@@ -49,15 +49,17 @@
                         :dataTable="dataTable" 
                         :dataColumn="datacolumn" 
                         :tableLoading="loadingTableData"
-                        :onRowClickSelected="onRowClickSelected"
-                        :isSingleSelect="true"
                         :selectedData="selectedData"
                         :hasPagination="true"
                         :pageSize="pagination.page_size"
                         :page="pagination.page"
                         :limit="pagination.limit"
+                        :isMultipleSelectWithIndex="true"
+                        :onRowClickCallback="onRowClickCallback"
+                        :isShowCheckboxAll="false"
                         @actionLimit="actionLimit"
                         @actionPagination="actionPagination"
+                        @updateSelected2="updateSelected"
                     />
                 </div>
 
@@ -75,6 +77,26 @@
                     :querySearch="querySearch"
                     @formData="formData"
                 />
+
+                <vs-row v-if="vehicle.length > 0">
+                    <h3 class="title">Vehicle List</h3>
+                    <vs-row
+                        v-for="(item, index) in vehicle"
+                        :key="index"
+                    >
+                        <vs-col w="12">
+                            <vehicle-card 
+                                :data="item" 
+                                :isActive="item.is_active"
+                            />
+                        </vs-col>
+                    </vs-row>
+                    
+                </vs-row>
+                <vs-row v-else>
+                    <img src="@/assets/svg/defaultVehicle.svg" alt="Core JNE Default Vehicle" style="width: 100%; margin: 20px 0;"/>
+                </vs-row>
+                
             </div>
         </template>
 
@@ -119,6 +141,7 @@ import Selector from "@/components/input/select";
 import SearchInput from "@/components/search/searchInput";
 import SelectSearchBy from "@/components/search/selectSearchBy";
 import TableMaster from "@/components/table/tableMaster";
+import VehicleCard from "@/views/transport/manifestNew/vehicleCard";
 
 export default {
     name:"surat-muatan-settings-stock-dialog",
@@ -131,6 +154,7 @@ export default {
         "search-input": SearchInput,
         "select-search-by": SelectSearchBy,
         "table-master" : TableMaster,
+        "vehicle-card": VehicleCard
     },
     props: {
         active: Boolean,
@@ -182,7 +206,7 @@ export default {
                 },
                 {
                     label: "Type",
-                    key: "vehicle_name",
+                    key: "vehicle_mode_name",
                     width: "sm"
                 },
                 {
@@ -229,12 +253,12 @@ export default {
             edit_data: {},
             selectedData: [],
             schedule_id: "",
+            vehicle: []
         }
     },
     computed: {
         listenActive(){
             if (this.active) {
-                this.getVehicle();
             }
             return this.active;
         },
@@ -305,11 +329,11 @@ export default {
                     })
                     
                     this.dataTable = arr
-                    this.onRowClickSelected(res.data.data)
                 } else {
                     this.dataTable = [];
                 }
             } catch (err) {
+                console.log("PP", err)
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loadingTableData = false;
@@ -362,10 +386,6 @@ export default {
             val.node_id_destination = val.node_name_destination + " (" + val.node_code_destination + ")";
         },
         querySearch(queryString, cb){
-            // TODO: UNCOMMENT IF WANNA USE NODE
-            // axios.get(this.URL.node_list +`?n=${this.listenNodeId}&s=${queryString}`, this.Helper.header())
-
-            // TODO: COMMENT IF DON'T WANNA USE BRANCH
             axios.get(this.URL.branch_list_v2 +`?n=${this.listenNodeId}&s=${queryString}`, this.Helper.header())
             .then(res => {
                 let result = res.data.data
@@ -392,10 +412,21 @@ export default {
                 formWithoutId.node_id_origin = form?.node_id_origin;
             }
 
+            formWithoutId.vehicle = this.vehicle.map(item => ({
+                vehicle_id: item.vehicle_id,
+                tlc_origin: item.origin_vehicle_tlc,
+                tlc_destination: item.destination_vehicle_tlc,
+                etd: item.etd_vehicle,
+                etd_timezone: "WIB",
+                eta: item.eta_vehicle,
+                eta_timezone: "WIB",
+                is_active: item.is_active ? 1 : 0
+            }));
             formWithoutId.is_active = formWithoutId.is_active === true ? "1" : "0";
-            formWithoutId.schedule_id = this.schedule_id;
+            formWithoutId.schedule_id = this.vehicle[0]?.shipment_schedule_id || null; // TODO: CONFIRM AGAIN
 
             this.form = formWithoutId;
+
             this.handleSubmitData();
         },
         updateValue(key, val, info){
@@ -407,31 +438,6 @@ export default {
                 default:
             }
         },
-        async getVehicle() {
-            this.loading = true;
-            try {
-                const res = await axios.get(`${this.URL.vehicle}?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header());
-
-                const data = res.data.data;
-
-                if (res.data.data.length > 0) {
-                    const arr = data.map(item => ({
-                        label: item.vehicle_name,
-                        value: item.vehicle_id,
-                        data: item
-                    }));
-
-                    this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID_ArrData", arr.length > 0 ? arr : null);
-                } else {
-                    this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID", "");
-                    this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID_ArrData", []);
-                }
-            } catch (err) {
-                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
-            } finally {
-                this.loading = false;
-            }
-        },
         async handleSubmitData() {
             this.loading = true;
             try {
@@ -441,7 +447,7 @@ export default {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;
-                this.cancel();
+                // this.cancel();
             }
         },
         handleSubmit(){
@@ -477,28 +483,47 @@ export default {
             this.schedule_id = "";
             this.selectedData = [];
             this.$refs.formDataController.handleEmptyForm();
-            this.form = {};
-            
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA_isDisabled", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD_isDisabled", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID_isDisabled", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_isDisabled", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE_isDisabled", false);  
+            this.form = {}; 
         },
-        onRowClickSelected(item) {
-            this.selectedData = [item];
-            this.schedule_id = item.shipment_schedule_id;
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID", parseInt(item.vehicle_id));
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD", item?.etd);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE", item?.etd_timezone);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA", item?.eta);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE", item?.eta_timezone);
-            
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA_isDisabled", true);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD_isDisabled", true);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID_isDisabled", true);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_isDisabled", true);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE_isDisabled", true);  
+        updateSelected(val, checkedItem) {
+            // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING CHECKBOX
+            this.vehicle = checkedItem.map((item, idx) => ({
+                shipment_schedule_id: item?.shipment_schedule_id,
+                origin_vehicle: item?.origin_name || "",
+                destination_vehicle: item?.destination_name || "",
+                origin_vehicle_tlc: item?.origin_identifier || "",
+                destination_vehicle_tlc: item?.destination_identifier || "",
+                vehicle_id: item?.vehicle_name || "",
+                pic_employee_id: "",
+                flight_number: item?.shipment_number || "",
+                flight_schedule: item?.etd || "",
+                flight_schedule_timezone: item?.etd_timezone || "",
+                etd_vehicle: item?.etd || "",
+                etd_vehicle_timezone: item?.etd_timezone || "",
+                eta_vehicle: item?.eta || "",
+                eta_vehicle_timezone: item?.eta_timezone || "",
+                is_active: idx === 0
+            }));
+        },
+        onRowClickCallback(event, val, checkedItem) {
+            // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING ROW
+            this.vehicle = checkedItem.map((item, idx) => ({
+                shipment_schedule_id: item?.shipment_schedule_id,
+                origin_vehicle: item?.origin_name || "",
+                destination_vehicle: item?.destination_name || "",
+                origin_vehicle_tlc: item?.origin_identifier || "",
+                destination_vehicle_tlc: item?.destination_identifier || "",
+                vehicle_id: item?.vehicle_name || "",
+                pic_employee_id: "",
+                flight_number: item?.shipment_number || "",
+                flight_schedule: item?.etd || "",
+                flight_schedule_timezone: item?.etd_timezone || "",
+                etd_vehicle: item?.etd || "",
+                etd_vehicle_timezone: item?.etd_timezone || "",
+                eta_vehicle: item?.eta || "",
+                eta_vehicle_timezone: item?.eta_timezone || "",
+                is_active: idx === 0
+            }));
         },
     },
     mounted() {

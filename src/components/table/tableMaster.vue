@@ -111,6 +111,7 @@
           <template v-if="listenIsMultipleSelectWithIndex">
             <vs-th>
               <vs-checkbox
+                v-if="listenIsShowCheckboxAll"
                 v-model="isAllChecked"
                 :indeterminate="selected.length == listenDataTable.length"
                 @change="onAllCheckWithIndexChange"
@@ -1676,6 +1677,7 @@ export default {
     
     isMultipleSelect: Boolean,
     isMultipleSelectWithIndex: Boolean,
+    isShowCheckboxAll: Boolean,
     isMultipleSelectColoum: Boolean,
     selectedData: Array,
     isSearchAble: Boolean,
@@ -1771,6 +1773,9 @@ export default {
     },
     listenIsMultipleSelectWithIndex() {
       return this.isMultipleSelectWithIndex;
+    },
+    listenIsShowCheckboxAll() {
+      return this.isShowCheckboxAll || false;
     },
     listenIsMultipleSelect() {
       return this.isMultipleSelect;

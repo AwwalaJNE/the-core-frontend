@@ -13,6 +13,7 @@
             :onRowClickCallback="onRowClickCallback"
             :isAllCheckedCheckCallback="onAllCheckCallback"
             :isAllChecked="isAllChecked"
+            isShowCheckboxAll="true"
             :isHideFilterColumn="true"
             :isHideTotalPerPage="true"
             @updateSelected2="updateSelected"
