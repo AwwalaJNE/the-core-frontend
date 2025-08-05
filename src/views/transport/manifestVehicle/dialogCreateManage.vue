@@ -173,6 +173,10 @@ export default {
         },
         activeTab(val) {
             this.navActive = val;
+
+            if (val === 'k-MANAGE') {
+                this.getManifestVehicle();
+            }
         },
         formData(form){
             form.origin_branch_code = form.origin_branch_code?.value;

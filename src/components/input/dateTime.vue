@@ -16,7 +16,7 @@
                         :format="isInventoryBag ? 'yyyy-MM-dd HH:mm' : null"
                         start-placeholder="Start date"
                         end-placeholder="End date"
-                        :picker-options="pickerOptions"
+                        :picker-options="isETDnETA ? pickerOptions : null"
                         :default-time="isETDnETA ? null : ['00:00:00', '23:59:59']"
                         :disabled="listenIsDisabled"
                         @change="updateValue"
