@@ -435,9 +435,32 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled", true);
             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_isDisabled", true);
             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_isDisabled", true);
-            this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ID_isDisabled", true);
             this.$store.dispatch("SET_SURAT_MUATAN_ETD_isDisabled", true);
             this.$store.dispatch("SET_SURAT_MUATAN_ETA_isDisabled", true);
+
+            this.initVehicle = {
+                origin_vehicle: val?.origin_vehicle?.label || "",
+                destination_vehicle: val?.destination_vehicle?.label || "",
+                vehicle_id: val?.vehicle_name || "",
+                pic_employee_id: val?.employee_pic?.employee_name || "",
+                flight_number: val?.shipment_number || "",
+                flight_schedule: val?.etd || "",
+                etd_vehicle: val?.etd_vehicle || "",
+                eta_vehicle: val?.eta_vehicle || "",
+            };
+
+            this.vehicle_form = {
+                vehicle_id: val?.vehicle_id?.vehicle_id || "",
+                vehicle_type_id: val?.vehicle_type_id || "",
+                vehicle_mode_id: val?.vehicle_mode_id || "",
+                pic_employee_id: parseInt(val?.employee_driver_id) || "",
+                flight_number: val?.shipment_number || "",
+                flight_schedule: val?.etd || "",
+                etd_vehicle: val?.etd_vehicle || "",
+                eta_vehicle: val?.eta_vehicle || "",
+                origin_vehicle: val?.origin_vehicle?.value || "",
+                destination_vehicle: val?.destination_vehicle?.value || "",
+            }
         },
         openSelectStockModal() {
             if (!this.isDisabled) {
