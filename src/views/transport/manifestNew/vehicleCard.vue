@@ -1,5 +1,5 @@
 <template>
-    <div class="box view">
+    <div class="box view" style="margin: 0!important; min-height: 30px; margin-bottom: 10px;">
         <vs-row justify="space-between" align="center" class="row-top">
             <div class="left">
                 <span class="vehicle">{{ data.vehicle_id }}</span>
@@ -11,28 +11,44 @@
 
         <div class="divider"></div>
 
-        <vs-row justify="space-between" align="center" class="row-bottom">
-            <div class="left">
-                <div class="code big">{{ data.origin_vehicle }}</div>
-                <div class="date">{{ formatDateTimeId(data.etd_vehicle) }}</div>
-            </div>
-            <div class="center">
+        <template v-if="data.origin_vehicle && data.destination_vehicle">
+            <vs-row justify="space-between" align="center" class="row-bottom">
+                <div class="left">
+                    <div class="code big">{{ data.origin_vehicle }}</div>
+                    <div class="date">{{ formatDateTimeId(data.etd_vehicle) }}</div>
+                </div>
+                <div class="center">
+                    <template v-if="!data.pic_employee_id">
+                        <span class="temp-data">{{ data.flight_number }}</span>
+                        <div class="divider small-divider"></div>
+                        <span class="date">{{ formatDateTimeId(data.flight_schedule) }}</span>
+                    </template>
+                    <template v-else>
+                        <div class="divider small-divider"></div>
+                        <span class="temp-data">{{ data.pic_employee_id }}</span>
+                        <div class="divider small-divider"></div>
+                    </template>
+                </div>
+                <div class="right">
+                    <div class="code big">{{ data.destination_vehicle }}</div>
+                    <div class="date">{{ formatDateTimeId(data.eta_vehicle) }}</div>
+                </div>
+            </vs-row>
+        </template>
+        <template>
+             <div class="left">
                 <template v-if="!data.pic_employee_id">
-                    <span class="temp-data">{{ data.flight_number }}</span>
-                    <div class="divider small-divider"></div>
-                    <span class="date">{{ formatDateTimeId(data.flight_schedule) }}</span>
+                    <div class="row-top">
+                        <span class="temp-data">{{ data.flight_number }}</span>
+                        <div class="divider small-divider"></div>
+                        <span class="date">{{ formatDateTimeId(data.flight_schedule) }}</span>
+                    </div>
                 </template>
                 <template v-else>
-                    <div class="divider small-divider"></div>
                     <span class="temp-data">{{ data.pic_employee_id }}</span>
-                    <div class="divider small-divider"></div>
                 </template>
             </div>
-            <div class="right">
-                <div class="code big">{{ data.destination_vehicle }}</div>
-                <div class="date">{{ formatDateTimeId(data.eta_vehicle) }}</div>
-            </div>
-        </vs-row>
+        </template>
     </div>
 </template>
 

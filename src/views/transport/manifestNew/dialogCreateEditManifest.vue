@@ -67,15 +67,16 @@
                     />
 
                     <div v-if="listenInitVehicle && Object.keys(listenInitVehicle).length !== 0">
-                        <vs-row justify="space-between">
-                            <vs-col w="6">
+                        <vs-row justify="space-between" style="margin: 0!important;">
+                            <vs-col w="6" >
                                 <h3 class="title">Current Vehicle</h3>
                             </vs-col>
-                            <vs-col w="6">
+                            <vs-col w="6" >
                                 <vs-row justify="flex-end" v-if="!is_sm_created && !is_sm_edit">
                                     <vs-button
                                         shadow
                                         :active="false"
+                                        :disabled="isDisabled"
                                         @click="openDialogCreateVehicleManifest"
                                     >
                                         <i class='bx bx-edit'></i> Vehicle
@@ -88,6 +89,7 @@
                                     <vs-button
                                         shadow
                                         :active="false"
+                                        :disabled="isDisabled"
                                         @click="openDialogManageVehicleManifest"
                                     >
                                         <i class='bx bx-cog'></i> Manage
@@ -102,6 +104,7 @@
                         v-if="Object.keys(listenInitVehicle).length === 0"
                         shadow
                         :active="false"
+                        :disabled="isDisabled"
                         @click="openDialogCreateVehicleManifest"
                     >
                         <i class='bx bx-plus'></i> Vehicle
@@ -569,6 +572,17 @@ export default {
             val.pic_employee_id = val?.employee_pic?.employee_name;
             val.flight_number = val?.flight_number;
             val.flight_schedule = val?.flight_schedule;
+
+            this.initVehicle = {
+                origin_vehicle: val?.origin_vehicle?.label || "",
+                destination_vehicle: val?.destination_vehicle?.label || "",
+                vehicle_id: val?.vehicle?.vehicle_name || "",
+                pic_employee_id: val?.employee_pic?.employee_name || "",
+                flight_number: val?.flight_number || "",
+                flight_schedule: val?.flight_schedule || "",
+                etd_vehicle: val?.etd_vehicle || "",
+                eta_vehicle: val?.eta_vehicle || "",
+            };
 
             this.dataByApi = val;
             
