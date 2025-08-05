@@ -20,11 +20,12 @@
             <vs-col xs="12" sm="12" lg="12">
                 <template v-if="navActive === 'k-MANAGE'">
                     <template v-if="list_manifest_vehicle.length > 0">
-                        <p class="notes"><b>Notes</b>: *Your changes are being autosaved</p>
+                        <p class="notes"><b>Notes</b>: *Click a card to select a vehicle — changes save automatically.</p>
                         <radio
                             :name="'list_manifest_vehicle'"
                             :valueData="list_manifest_vehicle"
                             :selectedValue="listenSelectedManifestVehicle"
+                            :radioType="'card'"
                             @updateValue="updateValue"
                             @removeRow="removeRow"
                         />
@@ -197,67 +198,88 @@ export default {
 
                 let arr = res.data.data;
                 
+                // NOTES: BELOW FOR RADIO - FORM
+                // const revamp_arr = arr.map(item => ({
+                //     key: item.manifest_vehicle_log_id,
+                //     state: [
+                //         {
+                //             label: '',
+                //             key: 'label',
+                //             value: item.status_flight,
+                //             typeInput: 'badge',
+                //             width: "12"
+                //         },
+                //         {
+                //             label: 'Origin*',
+                //             key: 'origin',
+                //             value: `${item.origin_branch_name} (${item.origin_branch_code})`,
+                //             typeInput: 'text',
+                //             width: "6"
+                //         },
+                //         {
+                //             label: 'Destination*',
+                //             key: 'destination',
+                //             value: `${item.destination_branch_name} (${item.destination_branch_code})`,
+                //             typeInput: 'text',
+                //             width: "6"
+                //         },
+                //         {
+                //             label: 'Flight Number',
+                //             key: 'flight_number',
+                //             value: item.flight_number,
+                //             typeInput: 'text',
+                //             width: "6"
+                //         },
+                //         {
+                //             label: 'Flight Schedule',
+                //             key: 'flight_schedule',
+                //             value: item.flight_schedule,
+                //             typeInput: 'text',
+                //             width: "6"
+                //         },
+                //         {
+                //             label: 'Vehicle',
+                //             key: 'vehicle',
+                //             value: item.vehicle_name,
+                //             typeInput: 'text',
+                //             width: "4"
+                //         },
+                //         {
+                //             label: 'ETD',
+                //             key: 'etd',
+                //             value: item.etd,
+                //             typeInput: 'text',
+                //             width: "4"
+                //         },
+                //         {
+                //             label: 'ETA',
+                //             key: 'eta',
+                //             value: item.eta,
+                //             typeInput: 'text',
+                //             width: "4"
+                //         }
+                //     ]
+                // }));
+
+                // NOTES: BELOW FOR RADIO - CARD
                 const revamp_arr = arr.map(item => ({
                     key: item.manifest_vehicle_log_id,
-                    state: [
-                        {
-                            label: '',
-                            key: 'label',
-                            value: item.status_flight,
-                            typeInput: 'badge',
-                            width: "12"
-                        },
-                        {
-                            label: 'Origin*',
-                            key: 'origin',
-                            value: `${item.origin_branch_name} (${item.origin_branch_code})`,
-                            typeInput: 'text',
-                            width: "6"
-                        },
-                        {
-                            label: 'Destination*',
-                            key: 'destination',
-                            value: `${item.destination_branch_name} (${item.destination_branch_code})`,
-                            typeInput: 'text',
-                            width: "6"
-                        },
-                        {
-                            label: 'Flight Number',
-                            key: 'flight_number',
-                            value: item.flight_number,
-                            typeInput: 'text',
-                            width: "6"
-                        },
-                        {
-                            label: 'Flight Schedule',
-                            key: 'flight_schedule',
-                            value: item.flight_schedule,
-                            typeInput: 'text',
-                            width: "6"
-                        },
-                        {
-                            label: 'Vehicle',
-                            key: 'vehicle',
-                            value: item.vehicle_name,
-                            typeInput: 'text',
-                            width: "4"
-                        },
-                        {
-                            label: 'ETD',
-                            key: 'etd',
-                            value: item.etd,
-                            typeInput: 'text',
-                            width: "4"
-                        },
-                        {
-                            label: 'ETA',
-                            key: 'eta',
-                            value: item.eta,
-                            typeInput: 'text',
-                            width: "4"
-                        }
-                    ]
+                    state: {
+                        origin_vehicle: item?.name_origin_tlc || "",
+                        destination_vehicle: item?.name_destination_tlc || "",
+                        origin_vehicle_tlc: item?.origin_tlc || "",
+                        destination_vehicle_tlc: item?.destination_tlc || "",
+                        vehicle_id: item?.vehicle_name || "",
+                        pic_employee_id: item?.pic_employee_id || "",
+                        flight_number: item?.flight_number || "",
+                        flight_schedule: item?.etd || "",
+                        etd_vehicle: item?.etd || "",
+                        eta_vehicle: item?.eta || "",
+                        status_flight: item?.status_flight,
+                        is_active: item?.status === 'ACTIVE'
+                    }
                 }));
+                
 
                 this.selected_manifest_vehicle = arr.find(item => item.status === 'ACTIVE')?.manifest_vehicle_log_id || null;
 
