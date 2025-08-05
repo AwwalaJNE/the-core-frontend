@@ -35,7 +35,7 @@
                 </div>
             </vs-row>
         </template>
-        <template>
+        <template v-else>
              <div class="left">
                 <template v-if="!data.pic_employee_id">
                     <div class="row-top">
