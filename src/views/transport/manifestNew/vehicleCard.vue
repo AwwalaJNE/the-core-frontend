@@ -1,69 +1,63 @@
 <template>
 	<div :class="['card', { active: listenIsActive }]">
 		<vs-row justify="space-between" align="center">
-		<vs-col w="6" align="left">
-			<h1 class="text-header">{{ listenData.vehicle_id || "TEST" }}</h1>
-			<span class="text">{{ formatDateTimeId(listenData.flight_schedule) }} {{ listenData.flight_schedule_timezone || "" }}</span>
-		</vs-col>
-		<vs-col w="6" align="right">
-			<span class="badge">Status</span>
-		</vs-col>
+			<vs-col w="6" align="left">
+				<h1 class="text-header">{{ listenData.vehicle_id }}</h1>
+				<span v-if="!listenData.pic_employee_id" class="text">{{ formatDateTimeId(listenData.flight_schedule) }} {{ listenData.flight_schedule_timezone || "" }}</span>
+			</vs-col>
+			<vs-col w="6" align="right">
+				<span v-if="listenData.status_flight" class="badge">{{ listenData.status_flight }}</span>
+			</vs-col>
 		</vs-row>
 
 		<div class="divider"></div>
 
 		<vs-row justify="space-between" align="center">
-		<vs-col w="4" align="left">
-			<h1 class="text-subheader">{{ listenData.origin_vehicle }}</h1>
-			<span class="text">{{ formatDateTimeId(listenData.etd_vehicle) }} {{ listenData.etd_vehicle_timezone || "" }}</span>
-		</vs-col>
+			<vs-col w="4" align="left">
+				<h1 class="text-subheader">{{ listenData.origin_vehicle }}</h1>
+				<span class="text">{{ formatDateTimeId(listenData.etd_vehicle) }} {{ listenData.etd_vehicle_timezone || "" }}</span>
+			</vs-col>
 
-		<vs-col w="4" align="center">
-			<template v-if="!listenData.pic_employee_id">
-			<vs-row>
-				<vs-row>
-				<vs-col align="center">
-					<img
-					:src="listenIsActive
-						? require('@/assets/svg/plane-white.svg')
-						: require('@/assets/svg/plane.svg')"
-					alt="Plane"
-					style="width: 10%;"
-					/>
-				</vs-col>
-				</vs-row>
+			<vs-col w="4" align="center">
+				<template>
+					<vs-row>
+						<vs-row v-if="!listenData.pic_employee_id">
+							<vs-col align="center">
+								<img
+									:src="listenIsActive
+										? require('@/assets/svg/plane-white.svg')
+										: require('@/assets/svg/plane.svg')"
+									alt="Plane"
+									style="width: 10%;"
+								/>
+							</vs-col>
+						</vs-row>
 
-				<vs-row>
-				<vs-col w="4">
-					<h1 class="text-subheader">{{ listenData.origin_vehicle_tlc }}</h1>
-				</vs-col>
-				<vs-col w="4">
-					<div class="divider small-divider"></div>
-				</vs-col>
-				<vs-col w="4">
-					<h1 class="text-subheader">{{ listenData.destination_vehicle_tlc }}</h1>
-				</vs-col>
-				</vs-row>
+						<vs-row>
+							<vs-col w="4">
+								<h1 class="text-subheader">{{ listenData.origin_vehicle_tlc }}</h1>
+							</vs-col>
+							<vs-col w="4">
+								<div class="divider small-divider"></div>
+							</vs-col>
+							<vs-col w="4">
+								<h1 class="text-subheader">{{ listenData.destination_vehicle_tlc }}</h1>
+							</vs-col>
+						</vs-row>
 
-				<vs-row>
-				<vs-col align="center">
-					<span class="badge-2">{{ listenData.flight_number }}</span>
-				</vs-col>
-				</vs-row>
-			</vs-row>
-			</template>
+						<vs-row>
+							<vs-col align="center">
+								<span class="badge-2">{{ listenData.flight_number || listenData.pic_employee_id }}</span>
+							</vs-col>
+						</vs-row>
+					</vs-row>
+				</template>
+			</vs-col>
 
-			<template v-else>
-			<div class="divider small-divider"></div>
-			<span class="temp-data">{{ listenData.pic_employee_id }}</span>
-			<div class="divider small-divider"></div>
-			</template>
-		</vs-col>
-
-		<vs-col w="4" align="right">
-			<h1 class="text-subheader">{{ listenData.destination_vehicle }}</h1>
-			<span class="text">{{ formatDateTimeId(listenData.eta_vehicle) }} {{ listenData.eta_vehicle_timezone || "" }}</span>
-		</vs-col>
+			<vs-col w="4" align="right">
+				<h1 class="text-subheader">{{ listenData.destination_vehicle }}</h1>
+				<span class="text">{{ formatDateTimeId(listenData.eta_vehicle) }} {{ listenData.eta_vehicle_timezone || "" }}</span>
+			</vs-col>
 		</vs-row>
 	</div>
 </template>
@@ -111,6 +105,7 @@ export default {
 	.text-header {
 		font-weight: 900;
 		font-size: 18px;
+		margin-bottom: 0;
 	}
 
 	.text-subheader {
