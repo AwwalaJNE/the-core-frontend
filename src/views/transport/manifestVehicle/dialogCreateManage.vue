@@ -34,13 +34,43 @@
                     </template>
                 </template>
                 <template v-else-if="navActive === 'k-NEW'">
-                    <form-input-controller
-                        ref="formSuratMuatanVehicleController"
-                        typeForm="surat_muatan_vehicle"
-                        :querySearch="querySearch"
-                        @formData="formData"
-                        @inputFocus="inputFocus"
-                    />
+                    <template v-if="listenManifestMethod === 1">
+                        <vs-input 
+                            border 
+                            type="text"
+                            v-model="flightNumber"
+                            label-placeholder="Search Flight Number Here"
+                            :autofocus="true"
+                            :disabled="hasFlightNumber"
+                            v-uppercase
+                            ref="formFlightNumber"
+                            @keyup.enter="processFlightNumber"
+                        />
+                        <template v-if="hasFlightNumber">
+                            <div style="position:absolute; right:20px; top:15px;">
+                                <span class="vs-select__chips__chip__close" @click="clearInput">
+                                    <i class="vs-icon-close vs-icon-hover-less"></i>
+                                </span>
+                            </div>
+
+                            <form-input-controller
+                                ref="formSuratMuatanVehicleController"
+                                typeForm="surat_muatan_vehicle"
+                                :querySearch="querySearch"
+                                @formData="formData"
+                                @inputFocus="inputFocus"
+                            />
+                        </template>
+                    </template>
+                    <template v-else>
+                        <form-input-controller
+                            ref="formSuratMuatanVehicleController"
+                            typeForm="surat_muatan_vehicle"
+                            :querySearch="querySearch"
+                            @formData="formData"
+                            @inputFocus="inputFocus"
+                        />
+                    </template>
                 </template>
             </vs-col>
         </template>
@@ -119,6 +149,9 @@ export default {
             loading: false,
             list_manifest_vehicle: [],
             selected_manifest_vehicle: "",
+
+            flightNumber: "",
+            hasFlightNumber: false
         };
     },
     computed: {
@@ -179,11 +212,11 @@ export default {
             }
         },
         formData(form){
-            form.origin_branch_code = form.origin_branch_code?.value;
-            form.destination_branch_code = form.destination_branch_code?.value;
+            form.origin_branch_code = form.origin_branch_code?.value || form.origin_branch_code;
+            form.destination_branch_code = form.destination_branch_code?.value || form.destination_branch_code;
             form.vehicle_id = form?.vehicle_id?.vehicle_id;
             form.employee_driver_id = form?.employee_driver_id?.employee_id || "";
-
+            
             this.form = form;
             this.createManifestVehicle()
         },
@@ -342,6 +375,35 @@ export default {
             await this.removeManifestVehicle(row_id);
             await this.getManifestVehicle();
         },
+        async processFlightNumber() {
+            if (!this.flightNumber || this.flightNumber.trim() === "") {
+                return;
+            }
+            this.hasFlightNumber = true;
+            
+
+            this.loading = true;
+            try {
+                const res = await axios.get(`${this.URL.search_flight}/${this.flightNumber}`, this.Helper.headerFlight());
+
+                let data = res.data.data;
+
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER", data?.flight);
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE", data?.detailJson?.timingInformation?.departure?.runway?.scheduled?.iso);
+                // this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_VEHICLE_ID", data?.detailJson?.aircraftInformation?.type?.friendlyName); TODO: confirm later
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE", data?.detailJson?.routeInformation?.departure?.airport?.iata);
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE", data?.detailJson?.routeInformation?.arrival?.airport?.iata);
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ETD", data?.detailJson?.timingInformation?.departure?.runway?.estimated?.iso);
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ETA", data?.detailJson?.timingInformation?.arrival?.runway?.estimated?.iso);
+
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_ValueData", data?.detailJson?.routeInformation?.departure?.airport?.iata);
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_ValueData", data?.detailJson?.routeInformation?.arrival?.airport?.iata);
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loading = false;
+            }
+        },
         inputFocus(info) {
             if (info?.key) {
                 switch (info.key) {
@@ -380,6 +442,16 @@ export default {
                 this.$refs.formSuratMuatanVehicleController.handleClearForm();
             }
         },
+        clearInput() {
+            this.hasFlightNumber = false;
+            this.flightNumber = "";
+
+            this.handleClearForm();
+            
+            this.$nextTick(() => {
+                this.$refs.formFlightNumber?.$el?.querySelector("input")?.focus();
+            });
+        },
         cancel() {
             this.handleClearForm();
 
@@ -388,9 +460,16 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID_visible", false);
 
             this.navActive = 'k-MANAGE';
+
+            this.hasFlightNumber = false;
+            this.flightNumber = "";
+            
             this.closeDialog();
         },
         moveTab() {
+            this.hasFlightNumber = false;
+            this.flightNumber = "";
+
             this.handleClearForm();
 
             this.navActive = 'k-MANAGE';

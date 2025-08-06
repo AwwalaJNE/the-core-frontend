@@ -4224,33 +4224,10 @@ export default {
     }
   },
   surat_muatan_vehicle: {
-    origin_branch_code: {
-      label: "Origin*",
-      key: "origin_branch_code",
-      rule: "required",
-      typeInput: "autocomplete",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: '',
-      width: "12"
-    },
-    destination_branch_code: {
-      label: "Destination*",
-      key: "destination_branch_code",
+    vehicle_id: {
+      label: "Vehicle*",
+      key: "vehicle_id",
       rule:"required",
-      typeInput: "autocomplete",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: '',
-      width: "12"
-    },
-    employee_driver_id: {
-      label: "Driver",
-      key: "employee_driver_id",
-      rule:"",
-      visible: false,
       typeInput: "autocomplete",
       typeData: "String",
       arrData: [],
@@ -4280,9 +4257,32 @@ export default {
       value: '',
       width: "12"
     },
-    vehicle_id: {
-      label: "Vehicle*",
-      key: "vehicle_id",
+    employee_driver_id: {
+      label: "Driver",
+      key: "employee_driver_id",
+      rule:"",
+      visible: false,
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+      width: "12"
+    },
+    origin_branch_code: {
+      label: "Origin*",
+      key: "origin_branch_code",
+      rule: "required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+      width: "12"
+    },
+    destination_branch_code: {
+      label: "Destination*",
+      key: "destination_branch_code",
       rule:"required",
       typeInput: "autocomplete",
       typeData: "String",
