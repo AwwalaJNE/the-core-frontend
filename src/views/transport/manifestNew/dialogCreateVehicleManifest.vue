@@ -11,13 +11,43 @@
 
         <template v-slot:content>
             <vs-col xs="12" sm="12" lg="12">
-                <form-input-controller
-                    ref="formSuratMuatanVehicleController"
-                    typeForm="surat_muatan_vehicle"
-                    :querySearch="querySearch"
-                    @formData="formData"
-                    @inputFocus="inputFocus"
-                />
+                <template v-if="listenManifestMethod === 1">
+                    <vs-input 
+                        border 
+                        type="text"
+                        v-model="flightNumber"
+                        label-placeholder="Search Flight Number Here"
+                        :autofocus="true"
+                        :disabled="hasFlightNumber"
+                        v-uppercase
+                        ref="formFlightNumber"
+                        @keyup.enter="processFlightNumber"
+                    />
+                    <template v-if="hasFlightNumber">
+                        <div style="position:absolute; right:20px; top:15px;">
+                            <span class="vs-select__chips__chip__close" @click="clearInput">
+                                <i class="vs-icon-close vs-icon-hover-less"></i>
+                            </span>
+                        </div>
+
+                        <form-input-controller
+                            ref="formSuratMuatanVehicleController"
+                            typeForm="surat_muatan_vehicle"
+                            :querySearch="querySearch"
+                            @formData="formData"
+                            @inputFocus="inputFocus"
+                        />
+                    </template>
+                </template>
+                <template v-else>
+                    <form-input-controller
+                        ref="formSuratMuatanVehicleController"
+                        typeForm="surat_muatan_vehicle"
+                        :querySearch="querySearch"
+                        @formData="formData"
+                        @inputFocus="inputFocus"
+                    />
+                </template>
             </vs-col>
         </template>
 
@@ -78,6 +108,8 @@ export default {
     data() {
         return {
             loading: false,
+            flightNumber: "",
+            hasFlightNumber: false
         };
     },
     computed: {
@@ -173,6 +205,35 @@ export default {
                 console.error("error", error);
             }
         },
+        async processFlightNumber() {
+            if (!this.flightNumber || this.flightNumber.trim() === "") {
+                return;
+            }
+            this.hasFlightNumber = true;
+            
+
+            this.loading = true;
+            try {
+                const res = await axios.get(`${this.URL.search_flight}/${this.flightNumber}`, this.Helper.headerFlight());
+
+                let data = res.data.data;
+
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER", data?.flight);
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE", data?.detailJson?.timingInformation?.departure?.runway?.scheduled?.iso);
+                // this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_VEHICLE_ID", data?.detailJson?.aircraftInformation?.type?.friendlyName); TODO: confirm later
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE", data?.detailJson?.routeInformation?.departure?.airport?.iata);
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE", data?.detailJson?.routeInformation?.arrival?.airport?.iata);
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ETD", data?.detailJson?.timingInformation?.departure?.runway?.estimated?.iso);
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ETA", data?.detailJson?.timingInformation?.arrival?.runway?.estimated?.iso);
+
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_ValueData", data?.detailJson?.routeInformation?.departure?.airport?.iata);
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_ValueData", data?.detailJson?.routeInformation?.arrival?.airport?.iata);
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loading = false;
+            }
+        },
         handleClearForm() {
             this.$refs.formSuratMuatanVehicleController.handleClearForm();
         },
@@ -183,7 +244,20 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE_visible", false);
             this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID_visible", false);
 
+            this.hasFlightNumber = false;
+            this.flightNumber = "";
+            
             this.closeDialog();
+        },
+        clearInput() {
+            this.hasFlightNumber = false;
+            this.flightNumber = "";
+
+            this.handleClearForm();
+            
+            this.$nextTick(() => {
+                this.$refs.formFlightNumber?.$el?.querySelector("input")?.focus();
+            });
         },
     },
     mounted() {

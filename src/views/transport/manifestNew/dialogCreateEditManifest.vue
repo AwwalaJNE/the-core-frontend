@@ -455,6 +455,8 @@ export default {
         getEditData(val) {
             this.is_sm_edit = true;
 
+            this.manifest_method_id = parseInt(val.manifest_method_id);
+
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled", true);
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
 
@@ -569,6 +571,7 @@ export default {
         },
         getDataPreview(val) {
 
+            this.manifest_method_id = parseInt(val.manifest_method_id);
             val.manifest_method_id = parseInt(val.manifest_method_id);
             val.manifest_prefix = val?.manifest_method?.prefix_name;
             
