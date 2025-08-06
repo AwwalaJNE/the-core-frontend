@@ -66,26 +66,23 @@
                         @handleIconClick="openSelectStockModal"
                     />
 
-                    <div v-if="listenInitVehicle && Object.keys(listenInitVehicle).length !== 0">
+                    <div v-if="vehicle.length > 0">
                         <vs-row justify="space-between" style="margin: 0!important;">
                             <vs-col w="6" >
-                                <h3 class="title">Current Vehicle</h3>
+                                <h3 class="title">List Vehicle</h3>
                             </vs-col>
                             <vs-col w="6" >
-                                <vs-row justify="flex-end" v-if="!is_sm_created && !is_sm_edit">
+                                <vs-row justify="flex-end" v-if="!is_sm_edit">
                                     <vs-button
                                         shadow
                                         :active="false"
                                         :disabled="isDisabled"
                                         @click="openDialogCreateVehicleManifest"
                                     >
-                                        <i class='bx bx-edit'></i> Vehicle
+                                        <i class='bx bx-plus'></i> More Vehicle
                                     </vs-button>
                                 </vs-row>
-                                <vs-row justify="flex-end" v-else-if="is_sm_created || is_sm_edit">
-                                    <!-- <vs-button @click="openDialogManageVehicleManifest">
-                                        <i class='bx bx-cog'></i> Manage
-                                    </vs-button> -->
+                                <vs-row justify="flex-end" v-else>
                                     <vs-button
                                         shadow
                                         :active="false"
@@ -97,11 +94,21 @@
                                 </vs-row>
                             </vs-col>
                         </vs-row>
-                        <vehicle-card :data="listenInitVehicle" :isActive="true"/>
+                        <vs-row
+                            v-for="(item, index) in vehicle"
+                            :key="index"
+                        >
+                            <vs-col w="12">
+                                <vehicle-card 
+                                    :data="item" 
+                                    :isActive="item.is_active"
+                                />
+                            </vs-col>
+                        </vs-row>
                     </div>
 
                     <vs-button
-                        v-if="Object.keys(listenInitVehicle).length === 0"
+                        v-if="vehicle.length === 0"
                         shadow
                         :active="false"
                         :disabled="isDisabled"
@@ -351,8 +358,8 @@ export default {
             dialogManageVehicleManifest: false,
             is_sm_created: false,
             is_sm_edit: false,
-            initVehicle: {},
-            vehicle_form: {}
+            vehicle_form: [],
+            vehicle: []
         };
     },
     computed: {
@@ -382,9 +389,6 @@ export default {
         },
         listenSMNumber() {
             return this.sm_number;
-        },
-        listenInitVehicle() {
-            return this.initVehicle || {}
         }
     },
     watch: {
@@ -437,30 +441,6 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_isDisabled", true);
             this.$store.dispatch("SET_SURAT_MUATAN_ETD_isDisabled", true);
             this.$store.dispatch("SET_SURAT_MUATAN_ETA_isDisabled", true);
-
-            this.initVehicle = {
-                origin_vehicle: val?.origin_vehicle?.label || "",
-                destination_vehicle: val?.destination_vehicle?.label || "",
-                vehicle_id: val?.vehicle_name || "",
-                pic_employee_id: val?.employee_pic?.employee_name || "",
-                flight_number: val?.shipment_number || "",
-                flight_schedule: val?.etd || "",
-                etd_vehicle: val?.etd_vehicle || "",
-                eta_vehicle: val?.eta_vehicle || "",
-            };
-
-            this.vehicle_form = {
-                vehicle_id: val?.vehicle_id?.vehicle_id || "",
-                vehicle_type_id: val?.vehicle_type_id || "",
-                vehicle_mode_id: val?.vehicle_mode_id || "",
-                pic_employee_id: parseInt(val?.employee_driver_id) || "",
-                flight_number: val?.shipment_number || "",
-                flight_schedule: val?.etd || "",
-                etd_vehicle: val?.etd_vehicle || "",
-                eta_vehicle: val?.eta_vehicle || "",
-                origin_vehicle: val?.origin_vehicle?.value || "",
-                destination_vehicle: val?.destination_vehicle?.value || "",
-            }
         },
         openSelectStockModal() {
             if (!this.isDisabled) {
@@ -536,16 +516,22 @@ export default {
                 auto_depart: val.auto_depart
             };
 
-            this.initVehicle = {
-                origin_vehicle: val?.origin_vehicle?.label || "",
-                destination_vehicle: val?.destination_vehicle?.label || "",
-                vehicle_id: val?.vehicle?.vehicle_name || "",
-                pic_employee_id: val?.employee_pic?.employee_name || "",
-                flight_number: val?.flight_number || "",
-                flight_schedule: val?.flight_schedule || "",
-                etd_vehicle: val?.etd_vehicle || "",
-                eta_vehicle: val?.eta_vehicle || "",
-            };
+            const active_vehicle = val?.vehicle_log?.find(item => item.status === 'ACTIVE');
+            this.vehicle =  [{
+                origin_vehicle: active_vehicle?.name_origin_tlc || "",
+                destination_vehicle: active_vehicle?.name_destination_tlc || "",
+                origin_vehicle_tlc: active_vehicle?.origin_tlc || "",
+                destination_vehicle_tlc: active_vehicle?.destination_tlc || "",
+                vehicle_id: active_vehicle?.vehicle_name || "",
+                pic_employee_id: active_vehicle?.pic_employee_id || "",
+                flight_number: active_vehicle?.flight_number || "",
+                flight_schedule: active_vehicle?.etd || "",
+                etd_vehicle: active_vehicle?.etd || "",
+                eta_vehicle: active_vehicle?.eta || "",
+                status_flight: active_vehicle?.status_flight,
+                is_active: active_vehicle?.status === 'ACTIVE'
+            }];
+
 
             val.manifest_prefix = val?.manifest_method?.prefix_name;
 
@@ -595,17 +581,6 @@ export default {
             val.pic_employee_id = val?.employee_pic?.employee_name;
             val.flight_number = val?.flight_number;
             val.flight_schedule = val?.flight_schedule;
-
-            this.initVehicle = {
-                origin_vehicle: val?.origin_vehicle?.label || "",
-                destination_vehicle: val?.destination_vehicle?.label || "",
-                vehicle_id: val?.vehicle?.vehicle_name || "",
-                pic_employee_id: val?.employee_pic?.employee_name || "",
-                flight_number: val?.flight_number || "",
-                flight_schedule: val?.flight_schedule || "",
-                etd_vehicle: val?.etd_vehicle || "",
-                eta_vehicle: val?.eta_vehicle || "",
-            };
 
             this.dataByApi = val;
             
@@ -699,16 +674,10 @@ export default {
             form.node_id_origin = form.node_id_origin?.node_id || form.node_id_origin || this.listenCurrentNode.node_id;
             form.node_id_destination = form.node_id_destination?.node_id || form.node_id_destination;
 
-            form.vehicle_id = this.vehicle_form?.vehicle_id;
-            form.vehicle_type_id = this.vehicle_form?.vehicle_type_id;
-            form.vehicle_mode_id = this.vehicle_form?.vehicle_mode_id;
-            form.pic_employee_id = this.vehicle_form?.pic_employee_id;
-            form.flight_number = this.vehicle_form?.flight_number;
-            form.flight_schedule = this.vehicle_form?.flight_schedule;
-            form.etd_vehicle = this.vehicle_form?.etd_vehicle;
-            form.eta_vehicle = this.vehicle_form?.eta_vehicle;
-            form.origin_vehicle = this.vehicle_form?.origin_vehicle;
-            form.destination_vehicle = this.vehicle_form?.destination_vehicle;
+            form.vehicles = this.vehicle_form;
+            form.vehicle_id = this.vehicle_form[0]?.vehicle_id;
+            form.vehicle_type_id = this.vehicle_form[0]?.vehicle_type_id;
+            form.vehicle_mode_id = this.vehicle_form[0]?.vehicle_mode_id;
 
             if (form.manifest_prefix && form.manifest_number) {
                 form.manifest_number = `${form.manifest_prefix}${form.manifest_number}`;
@@ -742,8 +711,8 @@ export default {
             this.manifest_number = "";
             this.dataTable = [];
 
-            this.initVehicle = {};
-            this.vehicle_form = {};
+            this.vehicle_form = [];
+            this.vehicle = [];
         },
         async getDataVehicleMode() {
             this.loading = true;
@@ -962,7 +931,8 @@ export default {
                         this.autoComplateUrl = `${this.URL.node}/${this.listenNodeId}/origin-link?n=${this.listenNodeId}&vehicle_mode_id=${this.vehicle_mode_id}&sort_order=desc&limit=15&page=1`;
                     }
 
-                    this.initVehicle = {};
+                    this.vehicle = [];
+                    this.vehicle_form = [];
                     updateMasterForm("manifest_method_id", val);
                     updateMasterForm("vehicle_mode_id", val);
                     break;
@@ -1071,7 +1041,7 @@ export default {
             this.dialogCreateVehicleManifest = false;
         },
         updateVehicleValue(form) {
-            this.initVehicle = {
+            let created_vehicle = {
                 origin_vehicle: form.origin_vehicle?.label,
                 destination_vehicle: form.destination_vehicle?.label,
                 vehicle_id: form.vehicle_id?.vehicle_name,
@@ -1079,21 +1049,25 @@ export default {
                 flight_number: form.flight_number,
                 flight_schedule: form.flight_schedule,
                 etd_vehicle: form.etd_vehicle,
-                eta_vehicle: form.eta_vehicle
+                eta_vehicle: form.eta_vehicle,
+                is_active: this.vehicle.length === 0
             };
 
-            this.vehicle_form = {
+            let vehicle_form = {
                 vehicle_id: form?.vehicle_id?.vehicle_id || "",
                 vehicle_type_id: form?.vehicle_id?.vehicle_type_id || "",
-                vehicle_mode_id: form?.vehicle_id?.vehicle_mode_id || "",
-                pic_employee_id: form?.pic_employee_id?.employee_id || "",
+                employee_driver_id: form?.pic_employee_id?.employee_id || "",
                 flight_number: form?.flight_number || "",
                 flight_schedule: form?.flight_schedule || "",
-                etd_vehicle: form?.etd_vehicle || "",
-                eta_vehicle: form?.eta_vehicle || "",
-                origin_vehicle: form?.origin_vehicle?.value || "",
-                destination_vehicle: form?.destination_vehicle?.value || "",
-            }
+                etd: form?.etd_vehicle || "",
+                eta: form?.eta_vehicle || "",
+                origin_branch_code: form?.origin_vehicle?.value || "",
+                destination_branch_code: form?.destination_vehicle?.value || "",
+                is_active: this.vehicle.length === 0
+            };
+
+            this.vehicle.push(created_vehicle);
+            this.vehicle_form.push(vehicle_form)
         },
         openDialogManageVehicleManifest() {
             this.dialogManageVehicleManifest = true;

@@ -2,7 +2,7 @@
 	<div :class="['card', { active: listenIsActive }]">
 		<vs-row>
 			<vs-col align="left" style="margin-bottom: 10px;">
-				<span v-if="listenIsActive" class="badge-3">SELECTED</span>
+				<span v-if="listenIsActive" class="badge-3">ACTIVE</span>
 			</vs-col>
 		</vs-row>
 		<vs-row justify="space-between" align="center">
