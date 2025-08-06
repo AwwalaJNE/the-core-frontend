@@ -69,7 +69,7 @@
                     <div v-if="vehicle.length > 0">
                         <vs-row justify="space-between" style="margin: 0!important;">
                             <vs-col w="6" >
-                                <h3 v-if="is_sm_created" class="title">List Vehicle</h3>
+                                <h3 v-if="is_sm_created || (!is_sm_edit && manifest_number)" class="title">List Vehicle</h3>
                                 <h3 v-if="is_sm_edit" class="title">Current Vehicle</h3>
                             </vs-col>
                             <vs-col w="6" >
@@ -423,6 +423,8 @@ export default {
     },
     methods: {
         handleSelectManifest(val) {
+            this.manifest_number = val.manifest_number;
+            this.manifest_method_id = parseInt(val.vehicle_mode_id)
             this.vehicle_type_id = val.vehicle_type_id;
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX", val.vehicle_prefix_name + "-");
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER", val.manifest_number);
@@ -443,6 +445,8 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_isDisabled", true);
             this.$store.dispatch("SET_SURAT_MUATAN_ETD_isDisabled", true);
             this.$store.dispatch("SET_SURAT_MUATAN_ETA_isDisabled", true);
+
+            this.getManifestVehicleSMStock();
         },
         openSelectStockModal() {
             if (!this.isDisabled) {
@@ -707,7 +711,7 @@ export default {
             
             this.form = form;
             if (this.form.eta > this.form.etd) {
-                if (this.manifest_number !== undefined && this.manifest_number !== "") {
+                if (this.manifest_number !== undefined && this.manifest_number !== "" && this.is_sm_edit) {
                     this.form.manifest_number = this.manifest_number;
                     this.form.etd = moment(this.form.etd).format("YYYY-MM-DD HH:mm:ss");
                     this.form.eta = moment(this.form.eta).format("YYYY-MM-DD HH:mm:ss");
@@ -883,6 +887,58 @@ export default {
                 this.loading = false;
             }
         },
+        async getManifestVehicleSMStock() {
+            this.loading = true;
+            try {
+                const res = await axios.get(`${this.URL.manifest_vehicle}/${this.manifest_number}?n=${this.listenNodeId}`, this.Helper.header());
+
+                let arr = res.data.data;
+
+                this.vehicle = arr.map((item, idx) => ({
+                    origin_vehicle: item?.name_origin_tlc || "",
+                    destination_vehicle: item?.name_destination_tlc || "",
+                    origin_vehicle_tlc: item?.origin_tlc || "",
+                    destination_vehicle_tlc: item?.destination_tlc || "",
+                    vehicle_id: item?.vehicle_name || "",
+                    pic_employee_id: item?.pic_employee_id || "",
+                    flight_number: item?.flight_number || "",
+                    flight_schedule: item?.etd || "",
+                    etd_vehicle: item?.etd || "",
+                    eta_vehicle: item?.eta || "",
+                    is_active: item?.status === 'ACTIVE'
+                }));
+
+                this.vehicle_form = arr.map((item, idx) => ({
+                    vehicle_id: item?.vehicle_id || "",
+                    vehicle_type_id: item?.vehicle_type_id || "",
+                    vehicle_mode_id: item?.vehicle_mode_id || "",
+                    origin_vehicle: item?.name_origin_tlc || "",
+                    destination_vehicle: item?.name_destination_tlc || "",
+                    origin_vehicle_tlc: item?.origin_tlc || "",
+                    destination_vehicle_tlc: item?.destination_tlc || "",
+                    pic_employee_id: item?.pic_employee_id || "",
+                    flight_number: item?.flight_number || "",
+                    flight_schedule: item?.etd || "",
+                    etd_vehicle: item?.etd || "",
+                    eta_vehicle: item?.eta || "",
+                    is_active: item?.status === 'ACTIVE'
+                }));
+                // vehicle_id: form?.vehicle_id?.vehicle_id || "",
+                // vehicle_type_id: form?.vehicle_id?.vehicle_type_id || "",
+                // employee_driver_id: form?.pic_employee_id?.employee_id || "",
+                // flight_number: form?.flight_number || "",
+                // flight_schedule: form?.flight_schedule || "",
+                // etd: form?.etd_vehicle || "",
+                // eta: form?.eta_vehicle || "",
+                // origin_branch_code: form?.origin_vehicle?.value || form.origin_vehicle?.iata || "",
+                // destination_branch_code: form?.destination_vehicle?.value || form.destination_vehicle?.iata || "",
+                // is_active: this.vehicle.length === 0
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loading = false;
+            }
+        },
         async approve() {
             this.loadingDetail = true;
             try {
@@ -950,7 +1006,7 @@ export default {
         },
         onChangeCustom(type, val, info = {}) {
             const updateMasterForm = (key, value) => {
-                if (this.manifest_number && this.master_form?.[key] !== value) {
+                if (this.manifest_number && this.is_sm_edit && this.master_form?.[key] !== value) {
                     this.master_form = { ...this.master_form, [key]: value };
                     this.updateSuratMuatan();
                 }
@@ -1092,10 +1148,10 @@ export default {
         },
         updateVehicleValue(form) {
             let created_vehicle = {
-                origin_vehicle: form.origin_vehicle?.label || form.origin_vehicle || "",
-                destination_vehicle: form.destination_vehicle?.label || form.destination_vehicle || "",
-                origin_vehicle_tlc: form.origin_vehicle?.value || form.origin_vehicle || "",
-                destination_vehicle_tlc: form.destination_vehicle?.value || form.destination_vehicle || "",
+                origin_vehicle: form.origin_vehicle?.label || form.origin_vehicle?.name || "",
+                destination_vehicle: form.destination_vehicle?.label || form.destination_vehicle?.name || "",
+                origin_vehicle_tlc: form.origin_vehicle?.value || form.origin_vehicle?.iata || "",
+                destination_vehicle_tlc: form.destination_vehicle?.value || form.destination_vehicle?.iata || "",
                 vehicle_id: form.vehicle_id?.vehicle_name,
                 pic_employee_id: form.pic_employee_id?.employee_name,
                 flight_number: form.flight_number,
@@ -1113,8 +1169,8 @@ export default {
                 flight_schedule: form?.flight_schedule || "",
                 etd: form?.etd_vehicle || "",
                 eta: form?.eta_vehicle || "",
-                origin_branch_code: form?.origin_vehicle?.value || form.origin_vehicle || "",
-                destination_branch_code: form?.destination_vehicle?.value || form.destination_vehicle || "",
+                origin_branch_code: form?.origin_vehicle?.value || form.origin_vehicle?.iata || "",
+                destination_branch_code: form?.destination_vehicle?.value || form.destination_vehicle?.iata || "",
                 is_active: this.vehicle.length === 0
             };
 
