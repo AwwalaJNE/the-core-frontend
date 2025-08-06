@@ -11,64 +11,65 @@
 
         <template v-slot:content>
             <div>
-                <vs-row align="center">
-                    <vs-col xs="12" sm="4" lg="4">
-                        <select-search-by
-                            key="searchBy"
-                            :border="true"
-                            :isMultiple="false"
-                            :selectedValue="searchBy" 
-                            :valueData="searchParams" 
-                            @updateSearchBy="updateSearchBy" 
-                        />
-                    </vs-col>
-                    <vs-col xs="12" sm="8" lg="8">
-                        <search-input 
-                            ref="searchInput"  
-                            :placeholder="searchPlaceholder" 
-                            @searchValue="searchValue"
-                        />
-                    </vs-col>
-                </vs-row>
-                <vs-row>
-                    <vs-col xs="12" sm="12" lg="12">
-                        <date-time 
-                            formKey="date_range"
-                            :name="''" 
-                            :rules="''" 
-                            :valueData="dateRange"
-                            typeInput="daterange" 
-                            @updateValue="updateValue" 
-                        />
-                    </vs-col>
-                </vs-row>
+                <template v-if="Object.keys(edit_data).length === 0">
+                    <vs-row align="center">
+                        <vs-col xs="12" sm="4" lg="4">
+                            <select-search-by
+                                key="searchBy"
+                                :border="true"
+                                :isMultiple="false"
+                                :selectedValue="searchBy" 
+                                :valueData="searchParams" 
+                                @updateSearchBy="updateSearchBy" 
+                            />
+                        </vs-col>
+                        <vs-col xs="12" sm="8" lg="8">
+                            <search-input 
+                                ref="searchInput"  
+                                :placeholder="searchPlaceholder" 
+                                @searchValue="searchValue"
+                            />
+                        </vs-col>
+                    </vs-row>
+                    <vs-row>
+                        <vs-col xs="12" sm="12" lg="12">
+                            <date-time 
+                                formKey="date_range"
+                                :name="''" 
+                                :rules="''" 
+                                :valueData="dateRange"
+                                typeInput="daterange" 
+                                @updateValue="updateValue" 
+                            />
+                        </vs-col>
+                    </vs-row>
 
-                <div style="margin-top: 10px;">
-                    <table-master 
-                        hideColumnKey="dialog-surat-muatan-stock" 
-                        :dataTable="dataTable" 
-                        :dataColumn="datacolumn" 
-                        :tableLoading="loadingTableData"
-                        :selectedData="selectedData"
-                        :hasPagination="true"
-                        :pageSize="pagination.page_size"
-                        :page="pagination.page"
-                        :limit="pagination.limit"
-                        :isMultipleSelectWithIndex="true"
-                        :onRowClickCallback="onRowClickCallback"
-                        :isShowCheckboxAll="false"
-                        @actionLimit="actionLimit"
-                        @actionPagination="actionPagination"
-                        @updateSelected2="updateSelected"
-                    />
-                </div>
+                    <div style="margin-top: 10px;">
+                        <table-master 
+                            hideColumnKey="dialog-surat-muatan-stock" 
+                            :dataTable="dataTable" 
+                            :dataColumn="datacolumn" 
+                            :tableLoading="loadingTableData"
+                            :selectedData="selectedData"
+                            :hasPagination="true"
+                            :pageSize="pagination.page_size"
+                            :page="pagination.page"
+                            :limit="pagination.limit"
+                            :isMultipleSelectWithIndex="true"
+                            :onRowClickCallback="onRowClickCallback"
+                            :isShowCheckboxAll="false"
+                            @actionLimit="actionLimit"
+                            @actionPagination="actionPagination"
+                            @updateSelected2="updateSelected"
+                        />
+                    </div>
+                </template>
 
                 <div class="parent-container">
                     <div class="container-clear-item" @click="handleClearAll">
                         Reset Inputs
                     </div>
                 </div>
-
 
                 <form-input-controller
                     ref="formDataController" 
@@ -253,7 +254,8 @@ export default {
             edit_data: {},
             selectedData: [],
             schedule_id: "",
-            vehicle: []
+            vehicle: [],
+            vehicle_form: [],
         }
     },
     computed: {
@@ -276,10 +278,7 @@ export default {
         dataItem: function (val) {
             if(val !== undefined) {
                 this.getDataDetail(val);
-
-                if (val.schedule_id) {
-                    this.getDataTableByScheduleId(val.schedule_id);
-                }
+                this.getManifestVehicle();
             }
         },
         query: function(val, old) {
@@ -311,33 +310,6 @@ export default {
         actionPagination(val) {
             this.pagination.page = val
             this.refresh()
-        },
-        async getDataTableByScheduleId(schedule_id) {
-            this.loadingTableData = true;
-
-            try {
-                const res = await axios.get(`${this.URL.schedule}/${schedule_id}?n=${this.listenNodeId}`, this.Helper.header());
-
-                if (res.data.data) {
-                    let arr = [res.data.data];
-                    arr.map(item => {
-                        item,
-                        item["origin"] = item?.origin_name + "\n" + item?.origin_identifier + "\n" + item?.origin_point;
-                        item["destination"] = item?.destination_name + "\n" + item?.destination_identifier + "\n" + item?.destination_point;
-                        item["etd_formatted"] = item?.etd + " " + item?.etd_timezone;
-                        item["eta_formatted"] = item?.eta + " " + item?.eta_timezone;
-                    })
-                    
-                    this.dataTable = arr
-                } else {
-                    this.dataTable = [];
-                }
-            } catch (err) {
-                console.log("PP", err)
-                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
-            } finally {
-                this.loadingTableData = false;
-            }
         },
         async getTableData(limit, page, q, from, to, searchBy) {
             this.loadingTableData = true
@@ -385,6 +357,34 @@ export default {
             val.node_id_origin = val.node_name_origin + " (" + val.node_code_origin + ")";
             val.node_id_destination = val.node_name_destination + " (" + val.node_code_destination + ")";
         },
+        async getManifestVehicle() {
+            this.loading = true;
+            try {
+                const res = await axios.get(`${this.URL.manifest_vehicle}/${this.edit_data.manifest_number}?n=${this.listenNodeId}`, this.Helper.header());
+
+                let arr = res.data.data;
+
+                this.vehicle = arr.map((item, idx) => ({
+                    origin_vehicle: item?.name_origin_tlc || "",
+                    destination_vehicle: item?.name_destination_tlc || "",
+                    origin_vehicle_tlc: item?.origin_tlc || "",
+                    destination_vehicle_tlc: item?.destination_tlc || "",
+                    vehicle_id: item?.vehicle_name || "",
+                    pic_employee_id: item?.pic_employee_id || "",
+                    flight_number: item?.flight_number || "",
+                    flight_schedule: item?.etd || "",
+                    etd_vehicle: item?.etd || "",
+                    eta_vehicle: item?.eta || "",
+                    status_flight: item?.status_flight,
+                    is_active: item?.status === 'ACTIVE'
+                }));
+                
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loading = false;
+            }
+        },
         querySearch(queryString, cb){
             axios.get(this.URL.branch_list_v2 +`?n=${this.listenNodeId}&s=${queryString}`, this.Helper.header())
             .then(res => {
@@ -412,10 +412,11 @@ export default {
                 formWithoutId.node_id_origin = form?.node_id_origin;
             }
 
-            formWithoutId.vehicle = this.vehicle.map(item => ({
+            formWithoutId.vehicle = this.vehicle_form.map(item => ({
                 vehicle_id: item.vehicle_id,
-                tlc_origin: item.origin_vehicle_tlc,
-                tlc_destination: item.destination_vehicle_tlc,
+                tlc_origin: item.tlc_origin,
+                tlc_destination: item.tlc_destination,
+                flight_number: item.flight_number,
                 etd: item.etd_vehicle,
                 etd_timezone: "WIB",
                 eta: item.eta_vehicle,
@@ -504,6 +505,19 @@ export default {
                 eta_vehicle_timezone: item?.eta_timezone || "",
                 is_active: idx === 0
             }));
+
+            this.vehicle_form = checkedItem.map((item, idx) => ({
+                shipment_schedule_id: item?.shipment_schedule_id,
+                tlc_origin: item?.origin_identifier || "",
+                tlc_destination: item?.destination_identifier || "",
+                vehicle_id: item?.vehicle_id || "",
+                flight_number: item?.shipment_number || "",
+                etd: item?.etd || "",
+                etd_timezone: item?.etd_timezone || "",
+                eta: item?.eta || "",
+                eta_timezone: item?.eta_timezone || "",
+                is_active: idx === 0
+            }));
         },
         onRowClickCallback(event, val, checkedItem) {
             // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING ROW
@@ -522,6 +536,19 @@ export default {
                 etd_vehicle_timezone: item?.etd_timezone || "",
                 eta_vehicle: item?.eta || "",
                 eta_vehicle_timezone: item?.eta_timezone || "",
+                is_active: idx === 0
+            }));
+
+            this.vehicle_form = checkedItem.map((item, idx) => ({
+                shipment_schedule_id: item?.shipment_schedule_id,
+                tlc_origin: item?.origin_identifier || "",
+                tlc_destination: item?.destination_identifier || "",
+                vehicle_id: item?.vehicle_id || "",
+                flight_number: item?.shipment_number || "",
+                etd: item?.etd || "",
+                etd_timezone: item?.etd_timezone || "",
+                eta: item?.eta || "",
+                eta_timezone: item?.eta_timezone || "",
                 is_active: idx === 0
             }));
         },

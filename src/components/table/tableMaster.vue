@@ -961,6 +961,17 @@
             <template v-if="hasAction == true">
               <vs-td class="action">
                 <vs-row justify="center" class="btn_action">
+                  <vs-col v-if="hasManageVehicle" w="4">
+                    <vs-button
+                      block
+                      flat
+                      size="small"
+                      :active="true"
+                      @click="actionManageVehicle(item)"
+                    >
+                      <span>Vehicle</span>
+                    </vs-button>
+                  </vs-col>
                   <vs-col w="4">
                     <vs-button
                       block
@@ -1635,6 +1646,7 @@ export default {
     page: Number,
     limit: Number,
     hasAction: Boolean,
+    hasManageVehicle: Boolean,
     scrollableAndStaticHeader: Boolean,
     hasAutoCompleteUrl: String,
     hasSelectLabel: String,
@@ -1914,6 +1926,9 @@ export default {
     },
     actionUpdate(val, key) {
       this.$emit("actionUpdate", val, key);
+    },
+    actionManageVehicle(val, key) {
+      this.$emit("actionManageVehicle", val, key);
     },
     actionDuplicate(val, key) {
       this.$emit("actionDuplicate", val, key);
