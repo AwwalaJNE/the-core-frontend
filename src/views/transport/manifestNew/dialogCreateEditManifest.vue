@@ -69,7 +69,8 @@
                     <div v-if="vehicle.length > 0">
                         <vs-row justify="space-between" style="margin: 0!important;">
                             <vs-col w="6" >
-                                <h3 class="title">List Vehicle</h3>
+                                <h3 v-if="is_sm_created" class="title">List Vehicle</h3>
+                                <h3 v-if="is_sm_edit" class="title">Current Vehicle</h3>
                             </vs-col>
                             <vs-col w="6" >
                                 <vs-row justify="flex-end" v-if="!is_sm_edit">
@@ -78,6 +79,7 @@
                                         :active="false"
                                         :disabled="isDisabled"
                                         @click="openDialogCreateVehicleManifest"
+                                        style="min-width: 120px;"
                                     >
                                         <i class='bx bx-plus'></i> More Vehicle
                                     </vs-button>
@@ -561,6 +563,7 @@ export default {
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
             } finally {
+                this.is_sm_edit = true;
                 this.loadingSuratMuatan = false;
             }
         },
@@ -581,6 +584,22 @@ export default {
             val.pic_employee_id = val?.employee_pic?.employee_name;
             val.flight_number = val?.flight_number;
             val.flight_schedule = val?.flight_schedule;
+
+            const active_vehicle = val?.vehicle_log?.find(item => item.status === 'ACTIVE');
+            this.vehicle =  [{
+                origin_vehicle: active_vehicle?.name_origin_tlc || "",
+                destination_vehicle: active_vehicle?.name_destination_tlc || "",
+                origin_vehicle_tlc: active_vehicle?.origin_tlc || "",
+                destination_vehicle_tlc: active_vehicle?.destination_tlc || "",
+                vehicle_id: active_vehicle?.vehicle_name || "",
+                pic_employee_id: active_vehicle?.pic_employee_id || "",
+                flight_number: active_vehicle?.flight_number || "",
+                flight_schedule: active_vehicle?.etd || "",
+                etd_vehicle: active_vehicle?.etd || "",
+                eta_vehicle: active_vehicle?.eta || "",
+                status_flight: active_vehicle?.status_flight,
+                is_active: active_vehicle?.status === 'ACTIVE'
+            }];
 
             this.dataByApi = val;
             
@@ -833,6 +852,34 @@ export default {
                 this.loading = false;
             }
         },
+        async getManifestVehicle() {
+            this.loading = true;
+            try {
+                const res = await axios.get(`${this.URL.manifest_vehicle}/${this.manifest_number}?n=${this.listenNodeId}`, this.Helper.header());
+
+                let arr = res.data.data;
+
+                const active_vehicle = arr?.find(item => item.status === 'ACTIVE');
+                this.vehicle =  [{
+                    origin_vehicle: active_vehicle?.name_origin_tlc || "",
+                    destination_vehicle: active_vehicle?.name_destination_tlc || "",
+                    origin_vehicle_tlc: active_vehicle?.origin_tlc || "",
+                    destination_vehicle_tlc: active_vehicle?.destination_tlc || "",
+                    vehicle_id: active_vehicle?.vehicle_name || "",
+                    pic_employee_id: active_vehicle?.pic_employee_id || "",
+                    flight_number: active_vehicle?.flight_number || "",
+                    flight_schedule: active_vehicle?.etd || "",
+                    etd_vehicle: active_vehicle?.etd || "",
+                    eta_vehicle: active_vehicle?.eta || "",
+                    status_flight: active_vehicle?.status_flight,
+                    is_active: active_vehicle?.status === 'ACTIVE'
+                }];
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loading = false;
+            }
+        },
         async approve() {
             this.loadingDetail = true;
             try {
@@ -1074,6 +1121,7 @@ export default {
         },
         closeDialogManageVehicleManifest() {
             this.dialogManageVehicleManifest = false;
+            this.getManifestVehicle();
         },
     },
     mounted() {
