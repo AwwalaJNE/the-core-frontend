@@ -219,7 +219,7 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "Scanned Date",
+                    label: "Open Bag Date",
                     key: "first_opened_bag",
                     width: "xs"
                 },
