@@ -2,7 +2,7 @@
     <inputan :name="name" :rules="rules">
         <template v-slot:inputan="props">
             <vs-col
-                v-for="(item, key) in DataArr"
+                v-for="(item, key) in valueData"
                 :key="item.key || key"
                 class="radio-wrapper"
             >
@@ -57,9 +57,14 @@ export default {
     },
     watch: {
         selectedValue(newVal) {
-            console.log("CEK 2")
             this.tempValue = newVal;
-        }
+        },
+        valueData: {
+            handler(newVal) {
+                this.DataArr = newVal
+            },
+            deep: true
+        },
     },
     computed: {
         listenIsDisabled() {
@@ -80,11 +85,11 @@ export default {
                 }
             });
         },
-                removeRow(row_id) {
-                    this.$emit("removeRow", row_id);
-                },
+            removeRow(row_id) {
+                this.$emit("removeRow", row_id);
             },
-        }
+        },
+    }
 </script>
 
 <style lang="scss" scoped>
