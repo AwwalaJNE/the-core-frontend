@@ -417,10 +417,10 @@ export default {
                 tlc_origin: item.tlc_origin,
                 tlc_destination: item.tlc_destination,
                 flight_number: item.flight_number,
-                etd: item.etd_vehicle,
-                etd_timezone: "WIB",
-                eta: item.eta_vehicle,
-                eta_timezone: "WIB",
+                etd: item.etd,
+                etd_timezone: item.etd_timezone,
+                eta: item.eta,
+                eta_timezone: item.eta_timezone,
                 is_active: item.is_active ? 1 : 0
             }));
             formWithoutId.is_active = formWithoutId.is_active === true ? "1" : "0";
