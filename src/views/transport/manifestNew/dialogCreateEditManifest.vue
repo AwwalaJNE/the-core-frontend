@@ -1092,10 +1092,10 @@ export default {
         },
         updateVehicleValue(form) {
             let created_vehicle = {
-                origin_vehicle: form.origin_vehicle?.label || form.origin_vehicle || "",
-                destination_vehicle: form.destination_vehicle?.label || form.destination_vehicle || "",
-                origin_vehicle_tlc: form.origin_vehicle?.value || form.origin_vehicle || "",
-                destination_vehicle_tlc: form.destination_vehicle?.value || form.destination_vehicle || "",
+                origin_vehicle: form.origin_vehicle?.label || form.origin_vehicle?.name || "",
+                destination_vehicle: form.destination_vehicle?.label || form.destination_vehicle?.name || "",
+                origin_vehicle_tlc: form.origin_vehicle?.value || form.origin_vehicle?.iata || "",
+                destination_vehicle_tlc: form.destination_vehicle?.value || form.destination_vehicle?.iata || "",
                 vehicle_id: form.vehicle_id?.vehicle_name,
                 pic_employee_id: form.pic_employee_id?.employee_name,
                 flight_number: form.flight_number,
@@ -1113,8 +1113,8 @@ export default {
                 flight_schedule: form?.flight_schedule || "",
                 etd: form?.etd_vehicle || "",
                 eta: form?.eta_vehicle || "",
-                origin_branch_code: form?.origin_vehicle?.value || form.origin_vehicle || "",
-                destination_branch_code: form?.destination_vehicle?.value || form.destination_vehicle || "",
+                origin_branch_code: form?.origin_vehicle?.value || form.origin_vehicle?.iata || "",
+                destination_branch_code: form?.destination_vehicle?.value || form.destination_vehicle?.iata || "",
                 is_active: this.vehicle.length === 0
             };
 
