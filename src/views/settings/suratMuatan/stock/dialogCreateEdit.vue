@@ -505,7 +505,7 @@ export default {
             this.searchPlaceholder = key;
         },
         clearSearch() {
-            this.$refs.searchInput.clear()
+            this.$refs?.searchInput?.clear()
         },
         handleClearAll() {
             this.schedule_id = "";
