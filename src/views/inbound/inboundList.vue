@@ -85,6 +85,11 @@ export default {
         width: "xxxs",
       },
       {
+        label: "Receiving Number",
+        key: "receiving_number",
+        width: "xxs",
+      },
+      {
         label: "Flight Number",
         key: "flight_number",
         width: "xxxs",
