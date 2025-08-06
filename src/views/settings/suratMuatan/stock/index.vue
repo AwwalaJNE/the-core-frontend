@@ -82,7 +82,9 @@
             :page="pagination.page"
             :limit="pagination.limit"
             :hasAction="true"
+            :hasManageVehicle="true"
             :hasPagination="true"
+            @actionManageVehicle="actionManageVehicle"
             @actionUpdate="actionUpdate"
             @actionRemove="actionRemove"
             @actionLimit="actionLimit"
@@ -110,6 +112,14 @@
             @cancel="() => closeDialog('dialog_remove')"
             @confirm="confirmRemove"
         />
+
+        <dialog-manage-vehicle-manifest
+            title="Manifest Vehicle"
+            :manifest_number="manifest_number"
+            :manifest_method="manifest_method"
+            :active="dialogManageVehicleManifest"
+            :closeDialog="closeDialogManageVehicleManifest"
+        />
     </div>
 </template>
 <script>
@@ -129,6 +139,7 @@ import TableMaster from "@/components/table/tableMaster";
 import DialogCreateEdit from "@/views/settings/suratMuatan/stock/dialogCreateEdit";
 import SelectBagOrigin from "@/views/settings/suratMuatan/stock/selectBagOrigin.vue";
 import SelectBagDestination from "@/views/settings/suratMuatan/stock/selectBagDestination.vue";
+import DialogManageVehicleManifest from "@/views/transport/manifestVehicle/dialogCreateManage";
 
 export default {
     name:"surat-muatan-settings-stock-data-table",
@@ -141,6 +152,7 @@ export default {
         "date-time": DateTime,
         "dialog-create-edit": DialogCreateEdit,
         "dialog-confirm": DialogConfirm,
+        "dialog-manage-vehicle-manifest": DialogManageVehicleManifest,
         "inputan": Inputan,
         "search-input": SearchInput,
         "select-search-by": SelectSearchBy,
@@ -267,6 +279,9 @@ export default {
                     value: 'manual'
                 }
             ],
+            dialogManageVehicleManifest: false,
+            manifest_number: "",
+            manifest_method: 0
         }
     },
     computed: {
@@ -371,6 +386,15 @@ export default {
         actionUpdate(val){
             this.dataItem = val;
             this.dialogEditActive = true;
+        },
+        actionManageVehicle(val) {
+            this.dialogManageVehicleManifest = true;
+            this.manifest_number = val.manifest_number;
+            this.manifest_method = parseInt(val.vehicle_mode_id);
+        },
+        closeDialogManageVehicleManifest() {
+            this.dialogManageVehicleManifest = false;
+            this.refresh();
         },
         actionLimit(val){
             this.pagination.limit = val

@@ -97,7 +97,7 @@
                                 </vs-row>
                             </vs-col>
                         </vs-row>
-                        <vehicle-card title="Current Vehicle" :data="listenInitVehicle"/>
+                        <vehicle-card :data="listenInitVehicle" :isActive="true"/>
                     </div>
 
                     <vs-button

@@ -1,112 +1,154 @@
 <template>
-    <dialog-master 
-        width="lg"
-        :actived="listenActive" 
-        :closeDialog="cancel"
-        :loading="listenLoading"
-    >
-        <template v-slot:header>
-            {{listenTitle}}
-        </template>
+    <div>
+        <dialog-master 
+            width="lg"
+            :actived="listenActive" 
+            :closeDialog="cancel"
+            :loading="listenLoading"
+        >
+            <template v-slot:header>
+                {{listenTitle}}
+            </template>
 
-        <template v-slot:content>
-            <div>
-                <vs-row align="center">
-                    <vs-col xs="12" sm="4" lg="4">
-                        <select-search-by
-                            key="searchBy"
-                            :border="true"
-                            :isMultiple="false"
-                            :selectedValue="searchBy" 
-                            :valueData="searchParams" 
-                            @updateSearchBy="updateSearchBy" 
-                        />
-                    </vs-col>
-                    <vs-col xs="12" sm="8" lg="8">
-                        <search-input 
-                            ref="searchInput"  
-                            :placeholder="searchPlaceholder" 
-                            @searchValue="searchValue"
-                        />
-                    </vs-col>
-                </vs-row>
-                <vs-row>
-                    <vs-col xs="12" sm="12" lg="12">
-                        <date-time 
-                            formKey="date_range"
-                            :name="''" 
-                            :rules="''" 
-                            :valueData="dateRange"
-                            typeInput="daterange" 
-                            @updateValue="updateValue" 
-                        />
-                    </vs-col>
-                </vs-row>
+            <template v-slot:content>
+                <div>
+                    <template v-if="Object.keys(edit_data).length === 0">
+                        <vs-row align="center">
+                            <vs-col xs="12" sm="4" lg="4">
+                                <select-search-by
+                                    key="searchBy"
+                                    :border="true"
+                                    :isMultiple="false"
+                                    :selectedValue="searchBy" 
+                                    :valueData="searchParams" 
+                                    @updateSearchBy="updateSearchBy" 
+                                />
+                            </vs-col>
+                            <vs-col xs="12" sm="8" lg="8">
+                                <search-input 
+                                    ref="searchInput"  
+                                    :placeholder="searchPlaceholder" 
+                                    @searchValue="searchValue"
+                                />
+                            </vs-col>
+                        </vs-row>
+                        <vs-row>
+                            <vs-col xs="12" sm="12" lg="12">
+                                <date-time 
+                                    formKey="date_range"
+                                    :name="''" 
+                                    :rules="''" 
+                                    :valueData="dateRange"
+                                    typeInput="daterange" 
+                                    @updateValue="updateValue" 
+                                />
+                            </vs-col>
+                        </vs-row>
 
-                <div style="margin-top: 10px;">
-                    <table-master 
-                        hideColumnKey="dialog-surat-muatan-stock" 
-                        :dataTable="dataTable" 
-                        :dataColumn="datacolumn" 
-                        :tableLoading="loadingTableData"
-                        :onRowClickSelected="onRowClickSelected"
-                        :isSingleSelect="true"
-                        :selectedData="selectedData"
-                        :hasPagination="true"
-                        :pageSize="pagination.page_size"
-                        :page="pagination.page"
-                        :limit="pagination.limit"
-                        @actionLimit="actionLimit"
-                        @actionPagination="actionPagination"
-                    />
-                </div>
+                        <div style="margin-top: 10px;">
+                            <table-master 
+                                hideColumnKey="dialog-surat-muatan-stock" 
+                                :dataTable="dataTable" 
+                                :dataColumn="datacolumn" 
+                                :tableLoading="loadingTableData"
+                                :selectedData="selectedData"
+                                :hasPagination="true"
+                                :pageSize="pagination.page_size"
+                                :page="pagination.page"
+                                :limit="pagination.limit"
+                                :isMultipleSelectWithIndex="true"
+                                :onRowClickCallback="onRowClickCallback"
+                                :isShowCheckboxAll="false"
+                                @actionLimit="actionLimit"
+                                @actionPagination="actionPagination"
+                                @updateSelected2="updateSelected"
+                            />
+                        </div>
+                    </template>
 
-                <div class="parent-container">
-                    <div class="container-clear-item" @click="handleClearAll">
-                        Reset Inputs
+                    <div class="parent-container">
+                        <div class="container-clear-item" @click="handleClearAll">
+                            Reset Inputs
+                        </div>
                     </div>
+
+                    <form-input-controller
+                        ref="formDataController" 
+                        typeForm="surat_muatan_stock"
+                        :dataItem="dataItem"
+                        :querySearch="querySearch"
+                        @formData="formData"
+                    />
+
+                    <vs-row v-if="vehicle.length > 0">
+                        <vs-row justify="space-between" v-if="Object.keys(edit_data).length > 0">
+                            <h3 class="title">Vehicle List</h3>
+                            <vs-button
+                                shadow
+                                :active="false"
+                                @click="openDialogManageVehicleManifest"
+                            >
+                                <i class='bx bx-cog'></i> Manage
+                            </vs-button>
+                        </vs-row>
+                        <vs-row
+                            v-for="(item, index) in vehicle"
+                            :key="index"
+                        >
+                            <vs-col w="12">
+                                <vehicle-card 
+                                    :data="item" 
+                                    :isActive="item.is_active"
+                                />
+                            </vs-col>
+                        </vs-row>
+                        
+                    </vs-row>
+                    <vs-row v-else>
+                        <img src="@/assets/svg/defaultVehicle.svg" alt="Core JNE Default Vehicle" style="width: 100%; margin: 20px 0;"/>
+                    </vs-row>
+                    
                 </div>
+            </template>
 
+            <template v-slot:footer>
+                <vs-row justify="flex-end">
+                    <vs-col w="3">
+                        <vs-button
+                            block
+                            danger
+                            flat
+                            transparent
+                            :active="true"
+                            @click="cancel"
+                        >
+                            Cancel
+                        </vs-button>
+                    </vs-col>
+                    <vs-col w="3">
+                        <vs-button
+                            block
+                            flat
+                            transparent
+                            type="submit"
+                            :active="true"
+                            @click="handleSubmit"
+                        >
+                            {{btnBlue || 'Add'}}
+                        </vs-button>
+                    </vs-col>
+                </vs-row>                
+            </template>
+        </dialog-master>
 
-                <form-input-controller
-                    ref="formDataController" 
-                    typeForm="surat_muatan_stock"
-                    :dataItem="dataItem"
-                    :querySearch="querySearch"
-                    @formData="formData"
-                />
-            </div>
-        </template>
-
-        <template v-slot:footer>
-            <vs-row justify="flex-end">
-                <vs-col w="3">
-                    <vs-button
-                        block
-                        danger
-                        flat
-                        transparent
-                        :active="true"
-                        @click="cancel"
-                    >
-                        Cancel
-                    </vs-button>
-                </vs-col>
-                <vs-col w="3">
-                    <vs-button
-                        block
-                        flat
-                        transparent
-                        type="submit"
-                        :active="true"
-                        @click="handleSubmit"
-                    >
-                        {{btnBlue || 'Add'}}
-                    </vs-button>
-                </vs-col>
-            </vs-row>                
-        </template>
-    </dialog-master>
+        <dialog-manage-vehicle-manifest
+            title="Manifest Vehicle"
+            :manifest_number="edit_data.manifest_number"
+            :manifest_method="parseInt(edit_data.vehicle_mode_id)"
+            :active="dialogManageVehicleManifest"
+            :closeDialog="closeDialogManageVehicleManifest"
+        />
+    </div>
 </template>
 <script>
 import axios from "axios";
@@ -119,6 +161,9 @@ import Selector from "@/components/input/select";
 import SearchInput from "@/components/search/searchInput";
 import SelectSearchBy from "@/components/search/selectSearchBy";
 import TableMaster from "@/components/table/tableMaster";
+import VehicleCard from "@/views/transport/manifestNew/vehicleCard";
+
+import DialogManageVehicleManifest from "@/views/transport/manifestVehicle/dialogCreateManage";
 
 export default {
     name:"surat-muatan-settings-stock-dialog",
@@ -126,11 +171,13 @@ export default {
     components: {
         "date-time": DateTime,
         "dialog-master": DialogMaster,
+        "dialog-manage-vehicle-manifest": DialogManageVehicleManifest,
         "form-input-controller": FormInputController,
         "selector": Selector,
         "search-input": SearchInput,
         "select-search-by": SelectSearchBy,
         "table-master" : TableMaster,
+        "vehicle-card": VehicleCard
     },
     props: {
         active: Boolean,
@@ -182,7 +229,7 @@ export default {
                 },
                 {
                     label: "Type",
-                    key: "vehicle_name",
+                    key: "vehicle_mode_name",
                     width: "sm"
                 },
                 {
@@ -229,12 +276,16 @@ export default {
             edit_data: {},
             selectedData: [],
             schedule_id: "",
+            vehicle: [],
+            vehicle_form: [],
+            manifest_number: "",
+            manifest_method_id: 0,
+            dialogManageVehicleManifest: false
         }
     },
     computed: {
         listenActive(){
             if (this.active) {
-                this.getVehicle();
             }
             return this.active;
         },
@@ -252,10 +303,7 @@ export default {
         dataItem: function (val) {
             if(val !== undefined) {
                 this.getDataDetail(val);
-
-                if (val.schedule_id) {
-                    this.getDataTableByScheduleId(val.schedule_id);
-                }
+                this.getManifestVehicle();
             }
         },
         query: function(val, old) {
@@ -287,33 +335,6 @@ export default {
         actionPagination(val) {
             this.pagination.page = val
             this.refresh()
-        },
-        async getDataTableByScheduleId(schedule_id) {
-            this.loadingTableData = true;
-
-            try {
-                const res = await axios.get(`${this.URL.schedule}/${schedule_id}?n=${this.listenNodeId}`, this.Helper.header());
-
-                if (res.data.data) {
-                    let arr = [res.data.data];
-                    arr.map(item => {
-                        item,
-                        item["origin"] = item?.origin_name + "\n" + item?.origin_identifier + "\n" + item?.origin_point;
-                        item["destination"] = item?.destination_name + "\n" + item?.destination_identifier + "\n" + item?.destination_point;
-                        item["etd_formatted"] = item?.etd + " " + item?.etd_timezone;
-                        item["eta_formatted"] = item?.eta + " " + item?.eta_timezone;
-                    })
-                    
-                    this.dataTable = arr
-                    this.onRowClickSelected(res.data.data)
-                } else {
-                    this.dataTable = [];
-                }
-            } catch (err) {
-                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
-            } finally {
-                this.loadingTableData = false;
-            }
         },
         async getTableData(limit, page, q, from, to, searchBy) {
             this.loadingTableData = true
@@ -361,11 +382,35 @@ export default {
             val.node_id_origin = val.node_name_origin + " (" + val.node_code_origin + ")";
             val.node_id_destination = val.node_name_destination + " (" + val.node_code_destination + ")";
         },
-        querySearch(queryString, cb){
-            // TODO: UNCOMMENT IF WANNA USE NODE
-            // axios.get(this.URL.node_list +`?n=${this.listenNodeId}&s=${queryString}`, this.Helper.header())
+        async getManifestVehicle() {
+            this.loading = true;
+            try {
+                const res = await axios.get(`${this.URL.manifest_vehicle}/${this.edit_data.manifest_number}?n=${this.listenNodeId}`, this.Helper.header());
 
-            // TODO: COMMENT IF DON'T WANNA USE BRANCH
+                let arr = res.data.data;
+
+                this.vehicle = arr.map((item, idx) => ({
+                    origin_vehicle: item?.name_origin_tlc || "",
+                    destination_vehicle: item?.name_destination_tlc || "",
+                    origin_vehicle_tlc: item?.origin_tlc || "",
+                    destination_vehicle_tlc: item?.destination_tlc || "",
+                    vehicle_id: item?.vehicle_name || "",
+                    pic_employee_id: item?.pic_employee_id || "",
+                    flight_number: item?.flight_number || "",
+                    flight_schedule: item?.etd || "",
+                    etd_vehicle: item?.etd || "",
+                    eta_vehicle: item?.eta || "",
+                    status_flight: item?.status_flight,
+                    is_active: item?.status === 'ACTIVE'
+                }));
+                
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loading = false;
+            }
+        },
+        querySearch(queryString, cb){
             axios.get(this.URL.branch_list_v2 +`?n=${this.listenNodeId}&s=${queryString}`, this.Helper.header())
             .then(res => {
                 let result = res.data.data
@@ -392,10 +437,22 @@ export default {
                 formWithoutId.node_id_origin = form?.node_id_origin;
             }
 
+            formWithoutId.vehicle = this.vehicle_form.map(item => ({
+                vehicle_id: item.vehicle_id,
+                tlc_origin: item.tlc_origin,
+                tlc_destination: item.tlc_destination,
+                flight_number: item.flight_number,
+                etd: item.etd,
+                etd_timezone: item.etd_timezone,
+                eta: item.eta,
+                eta_timezone: item.eta_timezone,
+                is_active: item.is_active ? 1 : 0
+            }));
             formWithoutId.is_active = formWithoutId.is_active === true ? "1" : "0";
-            formWithoutId.schedule_id = this.schedule_id;
+            formWithoutId.schedule_id = this.vehicle[0]?.shipment_schedule_id || null; // TODO: CONFIRM AGAIN
 
             this.form = formWithoutId;
+
             this.handleSubmitData();
         },
         updateValue(key, val, info){
@@ -405,31 +462,6 @@ export default {
                     this.refresh()
                     break;
                 default:
-            }
-        },
-        async getVehicle() {
-            this.loading = true;
-            try {
-                const res = await axios.get(`${this.URL.vehicle}?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header());
-
-                const data = res.data.data;
-
-                if (res.data.data.length > 0) {
-                    const arr = data.map(item => ({
-                        label: item.vehicle_name,
-                        value: item.vehicle_id,
-                        data: item
-                    }));
-
-                    this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID_ArrData", arr.length > 0 ? arr : null);
-                } else {
-                    this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID", "");
-                    this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID_ArrData", []);
-                }
-            } catch (err) {
-                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
-            } finally {
-                this.loading = false;
             }
         },
         async handleSubmitData() {
@@ -455,6 +487,8 @@ export default {
             this.$emit("refresh");
         },
         cancel() {
+            this.vehicle = {};
+            this.vehicle_form = {};
             this.dateRange = [];
             this.dataTable = [];
             this.clearSearch();
@@ -471,34 +505,85 @@ export default {
             this.searchPlaceholder = key;
         },
         clearSearch() {
-            this.$refs.searchInput.clear()
+            this.$refs?.searchInput?.clear()
         },
         handleClearAll() {
             this.schedule_id = "";
             this.selectedData = [];
             this.$refs.formDataController.handleEmptyForm();
-            this.form = {};
-            
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA_isDisabled", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD_isDisabled", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID_isDisabled", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_isDisabled", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE_isDisabled", false);  
+            this.form = {}; 
         },
-        onRowClickSelected(item) {
-            this.selectedData = [item];
-            this.schedule_id = item.shipment_schedule_id;
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID", parseInt(item.vehicle_id));
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD", item?.etd);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE", item?.etd_timezone);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA", item?.eta);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE", item?.eta_timezone);
-            
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA_isDisabled", true);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD_isDisabled", true);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID_isDisabled", true);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_isDisabled", true);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE_isDisabled", true);  
+        openDialogManageVehicleManifest() {
+            this.dialogManageVehicleManifest = true;
+        },
+        closeDialogManageVehicleManifest() {
+            this.dialogManageVehicleManifest = false;
+        },
+        updateSelected(val, checkedItem) {
+            // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING CHECKBOX
+            this.vehicle = checkedItem.map((item, idx) => ({
+                shipment_schedule_id: item?.shipment_schedule_id,
+                origin_vehicle: item?.origin_name || "",
+                destination_vehicle: item?.destination_name || "",
+                origin_vehicle_tlc: item?.origin_identifier || "",
+                destination_vehicle_tlc: item?.destination_identifier || "",
+                vehicle_id: item?.vehicle_name || "",
+                pic_employee_id: "",
+                flight_number: item?.shipment_number || "",
+                flight_schedule: item?.etd || "",
+                flight_schedule_timezone: item?.etd_timezone || "",
+                etd_vehicle: item?.etd || "",
+                etd_vehicle_timezone: item?.etd_timezone || "",
+                eta_vehicle: item?.eta || "",
+                eta_vehicle_timezone: item?.eta_timezone || "",
+                is_active: idx === 0
+            }));
+
+            this.vehicle_form = checkedItem.map((item, idx) => ({
+                shipment_schedule_id: item?.shipment_schedule_id,
+                tlc_origin: item?.origin_identifier || "",
+                tlc_destination: item?.destination_identifier || "",
+                vehicle_id: item?.vehicle_id || "",
+                flight_number: item?.shipment_number || "",
+                etd: item?.etd || "",
+                etd_timezone: item?.etd_timezone || "",
+                eta: item?.eta || "",
+                eta_timezone: item?.eta_timezone || "",
+                is_active: idx === 0
+            }));
+        },
+        onRowClickCallback(event, val, checkedItem) {
+            // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING ROW
+            this.vehicle = checkedItem.map((item, idx) => ({
+                shipment_schedule_id: item?.shipment_schedule_id,
+                origin_vehicle: item?.origin_name || "",
+                destination_vehicle: item?.destination_name || "",
+                origin_vehicle_tlc: item?.origin_identifier || "",
+                destination_vehicle_tlc: item?.destination_identifier || "",
+                vehicle_id: item?.vehicle_name || "",
+                pic_employee_id: "",
+                flight_number: item?.shipment_number || "",
+                flight_schedule: item?.etd || "",
+                flight_schedule_timezone: item?.etd_timezone || "",
+                etd_vehicle: item?.etd || "",
+                etd_vehicle_timezone: item?.etd_timezone || "",
+                eta_vehicle: item?.eta || "",
+                eta_vehicle_timezone: item?.eta_timezone || "",
+                is_active: idx === 0
+            }));
+
+            this.vehicle_form = checkedItem.map((item, idx) => ({
+                shipment_schedule_id: item?.shipment_schedule_id,
+                tlc_origin: item?.origin_identifier || "",
+                tlc_destination: item?.destination_identifier || "",
+                vehicle_id: item?.vehicle_id || "",
+                flight_number: item?.shipment_number || "",
+                etd: item?.etd || "",
+                etd_timezone: item?.etd_timezone || "",
+                eta: item?.eta || "",
+                eta_timezone: item?.eta_timezone || "",
+                is_active: idx === 0
+            }));
         },
     },
     mounted() {

@@ -1,28 +1,28 @@
 <template>
     <inputan :name="name" :rules="rules">
         <template v-slot:inputan="props">
-            <div class="radio-with-form-container">
+            <div :class="listenRadioType === 'form' ? 'radio-with-form-container' : ''">
                 <vs-col
-                    v-for="(item, key) in DataArr" 
+                    v-for="(item, key) in DataArr"
                     :key="key"
                     class="radio-wrapper"
                 >
                     <div class="overlay-wrapper">
-
-                        <div 
+                        <div
                             v-if="DataArr.length > 1 && value !== item.key"
-                            class="overlay-button" 
+                            class="overlay-button"
                             @click.stop="removeRow(item.key)"
                         >
-                            <i class='bx bx-trash'></i>
+                            <i class="bx bx-trash"></i>
                         </div>
 
-                        <vs-radio 
+                        <vs-radio
                             v-model="value"
                             :val="item.key"
                             :disabled="listenIsDisabled"
-                            :state="props.err !== undefined && props.err !== '' ? 'danger' : 'gray'"
+                            :state="props.err ? 'danger' : 'gray'"
                         >
+                        <template v-if="listenRadioType === 'form'">
                             <div class="radio-with-form">
                                 <vs-row>
                                     <vs-col
@@ -30,27 +30,35 @@
                                         :key="stateIndex"
                                         :w="stateItem.width"
                                     >
-                                        <template v-if="stateItem.typeInput === 'text'">
-                                            <input-general
-                                                :disabled="true"
-                                                :formKey="stateItem.key"
-                                                :name="stateItem.label"
-                                                :readonly="true"
-                                                :typeInput="stateItem.typeInput"
-                                                :valueData="stateItem.value"
-                                            />
-                                        </template>
-                                        <template v-else-if="stateItem.typeInput === 'badge'">
-                                            <div v-if="stateItem.value" style="height: 3em;">
-                                                <h4 :style="getRoutingStyle(stateItem.value)">
-                                                    {{ stateItem.value }}
-                                                </h4>
-                                            </div>
-                                        </template>
+                                        <input-general
+                                            v-if="stateItem.typeInput === 'text'"
+                                            :disabled="true"
+                                            :formKey="stateItem.key"
+                                            :name="stateItem.label"
+                                            :readonly="true"
+                                            :typeInput="stateItem.typeInput"
+                                            :valueData="stateItem.value"
+                                        />
+                                        <div
+                                            v-else-if="stateItem.typeInput === 'badge' && stateItem.value"
+                                            style="height: 3em;"
+                                        >
+                                            <h4 :style="getRoutingStyle(stateItem.value)">
+                                                {{ stateItem.value }}
+                                            </h4>
+                                        </div>
                                     </vs-col>
                                 </vs-row>
+                                
                                 <div class="radio-overlay"></div>
                             </div>
+                        </template>
+
+                        <vehicle-card
+                            v-else-if="listenRadioType === 'card'"
+                            :data="item.state"
+                            :isActive="item.state.is_active"
+                        />
                         </vs-radio>
                     </div>
                 </vs-col>
@@ -63,17 +71,21 @@
 import Inputan from "@/components/input/inputan";
 import InputGeneral from "@/components/input/general";
 
+import VehicleCard from "@/views/transport/manifestNew/vehicleCard";
+
 export default {
     name:"radio-with-form",
     components: {
         "inputan": Inputan,
         "input-general": InputGeneral,
+        "vehicle-card": VehicleCard
     }, 
     props: {
         name: String,
         valueData: Array,
         selectedValue: [String, Number],
         rules: String,
+        radioType: String,
         disabled: Boolean
     },
     data() {
@@ -84,6 +96,9 @@ export default {
     computed: {
         listenIsDisabled(){
             return this.disabled || false
+        },
+        listenRadioType() {
+            return this.radioType;
         },
         value: {
             get() {

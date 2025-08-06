@@ -2669,19 +2669,7 @@ export default {
       typeData: "String",
       valueData: null,
       value: '',
-      width: '6'
-    },
-    vehicle_id: {
-      label: "Vehicle*",
-      key: "vehicle_id",
-      rule:"required",
-      typeInput: "select",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: '',
-      width: '6',
-      isDisabled: false,
+      width: '4'
     },
     node_id_origin: {
       label: "Origin*",
@@ -2692,7 +2680,7 @@ export default {
       arrData: [],
       valueData: null,
       value: '',
-      width: '6'
+      width: '4'
     },
     node_id_destination: {
       label: "Destination*",
@@ -2703,7 +2691,7 @@ export default {
       arrData: [],
       valueData: null,
       value: '',
-      width: '6'
+      width: '4'
     },
     etd: {
       label: "ETD",

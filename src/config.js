@@ -1,5 +1,6 @@
 /* eslint-disable linebreak-style */
 const api = process.env.VUE_APP_API
+const apiFlight = process.env.VUE_APP_API_FLIGHT
 const urlFOrmated = new URL(api)
 
 
@@ -426,4 +427,7 @@ export default {
 
     // Close Pre Alert SM
     close_pre_alert_sm: api + 'manifest/sm-close-user-check',
+
+    // API Flight
+    search_flight: apiFlight + 'flight',
 }

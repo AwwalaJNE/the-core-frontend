@@ -545,20 +545,17 @@ const Master = {
         sanitizeAlphanumeric(fieldName) {
             this[fieldName] = this[fieldName].replace(/[^a-zA-Z0-9_-]/g, '');
         },
-        formatDateTimeId(datetime, short = false) {
+        formatDateTimeId(datetime) {
             if (!datetime) return '-';
             const d = new Date(datetime);
 
-            const dateOptions = short
-                ? { day: '2-digit', month: 'short', year: 'numeric' }
-                : { day: '2-digit', month: 'short', year: '2-digit' };
-
+            const dateOptions = { day: '2-digit', month: 'short', year: 'numeric' }
             const timeOptions = { hour: '2-digit', minute: '2-digit' };
 
             const dateStr = d.toLocaleDateString('id-ID', dateOptions).replace(',', '');
-            const timeStr = d.toLocaleTimeString('id-ID', timeOptions).replace('.', ':'); // just in case
+            const timeStr = d.toLocaleTimeString('id-ID', timeOptions).replace('.', ':');
 
-            return `${dateStr}  ${timeStr.replace(':', '.')} WIB`;
+            return `${dateStr} ${timeStr}`;
         }
     },
     mounted() {

@@ -84,7 +84,7 @@ export default {
             }
         },
         isETDnETA() {
-            if (this.name.toLowerCase() === 'eta' || this.name.toLowerCase() === 'etd') {
+            if (this.name.toLowerCase() === 'eta' || this.name.toLowerCase() === 'etd' || this.name.toLowerCase() === 'flight schedule') {
                 return true;
             } else {
                 return false;
