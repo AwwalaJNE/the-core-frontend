@@ -22,10 +22,9 @@
                     <template v-if="list_manifest_vehicle.length > 0">
                         <p class="notes"><b>Notes</b>: *Click a card to select a vehicle — changes save automatically.</p>
                         <radio
-                            :name="'list_manifest_vehicle'"
-                            :valueData="list_manifest_vehicle"
-                            :selectedValue="listenSelectedManifestVehicle"
-                            :radioType="'card'"
+                            :name="'manifest_vehicle'"
+                            :value-data="list_manifest_vehicle"
+                            :selected-value="listenSelectedManifestVehicle"
                             @updateValue="updateValue"
                             @removeRow="removeRow"
                         />
@@ -84,7 +83,7 @@ import master from "@/mixins/master";
 
 import DialogMaster from "@/components/dialog/dialogMaster";
 import FormInputController from "@/components/form/formInputController";
-import RadioWithForm from "@/components/input/radioWithForm";
+import RadioWithCard from "@/components/input/radioWithCard";
 import NavItem from "@/components/navbar/navTab";
 
 export default {
@@ -94,7 +93,7 @@ export default {
         "dialog-master": DialogMaster,
         "form-input-controller": FormInputController,
         "nav-item": NavItem,
-        "radio": RadioWithForm,
+        "radio": RadioWithCard,
     },
     props: {
         active: Boolean,
@@ -326,8 +325,18 @@ export default {
                 this.loading = false;
             }
         },
-        async updateValue(value) {
-            await this.chooseManifestVehicle(value);
+        async updateValue(newKey, done) {
+            this.loading = true;
+            try {
+                const res = await axios.patch(`${this.URL.manifest_vehicle}/${newKey}/active?n=${this.listenNodeId}`, null, this.Helper.header());
+                this.openNotification('success', null, "Success", "Update manifest vehicle success");
+                done(true);
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+                done(false);
+            } finally {
+                this.loading = false;
+            }
         },
         async removeRow(row_id) {
             await this.removeManifestVehicle(row_id);
