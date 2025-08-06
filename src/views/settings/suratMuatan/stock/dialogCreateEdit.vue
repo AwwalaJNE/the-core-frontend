@@ -1,135 +1,154 @@
 <template>
-    <dialog-master 
-        width="lg"
-        :actived="listenActive" 
-        :closeDialog="cancel"
-        :loading="listenLoading"
-    >
-        <template v-slot:header>
-            {{listenTitle}}
-        </template>
+    <div>
+        <dialog-master 
+            width="lg"
+            :actived="listenActive" 
+            :closeDialog="cancel"
+            :loading="listenLoading"
+        >
+            <template v-slot:header>
+                {{listenTitle}}
+            </template>
 
-        <template v-slot:content>
-            <div>
-                <template v-if="Object.keys(edit_data).length === 0">
-                    <vs-row align="center">
-                        <vs-col xs="12" sm="4" lg="4">
-                            <select-search-by
-                                key="searchBy"
-                                :border="true"
-                                :isMultiple="false"
-                                :selectedValue="searchBy" 
-                                :valueData="searchParams" 
-                                @updateSearchBy="updateSearchBy" 
-                            />
-                        </vs-col>
-                        <vs-col xs="12" sm="8" lg="8">
-                            <search-input 
-                                ref="searchInput"  
-                                :placeholder="searchPlaceholder" 
-                                @searchValue="searchValue"
-                            />
-                        </vs-col>
-                    </vs-row>
-                    <vs-row>
-                        <vs-col xs="12" sm="12" lg="12">
-                            <date-time 
-                                formKey="date_range"
-                                :name="''" 
-                                :rules="''" 
-                                :valueData="dateRange"
-                                typeInput="daterange" 
-                                @updateValue="updateValue" 
-                            />
-                        </vs-col>
-                    </vs-row>
+            <template v-slot:content>
+                <div>
+                    <template v-if="Object.keys(edit_data).length === 0">
+                        <vs-row align="center">
+                            <vs-col xs="12" sm="4" lg="4">
+                                <select-search-by
+                                    key="searchBy"
+                                    :border="true"
+                                    :isMultiple="false"
+                                    :selectedValue="searchBy" 
+                                    :valueData="searchParams" 
+                                    @updateSearchBy="updateSearchBy" 
+                                />
+                            </vs-col>
+                            <vs-col xs="12" sm="8" lg="8">
+                                <search-input 
+                                    ref="searchInput"  
+                                    :placeholder="searchPlaceholder" 
+                                    @searchValue="searchValue"
+                                />
+                            </vs-col>
+                        </vs-row>
+                        <vs-row>
+                            <vs-col xs="12" sm="12" lg="12">
+                                <date-time 
+                                    formKey="date_range"
+                                    :name="''" 
+                                    :rules="''" 
+                                    :valueData="dateRange"
+                                    typeInput="daterange" 
+                                    @updateValue="updateValue" 
+                                />
+                            </vs-col>
+                        </vs-row>
 
-                    <div style="margin-top: 10px;">
-                        <table-master 
-                            hideColumnKey="dialog-surat-muatan-stock" 
-                            :dataTable="dataTable" 
-                            :dataColumn="datacolumn" 
-                            :tableLoading="loadingTableData"
-                            :selectedData="selectedData"
-                            :hasPagination="true"
-                            :pageSize="pagination.page_size"
-                            :page="pagination.page"
-                            :limit="pagination.limit"
-                            :isMultipleSelectWithIndex="true"
-                            :onRowClickCallback="onRowClickCallback"
-                            :isShowCheckboxAll="false"
-                            @actionLimit="actionLimit"
-                            @actionPagination="actionPagination"
-                            @updateSelected2="updateSelected"
-                        />
+                        <div style="margin-top: 10px;">
+                            <table-master 
+                                hideColumnKey="dialog-surat-muatan-stock" 
+                                :dataTable="dataTable" 
+                                :dataColumn="datacolumn" 
+                                :tableLoading="loadingTableData"
+                                :selectedData="selectedData"
+                                :hasPagination="true"
+                                :pageSize="pagination.page_size"
+                                :page="pagination.page"
+                                :limit="pagination.limit"
+                                :isMultipleSelectWithIndex="true"
+                                :onRowClickCallback="onRowClickCallback"
+                                :isShowCheckboxAll="false"
+                                @actionLimit="actionLimit"
+                                @actionPagination="actionPagination"
+                                @updateSelected2="updateSelected"
+                            />
+                        </div>
+                    </template>
+
+                    <div class="parent-container">
+                        <div class="container-clear-item" @click="handleClearAll">
+                            Reset Inputs
+                        </div>
                     </div>
-                </template>
 
-                <div class="parent-container">
-                    <div class="container-clear-item" @click="handleClearAll">
-                        Reset Inputs
-                    </div>
-                </div>
+                    <form-input-controller
+                        ref="formDataController" 
+                        typeForm="surat_muatan_stock"
+                        :dataItem="dataItem"
+                        :querySearch="querySearch"
+                        @formData="formData"
+                    />
 
-                <form-input-controller
-                    ref="formDataController" 
-                    typeForm="surat_muatan_stock"
-                    :dataItem="dataItem"
-                    :querySearch="querySearch"
-                    @formData="formData"
-                />
-
-                <vs-row v-if="vehicle.length > 0">
-                    <h3 class="title">Vehicle List</h3>
-                    <vs-row
-                        v-for="(item, index) in vehicle"
-                        :key="index"
-                    >
-                        <vs-col w="12">
-                            <vehicle-card 
-                                :data="item" 
-                                :isActive="item.is_active"
-                            />
-                        </vs-col>
+                    <vs-row v-if="vehicle.length > 0">
+                        <vs-row justify="space-between" v-if="Object.keys(edit_data).length > 0">
+                            <h3 class="title">Vehicle List</h3>
+                            <vs-button
+                                shadow
+                                :active="false"
+                                @click="openDialogManageVehicleManifest"
+                            >
+                                <i class='bx bx-cog'></i> Manage
+                            </vs-button>
+                        </vs-row>
+                        <vs-row
+                            v-for="(item, index) in vehicle"
+                            :key="index"
+                        >
+                            <vs-col w="12">
+                                <vehicle-card 
+                                    :data="item" 
+                                    :isActive="item.is_active"
+                                />
+                            </vs-col>
+                        </vs-row>
+                        
+                    </vs-row>
+                    <vs-row v-else>
+                        <img src="@/assets/svg/defaultVehicle.svg" alt="Core JNE Default Vehicle" style="width: 100%; margin: 20px 0;"/>
                     </vs-row>
                     
-                </vs-row>
-                <vs-row v-else>
-                    <img src="@/assets/svg/defaultVehicle.svg" alt="Core JNE Default Vehicle" style="width: 100%; margin: 20px 0;"/>
-                </vs-row>
-                
-            </div>
-        </template>
+                </div>
+            </template>
 
-        <template v-slot:footer>
-            <vs-row justify="flex-end">
-                <vs-col w="3">
-                    <vs-button
-                        block
-                        danger
-                        flat
-                        transparent
-                        :active="true"
-                        @click="cancel"
-                    >
-                        Cancel
-                    </vs-button>
-                </vs-col>
-                <vs-col w="3">
-                    <vs-button
-                        block
-                        flat
-                        transparent
-                        type="submit"
-                        :active="true"
-                        @click="handleSubmit"
-                    >
-                        {{btnBlue || 'Add'}}
-                    </vs-button>
-                </vs-col>
-            </vs-row>                
-        </template>
-    </dialog-master>
+            <template v-slot:footer>
+                <vs-row justify="flex-end">
+                    <vs-col w="3">
+                        <vs-button
+                            block
+                            danger
+                            flat
+                            transparent
+                            :active="true"
+                            @click="cancel"
+                        >
+                            Cancel
+                        </vs-button>
+                    </vs-col>
+                    <vs-col w="3">
+                        <vs-button
+                            block
+                            flat
+                            transparent
+                            type="submit"
+                            :active="true"
+                            @click="handleSubmit"
+                        >
+                            {{btnBlue || 'Add'}}
+                        </vs-button>
+                    </vs-col>
+                </vs-row>                
+            </template>
+        </dialog-master>
+
+        <dialog-manage-vehicle-manifest
+            title="Manifest Vehicle"
+            :manifest_number="edit_data.manifest_number"
+            :manifest_method="parseInt(edit_data.vehicle_mode_id)"
+            :active="dialogManageVehicleManifest"
+            :closeDialog="closeDialogManageVehicleManifest"
+        />
+    </div>
 </template>
 <script>
 import axios from "axios";
@@ -144,12 +163,15 @@ import SelectSearchBy from "@/components/search/selectSearchBy";
 import TableMaster from "@/components/table/tableMaster";
 import VehicleCard from "@/views/transport/manifestNew/vehicleCard";
 
+import DialogManageVehicleManifest from "@/views/transport/manifestVehicle/dialogCreateManage";
+
 export default {
     name:"surat-muatan-settings-stock-dialog",
     mixins: [master],
     components: {
         "date-time": DateTime,
         "dialog-master": DialogMaster,
+        "dialog-manage-vehicle-manifest": DialogManageVehicleManifest,
         "form-input-controller": FormInputController,
         "selector": Selector,
         "search-input": SearchInput,
@@ -256,6 +278,9 @@ export default {
             schedule_id: "",
             vehicle: [],
             vehicle_form: [],
+            manifest_number: "",
+            manifest_method_id: 0,
+            dialogManageVehicleManifest: false
         }
     },
     computed: {
@@ -487,6 +512,12 @@ export default {
             this.selectedData = [];
             this.$refs.formDataController.handleEmptyForm();
             this.form = {}; 
+        },
+        openDialogManageVehicleManifest() {
+            this.dialogManageVehicleManifest = true;
+        },
+        closeDialogManageVehicleManifest() {
+            this.dialogManageVehicleManifest = false;
         },
         updateSelected(val, checkedItem) {
             // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING CHECKBOX
