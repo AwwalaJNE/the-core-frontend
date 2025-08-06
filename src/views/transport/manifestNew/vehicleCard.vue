@@ -1,5 +1,10 @@
 <template>
 	<div :class="['card', { active: listenIsActive }]">
+		<vs-row>
+			<vs-col align="left" style="margin-bottom: 10px;">
+				<span v-if="listenIsActive" class="badge-3">SELECTED</span>
+			</vs-col>
+		</vs-row>
 		<vs-row justify="space-between" align="center">
 			<vs-col w="6" align="left">
 				<h1 class="text-header">{{ listenData.vehicle_id }}</h1>
@@ -24,9 +29,7 @@
 						<vs-row v-if="!listenData.pic_employee_id">
 							<vs-col align="center">
 								<img
-									:src="listenIsActive
-										? require('@/assets/svg/plane-white.svg')
-										: require('@/assets/svg/plane.svg')"
+									:src="require('@/assets/svg/plane.svg')"
 									alt="Plane"
 									style="width: 10%;"
 								/>
@@ -124,7 +127,8 @@ export default {
 	}
 
 	.badge,
-	.badge-2 {
+	.badge-2,
+	.badge-3 {
 		padding: 4px 10px;
 		border-radius: 999px;
 		font-weight: bold;
@@ -145,29 +149,14 @@ export default {
 		background-color: rgba(var(--vs-color), 1);
 	}
 
+	.badge-3 {
+		color: #fff;
+		background-color: #28a745;
+		margin: 10px 0;
+	}
+
 	&.active {
-		background: rgba(var(--vs-color), 1);
-
-		.divider,
-		.small-divider {
-			border-color: #fff;
-		}
-
-		.text,
-		.text-header,
-		.text-subheader,
-		.temp-data {
-			color: #fff;
-		}
-
-		.badge {
-			background-color: var(--bg-color, #3498db);
-			color: #fff;
-		}
-		.badge-2 {
-			background-color: #fff;
-			color: rgba(var(--vs-color), 1);
-		}
+		border: 5px solid #28a745;
 	}
 }
 </style>
