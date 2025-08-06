@@ -448,7 +448,7 @@ export default {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;
-                // this.cancel();
+                this.cancel();
             }
         },
         handleSubmit(){
@@ -462,6 +462,8 @@ export default {
             this.$emit("refresh");
         },
         cancel() {
+            this.vehicle = {};
+            this.vehicle_form = {};
             this.dateRange = [];
             this.dataTable = [];
             this.clearSearch();

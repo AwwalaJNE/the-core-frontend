@@ -156,7 +156,7 @@ export default {
 	}
 
 	&.active {
-		border: 5px solid #28a745;
+		border: 1px solid rgba(var(--vs-color), 1);
 	}
 }
 </style>
