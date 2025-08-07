@@ -76,7 +76,7 @@
             </vs-col>
         </template>
 
-        <template v-slot:footer v-if="navActive === 'k-NEW'">
+        <template v-slot:footer v-if="navActive === 'k-NEW' && hasFlightNumber">
             <vs-row justify="flex-end" style="margin-top: 1pc;">
                 <vs-col w="3">
                     <vs-button
