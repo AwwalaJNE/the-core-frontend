@@ -911,16 +911,13 @@ export default {
                 this.vehicle_form = arr.map((item, idx) => ({
                     vehicle_id: item?.vehicle_id || "",
                     vehicle_type_id: item?.vehicle_type_id || "",
-                    vehicle_mode_id: item?.vehicle_mode_id || "",
-                    origin_vehicle: item?.name_origin_tlc || "",
-                    destination_vehicle: item?.name_destination_tlc || "",
-                    origin_vehicle_tlc: item?.origin_tlc || "",
-                    destination_vehicle_tlc: item?.destination_tlc || "",
-                    pic_employee_id: item?.pic_employee_id || "",
+                    employee_driver_id: "",
+                    origin_branch_code: item?.origin_tlc || "",
+                    destination_branch_code: item?.destination_tlc || "",
                     flight_number: item?.flight_number || "",
                     flight_schedule: item?.etd || "",
-                    etd_vehicle: item?.etd || "",
-                    eta_vehicle: item?.eta || "",
+                    etd: item?.etd || "",
+                    eta: item?.eta || "",
                     is_active: item?.status === 'ACTIVE'
                 }));
             } catch (err) {

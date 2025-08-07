@@ -157,6 +157,7 @@ import master from "@/mixins/master";
 import DateTime from "@/components/input/dateTime"
 import DialogMaster from "@/components/dialog/dialogMaster";
 import FormInputController from "@/components/form/formInputController";
+import RadioWithCard from "@/components/input/radioWithCard";
 import Selector from "@/components/input/select";
 import SearchInput from "@/components/search/searchInput";
 import SelectSearchBy from "@/components/search/selectSearchBy";
@@ -173,6 +174,7 @@ export default {
         "dialog-master": DialogMaster,
         "dialog-manage-vehicle-manifest": DialogManageVehicleManifest,
         "form-input-controller": FormInputController,
+        "radio": RadioWithCard,
         "selector": Selector,
         "search-input": SearchInput,
         "select-search-by": SelectSearchBy,
@@ -280,7 +282,9 @@ export default {
             vehicle_form: [],
             manifest_number: "",
             manifest_method_id: 0,
-            dialogManageVehicleManifest: false
+            dialogManageVehicleManifest: false,
+            selected_manifest_vehicle: "",
+            is_edit: false,
         }
     },
     computed: {
@@ -297,11 +301,15 @@ export default {
         },
         listenDataItem() {
             return this.dataItem;
+        },
+        listenSelectedManifestVehicle() {
+            return this.selected_manifest_vehicle || ''
         }
     },
     watch: {
         dataItem: function (val) {
             if(val !== undefined) {
+                this.is_edit = true;
                 this.getDataDetail(val);
                 this.getManifestVehicle();
             }
@@ -403,7 +411,6 @@ export default {
                     status_flight: item?.status_flight,
                     is_active: item?.status === 'ACTIVE'
                 }));
-                
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
@@ -508,6 +515,7 @@ export default {
             this.$refs?.searchInput?.clear()
         },
         handleClearAll() {
+            this.is_edit = false;
             this.schedule_id = "";
             this.selectedData = [];
             this.$refs.formDataController.handleEmptyForm();
@@ -518,6 +526,7 @@ export default {
         },
         closeDialogManageVehicleManifest() {
             this.dialogManageVehicleManifest = false;
+            this.getManifestVehicle();
         },
         updateSelected(val, checkedItem) {
             // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING CHECKBOX
