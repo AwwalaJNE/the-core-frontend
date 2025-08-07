@@ -444,17 +444,19 @@ export default {
                 formWithoutId.node_id_origin = form?.node_id_origin;
             }
 
-            formWithoutId.vehicle = this.vehicle_form.map(item => ({
-                vehicle_id: item.vehicle_id,
-                tlc_origin: item.tlc_origin,
-                tlc_destination: item.tlc_destination,
-                flight_number: item.flight_number,
-                etd: item.etd,
-                etd_timezone: item.etd_timezone,
-                eta: item.eta,
-                eta_timezone: item.eta_timezone,
-                is_active: item.is_active ? 1 : 0
-            }));
+            if (!this.is_edit) {
+                formWithoutId.vehicle = this.vehicle_form?.map(item => ({
+                    vehicle_id: item.vehicle_id,
+                    tlc_origin: item.tlc_origin,
+                    tlc_destination: item.tlc_destination,
+                    flight_number: item.flight_number,
+                    etd: item.etd,
+                    etd_timezone: item.etd_timezone,
+                    eta: item.eta,
+                    eta_timezone: item.eta_timezone,
+                    is_active: item.is_active ? 1 : 0
+                }));
+            }
             formWithoutId.is_active = formWithoutId.is_active === true ? "1" : "0";
             formWithoutId.schedule_id = this.vehicle[0]?.shipment_schedule_id || null; // TODO: CONFIRM AGAIN
 
