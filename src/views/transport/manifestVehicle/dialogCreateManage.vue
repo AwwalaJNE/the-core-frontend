@@ -25,6 +25,7 @@
                             :name="'manifest_vehicle'"
                             :value-data="list_manifest_vehicle"
                             :selected-value="listenSelectedManifestVehicle"
+                            :isRemoveButton="true"
                             @updateValue="updateValue"
                             @removeRow="removeRow"
                         />
@@ -151,7 +152,9 @@ export default {
             selected_manifest_vehicle: "",
 
             flightNumber: "",
-            hasFlightNumber: false
+            hasFlightNumber: false,
+
+            vehicle_id: ""
         };
     },
     computed: {
@@ -214,7 +217,7 @@ export default {
         formData(form){
             form.origin_branch_code = form.origin_branch_code?.value || form.origin_branch_code;
             form.destination_branch_code = form.destination_branch_code?.value || form.destination_branch_code;
-            form.vehicle_id = form?.vehicle_id?.vehicle_id;
+            form.vehicle_id = this.vehicle_id || form?.vehicle_id?.vehicle_id || form?.vehicle_id;
             form.employee_driver_id = form?.employee_driver_id?.employee_id || "";
             
             this.form = form;
@@ -222,6 +225,20 @@ export default {
         },
         handleSubmit(){
             this.$refs.formSuratMuatanVehicleController.handleSubmit();
+        },
+        async getVehicle(query) {
+            this.loadingVehicleId = true;
+            try {
+                const res = await axios.get(`${this.URL.vehicle}?n=${this.listenNodeId}&search_by=vehicle_police_no&s=${query}`, this.Helper.header());
+
+                const data = res.data.data || [];
+
+                this.vehicle_id = res.data.data[0].vehicle_id
+            } catch (err) {
+                // this.openNotification('danger', '', 'Failed', 'Gagal mengambil data kendaraan: ' + (err.message || 'Unknown error'));
+            } finally {
+                this.loadingVehicleId = false;
+            }
         },
         async getManifestVehicle() {
             this.loading = true;
@@ -327,11 +344,11 @@ export default {
             try {
                 const res = await axios.post(`${this.URL.manifest_vehicle}/${this.listenManifestNumber}?n=${this.listenNodeId}`, this.form, this.Helper.header());
                 this.openNotification('success', null, "Success", "Update manifest vehicle success");
+                this.moveTab();
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;
-                this.moveTab();
             }
         },
         async chooseManifestVehicle(log_id) {
@@ -390,14 +407,17 @@ export default {
 
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER", data?.flight);
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE", data?.detailJson?.timingInformation?.departure?.runway?.scheduled?.iso);
-                // this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_VEHICLE_ID", data?.detailJson?.aircraftInformation?.type?.friendlyName); TODO: confirm later
-                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE", data?.detailJson?.routeInformation?.departure?.airport?.iata);
-                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE", data?.detailJson?.routeInformation?.arrival?.airport?.iata);
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_VEHICLE_ID", data?.detailJson?.flightSummary?.airline?.shortName);
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE", data?.detailJson?.routeInformation?.departure?.airport?.name);
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE", data?.detailJson?.routeInformation?.arrival?.airport?.name);
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ETD", data?.detailJson?.timingInformation?.departure?.runway?.estimated?.iso);
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ETA", data?.detailJson?.timingInformation?.arrival?.runway?.estimated?.iso);
 
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_VEHICLE_ID_ValueData", data?.detailJson?.flightSummary?.airline?.iata);
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_ValueData", data?.detailJson?.routeInformation?.departure?.airport?.iata);
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_ValueData", data?.detailJson?.routeInformation?.arrival?.airport?.iata);
+
+                await this.getVehicle(data?.detailJson?.flightSummary?.airline?.iata);
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
@@ -445,6 +465,7 @@ export default {
         clearInput() {
             this.hasFlightNumber = false;
             this.flightNumber = "";
+            this.vehicle_id = "";
 
             this.handleClearForm();
             
@@ -463,12 +484,14 @@ export default {
 
             this.hasFlightNumber = false;
             this.flightNumber = "";
+            this.vehicle_id = "";
             
             this.closeDialog();
         },
         moveTab() {
             this.hasFlightNumber = false;
             this.flightNumber = "";
+            this.vehicle_id = "";
 
             this.handleClearForm();
 

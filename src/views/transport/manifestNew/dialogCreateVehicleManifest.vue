@@ -109,7 +109,8 @@ export default {
         return {
             loading: false,
             flightNumber: "",
-            hasFlightNumber: false
+            hasFlightNumber: false,
+            vehicle_id: {}
         };
     },
     computed: {
@@ -158,7 +159,7 @@ export default {
             this.form = {
                 origin_vehicle: form.origin_branch_code,
                 destination_vehicle: form.destination_branch_code,
-                vehicle_id: form.vehicle_id,
+                vehicle_id: this.vehicle_data || form.vehicle_id,
                 pic_employee_id: form.employee_driver_id || "",
                 flight_number: form.flight_number || "",
                 flight_schedule: form.flight_schedule || "",
@@ -220,22 +221,39 @@ export default {
 
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER", data?.flight);
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE", data?.detailJson?.timingInformation?.departure?.runway?.scheduled?.iso);
-                // this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_VEHICLE_ID", data?.detailJson?.aircraftInformation?.type?.friendlyName); TODO: confirm later
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_VEHICLE_ID", data?.detailJson?.flightSummary?.airline?.shortName);
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE", data?.detailJson?.routeInformation?.departure?.airport?.name);
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE", data?.detailJson?.routeInformation?.arrival?.airport?.name);
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ETD", data?.detailJson?.timingInformation?.departure?.runway?.estimated?.iso);
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ETA", data?.detailJson?.timingInformation?.arrival?.runway?.estimated?.iso);
 
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_VEHICLE_ID_ValueData", data?.detailJson?.flightSummary?.airline?.iata);
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_ValueData", data?.detailJson?.routeInformation?.departure?.airport);
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_ValueData", data?.detailJson?.routeInformation?.arrival?.airport);
+
+                await this.getVehicle(data?.detailJson?.flightSummary?.airline?.iata);
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;
             }
         },
+        async getVehicle(query) {
+            this.loadingVehicleId = true;
+            try {
+                const res = await axios.get(`${this.URL.vehicle}?n=${this.listenNodeId}&search_by=vehicle_police_no&s=${query}`, this.Helper.header());
+
+                const data = res.data.data || [];
+
+                this.vehicle_data = res.data.data[0] ||{};
+            } catch (err) {
+                // this.openNotification('danger', '', 'Failed', 'Gagal mengambil data kendaraan: ' + (err.message || 'Unknown error'));
+            } finally {
+                this.loadingVehicleId = false;
+            }
+        },
         handleClearForm() {
-            this.$refs.formSuratMuatanVehicleController.handleClearForm();
+            this.$refs?.formSuratMuatanVehicleController?.handleClearForm();
         },
         cancel() {
             this.handleClearForm();
@@ -246,12 +264,14 @@ export default {
 
             this.hasFlightNumber = false;
             this.flightNumber = "";
+            this.vehicle_data = {};
             
             this.closeDialog();
         },
         clearInput() {
             this.hasFlightNumber = false;
             this.flightNumber = "";
+            this.vehicle_data = {};
 
             this.handleClearForm();
             

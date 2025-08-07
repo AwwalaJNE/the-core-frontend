@@ -11,7 +11,7 @@
                     @click="handleSelect(item.key)"
                 >
                     <div
-                        v-if="DataArr.length > 1 && tempValue !== item.key"
+                        v-if="listenRemoveButton && DataArr.length > 1 && tempValue !== item.key"
                         class="overlay-button"
                         @click.stop="removeRow(item.key)"
                     >
@@ -47,12 +47,13 @@ export default {
         selectedValue: [String, Number],
         rules: String,
         radioType: String,
-        disabled: Boolean
+        disabled: Boolean,
+        isRemoveButton: Boolean
     },
     data() {
         return {
             DataArr: this.valueData || [],
-            tempValue: this.selectedValue
+            tempValue: this.selectedValue || 0
         }
     },
     watch: {
@@ -72,6 +73,9 @@ export default {
         },
         listenRadioType() {
             return this.radioType;
+        },
+        listenRemoveButton() {
+            return this.isRemoveButton || false
         }
     },
     methods: {
