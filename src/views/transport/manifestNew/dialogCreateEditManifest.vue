@@ -923,16 +923,6 @@ export default {
                     eta_vehicle: item?.eta || "",
                     is_active: item?.status === 'ACTIVE'
                 }));
-                // vehicle_id: form?.vehicle_id?.vehicle_id || "",
-                // vehicle_type_id: form?.vehicle_id?.vehicle_type_id || "",
-                // employee_driver_id: form?.pic_employee_id?.employee_id || "",
-                // flight_number: form?.flight_number || "",
-                // flight_schedule: form?.flight_schedule || "",
-                // etd: form?.etd_vehicle || "",
-                // eta: form?.eta_vehicle || "",
-                // origin_branch_code: form?.origin_vehicle?.value || form.origin_vehicle?.iata || "",
-                // destination_branch_code: form?.destination_vehicle?.value || form.destination_vehicle?.iata || "",
-                // is_active: this.vehicle.length === 0
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
@@ -1175,7 +1165,7 @@ export default {
             };
 
             this.vehicle.push(created_vehicle);
-            this.vehicle_form.push(vehicle_form)
+            this.vehicle_form.push(vehicle_form);
         },
         openDialogManageVehicleManifest() {
             this.dialogManageVehicleManifest = true;
