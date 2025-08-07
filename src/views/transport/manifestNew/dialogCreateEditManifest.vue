@@ -69,7 +69,7 @@
                     <div v-if="vehicle.length > 0">
                         <vs-row justify="space-between" style="margin: 0!important;">
                             <vs-col w="6" >
-                                <h3 v-if="is_sm_created || (!is_sm_edit && manifest_number)" class="title">List Vehicle</h3>
+                                <h3 v-if="(!is_sm_edit && manifest_number)" class="title">List Vehicle</h3>
                                 <h3 v-if="is_sm_edit" class="title">Current Vehicle</h3>
                             </vs-col>
                             <vs-col w="6" >
@@ -358,7 +358,6 @@ export default {
             selectedBagNumber: "",
             dialogCreateVehicleManifest: false,
             dialogManageVehicleManifest: false,
-            is_sm_created: false,
             is_sm_edit: false,
             vehicle_form: [],
             vehicle: []
@@ -764,8 +763,8 @@ export default {
                 const res = await axios.post(`${this.URL.revamp_surat_muatan}?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());
                 const data = res.data.data;
                 if (data) {
-                    this.is_sm_created = true;
                     this.manifest_number = data.manifest_number;
+                    this.is_sm_edit = true;
                     this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
                     this.master_form = {
                         manifest_number: data.manifest_number,
@@ -984,8 +983,7 @@ export default {
             this.handleClearForm();
             this.closeDialog();
             this.dataTable = [];
-
-            this.is_sm_created = false;
+            
             this.is_sm_edit = false;
         },
         updateValue() {
