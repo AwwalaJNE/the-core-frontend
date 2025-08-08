@@ -218,7 +218,7 @@ export default {
                 },
                 { 
                     label: "Weight", 
-                    key: "koli_actual_weight", 
+                    key: "connote_actual_weight", 
                     width: "xxxxs" 
                 },
                 { 
