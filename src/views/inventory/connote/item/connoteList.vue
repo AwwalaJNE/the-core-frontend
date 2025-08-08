@@ -166,7 +166,7 @@ export default {
                 },
                 {
                     label: "Actual Weight(Kg)",
-                    key: "koli_actual_weight",
+                    key: "connote_actual_weight",
                     width: "auto"
                 },
                 {
