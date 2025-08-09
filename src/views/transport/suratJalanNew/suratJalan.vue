@@ -226,6 +226,16 @@ export default {
           width: "xxs",
         },
         {
+          label: "Received",
+          key: "total_received",
+          width: "xxxs",
+        },
+        {
+          label: "Outstanding",
+          key: "total_outstanding",
+          width: "xxxs",
+        },
+        {
           label: "Total Bag",
           key: "total_item",
           width: "xxxs",
@@ -402,6 +412,8 @@ export default {
             item["total_masterbag"] = item.total_masterbag === 0 ? '0' : item.total_masterbag;
             item["total_bag"] = item.total_bag === 0 ? '0' : item.total_bag;
             item["total_connote"] = item.total_connote === 0 ? '0' : item.total_connote;
+            item["total_received"] = item.total_received === 0 ? '0' : item.total_received;
+            item["total_outstanding"] = item.total_outstanding === 0 ? '0' : item.total_outstanding;
             
             if (
                   (item.manifest_do_number?.startsWith("SJA") ||

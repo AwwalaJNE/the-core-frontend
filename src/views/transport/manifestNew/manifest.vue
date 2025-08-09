@@ -102,6 +102,16 @@ export default {
           width: "xxs",
         },
         {
+          label: "Received",
+          key: "total_received",
+          width: "xxxs",
+        },
+        {
+          label: "Outstanding",
+          key: "total_outstanding",
+          width: "xxxs",
+        },
+        {
           label: "Total Bag",
           key: "total_item",
           width: "auto",
@@ -376,6 +386,8 @@ export default {
             total_masterbag: item.total_masterbag === 0 ? "0" : item.total_masterbag,
             total_bag: item.total_bag === 0 ? "0" : item.total_bag,
             total_connote: item.koli_count === 0 ? "0" : item.koli_count,
+            total_received: item.total_received === 0 ? "0" : item.total_received,
+            total_outstanding: item.total_outstanding === 0 ? "0" : item.total_outstanding,
             created_at: this.dateConvert(item.created_at),
             approved: item.is_approve === 1 ? true : false,
             status_with_tooltip: item.is_transit === 1
