@@ -60,15 +60,25 @@ export default {
         width: "xxs",
       },
       {
-        label: "Total Bag",
-        key: "total_item",
+        label: "Received",
+        key: "total_received",
+        width: "xxxs",
+      },
+      {
+        label: "Outstanding",
+        key: "total_outstanding",
         width: "xxxs",
       },
       {
         label: "Total Bag",
-        key: "total_bag",
+        key: "total_item",
         width: "xxxs",
       },
+      // {
+      //   label: "Total Bag",
+      //   key: "total_bag",
+      //   width: "xxxs",
+      // },
       {
         label: "Total Master Bag",
         key: "total_master_bag",
@@ -449,6 +459,8 @@ export default {
           item["departed_at"] = this.dateConvert(item["departed_at"]);
           item["received_at"] = this.dateConvert(item["received_at"]);
           item["vehicle"] = item["vehicle_name"];
+          item["total_received"] = item["total_received"] === 0 ? "0": item["total_received"];
+          item["total_outstanding"] = item["total_outstanding"] === 0 ? "0": item["total_outstanding"];
           // item['is_prealert'] = isPrealert
           item["inbound_number"] =
           isPrealert == "bag" ? item["bag_number"] : item["inbound_number"];
