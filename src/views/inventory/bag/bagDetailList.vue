@@ -40,7 +40,7 @@
         <table-master 
         hideColumnKey="bag-detail"
         :dataTable="dataTable" 
-        :dataColumn="datacolumn" 
+        :dataColumn="!is_consolidated ? dataColumn.concat(additionalColumn) : dataColumn"
         :tableLoading="loading"
         :pageSize="pagination.page_size"
         :page="pagination.page"
@@ -92,13 +92,17 @@ export default {
                 }
             }
         },
-
+        is_consolidated: function(val, old) {
+            if (val !== undefined) {
+                this.is_consolidated = val;
+            }
+        },
 
     },
     data() {
         return {
             dataTable: [],
-            datacolumn: [
+            dataColumn: [
                 {
                     label: "No",
                     key: "no",
@@ -107,7 +111,7 @@ export default {
                 {
                     label: "Item",
                     key: "item_number",
-                    width: "auto"
+                    width: "md"
                 },
                 {
                     label: "Quantity",
@@ -121,7 +125,7 @@ export default {
                 },
                 {
                   label: "Weight",
-                  key: "connote_actual_weight",
+                  key: "bag_weight",
                   width: "auto"
                 },
                 {
@@ -144,6 +148,8 @@ export default {
                     key: "created_at",
                     width: "xs"
                 },
+            ],
+            additionalColumn: [
                 {
                     label: "Runsheet Number",
                     key: "runsheet_number",
@@ -174,6 +180,7 @@ export default {
             primaryKey: '',
             activeDialogConfirmRemove: false,
             loadingConfirmRemove:false,
+            is_consolidated: false
         }
     },
     methods: {
@@ -193,13 +200,15 @@ export default {
                     let bag_des = res.data.dat ? res.data.data.destination.node_code  : '-'
                     this.$ls.set('getDataBag',res.data.data);
 
+                    this.is_consolidated = res?.data?.data?.is_consolidated === '1';
+
  
                     arr.map((item, index)  => {
                       item["no"] = index+1
                       item['destination_code'] = item.item_type === 'KOLI' ?  item.connote_receiver_tariff_code : item.node_tariff_code
                       item['koli_qty'] = item.item_type == 'KOLI' ? item.koli_qty : item.bag_detail_qty
-                      item['koli_actual_weight'] = item.item_type == 'KOLI' ? item.koli_actual_weight : item.bag_weight
                       item['koli_sequence'] = item.item_type == 'KOLI' ? item.koli_sequence : '-'
+                      item['bag_weight'] = item.item_type == 'KOLI' ? item?.connote_actual_weight : item.bag_weight
                       item['connote_service_code'] = item.item_type == 'KOLI' ? item.connote_service_code : item.bag_service.join(', ')
                       item['bag_detail_qty'] = res.data.data.bag_detail_qty
                       item["isDisabled"] = res.data.data.is_approve === 1 ? true : false;

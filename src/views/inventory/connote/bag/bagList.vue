@@ -192,7 +192,52 @@ export default {
     data() {
         return {
             dataTable: [],
-            datacolumn: [
+            datacolumn: [],
+            loading: false,
+            dataItem: {},
+            tempSearch: this.query ? this.query : "",
+            isMasterbagFilter: this.isMasterbag ? this.isMasterbag : null,
+            isArchiveFilter: this.isArchive ? this.isArchive : null,
+            bagFilter: this.bagDestination ? this.bagDestination : "",
+            bagOriginFilter: this.bagOrigin ? this.bagOrigin : "",
+            routingFilter: this.bagRouting ? this.bagRouting : "",
+            tipeBagFilter: this.bagTipe ? this.bagTipe : "",
+            statusBagFilter: this.bagStatus ? this.bagStatus : "-",
+            statusBagIrreg: this.bagIrreg ? this.bagIrreg : "",
+            bagSourceFilter: this.bagSource ? this.bagSource : "",
+            bagStatusInventoryFilter: this.bagStatusInventory ? this.bagStatusInventory : "",
+            filterDateBy: this.searchDateBy ? this.searchDateBy : "",
+            searchByBag: this.searchBy ? this.searchBy : "",
+            dialogRole: false,
+            pagination: {
+                limit:20,
+                page_size: 1,
+                page: 1
+            },
+            tempDate:[],
+            startDate: "",
+            endDate: "",
+            dateRange: [],
+            selectedRow: [],
+            dialogTraceBag: false,
+            selectedBagNumber: "",
+            customActionList: [
+                {
+                    label:'Trace Bag',
+                    key:'trace_bag',
+                    attribute: 'primary',
+                },
+                {
+                    label:'Print',
+                    key:'print',
+                    attribute: 'primary',
+                }
+            ]
+        }
+    },
+    methods: {
+        setDatacolumn() {
+            this.datacolumn = [
                 {
                     label: "Bag #",
                     key: "bag_number",
@@ -236,7 +281,8 @@ export default {
                 {
                     label: "Total Bag",
                     key: "total_bag",
-                    width: "xs"
+                    width: "xs",
+                    ...(this.isMasterbagFilter === "0" ? { hidden: true } : {})
                 },
                 {
                     label: "Total Connote",
@@ -330,50 +376,8 @@ export default {
                     key: "is_confirmed",
                     width: "auto"
                 },
-            ],
-            loading: false,
-            dataItem: {},
-            tempSearch: this.query ? this.query : "",
-            isMasterbagFilter: this.isMasterbag ? this.isMasterbag : null,
-            isArchiveFilter: this.isArchive ? this.isArchive : null,
-            bagFilter: this.bagDestination ? this.bagDestination : "",
-            bagOriginFilter: this.bagOrigin ? this.bagOrigin : "",
-            routingFilter: this.bagRouting ? this.bagRouting : "",
-            tipeBagFilter: this.bagTipe ? this.bagTipe : "",
-            statusBagFilter: this.bagStatus ? this.bagStatus : "-",
-            statusBagIrreg: this.bagIrreg ? this.bagIrreg : "",
-            bagSourceFilter: this.bagSource ? this.bagSource : "",
-            bagStatusInventoryFilter: this.bagStatusInventory ? this.bagStatusInventory : "",
-            filterDateBy: this.searchDateBy ? this.searchDateBy : "",
-            searchByBag: this.searchBy ? this.searchBy : "",
-            dialogRole: false,
-            pagination: {
-                limit:20,
-                page_size: 1,
-                page: 1
-            },
-            tempDate:[],
-            startDate: "",
-            endDate: "",
-            dateRange: [],
-            selectedRow: [],
-            dialogTraceBag: false,
-            selectedBagNumber: "",
-            customActionList: [
-                {
-                    label:'Trace Bag',
-                    key:'trace_bag',
-                    attribute: 'primary',
-                },
-                {
-                    label:'Print',
-                    key:'print',
-                    attribute: 'primary',
-                }
             ]
-        }
-    },
-    methods: {
+        },
         async getTableData(limit,page,q, bagDestination, bagOrigin, bagRouting, bagTipe,  from, to, searchByBag, filterDateBy, bagStatus, bagIrreg, bagSource, isMasterbag, isArchive, bagStatusInventory) {
             this.loading = true
             let query = "";
@@ -447,6 +451,7 @@ export default {
                     }
 
                     res.data.data.forEach(el => {
+                        el.bag_actual_weight = el.is_pra_runsheet ? el.cost_weight : el.bag_actual_weight
                         el.is_confirmed = el.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed'
                         el.surat_muatan = []
                         el.surat_jalan = []
@@ -588,6 +593,7 @@ export default {
         }
     },
     mounted() {
+        this.setDatacolumn();
         this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.startDate, this.endDate, this.tipeBagFilter, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter)
         this.handlePrintShortcut(this.actionPrintSelected)
     },
