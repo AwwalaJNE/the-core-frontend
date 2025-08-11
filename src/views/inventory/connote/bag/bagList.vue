@@ -451,6 +451,7 @@ export default {
                     }
 
                     res.data.data.forEach(el => {
+                        el.bag_actual_weight = el.is_pra_runsheet ? el.cost_weight : el.bag_actual_weight
                         el.is_confirmed = el.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed'
                         el.surat_muatan = []
                         el.surat_jalan = []
