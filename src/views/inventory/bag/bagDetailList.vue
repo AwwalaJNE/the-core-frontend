@@ -40,7 +40,7 @@
         <table-master 
         hideColumnKey="bag-detail"
         :dataTable="dataTable" 
-        :dataColumn="datacolumn" 
+        :dataColumn="is_consolidated === '1' ? dataColumn.concat(additionalColumn) : dataColumn"
         :tableLoading="loading"
         :pageSize="pagination.page_size"
         :page="pagination.page"
@@ -92,13 +92,17 @@ export default {
                 }
             }
         },
-
+        is_consolidated: function(val, old) {
+            if (val !== undefined) {
+                this.is_consolidated = val;
+            }
+        },
 
     },
     data() {
         return {
             dataTable: [],
-            datacolumn: [
+            dataColumn: [
                 {
                     label: "No",
                     key: "no",
@@ -107,7 +111,7 @@ export default {
                 {
                     label: "Item",
                     key: "item_number",
-                    width: "auto"
+                    width: "md"
                 },
                 {
                     label: "Quantity",
@@ -144,6 +148,8 @@ export default {
                     key: "created_at",
                     width: "xs"
                 },
+            ],
+            additionalColumn: [
                 {
                     label: "Runsheet Number",
                     key: "runsheet_number",
@@ -174,6 +180,7 @@ export default {
             primaryKey: '',
             activeDialogConfirmRemove: false,
             loadingConfirmRemove:false,
+            is_consolidated: "0"
         }
     },
     methods: {
@@ -192,6 +199,8 @@ export default {
                     let arr = res.data.detail
                     let bag_des = res.data.dat ? res.data.data.destination.node_code  : '-'
                     this.$ls.set('getDataBag',res.data.data);
+
+                    this.is_consolidated = res?.data?.data?.is_consolidated || "0";
 
  
                     arr.map((item, index)  => {
