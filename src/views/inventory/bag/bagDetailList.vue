@@ -121,7 +121,7 @@ export default {
                 },
                 {
                   label: "Weight",
-                  key: "connote_actual_weight",
+                  key: "bag_weight",
                   width: "auto"
                 },
                 {
