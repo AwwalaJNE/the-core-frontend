@@ -420,7 +420,7 @@ export default {
       typeInput: "Number",
       typeData: "Number",
       valueData: null,
-      value: ''
+      value: 0
     },
     is_active: {
       label: "Active|Unactive",
