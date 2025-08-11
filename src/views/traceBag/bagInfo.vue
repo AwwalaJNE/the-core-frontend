@@ -227,11 +227,6 @@ export default {
                     width: "sm" 
                 },
                 { 
-                    label: "Service", 
-                    key: "connote_service_code", 
-                    width: "xs" 
-                },
-                { 
                     label: "Type", 
                     key: "item_type", 
                     width: "xxxxs" 
