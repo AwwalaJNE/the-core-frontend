@@ -824,7 +824,15 @@ export default {
                     arr = arr.map(item => ({
                         ...item,
                         received_status: item.received_at ? 1 : 0,
-                        destination_name: item.item_destination
+                        destination_name: (item.bag?.destination?.node_code || '') + ' - ' + (item.bag?.destination?.node_name || ''),
+                        status_trip: (item?.bag?.status_trip || '') + ' ' + (item?.bag?.current_node.node_name || '') + " (" + (item?.bag?.current_node?.node_code) + ")",
+                        received_by: item?.bag?.received_by_user || '',
+                        actual_weight: item?.bag?.bag_actual_weight || '0',
+                        cost_weight: item?.bag?.cost_weight || '0',
+                        total_connote_of_bag: item?.bag?.total_koli || '0',
+                        total_inner: item?.bag?.total_bag || '0',
+                        // status_irregularity: (item?.irregularity?.status_code || '') + ' (' + item?.irregularity?.status_description + ')'
+                        item_type: item?.bag?.is_consolidated === '1' ? 'MASTERBAG': 'BAG'
                     }));
 
                     this.dataTable = arr;
