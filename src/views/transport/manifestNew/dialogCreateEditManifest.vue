@@ -829,10 +829,10 @@ export default {
                         received_by: item?.bag?.received_by_user || '',
                         actual_weight: item?.bag?.bag_actual_weight || '0',
                         cost_weight: item?.bag?.cost_weight || '0',
-                        status_irregularity: item?.stat
-                        // total_connote_of_bag: item?.total_connote_of_bag || '',
-                        // total_inner: item?.bag_detail_count || '',
+                        total_connote_of_bag: item?.bag?.total_koli || '0',
+                        total_inner: item?.bag?.total_bag || '0',
                         // status_irregularity: (item?.irregularity?.status_code || '') + ' (' + item?.irregularity?.status_description + ')'
+                        item_type: item?.bag?.is_consolidated === '1' ? 'MASTERBAG': 'BAG'
                     }));
 
                     this.dataTable = arr;
