@@ -142,6 +142,11 @@ export default {
           key: "destination_name",
           width: "xxs",
         },
+        {
+          label: "Actual Weight",
+          key: "actual_weight",
+          width: "auto",
+        },
         // {
         //   label: "Fix Cost Weight",
         //   key: "fix_cost_weight",
@@ -370,6 +375,7 @@ export default {
 
           return {
             ...item,
+            actual_weight: item.actual_weight || "0",
             pickup_courier_employee_name: item.employee_courier?.employee_name || null,
             manifest_type_name: item.manifest_method?.vehicle_mode_name || null,
             jenis_kiriman: item.vehicle_type?.vehicle_type_name || "-",
