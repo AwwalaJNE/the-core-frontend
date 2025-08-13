@@ -82,7 +82,7 @@
 
                     <vs-row v-if="vehicle.length > 0">
                         <vs-row justify="space-between" v-if="Object.keys(edit_data).length > 0">
-                            <h3 class="title">Vehicle List</h3>
+                            <h3 class="title">Active Vehicle</h3>
                             <vs-button
                                 shadow
                                 :active="false"
@@ -95,7 +95,7 @@
                             v-for="(item, index) in vehicle"
                             :key="index"
                         >
-                            <vs-col w="12">
+                            <vs-col w="12" v-if="item.is_active">
                                 <vehicle-card 
                                     :data="item" 
                                     :isActive="item.is_active"
