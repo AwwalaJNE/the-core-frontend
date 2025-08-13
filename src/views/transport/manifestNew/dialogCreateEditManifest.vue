@@ -69,8 +69,8 @@
                     <div v-if="vehicle.length > 0">
                         <vs-row justify="space-between" style="margin: 0!important;">
                             <vs-col w="6" >
-                                <h3 v-if="(!is_sm_edit && manifest_number)" class="title">List Vehicle</h3>
-                                <h3 v-if="is_sm_edit" class="title">Current Vehicle</h3>
+                                <h3 v-if="!is_sm_edit" class="title">List Vehicle</h3>
+                                <h3 v-else class="title">Current Vehicle</h3>
                             </vs-col>
                             <vs-col w="6" >
                                 <vs-row justify="flex-end" v-if="!is_sm_edit">
@@ -96,17 +96,29 @@
                                 </vs-row>
                             </vs-col>
                         </vs-row>
-                        <vs-row
-                            v-for="(item, index) in vehicle"
-                            :key="index"
-                        >
-                            <vs-col w="12">
-                                <vehicle-card 
-                                    :data="item" 
-                                    :isActive="item.is_active"
-                                />
-                            </vs-col>
-                        </vs-row>
+                        <template v-if="(!is_sm_edit)">
+                            <radio
+                                :name="'manifest_vehicle'"
+                                :value-data="vehicle"
+                                :selected-value="listenSelectedManifestVehicle"
+                                :isRemoveButton="true"
+                                @updateValue="chooseRow"
+                                @removeRow="removeRow"
+                            />
+                        </template>
+                        <template v-else>
+                            <vs-row
+                                v-for="(item, index) in vehicle"
+                                :key="index"
+                            >
+                                <vs-col w="12">
+                                    <vehicle-card 
+                                        :data="item" 
+                                        :isActive="item.is_active"
+                                    />
+                                </vs-col>
+                            </vs-row>
+                        </template>
                     </div>
 
                     <vs-button
@@ -214,7 +226,9 @@ import master from "@/mixins/master";
 import CameraScanner from "@/components/scanner/camera";
 import DialogMaster from "@/components/dialog/dialogMaster";
 import FormInputController from "@/components/form/formInputController";
+import RadioWithCard from "@/components/input/radioWithCard";
 import TableMaster from "@/components/table/tableMaster.vue";
+
 import DialogTraceBag from "@/views/transport/manifestNew/dialogTraceBag";
 import dialogSelectManifestStock from "./dialogSelectManifestStock.vue";
 
@@ -234,6 +248,7 @@ export default {
         "dialog-select-manifest-stock": dialogSelectManifestStock,
         "dialog-manage-vehicle-manifest": DialogManageVehicleManifest,
         "dialog-create-vehicle-manifest": DialogCreateVehicleManifest,
+        "radio": RadioWithCard,
         "vehicle-card": VehicleCard
     },
     props: {
@@ -360,7 +375,8 @@ export default {
             dialogManageVehicleManifest: false,
             is_sm_edit: false,
             vehicle_form: [],
-            vehicle: []
+            vehicle: [],
+            selected_manifest_vehicle: "",
         };
     },
     computed: {
@@ -390,6 +406,9 @@ export default {
         },
         listenSMNumber() {
             return this.sm_number;
+        },
+        listenSelectedManifestVehicle() {
+            return this.selected_manifest_vehicle || ''
         }
     },
     watch: {
@@ -700,10 +719,21 @@ export default {
             form.node_id_origin = form.node_id_origin?.node_id || form.node_id_origin || this.listenCurrentNode.node_id;
             form.node_id_destination = form.node_id_destination?.node_id || form.node_id_destination;
 
-            form.vehicles = this.vehicle_form;
-            form.vehicle_id = this.vehicle_form[0]?.vehicle_id;
-            form.vehicle_type_id = this.vehicle_form[0]?.vehicle_type_id;
-            form.vehicle_mode_id = this.vehicle_form[0]?.vehicle_mode_id;
+            if (!this.is_sm_edit) {
+                form.vehicles = this.vehicle_form.map(item => item.state);
+
+                let active_vehicle = this.vehicle_form.find(item => item.state.is_active);
+                form.vehicle_id = active_vehicle?.vehicle_id;
+                form.vehicle_type_id = active_vehicle?.vehicle_type_id;
+                form.vehicle_mode_id = active_vehicle?.vehicle_mode_id;
+            } else {
+                form.vehicles = this.vehicle_form;
+
+                let active_vehicle = this.vehicle_form.find(item => item.is_active);
+                form.vehicle_id = active_vehicle?.vehicle_id;
+                form.vehicle_type_id = active_vehicle?.vehicle_type_id;
+                form.vehicle_mode_id = active_vehicle?.vehicle_mode_id;
+            }
 
             if (form.manifest_prefix && form.manifest_number) {
                 form.manifest_number = `${form.manifest_prefix}${form.manifest_number}`;
@@ -902,18 +932,21 @@ export default {
 
                 let arr = res.data.data;
 
-                this.vehicle = arr.map((item, idx) => ({
-                    origin_vehicle: item?.name_origin_tlc || "",
-                    destination_vehicle: item?.name_destination_tlc || "",
-                    origin_vehicle_tlc: item?.origin_tlc || "",
-                    destination_vehicle_tlc: item?.destination_tlc || "",
-                    vehicle_id: item?.vehicle_name || "",
-                    pic_employee_id: item?.pic_employee_id || "",
-                    flight_number: item?.flight_number || "",
-                    flight_schedule: item?.etd || "",
-                    etd_vehicle: item?.etd || "",
-                    eta_vehicle: item?.eta || "",
-                    is_active: item?.status === 'ACTIVE'
+                this.vehicle = arr.map(item => ({
+                    key: item.manifest_vehicle_log_id,
+                    state: {
+                        origin_vehicle: item?.name_origin_tlc || "",
+                        destination_vehicle: item?.name_destination_tlc || "",
+                        origin_vehicle_tlc: item?.origin_tlc || "",
+                        destination_vehicle_tlc: item?.destination_tlc || "",
+                        vehicle_id: item?.vehicle_name || "",
+                        pic_employee_id: item?.pic_employee_id || "",
+                        flight_number: item?.flight_number || "",
+                        flight_schedule: item?.etd || "",
+                        etd_vehicle: item?.etd || "",
+                        eta_vehicle: item?.eta || "",
+                        is_active: item?.status === 'ACTIVE'
+                    }
                 }));
 
                 this.vehicle_form = arr.map((item, idx) => ({
@@ -1141,31 +1174,41 @@ export default {
             this.dialogCreateVehicleManifest = false;
         },
         updateVehicleValue(form) {
+            let form_id =  Date.now() + Math.random();
+            
+            if (this.selected_manifest_vehicle === '') this.selected_manifest_vehicle = form_id;
+
             let created_vehicle = {
-                origin_vehicle: form.origin_vehicle?.label || form.origin_vehicle?.name || "",
-                destination_vehicle: form.destination_vehicle?.label || form.destination_vehicle?.name || "",
-                origin_vehicle_tlc: form.origin_vehicle?.value || form.origin_vehicle?.iata || "",
-                destination_vehicle_tlc: form.destination_vehicle?.value || form.destination_vehicle?.iata || "",
-                vehicle_id: form.vehicle_id?.vehicle_name,
-                pic_employee_id: form.pic_employee_id?.employee_name,
-                flight_number: form.flight_number,
-                flight_schedule: form.flight_schedule,
-                etd_vehicle: form.etd_vehicle,
-                eta_vehicle: form.eta_vehicle,
-                is_active: this.vehicle.length === 0
+                key: form_id,
+                state: {
+                    origin_vehicle: form.origin_vehicle?.label || form.origin_vehicle?.name || "",
+                    destination_vehicle: form.destination_vehicle?.label || form.destination_vehicle?.name || "",
+                    origin_vehicle_tlc: form.origin_vehicle?.value || form.origin_vehicle?.iata || "",
+                    destination_vehicle_tlc: form.destination_vehicle?.value || form.destination_vehicle?.iata || "",
+                    vehicle_id: form.vehicle_id?.vehicle_name,
+                    pic_employee_id: form.pic_employee_id?.employee_name,
+                    flight_number: form.flight_number,
+                    flight_schedule: form.flight_schedule,
+                    etd_vehicle: form.etd_vehicle,
+                    eta_vehicle: form.eta_vehicle,
+                    is_active: this.vehicle.length === 0
+                }
             };
 
             let vehicle_form = {
-                vehicle_id: form?.vehicle_id?.vehicle_id || "",
-                vehicle_type_id: form?.vehicle_id?.vehicle_type_id || "",
-                employee_driver_id: form?.pic_employee_id?.employee_id || "",
-                flight_number: form?.flight_number || "",
-                flight_schedule: form?.flight_schedule || "",
-                etd: form?.etd_vehicle || "",
-                eta: form?.eta_vehicle || "",
-                origin_branch_code: form?.origin_vehicle?.value || form.origin_vehicle?.iata || "",
-                destination_branch_code: form?.destination_vehicle?.value || form.destination_vehicle?.iata || "",
-                is_active: this.vehicle.length === 0
+                key: form_id,
+                state: {
+                    vehicle_id: form?.vehicle_id?.vehicle_id || "",
+                    vehicle_type_id: form?.vehicle_id?.vehicle_type_id || "",
+                    employee_driver_id: form?.pic_employee_id?.employee_id || "",
+                    flight_number: form?.flight_number || "",
+                    flight_schedule: form?.flight_schedule || "",
+                    etd: form?.etd_vehicle || "",
+                    eta: form?.eta_vehicle || "",
+                    origin_branch_code: form?.origin_vehicle?.value || form.origin_vehicle?.iata || "",
+                    destination_branch_code: form?.destination_vehicle?.value || form.destination_vehicle?.iata || "",
+                    is_active: this.vehicle.length === 0
+                }
             };
 
             this.vehicle.push(created_vehicle);
@@ -1177,6 +1220,27 @@ export default {
         closeDialogManageVehicleManifest() {
             this.dialogManageVehicleManifest = false;
             this.getManifestVehicle();
+        },
+        chooseRow(newKey, done) {
+            this.selected_manifest_vehicle = newKey;
+            this.vehicle = this.vehicle.map(item => ({
+                ...item,
+                state: {
+                    ...item.state,
+                    is_active: item.key === newKey
+                }
+            }));
+            this.vehicle_form = this.vehicle_form.map(item => ({
+                ...item,
+                state: {
+                    ...item.state,
+                    is_active: item.key === newKey
+                }
+            }));
+        },
+        removeRow(row_id) {
+            this.vehicle = this.vehicle.filter(item => item.key !== row_id);
+            this.vehicle_form = this.vehicle_form.filter(item => item.key !== row_id);
         },
     },
     mounted() {
