@@ -82,7 +82,8 @@
 
                     <vs-row v-if="vehicle.length > 0">
                         <vs-row justify="space-between" v-if="Object.keys(edit_data).length > 0">
-                            <h3 class="title">Active Vehicle</h3>
+                            <h3 v-if="!is_edit" class="title">Active Vehicle</h3>
+                            <h3 v-else class="title">List Vehicle</h3>
                             <vs-button
                                 shadow
                                 :active="false"
@@ -91,18 +92,28 @@
                                 <i class='bx bx-cog'></i> Manage
                             </vs-button>
                         </vs-row>
-                        <vs-row
-                            v-for="(item, index) in vehicle"
-                            :key="index"
-                        >
-                            <vs-col w="12" v-if="item.is_active">
-                                <vehicle-card 
-                                    :data="item" 
-                                    :isActive="item.is_active"
-                                />
-                            </vs-col>
-                        </vs-row>
-                        
+                        <template v-if="!is_edit">
+                            <radio
+                                :name="'manifest_vehicle'"
+                                :value-data="vehicle"
+                                :selected-value="listenSelectedManifestVehicle"
+                                :isRemoveButton="false"
+                                @updateValue="chooseRow"
+                            />
+                        </template>
+                        <template v-else>
+                            <vs-row
+                                v-for="(item, index) in vehicle"
+                                :key="index"
+                            >
+                                <vs-col w="12" v-if="item.is_active">
+                                    <vehicle-card 
+                                        :data="item" 
+                                        :isActive="item.is_active"
+                                    />
+                                </vs-col>
+                            </vs-row>
+                        </template>
                     </vs-row>
                     <vs-row v-else>
                         <img src="@/assets/svg/defaultVehicle.svg" alt="Core JNE Default Vehicle" style="width: 100%; margin: 20px 0;"/>
@@ -445,7 +456,7 @@ export default {
             }
 
             if (!this.is_edit) {
-                formWithoutId.vehicle = this.vehicle_form?.map(item => ({
+                formWithoutId.vehicle = this.vehicle_form?.map(item => item.state)?.map(item => ({
                     vehicle_id: item.vehicle_id,
                     tlc_origin: item.tlc_origin,
                     tlc_destination: item.tlc_destination,
@@ -458,7 +469,7 @@ export default {
                 }));
             }
             formWithoutId.is_active = formWithoutId.is_active === true ? "1" : "0";
-            formWithoutId.schedule_id = this.vehicle[0]?.shipment_schedule_id || null; // TODO: CONFIRM AGAIN
+            formWithoutId.schedule_id = this.vehicle.find(item => item.state.is_active)?.state?.shipment_schedule_id || null; // TODO: CONFIRM AGAIN
 
             this.form = formWithoutId;
 
@@ -532,68 +543,109 @@ export default {
         },
         updateSelected(val, checkedItem) {
             // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING CHECKBOX
+            if (val.shipment_schedule_id === this.selected_manifest_vehicle) this.selected_manifest_vehicle = '';
+
+            if (this.selected_manifest_vehicle === '') this.selected_manifest_vehicle = checkedItem?.[0]?.shipment_schedule_id;
+
             this.vehicle = checkedItem.map((item, idx) => ({
-                shipment_schedule_id: item?.shipment_schedule_id,
-                origin_vehicle: item?.origin_name || "",
-                destination_vehicle: item?.destination_name || "",
-                origin_vehicle_tlc: item?.origin_identifier || "",
-                destination_vehicle_tlc: item?.destination_identifier || "",
-                vehicle_id: item?.vehicle_name || "",
-                pic_employee_id: "",
-                flight_number: item?.shipment_number || "",
-                flight_schedule: item?.etd || "",
-                flight_schedule_timezone: item?.etd_timezone || "",
-                etd_vehicle: item?.etd || "",
-                etd_vehicle_timezone: item?.etd_timezone || "",
-                eta_vehicle: item?.eta || "",
-                eta_vehicle_timezone: item?.eta_timezone || "",
-                is_active: idx === 0
+                key: item?.shipment_schedule_id,
+                state: {
+                    shipment_schedule_id: item?.shipment_schedule_id,
+                    origin_vehicle: item?.origin_name || "",
+                    destination_vehicle: item?.destination_name || "",
+                    origin_vehicle_tlc: item?.origin_identifier || "",
+                    destination_vehicle_tlc: item?.destination_identifier || "",
+                    vehicle_id: item?.vehicle_name || "",
+                    pic_employee_id: "",
+                    flight_number: item?.shipment_number || "",
+                    flight_schedule: item?.etd || "",
+                    flight_schedule_timezone: item?.etd_timezone || "",
+                    etd_vehicle: item?.etd || "",
+                    etd_vehicle_timezone: item?.etd_timezone || "",
+                    eta_vehicle: item?.eta || "",
+                    eta_vehicle_timezone: item?.eta_timezone || "",
+                    is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
+                }
             }));
 
             this.vehicle_form = checkedItem.map((item, idx) => ({
-                shipment_schedule_id: item?.shipment_schedule_id,
-                tlc_origin: item?.origin_identifier || "",
-                tlc_destination: item?.destination_identifier || "",
-                vehicle_id: item?.vehicle_id || "",
-                flight_number: item?.shipment_number || "",
-                etd: item?.etd || "",
-                etd_timezone: item?.etd_timezone || "",
-                eta: item?.eta || "",
-                eta_timezone: item?.eta_timezone || "",
-                is_active: idx === 0
+                key: item?.shipment_schedule_id,
+                state: {
+                    shipment_schedule_id: item?.shipment_schedule_id,
+                    tlc_origin: item?.origin_identifier || "",
+                    tlc_destination: item?.destination_identifier || "",
+                    vehicle_id: item?.vehicle_id || "",
+                    flight_number: item?.shipment_number || "",
+                    etd: item?.etd || "",
+                    etd_timezone: item?.etd_timezone || "",
+                    eta: item?.eta || "",
+                    eta_timezone: item?.eta_timezone || "",
+                    is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
+                }
             }));
+
+            if (checkedItem.length === 0) this.selected_manifest_vehicle = '';
         },
         onRowClickCallback(event, val, checkedItem) {
             // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING ROW
+            if (val.shipment_schedule_id === this.selected_manifest_vehicle) this.selected_manifest_vehicle = '';
+
+            if (this.selected_manifest_vehicle === '') this.selected_manifest_vehicle = checkedItem?.[0]?.shipment_schedule_id;
+
             this.vehicle = checkedItem.map((item, idx) => ({
-                shipment_schedule_id: item?.shipment_schedule_id,
-                origin_vehicle: item?.origin_name || "",
-                destination_vehicle: item?.destination_name || "",
-                origin_vehicle_tlc: item?.origin_identifier || "",
-                destination_vehicle_tlc: item?.destination_identifier || "",
-                vehicle_id: item?.vehicle_name || "",
-                pic_employee_id: "",
-                flight_number: item?.shipment_number || "",
-                flight_schedule: item?.etd || "",
-                flight_schedule_timezone: item?.etd_timezone || "",
-                etd_vehicle: item?.etd || "",
-                etd_vehicle_timezone: item?.etd_timezone || "",
-                eta_vehicle: item?.eta || "",
-                eta_vehicle_timezone: item?.eta_timezone || "",
-                is_active: idx === 0
+                key: item?.shipment_schedule_id,
+                state: {
+                    shipment_schedule_id: item?.shipment_schedule_id,
+                    origin_vehicle: item?.origin_name || "",
+                    destination_vehicle: item?.destination_name || "",
+                    origin_vehicle_tlc: item?.origin_identifier || "",
+                    destination_vehicle_tlc: item?.destination_identifier || "",
+                    vehicle_id: item?.vehicle_name || "",
+                    pic_employee_id: "",
+                    flight_number: item?.shipment_number || "",
+                    flight_schedule: item?.etd || "",
+                    flight_schedule_timezone: item?.etd_timezone || "",
+                    etd_vehicle: item?.etd || "",
+                    etd_vehicle_timezone: item?.etd_timezone || "",
+                    eta_vehicle: item?.eta || "",
+                    eta_vehicle_timezone: item?.eta_timezone || "",
+                    is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
+                }
             }));
 
             this.vehicle_form = checkedItem.map((item, idx) => ({
-                shipment_schedule_id: item?.shipment_schedule_id,
-                tlc_origin: item?.origin_identifier || "",
-                tlc_destination: item?.destination_identifier || "",
-                vehicle_id: item?.vehicle_id || "",
-                flight_number: item?.shipment_number || "",
-                etd: item?.etd || "",
-                etd_timezone: item?.etd_timezone || "",
-                eta: item?.eta || "",
-                eta_timezone: item?.eta_timezone || "",
-                is_active: idx === 0
+                key: item?.shipment_schedule_id,
+                state: {
+                    shipment_schedule_id: item?.shipment_schedule_id,
+                    tlc_origin: item?.origin_identifier || "",
+                    tlc_destination: item?.destination_identifier || "",
+                    vehicle_id: item?.vehicle_id || "",
+                    flight_number: item?.shipment_number || "",
+                    etd: item?.etd || "",
+                    etd_timezone: item?.etd_timezone || "",
+                    eta: item?.eta || "",
+                    eta_timezone: item?.eta_timezone || "",
+                    is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
+                }
+            }));
+
+            if (checkedItem.length === 0) this.selected_manifest_vehicle = '';
+        },
+        chooseRow(newKey, done) {
+            this.selected_manifest_vehicle = newKey;
+            this.vehicle = this.vehicle.map(item => ({
+                ...item,
+                state: {
+                    ...item.state,
+                    is_active: item.key === newKey
+                }
+            }));
+            this.vehicle_form = this.vehicle_form.map(item => ({
+                ...item,
+                state: {
+                    ...item.state,
+                    is_active: item.key === newKey
+                }
             }));
         },
     },

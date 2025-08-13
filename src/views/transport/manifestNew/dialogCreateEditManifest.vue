@@ -96,7 +96,7 @@
                                 </vs-row>
                             </vs-col>
                         </vs-row>
-                        <template v-if="(!is_sm_edit)">
+                        <template v-if="!is_sm_edit">
                             <radio
                                 :name="'manifest_vehicle'"
                                 :value-data="vehicle"
