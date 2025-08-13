@@ -722,7 +722,7 @@ export default {
             if (!this.is_sm_edit) {
                 form.vehicles = this.vehicle_form.map(item => item.state);
 
-                let active_vehicle = this.vehicle_form.find(item => item.state.is_active);
+                let active_vehicle = this.vehicle_form.find(item => item.state.is_active)?.state;
                 form.vehicle_id = active_vehicle?.vehicle_id;
                 form.vehicle_type_id = active_vehicle?.vehicle_type_id;
                 form.vehicle_mode_id = active_vehicle?.vehicle_mode_id;
@@ -759,6 +759,7 @@ export default {
         },
         handleClearForm() {
             this.$refs.formSuratMuatanController.handleClearForm();
+            this.selected_manifest_vehicle = "";
             this.vehicle_type_id = "";
             this.node_id_origin = "";
             this.editData = {};
@@ -932,6 +933,8 @@ export default {
 
                 let arr = res.data.data;
 
+                if (this.selected_manifest_vehicle === '') this.selected_manifest_vehicle = arr.find(item => item.status === 'ACTIVE')?.manifest_vehicle_log_id;
+
                 this.vehicle = arr.map(item => ({
                     key: item.manifest_vehicle_log_id,
                     state: {
@@ -950,16 +953,19 @@ export default {
                 }));
 
                 this.vehicle_form = arr.map((item, idx) => ({
-                    vehicle_id: item?.vehicle_id || "",
-                    vehicle_type_id: item?.vehicle_type_id || "",
-                    employee_driver_id: "",
-                    origin_branch_code: item?.origin_tlc || "",
-                    destination_branch_code: item?.destination_tlc || "",
-                    flight_number: item?.flight_number || "",
-                    flight_schedule: item?.etd || "",
-                    etd: item?.etd || "",
-                    eta: item?.eta || "",
-                    is_active: item?.status === 'ACTIVE'
+                    key: item.manifest_vehicle_log_id,
+                    state: {
+                        vehicle_id: item?.vehicle_id || "",
+                        vehicle_type_id: item?.vehicle_type_id || "",
+                        employee_driver_id: "",
+                        origin_branch_code: item?.origin_tlc || "",
+                        destination_branch_code: item?.destination_tlc || "",
+                        flight_number: item?.flight_number || "",
+                        flight_schedule: item?.etd || "",
+                        etd: item?.etd || "",
+                        eta: item?.eta || "",
+                        is_active: item?.status === 'ACTIVE'
+                    }
                 }));
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
