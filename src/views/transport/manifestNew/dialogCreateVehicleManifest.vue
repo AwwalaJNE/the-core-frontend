@@ -171,7 +171,11 @@ export default {
             this.cancel();
         },
         handleSubmit(){
-            this.$refs.formSuratMuatanVehicleController.handleSubmit();
+            if (this.hasFlightNumber) {
+               this.$refs.formSuratMuatanVehicleController.handleSubmit(); 
+            } else {
+                this.processFlightNumber();
+            }
         },
         inputFocus(info) {
             if (info?.key) {

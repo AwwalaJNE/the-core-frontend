@@ -76,7 +76,7 @@
             </vs-col>
         </template>
 
-        <template v-slot:footer v-if="navActive === 'k-NEW' && hasFlightNumber">
+        <template v-slot:footer v-if="navActive === 'k-NEW'">
             <vs-row justify="flex-end" style="margin-top: 1pc;">
                 <vs-col w="3">
                     <vs-button
@@ -224,7 +224,11 @@ export default {
             this.createManifestVehicle()
         },
         handleSubmit(){
-            this.$refs.formSuratMuatanVehicleController.handleSubmit();
+            if (this.hasFlightNumber) {
+               this.$refs.formSuratMuatanVehicleController.handleSubmit(); 
+            } else {
+                this.processFlightNumber();
+            }
         },
         async getVehicle(query) {
             this.loadingVehicleId = true;

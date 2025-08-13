@@ -119,7 +119,7 @@
                         <i class='bx bx-plus'></i> Vehicle
                     </vs-button>
 
-                    <div v-if="!isDisabled && !manifest_number" style="justify-content: flex-end; display: flex;">
+                    <div v-if="!isDisabled && !is_sm_edit" style="justify-content: flex-end; display: flex;">
                         <div class="container-clear-item" @click="handleClearForm(); resetForm()">
                             Reset Inputs
                         </div>
