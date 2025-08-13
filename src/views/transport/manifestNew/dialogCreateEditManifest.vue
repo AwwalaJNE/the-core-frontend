@@ -478,8 +478,8 @@ export default {
                         data.bag_number = data.item_number;
                         data.type = data.item_type;
                         data.bag_weight = data.total_weight;
-                        data.cost_weight = data.cost_weight || '0';
-                        data.actual_weight = data.bag?.bag_actual_weight || '0';
+                        data.cost_weight = data.bag?.cost_weight || '0';
+                        data.actual_weight = data.bag?.actual_weight || '0';
                         data.total_inner = data.bag?.total_bag || '0';
                         data.total_connote_of_bag = data.bag?.total_koli || '0';
                         data.destination_name = (data.bag?.destination?.node_code || '') + ' - ' + (data.bag?.destination?.node_name || '');
