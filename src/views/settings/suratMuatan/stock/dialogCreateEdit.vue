@@ -66,7 +66,7 @@
                         </div>
                     </template>
 
-                    <div class="parent-container">
+                    <div v-if="!is_edit" class="parent-container">
                         <div class="container-clear-item" @click="handleClearAll">
                             Reset Inputs
                         </div>
@@ -395,6 +395,7 @@ export default {
             this.edit_data = val;
             this.id = val.id;
 
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER_isDisabled", true);
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN_ValueData", val.node_id_origin.toString());
             this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NODE_ID_DESTINATION_ValueData", val.node_id_destination.toString());
 
@@ -469,7 +470,7 @@ export default {
                 }));
             }
             formWithoutId.is_active = formWithoutId.is_active === true ? "1" : "0";
-            formWithoutId.schedule_id = this.vehicle.find(item => item.state.is_active)?.state?.shipment_schedule_id || null; // TODO: CONFIRM AGAIN
+            formWithoutId.schedule_id = this.vehicle.find(item => item?.state?.is_active)?.state?.shipment_schedule_id || this.edit_data?.schedule_id || null; // TODO: CONFIRM AGAIN
 
             this.form = formWithoutId;
 
@@ -507,6 +508,7 @@ export default {
             this.$emit("refresh");
         },
         cancel() {
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER_isDisabled", false);
             this.vehicle = {};
             this.vehicle_form = {};
             this.dateRange = [];

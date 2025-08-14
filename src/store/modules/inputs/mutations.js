@@ -4659,6 +4659,9 @@ export default {
   SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER_ValueData(state, payload) {
     state.surat_muatan_stock.manifest_number.valueData = payload
   },
+  SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER_isDisabled(state, payload) {
+    state.surat_muatan_stock.manifest_number.isDisabled = payload
+  },
 
 
   SET_SURAT_MUATAN_STOCK_SCHEDULE_ID(state, payload) {

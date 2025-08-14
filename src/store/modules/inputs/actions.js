@@ -4256,6 +4256,9 @@ export default {
   SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER_ValueData', payload)
   },
+  SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER_isDisabled({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER_isDisabled', payload)
+  },
 
 
   SET_SURAT_MUATAN_STOCK_SCHEDULE_ID({ commit }, payload) {
