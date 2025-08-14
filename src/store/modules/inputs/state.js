@@ -2668,6 +2668,7 @@ export default {
       typeInput: "text",
       typeData: "String",
       valueData: null,
+      
       value: '',
       width: '4'
     },
@@ -2786,7 +2787,8 @@ export default {
       typeData: "String",
       arrData: [],
       valueData: null,
-      value: ''
+      value: '',
+      isDisabled: false
     },
     vehicle_id: {
       label: "Vehicle",
