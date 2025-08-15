@@ -465,7 +465,10 @@ const Master = {
             }
         },
         convertMinutesToTimeFormat(totalMinutes) {
-            totalMinutes = Math.abs(totalMinutes);
+            if (totalMinutes == null || isNaN(totalMinutes)) return "-";
+            // pembulatan ke atas
+            totalMinutes = Math.ceil(Math.abs(Number(totalMinutes)));
+            
             const days = Math.floor(totalMinutes / 1440);
             const hours = Math.floor((totalMinutes % 1440) / 60);
             const minutes = totalMinutes % 60;

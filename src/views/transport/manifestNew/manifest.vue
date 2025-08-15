@@ -127,7 +127,7 @@ export default {
           width: "xxxs",
         },
         {
-          label: "Tipe Kiriman",
+          label: "Moda Transportasi",
           key: "jenis_kiriman",
           isTransitTag: "isTransitTag",
           width: "xxxs",
