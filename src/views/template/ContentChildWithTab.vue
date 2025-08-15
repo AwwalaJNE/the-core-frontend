@@ -77,7 +77,11 @@ export default {
             this.childrenData = (parentRoute.children || [])
                 .filter(child => {
                     const perm = child.meta?.permission;
-                    return perm === '' || (perm && this.listenPermissions?.core?.includes(perm));
+                    return (
+                        perm === '' ||
+                        (typeof perm === 'string' && this.listenPermissions?.core?.includes(perm)) ||
+                        (Array.isArray(perm) && perm.some(p => this.listenPermissions?.core?.includes(p)))
+                    );
                 })
                 .map(child => {
                     const childPath = child.path.replace(/^\/?/, "");
