@@ -500,7 +500,7 @@ export default {
                         data.cost_weight = data.bag?.cost_weight || '0';
                         data.actual_weight = data.bag?.actual_weight || '0';
                         data.total_inner = data.bag?.total_bag || '0';
-                        data.total_connote_of_bag = data.bag?.total_koli || '0';
+                        data.total_connote_of_bag = data.total_connote || '0';
                         data.destination_name = (data.bag?.destination?.node_code || '') + ' - ' + (data.bag?.destination?.node_name || '');
                         data.status_trip = (data?.bag?.status_trip || '') + ' ' + (data?.bag?.current_node.node_name || '') + " (" + (data?.bag?.current_node?.node_code) + ")";
                         data.received_by = data?.bag?.received_by_user || '';
