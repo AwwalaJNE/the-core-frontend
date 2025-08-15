@@ -50,7 +50,7 @@
             >
               <vs-sidebar-item
                 :id="item.label.trim()"
-                :class="{ active: activeItem === item.url }"
+                :class="{ active: activeItem === item.url || activeItem.startsWith(item.url) }"
               >
                 <template #icon>
                   <i :class="`bx ${item.icon !== null ? item.icon : ''}`" />
