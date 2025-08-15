@@ -451,7 +451,7 @@ export default {
             }
         },
         back(){
-            this.$router.push('/inbound/prealert')
+            this.$router.back();
             this.setRoutePageHistory(this.$route.meta, false);
         },
         handlerClearForm() {
