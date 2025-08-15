@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="position: relative; width: 100%;">
         <vs-row justify="space-between">
             <vs-col xs="6" sm="6" lg="6">
                 <div class="titlePage">

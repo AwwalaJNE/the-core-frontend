@@ -9,7 +9,6 @@
         </button>
 
         <div class="tab-container" ref="tabContainer" @scroll="updateScrollButtons">
-            <!-- TODO: ADD HIDE WHILE PERMISSION NOT EXISTS -->
             <router-link
                 v-for="(item, key) in listenTab"
                 :key="key"
