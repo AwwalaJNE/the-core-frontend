@@ -18,11 +18,14 @@
 </template>
 
 <script>
+import master from "@/mixins/master";
+
 import Breadcrumb from "@/components/breadcrumb/index";
 import TabMenu from "@/components/tab/tabMenu";
 
 export default {
     name: "content-child-with-tab",
+    mixins: [master],
     components: { 
         "breadcrumb": Breadcrumb, 
         "tab-menu": TabMenu 
@@ -71,20 +74,27 @@ export default {
             }
 
             const parentPath = parentRoute.path.replace(/^\/?/, "");
-            this.childrenData = (parentRoute.children || []).map(child => {
-                const childPath = child.path.replace(/^\/?/, "");
-                return {
-                    label: child.name,
-                    url: `/${parentPath}/${childPath}`.replace(/\/+/g, "/"),
-                    permission: child.meta.permission
-                };
-            });
+            this.childrenData = (parentRoute.children || [])
+                .filter(child => {
+                    const perm = child.meta?.permission;
+                    return perm === '' || (perm && this.listenPermissions?.core?.includes(perm));
+                })
+                .map(child => {
+                    const childPath = child.path.replace(/^\/?/, "");
+                    return {
+                        label: child.name,
+                        url: `/${parentPath}/${childPath}`.replace(/\/+/g, "/"),
+                        permission: child.meta.permission
+                    };
+                });
 
-            // NOTES: Redirect otomatis ke child pertama jika route saat ini parent
+
+            // Redirect otomatis ke child pertama jika route saat ini parent
             if (this.childrenData.length && this.$route.path === `/${parentPath}`) {
                 this.$router.replace(this.childrenData[0].url);
             }
 
+            // Update title sesuai child aktif
             const activeChild = this.childrenData.find(c => c.url === this.$route.path);
             this.title = activeChild ? activeChild.label : (this.childrenData[0]?.label || '');
         },
