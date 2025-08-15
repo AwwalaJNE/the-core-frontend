@@ -9,14 +9,16 @@
         </button>
 
         <div class="tab-container" ref="tabContainer" @scroll="updateScrollButtons">
-            <div
+            <!-- TODO: ADD HIDE WHILE PERMISSION NOT EXISTS -->
+            <router-link
                 v-for="(item, key) in listenTab"
                 :key="key"
+                :to="item.url"
                 :class="['tab', { active: isActive === item.url }]"
-                @click="handleSelect(item.url)"
+                @click.native="handleSelect(item.url)"
             >
                 {{ item.label }}
-            </div>
+            </router-link>
         </div>
         
         <button
@@ -47,6 +49,11 @@ export default {
             canScrollRight: false,
         };
     },
+    watch: {
+        '$route.path'() {
+            this.updateActiveTabFromRoute();
+        }
+    },
     methods: {
         handleSelect(key) {
             this.isActive = key;
@@ -59,11 +66,14 @@ export default {
         scrollTabs(offset) {
             this.$refs.tabContainer.scrollBy({ left: offset, behavior: "smooth" });
         },
+        updateActiveTabFromRoute() {
+            const currentPath = this.$route.path;
+            const match = this.listenTab.find(tab => tab.url === currentPath);
+            this.isActive = match ? match.url : "";
+        }
     },
     mounted() {
-        if (this.arrData.length) {
-            this.isActive = this.arrData[0].url;
-        }
+        this.updateActiveTabFromRoute();
         this.updateScrollButtons();
         window.addEventListener("resize", this.updateScrollButtons);
     },
