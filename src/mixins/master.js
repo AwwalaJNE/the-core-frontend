@@ -388,7 +388,7 @@ const Master = {
                             this.$router.push('/trace-bag')
                             break;
                         case "v":
-                            this.$router.push('/inbound/prealert/scan')
+                            this.$router.push('/incoming/pre-alert')
                             break;
                         case "b":
                             this.$router.push('/inventory/bagging')

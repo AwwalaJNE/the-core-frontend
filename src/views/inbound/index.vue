@@ -1,27 +1,16 @@
 <template>
     <div>
-        <vs-row justify="space-between">
-            <vs-col xs="6" sm="4" lg="4">
-                <div class="titlePage">
-                    <breadcrumb />
-                    <h2>{{title + this.getNodeTypeLogin()}}</h2>
-                </div>
-            </vs-col>
-            <vs-col xs="6" sm="3" lg="3">
-                <div style="position:relative;display:flex;justify-content: flex-end;">
-                    <div style="width: 100px;padding-right: 5px;">
-                        <vs-button
-                        flat
-                        square
-                        block
-                        :active="true"
-                        @click="openDialog"
-                        > RECEIVING
-                        </vs-button>
-                    </div>
-                </div>
-            </vs-col>
-        </vs-row>
+        <div style="position: absolute; top: 0; right: 0; width: 100px;">
+            <vs-button 
+                flat 
+                square 
+                block 
+                :active="true" 
+                @click="openDialog"
+            >
+                RECEIVING
+            </vs-button>
+        </div>
 
         <section class="nodes">
             <div class="box view">

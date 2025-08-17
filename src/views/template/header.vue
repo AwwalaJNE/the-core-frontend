@@ -1,7 +1,7 @@
 <template>
     <header class="header shadow">
         <vs-row justify="space-between">
-            <vs-col xs="12" sm="12" lg="2">
+            <vs-col xs="2" sm="2" lg="2">
                 <vs-row>
                     <vs-col xs="3" sm="3" lg="3">
                         <vs-button @click="clickProps" size="l" :active="true" border icon>
@@ -13,7 +13,7 @@
                     </vs-col>
                 </vs-row>
             </vs-col>
-            <vs-col xs="12" sm="12" lg="8">
+            <vs-col xs="8" sm="8" lg="8">
                 <vs-row justify="flex-end">
                     <vs-col xs="10" sm="10" lg="4">
                         <template v-if="datanode.length > 0">
