@@ -89,7 +89,7 @@ export default {
     overflow-x: auto;
     scroll-behavior: smooth;
     width: max-content;
-    padding: 4px 10px;
+    padding: 4px;
     scrollbar-width: none; /* Firefox */
     background-color: white;
     border-radius: 9999px;
@@ -103,7 +103,7 @@ export default {
     flex-shrink: 0;
     padding: 6px 14px;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 800;
     color: #1a1a1a;
     transition: all 0.2s ease-in-out;
     white-space: nowrap;
