@@ -5,7 +5,7 @@
             class="scroll-btn left"
             @click="scrollTabs(-150)"
         >
-            ‹
+            <i class='bx bx-chevrons-left' ></i>
         </button>
 
         <div class="tab-container" ref="tabContainer" @scroll="updateScrollButtons">
@@ -25,7 +25,7 @@
             class="scroll-btn right"
             @click="scrollTabs(150)"
         >
-            ›
+            <i class='bx bx-chevrons-right'></i>
         </button>
     </vs-row>
 </template>
@@ -88,10 +88,13 @@ export default {
     gap: 1rem;
     overflow-x: auto;
     scroll-behavior: smooth;
-    flex: 1;
-    padding: 4px;
-    scrollbar-width: none; // Firefox
+    width: max-content;
+    padding: 4px 10px;
+    scrollbar-width: none; /* Firefox */
+    background-color: white;
+    border-radius: 9999px;
 }
+
 .tab-container::-webkit-scrollbar {
     display: none; // Chrome/Safari
 }
@@ -99,35 +102,35 @@ export default {
 .tab {
     flex-shrink: 0;
     padding: 6px 14px;
-    border-radius: 9999px;
     font-size: 14px;
     font-weight: 500;
-    background-color: white;
     color: #1a1a1a;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
     transition: all 0.2s ease-in-out;
     white-space: nowrap;
 
     &:hover {
         cursor: pointer;
-        box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+        border-radius: 9999px;
+        background-color: rgba(0, 0, 0, 0.05);
     }
 
     &.active {
+        border-radius: 9999px;
         background-color: #F3F7FF;
         color: #195BFF;
-        box-shadow: 0 0 6px rgba(0, 123, 255, 0.5);
-
-        &:hover {
-            box-shadow: 0 0 8px rgba(0, 123, 255, 0.6);
-        }
     }
 }
 
 .scroll-btn {
     position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     z-index: 1;
     width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: rgba(255, 255, 255, 0.95);
     border: none;
     font-size: 20px;
@@ -135,7 +138,6 @@ export default {
     border-radius: 999px;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
     transition: background 0.2s ease;
-    align-self: center;
 
     &:hover {
         background: white;
