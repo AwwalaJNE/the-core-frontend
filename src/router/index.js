@@ -1619,7 +1619,7 @@ const routes = [
             meta: {
               requiresAuth: true,
               breadCrumb: "Pre-Alert",
-              breadCrumbCode: "PRE_ALERT",
+              breadCrumbCode: "Pre Alert",
               resource_type: resourceLookup["RECEIVING"].resource_type,
               resource_code: resourceLookup["RECEIVING"].resource_code,
               resource_name: resourceLookup["RECEIVING"].resource_name,
@@ -1634,7 +1634,7 @@ const routes = [
             meta: {
               requiresAuth: true,
               breadCrumb: "Receiving Surat Muatan",
-              breadCrumbCode: "RECEIVING_SM",
+              breadCrumbCode: "SM",
               resource_type: resourceLookup["RECEIVING"].resource_type,
               resource_code: resourceLookup["RECEIVING"].resource_code,
               resource_name: resourceLookup["RECEIVING"].resource_name,
@@ -1649,7 +1649,7 @@ const routes = [
             meta: {
               requiresAuth: true,
               breadCrumb: "Receiving Surat Jalan",
-              breadCrumbCode: "RECEIVING_SJ",
+              breadCrumbCode: "SJ",
               resource_type: resourceLookup["RECEIVING"].resource_type,
               resource_code: resourceLookup["RECEIVING"].resource_code,
               resource_name: resourceLookup["RECEIVING"].resource_name,
@@ -1664,7 +1664,7 @@ const routes = [
             meta: {
               requiresAuth: true,
               breadCrumb: "Receiving Bag",
-              breadCrumbCode: "RECEIVING_BAG",
+              breadCrumbCode: "Bag",
               resource_type: resourceLookup["RECEIVING"].resource_type,
               resource_code: resourceLookup["RECEIVING"].resource_code,
               resource_name: resourceLookup["RECEIVING"].resource_name,
@@ -1679,7 +1679,7 @@ const routes = [
             meta: {
               requiresAuth: true,
               breadCrumb: "Receiving CONNOTE",
-              breadCrumbCode: "RECEIVING_CONNOTE",
+              breadCrumbCode: "Connote",
               resource_type: resourceLookup["RECEIVING"].resource_type,
               resource_code: resourceLookup["RECEIVING"].resource_code,
               resource_name: resourceLookup["RECEIVING"].resource_name,
@@ -1694,7 +1694,7 @@ const routes = [
             meta: {
               requiresAuth: true,
               breadCrumb: "RDO",
-              breadCrumbCode: "RECEIVING_RDO",
+              breadCrumbCode: "RDO",
               resource_type: resourceLookup["RECEIVING"].resource_type,
               resource_code: resourceLookup["RECEIVING"].resource_code,
               resource_name: resourceLookup["RECEIVING"].resource_name,
@@ -1709,7 +1709,7 @@ const routes = [
             meta: {
               requiresAuth: true,
               breadCrumb: "MTI",
-              breadCrumbCode: "RECEIVING_MTI",
+              breadCrumbCode: "MTI",
               resource_type: resourceLookup["RECEIVING"].resource_type,
               resource_code: resourceLookup["RECEIVING"].resource_code,
               resource_name: resourceLookup["RECEIVING"].resource_name,
@@ -1724,7 +1724,7 @@ const routes = [
             meta: {
               requiresAuth: true,
               breadCrumb: "RCVB",
-              breadCrumbCode: "RECEIVING_RCVB",
+              breadCrumbCode: "RCVB",
               resource_type: resourceLookup["RECEIVING"].resource_type,
               resource_code: resourceLookup["RECEIVING"].resource_code,
               resource_name: resourceLookup["RECEIVING"].resource_name,
