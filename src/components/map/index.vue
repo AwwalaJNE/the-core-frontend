@@ -180,13 +180,13 @@ export default {
         async getCoordinates(){
             let self = this;
             await axios.get(
-                `https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json?prox=${self.latitude}%2C${self.longitude}%2C250&mode=retrieveAddresses&maxresults=1&gen=9&apiKey=5TeU1RNyTobul0RE74e0Xw3wmqC3JZL7w1sZ87oRkEU&q=`
+                `https://api.geoapify.com/v1/geocode/reverse?lat=${self.latitude}&lon=${self.longitude}&apiKey=64a21693a8994b028d79d7ec832708be`
                 ).then(res => {
                     let result = res;
                     
                     let address_data =
-                        result["data"]["Response"]["View"].length > 0 ? result["data"]["Response"]["View"][0]["Result"][0]["Location"] : "";
-                    self.locationName = address_data.Address.Label;
+                        result["data"]["features"].length > 0 ? result["data"]["features"][0] : "";
+                    self.locationName = address_data.properties.name;
                 })
             .catch(error => console.log("error", error));
 
@@ -202,12 +202,13 @@ export default {
             self.latitude = marker.lat;
             self.longitude = marker.lng;
             self.locationName = selected.address.label;
+            // self.locationName = 'Berlin'
             self.center = marker;
 
             self.marker.setLatLng([marker.lat, marker.lng]);
             self.map.panTo([marker.lat, marker.lng], self.zoom);
 
-            self.emitThem()
+            // self.emitThem()
         },
         emitThem() {
             let dataMap = {

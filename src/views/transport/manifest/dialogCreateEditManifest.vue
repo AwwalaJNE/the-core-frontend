@@ -256,8 +256,19 @@ export default {
 
         if (Object.keys(this.listenDataItem).length > 0) {
           // if this.listenDataItem ada isinya
-
           this.initDataItem();
+          
+          setTimeout(() => {
+            const vehicleModes = this.$store.getters["getInputs"]["surat_muatan"]["manifest_method_id"]["arrData"];
+            if (vehicleModes && vehicleModes.length > 0) {
+                const selectedMode = vehicleModes.find(mode => mode.value === this.listenDataItem.manifest_method_id);
+                if (selectedMode && selectedMode.data && selectedMode.data.vehicle_prefix) {
+                    console.log("Setting initial prefix:", selectedMode.data.vehicle_prefix);
+                    this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX", selectedMode.data.vehicle_prefix);
+                    this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_value", selectedMode.data.vehicle_prefix);
+                }
+            }
+          }, 500);
         }
       }
     },
@@ -280,6 +291,18 @@ export default {
       }
       if (this.vehicle_type_id != null && this.vehicle_mode_id != "") {
         this.getDataVehicle();
+      }
+      
+      if (this.listenDataItem.manifest_number && this.listenDataItem.manifest_number.includes('-')) {
+          const parts = this.listenDataItem.manifest_number.split('-');
+          if (parts.length === 2) {
+              this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX", parts[0].trim());
+              this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER", parts[1].trim());
+          } else {
+              this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER", this.listenDataItem.manifest_number);
+          }
+      } else {
+          this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER", this.listenDataItem.manifest_number);
       }
 
       if (this.listenDataItem.hasOwnProperty("detail")) {
@@ -431,6 +454,10 @@ export default {
       // form["max_weight"] = 1
 
 
+      if (form.manifest_prefix && form.manifest_number) {
+          form.manifest_number = `${form.manifest_prefix}${form.manifest_number}`;
+      }
+
       form['auto_depart'] = form['auto_depart']
 
       this.form = form;
@@ -467,7 +494,7 @@ export default {
     async getDataVehicleMode() {
       await axios
         .get(
-          this.URL.vehicle_mode +
+          this.URL.vehicle_mode_list_v2 +
             `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
           this.Helper.header()
         )
@@ -777,6 +804,10 @@ export default {
         // setTimeout(function(){ }, 3000);
       }
       switch (type) {
+        case "manifest_number":
+          break;
+        case "manifest_prefix":
+          break;
         case "vehicle_type_id":
           if (info.hasOwnProperty("data")) {
             this.vehicle_type_id = info.data.vehicle_type_id || "";
@@ -816,6 +847,11 @@ export default {
           }
           if (info.hasOwnProperty("data")) {
             this.vehicle_mode_id = info.data.vehicle_mode_id || "";
+            
+            if (info.data.vehicle_prefix) {
+                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX", info.data.vehicle_prefix);
+                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_value", info.data.vehicle_prefix);
+            }
 
             let url =
               this.URL.node +

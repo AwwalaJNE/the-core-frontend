@@ -61,6 +61,7 @@ export default {
         bagStatus: String,
         bagIrreg: String,
         bagSource: String,
+        bagStatusInventory: String,
         isMasterbag: String,
         isArchive: Boolean,
     },
@@ -77,7 +78,7 @@ export default {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
                     this.pagination.page = 1
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter);
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter);
                 }
             }
         },
@@ -85,7 +86,7 @@ export default {
           if(val !== undefined) {
             this.isMasterbagFilter = val
             if(this.isMasterbagFilter !== old) {
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, val, this.isArchiveFilter);
+            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, val, this.isArchiveFilter, this.bagStatusInventoryFilter);
             }
           }
         },
@@ -93,7 +94,7 @@ export default {
           if(val !== undefined) {
             this.isArchiveFilter = val
             if(this.isArchiveFilter !== old) {
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, val);
+            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, val, this.bagStatusInventoryFilter);
             }
           }
         },
@@ -101,7 +102,7 @@ export default {
           if(val !== undefined) {
             this.bagFilter = val
             if(this.bagFilter !== old) {
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter);
+            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter);
             }
           }
         },
@@ -109,7 +110,7 @@ export default {
           if(val !== undefined) {
             this.bagOriginFilter = val
             if(this.bagOriginFilter !== old) {
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, val, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter);
+            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, val, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter);
             }
           }
         },
@@ -117,7 +118,7 @@ export default {
           if(val !== undefined) {
             this.routingFilter = val
             if(this.routingFilter !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, val, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, val, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter);
             }
           }
         },
@@ -125,7 +126,7 @@ export default {
           if(val !== undefined) {
             this.tipeBagFilter = val
             if(this.tipeBagFilter !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, val, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, val, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter);
             }
           }
         },
@@ -133,7 +134,7 @@ export default {
           if(val !== undefined) {
             this.filterDateBy = val
             if(this.filterDateBy !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, val, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, val, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter);
             }
           }
         },
@@ -141,7 +142,7 @@ export default {
           if(val !== undefined) {
             this.searchByBag = val
             if(this.searchByBag !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, val, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, val, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter);
             }
           }
         },
@@ -152,14 +153,14 @@ export default {
                     this.startDate = this.tempDate !== null ? this.tempDate[0] : '';
                     this.endDate = this.tempDate !== null ? this.tempDate[1] : '';
                 }
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter);
             }
         },
         bagStatus: function(val, old) {
           if(val !== undefined) {
             this.statusBagFilter = val
             if(this.statusBagFilter !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, val, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, val, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter);
             }
           }
         },
@@ -167,7 +168,7 @@ export default {
           if(val !== undefined) {
             this.statusBagIrreg = val
             if(this.statusBagIrreg !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, val, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, val, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter);
             }
           }
         },
@@ -175,7 +176,15 @@ export default {
           if(val !== undefined) {
             this.bagSourceFilter = val
             if(this.bagSourceFilter !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, val, this.isMasterbagFilter, this.isArchiveFilter);
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, val, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter);
+            }
+          }
+        },
+        bagStatusInventory: function(val, old) {
+          if(val !== undefined) {
+            this.bagStatusInventoryFilter = val
+            if(this.bagStatusInventoryFilter !== old) {
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, val);
             }
           }
         },
@@ -183,7 +192,52 @@ export default {
     data() {
         return {
             dataTable: [],
-            datacolumn: [
+            datacolumn: [],
+            loading: false,
+            dataItem: {},
+            tempSearch: this.query ? this.query : "",
+            isMasterbagFilter: this.isMasterbag ? this.isMasterbag : null,
+            isArchiveFilter: this.isArchive ? this.isArchive : null,
+            bagFilter: this.bagDestination ? this.bagDestination : "",
+            bagOriginFilter: this.bagOrigin ? this.bagOrigin : "",
+            routingFilter: this.bagRouting ? this.bagRouting : "",
+            tipeBagFilter: this.bagTipe ? this.bagTipe : "",
+            statusBagFilter: this.bagStatus ? this.bagStatus : "-",
+            statusBagIrreg: this.bagIrreg ? this.bagIrreg : "",
+            bagSourceFilter: this.bagSource ? this.bagSource : "",
+            bagStatusInventoryFilter: this.bagStatusInventory ? this.bagStatusInventory : "",
+            filterDateBy: this.searchDateBy ? this.searchDateBy : "",
+            searchByBag: this.searchBy ? this.searchBy : "",
+            dialogRole: false,
+            pagination: {
+                limit:20,
+                page_size: 1,
+                page: 1
+            },
+            tempDate:[],
+            startDate: "",
+            endDate: "",
+            dateRange: [],
+            selectedRow: [],
+            dialogTraceBag: false,
+            selectedBagNumber: "",
+            customActionList: [
+                {
+                    label:'Trace Bag',
+                    key:'trace_bag',
+                    attribute: 'primary',
+                },
+                {
+                    label:'Print',
+                    key:'print',
+                    attribute: 'primary',
+                }
+            ]
+        }
+    },
+    methods: {
+        setDatacolumn() {
+            this.datacolumn = [
                 {
                     label: "Bag #",
                     key: "bag_number",
@@ -210,7 +264,7 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "Scanned Date",
+                    label: "Open Bag Date",
                     key: "first_opened_bag",
                     width: "xs"
                 },
@@ -227,7 +281,8 @@ export default {
                 {
                     label: "Total Bag",
                     key: "total_bag",
-                    width: "xs"
+                    width: "xs",
+                    ...(this.isMasterbagFilter === "0" ? { hidden: true } : {})
                 },
                 {
                     label: "Total Connote",
@@ -315,51 +370,15 @@ export default {
                     label: "Status Irregularity",
                     key: "status_irregularity_description",
                     width: "xxxxs",
-                }
-            ],
-            loading: false,
-            dataItem: {},
-            tempSearch: this.query ? this.query : "",
-            isMasterbagFilter: this.isMasterbag ? this.isMasterbag : null,
-            isArchiveFilter: this.isArchive ? this.isArchive : null,
-            bagFilter: this.bagDestination ? this.bagDestination : "",
-            bagOriginFilter: this.bagOrigin ? this.bagOrigin : "",
-            routingFilter: this.bagRouting ? this.bagRouting : "",
-            tipeBagFilter: this.bagTipe ? this.bagTipe : "",
-            statusBagFilter: this.bagStatus ? this.bagStatus : "-",
-            statusBagIrreg: this.bagIrreg ? this.bagIrreg : "",
-            bagSourceFilter: this.bagSource ? this.bagSource : "",
-            filterDateBy: this.searchDateBy ? this.searchDateBy : "",
-            searchByBag: this.searchBy ? this.searchBy : "",
-            dialogRole: false,
-            pagination: {
-                limit:20,
-                page_size: 1,
-                page: 1
-            },
-            tempDate:[],
-            startDate: "",
-            endDate: "",
-            dateRange: [],
-            selectedRow: [],
-            dialogTraceBag: false,
-            selectedBagNumber: "",
-            customActionList: [
-                {
-                    label:'Trace Bag',
-                    key:'trace_bag',
-                    attribute: 'primary',
                 },
                 {
-                    label:'Print',
-                    key:'print',
-                    attribute: 'primary',
-                }
+                    label: "Status",
+                    key: "is_confirmed",
+                    width: "auto"
+                },
             ]
-        }
-    },
-    methods: {
-        async getTableData(limit,page,q, bagDestination, bagOrigin, bagRouting, bagTipe,  from, to, searchByBag, filterDateBy, bagStatus, bagIrreg, bagSource, isMasterbag, isArchive) {
+        },
+        async getTableData(limit,page,q, bagDestination, bagOrigin, bagRouting, bagTipe,  from, to, searchByBag, filterDateBy, bagStatus, bagIrreg, bagSource, isMasterbag, isArchive, bagStatusInventory) {
             this.loading = true
             let query = "";
             let bagDes = "";
@@ -371,6 +390,7 @@ export default {
             let bagStat = "";
             let bagIrregStatus = "";
             let bagSourceFilter = "";
+            let bagStatusInventoryFilter = "";
             let isMasterbagFilter = "";
             if(q !== undefined) {
                 query = q
@@ -405,10 +425,13 @@ export default {
             if(bagSource !== undefined && bagSource !== '-') {
                 bagSourceFilter = bagSource
             }
+            if(bagStatusInventory !== undefined && bagStatusInventory !== '-') {
+                bagStatusInventoryFilter = bagStatusInventory
+            }
             if(isMasterbag !== undefined && isMasterbag !== null) {
                 isMasterbagFilter = isMasterbag === "1" ? "1" : "0";
             }
-            let url = this.URL.bag_inventory + `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&origin_node=${bagOri}&routing=${bagRout}&tipe_bag=${bagTipee}&start_date=${startDate}&end_date=${endDate}&search_by=${searchByBag}&filter_date_by=${filterDateBy}&is_opened=${bagStat}&irregularity=${bagIrregStatus}&source=${bagSourceFilter}`
+            let url = this.URL.bag_inventory + `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&origin_node=${bagOri}&routing=${bagRout}&tipe_bag=${bagTipee}&start_date=${startDate}&end_date=${endDate}&search_by=${searchByBag}&filter_date_by=${filterDateBy}&is_opened=${bagStat}&irregularity=${bagIrregStatus}&source=${bagSourceFilter}&is_confirmed=${bagStatusInventoryFilter}`
             
             if (!isArchive) {
                 url += `&is_consolidated=${isMasterbagFilter}`;
@@ -428,6 +451,8 @@ export default {
                     }
 
                     res.data.data.forEach(el => {
+                        el.bag_actual_weight = el.is_pra_runsheet  === '1' ? el.cost_weight : el.actual_weight
+                        el.is_confirmed = el.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed'
                         el.surat_muatan = []
                         el.surat_jalan = []
                         
@@ -449,6 +474,13 @@ export default {
                         el.with_courier = el.courier ? el.courier.employee_name : ""
                         el.approved = el.is_approve === 1 ? true : false
                         el.status_irregularity_description = el.irregularity_status_description || ""
+                        if (el.status_irregularity_description === "MISSROUTE RECEIVED") {
+                            el.status_irregularity_description = "MISSROUTE RECEIVED (MR1)"
+                        }
+
+                        if (el.irregularity_deleted_at !== null || el.irregularity_deleted_at !== undefined) {
+                            el.status_irregularity_description = ""
+                        }
 
                         let data = el.hvo || el.om || el.pra_number || el.hacb || "";
                         el.document_type = this.getOrionDocumentType(data);
@@ -551,7 +583,7 @@ export default {
             let [from, to] = this.dateRange.length > 0 
                 ? [moment(this.dateRange[0]).format("YYYY-MM-DD"), moment(this.dateRange[1]).format("YYYY-MM-DD")] 
                 : ["", ""];
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, from, to, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, from, to, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter)
         },
         updateSelected(_event, _item, selected) {
             this.selectedRow = selected.filter(bag => bag.is_approve !== 0).map(bag => bag.bag_number);
@@ -561,7 +593,8 @@ export default {
         }
     },
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.startDate, this.endDate, this.tipeBagFilter, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter)
+        this.setDatacolumn();
+        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.startDate, this.endDate, this.tipeBagFilter, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter)
         this.handlePrintShortcut(this.actionPrintSelected)
     },
 }

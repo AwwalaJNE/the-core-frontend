@@ -188,6 +188,7 @@ export default {
         },
     },
     mounted() {
+        this.removeBagNumber();
         this.getBag();
         this.$refs.formInputBag.$el.querySelector("input").focus();
     }

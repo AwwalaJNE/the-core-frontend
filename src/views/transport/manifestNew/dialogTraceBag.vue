@@ -98,7 +98,7 @@ export default {
                 
             ],
             pagination: {
-                limit: 10,
+                limit: 20,
                 page_size: 1,
                 page: 1
             }
@@ -127,7 +127,6 @@ export default {
                 const page = this.pagination.page;
                 const response = await axios.get(`${this.URL.bag}/${this.bag_number}/history?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}`, this.Helper.header());
                 this.dataTable = response.data.data;
-                this.pagination.page_size = Math.ceil(this.dataTable.length / this.pagination.limit);
             } catch (error) {
                 this.openNotification(
                     "danger",

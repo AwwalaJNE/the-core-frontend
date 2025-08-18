@@ -6,6 +6,7 @@ import Login from '@/views/auth'
 
 import Content from '@/views/template/Content.vue'
 import ContentChild from '@/views/template/Content-child'
+import ContentChildWithTab from "@/views/template/ContentChildWithTab";
 import MainPage from '@/views/template/mainPage'
 
 import Upload from '@/views/upload/index.vue'
@@ -84,6 +85,9 @@ import TraceConnote from '@/views/traceConnote/index'
 // === Trace Bag ===
 import TraceBag from '@/views/traceBag/index'
 
+// === Trace Flight ===
+import TraceFlight from '@/views/traceFlight/index'
+
 // === Cash Register  ===
 import CashRegister from "@/views/cashRegister"
 
@@ -137,6 +141,9 @@ import InboundIncomingDetail from "@/views/inboundAirport/prealert/detail"
 
 // === Transport Manifest ===
 import TransportManifest from "@/views/transport/manifestNew"
+
+// === Transport Manifest ===
+import TransportManifestVehicle from "@/views/transport/manifestVehicle"
 
 // === Delivery Runsheet ===
 import DeliveryRunsheet from "@/views/delivery/runsheetNew"
@@ -690,6 +697,21 @@ const routes = [
         }
       },
       {
+        path: "trace-flight/:id?",
+        name: "trace-flight",
+        component: TraceFlight,
+        children: [],
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "Trace Flight",
+          resource_type: resourceLookup["TRACE_FLIGHT"].resource_type,
+          resource_code: resourceLookup["TRACE_FLIGHT"].resource_code,
+          resource_name: resourceLookup["TRACE_FLIGHT"].resource_name,
+          isMaintenanceMode: false,
+          permission: '',
+        }
+      },
+      {
         path: "sales",
         name: "sales",
         component: ContentChild,
@@ -1031,35 +1053,6 @@ const routes = [
           permission: '',
         }
       },
-
-      {
-        path: "/inventory/item",
-        name: "InventoryItem",
-        component: InventoryItem,
-        meta: {
-          requiresAuth: true,
-          breadCrumb: "inventory Item",
-          resource_type: resourceLookup["INVENTORY_ITEM"].resource_type,
-          resource_code: resourceLookup["INVENTORY_ITEM"].resource_code,
-          resource_name: resourceLookup["INVENTORY_ITEM"].resource_name,
-          isMaintenanceMode: false,
-          permission: ['read-inventory', 'read-bag'],
-        }
-      },
-      {
-        path: "/inventory/bag",
-        name: "InventoryBagItem",
-        component: InventoryBagItem,
-        meta: {
-          requiresAuth: true,
-          breadCrumb: "Inventory Item",
-          resource_type: resourceLookup["INVENTORY_BAG_ITEM"].resource_type,
-          resource_code: resourceLookup["INVENTORY_BAG_ITEM"].resource_code,
-          resource_name: resourceLookup["INVENTORY_BAG_ITEM"].resource_name,
-          isMaintenanceMode: false,
-          permission: ['read-inventory', 'read-bag'],
-        }
-      },
       {
         path: "/connote-detail/:id",
         name: "InventoryItem-detail",
@@ -1073,20 +1066,6 @@ const routes = [
           resource_name: resourceLookup["INVENTORY_ITEM_DETAIL"].resource_name,
               isMaintenanceMode: false,
               permission: '',
-        }
-      },
-      {
-        path: "/inventory/bagging",
-        name: "InventoryBag",
-        component: InventoryBag,
-        meta: {
-          requiresAuth: true,
-          breadCrumb: "bagging",
-          resource_type: resourceLookup["INVENTORY_BAG"].resource_type,
-          resource_code: resourceLookup["INVENTORY_BAG"].resource_code,
-          resource_name: resourceLookup["INVENTORY_BAG"].resource_name,
-          isMaintenanceMode: false,
-          permission: ['read-inventory', 'read-bag'],
         }
       },
       {
@@ -1196,17 +1175,17 @@ const routes = [
         component: ContentChild,
         children: [
           {
-            path: "manifest",
-            name: "transport-manifest",
-            component: TransportManifest,
+            path: "manifest-vehicle/:id?",
+            name: "transport-manifest-vehicle",
+            component: TransportManifestVehicle,
             meta: {
               requiresAuth: true,
-              breadCrumb: "Surat Muatan",
-              resource_type: resourceLookup["TRANSPORT_MANIFEST"].resource_type,
-              resource_code: resourceLookup["TRANSPORT_MANIFEST"].resource_code,
-              resource_name: resourceLookup["TRANSPORT_MANIFEST"].resource_name,
+              breadCrumb: "Manifest Vehicle",
+              resource_type: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_type,
+              resource_code: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_code,
+              resource_name: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_name,
               isMaintenanceMode: false,
-              permission: 'read-manifest',
+              permission: 'read-manifest-vehicle',
             }
           },
           {
@@ -1221,20 +1200,6 @@ const routes = [
               resource_name: resourceLookup["TRANSPORT_PACKING_KAYU"].resource_name,
               isMaintenanceMode: false,
               permission: 'read-packing-kayu',
-            }
-          },
-          {
-            path: "manifest-jalan",
-            name: "SuratJalan",
-            component: TransportSuratJalan,
-            meta: {
-              requiresAuth: true,
-              breadCrumb: "Surat Jalan",
-              resource_type: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_type,
-              resource_code: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_code,
-              resource_name: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_name,
-              isMaintenanceMode: false,
-              permission: 'read-manifest-delivery-order',
             }
           },
           {
@@ -1257,20 +1222,6 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "transport"
-        }
-      },
-      {
-        path: "/inbound/prealert",
-        name: "Receiving",
-        component: InboundIncoming,
-        meta: {
-          requiresAuth: true,
-          breadCrumb: "Receiving",
-          resource_type: resourceLookup["RECEIVING"].resource_type,
-          resource_code: resourceLookup["RECEIVING"].resource_code,
-          resource_name: resourceLookup["RECEIVING"].resource_name,
-          isMaintenanceMode: false,
-          permission: 'read-receiving',
         }
       },
       {
@@ -1343,20 +1294,6 @@ const routes = [
           resource_name: resourceLookup["AIRPORT_RECEIVING_DETAIL"].resource_name,
           isMaintenanceMode: false,
           permission: 'read-airport-prealert',
-        }
-      },
-      {
-        path: "/receiving-log",
-        name: "Receiving Log",
-        component: ReceivingLog,
-        meta: {
-          requiresAuth: true,
-          breadCrumb: "Receiving Log",
-          resource_type: resourceLookup["RECEIVING_LOG"].resource_type,
-          resource_code: resourceLookup["RECEIVING_LOG"].resource_code,
-          resource_name: resourceLookup["RECEIVING_LOG"].resource_name,
-          isMaintenanceMode: false,
-          permission: 'read-receiving',
         }
       },
       {
@@ -1570,6 +1507,306 @@ const routes = [
               isMaintenanceMode: false,
               permission: 'read-admin',
           }
+      },
+      {
+        path: "outgoing",
+        name: "Outgoing",
+        component: ContentChildWithTab,
+        children: [
+          {
+            path: "bag",
+            name: "Bag",
+            component: InventoryBag,
+            meta: {
+              icon: "bx bx-shopping-bag",
+              requiresAuth: true,
+              breadCrumb: "Bag",
+              resource_type: resourceLookup["INVENTORY_BAG"].resource_type,
+              resource_code: resourceLookup["INVENTORY_BAG"].resource_code,
+              resource_name: resourceLookup["INVENTORY_BAG"].resource_name,
+              isMaintenanceMode: false,
+              permission: ['read-inventory', 'read-bag'],
+            }
+          },
+          {
+            path: "surat-muatan",
+            name: "Surat Muatan",
+            component: TransportManifest,
+            meta: {
+              icon: "bx bxs-truck",
+              requiresAuth: true,
+              breadCrumb: "Surat Muatan",
+              resource_type: resourceLookup["TRANSPORT_MANIFEST"].resource_type,
+              resource_code: resourceLookup["TRANSPORT_MANIFEST"].resource_code,
+              resource_name: resourceLookup["TRANSPORT_MANIFEST"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-manifest',
+            }
+          },
+          {
+            path: "surat-jalan",
+            name: "Surat Jalan",
+            component: TransportSuratJalan,
+            meta: {
+              icon: "bx bxs-food-menu",
+              requiresAuth: true,
+              breadCrumb: "Surat Jalan",
+              breadCrumbCode: "SJ",
+              resource_type: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_type,
+              resource_code: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_code,
+              resource_name: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-manifest-delivery-order',
+            }
+          },
+          {
+            path: "hbag",
+            name: "HBAG",
+            component: TransportSuratJalan,
+            meta: {
+              icon: "bx bx-book-content",
+              requiresAuth: true,
+              breadCrumb: "Handover Bag",
+              breadCrumbCode: "HBAG",
+              resource_type: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_type,
+              resource_code: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_code,
+              resource_name: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-manifest-delivery-order',
+            }
+          },
+          {
+            path: "do",
+            name: "DO",
+            component: TransportSuratJalan,
+            meta: {
+              icon: "bx bxs-book-open",
+              requiresAuth: true,
+              breadCrumb: "Delivery Order",
+              breadCrumbCode: "DO",
+              resource_type: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_type,
+              resource_code: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_code,
+              resource_name: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-manifest-delivery-order',
+            }
+          },
+          {
+            path: "mts",
+            name: "MTS",
+            component: TransportSuratJalan,
+            meta: {
+              icon: "bx bx-book",
+              requiresAuth: true,
+              breadCrumb: "Manifest Transit Subagent",
+              breadCrumbCode: "MTS",
+              resource_type: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_type,
+              resource_code: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_code,
+              resource_name: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-manifest-delivery-order',
+            }
+          },
+        ],
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "outgoing",
+        }
+      },
+      {
+        path: "incoming",
+        name: "Incoming",
+        component: ContentChildWithTab,
+        children: [
+          {
+            path: "pre-alert",
+            name: "Pre-Alert",
+            component: InboundIncoming,
+            meta: {
+              icon: "bx bxs-bell-ring",
+              requiresAuth: true,
+              breadCrumb: "Pre-Alert",
+              breadCrumbCode: "Pre Alert",
+              resource_type: resourceLookup["RECEIVING"].resource_type,
+              resource_code: resourceLookup["RECEIVING"].resource_code,
+              resource_name: resourceLookup["RECEIVING"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-receiving',
+            }
+          },
+          {
+            path: "receiving-surat-muatan",
+            name: "Receiving Surat Muatan",
+            component: InboundIncoming,
+            meta: {
+              icon: "bx bxs-truck",
+              requiresAuth: true,
+              breadCrumb: "Receiving Surat Muatan",
+              breadCrumbCode: "SM",
+              resource_type: resourceLookup["RECEIVING"].resource_type,
+              resource_code: resourceLookup["RECEIVING"].resource_code,
+              resource_name: resourceLookup["RECEIVING"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-receiving',
+            }
+          },
+          {
+            path: "receiving-surat-jalan",
+            name: "Receiving Surat Jalan",
+            component: InboundIncoming,
+            meta: {
+              icon: "bx bxs-food-menu",
+              requiresAuth: true,
+              breadCrumb: "Receiving Surat Jalan",
+              breadCrumbCode: "SJ",
+              resource_type: resourceLookup["RECEIVING"].resource_type,
+              resource_code: resourceLookup["RECEIVING"].resource_code,
+              resource_name: resourceLookup["RECEIVING"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-receiving',
+            }
+          },
+          {
+            path: "receiving-bag",
+            name: "Receiving Bag",
+            component: InboundIncoming,
+            meta: {
+              icon: "bx bx-shopping-bag",
+              requiresAuth: true,
+              breadCrumb: "Receiving Bag",
+              breadCrumbCode: "Bag",
+              resource_type: resourceLookup["RECEIVING"].resource_type,
+              resource_code: resourceLookup["RECEIVING"].resource_code,
+              resource_name: resourceLookup["RECEIVING"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-receiving',
+            }
+          },
+          {
+            path: "receiving-connote",
+            name: "Receiving Connote",
+            component: InboundIncoming,
+            meta: {
+              icon: "bx bx-notepad",
+              requiresAuth: true,
+              breadCrumb: "Receiving CONNOTE",
+              breadCrumbCode: "Connote",
+              resource_type: resourceLookup["RECEIVING"].resource_type,
+              resource_code: resourceLookup["RECEIVING"].resource_code,
+              resource_name: resourceLookup["RECEIVING"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-receiving',
+            }
+          },
+          {
+            path: "rdo",
+            name: "RDO",
+            component: InboundIncoming,
+            meta: {
+              icon: "bx bxs-book-open",
+              requiresAuth: true,
+              breadCrumb: "RDO",
+              breadCrumbCode: "RDO",
+              resource_type: resourceLookup["RECEIVING"].resource_type,
+              resource_code: resourceLookup["RECEIVING"].resource_code,
+              resource_name: resourceLookup["RECEIVING"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-receiving',
+            }
+          },
+          {
+            path: "mti",
+            name: "MTI",
+            component: InboundIncoming,
+            meta: {
+              icon: "bx bx-book",
+              requiresAuth: true,
+              breadCrumb: "MTI",
+              breadCrumbCode: "MTI",
+              resource_type: resourceLookup["RECEIVING"].resource_type,
+              resource_code: resourceLookup["RECEIVING"].resource_code,
+              resource_name: resourceLookup["RECEIVING"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-receiving',
+            }
+          },
+          {
+            path: "rcvb",
+            name: "RCVB",
+            component: InboundIncoming,
+            meta: {
+              icon: "bx bxs-shopping-bag-alt",
+              requiresAuth: true,
+              breadCrumb: "RCVB",
+              breadCrumbCode: "RCVB",
+              resource_type: resourceLookup["RECEIVING"].resource_type,
+              resource_code: resourceLookup["RECEIVING"].resource_code,
+              resource_name: resourceLookup["RECEIVING"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-receiving',
+            }
+          },
+          {
+            path: "log",
+            name: "Log",
+            component: ReceivingLog,
+            meta: {
+              icon: "bx bx-history",
+              requiresAuth: true,
+              breadCrumb: "Log",
+              resource_type: resourceLookup["RECEIVING_LOG"].resource_type,
+              resource_code: resourceLookup["RECEIVING_LOG"].resource_code,
+              resource_name: resourceLookup["RECEIVING_LOG"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-receiving',
+            }
+          },
+        ],
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "incoming"
+        }
+      },
+      {
+        path: "inventory",
+        name: "Inventory",
+        component: ContentChildWithTab,
+        children: [
+          {
+            path: "connote",
+            name: "Connote",
+            component: InventoryItem,
+            meta: {
+              icon: "bx bx-notepad",
+              requiresAuth: true,
+              breadCrumb: "Connote",
+              resource_type: resourceLookup["INVENTORY_ITEM"].resource_type,
+              resource_code: resourceLookup["INVENTORY_ITEM"].resource_code,
+              resource_name: resourceLookup["INVENTORY_ITEM"].resource_name,
+              isMaintenanceMode: false,
+              permission: ['read-inventory', 'read-bag'],
+            }
+          },
+          {
+            path: "bag",
+            name: "Bag",
+            component: InventoryBagItem,
+            meta: {
+              icon: "bx bx-shopping-bag",
+              requiresAuth: true,
+              breadCrumb: "Bag",
+              resource_type: resourceLookup["INVENTORY_BAG_ITEM"].resource_type,
+              resource_code: resourceLookup["INVENTORY_BAG_ITEM"].resource_code,
+              resource_name: resourceLookup["INVENTORY_BAG_ITEM"].resource_name,
+              isMaintenanceMode: false,
+              permission: ['read-inventory', 'read-bag'],
+            }
+          },
+        ],
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "inventory"
+        }
       },
       {
         path: "help",

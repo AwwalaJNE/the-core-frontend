@@ -48,7 +48,7 @@
                         <form @submit.prevent="createSuratJalan">
                             <input-general
                                 icon-after
-                                name="Scan Surat Muatan / Masterbag / Bag"
+                                :name="getScanLabel"
                                 rules=""
                                 formKey="scanBag"
                                 :valueData="item_number"
@@ -72,7 +72,7 @@
 
                         <div class="nomor-sj" v-if="manifest_do_number">
                             <input-general
-                                name="No Surat Jalan"
+                                :name="`No ${listenBreadcrumbTitle}`"
                                 :valueData="manifest_do_number"
                                 :typeInput="`text`"
                                 :disabled="true"
@@ -95,7 +95,7 @@
                                     <form @submit.prevent="submitSuratJalan">
                                         <input-general
                                             icon-after
-                                            name="Scan Surat Muatan / Masterbag / Bag / Koli"
+                                            name="Scan Masterbag / Bag / Koli"
                                             rules=""
                                             formKey="scanBag"
                                             :valueData="item_number"
@@ -167,11 +167,13 @@ export default {
     },
     props: {
         active: Boolean,
+        breadcrumb: String,
         btnRed: String,
         btnBlue: String,
         closeDialog: Function,        
         dataItem: Object,
         refresh: Function,
+        sj_type: String, 
         title: String,
     },
     data() {
@@ -224,6 +226,7 @@ export default {
                 {
                     label: "Received",
                     key: "received_status",
+                    is_missroute: "is_missroute",
                     type: "status",
                     width: "sm",
                 },
@@ -274,6 +277,7 @@ export default {
             },
             editData: {},
             destination_name_code: '',
+            is_missroute:false,
             dialogTraceBag: false,
             selectedBagNumber: "",
         };
@@ -290,6 +294,26 @@ export default {
         },
         listenDisableSwitch() {
             return this.manifest_do_number ? true : false
+        },
+        listenBreadcrumbTitle() {
+            return this.breadcrumb
+        },
+        listenSjType() {
+            return this.sj_type
+        },
+        getScanLabel() {
+            switch (this.sj_type) {
+                case 'SJ':
+                    return 'Scan Masterbag / Bag / Koli';
+                case 'HBAG':
+                    return 'Scan Masterbag / Bag';
+                case 'MTS':
+                    return 'Scan Koli';
+                case 'DO':
+                    return 'Scan Masterbag / Bag';
+                default:
+                    return 'Scan Item';
+            }
         }
     },
     watch: {
@@ -325,13 +349,14 @@ export default {
                 item.destination = item.bag?.destination?.node_tariff_code || item.koli?.connote?.connote_receiver_tariff_code || item.manifest?.destination?.node_tariff_code || '';
                 item.node_code_destination = item?.bag?.destination?.node_code || item?.manifest?.destination?.branch_code || '';
                 item.node_name_destination = item?.bag?.destination?.node_name || '';
-                item.status_trip = (item?.bag?.status_trip || '') + ' ' + (val?.latest_node_name_receiver || '');
+                item.status_trip = (item?.bag?.status_trip || '') + ' ' + (item?.bag?.current_node_name || '');
 
                 if (val.status !== "UNAPPROVED" || val.is_approve === 1) {
                     item.button_status = { remove: false };
                 }
 
                 item.received_status = item.received_at ? 1 : 0;
+                item.is_missroute = item.is_missroute === true ? 1 : 0
             });
 
             this.total_weight = val.total_weight;
@@ -522,10 +547,11 @@ export default {
             this.loading = true;
             let form = {
                 item_no: this.item_number,
-                is_penerusan: this.is_penerusan
+                is_penerusan: this.is_penerusan,
+                sj_type: this.listenSjType
             }
             try {
-                const res = await axios.post(`${this.URL.revamp_surat_jalan_v2}?n=${this.listenNodeId}`, JSON.stringify(form), this.Helper.header());
+                const res = await axios.post(`${this.URL.revamp_surat_jalan_v3}?n=${this.listenNodeId}`, JSON.stringify(form), this.Helper.header());
 
                 let data = res.data.data;
                 if (data) {
@@ -600,7 +626,8 @@ export default {
                         received_status: item.received_at ? 1 : 0,
                         destination: item.item_destination,
                         node_code_destination: item.node_code_destination,
-                        status_trip: (item?.bag?.status_trip || '') + ' ' + (res.data?.latest_node_name_receiver || '')
+                        status_trip: (item?.bag?.status_trip || '') + ' ' + (item?.bag?.current_node_name || ''),
+                        is_missroute: item.is_missroute
                     }));
 
                     this.dataTable = arr;

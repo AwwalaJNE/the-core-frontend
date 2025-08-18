@@ -26,6 +26,14 @@
       @refresh="refresh"
     />
 
+    <dialog-manage-vehicle-manifest
+      title="Manifest Vehicle"
+      :manifest_number="manifest_number"
+      :manifest_method="manifest_method"
+      :active="dialogManageVehicleManifest"
+      :closeDialog="closeDialogManageVehicleManifest"
+    />
+
     <dialog-confirm
       title="Cancel Surat Muatan"
       :message="`Anda yakin ingin membatalkan Surat Muatan dengan nomor ${manifest_number} ini?`"
@@ -56,6 +64,7 @@ import DialogConfirm from "@/components/dialog/dialogConfirm";
 import TableMaster from "@/components/table/tableMaster.vue";
 
 import DialogCreateManifest from "@/views/transport/manifestNew/dialogCreateEditManifest";
+import DialogManageVehicleManifest from "@/views/transport/manifestVehicle/dialogCreateManage";
 
 export default {
   name: "transport-surat-muatan-table-new",
@@ -66,10 +75,12 @@ export default {
     query: String,
     searchBy: String,
     status: [Array, String],
+    isTransit: [Array, String]
   },
   components: {
     "table-master": TableMaster,
     dialogCreateManifest: DialogCreateManifest,
+    "dialog-manage-vehicle-manifest": DialogManageVehicleManifest,
     "dialog-confirm": DialogConfirm,
   },
   data() {
@@ -78,6 +89,7 @@ export default {
       activeLoadingCancel: false,
       dataTable: [],
       dialogManifestList: false,
+      dialogManageVehicleManifest: false,
       datacolumn: [
         {
           label: "No Surat Muatan",
@@ -87,11 +99,16 @@ export default {
         {
           label: "Status",
           key: "status_with_tooltip",
-          width: "xxxxs",
+          width: "xxs",
         },
         {
-          label: "Total Item (Koli)",
-          key: "total_item",
+          label: "Received",
+          key: "total_received",
+          width: "xxxs",
+        },
+        {
+          label: "Outstanding",
+          key: "total_outstanding",
           width: "xxxs",
         },
         {
@@ -100,13 +117,19 @@ export default {
           width: "xxxxs",
         },
         {
+          label: "Flight Number",
+          key: "flight_number",
+          width: "xxxxs",
+        },
+        {
           label: "Vehicle",
           key: "formatted_vehicle",
           width: "xxxs",
         },
         {
-          label: "Jenis Kiriman",
+          label: "Moda Transportasi",
           key: "jenis_kiriman",
+          isTransitTag: "isTransitTag",
           width: "xxxs",
         },
         {
@@ -120,25 +143,30 @@ export default {
           width: "xxs",
         },
         {
-          label: "Fix Cost Weight",
-          key: "fix_cost_weight",
+          label: "Actual Weight",
+          key: "actual_weight",
           width: "auto",
         },
-        {
-          label: "Live Cost Weight",
-          key: "live_cost_weight",
-          width: "auto",
-        },
-        {
-          label: "Fix Actual Weight",
-          key: "fix_actual_weight",
-          width: "auto",
-        },
-        {
-          label: "Live Actual Weight",
-          key: "live_actual_weight",
-          width: "auto",
-        },
+        // {
+        //   label: "Fix Cost Weight",
+        //   key: "fix_cost_weight",
+        //   width: "auto",
+        // },
+        // {
+        //   label: "Live Cost Weight",
+        //   key: "live_cost_weight",
+        //   width: "auto",
+        // },
+        // {
+        //   label: "Fix Actual Weight",
+        //   key: "fix_actual_weight",
+        //   width: "auto",
+        // },
+        // {
+        //   label: "Live Actual Weight",
+        //   key: "live_actual_weight",
+        //   width: "auto",
+        // },
         {
           label: "ETD",
           key: "etd",
@@ -195,6 +223,11 @@ export default {
       ],
       customActionList: [
         {
+          label: "Vehicle",
+          key: "vehicle",
+          attribute: "",
+        },
+        {
           label: "Print",
           key: "print",
           attribute: "",
@@ -212,16 +245,17 @@ export default {
       ],
       loading: false,
       dataItem: {},
-      tempSearch: "",
-      tempDate: [],
-      startDate: "",
-      endDate: "",
+      tempSearch: this.$ls.get('manifestFilter')?.tempSearch || "",
+      tempDate: this.$ls.get('manifestFilter')?.tempDate || [],
+      startDate: this.$ls.get('manifestFilter')?.tempDate[0] || "",
+      endDate: this.$ls.get('manifestFilter')?.tempDate[1] || "",
       pagination: {
         limit: 20,
         page_size: 1,
         page: 1,
       },
       manifest_number: "", // Untuk menyimpan nomor manifes yang sedang dioperasikan
+      manifest_method: 0,
       activeDialogConfirmDepart: false,
       loadingConfirmDepart: false,
     };
@@ -285,12 +319,13 @@ export default {
 
       try {
         const res = await axios.get(
-          `${this.URL.surat_muatan}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${queryDate}&status=${this.status}`,
+          `${this.URL.surat_muatan}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${queryDate}&status=${this.status}&is_sm_transit=${this.isTransit}`,
           this.Helper.header()
         );
 
         const arr = res.data.data.map((item) => {
           const buttonStatus = {
+            vehicle: false,
             print: false,
             depart: false,
             cancel: false,
@@ -301,15 +336,18 @@ export default {
             let strStatus = item["status"].toLowerCase();
             if (item.is_approve === 1) { // Jika sudah di-approve
               if (strStatus.includes("unapproved")) {
+                buttonStatus.vehicle = true; // Bisa edit vehicle
                 buttonStatus.print = true; // Bisa print
                 buttonStatus.depart = true; // Bisa depart
                 buttonStatus.cancel = true; // Bisa cancel
               } else if (
+                strStatus.includes("approved") ||
                 strStatus.includes("depart") ||
                 strStatus.includes("transit") || // Menambahkan 'transit'
                 strStatus.includes("receive") ||
                 strStatus.includes("complete")
               ) {
+                buttonStatus.vehicle = true; // Bisa edit vehicle
                 buttonStatus.print = true; // Bisa print
                 // Depart tidak bisa dilakukan jika sudah depart/receive/complete
               } else if (strStatus.includes("cancel")) {
@@ -317,6 +355,7 @@ export default {
               }
             } else { // Jika belum di-approve
               if (strStatus.includes("unapproved") || strStatus.includes("unreceived")) {
+                buttonStatus.vehicle = true; // Bisa edit vehicle
                 buttonStatus.print = true; // Bisa print
                 // Depart tidak bisa jika belum di-approve
                 buttonStatus.cancel = true; // Bisa cancel
@@ -326,6 +365,7 @@ export default {
                 strStatus.includes("receive") ||
                 strStatus.includes("complete")
               ) {
+                buttonStatus.vehicle = true; // Bisa edit vehicle
                 buttonStatus.print = true; // Bisa print
               } else if (strStatus.includes("cancel")) {
                 // Semua aksi dinonaktifkan jika status cancel
@@ -335,20 +375,24 @@ export default {
 
           return {
             ...item,
+            actual_weight: item.actual_weight || "0",
             pickup_courier_employee_name: item.employee_courier?.employee_name || null,
             manifest_type_name: item.manifest_method?.vehicle_mode_name || null,
             jenis_kiriman: item.vehicle_type?.vehicle_type_name || "-",
-            origin_name: `${item.origin?.node_code || "null"} - ${item.origin?.node_name || "-"}`,
-            destination_name: `${item.destination?.node_code || "null"} - ${item.destination?.node_name || "-"}`,
+            isTransitTag: item?.is_sm_transit || "",
+            origin_name: `${item.origin_branch_code || ""} - ${item.origin_branch_name || "-"}`,
+            destination_name: `${item.destination_branch_code || ""} - ${item.destination_branch_name || ""}`,
             eta: this.dateConvert(item.eta),
             etd: this.dateConvert(item.etd),
             total_masterbag: item.total_masterbag === 0 ? "0" : item.total_masterbag,
             total_bag: item.total_bag === 0 ? "0" : item.total_bag,
-            total_connote: item.koli_count === 0 ? "0" : item.koli_count,
+            total_connote: item.total_koli === 0 ? "0" : item.total_koli,
+            total_received: item.total_received === 0 ? "0" : item.total_received,
+            total_outstanding: item.total_outstanding === 0 ? "0" : item.total_outstanding,
             created_at: this.dateConvert(item.created_at),
             approved: item.is_approve === 1 ? true : false,
             status_with_tooltip: item.is_transit === 1
-              ? `${item.status} <span class="status-tooltip" title="Terdapat Bag masih dalam proses transit."><i class="bx bxs-help-circle"></i></span>`
+              ? `${item.status} <span class="status-tooltip" title="Terdapat Bag masih dalam proses transit."><i class="bx bxs-truck" style="font-size: 0.8rem; vertical-align: middle; border: 1px solid; border-radius: 50%; padding: 3px;"></i></span>`
               : item.status,
             // `isDisabled` tidak lagi diperlukan karena `button_status` menangani ini
             latest_node_receiver:
@@ -407,6 +451,11 @@ export default {
     actionUpdate(val, key) {
       // `val` adalah data item, `key` adalah kunci tindakan (print, depart, cancel)
       switch (key) {
+        case "vehicle":
+          this.dialogManageVehicleManifest = true;
+          this.manifest_number = val.manifest_number;
+          this.manifest_method = parseInt(val.manifest_method_id);
+          break;
         case "print":
           this.manifest_number = val.manifest_number;
           this.print();
@@ -439,19 +488,6 @@ export default {
         val["flight_schedule"] = val["flight_schedule"];
 
         this.dataItem = val;
-
-        // Logika untuk menampilkan/menyembunyikan flight number/schedule
-        if (parseInt(val["manifest_method_id"]) === 1) { 
-          this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", true);
-          this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", true);
-          this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_ValueData", val["origin"]);
-        } else {
-          this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", false);
-          this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", false);
-          this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_ValueData", val["origin"]);
-        }
-        this.$store.dispatch(`SET_SURAT_MUATAN_NODE_ID_ORIGIN_ValueData`, val["origin"]);
-        this.$store.dispatch(`SET_SURAT_MUATAN_NODE_ID_DESTINATION_ValueData`, val["destination"]);
 
         this.$nextTick(() => {
           this.dialogManifestList = true;
@@ -511,6 +547,10 @@ export default {
         this.refresh();
       }
     },
+    closeDialogManageVehicleManifest() {
+      this.dialogManageVehicleManifest = false;
+      this.refresh();
+    },
     closeDialogConfirmDepart() {
       this.activeDialogConfirmDepart = false;
       this.loadingConfirmDepart = false;
@@ -561,5 +601,11 @@ export default {
   font-weight: bold;
   color: #666;
   cursor: help;
+}
+
+.status-tooltip i.bx.bxs-truck {
+  font-size: 1.5rem;
+  vertical-align: middle;
+  display: inline-block;
 }
 </style>

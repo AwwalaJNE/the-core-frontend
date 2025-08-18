@@ -1,82 +1,196 @@
 <template>
-    <dialog-master 
-        width="lg"
-        :actived="listenActive" 
-        :closeDialog="cancel"
-        :loading="listenLoading"
-    >
-        <template v-slot:header>
-            {{listenTitle}}
-        </template>
+    <div>
+        <dialog-master 
+            width="lg"
+            :actived="listenActive" 
+            :closeDialog="cancel"
+            :loading="listenLoading"
+        >
+            <template v-slot:header>
+                {{listenTitle}}
+            </template>
 
-        <template v-slot:content>
-            <div>
-                <template v-if="loadingVehicleMode == false && vehicle_mode_arr.length > 0">
-                    <selector 
-                        name="Vehicle Mode" 
-                        rules="required" 
-                        formKey="vehicle_mode"
-                        :valueData="vehicle_mode_arr"
-                        :selectedValue="vehicle_mode"
-                        :isMultiple="false"
-                        @updateValue="updateValue" 
+            <template v-slot:content>
+                <div>
+                    <template v-if="Object.keys(edit_data).length === 0">
+                        <vs-row align="center">
+                            <vs-col xs="12" sm="4" lg="4">
+                                <select-search-by
+                                    key="searchBy"
+                                    :border="true"
+                                    :isMultiple="false"
+                                    :selectedValue="searchBy" 
+                                    :valueData="searchParams" 
+                                    @updateSearchBy="updateSearchBy" 
+                                />
+                            </vs-col>
+                            <vs-col xs="12" sm="8" lg="8">
+                                <search-input 
+                                    ref="searchInput"  
+                                    :placeholder="searchPlaceholder" 
+                                    @searchValue="searchValue"
+                                />
+                            </vs-col>
+                        </vs-row>
+                        <vs-row>
+                            <vs-col xs="12" sm="12" lg="12">
+                                <date-time 
+                                    formKey="date_range"
+                                    :name="''" 
+                                    :rules="''" 
+                                    :valueData="dateRange"
+                                    typeInput="daterange" 
+                                    @updateValue="updateValue" 
+                                />
+                            </vs-col>
+                        </vs-row>
+
+                        <div style="margin-top: 10px;">
+                            <table-master 
+                                hideColumnKey="dialog-surat-muatan-stock" 
+                                :dataTable="dataTable" 
+                                :dataColumn="datacolumn" 
+                                :tableLoading="loadingTableData"
+                                :selectedData="selectedData"
+                                :hasPagination="true"
+                                :pageSize="pagination.page_size"
+                                :page="pagination.page"
+                                :limit="pagination.limit"
+                                :isMultipleSelectWithIndex="true"
+                                :onRowClickCallback="onRowClickCallback"
+                                :isShowCheckboxAll="false"
+                                @actionLimit="actionLimit"
+                                @actionPagination="actionPagination"
+                                @updateSelected2="updateSelected"
+                            />
+                        </div>
+                    </template>
+
+                    <div v-if="!is_edit" class="parent-container">
+                        <div class="container-clear-item" @click="handleClearAll">
+                            Reset Inputs
+                        </div>
+                    </div>
+
+                    <form-input-controller
+                        ref="formDataController" 
+                        typeForm="surat_muatan_stock"
+                        :dataItem="dataItem"
+                        :querySearch="querySearch"
+                        @formData="formData"
                     />
-                </template>
-                <form-input-controller
-                    ref="formDataController" 
-                    typeForm="surat_muatan_stock"
-                    :dataItem="dataItem"
-                    @formData="formData"
-                    @onChangeCustom="onChangeCustom"
-                />
-            </div>
-        </template>
 
-        <template v-slot:footer>
-            <vs-row justify="flex-end">
-                <vs-col w="3">
-                    <vs-button
-                        block
-                        danger
-                        flat
-                        transparent
-                        :active="true"
-                        @click="cancel"
-                    >
-                        Cancel
-                    </vs-button>
-                </vs-col>
-                <vs-col w="3">
-                    <vs-button
-                        block
-                        flat
-                        transparent
-                        type="submit"
-                        :active="true"
-                        @click="handleSubmit"
-                    >
-                        {{btnBlue || 'Add'}}
-                    </vs-button>
-                </vs-col>
-            </vs-row>                
-        </template>
-    </dialog-master>
+                    <vs-row v-if="vehicle.length > 0">
+                        <vs-row justify="space-between" v-if="Object.keys(edit_data).length > 0">
+                            <h3 v-if="!is_edit" class="title">Active Vehicle</h3>
+                            <h3 v-else class="title">List Vehicle</h3>
+                            <vs-button
+                                shadow
+                                :active="false"
+                                @click="openDialogManageVehicleManifest"
+                            >
+                                <i class='bx bx-cog'></i> Manage
+                            </vs-button>
+                        </vs-row>
+                        <template v-if="!is_edit">
+                            <radio
+                                :name="'manifest_vehicle'"
+                                :value-data="vehicle"
+                                :selected-value="listenSelectedManifestVehicle"
+                                :isRemoveButton="false"
+                                @updateValue="chooseRow"
+                            />
+                        </template>
+                        <template v-else>
+                            <vs-row
+                                v-for="(item, index) in vehicle"
+                                :key="index"
+                            >
+                                <vs-col w="12" v-if="item.is_active">
+                                    <vehicle-card 
+                                        :data="item" 
+                                        :isActive="item.is_active"
+                                    />
+                                </vs-col>
+                            </vs-row>
+                        </template>
+                    </vs-row>
+                    <vs-row v-else>
+                        <img src="@/assets/svg/defaultVehicle.svg" alt="Core JNE Default Vehicle" style="width: 100%; margin: 20px 0;"/>
+                    </vs-row>
+                    
+                </div>
+            </template>
+
+            <template v-slot:footer>
+                <vs-row justify="flex-end">
+                    <vs-col w="3">
+                        <vs-button
+                            block
+                            danger
+                            flat
+                            transparent
+                            :active="true"
+                            @click="cancel"
+                        >
+                            Cancel
+                        </vs-button>
+                    </vs-col>
+                    <vs-col w="3">
+                        <vs-button
+                            block
+                            flat
+                            transparent
+                            type="submit"
+                            :active="true"
+                            @click="handleSubmit"
+                        >
+                            {{btnBlue || 'Add'}}
+                        </vs-button>
+                    </vs-col>
+                </vs-row>                
+            </template>
+        </dialog-master>
+
+        <dialog-manage-vehicle-manifest
+            title="Manifest Vehicle"
+            :manifest_number="edit_data.manifest_number"
+            :manifest_method="parseInt(edit_data.vehicle_mode_id)"
+            :active="dialogManageVehicleManifest"
+            :closeDialog="closeDialogManageVehicleManifest"
+        />
+    </div>
 </template>
 <script>
 import axios from "axios";
 import master from "@/mixins/master";
 
+import DateTime from "@/components/input/dateTime"
 import DialogMaster from "@/components/dialog/dialogMaster";
 import FormInputController from "@/components/form/formInputController";
+import RadioWithCard from "@/components/input/radioWithCard";
 import Selector from "@/components/input/select";
+import SearchInput from "@/components/search/searchInput";
+import SelectSearchBy from "@/components/search/selectSearchBy";
+import TableMaster from "@/components/table/tableMaster";
+import VehicleCard from "@/views/transport/manifestNew/vehicleCard";
+
+import DialogManageVehicleManifest from "@/views/transport/manifestVehicle/dialogCreateManage";
 
 export default {
     name:"surat-muatan-settings-stock-dialog",
     mixins: [master],
     components: {
+        "date-time": DateTime,
         "dialog-master": DialogMaster,
+        "dialog-manage-vehicle-manifest": DialogManageVehicleManifest,
         "form-input-controller": FormInputController,
-        "selector": Selector
+        "radio": RadioWithCard,
+        "selector": Selector,
+        "search-input": SearchInput,
+        "select-search-by": SelectSearchBy,
+        "table-master" : TableMaster,
+        "vehicle-card": VehicleCard
     },
     props: {
         active: Boolean,
@@ -88,169 +202,287 @@ export default {
     },
     data() {
         return {
+            autoCompleteUrl: "",
             form: {},
             id: "",
             loading: false,
-            loadingVehicleMode: false,
-            loadingVehicleId: false,
-            loadingManifestNumber: false,
-            vehicle_mode_arr: [],
-            vehicle_mode: '',
-            vehicle_id: ''
+            tempSearch: "",
+            dateRange: [],
+            searchBy: "vehicle",
+            searchPlaceholder: "Search Schedule Vehicle",
+            searchParams: [
+                {
+                    label: 'Vehicle',
+                    value: 'vehicle'
+                },
+                {
+                    label: 'Origin',
+                    value: 'origin'
+                },
+                {
+                    label: 'Destination',
+                    value: 'destination'
+                },
+                {
+                    label: 'Vehicle Info',
+                    value: 'vehicle_info'
+                },
+                {
+                    label: 'Registration Number',
+                    value: 'registration_number'
+                },
+            ],
+            loadingTableData: false,
+            dataTable: [],
+            datacolumn: [
+                {
+                    label: "Vehicle",
+                    key: "vehicle_name",
+                    width: "sm"
+                },
+                {
+                    label: "Type",
+                    key: "vehicle_mode_name",
+                    width: "sm"
+                },
+                {
+                    label: "SHP No",
+                    key: "shipment_number",
+                    width: "xs"
+                },
+                {
+                    label: "Origin",
+                    key: "origin",
+                    width: "md"
+                },
+                {
+                    label: "Destination",
+                    key: "destination",
+                    width: "md"
+                },
+                {
+                    label: "ETD",
+                    key: "etd_formatted",
+                    width: "sm"
+                },
+                {
+                    label: "ETA",
+                    key: "eta_formatted",
+                    width: "sm"
+                },
+                {
+                    label: "Vehicle Info",
+                    key: "vehicle_information",
+                    width: "xs"
+                },
+                {
+                    label: "Reg No",
+                    key: "registration_number",
+                    width: "xs"
+                },
+            ],
+            pagination: {
+                limit: 3,
+                page_size: 1,
+                page: 1
+            },
+            edit_data: {},
+            selectedData: [],
+            schedule_id: "",
+            vehicle: [],
+            vehicle_form: [],
+            manifest_number: "",
+            manifest_method_id: 0,
+            dialogManageVehicleManifest: false,
+            selected_manifest_vehicle: "",
+            is_edit: false,
         }
     },
     computed: {
         listenActive(){
+            if (this.active) {
+            }
             return this.active;
         },
         listenTitle(){
             return this.title;
         },
         listenLoading() {
-            return this.loading || this.loadingVehicleMode || this.loadingVehicleId || this.loadingManifestNumber;
+            return this.loading;
         },
         listenDataItem() {
             return this.dataItem;
+        },
+        listenSelectedManifestVehicle() {
+            return this.selected_manifest_vehicle || ''
         }
     },
     watch: {
-        active: function (val) {
-            if (val && !this.dataItem) {
-                this.getVehicleMode();
-            }
-        },
         dataItem: function (val) {
             if(val !== undefined) {
+                this.is_edit = true;
                 this.getDataDetail(val);
+                this.getManifestVehicle();
             }
         },
-        vehicle_mode (newVal, oldVal) {
-            if (newVal !== undefined && newVal !== oldVal) {
-                this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID", '');
-                this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID_ArrData", []);
-                this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NO_SM", '');
-                this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NO_SM_ArrData", []);
-                this.getVehicle();
+        query: function(val, old) {
+            if(val !== undefined) {
+                this.searchValue = val
+                if(this.searchValue !== old) {
+                    this.pagination.page = 1
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate, this.searchBy)
+                }
             }
         },
-        vehicle_id (newVal, oldVal) {
-            if (newVal !== undefined && newVal !== oldVal) {
-                this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NO_SM", '');
-                this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NO_SM_ArrData", []);
-                this.getManifestNumber();
-            }
-        }
     },
     methods: {
+        refresh() {
+            const isTempSearchEmpty = this.tempSearch === "";
+            const isDateRangeEmpty = !this.dateRange || this.dateRange.length === 0;
+
+            if (isTempSearchEmpty && isDateRangeEmpty) {
+                this.dataTable = [];
+            } else {
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.dateRange?.[0] || null, this.dateRange?.[1] || null, this.searchBy);
+            }
+        },
+        actionLimit(val){
+            this.pagination.limit = val
+            this.pagination.page = 1
+            this.refresh()
+        },
+        actionPagination(val) {
+            this.pagination.page = val
+            this.refresh()
+        },
+        async getTableData(limit, page, q, from, to, searchBy) {
+            this.loadingTableData = true
+
+            let query = q || '';            
+            let startDate = from || "";
+            let endDate = to || "";
+            
+            try {
+                const res = await axios.get(`${this.URL.schedule}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&filter_date_by=etd&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}`, this.Helper.header());
+
+                if(res.data.data.length > 0) {
+                    let arr = res.data.data;
+                    arr.map(item => {
+                        item,
+                        item["origin"] = item?.origin_name + "\n" + item?.origin_identifier + "\n" + item?.origin_point;
+                        item["destination"] = item?.destination_name + "\n" + item?.destination_identifier + "\n" + item?.destination_point;
+                        item["etd_formatted"] = item?.etd + " " + item?.etd_timezone;
+                        item["eta_formatted"] = item?.eta + " " + item?.eta_timezone;
+                    })
+                    
+                    this.dataTable = arr
+                    this.pagination = {
+                        page: res.data.meta.current_page,
+                        limit: parseInt(res.data.meta.per_page, 10),
+                        page_size: res.data.meta.last_page,
+                    };
+                } else {
+                    this.dataTable = [];
+                }  
+                
+            } catch (err) {
+                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loadingTableData = false;
+            }
+        },
         async getDataDetail(val) {
+            this.edit_data = val;
             this.id = val.id;
 
-            await this.getVehicleMode();
-            this.vehicle_mode = this.vehicle_mode_arr.find(item => item.value == val.vehicle_mode_id)?.value;
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER_isDisabled", true);
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN_ValueData", val.node_id_origin.toString());
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NODE_ID_DESTINATION_ValueData", val.node_id_destination.toString());
 
-            await this.getVehicle();
-            this.vehicle_id = parseInt(val.vehicle_id);
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID", this.vehicle_id);
+            val.node_id_origin = val.node_name_origin + " (" + val.node_code_origin + ")";
+            val.node_id_destination = val.node_name_destination + " (" + val.node_code_destination + ")";
+        },
+        async getManifestVehicle() {
+            this.loading = true;
+            try {
+                const res = await axios.get(`${this.URL.manifest_vehicle}/${this.edit_data.manifest_number}?n=${this.listenNodeId}`, this.Helper.header());
 
-            await this.getManifestNumber();
-            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NO_SM", val.no_sm);
+                let arr = res.data.data;
+
+                this.vehicle = arr.map((item, idx) => ({
+                    origin_vehicle: item?.name_origin_tlc || "",
+                    destination_vehicle: item?.name_destination_tlc || "",
+                    origin_vehicle_tlc: item?.origin_tlc || "",
+                    destination_vehicle_tlc: item?.destination_tlc || "",
+                    vehicle_id: item?.vehicle_name || "",
+                    pic_employee_id: item?.pic_employee_id || "",
+                    flight_number: item?.flight_number || "",
+                    flight_schedule: item?.etd || "",
+                    etd_vehicle: item?.etd || "",
+                    eta_vehicle: item?.eta || "",
+                    status_flight: item?.status_flight,
+                    is_active: item?.status === 'ACTIVE'
+                }));
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loading = false;
+            }
+        },
+        querySearch(queryString, cb){
+            axios.get(this.URL.branch_list_v2 +`?n=${this.listenNodeId}&s=${queryString}`, this.Helper.header())
+            .then(res => {
+                let result = res.data.data
+                let suggestions = [];
+                result.length > 0 && result.map(item => {
+
+                    suggestions.push({
+                        value: item['node_name'],
+                        data: item['node_id']
+                    });
+                });
+                cb(suggestions);
+                })
+            .catch(error => console.log("error", error));
         },
         formData(form){
             const { id, ...formWithoutId } = form;
+            
+            if (this.edit_data.node_id_destination !== form?.node_id_destination) {
+                formWithoutId.node_id_destination = form?.node_id_destination;
+            }
+
+            if (this.edit_data.node_id_origin !== form?.node_id_origin) {
+                formWithoutId.node_id_origin = form?.node_id_origin;
+            }
+
+            if (!this.is_edit) {
+                formWithoutId.vehicle = this.vehicle_form?.map(item => item.state)?.map(item => ({
+                    vehicle_id: item.vehicle_id,
+                    tlc_origin: item.tlc_origin,
+                    tlc_destination: item.tlc_destination,
+                    flight_number: item.flight_number,
+                    etd: item.etd,
+                    etd_timezone: item.etd_timezone,
+                    eta: item.eta,
+                    eta_timezone: item.eta_timezone,
+                    is_active: item.is_active ? 1 : 0
+                }));
+            }
+            formWithoutId.is_active = formWithoutId.is_active === true ? "1" : "0";
+            formWithoutId.schedule_id = this.vehicle.find(item => item?.state?.is_active)?.state?.shipment_schedule_id || this.edit_data?.schedule_id || null; // TODO: CONFIRM AGAIN
 
             this.form = formWithoutId;
+
             this.handleSubmitData();
-        },
-        onChangeCustom(type, val, obj) {
-            switch (type) {
-                case "vehicle_id":
-                    this.vehicle_id = val;
-                    break;
-                default:
-            }
         },
         updateValue(key, val, info){
             switch(key) {
-                case "vehicle_mode":
-                    this.vehicle_mode = this.vehicle_mode_arr.find(item => item.value == val)?.value;
+                case "date_range":
+                    this.dateRange = val;
+                    this.refresh()
                     break;
                 default:
-            }
-        },
-        async getVehicleMode() {
-            this.loadingVehicleMode = true;
-            try {
-                const res = await axios.get(`${this.URL.vehicle_mode_list_v2}?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header());
-
-                const data = res.data.data;
-
-                if (data.length > 0) {
-                    const arr = data.map(item => ({
-                        label: item.vehicle_mode_name,
-                        value: item.vehicle_mode_id,
-                        data: item
-                    }));
-
-                    this.vehicle_mode_arr = arr
-                }
-            } catch (err) {
-                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
-            } finally {
-                this.loadingVehicleMode = false;
-            }
-        },
-        async getVehicle() {
-            if (!this.vehicle_mode) return
-
-            this.loadingVehicleId = true;
-            try {
-                const res = await axios.get(`${this.URL.vehicle_list_v2}/${this.vehicle_mode}?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header());
-
-                const data = res.data.data;
-
-                if (data.length > 0) {
-                    const arr = data.map(item => ({
-                        label: item.vehicle_name,
-                        value: item.vehicle_id,
-                        data: item
-                    }));
-
-                    this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID_ArrData", arr.length > 0 ? arr : null);
-                } else {
-                    this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID", "");
-                    this.$store.dispatch("SET_SURAT_MUATAN_STOCK_VEHICLE_ID_ArrData", []);
-                }
-            } catch (err) {
-                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
-            } finally {
-                this.loadingVehicleId = false;
-            }
-        },
-        async getManifestNumber() {
-            if (!this.vehicle_id) return
-
-            this.loadingManifestNumber = true;
-            try {
-                const res = await axios.get(`${this.URL.list_sm}/${this.vehicle_id}?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header());
-
-                const data = res.data.data;
-
-                if (data.length > 0) {
-                    const arr = data.map(item => ({
-                        label: item,
-                        value: item,
-                        data: item
-                    }));
-
-                    this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NO_SM_ArrData", arr.length > 0 ? arr : null);
-                } else {
-                    this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NO_SM", "");
-                    this.$store.dispatch("SET_SURAT_MUATAN_STOCK_NO_SM_ArrData", []);
-                }
-            } catch (err) {
-                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
-            } finally {
-                this.loadingManifestNumber = false;
             }
         },
         async handleSubmitData() {
@@ -272,15 +504,151 @@ export default {
             this.$refs.formDataController.handleClearForm();
             this.form = {};
             this.id = "";
-            this.vehicle_mode_arr = [];
-            this.vehicle_mode = '';
-            this.vehicle_id = '';
             this.$emit("handleClearInput");
             this.$emit("refresh");
         },
         cancel() {
+            this.$store.dispatch("SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER_isDisabled", false);
+            this.vehicle = {};
+            this.vehicle_form = {};
+            this.dateRange = [];
+            this.dataTable = [];
+            this.clearSearch();
             this.handleClearForm();
+            this.handleClearAll();
             this.closeDialog();
+        },
+        searchValue (val) {
+            this.tempSearch = val
+            this.refresh();
+        },
+        updateSearchBy(key, val) {
+            this.searchBy = val;
+            this.searchPlaceholder = key;
+        },
+        clearSearch() {
+            this.$refs?.searchInput?.clear()
+        },
+        handleClearAll() {
+            this.is_edit = false;
+            this.schedule_id = "";
+            this.selectedData = [];
+            this.$refs.formDataController.handleEmptyForm();
+            this.form = {}; 
+        },
+        openDialogManageVehicleManifest() {
+            this.dialogManageVehicleManifest = true;
+        },
+        closeDialogManageVehicleManifest() {
+            this.dialogManageVehicleManifest = false;
+            this.getManifestVehicle();
+        },
+        updateSelected(val, checkedItem) {
+            // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING CHECKBOX
+            if (val.shipment_schedule_id === this.selected_manifest_vehicle) this.selected_manifest_vehicle = '';
+
+            if (this.selected_manifest_vehicle === '') this.selected_manifest_vehicle = checkedItem?.[0]?.shipment_schedule_id;
+
+            this.vehicle = checkedItem.map((item, idx) => ({
+                key: item?.shipment_schedule_id,
+                state: {
+                    shipment_schedule_id: item?.shipment_schedule_id,
+                    origin_vehicle: item?.origin_name || "",
+                    destination_vehicle: item?.destination_name || "",
+                    origin_vehicle_tlc: item?.origin_identifier || "",
+                    destination_vehicle_tlc: item?.destination_identifier || "",
+                    vehicle_id: item?.vehicle_name || "",
+                    pic_employee_id: "",
+                    flight_number: item?.shipment_number || "",
+                    flight_schedule: item?.etd || "",
+                    flight_schedule_timezone: item?.etd_timezone || "",
+                    etd_vehicle: item?.etd || "",
+                    etd_vehicle_timezone: item?.etd_timezone || "",
+                    eta_vehicle: item?.eta || "",
+                    eta_vehicle_timezone: item?.eta_timezone || "",
+                    is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
+                }
+            }));
+
+            this.vehicle_form = checkedItem.map((item, idx) => ({
+                key: item?.shipment_schedule_id,
+                state: {
+                    shipment_schedule_id: item?.shipment_schedule_id,
+                    tlc_origin: item?.origin_identifier || "",
+                    tlc_destination: item?.destination_identifier || "",
+                    vehicle_id: item?.vehicle_id || "",
+                    flight_number: item?.shipment_number || "",
+                    etd: item?.etd || "",
+                    etd_timezone: item?.etd_timezone || "",
+                    eta: item?.eta || "",
+                    eta_timezone: item?.eta_timezone || "",
+                    is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
+                }
+            }));
+
+            if (checkedItem.length === 0) this.selected_manifest_vehicle = '';
+        },
+        onRowClickCallback(event, val, checkedItem) {
+            // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING ROW
+            if (val.shipment_schedule_id === this.selected_manifest_vehicle) this.selected_manifest_vehicle = '';
+
+            if (this.selected_manifest_vehicle === '') this.selected_manifest_vehicle = checkedItem?.[0]?.shipment_schedule_id;
+
+            this.vehicle = checkedItem.map((item, idx) => ({
+                key: item?.shipment_schedule_id,
+                state: {
+                    shipment_schedule_id: item?.shipment_schedule_id,
+                    origin_vehicle: item?.origin_name || "",
+                    destination_vehicle: item?.destination_name || "",
+                    origin_vehicle_tlc: item?.origin_identifier || "",
+                    destination_vehicle_tlc: item?.destination_identifier || "",
+                    vehicle_id: item?.vehicle_name || "",
+                    pic_employee_id: "",
+                    flight_number: item?.shipment_number || "",
+                    flight_schedule: item?.etd || "",
+                    flight_schedule_timezone: item?.etd_timezone || "",
+                    etd_vehicle: item?.etd || "",
+                    etd_vehicle_timezone: item?.etd_timezone || "",
+                    eta_vehicle: item?.eta || "",
+                    eta_vehicle_timezone: item?.eta_timezone || "",
+                    is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
+                }
+            }));
+
+            this.vehicle_form = checkedItem.map((item, idx) => ({
+                key: item?.shipment_schedule_id,
+                state: {
+                    shipment_schedule_id: item?.shipment_schedule_id,
+                    tlc_origin: item?.origin_identifier || "",
+                    tlc_destination: item?.destination_identifier || "",
+                    vehicle_id: item?.vehicle_id || "",
+                    flight_number: item?.shipment_number || "",
+                    etd: item?.etd || "",
+                    etd_timezone: item?.etd_timezone || "",
+                    eta: item?.eta || "",
+                    eta_timezone: item?.eta_timezone || "",
+                    is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
+                }
+            }));
+
+            if (checkedItem.length === 0) this.selected_manifest_vehicle = '';
+        },
+        chooseRow(newKey, done) {
+            this.selected_manifest_vehicle = newKey;
+            this.vehicle = this.vehicle.map(item => ({
+                ...item,
+                state: {
+                    ...item.state,
+                    is_active: item.key === newKey
+                }
+            }));
+            this.vehicle_form = this.vehicle_form.map(item => ({
+                ...item,
+                state: {
+                    ...item.state,
+                    is_active: item.key === newKey
+                }
+            }));
         },
     },
     mounted() {
@@ -288,3 +656,27 @@ export default {
     },
 }
 </script>
+<style> 
+.container-clear-item {
+  display: flex;
+  justify-content: flex-end;
+}
+.clear-item {
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
+  color: red;
+  margin: 10px 0;
+}
+.parent-container {
+  padding-top: 30px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.container-clear-item {
+  cursor: pointer;
+  color: #007bff;
+}
+
+</style>

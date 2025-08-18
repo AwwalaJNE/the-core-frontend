@@ -34,6 +34,7 @@
                     
                     <template v-if="listenIsMultiple == true">
                       <el-select 
+                      ref="filterInputRef"
                       v-model="arrValue" 
                       filterable
                       multiple
@@ -43,6 +44,7 @@
                       :disabled="listenIsDisabled"
                       :loading="loadingActive"
                       @change="updateValue"
+                      @visible-change="setupSanitizeFilterInput"
                       :state="props.err !== undefined && props.err !== '' ?'danger':'gray'">
                           <el-option
                           v-for="(item,key) in DataArr"
@@ -56,6 +58,7 @@
                     </template>
                     <template v-else-if="listenIsMultipleTags == true">
                         <el-select
+                            ref="filterInputRef"
                             v-model="arrValue"
                             multiple
                             filterable
@@ -68,6 +71,7 @@
                             :loading="loadingActive"
                             :is-Multiple-Tag="listenIsMultipleTags"
                             @change="updateValue"
+                            @visible-change="setupSanitizeFilterInput"
                             :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
                         >
                             <el-option
@@ -81,6 +85,7 @@
                     </template>
                     <template v-else-if="listenIsMultiple == false">
                      <el-select
+                      ref="filterInputRef"
                       v-model="value" 
                       :allow-create="listenAllowCreate"
                       filterable
@@ -89,6 +94,7 @@
                       :disabled="listenIsDisabled"
                       @change="updateValue"
                       @focus="inputFocus"
+                      @visible-change="setupSanitizeFilterInput"
                       :clearable="listenHasClearButton"
                       :loading="loadingActive"
                       :state="props.err !== undefined && props.err !== '' ?'danger':'gray'">
@@ -245,7 +251,29 @@ export default {
             return {
                 [this.customBind]: label
             };
+        },
+        setupSanitizeFilterInput() {
+            this.$nextTick(() => {
+                const inputEls = this.$el.querySelectorAll('input.el-input__inner, input.el-select__input');
+
+                inputEls.forEach(input => {
+                    if (input._hasSanitizeListener) return;
+
+                    input.addEventListener('input', e => {
+                        const clean = e.target.value.replace(/[^a-zA-Z0-9_\-\*\(\)~ ,]/g, '');
+                        if (e.target.value !== clean) {
+                        e.target.value = clean;
+                        e.target.dispatchEvent(new Event('input'));
+                        }
+                    });
+
+                    input._hasSanitizeListener = true;
+                });
+            });
         }
+    },
+    mounted() {
+        this.setupSanitizeFilterInput();
     },
 }
 </script>

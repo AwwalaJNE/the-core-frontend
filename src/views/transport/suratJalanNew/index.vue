@@ -1,27 +1,16 @@
 <template>
     <div>
-        <vs-row justify="space-between">
-            <vs-col xs="6" sm="4" lg="4">
-                <div class="titlePage">
-                    <breadcrumb />
-                    <h2>{{ title }}</h2>
-                </div>
-            </vs-col>
-            <vs-col xs="6" sm="3" lg="3">
-                <div style="position:relative;display:flex;justify-content: flex-end;">
-                    <div style="width: 100px;padding-right: 5px;">
-                        <vs-button 
-                            flat 
-                            block 
-                            :active="true" 
-                            @click="openDialog"
-                        >
-                            <i class="bx bx-plus"></i> New
-                        </vs-button>
-                    </div>
-                </div>
-            </vs-col>
-        </vs-row>
+        <div style="position: absolute; top: 0; right: 0; width: 100px;">
+            <vs-button 
+                flat 
+                square 
+                block 
+                :active="true" 
+                @click="openDialog"
+            >
+                <i class="bx bx-plus"></i> New
+            </vs-button>
+        </div>
 
         <section class="nodes">
             <div class="box view">
@@ -31,6 +20,7 @@
                             <vs-row justify="end">
                                 <vs-col xs="6" sm="8" lg="4">
                                     <select-search-by 
+                                        :key="listenBreadcrumbTitle"
                                         :isMultiple="false" 
                                         :border="true" 
                                         :valueData="searchParams" 
@@ -102,8 +92,10 @@
                             :dateFilter="tempDate"
                             :query="tempSearch"
                             :searchBy="searchBy"
+                            :sj_type="listenBreadcrumbCode"
                             :filterDateBy="filterDateBy"
                             :status="filterStatusBy"
+                            :title="listenBreadcrumbTitle"
                         />
                     </transition>
                 </template>
@@ -113,16 +105,18 @@
         <div v-if="true">
             <dialogCreateSuratJalanV2
                 btnBlue="Approve"
-                title="Transport Surat Jalan"
+                :title="`Transport ${listenBreadcrumbTitle}`"
+                :breadcrumb="`${listenBreadcrumbTitle}`"
                 :active="dialogSuratJalan"
                 :closeDialog="closeDialogSuratJalan"
+                :sj_type="listenBreadcrumbCode"
                 @refresh="refresh"
             />
         </div>
         <div v-else>
             <dialogCreateSuratJalan
                 btnBlue="Approve"
-                title="Transport Surat Jalan"
+                :title="`Transport ${listenBreadcrumbTitle}`"
                 :active="dialogSuratJalan"
                 :closeDialog="closeDialogSuratJalan"
                 @refresh="refresh"
@@ -160,48 +154,10 @@ export default {
     data() {
         return {
             dialogSuratJalan: false,
-            title: "Surat Jalan",
             tempSearch: "",            
             searchPlaceholder: "Search Surat Jalan",
             searchBy:"manifest do number",
-            searchParams: [
-                {
-                    label: 'Surat Jalan',
-                    value: 'manifest do number'
-                },
-                {
-                    label: 'Orion Number',
-                    value: 'do_number'
-                },
-                {
-                    label: 'Vehicle Type',
-                    value: 'vehicle_type'
-                },
-                {
-                    label: 'Driver',
-                    value: 'pic'
-                },
-                {
-                    label: 'Mode',
-                    value: 'mode'
-                },
-                {
-                    label: 'Origin',
-                    value: 'origin'
-                },
-                {
-                    label: 'Destination',
-                    value: 'destination'
-                },
-                {
-                    label: 'Weight',
-                    value: 'weight'
-                },
-                {
-                    label: 'Status',
-                    value: 'status'
-                }
-            ],
+            searchParams: [],
             filterDateBy:"create",
             tempDate: [],
             dateParams: [
@@ -251,6 +207,14 @@ export default {
             ],
         };
     },
+    computed: {
+        listenBreadcrumbTitle() {
+            return this.$route.meta.breadCrumb;
+        },
+        listenBreadcrumbCode() {
+            return this.$route.meta.breadCrumbCode || "";
+        },
+    },
     watch: {
         searchBy(old, val) {
             if (old !== val) {
@@ -259,8 +223,57 @@ export default {
                 });
             }
         },
+        listenBreadcrumbTitle: {
+            handler(val, oldVal) {
+                if (val !== oldVal && val !== undefined) {
+                    this.setSearchParams();
+                }
+            },
+            immediate: true
+        },
     },
     methods: {
+        setSearchParams() {
+            
+            this.searchParams = [
+                {
+                    label: `No ${this.listenBreadcrumbTitle}`,
+                    value: 'manifest do number'
+                },
+                {
+                    label: 'Orion Number',
+                    value: 'do_number'
+                },
+                {
+                    label: 'Vehicle Type',
+                    value: 'vehicle_type'
+                },
+                {
+                    label: 'Driver',
+                    value: 'pic'
+                },
+                {
+                    label: 'Mode',
+                    value: 'mode'
+                },
+                {
+                    label: 'Origin',
+                    value: 'origin'
+                },
+                {
+                    label: 'Destination',
+                    value: 'destination'
+                },
+                {
+                    label: 'Weight',
+                    value: 'weight'
+                },
+                {
+                    label: 'Status',
+                    value: 'status'
+                }
+            ]
+        },
         refresh() {
             this.$refs.SuratJalan.refresh();
         },

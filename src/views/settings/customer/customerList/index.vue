@@ -193,7 +193,7 @@ export default {
                     if(res.data.data.length > 0) {
                         if(res.data.data.length > 0){
                             res.data.data.map(item =>{
-                                item['customer_type_name'] = item.customer_type.customer_type_name
+                                item['customer_type_name'] = item.customer_type_name ?? null;
                                 if(item.is_active == true){
                                     item['status'] = 'Active'
                                 }else{

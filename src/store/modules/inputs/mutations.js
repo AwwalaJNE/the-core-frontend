@@ -2082,6 +2082,19 @@ export default {
     state.surat_muatan.manifest_number.valueData = payload
   },
 
+  SET_SURAT_MUATAN_MANIFEST_PREFIX(state, payload) {
+    state.surat_muatan.manifest_prefix.value = payload
+  },
+  SET_SURAT_MUATAN_MANIFEST_PREFIX_value(state, payload) {
+    state.surat_muatan.manifest_prefix.value = payload
+  },
+  SET_SURAT_MUATAN_MANIFEST_PREFIX_ValueData(state, payload) {
+    state.surat_muatan.manifest_prefix.valueData = payload
+  },
+  SET_SURAT_MUATAN_MANIFEST_PREFIX_isDisabled(state, payload) {
+    state.surat_muatan.manifest_prefix.isDisabled = payload
+  },
+
   SET_SURAT_MUATAN_FLIGHT_NUMBER(state, payload) {
     state.surat_muatan.flight_number.value = payload
   },
@@ -2090,6 +2103,9 @@ export default {
   },
   SET_SURAT_MUATAN_FLIGHT_NUMBER_visible(state, payload) {
     state.surat_muatan.flight_number.visible = payload
+  },
+  SET_SURAT_MUATAN_FLIGHT_NUMBER_isDisabled(state, payload) {
+    state.surat_muatan.flight_number.isDisabled = payload
   },
 
   SET_SURAT_MUATAN_FLIGHT_SCHEDULE(state, payload) {
@@ -2100,6 +2116,9 @@ export default {
   },
   SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible(state, payload) {
     state.surat_muatan.flight_schedule.visible = payload
+  },
+  SET_SURAT_MUATAN_FLIGHT_SCHEDULE_isDisabled(state, payload) {
+    state.surat_muatan.flight_schedule.isDisabled = payload
   },
 
   SET_SURAT_MUATAN_MAX_WEIGHT(state, payload) {
@@ -2120,6 +2139,9 @@ export default {
       state.surat_muatan.manifest_method_id.arrData = payload :
       state.surat_muatan.manifest_method_id.arrData = []
   },
+  SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled(state, payload) {
+    state.surat_muatan.manifest_method_id.isDisabled = payload
+  },
 
   SET_SURAT_MUATAN_NODE_ID_ORIGIN(state, payload) {
     state.surat_muatan.node_id_origin.value = payload
@@ -2137,6 +2159,12 @@ export default {
     state.surat_muatan.node_id_origin.hasOwnProperty('arrData') ?
       state.surat_muatan.node_id_origin.arrData = payload :
       state.surat_muatan.node_id_origin.arrData = []
+  },
+  SET_SURAT_MUATAN_NODE_ID_ORIGIN_visible(state, payload) {
+    state.surat_muatan.node_id_origin.visible = payload
+  },
+  SET_SURAT_MUATAN_NODE_ID_ORIGIN_isDisabled(state, payload) {
+    state.surat_muatan.node_id_origin.isDisabled = payload
   },
 
   SET_SURAT_MUATAN_NODE_ID_TRANSIT(state, payload) {
@@ -2231,6 +2259,9 @@ export default {
   SET_SURAT_MUATAN_NODE_ID_DESTINATION_visible(state, payload) {
     state.surat_muatan.node_id_destination.visible = payload
   },
+  SET_SURAT_MUATAN_NODE_ID_DESTINATION_isDisabled(state, payload) {
+    state.surat_muatan.node_id_destination.isDisabled = payload
+  },
 
   SET_SURAT_MUATAN_VEHICLE_TYPE_ID(state, payload) {
     state.surat_muatan.vehicle_type_id.value = payload
@@ -2270,6 +2301,9 @@ export default {
       state.surat_muatan.vehicle_id.arrData = payload :
       state.surat_muatan.vehicle_id.arrData = []
   },
+  SET_SURAT_MUATAN_VEHICLE_ID_isDisabled(state, payload) {
+    state.surat_muatan.vehicle_id.isDisabled = payload
+  },
 
   SET_SURAT_MUATAN_PIC_EMPLOYEE_ID(state, payload) {
     state.surat_muatan.pic_employee_id.value = payload
@@ -2285,6 +2319,9 @@ export default {
       state.surat_muatan.pic_employee_id.arrData = payload :
       state.surat_muatan.pic_employee_id.arrData = []
   },
+  SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_isDisabled(state, payload) {
+    state.surat_muatan.pic_employee_id.isDisabled = payload
+  },
 
   SET_SURAT_MUATAN_ETD(state, payload) {
     state.surat_muatan.etd.value = payload
@@ -2292,12 +2329,18 @@ export default {
   SET_SURAT_MUATAN_ETD_ValueData(state, payload) {
     state.surat_muatan.etd.valueData = payload
   },
+  SET_SURAT_MUATAN_ETD_isDisabled(state, payload) {
+    state.surat_muatan.etd.isDisabled = payload
+  },
 
   SET_SURAT_MUATAN_ETA(state, payload) {
     state.surat_muatan.eta.value = payload
   },
   SET_SURAT_MUATAN_ETA_ValueData(state, payload) {
     state.surat_muatan.eta.valueData = payload
+  },
+  SET_SURAT_MUATAN_ETA_isDisabled(state, payload) {
+    state.surat_muatan.eta.isDisabled = payload
   },
 
   SET_SURAT_MUATAN_AUTO_DEPART(state, payload) {
@@ -4610,6 +4653,25 @@ export default {
 
   //====== SURAT MUATAN STOCK ======//
 
+  SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER(state, payload) {
+    state.surat_muatan_stock.manifest_number.value = payload
+  },
+  SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER_ValueData(state, payload) {
+    state.surat_muatan_stock.manifest_number.valueData = payload
+  },
+  SET_SURAT_MUATAN_STOCK_MANIFEST_NUMBER_isDisabled(state, payload) {
+    state.surat_muatan_stock.manifest_number.isDisabled = payload
+  },
+
+
+  SET_SURAT_MUATAN_STOCK_SCHEDULE_ID(state, payload) {
+    state.surat_muatan_stock.schedule_id.value = payload
+  },
+  SET_SURAT_MUATAN_STOCK_SCHEDULE_ID_ValueData(state, payload) {
+    state.surat_muatan_stock.schedule_id.valueData = payload
+  },
+
+
   SET_SURAT_MUATAN_STOCK_VEHICLE_ID(state, payload) {
     state.surat_muatan_stock.vehicle_id.value = payload
   },
@@ -4621,18 +4683,47 @@ export default {
     state.surat_muatan_stock.vehicle_id.arrData = payload :
     state.surat_muatan_stock.vehicle_id.arrData = []
   },
-  
-  
-  SET_SURAT_MUATAN_STOCK_NO_SM(state, payload) {
-    state.surat_muatan_stock.no_sm.value = payload
+  SET_SURAT_MUATAN_STOCK_VEHICLE_ID_isDisabled(state, payload) {
+    state.surat_muatan_stock.vehicle_id.isDisabled = payload
   },
-  SET_SURAT_MUATAN_STOCK_NO_SM_ValueData(state, payload) {
-    state.surat_muatan_stock.no_sm.valueData = payload
+
+
+  SET_SURAT_MUATAN_STOCK_EMPLOYEE_DRIVER_ID(state, payload) {
+    state.surat_muatan_stock.employee_driver_id.value = payload
   },
-  SET_SURAT_MUATAN_STOCK_NO_SM_ArrData(state, payload) {
-    state.surat_muatan_stock.no_sm.hasOwnProperty('arrData') ?
-    state.surat_muatan_stock.no_sm.arrData = payload :
-    state.surat_muatan_stock.no_sm.arrData = []
+  SET_SURAT_MUATAN_STOCK_EMPLOYEE_DRIVER_ID_ValueData(state, payload) {
+    state.surat_muatan_stock.employee_driver_id.valueData = payload
+  },
+  SET_SURAT_MUATAN_STOCK_EMPLOYEE_DRIVER_ID_ArrData(state, payload) {
+    state.surat_muatan_stock.employee_driver_id.hasOwnProperty('arrData') ?
+    state.surat_muatan_stock.employee_driver_id.arrData = payload :
+    state.surat_muatan_stock.employee_driver_id.arrData = []
+  },
+
+
+  SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN(state, payload) {
+    state.surat_muatan_stock.node_id_origin.value = payload
+  },
+  SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN_ValueData(state, payload) {
+    state.surat_muatan_stock.node_id_origin.valueData = payload
+  },
+  SET_SURAT_MUATAN_STOCK_NODE_ID_ORIGIN_ArrData(state, payload) {
+    state.surat_muatan_stock.node_id_origin.hasOwnProperty('arrData') ?
+    state.surat_muatan_stock.node_id_origin.arrData = payload :
+    state.surat_muatan_stock.node_id_origin.arrData = []
+  },
+
+
+  SET_SURAT_MUATAN_STOCK_NODE_ID_DESTINATION(state, payload) {
+    state.surat_muatan_stock.node_id_destination.value = payload
+  },
+  SET_SURAT_MUATAN_STOCK_NODE_ID_DESTINATION_ValueData(state, payload) {
+    state.surat_muatan_stock.node_id_destination.valueData = payload
+  },
+  SET_SURAT_MUATAN_STOCK_NODE_ID_DESTINATION_ArrData(state, payload) {
+    state.surat_muatan_stock.node_id_destination.hasOwnProperty('arrData') ?
+    state.surat_muatan_stock.node_id_destination.arrData = payload :
+    state.surat_muatan_stock.node_id_destination.arrData = []
   },
 
 
@@ -4642,6 +4733,25 @@ export default {
   SET_SURAT_MUATAN_STOCK_ETA_ValueData(state, payload) {
     state.surat_muatan_stock.eta.valueData = payload
   },
+  SET_SURAT_MUATAN_STOCK_ETA_isDisabled(state, payload) {
+    state.surat_muatan_stock.eta.isDisabled = payload
+  },
+
+
+  SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE(state, payload) {
+    state.surat_muatan_stock.eta_timezone.value = payload
+  },
+  SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE_ValueData(state, payload) {
+    state.surat_muatan_stock.eta_timezone.valueData = payload
+  },
+  SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE_ArrData(state, payload) {
+    state.surat_muatan_stock.eta_timezone.hasOwnProperty('arrData') ?
+    state.surat_muatan_stock.eta_timezone.arrData = payload :
+    state.surat_muatan_stock.eta_timezone.arrData = []
+  },
+  SET_SURAT_MUATAN_STOCK_ETA_TIMEZONE_isDisabled(state, payload) {
+    state.surat_muatan_stock.eta_timezone.isDisabled = payload
+  },
 
 
   SET_SURAT_MUATAN_STOCK_ETD(state, payload) {
@@ -4649,6 +4759,25 @@ export default {
   },
   SET_SURAT_MUATAN_STOCK_ETD_ValueData(state, payload) {
     state.surat_muatan_stock.etd.valueData = payload
+  },
+  SET_SURAT_MUATAN_STOCK_ETD_isDisabled(state, payload) {
+    state.surat_muatan_stock.etd.isDisabled = payload
+  },
+
+
+  SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE(state, payload) {
+    state.surat_muatan_stock.etd_timezone.value = payload
+  },
+  SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_ValueData(state, payload) {
+    state.surat_muatan_stock.etd_timezone.valueData = payload
+  },
+  SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_ArrData(state, payload) {
+    state.surat_muatan_stock.etd_timezone.hasOwnProperty('arrData') ?
+    state.surat_muatan_stock.etd_timezone.arrData = payload :
+    state.surat_muatan_stock.etd_timezone.arrData = []
+  },
+  SET_SURAT_MUATAN_STOCK_ETD_TIMEZONE_isDisabled(state, payload) {
+    state.surat_muatan_stock.etd_timezone.isDisabled = payload
   },
 
 
@@ -4661,6 +4790,205 @@ export default {
 
 
   //====== END SURAT MUATAN STOCK ======//
+
+  //====== SURAT MUATAN SCHEDULE ======//
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_TYPE_ID(state, payload) {
+  state.surat_muatan_schedule.vehicle_type_id.value = payload;
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_TYPE_ID_ValueData(state, payload) {
+    state.surat_muatan_schedule.vehicle_type_id.valueData = payload;
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ArrData(state, payload) {
+    state.surat_muatan_schedule.vehicle_mode_id.hasOwnProperty('arrData')
+      ? state.surat_muatan_schedule.vehicle_mode_id.arrData = payload
+      : state.surat_muatan_schedule.vehicle_mode_id.arrData = [];
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_ID(state, payload) {
+    state.surat_muatan_schedule.vehicle_id.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_ID_ValueData(state, payload) {
+    state.surat_muatan_schedule.vehicle_id.valueData = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_ID_ArrData(state, payload) {
+    state.surat_muatan_schedule.vehicle_id.hasOwnProperty('arrData') ?
+    state.surat_muatan_schedule.vehicle_id.arrData = payload :
+    state.surat_muatan_schedule.vehicle_id.arrData = []
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_SHIPMENT_NUMBER(state, payload) {
+    state.surat_muatan_schedule.shipment_number.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_SHIPMENT_NUMBER_ValueData(state, payload) {
+    state.surat_muatan_schedule.shipment_number.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME(state, payload) {
+    state.surat_muatan_schedule.origin_name.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME_ValueData(state, payload) {
+    state.surat_muatan_schedule.origin_name.valueData = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_ORIGIN_IDENTIFIER(state, payload) {
+    state.surat_muatan_schedule.origin_identifier.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_ORIGIN_POINT(state, payload) {
+    state.surat_muatan_schedule.origin_point.value = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_ORIGIN_IDENTIFIER(state, payload) {
+    state.surat_muatan_schedule.origin_identifier.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_ORIGIN_IDENTIFIER_ValueData(state, payload) {
+    state.surat_muatan_schedule.origin_identifier.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_ORIGIN_POINT(state, payload) {
+    state.surat_muatan_schedule.origin_point.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_ORIGIN_POINT_ValueData(state, payload) {
+    state.surat_muatan_schedule.origin_point.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME(state, payload) {
+    state.surat_muatan_schedule.destination_name.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME_ValueData(state, payload) {
+    state.surat_muatan_schedule.destination_name.valueData = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_DESTINATION_IDENTIFIER(state, payload) {
+    state.surat_muatan_schedule.destination_identifier.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_DESTINATION_POINT(state, payload) {
+    state.surat_muatan_schedule.destination_point.value = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_DESTINATION_IDENTIFIER(state, payload) {
+    state.surat_muatan_schedule.destination_identifier.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_DESTINATION_IDENTIFIER_ValueData(state, payload) {
+    state.surat_muatan_schedule.destination_identifier.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_DESTINATION_POINT(state, payload) {
+    state.surat_muatan_schedule.destination_point.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_DESTINATION_POINT_ValueData(state, payload) {
+    state.surat_muatan_schedule.destination_point.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_ETD(state, payload) {
+    state.surat_muatan_schedule.etd.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_ETD_ValueData(state, payload) {
+    state.surat_muatan_schedule.etd.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_ETD_TIMEZONE(state, payload) {
+    state.surat_muatan_schedule.etd_timezone.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_ETD_TIMEZONE_ValueData(state, payload) {
+    state.surat_muatan_schedule.etd_timezone.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_ETA(state, payload) {
+    state.surat_muatan_schedule.eta.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_ETA_ValueData(state, payload) {
+    state.surat_muatan_schedule.eta.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_ETA_TIMEZONE(state, payload) {
+    state.surat_muatan_schedule.eta_timezone.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_ETA_TIMEZONE_ValueData(state, payload) {
+    state.surat_muatan_schedule.eta_timezone.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_INFORMATION(state, payload) {
+    state.surat_muatan_schedule.vehicle_information.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_INFORMATION_ValueData(state, payload) {
+    state.surat_muatan_schedule.vehicle_information.valueData = payload
+  },
+
+  SET_SURAT_MUATAN_SCHEDULE_REGISTRATION_NUMBER(state, payload) {
+    state.surat_muatan_schedule.registration_number.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_REGISTRATION_NUMBER_ValueData(state, payload) {
+    state.surat_muatan_schedule.registration_number.valueData = payload
+  },
+  
+  SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME_ArrData(state, payload) {
+    state.surat_muatan_schedule.origin_name.hasOwnProperty('arrData') ?
+      state.surat_muatan_schedule.origin_name.arrData = payload :
+      state.surat_muatan_schedule.origin_name.arrData = []
+  },
+  SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME_ArrData(state, payload) {
+    state.surat_muatan_schedule.destination_name.hasOwnProperty('arrData') ?
+      state.surat_muatan_schedule.destination_name.arrData = payload :
+      state.surat_muatan_schedule.destination_name.arrData = []
+  },
+  //====== END SURAT MUATAN SCHEDULE ======//
+
+  // ====== SYNC SURAT MUATAN ====== //
+SET_SYNC_SURAT_MUATAN_TRANSPORT_TYPE(state, payload) {
+  state.sync_surat_muatan.transport_type.value = payload;
+},
+
+SET_SYNC_SURAT_MUATAN_FLIGHT_STATUS(state, payload) {
+  state.sync_surat_muatan.flight_status.value = payload;
+},
+
+SET_SYNC_SURAT_MUATAN_FLIGHT_DATE(state, payload) {
+  state.sync_surat_muatan.flight_date.value = payload;
+},
+
+SET_SYNC_SURAT_MUATAN_DEP_IATA(state, payload) {
+  state.sync_surat_muatan.dep_iata.value = payload;
+},
+SET_SYNC_SURAT_MUATAN_DEP_IATA_ValueData(state, payload) {
+  state.sync_surat_muatan.dep_iata.valueData = payload
+},
+SET_SYNC_SURAT_MUATAN_DEP_IATA_ArrData(state, payload) {
+  state.sync_surat_muatan.dep_iata.hasOwnProperty('arrData') ?
+  state.sync_surat_muatan.dep_iata.arrData = payload :
+  state.sync_surat_muatan.dep_iata.arrData = []
+},
+
+SET_SYNC_SURAT_MUATAN_ARR_IATA(state, payload) {
+  state.sync_surat_muatan.arr_iata.value = payload;
+},
+SET_SYNC_SURAT_MUATAN_ARR_IATA_ValueData(state, payload) {
+  state.sync_surat_muatan.arr_iata.valueData = payload
+},
+SET_SYNC_SURAT_MUATAN_ARR_IATA_ArrData(state, payload) {
+  state.sync_surat_muatan.arr_iata.hasOwnProperty('arrData') ?
+  state.sync_surat_muatan.arr_iata.arrData = payload :
+  state.sync_surat_muatan.arr_iata.arrData = []
+},
+
+
+SET_SYNC_SURAT_MUATAN_AIRLINE_IATA(state, payload) {
+  state.sync_surat_muatan.airline_iata.value = payload;
+},
+SET_SYNC_SURAT_MUATAN_AIRLINE_IATA_ValueData(state, payload) {
+  state.sync_surat_muatan.airline_iata.valueData = payload
+},
+SET_SYNC_SURAT_MUATAN_AIRLINE_IATA_ArrData(state, payload) {
+  state.sync_surat_muatan.airline_iata.hasOwnProperty('arrData') ?
+  state.sync_surat_muatan.airline_iata.arrData = payload :
+  state.sync_surat_muatan.airline_iata.arrData = []
+},
+
+SET_SYNC_SURAT_MUATAN_FLIGHT_IATA(state, payload) {
+  state.sync_surat_muatan.flight_iata.value = payload;
+},
+// ====== END SYNC SURAT MUATAN ====== //
+
+
 
     //====== START RECEIVING LOG ======//
     SET_RECEIVING_LOG_INBOUND_NUMBER(state, payload) {
@@ -4686,4 +5014,116 @@ export default {
       state.receiving_log.status.arrData = payload :
       state.receiving_log.status.arrData = []
     },
+
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID(state, payload) {
+    state.surat_muatan_schedule.vehicle_mode_id.value = payload;
+  },
+  
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ValueData(state, payload) {
+    state.surat_muatan_schedule.vehicle_mode_id.valueData = payload;
+  },
+  
+  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ArrData(state, payload) {
+    state.surat_muatan_schedule.vehicle_mode_id.hasOwnProperty('arrData') ?
+      state.surat_muatan_schedule.vehicle_mode_id.arrData = payload :
+      state.surat_muatan_schedule.vehicle_mode_id.arrData = []
+  },
+
+
+
+  // ====== SURAT MUATAN VEHICLE ====== //
+  SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE(state, payload) {
+    state.surat_muatan_vehicle.origin_branch_code.value = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_ValueData(state, payload) {
+    state.surat_muatan_vehicle.origin_branch_code.valueData = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_ArrData(state, payload) {
+    state.surat_muatan_vehicle.origin_branch_code.hasOwnProperty('arrData') ?
+      state.surat_muatan_vehicle.origin_branch_code.arrData = payload :
+      state.surat_muatan_vehicle.origin_branch_code.arrData = []
+  },
+
+
+  SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE(state, payload) {
+    state.surat_muatan_vehicle.destination_branch_code.value = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_ValueData(state, payload) {
+    state.surat_muatan_vehicle.destination_branch_code.valueData = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_ArrData(state, payload) {
+    state.surat_muatan_vehicle.destination_branch_code.hasOwnProperty('arrData') ?
+      state.surat_muatan_vehicle.destination_branch_code.arrData = payload :
+      state.surat_muatan_vehicle.destination_branch_code.arrData = []
+  },
+
+
+  SET_SURAT_MUATAN_VEHICLE_VEHICLE_ID(state, payload) {
+    state.surat_muatan_vehicle.vehicle_id.value = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_VEHICLE_ID_ValueData(state, payload) {
+    state.surat_muatan_vehicle.vehicle_id.valueData = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_VEHICLE_ID_ArrData(state, payload) {
+    state.surat_muatan_vehicle.vehicle_id.hasOwnProperty('arrData') ?
+      state.surat_muatan_vehicle.vehicle_id.arrData = payload :
+      state.surat_muatan_vehicle.vehicle_id.arrData = []
+  },
+
+
+  SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID(state, payload) {
+    state.surat_muatan_vehicle.employee_driver_id.value = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID_visible(state, payload) {
+    state.surat_muatan_vehicle.employee_driver_id.visible = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID_ValueData(state, payload) {
+    state.surat_muatan_vehicle.employee_driver_id.valueData = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID_ArrData(state, payload) {
+    state.surat_muatan_vehicle.employee_driver_id.hasOwnProperty('arrData') ?
+      state.surat_muatan_vehicle.employee_driver_id.arrData = payload :
+      state.surat_muatan_vehicle.employee_driver_id.arrData = []
+  },
+
+
+  SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER(state, payload) {
+    state.surat_muatan_vehicle.flight_number.value = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER_ValueData(state, payload) {
+    state.surat_muatan_vehicle.flight_number.valueData = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER_visible(state, payload) {
+    state.surat_muatan_vehicle.flight_number.visible = payload
+  },
+
+
+  SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE(state, payload) {
+    state.surat_muatan_vehicle.flight_schedule.value = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE_ValueData(state, payload) {
+    state.surat_muatan_vehicle.flight_schedule.valueData = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE_visible(state, payload) {
+    state.surat_muatan_vehicle.flight_schedule.visible = payload
+  },
+
+
+  SET_SURAT_MUATAN_VEHICLE_ETD(state, payload) {
+    state.surat_muatan_vehicle.etd.value = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_ETD_ValueData(state, payload) {
+    state.surat_muatan_vehicle.etd.valueData = payload
+  },
+
+
+  SET_SURAT_MUATAN_VEHICLE_ETA(state, payload) {
+    state.surat_muatan_vehicle.eta.value = payload
+  },
+  SET_SURAT_MUATAN_VEHICLE_ETA_ValueData(state, payload) {
+    state.surat_muatan_vehicle.eta.valueData = payload
+  },
+
+
+  // ====== END SURAT MUATAN VEHICLE ====== //
 }

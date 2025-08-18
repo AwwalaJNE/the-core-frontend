@@ -1,27 +1,16 @@
 <template>
     <div>
-        <vs-row justify="space-between">
-            <vs-col xs="6" sm="4" lg="4">
-                <div class="titlePage">
-                    <breadcrumb />
-                    <h2>{{title + this.getNodeTypeLogin()}}</h2>
-                </div>
-            </vs-col>
-            <vs-col xs="6" sm="3" lg="3">
-                <div style="position:relative;display:flex;justify-content: flex-end;">
-                    <div style="width: 100px;padding-right: 5px;">
-                        <vs-button
-                        flat
-                        square
-                        block
-                        :active="true"
-                        @click="openDialog"
-                        > RECEIVING
-                        </vs-button>
-                    </div>
-                </div>
-            </vs-col>
-        </vs-row>
+        <div style="position: absolute; top: 0; right: 0; width: 100px;">
+            <vs-button 
+                flat 
+                square 
+                block 
+                :active="true" 
+                @click="openDialog"
+            >
+                RECEIVING
+            </vs-button>
+        </div>
 
         <section class="nodes">
             <div class="box view">
@@ -85,9 +74,16 @@
                   <vs-col xs="12" sm="6" lg="6" style="padding: 0;">
                     <vs-row justify="end">
                       <vs-col xs="12" sm="4" lg="4">
-                        <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy" :valueData="searchParams" :selectedValue="searchBy" />
+                        <select-search-by 
+                          :key="listenBreadcrumbCode"
+                          :isMultiple="false" 
+                          :border="true" 
+                          @updateSearchBy="updateSearchBy" 
+                          :valueData="searchParams" 
+                          :selectedValue="searchBy" 
+                        />
                       </vs-col>
-                      <search-input ref="searchInput" @handleSearch="handleSearch" @searchValue="searchValue" :placeholder="searchPlaceholder" :isNumeric="searchByNumeric" />
+                      <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" :isNumeric="searchByNumeric" />
                     </vs-row>
                   </vs-col>
                 </vs-row>
@@ -186,6 +182,8 @@
                           :dateFilter="tempDate"
                           :isReset="reset"
                           :searchBy="searchBy"
+                          :title="listenBreadcrumbTitle"
+                          :type="listenBreadcrumbCode"
                           @updateLocalStorage="updateLocalStorage"
                         />
                     </transition>
@@ -250,16 +248,20 @@ export default {
                 value: '-'
               },
               {
-                label: 'Info',
-                value: 'INFO'
+                label: 'Outstanding',
+                value: 'OUTSTANDING'
+              },
+              {
+                label: 'Unreceived',
+                value: 'UNRECEIVED'
               },
               {
                 label: 'Received',
                 value: 'RECEIVED'
               },
               {
-                label: 'Outstanding',
-                value: 'OUTSTANDING'
+                label: 'Missroute Received',
+                value: 'MISSROUTE RECEIVED'
               }
             ],
             values: JSON.parse(localStorage.getItem("InboundFilters"))?.values || '-',
@@ -294,9 +296,84 @@ export default {
             searchBy:JSON.parse(localStorage.getItem("InboundFilters"))?.searchBy || 'inbound_number',
             searchByNumeric: false,
             searchPlaceholder: "Search Inbound Number",
-            searchParams: [
+            searchParams: [],
+            dateParams: [
               {
-                label: "Inbound Number",
+                label: 'Received Time',
+                value: 'received'
+              },
+              {
+                label: 'ETD',
+                value: 'etd'
+              },
+              {
+                label: 'ETA',
+                value: 'eta'
+              },
+              {
+                label: 'Departed Time',
+                value: 'departed'
+              },
+              {
+                label: 'Created Date',
+                value: 'created'
+              }
+            ],
+            reset: false,
+        }
+    },
+    computed: {
+      listenFormKey(){
+        return this.formKey || ''
+      },
+      listenIsMultiple(){
+        return this.isMultiple ? this.isMultiple : false
+      },
+      listenBreadcrumbTitle() {
+        return this.$route.meta.breadCrumb;
+      },
+      listenBreadcrumbCode() {
+        return this.$route.meta.breadCrumbCode || "";
+      },
+    },
+    watch: {
+      valueData: function (val) {
+        if (val != undefined) {
+          this.DataArr = val
+          this.updateLocalStorage()
+        }
+      },
+      selectedValue: function (val) {
+        if (val != undefined) {
+          if(this.isMultiple == false) {
+            this.value = val
+          } else {
+            this.arrValue = val
+          }
+          this.updateLocalStorage()
+        }
+      },
+      searchByNumeric: function(val, old) {
+        if (val !== old) {
+          this.clearSearch()
+          this.updateLocalStorage()
+        }
+      },
+      listenBreadcrumbCode: {
+        handler(val, oldVal) {
+          if (val !== oldVal && val !== undefined) {
+            this.setSearchParams();
+          }
+        },
+        immediate: true
+      },
+    },
+    methods: {
+        setSearchParams() {
+            
+            this.searchParams = [
+              {
+                label: `${this.listenBreadcrumbCode} Number`,
                 value: "inbound_number",
               },
               {
@@ -341,65 +418,8 @@ export default {
                 label: "Received At",
                 value: "inbound_node_name_receiver",
               }
-            ],
-            dateParams: [
-              {
-                label: 'Received Time',
-                value: 'received'
-              },
-              {
-                label: 'ETD',
-                value: 'etd'
-              },
-              {
-                label: 'ETA',
-                value: 'eta'
-              },
-              {
-                label: 'Departed Time',
-                value: 'departed'
-              },
-              {
-                label: 'Created Date',
-                value: 'created'
-              }
-            ],
-            reset: false,
-        }
-    },
-    computed: {
-      listenFormKey(){
-        return this.formKey || ''
-      },
-      listenIsMultiple(){
-        return this.isMultiple ? this.isMultiple : false
-      }
-    },
-    watch: {
-      valueData: function (val) {
-        if (val != undefined) {
-          this.DataArr = val
-          this.updateLocalStorage()
-        }
-      },
-      selectedValue: function (val) {
-        if (val != undefined) {
-          if(this.isMultiple == false) {
-            this.value = val
-          } else {
-            this.arrValue = val
-          }
-          this.updateLocalStorage()
-        }
-      },
-      searchByNumeric: function(val, old) {
-        if (val !== old) {
-          this.clearSearch()
-          this.updateLocalStorage()
-        }
-      }
-    },
-    methods: {
+            ]
+        },
         refresh(){
             this.$refs.inboundIncoming.refresh() // trigger function refresh form dari luar component list
         },

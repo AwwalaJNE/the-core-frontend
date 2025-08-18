@@ -32,6 +32,7 @@ export default {
     props: {
         dateFilter: String,
         filterDateBy: String,
+        filterPriorityBy: String,
         node:String,
         query: String,
         searchBy: String,
@@ -93,6 +94,7 @@ export default {
             dataItem: {},
             tempSearch: "",
             tempDate: [],
+            tempPriority: this.filterPriorityBy,
             date: "",
             dialogTariff: false,
             pagination: {
@@ -108,7 +110,7 @@ export default {
                 this.tempSearch = val
                 if(this.tempSearch !== old) {
                     this.pagination.page = 1
-                    this.getTableData(this.pagination.limit, 1, val, this.startDate, this.endDate)
+                    this.getTableData(this.pagination.limit, 1, val, this.startDate, this.endDate, this.node_filter, this.tempPriority)
                 }
             }
         },
@@ -119,24 +121,33 @@ export default {
                     this.startDate = this.tempDate !== null ? this.tempDate[0] : ''
                     this.endDate = this.tempDate !== null ? this.tempDate[1] : ''
                 }
-                this.getTableData(this.pagination.limit, 1, this.tempSearch, this.startDate, this.endDate, this.node_filter)
+                this.getTableData(this.pagination.limit, 1, this.tempSearch, this.startDate, this.endDate, this.node_filter, this.tempPriority)
             }
         },
         node: function(val, old) {
             if(val !== undefined) {
                 this.node_filter = val
                 if(this.node_filter !== old) {
-                    this.getTableData(this.pagination.limit, 1, this.tempSearch, this.startDate, this.endDate, val)
+                    this.getTableData(this.pagination.limit, 1, this.tempSearch, this.startDate, this.endDate, val, this.tempPriority)
+                }
+            }
+        },
+        filterPriorityBy: function(val, old) {
+            if(val !== undefined) {
+                this.tempPriority = val
+                if(this.tempPriority !== old) {
+                    this.getTableData(this.pagination.limit, 1, this.tempSearch, this.startDate, this.endDate, this.node_filter, val)
                 }
             }
         },
     },
     methods: {
-        async getTableData(limit,page,q, from, to) {
+        async getTableData(limit,page,q, from, to, node, tempPriority) {
             this.loading = true
             let query = "";
             let startDate = "";
             let endDate = "";
+            let priority = "";
             if(q !== undefined) {
                 query = q
             }
@@ -144,14 +155,18 @@ export default {
                 startDate = from
                 endDate = to
             }
+            if(tempPriority !== undefined) {
+                priority = tempPriority
+            }
             await axios
                 .get(this.URL.courier_delivery +
-                `?n=${this.listenNodeId}&s=${query}&date_filter=${this.dateFilter}&search_by=${this.searchBy}&page=${page}&limit=${limit}`,
+                `?n=${this.listenNodeId}&s=${query}&date_filter=${this.dateFilter}&search_by=${this.searchBy}&page=${page}&limit=${limit}&priority=${priority}`,
                 this.Helper.header())
                 .then(res => {
                     let arr = res.data.data
                     arr.map((item) => {
                         let children = {}
+                        let has_undelivered_connote = []
                         let delivery_runsheet_number = []
                         let dri = []
                         let hrs = []
@@ -162,6 +177,7 @@ export default {
                         let total_undelivered = []
                         let total_undelivery_received = []
                         item['children_width'] = {
+                            'Priority': 'auto',
                             'Runsheet #': 'md',
                             'DRI Number': 'sm',
                             'HRS Number': 'sm',
@@ -173,7 +189,15 @@ export default {
                             'Undelivered Received': 'xs',
                             'HRS': 'xxxxs'
                         }
+                        item['children_hide_label'] = ['Priority']
+                        item['children_type'] = {
+                            'Priority': 'icon-warning'
+                        }
+                        item['children_icon_tooltip'] = {
+                            'Priority': 'Contains Undelivered Koli'
+                        }
                         item.delivery.map((el) => {
+                            has_undelivered_connote.push(el.has_undelivered_connote)
                             delivery_runsheet_number.push(el.delivery_runsheet_number)
                             dri.push(el.dri ?? "-")
                             hrs.push(el.hrs ?? "-")
@@ -184,6 +208,7 @@ export default {
                             total_undelivered.push(el.total_undelivered)
                             total_undelivery_received.push(el.total_undelivery_received)
                         })
+                        children['Priority'] = has_undelivered_connote
                         children['Runsheet #'] = delivery_runsheet_number
                         children['DRI Number'] = dri
                         children['HRS Number'] = hrs
@@ -215,7 +240,7 @@ export default {
             this.refresh()
         },
         refresh(){
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate)
+            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate, this.node_filter, this.tempPriority)
         },
         actionDetail(row, item){
             let params = {

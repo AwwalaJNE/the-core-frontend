@@ -1,13 +1,5 @@
 <template>
     <div>
-        <vs-row justify="space-between">
-            <vs-col xs="6" sm="4" lg="4">
-                <div class="titlePage">
-                    <breadcrumb />
-                    <h2>{{ title }}</h2>
-                </div>
-            </vs-col>
-        </vs-row>
 
         <vs-row justify="space-around">
             <vs-col vs-type="flex" vs-justify="center" vs-align="center">
@@ -48,7 +40,7 @@
 
                     <template>
                         <vs-row align="center">
-                            <vs-col vs-align="center" xs="12" sm="6" :lg="navActive !== 'k-BAG' ? 3 : 4">
+                            <vs-col vs-align="center" xs="12" sm="6" :lg="navActive !== 'k-BAG' ? 4 : 3">
                                 <select-bag-origin
                                     ref="bag_origin"
                                     :isMultiple="false"
@@ -56,7 +48,7 @@
                                     @updateBagOrigin="updateBagOrigin" 
                                 />
                             </vs-col>
-                            <vs-col vs-align="center" xs="12" sm="6" :lg="navActive !== 'k-BAG' ? 3 : 4">
+                            <vs-col vs-align="center" xs="12" sm="6" :lg="navActive !== 'k-BAG' ? 4 : 3">
                                 <select-bag-destination
                                     ref="bag_destination"
                                     :isMultiple="false"
@@ -64,7 +56,7 @@
                                     @updateBagDestination="updateBagDestination" 
                                 />
                             </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="6"  :lg="navActive !== 'k-BAG' ? 3 : 4">
+                            <vs-col vs-align="center" xs="6" sm="6"  :lg="navActive !== 'k-BAG' ? 4 : 3">
                                 <select-bag-routing
                                     ref="bag_routing"
                                     :selectedValue="bagRouting"
@@ -73,7 +65,7 @@
                                     @updateBagRouting="updateBagRouting" 
                                 />
                             </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="4"  :lg="navActive !== 'k-BAG' ? 3 : 4" v-if="navActive === 'k-BAG'">
+                            <vs-col vs-align="center" xs="6" sm="4"  :lg="navActive !== 'k-BAG' ? 4 : 3" v-if="navActive === 'k-BAG'">
                                 <select-bag-tipe
                                     ref="bag_tipe"
                                     :selectedValue="bagTipe"
@@ -82,7 +74,7 @@
                                     @updateBagTipe="updateBagTipe" 
                                 />
                             </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="4"  :lg="navActive !== 'k-BAG' ? 3 : 4" v-if="navActive !== 'k-ARCHIVE'">
+                            <vs-col vs-align="center" xs="6" sm="4"  :lg="navActive !== 'k-BAG' ? 4 : 3" v-if="navActive !== 'k-ARCHIVE'">
                                 <select-bag-status
                                     ref="bag_status"
                                     :selectedValue="bagStatus"
@@ -91,7 +83,7 @@
                                     @updateBagStatus="updateBagStatus" 
                                 />
                             </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="4" :lg="navActive !== 'k-BAG' ? 3 : 4">
+                            <vs-col vs-align="center" xs="6" sm="4" :lg="navActive !== 'k-BAG' ? 4 : 3">
                                 <select-bag-irreg
                                     ref="bag_irreg"
                                     :selectedValue="bagIrreg"
@@ -100,7 +92,7 @@
                                     @updateBagIrreg="updateBagIrreg" 
                                 />
                             </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="4" :lg="navActive !== 'k-BAG' ? 3 : 4">
+                            <vs-col vs-align="center" xs="6" sm="4" :lg="navActive !== 'k-BAG' ? 4 : 3">
                                 <select-bag-source
                                     ref="bag_source"
                                     :selectedValue="bagSource"
@@ -109,7 +101,16 @@
                                     @updateBagSource="updateBagSource" 
                                 />
                             </vs-col>
-                            <vs-col vs-align="center" xs="12" sm="6" :lg="navActive !== 'k-BAG' ? 3 : 4">
+                            <vs-col vs-align="center" xs="6" sm="4" :lg="navActive !== 'k-BAG' ? 4 : 3">
+                                <select-bag-status-inventory
+                                    ref="bag_status_inventory"
+                                    :selectedValue="bagStatusInventory"
+                                    :isMultiple="false"
+                                    :border="true"
+                                    @updateBagStatusInventory="updateBagStatusInventory"
+                                />
+                            </vs-col>
+                            <vs-col vs-align="center" xs="12" sm="6" :lg="navActive !== 'k-BAG' ? 4 : 3">
                                 <select-search-by 
                                     :border="true" 
                                     :isMultiple="false" 
@@ -118,7 +119,7 @@
                                     @updateSearchBy="updateFilterDateBy" 
                                 />
                             </vs-col>
-                            <vs-col xs="12" sm="6" :lg="navActive !== 'k-BAG' ? 3 : 4">
+                            <vs-col xs="12" sm="6" :lg="navActive !== 'k-BAG' ? 4 : 3">
                                 <date-time
                                     :name="''"
                                     :rules="''"
@@ -139,6 +140,7 @@
                                 :bagOrigin="bagOrigin" 
                                 :bagRouting="bagRouting" 
                                 :bagSource="bagSource" 
+                                :bagStatusInventory="bagStatusInventory"
                                 :bagStatus="navActive === 'k-ARCHIVE' ? 'fullyOpened' : bagStatus" 
                                 :bagTipe="bagTipe" 
                                 :dateFilter="tempDate" 
@@ -171,6 +173,7 @@ import SelectBagTipe from "@/views/inventory/connote/bag/selectBagTipe"
 import SelectBagStatus from "@/views/inventory/connote/bag/selectBagOpened"
 import SelectBagStatusIrreg from "@/views/inventory/connote/bag/selectBagIrreg"
 import SelectBagSource from "@/views/inventory/connote/bag/selectBagSource"
+import SelectBagStatusInventory from "@/views/inventory/connote/bag/selectBagStatusInventory"
 import DateTime from "@/components/input/dateTime"
 
 // Bag
@@ -192,6 +195,7 @@ export default {
         "select-bag-status": SelectBagStatus,
         "select-bag-irreg": SelectBagStatusIrreg,
         "select-bag-source": SelectBagSource,
+        "select-bag-status-inventory": SelectBagStatusInventory,
         "date-time": DateTime,
     },
     data() {
@@ -291,6 +295,7 @@ export default {
             bagStatus: "-",
             bagIrreg: "",
             bagSource: "",
+            bagStatusInventory: "",
         }
     },
     methods: {
@@ -326,6 +331,9 @@ export default {
         updateBagSource(key,val){
             this.bagSource = val
         },
+        updateBagStatusInventory(key,val){
+            this.bagStatusInventory = val
+        },
         refresh(){
             let el = this.refreshInject
             this.$refs[el].refresh() // trigger function refresh form dari luar component list
@@ -352,6 +360,7 @@ export default {
             this.bagStatus = "-";
             this.bagIrreg = "-";
             this.bagSource = "-";
+            this.bagStatusInventory = "-";
             this.tempDate = [];
             this.tempSearch = ""
         },

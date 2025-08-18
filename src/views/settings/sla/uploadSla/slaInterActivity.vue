@@ -175,13 +175,6 @@ export default {
                     "type": "",
                     "rule": "string"
                 },
-                "Node Code":{
-                    "label":"Node Code",
-                    "key":"node_code",
-                    "width":"auto",
-                    "type": "",
-                    "rule": "required|string"
-                },
                 "Previous Activity":{
                     "label":"Previous Activity",
                     "key":"previous_activity",

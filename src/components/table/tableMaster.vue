@@ -49,7 +49,39 @@
 -->
 <template>
   <div>
-    <vs-table ref="tablee" v-model="selected" :class="{ 'scrollableAndStaticHeader': scrollableAndStaticHeader }">
+    <template v-if="!listenHideIsFilterColumn">
+      <div ref="dropdownContainer" class="column-toggle-wrapper">
+        <!-- Header Row: Button + Total -->
+        <div class="column-toggle-header" style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+          <vs-button @click="toggleDropdown" icon>
+            <i class="bx bx-slider"></i> Columns
+          </vs-button>
+          <p v-if="!listenTotalPerPage" class="columns-label" style="margin: 0;">Total: {{ dataTable.length }}</p>
+        </div>
+
+        <div v-show="showColumnDropdown" class="column-dropdown-panel">
+          <vs-input v-model="columnSearch" placeholder="Search columns..." />
+
+          <div class="checkbox-scroll">
+            <vs-checkbox
+              v-for="col in validColumn"
+              :key="col.key"
+              v-model="visibleKeys"
+              :val="col.key"
+            >
+              {{ col.label }}
+            </vs-checkbox>
+          </div>
+
+          <div class="footer-actions">
+            <vs-checkbox v-model="toggleAllVisible" @change="toggleAllColumns">
+              Show All Columns
+            </vs-checkbox>
+          </div>
+        </div>
+      </div>
+    </template>
+    <vs-table ref="tablee" v-model="selected" :isSingleSelect="listenIsSingleSelect" :class="{ 'scrollableAndStaticHeader': scrollableAndStaticHeader }">
       <template #header>
         <template v-if="listenIsSearchAble">
           <vs-input v-model="search" border placeholder="Search" />
@@ -79,6 +111,7 @@
           <template v-if="listenIsMultipleSelectWithIndex">
             <vs-th>
               <vs-checkbox
+                v-if="listenIsShowCheckboxAll"
                 v-model="isAllChecked"
                 :indeterminate="selected.length == listenDataTable.length"
                 @change="onAllCheckWithIndexChange"
@@ -87,6 +120,11 @@
             </vs-th>
           </template>
 
+          <template v-if="isActionFirst == true">
+              <vs-th class="action">
+                Action
+              </vs-th>
+            </template>
           <template v-if="listenColumn.length > 0">
             <template v-if="hasId == true">
               <vs-th class="automation-id" v-bind:data-kt-table="'ID'">
@@ -185,6 +223,24 @@
             :is-selected="!!selected.includes(item)"
             @click="onRowClick($event, item)"
           >
+            <template v-if="isActionFirst == true">
+              <vs-td class="action">
+                <vs-row justify="center" class="btn_action">
+                  <vs-col w="4">
+                    <vs-button
+                      block
+                      size="small"
+                      flat
+                      :active="true"
+                      type="submit"
+                      @click="actionSelect(item)"
+                    >
+                      <span>Select</span>
+                    </vs-button>
+                  </vs-col>
+                </vs-row>
+              </vs-td>
+            </template>
             <template v-if="listenIsMultipleSelect">
               <vs-td checkbox class="xs">
                 <vs-checkbox
@@ -491,11 +547,40 @@
                       "
                     >
                       <template v-if="item[column.key]">
-                        <i 
-                          class='bx bxs-error-circle icon-warning' 
-                          @click="actionPopup(item[column.key])"
-                        ></i>
+                        <template v-if="icon_tooltip">
+                          <vs-tooltip bottom>
+                            <i 
+                              class="bx bxs-error-circle icon-warning"
+                              @click="actionPopup(item[column.key])"
+                            ></i>
+                            <template #tooltip>
+                              {{ icon_tooltip }}
+                            </template>
+                          </vs-tooltip>
+                        </template>
+                        <template v-else>
+                          <i 
+                            class="bx bxs-error-circle icon-warning"
+                            @click="actionPopup(item[column.key])"
+                          ></i>
+                        </template>
                       </template>
+                    </template>
+                    <template
+                      v-else-if="
+                        column.typeInput !== undefined &&
+                          column.typeInput
+                            .toLowerCase()
+                            .includes('button_text')
+                      "
+                    >
+                    <span 
+                      v-if="item[column.key]" 
+                      style="cursor: pointer; color: rgb(53, 92, 255);"
+                      @click="actionPopup2(item)"
+                    >
+                      {{ item[column.key] }}
+                    </span>
                     </template>
                     <template
                       v-if="
@@ -584,20 +669,31 @@
                   <vs-td :key="key" :class="column.width ? column.width : ''">
                     
                     <!-- ✅ Missroute -->
-                    <!-- <template
+                    <template
                       v-if="
                         item[column.is_missroute] !== undefined &&
                         item[column.is_missroute] === 1
                       "
                     >
                       <div class="tooltip-container">
-                        <i class="bx bx-help-circle missroute-icon"></i>
+                        <!-- <vs-button
+                          class="status-missroute"
+                          circle
+                          icon
+                          disabled
+                          :active="false"
+                        >
+                      </vs-button> -->
+                        <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M11.295 10.585L8.705 8L8 8.705L10.585 11.29L11.295 10.585ZM13.25 8L14.27 9.02L8 15.295L8.705 16L14.98 9.73L16 10.75V8H13.25ZM12.71 13.41L13.415 12.705L14.98 14.27L16 13.25V16H13.25L14.275 14.975L12.71 13.41Z" fill="#eddb34"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z" fill="#eddb34"/>
+                        </svg>
                         <span class="tooltip-text">Missroute Received</span>
                       </div>
-                    </template> -->
+                    </template>
 
                     <!-- ✅ Normal status -->
-                    <template v-if="item[column.key] !== undefined">
+                    <template v-else-if="item[column.key] !== undefined && item[column.is_missroute] !== 1">
                       <vs-button
                         circle
                         icon
@@ -660,6 +756,9 @@
                         <span class="text-danger" @click="handleEdit(item)">{{
                           item[column.key] ? item[column.key] : ""
                         }}</span>
+                      </template>
+                      <template v-else-if="column.key === 'koli_with_priority'">
+                        <span class="text-link priority-link" @click="handleEdit(item)" v-html="item[column.key]"></span>
                       </template>
                       <template v-else>
                         <span class="text-link" @click="handleEdit(item)">{{
@@ -754,12 +853,16 @@
                     </template>
                     <template v-else>
                       <span>
-                        {{ item[column.key] 
-                            ? column.type_amount 
-                                ? Intl.NumberFormat('en-GB').format(item[column.key])
-                                : item[column.key]
-                            : "" 
-                        }}
+                        <span 
+                          :style="column.isTransitTag && item[column.isTransitTag] === 1 ? { borderBottom: '1px solid #666' }  : {}"
+                        >
+                          {{ item[column.key] 
+                              ? column.type_amount 
+                                  ? Intl.NumberFormat('en-GB').format(item[column.key])
+                                  : item[column.key]
+                              : "" 
+                          }}
+                        </span>
                         <span v-if="column.hasTooltip" style="margin-left: 5px; font-weight: bold; color: #666; cursor: help;">
                           <vs-tooltip bottom>
                             ?
@@ -767,6 +870,12 @@
                               {{ column.tooltip }}
                             </template>
                           </vs-tooltip>
+                        </span>
+                        <span
+                          v-if="column.isTransitTag && item[column.isTransitTag] === 1"
+                          style="display: ruby; font-weight: bold; font-style: italic; font-size: 10px"
+                        >
+                          TRANSIT
                         </span>
                       </span>
                     </template>
@@ -852,6 +961,17 @@
             <template v-if="hasAction == true">
               <vs-td class="action">
                 <vs-row justify="center" class="btn_action">
+                  <vs-col v-if="hasManageVehicle" w="4">
+                    <vs-button
+                      block
+                      flat
+                      size="small"
+                      :active="true"
+                      @click="actionManageVehicle(item)"
+                    >
+                      <span>Vehicle</span>
+                    </vs-button>
+                  </vs-col>
                   <vs-col w="4">
                     <vs-button
                       block
@@ -1355,7 +1475,9 @@
                         :class="item.hasOwnProperty('children_width') ? item['children_width'][c_item] : ''"
                         style="font-size: 0.85em; padding-left: 0.75em"
                       >
-                        {{ c_item.replace(/[&\/\\#,+$~%._'":*?<>{}]/g, " ") }}
+                        <template v-if="(item.children_hide_label && !item.children_hide_label.includes(c_item)) || !item.children_hide_label">
+                          {{ c_item.replace(/[&\/\\#,+$~%._'":*?<>{}]/g, " ") }}
+                        </template>
                       </th>
                     </tr>
                     <tr>
@@ -1368,9 +1490,20 @@
                               <li
                                 v-for="(itm, idx) in item.children[c_item]"
                                 :key="idx"
-                                :style="{ fontSize: '0.85em', height: listenHasChildStatus ? '2.5rem' : '' }"
+                                :style="{ margin: '1em 0', ontSize: '0.85em', height: listenHasChildStatus ? '2.5rem' : '' }"
                               >
-                                <template v-if="typeof itm === 'object'">
+                                <template v-if="item.children_type && item.children_type.hasOwnProperty(c_item)">
+                                  <template v-if="item.children_type[c_item] === 'icon-warning' && itm">
+                                    <vs-tooltip v-if="item.children_icon_tooltip.hasOwnProperty(c_item)" bottom>
+                                      <i class="bx bxs-error-circle icon-warning"></i>
+                                      <template #tooltip>
+                                        {{ item.children_icon_tooltip && item.children_icon_tooltip.hasOwnProperty(c_item) ? item.children_icon_tooltip[c_item] : '' }}
+                                      </template>
+                                    </vs-tooltip>
+                                  </template>
+                                  
+                                </template>
+                                <template v-else-if="typeof itm === 'object'">
                                   <template
                                     v-for="(itm_keys, itm_i) in Object.keys(
                                       itm
@@ -1468,7 +1601,7 @@
               Export
             </vs-button>
         </vs-col>
-        <vs-col w="8">
+        <vs-col w="10">
           <pagination-master
             :page="pagination.page"
             :limit="pagination.limit"
@@ -1513,6 +1646,7 @@ export default {
     page: Number,
     limit: Number,
     hasAction: Boolean,
+    hasManageVehicle: Boolean,
     scrollableAndStaticHeader: Boolean,
     hasAutoCompleteUrl: String,
     hasSelectLabel: String,
@@ -1530,6 +1664,7 @@ export default {
     hasLinkedCustomValidation: Array,
     hasLinkedChild: Array,
     hasId: Boolean,
+    isActionFirst: Boolean,
     editOnly: Boolean,
     removeOnly: Boolean,
     searchPreviewAction: Boolean,
@@ -1554,6 +1689,7 @@ export default {
     
     isMultipleSelect: Boolean,
     isMultipleSelectWithIndex: Boolean,
+    isShowCheckboxAll: Boolean,
     isMultipleSelectColoum: Boolean,
     selectedData: Array,
     isSearchAble: Boolean,
@@ -1596,6 +1732,14 @@ export default {
       type: Function,
       default: undefined,
     },
+    isSingleSelect: {
+      type: Boolean,
+      default: false
+    },
+    icon_tooltip: String,
+
+    isHideFilterColumn: Boolean,
+    isHideTotalPerPage: Boolean,
   },
   data() {
     return {
@@ -1617,18 +1761,14 @@ export default {
       localmax: 1000,
       dialogImageUrl: "",
       dialogVisible: false,
+
+      columnSearch: '',
+      showColumnDropdown: false,
+      visibleKeys: [],
+      toggleAllVisible: true,
     };
   },
   computed: {
-    listenColumn() {
-      if (this.hideColumnKey) {
-        const hiddenKeys = this.listenPermissions?.["core_data_table"]?.find(v => v.feature === this.hideColumnKey)?.filter?.["HIDDEN_COLUMN"] || [];
-        return this.dataColumn.filter(item => !hiddenKeys.includes(item.key));
-      } else {
-        return this.dataColumn;
-      }
-      
-    },
     listenDataTable() {
 
 
@@ -1646,6 +1786,9 @@ export default {
     listenIsMultipleSelectWithIndex() {
       return this.isMultipleSelectWithIndex;
     },
+    listenIsShowCheckboxAll() {
+      return this.isShowCheckboxAll || false;
+    },
     listenIsMultipleSelect() {
       return this.isMultipleSelect;
     },
@@ -1655,6 +1798,12 @@ export default {
     listenIsSearchAble() {
       return this.isSearchAble;
     },
+    listenHideIsFilterColumn() {
+      return this.isHideFilterColumn;
+    },
+    listenTotalPerPage() {
+      return this.isHideTotalPerPage;
+    },
     listenIsLocalPagination() {
       return this.isLocalPagination;
     },
@@ -1663,6 +1812,24 @@ export default {
     },
     listenHasChildStatus() {
       return this.hasChildStatus;
+    },
+    listenIsSingleSelect() {
+      return this.isSingleSelect || false;
+    },
+
+    listenHideColumn() {
+      return this.listenPermissions?.["core_data_table"]?.find(v => v.feature === this.hideColumnKey)?.filter?.["HIDDEN_COLUMN"] || [];
+    },
+    listenEnableColumn() {
+      return this.dataColumn.filter(col => !this.listenHideColumn.includes(col.key))?.map(col => col.key);
+    },
+    validColumn() {
+      return this.dataColumn
+        .filter(col => !this.listenHideColumn.includes(col.key))
+        .filter(col => col.label.toLowerCase().includes(this.columnSearch.toLowerCase()));
+    },
+    listenColumn() {
+      return this.dataColumn.filter(col => this.visibleKeys.includes(col.key));
     }
   },
   watch: {
@@ -1701,6 +1868,22 @@ export default {
     dataTable: function() {
       if (this.listenExpandable) {
         this.resetExpandedRows()
+      }
+    },
+    dataColumn: {
+      handler(newVal) {
+        if (this.visibleKeys.length === 0 && newVal.length > 0) {
+          this.visibleKeys = this.listenEnableColumn;
+        }
+      },
+      immediate: true,
+      deep: true
+    },
+    visibleKeys(newVal, oldVal) {
+      if (newVal.length === this.validColumn.length) {
+        this.toggleAllVisible = true;
+      } else {
+        this.toggleAllVisible = false;
       }
     }
   },
@@ -1744,11 +1927,17 @@ export default {
     actionUpdate(val, key) {
       this.$emit("actionUpdate", val, key);
     },
+    actionManageVehicle(val, key) {
+      this.$emit("actionManageVehicle", val, key);
+    },
     actionDuplicate(val, key) {
       this.$emit("actionDuplicate", val, key);
     },
     actionPopup(val, key) {
       this.$emit("actionPopup", val, key);
+    },
+    actionPopup2(item) {
+      this.$emit("actionPopup2", item);
     },
     actionCollect(val) {
       this.$emit("actionCollect", val);
@@ -1758,6 +1947,9 @@ export default {
     },
     actionRemove(val) {
       this.$emit("actionRemove", val);
+    },
+    actionSelect(val) {
+      this.$emit("actionSelect", val);
     },
     actionSearchPreview(val) {
       this.$emit("actionSearchPreview", val);
@@ -1878,11 +2070,13 @@ export default {
     },
 
     onRowClick(event, item) {
-      // eslint-disable-next-line quotes
       if (event.target?.tagName === "TD") {
-        // eslint-disable-next-line quotes
         if (typeof this.onRowClickCallback === "function") {
           this.onRowClickCallback(event, item, this.selected);
+        }
+
+        if (this.listenIsSingleSelect) {
+          this.selected = [item];
         }
 
         if (typeof this.onRowClickSelected === "function") {
@@ -1928,9 +2122,30 @@ export default {
             document.body.removeChild(link);
         }
     },
+
+    toggleDropdown() {
+      this.showColumnDropdown = !this.showColumnDropdown;
+    },
+    closeOnOutsideClick(e) {
+      const container = this.$refs.dropdownContainer;
+      if (this.showColumnDropdown && container && !container.contains(e.target)) {
+        this.showColumnDropdown = false;
+      }
+    },
+    toggleAllColumns() {
+      if (this.toggleAllVisible) {
+        this.visibleKeys = this.validColumn?.map(col => col.key);
+      } else {
+        this.visibleKeys = [];
+      }
+    }
   },
   mounted() {
+    document.addEventListener("click", this.closeOnOutsideClick);
     this.handleColumnsOrder();
+  },
+  beforeDestroy() {
+    document.removeEventListener("click", this.closeOnOutsideClick);
   },
 };
 </script>
@@ -1976,7 +2191,7 @@ export default {
       &.vs-table__th {
         position: relative;
         width: 280px !important;
-        min-width: 280px;
+        min-width: 140px;
         max-width: 300px;
         .vs-table__th__content {
           float: right;
@@ -2153,7 +2368,38 @@ span.text-danger {
 }
 
 </style>
-<!-- <style scoped>
+<style scoped>
+  .column-toggle-wrapper {
+    position: relative;
+  }
+
+  .column-dropdown-panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    width: 250px;
+    border-radius: 4px;
+    margin-top: 5px;
+  }
+
+  .checkbox-scroll {
+    max-height: 250px;
+    overflow-y: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .footer-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+  }
+
   .missroute-icon {
     color: #fbe99d;
     font-size: 30px;
@@ -2188,4 +2434,17 @@ span.text-danger {
     visibility: visible;
     opacity: 1;
   }
-</style> -->
+
+  .priority-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    line-height: 1.25;
+    vertical-align: middle;
+    cursor: pointer;
+  }
+  .columns-label {
+    font-weight: bold; 
+    color: #333;
+  }
+</style>

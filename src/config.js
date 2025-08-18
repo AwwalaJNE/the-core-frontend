@@ -1,5 +1,6 @@
 /* eslint-disable linebreak-style */
 const api = process.env.VUE_APP_API
+const apiFlight = process.env.VUE_APP_API_FLIGHT
 const urlFOrmated = new URL(api)
 
 
@@ -254,10 +255,16 @@ export default {
     // Surat Jalan Revamp V2
     revamp_surat_jalan_v2: api + 'revamp/manifest-delivery-order-v2',
 
+    // Surat Jalan Revamp V3
+    revamp_surat_jalan_v3: api + 'revamp/manifest-delivery-order-v3',
+
     // Surat Muatan Revamp
     revamp_surat_muatan: api + 'revamp/manifest',
 
     depart_surat_muatan: api + 'manifest',
+
+    // Manifest Vehicle
+    manifest_vehicle: api + 'manifest-vehicle',
 
     // Delivery Revamp
     revamp_delivery: api + 'revamp/delivery',
@@ -291,6 +298,8 @@ export default {
 
     // Branch List
     branch_list: api + 'branch-list',
+
+    branch_list_v2: api + 'branch-list-v2',
 
     // Origin List
     origin_list: api + 'origin-list',
@@ -408,4 +417,17 @@ export default {
     // insert remark
     insert_remark: api + 'remark-inbound-confirm',
     inbound_remark: api + 'inbound-remark',
+
+    // Setting Surat Muatan
+    schedule: api + 'schedule',
+    sync_flight: api + 'schedule/flight',
+
+    // Airports List
+    airports_list: api + 'schedule/airport-lov',
+
+    // Close Pre Alert SM
+    close_pre_alert_sm: api + 'manifest/sm-close-user-check',
+
+    // API Flight
+    search_flight: apiFlight + 'flight',
 }

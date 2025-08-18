@@ -18,7 +18,7 @@
         <template v-if="listenUserRoleName === 'HELPDESK'">
           <vs-button
             @click="approveAction(true)"
-            :disabled="!isAllowed || is_orion"
+            :disabled="!isAllowed"
             style="width: 6rem;"
             v-if="!disabledApprove"
           >
@@ -29,7 +29,7 @@
           <vs-button
             @click="approveAction(false)"
             danger
-            :disabled="!isAllowed || is_orion"
+            :disabled="!isAllowed"
             style="width: 6rem;"
             v-if="disabledApprove"
           >
@@ -41,7 +41,7 @@
         <template v-else>
           <vs-button
             @click="approveAction(true)"
-            :disabled="disabledApprove || is_orion"
+            :disabled="disabledApprove"
             style="width: 6rem;"
           >
             <span>
@@ -59,7 +59,7 @@
       </div>
     </vs-row>
 
-    <template v-if="!disabledApprove && !is_orion && !loading && !is_masterbag">
+    <template v-if="!disabledApprove && !loading && !is_masterbag">
       <div class="center in-get-bag">
         <vs-row class="mb-2 mt-2" align="center">
           <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
@@ -139,7 +139,7 @@
     <section class="bagging">
       <vs-row justify="space-between">
         <vs-col xs="12" sm="2" lg="2">
-          <template v-if="!disabledApprove && !is_orion && !loading">
+          <template v-if="!disabledApprove && !loading">
             <!-- <div v-if="radio_option === 'connote'" class="center in-get-bag">
               <vs-input 
                 border 
@@ -173,6 +173,7 @@
                 ref="formInputBaggingKoli"
                 @click-icon="$refs.cameraScanner.open('formInputBaggingKoli')"
                 v-bind:data-kt="'scan_input'"
+                @input="sanitizeAlphanumeric('item_code')"
               >
                 <template #icon>
                   <i class="bx bx-barcode-reader"></i>
@@ -192,6 +193,7 @@
                 ref="formInputBaggingBag"
                 @click-icon="$refs.cameraScanner.open('formInputBaggingBag')"
                 v-bind:data-kt="'scan_input'"
+                @input="sanitizeAlphanumeric('item_code')"
               >
                 <template #icon>
                   <i class="bx bx-barcode-reader"></i>
@@ -294,7 +296,7 @@
                          placeholder="Weight"
                          v-on:keyup.enter="updateValue"
                          ref="formInputBagging" icon-after
-                         :disabled="(disabledApprove || is_orion) && !loading"
+                         :disabled="(disabledApprove) && !loading"
                          >
                  <template #icon>Kg</template>
                </vs-input>
@@ -454,7 +456,7 @@ export default {
       this.is_auto_open_bag = val.target.checked;
     },
     handleValidateHubDelivery(val) {
-      this.is_hub_delivery_validation = val.target.checked;
+      this.is_hub_delivery_validation = val.target.checked || false;
     },
     async getResponse(data, loading) {
       
@@ -573,21 +575,22 @@ export default {
           destination : this.listenDestination,
           service: this.listenServiceType,
           is_pra_runsheet: this.is_pra_runsheet,
-          auto_open_bag: this.is_auto_open_bag
+          auto_open_bag: this.is_auto_open_bag,
+          is_hub_delivery_validation: this.is_hub_delivery_validation || false
       }
     },
     updateItemOnBag() {
-      this.form.item_number = this.item_code
+      this.form.item_number = this.item_code.replace(/\s+/g, '');
       this.form.is_pra_runsheet = this.is_pra_runsheet
       this.form.auto_open_bag = this.is_auto_open_bag,
-      this.form.is_hub_delivery_validation = this.is_hub_delivery_validation
+      this.form.is_hub_delivery_validation = this.is_hub_delivery_validation || false
       this.ProccessAddBagItem()
     },
     updateItemOnBagOrion() {
-      this.form.item_number = this.item_code_orion + "00"
+      this.form.item_number = (this.item_code_orion + "00").replace(/\s+/g, '');
       this.form.is_pra_runsheet = this.is_pra_runsheet
       this.form.auto_open_bag = this.is_auto_open_bag
-      this.form.is_hub_delivery_validation = this.is_hub_delivery_validation
+      this.form.is_hub_delivery_validation = this.is_hub_delivery_validation || false
       this.ProccessAddBagItem()
     },
     updateValue(){
@@ -798,7 +801,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.$store.getters.getInputs)
     this.getBagIdParam()
     this.getIsPraRunsheet()
     this.setInputFocus()

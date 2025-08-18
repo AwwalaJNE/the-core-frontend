@@ -145,6 +145,11 @@ export default {
                     width: "xs"
                 },
                 {
+                    label: "Received By",
+                    key: "latest_received_by_user_name",
+                    width: "xs"
+                }, 
+                {
                     label: "Last Bag Opened Date",
                     key: "latest_opened_bag",
                     width: "xs"
@@ -160,10 +165,20 @@ export default {
                     width: "auto"
                 },
                 {
-                    label: "Weight(Kg)",
+                    label: "Actual Weight(Kg)",
+                    key: "connote_actual_weight",
+                    width: "auto"
+                },
+                {
+                    label: "Cost Weight(Kg)",
                     key: "connote_chargeable_weight",
                     width: "auto"
-                },                
+                },
+                {
+                    label: "Routing Type",
+                    key: "routing_type",
+                    width: "auto"
+                },
                 {
                     label: "Service",
                     key: "connote_service_code",

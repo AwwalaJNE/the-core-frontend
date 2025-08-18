@@ -7,6 +7,23 @@
                     <h2>{{title}}</h2>
                 </div>
             </vs-col>
+            <template v-if="is_sm && !listenIsGateway && !is_user_check">
+                <vs-col xs="6" sm="3" lg="3">
+                    <div style="position:relative; display:flex; justify-content: flex-end;">
+                        <div style="width: 100px;padding-right: 5px;">
+                            <vs-button
+                                flat
+                                square
+                                block
+                                :active="true"
+                                @click="closePreAlert"
+                            > 
+                                Close SM
+                            </vs-button>
+                        </div>
+                    </div>
+                </vs-col>
+            </template>
         </vs-row>
 
         <section>
@@ -32,6 +49,7 @@
                                                     :disabled="processing"
                                                     @keyup.enter.native="updateValue('item_no')"
                                                     @click-icon="$refs.cameraScanner.open('formInputInbound')"
+                                                    @input="sanitizeAlphanumeric('item_no')"
                                                 >
                                                     <template #icon>
                                                         <i class="bx bx-barcode-reader"></i>
@@ -60,6 +78,7 @@
                                         :disabled="hasInboundNumber"
                                         @keyup.enter.native="updateValue('parent_no')"
                                         @click-icon="$refs.cameraScanner.open('formInputParentInbound')"
+                                        @input="sanitizeAlphanumeric('parent_no')"
                                     >
                                         <template #icon v-if="!hasInboundNumber">
                                             <i class="bx bx-barcode-reader"></i>
@@ -85,6 +104,7 @@
                                         :disabled="processing"
                                         @keyup.enter.native="updateValue('child_no')"
                                         @click-icon="$refs.cameraScanner.open('formInputChildInbound')"
+                                        @input="sanitizeAlphanumeric('child_no')"
                                     >
                                         <template #icon>
                                             <i class="bx bx-barcode-reader"></i>
@@ -122,9 +142,7 @@
                         <div class="nav-box">
                             <template>
                                 <transition name="slide-fade">
-                                    <template v-if="loading == false">
-                                        <InboundInformation :ref="'inboundInformation'" :dataTableProp="dataTable" :loading="loading"/>
-                                    </template>
+                                    <InboundInformation :ref="'inboundInformation'" :dataTableProp="dataTable" :loading="loading"/>
                                 </transition>
                             </template>
                         </div>
@@ -239,7 +257,11 @@ export default {
             receivingLogs: [],
             inboundNumber: '',
             processing: false,
-            showDialog: false
+            showDialog: false,
+            is_missroute: false,
+            is_plain: false,
+            is_sm: false,
+            is_user_check: false
         }
     },
     methods: {
@@ -346,18 +368,32 @@ export default {
                     let arr = [res.data.data];
                     this.receivingLogs = res.data.data.receiving_log;
                     this.inboundNumber = res.data.data.inbound_number;
+                    if (res.data.data.inbound_type === 'RECEIVING CONNOTE' || res.data.data.inbound_type === 'RECEIVING BAG') {
+                        this.is_plain = true
+                    }
+
+                    if (res.data.data.inbound_type === 'SM') {
+                        this.is_sm = true
+                        this.is_user_check = res.data.data.is_user_check === "1";
+                    }
 
                     arr = arr.map(item => ({
                         ...item,
                         total_received: item.total_received.toString(),
-                        total_unreceived: item.total_unreceived.toString()
+                        total_unreceived: item.total_unreceived.toString(),
+                        is_missroute: item.is_missroute == true ? 1 : 0
                     }));
-                    this.dataTable = arr;
+                    if (!this.is_plain) {
+                        this.dataTable = arr;
+                    } else {
+                        this.dataTable = [];
+                    }
                     this.dataTableProp = res.data.detail;
                     this.dataTableProp.forEach(item => {
                         if (item.is_masterbag === '1') {
                             item.item_type = 'MASTERBAG';
                         }
+                        item.is_missroute = item.is_missroute == true ? 1 : 0
                     });
                     this.dataTableProp.map(item => {
                       item,
@@ -415,7 +451,7 @@ export default {
             }
         },
         back(){
-            this.$router.push('/inbound/prealert')
+            this.$router.back();
             this.setRoutePageHistory(this.$route.meta, false);
         },
         handlerClearForm() {
@@ -433,6 +469,8 @@ export default {
             this.inbound_number = "";
         },
         removeInboundNumber() {
+            this.is_sm = false;
+            this.is_user_check = false;
             this.parent_no = '';
             this.inbound_number = '';
             this.hasInboundNumber = false;
@@ -476,7 +514,21 @@ export default {
         },
         closeDialog() {
         this.showDialog = false;
-        }
+        },
+
+        async closePreAlert() {
+            this.loading = true;
+            try {
+                const res = await axios.post(`${this.URL.close_pre_alert_sm}/${this.inbound_number}?n=${this.listenNodeId}`, {}, this.Helper.header());
+                
+                this.openNotification("success", null, "Success", "Succes Close SM");
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+            } finally {
+                this.loading = false;
+                this.refresh();
+            }
+        },
     },
     async mounted() {
         await this.loadInboundFromStorage();

@@ -93,7 +93,9 @@ const resources = [
     { resource_code: "CORE-01-092", resource_type: "PAGE", resource_name: "RECEIVING_LOG" },
     { resource_code: "CORE-01-093", resource_type: "PAGE", resource_name: "SETTINGS_COURIER" },
     { resource_code: "CORE-01-094", resource_type: "PAGE", resource_name: "SYSTEM_SCOPE" },
-    { resource_code: "CORE-01-094", resource_type: "PAGE", resource_name: "CLAIM_AND_BURDEN" }
+    { resource_code: "CORE-01-094", resource_type: "PAGE", resource_name: "CLAIM_AND_BURDEN" },
+    { resource_code: "CORE-01-095", resource_type: "PAGE", resource_name: "TRACE_FLIGHT" },
+    { resource_code: "CORE-01-096", resource_type: "PAGE", resource_name: "TRANSPORT_MANIFEST_VEHICLE" },
 ];
 
 

@@ -23,10 +23,11 @@ export default {
     props: {
         placeholder: String,
         isNumeric: Boolean,
+        valueData: String
     },
     data() {
         return {
-            value: ""
+            value: this.valueData || ""
         }
     },
     computed: {
@@ -59,31 +60,34 @@ export default {
 }
 </script>
 <style lang="scss">
-    .searchbox{
-        position: relative;
-        .vs-input-content{
+    .searchbox {
+        .vs-input-content {
+            margin: 0 0 10px 0 !important;
             position: relative;
-            max-width: 200px;
             display: flex;
             align-self: flex-end;
+
             label {
                 margin-left: 5px;
             }
         }
+
         button {
             position: absolute;
             right: 0;
             top: 0;
             bottom: 0;
-            box-shadow: -12px 0 10px -10px rgba(0,0,0,0.1);
-            i {
-                margin-top: 5px;
-            }
             padding: 0 10px;
+            margin: 0 0 10px 0;
             border: none;
             background: rgba(var(--vs-gray-2), 1);
             outline: 2px solid rgba(var(--vs-gray-2), 1);
             border-radius: 10px;
+            box-shadow: -12px 0 10px -10px rgba(0, 0, 0, 0.1);
+
+            i {
+            margin-top: 5px;
+            }
         }
-    }
+        }
 </style>

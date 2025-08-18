@@ -11,6 +11,7 @@
                                     <template v-if="InputObject[item]['visible'] == true">
                                         <div>
                                             <input-general 
+                                            :icon-after="InputObject[item].showIcon === true"
                                             :name="InputObject[item].label"
                                             :rules="InputObject[item].rule"
                                             :formKey="InputObject[item].key"
@@ -18,7 +19,12 @@
                                             :typeInput="InputObject[item].typeInput"
                                             :disabled="listenIsDisabled || InputObject[item].isDisabled"
                                             @updateValue="updateValue" 
-                                            @inputFocus="onfocuslah"/>
+                                            @inputFocus="onfocuslah"
+                                            @click-icon="handleIconClick">
+                                                <template v-if="InputObject[item].showIcon === true" #icon>
+                                                    <i class="bx bx-search"></i>
+                                                </template>
+                                            </input-general>
                                         </div>
                                     </template>
                                     <template v-else>
@@ -26,7 +32,8 @@
                                     </template>
                                 </template>
                                 <template v-else>
-                                    <input-general 
+                                    <input-general
+                                    :icon-after="InputObject[item].showIcon === true"
                                     :name="InputObject[item].label"
                                     :rules="InputObject[item].rule"
                                     :formKey="InputObject[item].key"
@@ -35,7 +42,12 @@
                                     :placeholder="InputObject[item].placeholder"
                                     :disabled="listenIsDisabled || InputObject[item].isDisabled"
                                     @updateValue="updateValue" 
-                                    @inputFocus="onfocuslah"/>
+                                    @inputFocus="onfocuslah"
+                                    @click-icon="handleIconClick">
+                                        <template v-if="InputObject[item].showIcon === true" #icon>
+                                            <i class="bx bx-search"></i>
+                                        </template>
+                                    </input-general>
                                 </template>
                                 <template v-if="InputObject[item].hasOwnProperty('visible') && InputObject[item]['visible'] == true">
                                     
@@ -53,6 +65,7 @@
                                             :valueData="InputObject[item].value"
                                             :typeInput="InputObject[item].typeInput"
                                             :disabled="listenIsDisabled"
+                                            :onlyNumber="true"
                                             @updateValue="updateValue" 
                                             @inputFocus="onfocuslah"/>
                                         </div>
@@ -70,6 +83,7 @@
                                     :typeInput="InputObject[item].typeInput"
                                     :placeholder="InputObject[item].placeholder"
                                     :disabled="listenIsDisabled"
+                                    :onlyNumber="true"
                                     @updateValue="updateValue" 
                                     @inputFocus="onfocuslah"/>
                                 </template>
@@ -97,7 +111,7 @@
                                             :formKey="InputObject[item].key"
                                             :valueData="InputObject[item].value"
                                             :typeInput="InputObject[item].typeInput"
-                                            :disabled="listenIsDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
+                                            :disabled="listenIsDisabled || InputObject[item].isDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
                                             @updateValue="updateValue" />
                                         </div>
                                     </template>
@@ -113,7 +127,7 @@
                                         :formKey="InputObject[item].key"
                                         :valueData="InputObject[item].value"
                                         :typeInput="InputObject[item].typeInput"
-                                        :disabled="listenIsDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
+                                        :disabled="listenIsDisabled || InputObject[item].isDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
                                         @updateValue="updateValue" />
                                     </div>
                                 </template>
@@ -520,6 +534,9 @@ export default {
                     this.InputObject = {}
                 }
         },
+        handleIconClick() {
+            this.$emit('handleIconClick')
+        },
         initializeDataItem() {
             this.iterateInputWait = true
             let obj = this.listenDataItem
@@ -562,10 +579,10 @@ export default {
                 let action = key.toUpperCase()
                 if(this.InputObject[key].hasOwnProperty('mapPicker')) {
                     if(this.InputObject[key]['typeInput'].toLowerCase().includes('latitude')){
-                        this.$store.dispatch(`SET_${prefix}_${action}`, item['latitude'])
+                        this.$store.dispatch(`SET_${prefix}_${action}`, String(item['latitude']))
                         // this.latitude = item['latitude']
                     } else if(this.InputObject[key]['typeInput'].toLowerCase().includes('longitude')){
-                        this.$store.dispatch(`SET_${prefix}_${action}`, item['longitude'])
+                        this.$store.dispatch(`SET_${prefix}_${action}`, String(item['longitude']))
                         // this.longitude = item['longitude']
                     }
                 }

@@ -1,28 +1,16 @@
 <template>
     <div>
-        <vs-row justify="space-between">
-            <vs-col xs="6" sm="4" lg="4">
-                <div class="titlePage">
-                    <breadcrumb />
-                    <h2>{{ title }}</h2>
-                </div>
-            </vs-col>
-            <vs-col xs="6" sm="3" lg="3">
-                <div style="position:relative;display:flex;justify-content: flex-end;">
-                    <div style="width: 100px;padding-right: 5px;">
-                        <vs-button 
-                            flat 
-                            square 
-                            block 
-                            :active="true" 
-                            @click="openDialog"
-                        >
-                            <i class="bx bx-plus"></i> New
-                        </vs-button>
-                    </div>
-                </div>
-            </vs-col>
-        </vs-row>
+        <div style="position: absolute; top: 0; right: 0; width: 100px;">
+            <vs-button 
+                flat 
+                square 
+                block 
+                :active="true" 
+                @click="openDialog"
+            >
+                <i class="bx bx-plus"></i> New
+            </vs-button>
+        </div>
 
         <section class="nodes">
             <div class="box view">
@@ -42,9 +30,9 @@
                                 <vs-col xs="6" sm="4" lg="4">
                                     <search-input 
                                         ref="searchInput" 
+                                        :valueData="tempSearch"
                                         :placeholder="searchPlaceholder"
-                                        @searchValue="searchValue" 
-                                        @handleSearch="handleSearch"
+                                        @searchValue="searchValue"
                                     />
                                 </vs-col>
                             </vs-row>
@@ -75,6 +63,30 @@
                                 </vs-select>
                             </template>
                         </vs-col>
+                        <vs-col xs="6" sm="4" lg="3">
+                            <template>
+                                <vs-select
+                                    class="m-select"
+                                    filter
+                                    placeholder="Select Route"
+                                    v-model="filterIsTransitBy"
+                                    :border="true"
+                                    :multiple="true"
+                                    @change="updateFilterIsTransit"
+                                >
+                                    <template>
+                                        <vs-option
+                                            v-for="(item,key) in filterIsTransit"
+                                            :key="key"
+                                            :label="item.label"
+                                            :value="item.value"
+                                        >
+                                            {{item.label}}
+                                        </vs-option>
+                                    </template>
+                                </vs-select>
+                            </template>
+                        </vs-col>
                         <vs-col xs="12" sm="12" lg="6" >
                             <vs-row>
                                 <vs-col w="4">
@@ -89,6 +101,7 @@
                                 <vs-col w="8">
                                     <daterange-filter 
                                         size="small" 
+                                        :valueData="tempDate"
                                         @searchDate="searchDate" 
                                     />
                                 </vs-col>
@@ -107,6 +120,7 @@
                             :query="tempSearch"
                             :searchBy="searchBy"
                             :status="filterStatusBy"
+                            :isTransit="filterIsTransitBy"
                         />
                     </transition>
                 </template>
@@ -146,8 +160,8 @@ export default {
     data() {
         return {
             title: "Surat Muatan",
-            tempSearch: "",
-            tempDate: [],
+            tempSearch: this.$ls.get('manifestFilter')?.tempSearch || "",
+            tempDate: this.$ls.get('manifestFilter')?.tempDate || [],
             dialogSuratMuatan: false,
             DataNode: [],
             DataStatus: [
@@ -158,9 +172,9 @@ export default {
             ],
             node_request: "",
             status_pickup: "",
-            searchBy:"manifest_number",
-            filterDateBy:"create",
-            searchPlaceholder: "Search Manifest Number",
+            searchBy: this.$ls.get('manifestFilter')?.searchBy || "manifest_number",
+            filterDateBy: this.$ls.get('manifestFilter')?.filterDateBy || "create",
+            searchPlaceholder: this.$ls.get('manifestFilter')?.searchPlaceholder || "Search Manifest Number",
             searchParams: [
                 {
                     label: 'Manifest Number',
@@ -205,19 +219,19 @@ export default {
                     value: 'eta'
                 }
             ],
-            filterStatusBy: "",
+            filterStatusBy: this.$ls.get('manifestFilter')?.filterStatusBy || "",
             filterStatus: [
                 {
-                    label: 'READY',
-                    value: 'READY'
+                    label: 'UNAPPROVED',
+                    value: 'UNAPPROVED'
                 },
                 {
-                    label: 'CANCELED',
-                    value: 'CANCELED'
+                    label: 'OUTSTANDING',
+                    value: 'OUTSTANDING'
                 },
                 {
-                    label: 'DEPARTED',
-                    value: 'DEPARTED'
+                    label: 'UNRECEIVED',
+                    value: 'UNRECEIVED'
                 },
                 {
                     label: 'RECEIVED',
@@ -228,9 +242,20 @@ export default {
                     value: 'MISSROUTE RECEIVED'
                 },
                 {
-                    label: 'INFO',
-                    value: 'INFO'
-                }
+                    label: 'CANCELED',
+                    value: 'CANCELED'
+                },
+            ],
+            filterIsTransitBy: this.$ls.get('manifestFilter')?.filterIsTransitBy || "",
+            filterIsTransit: [
+                {
+                    label: 'TRANSIT',
+                    value: '1'
+                },
+                {
+                    label: 'DIRECT',
+                    value: '0'
+                },
             ],
         };
     },
@@ -244,14 +269,27 @@ export default {
         },
     },
     methods: {
+        updateLocalStorage() {
+            this.$ls.set('manifestFilter', {
+                filterDateBy: this.filterDateBy,
+                tempDate: this.tempDate,
+                tempSearch: this.tempSearch,
+                filterIsTransitBy: this.filterIsTransitBy,
+                searchBy: this.searchBy,
+                searchPlaceholder: this.searchPlaceholder,
+                filterStatusBy: this.filterStatusBy,
+            });
+        },
         refresh() {
             this.$refs.SuratMuatan.refresh();
         },
         searchValue(val) {
             this.tempSearch = val;
+            this.updateLocalStorage();
         },
         searchDate(val) {
             this.tempDate = val;
+            this.updateLocalStorage();
         },
         closeDialog() {
             this.dialogSuratMuatan = false;
@@ -259,20 +297,23 @@ export default {
         },
         openDialog() {
             this.dialogSuratMuatan = true;
-            this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_NUMBER_visible", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_FLIGHT_SCHEDULE_visible", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_visible", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_PIC_EMPLOYEE_ID_visible", false);
         },        
         updateSearchBy(key, val) {
             val = val.replaceAll(" ", "_");
             this.searchBy = val;
             this.searchPlaceholder = key;
+            this.updateLocalStorage();
         },
         updateFilterDateBy(key,val) {
             this.filterDateBy = val;
+            this.updateLocalStorage();
         },
         updateFilterStatus(key){
+            this.updateLocalStorage();
+            this.refresh()
+        },
+        updateFilterIsTransit(key){
+            this.updateLocalStorage();
             this.refresh()
         },
         createNewShortcut() {
@@ -294,12 +335,6 @@ export default {
                 keysPressed[e.key.toLowerCase()] = false;
             });
         },
-        handleSearch() {
-            this.$nextTick(() => {
-                this.refresh();
-                this.$refs.searchInput.clear();
-            });
-        }
     },
     mounted() {
         this.createNewShortcut()

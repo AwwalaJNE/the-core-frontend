@@ -61,7 +61,7 @@ export default {
                   width: "xs",
                 },
                 {
-                    label: "PIC",
+                    label: "User",
                     key: "user_login",
                     width: "xs"
                 },

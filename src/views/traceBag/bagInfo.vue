@@ -80,7 +80,7 @@
                 <table-master 
                     hideColumnKey="trace-bag-info"
                     :dataTable="dataTable"
-                    :dataColumn="datacolumn"
+                    :dataColumn="!is_consolidated ? dataColumn.concat(additionalColumn) : dataColumn"
                     :tableLoading="loading"
                     :hasAction="false"
                     :hasPagination="false"
@@ -195,60 +195,63 @@ export default {
                 }
             ],
             dataTable: [],
-            datacolumn: [
-                { 
-                    label: "No", 
-                    key: "index", 
-                    width: "xxxxs" 
+            dataColumn: [
+                {
+                    label: "No",
+                    key: "no",
+                    width: "xs"
                 },
-                { 
-                    label: "Item", 
-                    key: "item_number", 
-                    width: "md" 
+                {
+                    label: "Item",
+                    key: "item_number",
+                    width: "md"
                 },
-                { 
-                    label: "Quantity", 
-                    key: "koli_qty", 
-                    width: "xxxxs" 
+                {
+                    label: "Quantity",
+                    key: "koli_qty",
+                    width: "xs"
                 },
-                { 
-                    label: "Of#", 
-                    key: "koli_sequence", 
-                    width: "xxxxs" 
+                {
+                    label: "Of#",
+                    key: "koli_sequence",
+                    width: "auto"
                 },
-                { 
-                    label: "Weight", 
-                    key: "koli_actual_weight", 
-                    width: "xxxxs" 
+                {
+                  label: "Weight",
+                  key: "bag_weight",
+                  width: "auto"
                 },
-                { 
-                    label: "Destination Code", 
-                    key: "destination_code", 
-                    width: "sm" 
+                {
+                    label: "Destination Code",
+                    key: "destination_code",
+                    width: "auto"
                 },
-                { 
-                    label: "Service", 
-                    key: "connote_service_code", 
-                    width: "xs" 
+                {
+                    label: "Service",
+                    key: "connote_service_code",
+                    width: "auto"
+                },                
+                {
+                    label: "Type",
+                    key: "item_type",
+                    width: "auto"
                 },
-                { 
-                    label: "Type", 
-                    key: "item_type", 
-                    width: "xxxxs" 
+                {
+                    label: "Date",
+                    key: "created_at",
+                    width: "xs"
                 },
-                { 
-                    label: "Runsheet Number", 
-                    key: "runsheet_number", 
-                    width: "md" 
-                },
-                { 
-                    label: "Create Date", 
-                    key: "created_at", 
-                    width: "sm" 
+            ],
+            additionalColumn: [
+                {
+                    label: "Runsheet Number",
+                    key: "runsheet_number",
+                    width: "auto"
                 }
             ],
             sm_number: "",
             dialogManifestList:false,
+            is_consolidated: false
         };
     },
     methods: {
@@ -290,18 +293,13 @@ export default {
             try {
                 const res = await axios.get(`${this.URL.bag}/${this.bag_number}?n=${this.listenNodeId}`, this.Helper.header());               
 
-                this.dataTable = res.data.detail.map((item, index) => ({
-                    index: index + 1,
-                    destination_code: item.item_type === 'KOLI' ? item.connote_receiver_tariff_code : item.node_tariff_code,
-                    ...item
-                }));
-
                 let data = res.data.data;
                 
                 if (data) {            
                     this.current_node_id = data.current_node_id;        
                     const currentLocationNode = await this.getNodeById(parseInt(this.current_node_id));
                     this.current_node_code = currentLocationNode?.node_code;
+                    this.is_consolidated = res?.data?.data?.is_consolidated === '1';
 
                     await this.getBag();
 
@@ -331,6 +329,22 @@ export default {
                             current_location_node_code: this.current_node_code || '-'
                         };
                     }
+                    this.dataTable = res.data.detail.map((item, index) => {
+                        const isKoli = !this.is_consolidated;
+                        
+                        return {
+                            ...item,
+                            no: index + 1,
+                            destination_code: isKoli ? item.connote_receiver_tariff_code : item.node_tariff_code,
+                            koli_qty: isKoli ? item.koli_qty : item.bag_detail_qty,
+                            koli_sequence: isKoli ? item.koli_sequence : '-',
+                            bag_weight: isKoli ? item?.connote_actual_weight : item.bag_weight,
+                            connote_service_code: isKoli ? item.connote_service_code : item.bag_service.join(', '),
+                            bag_detail_qty: res.data.data.bag_detail_qty,
+                            isDisabled: res.data.data.is_approve === 1,
+                            runsheet_number: item?.runsheet?.[item.runsheet.length - 1]?.delivery_runsheet_number || ''
+                        };
+                    });
                 }
             } catch (err) {
                 this.openNotification('danger', err.response?.data.code ?? '', 'Failed', err?.response?.data?.message ?? 'Something went wrong');

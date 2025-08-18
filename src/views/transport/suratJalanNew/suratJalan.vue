@@ -21,7 +21,8 @@
     <div v-if="true">
       <dialogCreateSuratJalanV2
       btnBlue="Edit"
-      title="Edit Transport Surat Jalan"
+      :title="`Edit Transport ${listenBreadcrumbTitle}`"
+      :breadcrumb="`${listenBreadcrumbTitle}`"
       :active="dialogSuratJalan"
       :closeDialog="closeDialogSuratJalan"
       :dataItem="dataItem"
@@ -31,7 +32,8 @@
     <div v-else>
       <dialogCreateSuratJalan
       btnBlue="Edit"
-      title="Edit Transport Surat Jalan"
+      :title="`Edit Transport ${listenBreadcrumbTitle}`"
+      :breadcrumb="`${listenBreadcrumbTitle}`"
       :active="dialogSuratJalan"
       :closeDialog="closeDialogSuratJalan"
       :dataItem="dataItem"
@@ -72,6 +74,8 @@ export default {
     query: String,
     searchBy: String,
     status: [Array, String],
+    title: String,
+    sj_type: String,
   },
   components: {
     "table-master": TableMaster,
@@ -85,19 +89,154 @@ export default {
       form: {},
       dataTable: [],
       dialogSuratJalan: false,
-      datacolumn: [
+      datacolumn: [],
+      customActionList: [
+      {
+        label: "Print",
+        key: "print",
+        attribute: "",
+      },
+      {
+        label: "Depart",
+        key: "depart",
+        attribute: "",
+      },
+      {
+        label: "Cancel",
+        key: "cancel",
+        attribute: "danger",
+      },
+      ],
+      
+      loading: false,
+      dataItem: {},
+      tempSearch: "",
+      tempDate: [],
+      startDate: "",
+      endDate: "",
+      dialogTariff: false,
+      pagination: {
+        limit: 20,
+        page_size: 1,
+        page: 1,
+      },
+      activeDialogCancel: false,
+      activeLoadingCancel: false,
+      pickupData: {},
+      manifest_do_number: "",
+      id: "",
+      activeDialogConfirmCancel: false,
+      loadingConfirmCancel: false,
+    };
+  },
+  computed: {
+    listenBreadcrumbTitle() {
+      return this.title;
+    },
+    listenBreadcrumbCode() {
+      return this.sj_type;
+    },
+  },
+  watch: {
+    listenBreadcrumbTitle: {
+      handler(val, oldVal) {
+        if (val !== oldVal && val !== undefined) {
+          this.setDatacolumn();
+        }
+      },
+      immediate: true
+    },
+    query: function(val, old) {
+      if (val !== undefined) {
+        this.tempSearch = val;
+        if (this.tempSearch !== old) {
+          this.pagination.page = 1
+          this.getTableData(
+          this.pagination.limit,
+          this.pagination.page,
+          val,
+          this.startDate,
+          this.endDate,
+          this.filterDateBy,
+          this.sj_type
+          );
+        }
+      }
+    },
+    filterDateBy: function(val, old) {
+      if (val !== undefined) {
+        if (val !== old) {
+          this.getTableData(
+          this.pagination.limit,
+          this.pagination.page,
+          this.tempSearch,
+          this.startDate,
+          this.endDate,
+          val,
+          this.sj_type
+          );
+        }
+      }
+    },
+    dateFilter: function(val, old) {
+      if (val !== undefined) {
+        this.tempDate = val;
+        if (this.tempDate !== old) {
+          this.startDate = this.tempDate !== null ? this.tempDate[0] : "";
+          this.endDate = this.tempDate !== null ? this.tempDate[1] : "";
+        }
+        this.getTableData(
+        this.pagination.limit,
+        this.pagination.page,
+        this.tempSearch,
+        this.startDate,
+        this.endDate,
+        this.filterDateBy,
+        this.sj_type
+        );
+      }
+    },
+    sj_type: function(val, old) {
+      if (val !== undefined) {
+        if (val !== old) {
+          this.getTableData(
+            this.pagination.limit,
+            this.pagination.page,
+            this.tempSearch,
+            this.startDate,
+            this.endDate,
+            this.filterDateBy,
+            val
+          );
+        }
+      }
+    },
+  },
+  methods: {
+    setDatacolumn() {
+      this.datacolumn = [
         {
-          label: "No Surat Jalan",
+          label: `No ${this.listenBreadcrumbCode}`,
           key: "manifest_do_number",
           width: "xxxs",
         },
         {
           label: "Status",
           key: "status_with_tooltip",
+          width: "xxs",
+        },
+        {
+          label: "Received",
+          key: "total_received",
           width: "xxxs",
         },
         {
-          label: "Total Item",
+          label: "Outstanding",
+          key: "total_outstanding",
+          width: "xxxs",
+        },
+        {
+          label: "Total Bag",
           key: "total_item",
           width: "xxxs",
         },
@@ -146,26 +285,26 @@ export default {
           key: "node_id_destination_name",
           width: "xxs",
         },
-        {
-          label: "Fix Cost Weight",
-          key: "fix_cost_weight",
-          width: "auto",
-        },
-        {
-          label: "Live Cost Weight",
-          key: "live_cost_weight",
-          width: "auto",
-        },
-        {
-          label: "Fix Actual Weight",
-          key: "fix_actual_weight",
-          width: "auto",
-        },
-        {
-          label: "Live Actual Weight",
-          key: "live_actual_weight",
-          width: "auto",
-        },
+        // {
+        //   label: "Fix Cost Weight",
+        //   key: "fix_cost_weight",
+        //   width: "auto",
+        // },
+        // {
+        //   label: "Live Cost Weight",
+        //   key: "live_cost_weight",
+        //   width: "auto",
+        // },
+        // {
+        //   label: "Fix Actual Weight",
+        //   key: "fix_actual_weight",
+        //   width: "auto",
+        // },
+        // {
+        //   label: "Live Actual Weight",
+        //   key: "live_actual_weight",
+        //   width: "auto",
+        // },
         {
           label: "ETD",
           key: "etd",
@@ -177,7 +316,7 @@ export default {
           width: "xxxs",
         },
         {
-          label: "Departed Time",
+          label: "Handover to Transport",
           key: "departed_time",
           width: "xxxs",
         },
@@ -188,7 +327,7 @@ export default {
           width: "xxxxs",
         },
         {
-          label: "Latest Node Receiver",
+          label: "Latest Node",
           key: "latest_node_code_receiver",
           width: "xxxxs",
         },
@@ -207,102 +346,17 @@ export default {
           key: "total_connote",
           width: "xxxs",
         },
-      ],
-      customActionList: [
-      {
-        label: "Print",
-        key: "print",
-        attribute: "",
-      },
-      {
-        label: "Depart",
-        key: "depart",
-        attribute: "",
-      },
-      {
-        label: "Cancel",
-        key: "cancel",
-        attribute: "danger",
-      },
-      ],
-      
-      loading: false,
-      dataItem: {},
-      tempSearch: "",
-      tempDate: [],
-      startDate: "",
-      endDate: "",
-      dialogTariff: false,
-      pagination: {
-        limit: 20,
-        page_size: 1,
-        page: 1,
-      },
-      activeDialogCancel: false,
-      activeLoadingCancel: false,
-      pickupData: {},
-      manifest_do_number: "",
-      id: "",
-      activeDialogConfirmCancel: false,
-      loadingConfirmCancel: false,
-    };
-  },
-  watch: {
-    query: function(val, old) {
-      if (val !== undefined) {
-        this.tempSearch = val;
-        if (this.tempSearch !== old) {
-          this.pagination.page = 1
-          this.getTableData(
-          this.pagination.limit,
-          this.pagination.page,
-          val,
-          this.startDate,
-          this.endDate,
-          this.filterDateBy
-          );
-        }
-      }
+      ]
     },
-    filterDateBy: function(val, old) {
-      if (val !== undefined) {
-        if (val !== old) {
-          this.getTableData(
-          this.pagination.limit,
-          this.pagination.page,
-          this.tempSearch,
-          this.startDate,
-          this.endDate,
-          val
-          );
-        }
-      }
-    },
-    dateFilter: function(val, old) {
-      if (val !== undefined) {
-        this.tempDate = val;
-        if (this.tempDate !== old) {
-          this.startDate = this.tempDate !== null ? this.tempDate[0] : "";
-          this.endDate = this.tempDate !== null ? this.tempDate[1] : "";
-        }
-        this.getTableData(
-        this.pagination.limit,
-        this.pagination.page,
-        this.tempSearch,
-        this.startDate,
-        this.endDate,
-        this.filterDateBy
-        );
-      }
-    },
-  },
-  methods: {
-    async getTableData(limit, page, q, from, to, qDate) {
+
+    async getTableData(limit, page, q, from, to, qDate, sj_type) {
       this.loading = true;
       let query = "";
       let startDate = "";
       let endDate = "";
       let queryDate = "";
+      let sjType = "";
+
       if (q !== undefined) {
         query = q;
         if (q.includes("/")) {
@@ -316,10 +370,15 @@ export default {
       if (qDate !== undefined) {
         queryDate = qDate;
       }
+
+      if (sj_type !== undefined) {
+        sjType = sj_type;
+      }
+
       await axios
         .get(
           this.URL.manifest_delivery_order +
-            `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${queryDate}&status=${this.status}`,
+            `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${queryDate}&status=${this.status}&sj_type=${sjType}`,
           this.Helper.header()
         )
         .then((res) => {
@@ -353,6 +412,8 @@ export default {
             item["total_masterbag"] = item.total_masterbag === 0 ? '0' : item.total_masterbag;
             item["total_bag"] = item.total_bag === 0 ? '0' : item.total_bag;
             item["total_connote"] = item.total_connote === 0 ? '0' : item.total_connote;
+            item["total_received"] = item.total_received === 0 ? '0' : item.total_received;
+            item["total_outstanding"] = item.total_outstanding === 0 ? '0' : item.total_outstanding;
             
             if (
                   (item.manifest_do_number?.startsWith("SJA") ||
@@ -367,7 +428,7 @@ export default {
                 }
 
             item["status_with_tooltip"] = item.is_transit === 1
-              ? `${item.status} <span class="status-tooltip" title="Terdapat Bag masih dalam proses transit."><i class="bx bxs-help-circle"></i></span>`
+              ? `${item.status} <span class="status-tooltip" title="Terdapat Bag masih dalam proses transit."><i class="bx bxs-truck" style="font-size: 0.8rem; vertical-align: middle; border: 1px solid; border-radius: 50%; padding: 3px;"></i></span>`
               : item.status;
 
             if (item.hasOwnProperty("status") && item["status"] !== null) {
@@ -520,7 +581,8 @@ export default {
       this.tempSearch,
       this.startDate,
       this.endDate,
-      this.filterDateBy
+      this.filterDateBy,
+      this.sj_type
       );
     },
     print() {

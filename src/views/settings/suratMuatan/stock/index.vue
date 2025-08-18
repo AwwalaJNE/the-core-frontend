@@ -27,6 +27,17 @@
                         </div>
                     </vs-col>
                     <vs-col xs="6" sm="3" lg="2">
+                        <div class="select-surat-muatan-stock">
+                            <selector 
+                                formKey="filter_source"
+                                :valueData="filterSource"
+                                :selectedValue="filterSourceBy"
+                                :isMultiple="false"
+                                @updateValue="updateValue" 
+                            />
+                        </div>
+                    </vs-col>
+                    <vs-col xs="6" sm="3" lg="2">
                         <select-search-by 
                             :border="true"
                             :isMultiple="false" 
@@ -35,7 +46,7 @@
                             @updateSearchBy="updateFilterDateBy"
                         />
                     </vs-col>
-                    <vs-col xs="12" sm="6" lg="6">
+                    <vs-col xs="12" sm="6" lg="4">
                         <date-time 
                             formKey="date_range"
                             :name="''" 
@@ -44,6 +55,20 @@
                             typeInput="daterange" 
                             @updateValue="updateValue" 
                         />
+                    </vs-col>
+                    <vs-col xs="6" sm="3" lg="2">
+                            <select-bag-origin
+                                ref="bag_origin"
+                                :border="true"
+                                @updateBagOrigin="updateBagOrigin"
+                            />
+                    </vs-col>
+                    <vs-col xs="6" sm="3" lg="2">
+                            <select-bag-destination
+                                ref="bag_destination"
+                                :border="true"
+                                @updateBagDestination="updateBagDestination"
+                            />
                     </vs-col>
                 </vs-row>
             </vs-col>
@@ -57,7 +82,9 @@
             :page="pagination.page"
             :limit="pagination.limit"
             :hasAction="true"
+            :hasManageVehicle="true"
             :hasPagination="true"
+            @actionManageVehicle="actionManageVehicle"
             @actionUpdate="actionUpdate"
             @actionRemove="actionRemove"
             @actionLimit="actionLimit"
@@ -85,6 +112,14 @@
             @cancel="() => closeDialog('dialog_remove')"
             @confirm="confirmRemove"
         />
+
+        <dialog-manage-vehicle-manifest
+            title="Manifest Vehicle"
+            :manifest_number="manifest_number"
+            :manifest_method="manifest_method"
+            :active="dialogManageVehicleManifest"
+            :closeDialog="closeDialogManageVehicleManifest"
+        />
     </div>
 </template>
 <script>
@@ -102,6 +137,9 @@ import SelectSearchBy from "@/components/search/selectSearchBy";
 import TableMaster from "@/components/table/tableMaster";
 
 import DialogCreateEdit from "@/views/settings/suratMuatan/stock/dialogCreateEdit";
+import SelectBagOrigin from "@/views/settings/suratMuatan/stock/selectBagOrigin.vue";
+import SelectBagDestination from "@/views/settings/suratMuatan/stock/selectBagDestination.vue";
+import DialogManageVehicleManifest from "@/views/transport/manifestVehicle/dialogCreateManage";
 
 export default {
     name:"surat-muatan-settings-stock-data-table",
@@ -114,11 +152,14 @@ export default {
         "date-time": DateTime,
         "dialog-create-edit": DialogCreateEdit,
         "dialog-confirm": DialogConfirm,
+        "dialog-manage-vehicle-manifest": DialogManageVehicleManifest,
         "inputan": Inputan,
         "search-input": SearchInput,
         "select-search-by": SelectSearchBy,
         "selector": Selector,
         "table-master" : TableMaster,
+        "select-bag-origin": SelectBagOrigin,
+        "select-bag-destination": SelectBagDestination,
     },
     data() {
         return {
@@ -135,8 +176,18 @@ export default {
                     width: "sm"
                 },
                 {
-                    label: "Surat Muatan",
-                    key: "no_sm",
+                    label: "Manifest Number",
+                    key: "manifest_number",
+                    width: "sm"
+                },
+                {
+                    label: "Origin",
+                    key: "node_code_origin",
+                    width: "sm"
+                },
+                {
+                    label: "Destination",
+                    key: "node_code_destination",
                     width: "sm"
                 },
                 {
@@ -153,6 +204,12 @@ export default {
                     label: "Created At",
                     key: "created_at",
                     width: "sm"
+                },
+                {
+                    label: "Via Schedule",
+                    key: "schedule_id_value",
+                    type: "status",
+                    width: "xxxxs"
                 },
                 {
                     label: "Active",
@@ -175,6 +232,8 @@ export default {
             dialogRemoveActive: false,
             loadingRemove: false,
             loadingEdit: false,
+            bagDestination: "",
+            bagOrigin: "",
             filterDateBy:"create",
             dateParams: [
                 {
@@ -205,9 +264,30 @@ export default {
                     value: '0'
                 }
             ],
+            filterSourceBy: "all",
+            filterSource: [
+                {
+                    label: 'All Creation Source',
+                    value: 'all'
+                },
+                {
+                    label: 'Schedule',
+                    value: 'schedule'
+                },
+                {
+                    label: 'Manual',
+                    value: 'manual'
+                }
+            ],
+            dialogManageVehicleManifest: false,
+            manifest_number: "",
+            manifest_method: 0
         }
     },
     computed: {
+        selectedBagOrigin() {
+            return this.bagOrigin || this.listenCurrentNode.branch_code;
+        }
     },
     watch: {
         query: function(val, old) {
@@ -242,6 +322,10 @@ export default {
                     this.filterStatusBy = this.filterStatus.find(item => item.value == val)?.value;
                     this.refresh();
                     break;
+                case "filter_source":
+                    this.filterSourceBy = this.filterSource.find(item => item.value == val)?.value;
+                    this.refresh();
+                    break;
                 case "date_range":
                     this.dateRange = val
                     this.startDate = this.dateRange[0];
@@ -255,6 +339,14 @@ export default {
             this.filterDateBy = val;
             this.refresh();
         },
+        updateBagOrigin(key, val) {
+            this.bagOrigin = val;
+            this.refresh();
+        },
+        updateBagDestination(key, val) {
+            this.bagDestination = val;
+            this.refresh();
+        },
         async getTableData(limit, page, q, from, to, searchBy) {
             this.loading = true
 
@@ -263,13 +355,16 @@ export default {
             let endDate = to || "";
             
             try {
-                const res = await axios.get(`${this.URL.sm_stock}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&filter_date_by=${this.filterDateBy}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}&is_active=${this.filterStatusBy}&vehicle_mode=${this.filterVehicleModeBy}`, this.Helper.header());
+                const res = await axios.get(`${this.URL.sm_stock}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&filter_date_by=${this.filterDateBy}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}&is_active=${this.filterStatusBy}&creation_source=${this.filterSourceBy}&vehicle_mode=${this.filterVehicleModeBy}&node_origin=${this.selectedBagOrigin}&node_destination=${this.bagDestination}`, this.Helper.header());
 
                 if(res.data.data.length > 0) {
                     let arr = res.data.data;
                     arr.map(item => {
                         item,
                         item["is_active"] = item.is_active === "1" ? true : false;
+                        item["schedule_id_value"] = item.schedule_id ? true : false;
+                        item["etd"] = item?.etd + " " + item?.etd_timezone;
+                        item["eta"] = item?.eta + " " + item?.eta_timezone;
                     })
                     
                     this.dataTable = arr
@@ -291,6 +386,15 @@ export default {
         actionUpdate(val){
             this.dataItem = val;
             this.dialogEditActive = true;
+        },
+        actionManageVehicle(val) {
+            this.dialogManageVehicleManifest = true;
+            this.manifest_number = val.manifest_number;
+            this.manifest_method = parseInt(val.vehicle_mode_id);
+        },
+        closeDialogManageVehicleManifest() {
+            this.dialogManageVehicleManifest = false;
+            this.refresh();
         },
         actionLimit(val){
             this.pagination.limit = val

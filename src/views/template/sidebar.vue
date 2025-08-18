@@ -50,7 +50,7 @@
             >
               <vs-sidebar-item
                 :id="item.label.trim()"
-                :class="{ active: activeItem === item.url }"
+                :class="{ active: activeItem === item.url || activeItem.startsWith(item.url) }"
               >
                 <template #icon>
                   <i :class="`bx ${item.icon !== null ? item.icon : ''}`" />
@@ -122,6 +122,40 @@ export default {
             resource_code: resourceLookup["TRACE_BAG"].resource_code,
             resource_name: resourceLookup["TRACE_BAG"].resource_name
           },
+        },
+        {
+          label: "Trace Flights",
+          url: "/trace-flight",
+          icon: "bx-search-alt-2",
+          permission: "",
+          children: [],
+          showAll: true,
+          meta: {
+            resource_type: resourceLookup["TRACE_FLIGHT"].resource_type,
+            resource_code: resourceLookup["TRACE_FLIGHT"].resource_code,
+            resource_name: resourceLookup["TRACE_FLIGHT"].resource_name
+          },
+        },
+        {
+          label: "Outgoing",
+          url: "/outgoing",
+          icon: "bx bxs-truck",
+          permission: "read-outgoing-module",
+          children: []
+        },
+        {
+          label: "Incoming",
+          url: "/incoming",
+          icon: "bx bxs-cart-download",
+          permission: "read-incoming-module",
+          children: []
+        },
+        {
+          label: "Inventory",
+          url: "/inventory",
+          icon: "bx bx-archive",
+          permission: "read-inventory", 
+          children: []
         },
         {
           label: "Transaction",
@@ -205,44 +239,11 @@ export default {
           ],
         },
         {
-          label: "Inventory",
+          label: "Sorting",
           url: null,
-          icon: "bx bx-archive",
+          icon: "bx bx-sort",
           permission: "read-inventory",
           children: [
-            {
-              label: "Inventory Item",
-              url: "/inventory/item",
-              icon: "bx bxs-checkbox",
-              permission: "read-bag",
-              meta: {
-                resource_type: resourceLookup["INVENTORY_ITEM"].resource_type,
-                resource_code: resourceLookup["INVENTORY_ITEM"].resource_code,
-                resource_name: resourceLookup["INVENTORY_ITEM"].resource_name
-              },
-            },
-            {
-              label: "Inventory Bag",
-              url: "/inventory/bag",
-              icon: "bx bxs-checkbox",
-              permission: "read-bag",
-              meta: {
-                resource_type: resourceLookup["INVENTORY_BAG_ITEM"].resource_type,
-                resource_code: resourceLookup["INVENTORY_BAG_ITEM"].resource_code,
-                resource_name: resourceLookup["INVENTORY_BAG_ITEM"].resource_name
-              },
-            },
-            {
-              label: "Create Bag",
-              url: "/inventory/bagging",
-              icon: "bx bxs-checkbox",
-              permission: "read-bag",
-              meta: {
-                resource_type: resourceLookup["INVENTORY_BAG"].resource_type,
-                resource_code: resourceLookup["INVENTORY_BAG"].resource_code,
-                resource_name: resourceLookup["INVENTORY_BAG"].resource_name
-              },
-            },
             {
               label: "Open Bag",
               url: "/inventory/unbagging",
@@ -282,7 +283,7 @@ export default {
         {
           label: "Transport",
           url: null,
-          icon: "bx bxs-truck",
+          icon: "bx bxs-car",
           children: [
             {
               label: "Transport Packing Kayu",
@@ -322,71 +323,17 @@ export default {
               },
             },
             {
-              label: "Surat Jalan",
-              url: "/transport/manifest-jalan",
+              label: "Manifest Vehicle",
+              url: "/transport/manifest-vehicle",
               icon: "bx bxs-checkbox",
-              permission: "read-manifest-delivery-order",
+              permission: "read-manifest-vehicle",
               meta: {
-                resource_type: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_type,
-                resource_code: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_code,
-                resource_name: resourceLookup["TRANSPORT_SURAT_JALAN"].resource_name
-              },
-            },
-            {
-              label: "Surat Muatan",
-              url: "/transport/manifest",
-              icon: "bx bxs-checkbox",
-              permission: "read-manifest",
-              meta: {
-                resource_type: resourceLookup["TRANSPORT_MANIFEST"].resource_type,
-                resource_code: resourceLookup["TRANSPORT_MANIFEST"].resource_code,
-                resource_name: resourceLookup["TRANSPORT_MANIFEST"].resource_name
+                resource_type: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_type,
+                resource_code: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_code,
+                resource_name: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_name
               },
             },
           ],
-        },
-        {
-          label: "Receiving",
-          url: null,
-          icon: "bx bxs-inbox",
-          children: [
-              {
-              label: "Receiving",
-              url: "/inbound/prealert",
-              icon: "bx bxs-checkbox",
-              children: [],
-              permission: "read-receiving",
-              meta: {
-                resource_type: resourceLookup["RECEIVING"].resource_type,
-                resource_code: resourceLookup["RECEIVING"].resource_code,
-                resource_name: resourceLookup["RECEIVING"].resource_name
-              },
-            },
-            {
-              label: "Airport Receiving",
-              url: "/inbound-airport",
-              icon: "bx bxs-checkbox",
-              children: [],
-              permission: "read-airport-prealert",
-              meta: {
-                resource_type: resourceLookup["AIRPORT_RECEIVING"].resource_type,
-                resource_code: resourceLookup["AIRPORT_RECEIVING"].resource_code,
-                resource_name: resourceLookup["AIRPORT_RECEIVING"].resource_name
-              },
-            },
-            {
-              label: "Receiving Log",
-              url: "/receiving-log",
-              icon: "bx bxs-checkbox",
-              children: [],
-              permission: "read-receiving",
-              meta: {
-                resource_type: resourceLookup["RECEIVING_LOG"].resource_type,
-                resource_code: resourceLookup["RECEIVING_LOG"].resource_code,
-                resource_name: resourceLookup["RECEIVING_LOG"].resource_name
-              },
-            },
-          ]
         },
         {
           label: "Delivery",

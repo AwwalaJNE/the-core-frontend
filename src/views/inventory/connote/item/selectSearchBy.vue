@@ -64,8 +64,8 @@ export default {
           value: 'destination'
         },
         {
-          label: 'Weight',
-          value: 'weight',
+          label: 'Cost Weight',
+          value: 'cost_weight',
           isNumeric: true
         },
         {

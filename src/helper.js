@@ -27,4 +27,11 @@ export default {
       },
     }
   },
+  headerFlight() {
+    return {
+      headers: {
+        'X-API-Token': '4W1qvtta6YeCcVaWtnbjTanAPgaWog'
+      },
+    }
+  },
 }

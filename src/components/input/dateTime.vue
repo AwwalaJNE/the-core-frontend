@@ -1,22 +1,29 @@
 <template>
     <inputan :name="name" :rules="rules">
         <template v-slot:inputan="props">
-            <div :class="`vs-input-content vs-input-content--has-label custom_datePicker ${props.err !== undefined && props.err !== '' ?'danger':''}`">
-                <label class="vs-input__label vs-input__label--placeholder vs-input__label--label">{{name}}</label>
-                <el-date-picker
-                    v-model="value"
-                    :type="type"
-                    :placeholder="`Select date ${typeInput.toLowerCase().includes('time') ? 'and time' : ''}`"
-                    range-separator="To"
-                    :value-format="isInventoryBag ? 'yyyy-MM-dd HH:mm' : 'yyyy-MM-dd HH:mm:ss'"
-                    :format="isInventoryBag ? 'yyyy-MM-dd HH:mm' : null"
-                    start-placeholder="Start date"
-                    end-placeholder="End date"
-                    :picker-options="isETDnETA ? pickerOptions : null"
-                    :default-time="isETDnETA ? null : ['00:00:00', '23:59:59']"
-                    :disabled="listenIsDisabled"
-                    @change="updateValue">
-                </el-date-picker>
+            <div :class="`custom_datePicker ${props.err !== undefined && props.err !== '' ?'danger':''}`">
+                <template v-if="listenName">
+                    <span class="c-label">{{ name }}<span v-if="rules && rules.includes('required')">*</span></span>
+                </template>
+                <template>
+                    <el-date-picker
+                        ref="customDateInput"
+                        v-model="value"
+                        :type="type"
+                        :placeholder="`Select date ${typeInput.toLowerCase().includes('time') ? 'and time' : ''}`"
+                        range-separator="To"
+                        :value-format="isInventoryBag ? 'yyyy-MM-dd HH:mm' : 'yyyy-MM-dd HH:mm:ss'"
+                        :format="isInventoryBag ? 'yyyy-MM-dd HH:mm' : null"
+                        start-placeholder="Start date"
+                        end-placeholder="End date"
+                        :picker-options="isETDnETA ? pickerOptions : null"
+                        :default-time="isETDnETA ? null : ['00:00:00', '23:59:59']"
+                        :disabled="listenIsDisabled"
+                        @change="updateValue"
+                        @focus="attachInputSanitizer"
+                    >
+                    </el-date-picker>
+                </template>
             </div>
         </template>
     </inputan>
@@ -40,7 +47,7 @@ export default {
     },
     data() {
         return {
-            value: this.valueData,
+            value: this.valueData || '',
             type: this.typeInput || 'date',
             pickerOptions: {
                 disabledDate(time) {
@@ -54,6 +61,9 @@ export default {
         }
     },
     computed: {
+        listenName() {
+            return this.name ? this.name : false
+        },
         listenFormKey(){
             return this.formKey
         },
@@ -74,7 +84,7 @@ export default {
             }
         },
         isETDnETA() {
-            if (this.name.toLowerCase() === 'eta' || this.name.toLowerCase() === 'etd') {
+            if (this.name.toLowerCase() === 'eta' || this.name.toLowerCase() === 'etd' || this.name.toLowerCase() === 'flight schedule') {
                 return true;
             } else {
                 return false;
@@ -87,7 +97,7 @@ export default {
     watch: {
         valueData: function(val){
             if(val !== undefined) {
-                this.value = val
+                this.value = val || ''
                 this.updateValue()
             }
         }
@@ -110,10 +120,30 @@ export default {
             info['status'] = status
           this.$emit("updateValue", this.listenFormKey, this.value, info)
         },
+        attachInputSanitizer() {
+            this.$nextTick(() => {
+                const inputs = this.$refs.customDateInput?.$el?.querySelectorAll('input');
+                inputs?.forEach(input => {
+                    input.oninput = () => {
+                        input.value = input.value.replace(/[^0-9:\- ]/g, '');
+                        this.value = input.value;
+                    };
+                });
+            });
+        }
     },
 }
 </script>
 <style lang="scss">
+.c-label{
+            font-size: 0.75rem;
+            /* left: 0px; */
+            position: relative;
+            align-content: start;
+            display: block;
+            padding: 4px 7px;
+            text-align: left;
+        }
     .custom_datePicker{
         .el-date-editor.el-range-editor {
             width: 100%;

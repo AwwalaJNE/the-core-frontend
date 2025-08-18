@@ -49,6 +49,9 @@ const Master = {
         },
         listenUserRoleName() {
             return this.listenUserRole.find(item => item.app === 'CORE')?.app_role_name;
+        },
+        listenIsGateway() {
+            return this.listenCurrentNode.branch_code.slice(0, 3).includes('X') && !this.listenUserRoleName.toLowerCase().includes('airport') || false
         }
     },
     methods: {
@@ -268,10 +271,11 @@ const Master = {
             return new Date(date).defaultTime()
         },
         checkAuth(res) {
+            // This method is kept for backward compatibility and manual auth checks
             if(res.status === 401) {
                 localStorage.clear();
                 this.$router.push('/login')
-            } else if(res.data.reason) {
+            } else if(res.data && res.data.reason) {
                 let reason = res.data.reason.toLowerCase()
                 switch(true) {
                     case reason.includes("unauthenticated"):
@@ -281,11 +285,10 @@ const Master = {
                     default:
                         // code block
                 }
+            } else if(res.data && res.data.type === "AuthenticationException") {
+                localStorage.clear();
+                this.$router.push('/login')
             }
-            // if(res == 401) {
-            //     localStorage.clear();
-            //     this.$router.go()
-            // }
         },
         async checkAuthRequest() {
             // 
@@ -385,7 +388,7 @@ const Master = {
                             this.$router.push('/trace-bag')
                             break;
                         case "v":
-                            this.$router.push('/inbound/prealert/scan')
+                            this.$router.push('/incoming/pre-alert')
                             break;
                         case "b":
                             this.$router.push('/inventory/bagging')
@@ -462,7 +465,10 @@ const Master = {
             }
         },
         convertMinutesToTimeFormat(totalMinutes) {
-            totalMinutes = Math.abs(totalMinutes);
+            if (totalMinutes == null || isNaN(totalMinutes)) return "-";
+            // pembulatan ke atas
+            totalMinutes = Math.ceil(Math.abs(Number(totalMinutes)));
+            
             const days = Math.floor(totalMinutes / 1440);
             const hours = Math.floor((totalMinutes % 1440) / 60);
             const minutes = totalMinutes % 60;
@@ -525,7 +531,35 @@ const Master = {
             
             const parts = orion_number.split('/');
             return parts[1] ?? null;
-        }          
+        },
+        formatElapsedTime(rawMinutes) {
+            const totalMinutes = Math.round(rawMinutes);
+
+            const days = Math.floor(totalMinutes / 1440);
+            const hours = Math.floor((totalMinutes % 1440) / 60);
+            const minutes = totalMinutes % 60;
+
+            return `${days} day(s) ${hours} hour(s) ${minutes} minute(s)`;
+        },
+        formatElapsedDay(days) {
+            return `${days} day(s)`;
+        },
+
+        sanitizeAlphanumeric(fieldName) {
+            this[fieldName] = this[fieldName].replace(/[^a-zA-Z0-9_-]/g, '');
+        },
+        formatDateTimeId(datetime) {
+            if (!datetime) return '-';
+            const d = new Date(datetime);
+
+            const dateOptions = { day: '2-digit', month: 'short', year: 'numeric' }
+            const timeOptions = { hour: '2-digit', minute: '2-digit' };
+
+            const dateStr = d.toLocaleDateString('id-ID', dateOptions).replace(',', '');
+            const timeStr = d.toLocaleTimeString('id-ID', timeOptions).replace('.', ':');
+
+            return `${dateStr} ${timeStr}`;
+        }
     },
     mounted() {
         this.checkIfMobile();

@@ -420,7 +420,7 @@ export default {
       typeInput: "Number",
       typeData: "Number",
       valueData: null,
-      value: ''
+      value: 0
     },
     is_active: {
       label: "Active|Unactive",
@@ -1708,17 +1708,17 @@ export default {
       valueData: null,
       value: ''
     },
-    node_code: {
-      label: "Node Code*",
-      key: "node_code",
-      rule: "required",
-      typeInput: "autocomplete",
-      typeData: "String",
-      width: '12',
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
+    // node_code: {
+    //   label: "Node Code*",
+    //   key: "node_code",
+    //   rule: "required",
+    //   typeInput: "autocomplete",
+    //   typeData: "String",
+    //   width: '12',
+    //   arrData: [],
+    //   valueData: null,
+    //   value: ''
+    // },
     previous_activity: {
       label: "Current Activity*",
       key: "previous_activity",
@@ -2661,24 +2661,38 @@ export default {
   },
 
   surat_muatan_stock: {
-    vehicle_id: {
-      label: "Vehicle Name",
-      key: "vehicle_id",
-      rule:"required",
-      typeInput: "select",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
-    no_sm: {
-      label: "Surat Muatan",
-      key: "no_sm",
+    manifest_number: {
+      label: "Surat Muatan*",
+      key: "manifest_number",
       rule: "required",
       typeInput: "text",
       typeData: "String",
       valueData: null,
-      value: ''
+      
+      value: '',
+      width: '4'
+    },
+    node_id_origin: {
+      label: "Origin*",
+      key: "node_id_origin",
+      rule:"required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+      width: '4'
+    },
+    node_id_destination: {
+      label: "Destination*",
+      key: "node_id_destination",
+      rule:"required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+      width: '4'
     },
     etd: {
       label: "ETD",
@@ -2687,7 +2701,34 @@ export default {
       typeInput: "datetime",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      width: '4',
+      isDisabled: false,
+    },
+    etd_timezone: {
+      label: "ETD Timezone*",
+      key: "etd_timezone",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      valueData: null,
+      arrData: [
+        {
+          "label": "WIB",
+          "value": "WIB"
+        },
+        {
+          "label": "WITA",
+          "value": "WITA"
+        },
+        {
+          "label": "WIT",
+          "value": "WIT"
+        },
+      ],
+      value: '',
+      width: '2',
+      isDisabled: false,
     },
     eta: {
       label: "ETA",
@@ -2696,7 +2737,34 @@ export default {
       typeInput: "datetime",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      width: '4',
+      isDisabled: false,
+    },
+    eta_timezone: {
+      label: "ETA Timezone*",
+      key: "eta_timezone",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      valueData: null,
+      arrData: [
+        {
+          "label": "WIB",
+          "value": "WIB"
+        },
+        {
+          "label": "WITA",
+          "value": "WITA"
+        },
+        {
+          "label": "WIT",
+          "value": "WIT"
+        },
+      ],
+      value: '',
+      width: '2',
+      isDisabled: false,
     },
     is_active: {
       label: "Active|Unactive",
@@ -2709,6 +2777,270 @@ export default {
       isDisabled: false,
     },
   },
+
+  surat_muatan_schedule: {
+     vehicle_mode_id: {
+      label: "Vehicle Mode",
+      key: "vehicle_mode_id",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+      isDisabled: false
+    },
+    vehicle_id: {
+      label: "Vehicle",
+      key: "vehicle_id",
+      rule:"required",
+      typeInput: "select",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      arrData: [],
+    },
+    shipment_number: {
+      label: "Shipment Number",
+      key: "shipment_number",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: ''
+    },
+    origin_name: {
+      label: "Origin Name",
+      key: "origin_name",
+      rule: "required",
+      typeInput: "autoComplete",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: '4'
+    },
+     origin_identifier: {
+      label: "Origin Identifier",
+      key: "origin_identifier",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: '4'
+    },
+     origin_point: {
+      label: "Origin Point",
+      key: "origin_point",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: '4'
+    },
+    destination_name: {
+      label: "Destination Name",
+      key: "destination_name",
+      rule: "required",
+      typeInput: "autoComplete",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: '4'
+    },
+    destination_identifier: {
+      label: "Destination Identifier",
+      key: "destination_identifier",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: '4'
+    },
+    destination_point: {
+      label: "Destination Point",
+      key: "destination_point",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: '4'
+    },
+    etd: {
+      label: "ETD",
+      key: "etd",
+      rule: "required",
+      typeInput: "datetime",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: '4'
+    },
+    etd_timezone: {
+      label: "ETD Timezone",
+      key: "etd_timezone",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: '2',
+      arrData: [
+         {
+          "label": "WIB",
+          "value": "WIB"
+        },
+        {
+          "label": "WIT",
+          "value": "WIT"
+        },
+        {
+          "label": "WITA",
+          "value": "WITA"
+        }
+      ],
+    },
+    eta: {
+      label: "ETA",
+      key: "eta",
+      rule: "required",
+      typeInput: "datetime",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: '4',
+    },
+     eta_timezone: {
+      label: "ETA Timezone",
+      key: "eta_timezone",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: '2',
+      arrData: [
+         {
+          "label": "WIB",
+          "value": "WIB"
+        },
+        {
+          "label": "WIT",
+          "value": "WIT"
+        },
+        {
+          "label": "WITA",
+          "value": "WITA"
+        }
+      ],
+    },
+    vehicle_information: {
+      label: "Vehicle Information",
+      key: "vehicle_information",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+    registration_number: {
+      label: "Registration Number",
+      key: "registration_number",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+    },
+  },
+
+  sync_surat_muatan: {
+  transport_type: {
+    label: "Transport Type",
+    key: "transport_type",
+    rule: "required",
+    typeInput: "radio",
+    typeData: "String",
+    value: "flight",
+    arrData: [
+      { label: "Flight", value: "flight" },
+      { label: "Train", value: "train" },
+      { label: "Cargo Ship", value: "cargo" }
+    ]
+  },
+  flight_status: {
+    label: "Flight Status",
+    key: "flight_status",
+    typeInput: "select",
+    typeData: "String",
+    rule: "",
+    value: '',
+    width:'6',
+    valueData: null,
+    arrData: [
+      { label: "Scheduled", value: "scheduled" },
+      { label: "Active", value: "active" },
+      { label: "Landed", value: "landed" },
+      { label: "Cancelled", value: "cancelled" },
+      { label: "Incident", value: "incident" },
+      { label: "Diverted", value: "diverted" }
+    ]
+  },
+  flight_date: {
+    label: "Flight Date",
+    key: "flight_date",
+    typeInput: "date",
+    typeData: "String",
+    rule: "",
+    width:'6',
+    value: ''
+  },
+  dep_iata: {
+    label: "Departure Airport (IATA)",
+    key: "dep_iata",
+    typeInput: "autocomplete",
+    typeData: "String",
+    arrData: [],
+    valueData: null,
+    value: '',
+    rule: "",
+    width:'6',
+  },
+  arr_iata: {
+    label: "Arrival Airport (IATA)",
+    key: "arr_iata",
+    typeInput: "autocomplete",
+    typeData: "String",
+    arrData: [],
+    valueData: null,
+    value: '',
+    rule: "",
+    width:'6',
+  },
+  airline_iata: {
+    label: "Airline Name (IATA)",
+    key: "airline_iata",
+    typeInput: "autocomplete",
+    typeData: "String",
+    arrData: [],
+    valueData: null,
+    value: '',
+    rule: "",
+    width:'6'
+  },
+  flight_iata: {
+    label: "Flight Number (IATA)",
+    key: "flight_iata",
+    typeInput: "text",
+    typeData: "String",
+    rule: "",
+    value: '',
+    width:'6'
+  }
+},
   
   runsheet_limit: {
     reference_to: {
@@ -3893,28 +4225,107 @@ export default {
       value: ''
     }
   },
-  //surat muatan
-  surat_muatan:{
-    manifest_number: {
-      label: "No Surat Muatan",
-      key: "manifest_number",
+  surat_muatan_vehicle: {
+    vehicle_id: {
+      label: "Vehicle*",
+      key: "vehicle_id",
+      rule:"required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+      width: "12"
+    },
+    flight_number: {
+      label: "Flight Number",
+      key: "flight_number",
       rule: "",
+      visible: false,
       typeInput: "text",
       typeData: "String",
       valueData: null,
       value: '',
-      isDisabled: false,
-      width: "6",
+      width: "12"
     },
-    max_weight: {
-      label: "Max Weight",
-      key: "max_weight",
-      rule: "",
-      typeInput: "number",
-      typeData: "Number",
+    flight_schedule: {
+      label: "Flight Schedule",
+      key: "flight_schedule",
+      rule: "required",
+      visible: false,
+      typeInput: "datetime",
+      typeData: "String",
       valueData: null,
-      value: null,
-      width: "6"
+      value: '',
+      width: "12"
+    },
+    employee_driver_id: {
+      label: "Driver",
+      key: "employee_driver_id",
+      rule:"",
+      visible: false,
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+      width: "12"
+    },
+    origin_branch_code: {
+      label: "Origin*",
+      key: "origin_branch_code",
+      rule: "required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+      width: "12"
+    },
+    destination_branch_code: {
+      label: "Destination*",
+      key: "destination_branch_code",
+      rule:"required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+      width: "12"
+    },
+    etd: {
+      label: "ETD",
+      key: "etd",
+      rule: "required",
+      typeInput: "datetime",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: "12"
+    },
+    eta: {
+      label: "ETA",
+      key: "eta",
+      rule: "required",
+      typeInput: "datetime",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: "12"
+    },
+  },
+  //surat muatan
+  surat_muatan: {
+    auto_depart: {
+      label: "Auto Depart",
+      key: "auto_depart",
+      rule: "",
+      typeInput: "Boolean",
+      typeData: "Boolean",
+      valueData: true,
+      value: true,
+      isDisabled: false,
+      width: "12"
     },
     manifest_method_id: {
       label: "Moda",
@@ -3927,26 +4338,37 @@ export default {
       value: '',
       width: "12"
     },
-    flight_number: {
-      label: "Flight Number",
-      key: "flight_number",
-      rule: "required",
-      visible: false,
+    manifest_prefix: {
+      label: "Prefix",
+      key: "manifest_prefix",
+      rule: "",
       typeInput: "text",
       typeData: "String",
       valueData: null,
       value: '',
-      width: "6"
+      isDisabled: true,
+      width: "2",
     },
-    flight_schedule: {
-      label: "Flight Schedule",
-      key: "flight_schedule",
-      rule: "required",
-      visible: false,
-      typeInput: "datetime",
+    manifest_number: {
+      label: "No Surat Muatan",
+      key: "manifest_number",
+      rule: "",
+      typeInput: "text",
       typeData: "String",
       valueData: null,
       value: '',
+      isDisabled: false,
+      width: "4",
+      showIcon: true
+    },
+    max_weight: {
+      label: "Max Weight",
+      key: "max_weight",
+      rule: "",
+      typeInput: "number",
+      typeData: "Number",
+      valueData: null,
+      value: null,
       width: "6"
     },
     node_id_origin: {
@@ -3958,110 +4380,13 @@ export default {
       arrData: [],
       valueData: null,
       value: '',
-      width: "12"
+      width: "6"
     },
-    dynamicinputcomponent_node_id_transit: {
-      label: "Transit",
-      key: "dynamicinputcomponent_node_id_transit",
-      rule:"",
-      typeInput: "dynamicinputcomponent",
-      typeData: "Array",
-      max: 3,
-      inputs: [ // template input yg di render tiap row
-        {
-          key: "node_id_transit",
-          typeInput: "autocomplete",
-          value: 'meong1',
-          query: "",
-          width: "12",
-        },
-      ],
-      arrData: [],
-      valueData: null,
-      value: '',
-      width: "12"
-    },
-    node_id_transit: {
-      label: "Transit",
-      key: "node_id_transit",
-      rule:"",
-      typeInput: "null",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: ''
-    },
-    // node_id_transit_2: {
-    //   label: "Transit",
-    //   key: "node_id_transit_2",
-    //   rule:"",
-    //   typeInput: "null",
-    //   typeData: "String",
-    //   arrData: [],
-    //   valueData: null,
-    //   value: ''
-    // },
-    // node_id_transit_3: {
-    //   label: "Transit",
-    //   key: "node_id_transit_3",
-    //   rule:"",
-    //   typeInput: "null",
-    //   typeData: "String",
-    //   arrData: [],
-    //   valueData: null,
-    //   value: ''
-    // },
     node_id_destination: {
       label: "Destination",
       key: "node_id_destination",
-      rule:"",
-      visible: false,
+      rule:"required",
       typeInput: "autocomplete",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: '',
-      width: "12"
-    },
-    vehicle_type_id: {
-      label: "Tipe",
-      key: "vehicle_type_id",
-      rule:"",
-      typeInput: "select",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: '',
-      width: "6"
-    },
-    // manifest_type_id: {
-    //   label: "Jenis Kiriman",
-    //   key: "manifest_type_id",
-    //   rule:"",
-    //   typeInput: "select",
-    //   typeData: "String",
-    //   arrData: [],
-    //   visible: false,
-    //   valueData: null,
-    //   value: ''
-    // },
-    vehicle_id: {
-      label: "Nama",
-      key: "vehicle_id",
-      rule:"",
-      typeInput: "select",
-      typeData: "String",
-      arrData: [],
-      valueData: null,
-      value: '',
-      width: "6"
-    },
-    pic_employee_id: {
-      label: "Driver",
-      key: "pic_employee_id",
-      rule:"",
-      visible: true,
-      typeInput: "select",
       typeData: "String",
       arrData: [],
       valueData: null,
@@ -4087,17 +4412,6 @@ export default {
       valueData: null,
       value: '',
       width: "6"
-    },
-    auto_depart: {
-      label: "Auto Depart",
-      key: "auto_depart",
-      rule: "",
-      typeInput: "Boolean",
-      typeData: "Boolean",
-      valueData: true,
-      value: true,
-      isDisabled: false,
-      width: "12"
     },
   },
   surat_jalan:{

@@ -13,6 +13,9 @@
             :onRowClickCallback="onRowClickCallback"
             :isAllCheckedCheckCallback="onAllCheckCallback"
             :isAllChecked="isAllChecked"
+            isShowCheckboxAll="true"
+            :isHideFilterColumn="true"
+            :isHideTotalPerPage="true"
             @updateSelected2="updateSelected"
             @updateValue="updateValue"
             @handleAddData="handleAddData"
@@ -214,7 +217,7 @@ export default {
             dataObj.filter[index][key] = val;
 
             if (key === "reference_entity") {
-                this.setAutoCompleteData(this.getReference(val), val);
+                this.setAutoCompleteData(this.getReference(val), val, dataObj);
                 dataObj.filter[index].reference_value = [];
             }
 
