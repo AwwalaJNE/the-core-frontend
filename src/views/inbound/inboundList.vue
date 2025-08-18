@@ -40,7 +40,9 @@ export default {
     filterDateBy: String,
     isReset: Boolean,
     created: Function,
-    updateLocalStorage: Function
+    updateLocalStorage: Function,
+    title: String,
+    type: String,
   },
   components: {
     "table-master": TableMaster,
@@ -48,158 +50,7 @@ export default {
   data() {
     return {
       dataTable: [],
-      datacolumn: [
-      {
-        label: "Inbound Number",
-        key: "inbound_number",
-        width: "xxs",
-      },
-      {
-        label: "Status",
-        key: "status",
-        width: "xxs",
-      },
-      {
-        label: "Received",
-        key: "total_received",
-        width: "xxxs",
-      },
-      {
-        label: "Outstanding",
-        key: "total_outstanding",
-        width: "xxxs",
-      },
-      {
-        label: "Total Bag",
-        key: "total_item",
-        width: "xxxs",
-      },
-      // {
-      //   label: "Total Bag",
-      //   key: "total_bag",
-      //   width: "xxxs",
-      // },
-      {
-        label: "Total Master Bag",
-        key: "total_master_bag",
-        width: "xxxs",
-      },
-      {
-        label: "Total Connote",
-        key: "total_koli",
-        width: "xxxs",
-      },
-      {
-        label: "IM Numbers",
-        key: "im_numbers",
-        width: "xxxs",
-      },
-      {
-        label: "Receiving Number",
-        key: "receiving_number",
-        width: "xxs",
-      },
-      {
-        label: "Flight Number",
-        key: "flight_number",
-        width: "xxxs",
-      },
-      {
-        label: "Vehicle",
-        key: "vehicle",
-        width: "xxxs",
-      },
-      {
-        label: "Branch Origin",
-        key: "inbound_branch",
-        width: "xs",
-      },
-      {
-        label: "Node Origin",
-        key: "inbound_node_name_origin",
-        width: "md",
-      },
-      {
-        label: "Inbound Type",
-        key: "inbound_type",
-        width: "auto",
-      },
-      // {
-      //   label: "Item",
-      //   key: "inbound_total_bag",
-      //   width: "auto",
-      // },
-      // {
-      //   label: "Connote",
-      //   key: "inbound_total_koli",
-      //   width: "auto",
-      // },
-        // {
-        //   label: "Fix Cost Weight",
-        //   key: "fix_cost_weight",
-        //   width: "auto"
-        // },
-        // {
-        //   label: "Live Cost Weight",
-        //   key: "live_cost_weight",
-        //   width: "auto"
-        // },
-        // {
-        //   label: "Fix Actual Weight",
-        //   key: "fix_actual_weight",
-        //   width: "auto"
-        // },
-        // {
-        //   label: "Live Actual Weight",
-        //   key: "live_actual_weight",
-        //   width: "auto"
-        // },
-      {
-        label: "Driver",
-        key: "carrier_employee_name",
-        width: "auto",
-      },
-      {
-        label: "Created ",
-        key: "created_orion",
-        width: "xxxs",
-      },
-      {
-        label: "Created By",
-        key: "created_by_user_name",
-        width: "auto",
-      },
-      {
-        label: "ETD",
-        key: "inbound_etd",
-        width: "xxxs",
-      },
-      {
-        label: "ETA",
-        key: "inbound_eta",
-        width: "xxxs",
-      },
-      {
-        label: "Handover to Transport",
-        key: "departed_at",
-        width: "xxs",
-      },
-      {
-        label: "Received At",
-        key: "inbound_node_name_receiver",
-        width: "xxxs",
-      },
-      {
-        label: "Received By",
-        key: "received_by_user_name",
-        width: "auto"
-      },
-      {
-        label: "Received Time",
-        key: "received_at",
-        width: "xxxs",
-      },
-      ],
+      datacolumn: [],
       loading: false,
       dataItem: {},
       tempSearch: JSON.parse(localStorage.getItem('InboundFilters'))?.tempSearch || '',
@@ -398,6 +249,22 @@ export default {
         }
       }
     },
+    listenBreadcrumbTitle: {
+      handler(val, oldVal) {
+        if (val !== oldVal && val !== undefined) {
+          this.setDatacolumn();
+        }
+      },
+      immediate: true
+    },
+  },
+  computed: {
+    listenBreadcrumbTitle() {
+      return this.title;
+    },
+    listenBreadcrumbCode() {
+      return this.type;
+    },
   },
   methods: {
     async getTableData(
@@ -507,6 +374,161 @@ export default {
         err
         );
       });
+    },
+
+    setDatacolumn() {
+      this.datacolumn = [
+        {
+          label: `${this.listenBreadcrumbCode} Number`,
+          key: "inbound_number",
+          width: "xxs",
+        },
+        {
+          label: "Status",
+          key: "status",
+          width: "xxs",
+        },
+        {
+          label: "Received",
+          key: "total_received",
+          width: "xxxs",
+        },
+        {
+          label: "Outstanding",
+          key: "total_outstanding",
+          width: "xxxs",
+        },
+        {
+          label: "Total Bag",
+          key: "total_item",
+          width: "xxxs",
+        },
+        // {
+        //   label: "Total Bag",
+        //   key: "total_bag",
+        //   width: "xxxs",
+        // },
+        {
+          label: "Total Master Bag",
+          key: "total_master_bag",
+          width: "xxxs",
+        },
+        {
+          label: "Total Connote",
+          key: "total_koli",
+          width: "xxxs",
+        },
+        {
+          label: "IM Numbers",
+          key: "im_numbers",
+          width: "xxxs",
+        },
+        {
+          label: "Receiving Number",
+          key: "receiving_number",
+          width: "xxs",
+        },
+        {
+          label: "Flight Number",
+          key: "flight_number",
+          width: "xxxs",
+        },
+        {
+          label: "Vehicle",
+          key: "vehicle",
+          width: "xxxs",
+        },
+        {
+          label: "Branch Origin",
+          key: "inbound_branch",
+          width: "xs",
+        },
+        {
+          label: "Node Origin",
+          key: "inbound_node_name_origin",
+          width: "md",
+        },
+        {
+          label: "Inbound Type",
+          key: "inbound_type",
+          width: "auto",
+        },
+        // {
+        //   label: "Item",
+        //   key: "inbound_total_bag",
+        //   width: "auto",
+        // },
+        // {
+        //   label: "Connote",
+        //   key: "inbound_total_koli",
+        //   width: "auto",
+        // },
+          // {
+          //   label: "Fix Cost Weight",
+          //   key: "fix_cost_weight",
+          //   width: "auto"
+          // },
+          // {
+          //   label: "Live Cost Weight",
+          //   key: "live_cost_weight",
+          //   width: "auto"
+          // },
+          // {
+          //   label: "Fix Actual Weight",
+          //   key: "fix_actual_weight",
+          //   width: "auto"
+          // },
+          // {
+          //   label: "Live Actual Weight",
+          //   key: "live_actual_weight",
+          //   width: "auto"
+          // },
+        {
+          label: "Driver",
+          key: "carrier_employee_name",
+          width: "auto",
+        },
+        {
+          label: "Created ",
+          key: "created_orion",
+          width: "xxxs",
+        },
+        {
+          label: "Created By",
+          key: "created_by_user_name",
+          width: "auto",
+        },
+        {
+          label: "ETD",
+          key: "inbound_etd",
+          width: "xxxs",
+        },
+        {
+          label: "ETA",
+          key: "inbound_eta",
+          width: "xxxs",
+        },
+        {
+          label: "Handover to Transport",
+          key: "departed_at",
+          width: "xxs",
+        },
+        {
+          label: "Received At",
+          key: "inbound_node_name_receiver",
+          width: "xxxs",
+        },
+        {
+          label: "Received By",
+          key: "received_by_user_name",
+          width: "auto"
+        },
+        {
+          label: "Received Time",
+          key: "received_at",
+          width: "xxxs",
+        },
+      ]
     },
     
     closeDialogConfirm() {
