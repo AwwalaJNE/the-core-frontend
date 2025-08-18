@@ -88,7 +88,8 @@ export default {
                     return {
                         label: child.name,
                         url: `/${parentPath}/${childPath}`.replace(/\/+/g, "/"),
-                        permission: child.meta.permission
+                        permission: child.meta.permission,
+                        icon: child?.meta?.icon || 'bx bxs-checkbox'
                     };
                 });
 

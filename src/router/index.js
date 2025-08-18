@@ -1518,6 +1518,7 @@ const routes = [
             name: "Bag",
             component: InventoryBag,
             meta: {
+              icon: "bx bx-shopping-bag",
               requiresAuth: true,
               breadCrumb: "Bag",
               resource_type: resourceLookup["INVENTORY_BAG"].resource_type,
@@ -1532,6 +1533,7 @@ const routes = [
             name: "Surat Muatan",
             component: TransportManifest,
             meta: {
+              icon: "bx bxs-truck",
               requiresAuth: true,
               breadCrumb: "Surat Muatan",
               resource_type: resourceLookup["TRANSPORT_MANIFEST"].resource_type,
@@ -1546,6 +1548,7 @@ const routes = [
             name: "Surat Jalan",
             component: TransportSuratJalan,
             meta: {
+              icon: "bx bxs-food-menu",
               requiresAuth: true,
               breadCrumb: "Surat Jalan",
               breadCrumbCode: "SJ",
@@ -1561,6 +1564,7 @@ const routes = [
             name: "HBAG",
             component: TransportSuratJalan,
             meta: {
+              icon: "bx bx-book-content",
               requiresAuth: true,
               breadCrumb: "Handover Bag",
               breadCrumbCode: "HBAG",
@@ -1576,6 +1580,7 @@ const routes = [
             name: "DO",
             component: TransportSuratJalan,
             meta: {
+              icon: "bx bxs-book-open",
               requiresAuth: true,
               breadCrumb: "Delivery Order",
               breadCrumbCode: "DO",
@@ -1591,6 +1596,7 @@ const routes = [
             name: "MTS",
             component: TransportSuratJalan,
             meta: {
+              icon: "bx bx-book",
               requiresAuth: true,
               breadCrumb: "Manifest Transit Subagent",
               breadCrumbCode: "MTS",
@@ -1617,6 +1623,7 @@ const routes = [
             name: "Pre-Alert",
             component: InboundIncoming,
             meta: {
+              icon: "bx bxs-bell-ring",
               requiresAuth: true,
               breadCrumb: "Pre-Alert",
               breadCrumbCode: "Pre Alert",
@@ -1632,6 +1639,7 @@ const routes = [
             name: "Receiving Surat Muatan",
             component: InboundIncoming,
             meta: {
+              icon: "bx bxs-truck",
               requiresAuth: true,
               breadCrumb: "Receiving Surat Muatan",
               breadCrumbCode: "SM",
@@ -1647,6 +1655,7 @@ const routes = [
             name: "Receiving Surat Jalan",
             component: InboundIncoming,
             meta: {
+              icon: "bx bxs-food-menu",
               requiresAuth: true,
               breadCrumb: "Receiving Surat Jalan",
               breadCrumbCode: "SJ",
@@ -1662,6 +1671,7 @@ const routes = [
             name: "Receiving Bag",
             component: InboundIncoming,
             meta: {
+              icon: "bx bx-shopping-bag",
               requiresAuth: true,
               breadCrumb: "Receiving Bag",
               breadCrumbCode: "Bag",
@@ -1677,6 +1687,7 @@ const routes = [
             name: "Receiving Connote",
             component: InboundIncoming,
             meta: {
+              icon: "bx bx-notepad",
               requiresAuth: true,
               breadCrumb: "Receiving CONNOTE",
               breadCrumbCode: "Connote",
@@ -1692,6 +1703,7 @@ const routes = [
             name: "RDO",
             component: InboundIncoming,
             meta: {
+              icon: "bx bxs-book-open",
               requiresAuth: true,
               breadCrumb: "RDO",
               breadCrumbCode: "RDO",
@@ -1707,6 +1719,7 @@ const routes = [
             name: "MTI",
             component: InboundIncoming,
             meta: {
+              icon: "bx bx-book",
               requiresAuth: true,
               breadCrumb: "MTI",
               breadCrumbCode: "MTI",
@@ -1722,6 +1735,7 @@ const routes = [
             name: "RCVB",
             component: InboundIncoming,
             meta: {
+              icon: "bx bxs-shopping-bag-alt",
               requiresAuth: true,
               breadCrumb: "RCVB",
               breadCrumbCode: "RCVB",
@@ -1737,6 +1751,7 @@ const routes = [
             name: "Log",
             component: ReceivingLog,
             meta: {
+              icon: "bx bx-history",
               requiresAuth: true,
               breadCrumb: "Log",
               resource_type: resourceLookup["RECEIVING_LOG"].resource_type,
@@ -1762,6 +1777,7 @@ const routes = [
             name: "Connote",
             component: InventoryItem,
             meta: {
+              icon: "bx bx-notepad",
               requiresAuth: true,
               breadCrumb: "Connote",
               resource_type: resourceLookup["INVENTORY_ITEM"].resource_type,
@@ -1776,6 +1792,7 @@ const routes = [
             name: "Bag",
             component: InventoryBagItem,
             meta: {
+              icon: "bx bx-shopping-bag",
               requiresAuth: true,
               breadCrumb: "Bag",
               resource_type: resourceLookup["INVENTORY_BAG_ITEM"].resource_type,

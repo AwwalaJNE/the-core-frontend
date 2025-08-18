@@ -16,7 +16,7 @@
                 :class="['tab', { active: isActive === item.url }]"
                 @click.native="handleSelect(item.url)"
             >
-                {{ item.label }}
+                <i :class="`${item.icon}`" /> {{ item.label }}
             </router-link>
         </div>
         
@@ -100,6 +100,9 @@ export default {
 }
 
 .tab {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     flex-shrink: 0;
     padding: 6px 14px;
     font-size: 14px;
