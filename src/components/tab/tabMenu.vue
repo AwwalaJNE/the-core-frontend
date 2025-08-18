@@ -125,6 +125,7 @@ export default {
 }
 
 .scroll-btn {
+    margin: 0 4px;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
