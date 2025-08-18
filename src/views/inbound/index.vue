@@ -74,7 +74,14 @@
                   <vs-col xs="12" sm="6" lg="6" style="padding: 0;">
                     <vs-row justify="end">
                       <vs-col xs="12" sm="4" lg="4">
-                        <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchBy" :valueData="searchParams" :selectedValue="searchBy" />
+                        <select-search-by 
+                          :key="listenBreadcrumbCode"
+                          :isMultiple="false" 
+                          :border="true" 
+                          @updateSearchBy="updateSearchBy" 
+                          :valueData="searchParams" 
+                          :selectedValue="searchBy" 
+                        />
                       </vs-col>
                       <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" :isNumeric="searchByNumeric" />
                     </vs-row>
