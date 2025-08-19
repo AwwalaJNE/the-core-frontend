@@ -207,6 +207,17 @@ export default {
             if (newValue !== oldValue) {
                 this.refresh();
             }
+        },
+        processLoading: function(val) {
+          console.log("processLoading", val);
+          if (val !== undefined) {
+            this.processLoading = val;
+            if (val == true) {
+              this.loadingHandler();
+            } else {
+              this.closeLoading();
+            }
+          }
         }
     },
     data() {
@@ -237,7 +248,9 @@ export default {
             is_missroute: false,
             is_plain: false,
             is_sm: false,
-            is_user_check: false
+            is_user_check: false,
+            processLoading: false,
+            refloading: null
         }
     },
     methods: {
@@ -248,6 +261,33 @@ export default {
                 hasInboundNumber: this.hasInboundNumber
             };
             localStorage.setItem('inboundScanData', JSON.stringify(inboundData));
+        },
+
+        loadingHandler() {
+          if (this.is_prealert) {
+            this.refloading = this.$vs.loading({
+              target: this.$refs.formInputInbound.$el,
+              type: "scale",
+              text: "Loading...",
+              background: "#EAEAEA",
+              color: "#3b86ff"
+            });
+          } else {
+            this.refloading = this.$vs.loading({
+              target: this.$refs.formInputChildInbound.$el,
+              type: "scale",
+              text: "Loading...",
+              background: "#EAEAEA",
+              color: "#3b86ff"
+            });
+          }
+        },
+
+        closeLoading() {
+          if (this.refloading) {
+            this.refloading.close();
+            this.refloading = null;
+          }
         },
 
         async loadInboundFromStorage() {
@@ -308,6 +348,8 @@ export default {
         },
         async processInbond() {
             this.processing = true;
+            this.processLoading = true;
+
             this.openProgress(null, "Processing", `${this.form.item_no ? this.form.item_no : 'Item' } is in process`);
             
 
@@ -324,11 +366,13 @@ export default {
                 if (!this.is_prealert && !this.parent_no) {
                     this.handleClearTableInfo();
                 }
+                this.processLoading = false;
                 this.processing = false;
             } finally {
                 this.refresh();
                 this.closeProgress();
                 this.handlerClearForm();
+                this.processLoading = false;
                 this.processing = false;
             }
         },
