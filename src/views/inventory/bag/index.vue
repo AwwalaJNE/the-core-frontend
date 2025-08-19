@@ -17,7 +17,7 @@
                 @updateValue="updateFilter" />
             </vs-col>
             <!-- <template v-if="bag_type === ('normal' || 'masterbag' || 'return' || 'pickup')"> -->
-              <template v-if="['normal', 'masterbag', 'return', 'pickup'].includes(bag_type)">
+              <template v-if="['normal', 'hvo', 'om', 'hacb', 'masterbag', 'return', 'pickup'].includes(bag_type)">
               <vs-col xs="12" sm="3" lg="2">
                 <template>
                   <div class="center in-get-bag">
@@ -152,7 +152,7 @@
 
           <vs-row style="margin-bottom: 1.5em;">
             <!-- Auto Open Bag -->
-              <template v-if="['normal', 'masterbag', 'pra runsheet', 'return', 'pickup'].includes(bag_type)">
+              <template v-if="['normal', 'hvo', 'om', 'hacb', 'masterbag', 'pra runsheet', 'return', 'pickup'].includes(bag_type)">
               <vs-col xs="6" sm="3" lg="2">
                 <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
                   Auto Open Bag
@@ -247,6 +247,9 @@ export default {
       if (val !== undefined) {
         switch (val) {
           case "normal":
+          case "hvo":
+          case "om":
+          case "hacb":
             this.getService()
             this.title = 'Create Bag'
             this.placeholder = 'Masukkan Connote'
