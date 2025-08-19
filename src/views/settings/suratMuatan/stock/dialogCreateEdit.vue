@@ -81,18 +81,10 @@
                     />
 
                     <vs-row v-if="vehicle.length > 0">
-                        <vs-row justify="space-between" v-if="Object.keys(edit_data).length > 0">
-                            <h3 v-if="!is_edit" class="title">Active Vehicle</h3>
-                            <h3 v-else class="title">List Vehicle</h3>
-                            <vs-button
-                                shadow
-                                :active="false"
-                                @click="openDialogManageVehicleManifest"
-                            >
-                                <i class='bx bx-cog'></i> Manage
-                            </vs-button>
-                        </vs-row>
                         <template v-if="!is_edit">
+                            <vs-row>
+                                <h3 class="title">List Vehicle</h3>
+                            </vs-row>
                             <radio
                                 :name="'manifest_vehicle'"
                                 :value-data="vehicle"
@@ -102,6 +94,16 @@
                             />
                         </template>
                         <template v-else>
+                            <vs-row justify="space-between">
+                                <h3 class="title">Active Vehicle</h3>
+                                <vs-button
+                                    shadow
+                                    :active="false"
+                                    @click="openDialogManageVehicleManifest"
+                                >
+                                    <i class='bx bx-cog'></i> Manage
+                                </vs-button>
+                            </vs-row>
                             <vs-row
                                 v-for="(item, index) in vehicle"
                                 :key="index"
