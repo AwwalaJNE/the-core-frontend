@@ -34,36 +34,25 @@
                         <p>No vehicle data is currently available. Please create a new vehicle first.</p>
                     </template>
                 </template>
-                <template v-else-if="navActive === 'k-NEW'">
-                    <template v-if="listenManifestMethod === 1">
-                        <vs-input 
-                            border 
-                            type="text"
-                            v-model="flightNumber"
-                            label-placeholder="Search Flight Number Here"
-                            :autofocus="true"
-                            :disabled="hasFlightNumber"
-                            v-uppercase
-                            ref="formFlightNumber"
-                            @keyup.enter="processFlightNumber"
-                        />
-                        <template v-if="hasFlightNumber">
-                            <div style="position:absolute; right:20px; top:15px;">
-                                <span class="vs-select__chips__chip__close" @click="clearInput">
-                                    <i class="vs-icon-close vs-icon-hover-less"></i>
-                                </span>
-                            </div>
+                <template v-else-if="navActive === 'k-NEW-AUTO'">
+                    <vs-input 
+                        border 
+                        type="text"
+                        v-model="flightNumber"
+                        label-placeholder="Search Flight Number Here"
+                        :autofocus="true"
+                        :disabled="hasFlightNumber"
+                        v-uppercase
+                        ref="formFlightNumber"
+                        @keyup.enter="processFlightNumber"
+                    />
+                    <template v-if="hasFlightNumber">
+                        <div style="position:absolute; right:20px; top:15px;">
+                            <span class="vs-select__chips__chip__close" @click="clearInput">
+                                <i class="vs-icon-close vs-icon-hover-less"></i>
+                            </span>
+                        </div>
 
-                            <form-input-controller
-                                ref="formSuratMuatanVehicleController"
-                                typeForm="surat_muatan_vehicle"
-                                :querySearch="querySearch"
-                                @formData="formData"
-                                @inputFocus="inputFocus"
-                            />
-                        </template>
-                    </template>
-                    <template v-else>
                         <form-input-controller
                             ref="formSuratMuatanVehicleController"
                             typeForm="surat_muatan_vehicle"
@@ -73,10 +62,19 @@
                         />
                     </template>
                 </template>
+                <template v-else-if="navActive === 'k-NEW-MANUAL'">
+                    <form-input-controller
+                        ref="formSuratMuatanVehicleController"
+                        typeForm="surat_muatan_vehicle"
+                        :querySearch="querySearch"
+                        @formData="formData"
+                        @inputFocus="inputFocus"
+                    />
+                </template>
             </vs-col>
         </template>
 
-        <template v-slot:footer v-if="navActive === 'k-NEW'">
+        <template v-slot:footer v-if="navActive === 'k-NEW-AUTO' || navActive === 'k-NEW-MANUAL'">
             <vs-row justify="flex-end" style="margin-top: 1pc;">
                 <vs-col w="3">
                     <vs-button
@@ -143,8 +141,12 @@ export default {
                     key: "k-MANAGE"
                 },
                 {
-                    label: "NEW",
-                    key: "k-NEW"
+                    label: "NEW (AUTO)",
+                    key: "k-NEW-AUTO"
+                },
+                {
+                    label: "NEW (MANUAL)",
+                    key: "k-NEW-MANUAL"
                 },
             ],
             loading: false,
@@ -213,6 +215,8 @@ export default {
             if (val === 'k-MANAGE') {
                 this.getManifestVehicle();
             }
+
+            this.moveTab();
         },
         formData(form){
             form.origin_branch_code = form.origin_branch_code?.value || form.origin_branch_code;
@@ -224,10 +228,14 @@ export default {
             this.createManifestVehicle()
         },
         handleSubmit(){
-            if (this.hasFlightNumber) {
-               this.$refs.formSuratMuatanVehicleController.handleSubmit(); 
-            } else {
-                this.processFlightNumber();
+            if (this.navActive === 'k-NEW-AUTO') {
+                if (this.hasFlightNumber) {
+                this.$refs.formSuratMuatanVehicleController.handleSubmit(); 
+                } else {
+                    this.processFlightNumber();
+                }
+            } else if (this.navActive === 'k-NEW-MANUAL') {
+                this.$refs.formSuratMuatanVehicleController.handleSubmit(); 
             }
         },
         async getVehicle(query) {
@@ -349,6 +357,7 @@ export default {
                 const res = await axios.post(`${this.URL.manifest_vehicle}/${this.listenManifestNumber}?n=${this.listenNodeId}`, this.form, this.Helper.header());
                 this.openNotification('success', null, "Success", "Update manifest vehicle success");
                 this.moveTab();
+                this.navActive = 'k-MANAGE';
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
@@ -462,33 +471,25 @@ export default {
             }
         },
         handleClearForm() {
-            if (this.navActive === 'k-NEW' && this.$refs.formSuratMuatanVehicleController) {
+            if ((this.navActive === 'k-NEW-AUTO' || this.navActive === 'k-NEW-MANUAL') && this.$refs.formSuratMuatanVehicleController) {
                 this.$refs.formSuratMuatanVehicleController.handleClearForm();
             }
         },
         clearInput() {
-            this.hasFlightNumber = false;
-            this.flightNumber = "";
-            this.vehicle_id = "";
-
-            this.handleClearForm();
+            this.moveTab();
             
             this.$nextTick(() => {
                 this.$refs.formFlightNumber?.$el?.querySelector("input")?.focus();
             });
         },
         cancel() {
-            this.handleClearForm();
+            this.moveTab();
 
             this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER_visible", false);
             this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE_visible", false);
             this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID_visible", false);
 
             this.navActive = 'k-MANAGE';
-
-            this.hasFlightNumber = false;
-            this.flightNumber = "";
-            this.vehicle_id = "";
             
             this.closeDialog();
         },
@@ -498,9 +499,6 @@ export default {
             this.vehicle_id = "";
 
             this.handleClearForm();
-
-            this.navActive = 'k-MANAGE';
-            this.getManifestVehicle();
         }
     },
     mounted() {
