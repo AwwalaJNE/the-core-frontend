@@ -39,7 +39,7 @@
                         border 
                         type="text"
                         v-model="flightNumber"
-                        label-placeholder="Search Flight Number Here"
+                        label-placeholder="Search By Flight Number Here"
                         :autofocus="true"
                         :disabled="hasFlightNumber"
                         v-uppercase
@@ -53,13 +53,20 @@
                             </span>
                         </div>
 
-                        <form-input-controller
-                            ref="formSuratMuatanVehicleController"
-                            typeForm="surat_muatan_vehicle"
-                            :querySearch="querySearch"
-                            @formData="formData"
-                            @inputFocus="inputFocus"
-                        />
+                        <template v-if="!loading">
+                            <template v-if="!is_found">
+                                <p>Flight number not found. Kindly enter a valid code or create the record manually.</p>
+                            </template>
+                            <template v-else>
+                                <form-input-controller
+                                    ref="formSuratMuatanVehicleController"
+                                    typeForm="surat_muatan_vehicle"
+                                    :querySearch="querySearch"
+                                    @formData="formData"
+                                    @inputFocus="inputFocus"
+                                />
+                            </template>
+                        </template>
                     </template>
                 </template>
                 <template v-else-if="navActive === 'k-NEW-MANUAL'">
@@ -156,7 +163,8 @@ export default {
             flightNumber: "",
             hasFlightNumber: false,
 
-            vehicle_id: ""
+            vehicle_id: "",
+            is_found: false
         };
     },
     computed: {
@@ -410,13 +418,14 @@ export default {
                 return;
             }
             this.hasFlightNumber = true;
-            
 
             this.loading = true;
             try {
                 const res = await axios.get(`${this.URL.search_flight}/${this.flightNumber}`, this.Helper.headerFlight());
 
                 let data = res.data.data;
+
+                this.is_found = true;
 
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER", data?.flight);
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE", data?.detailJson?.timingInformation?.departure?.runway?.scheduled?.iso);
@@ -432,6 +441,7 @@ export default {
 
                 await this.getVehicle(data?.detailJson?.flightSummary?.airline?.iata);
             } catch (err) {
+                this.is_found = false;
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;
@@ -495,6 +505,7 @@ export default {
         },
         moveTab() {
             this.hasFlightNumber = false;
+            this.is_found = false;
             this.flightNumber = "";
             this.vehicle_id = "";
 
