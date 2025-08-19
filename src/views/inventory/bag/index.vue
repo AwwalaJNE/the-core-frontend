@@ -760,6 +760,7 @@ export default {
           .post(this.URL.revamp_bag+`?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header())
           .then(res => {
             let bagNumber = res.data.data.bag_number;
+            let bagNumberForRoute = bagNumber.replace(/\//g, '~');
             this.handleClearForm()
             this.openNotification("success", null, 'Success', 'Bagging is success')
 
@@ -769,7 +770,7 @@ export default {
             this.$store.dispatch("SET_IS_HUB_DELIVERY_VALIDATION", this.is_hub_delivery_validation);
             this.$store.dispatch("SET_IS_HUB_DELIVERY_VALIDATION_ValueData", this.is_hub_delivery_validation);
 
-            this.$router.push('/bagging-detail/'+bagNumber)
+            this.$router.push('/bagging-detail/'+bagNumberForRoute)
             this.setRoutePageHistory(this.$route.meta, false);
           }).catch(err => {
               this.loading = false;
