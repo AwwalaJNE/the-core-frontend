@@ -131,12 +131,12 @@ export default {
                 },
                 {
                   label: "Actual Weight",
-                  key: "bag_weight",
+                  key: "actual_weight_item",
                   width: "auto"
                 },
                 {
                   label: "Cost Weight",
-                  key: "bag_weight",
+                  key: "cost_weight_item",
                   width: "auto"
                 },
                 {
@@ -301,9 +301,10 @@ export default {
             this.removeData()
         },
         async removeData(){
+            let bagNumberForRoute = this.parentId.replace(/\//g, '~');
             await axios
                 .delete(
-                    this.URL.bag+`/${this.parentId}/detail/${this.id}?n=${this.listenNodeId}`,
+                    this.URL.bag+`/${bagNumberForRoute}/detail/${this.id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
                     this.closeDialogConfirmRemove()
