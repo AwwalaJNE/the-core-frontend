@@ -807,6 +807,7 @@ export default {
                         status: data.status
                     };
                     await this.getSuratMuatanDetail();
+                    await this.getManifestVehicle();
                 }
 
                 this.openNotification('success', null, "Success", "Create surat jalan success");
