@@ -496,17 +496,29 @@ export default {
               "value": "masterbag"
             },
             {
-              "label": "Bag Pra Runsheet",
+              "label": "Pra Runsheet",
               "value": "pra runsheet"
             },
             {
-              "label": "Bag Return",
-              "value": "return"
+              "label": "HVO",
+              "value": "hvo"
             },
             {
-              "label": "Bag Pickup",
-              "value": "pickup"
+              "label": "OM",
+              "value": "om"
             },
+            {
+              "label": "HACB",
+              "value": "hacb"
+            },
+            // {
+            //   "label": "Bag Return",
+            //   "value": "return"
+            // },
+            // {
+            //   "label": "Bag Pickup",
+            //   "value": "pickup"
+            // },
           ],
           placeholder: 'Masukkan Connote',
           is_auto_open_bag: true,
