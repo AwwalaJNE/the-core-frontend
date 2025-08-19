@@ -78,7 +78,7 @@
                                         shadow
                                         :active="false"
                                         :disabled="isDisabled"
-                                        @click="openDialogCreateVehicleManifest"
+                                        @click="openDialogManageVehicleManifest"
                                         style="min-width: 120px;"
                                     >
                                         <i class='bx bx-plus'></i> More Vehicle
@@ -126,7 +126,7 @@
                         shadow
                         :active="false"
                         :disabled="isDisabled"
-                        @click="openDialogCreateVehicleManifest"
+                        @click="openDialogManageVehicleManifest"
                     >
                         <i class='bx bx-plus'></i> Vehicle
                     </vs-button>
@@ -206,13 +206,7 @@
             :manifest_method="manifest_method_id"
             :active="dialogManageVehicleManifest"
             :closeDialog="closeDialogManageVehicleManifest"
-        />
-
-        <dialog-create-vehicle-manifest
-            title="Manifest Vehicle"
-            :manifest_method="manifest_method_id"
-            :active="dialogCreateVehicleManifest"
-            :closeDialog="closeDialogCreateVehicleManifest"
+            :submitType="is_sm_edit ? 'api' : 'prefill'"
             @updateVehicleValue="updateVehicleValue"
         />
     </div>
@@ -233,7 +227,6 @@ import DialogTraceBag from "@/views/transport/manifestNew/dialogTraceBag";
 import dialogSelectManifestStock from "./dialogSelectManifestStock.vue";
 
 import DialogManageVehicleManifest from "@/views/transport/manifestVehicle/dialogCreateManage";
-import DialogCreateVehicleManifest from "@/views/transport/manifestNew/dialogCreateVehicleManifest";
 import VehicleCard from "@/views/transport/manifestNew/vehicleCard";
 
 export default {
@@ -247,7 +240,6 @@ export default {
         "dialog-trace-bag": DialogTraceBag,
         "dialog-select-manifest-stock": dialogSelectManifestStock,
         "dialog-manage-vehicle-manifest": DialogManageVehicleManifest,
-        "dialog-create-vehicle-manifest": DialogCreateVehicleManifest,
         "radio": RadioWithCard,
         "vehicle-card": VehicleCard
     },
@@ -371,7 +363,6 @@ export default {
             dialogTraceBag: false,
             showSelectStockModal: false,
             selectedBagNumber: "",
-            dialogCreateVehicleManifest: false,
             dialogManageVehicleManifest: false,
             is_sm_edit: false,
             vehicle_form: [],
@@ -1169,16 +1160,6 @@ export default {
         openTraceBagDialog() {
             this.dialogTraceBag = true;
         },
-        openDialogCreateVehicleManifest() {
-            if (this.manifest_method_id === 0) {
-                this.openNotification("warn", null, "Failed", 'Please choose manifest mode first');
-            } else {
-                this.dialogCreateVehicleManifest = true;
-            }
-        },
-        closeDialogCreateVehicleManifest() {
-            this.dialogCreateVehicleManifest = false;
-        },
         updateVehicleValue(form) {
             let form_id =  Date.now() + Math.random();
             
@@ -1221,11 +1202,22 @@ export default {
             this.vehicle_form.push(vehicle_form);
         },
         openDialogManageVehicleManifest() {
-            this.dialogManageVehicleManifest = true;
+            if (this.is_sm_edit) {
+                this.dialogManageVehicleManifest = true;
+            } else {
+                if (this.manifest_method_id === 0) {
+                    this.openNotification("warn", null, "Failed", 'Please choose manifest mode first');
+                } else {
+                    this.dialogManageVehicleManifest = true;
+                }
+            }
         },
         closeDialogManageVehicleManifest() {
             this.dialogManageVehicleManifest = false;
-            this.getManifestVehicle();
+
+            if (this.is_sm_edit) {
+                this.getManifestVehicle();
+            }
         },
         chooseRow(newKey, done) {
             this.selected_manifest_vehicle = newKey;

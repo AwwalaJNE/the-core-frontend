@@ -137,25 +137,18 @@ export default {
         dataItem: Object,
         manifest_method: Number,
         manifest_number: String,
-        title: String
+        title: String,
+        submitType: {
+            type: String,
+            default: 'api',
+            validator: v => ['api', 'prefill'].includes(v)
+        },
+        updateVehicleValue: Function
     },
     data() {
         return {
-            navActive: "k-MANAGE",
-            navItem: [
-                {
-                    label: "MANAGE",
-                    key: "k-MANAGE"
-                },
-                {
-                    label: "NEW (AUTO)",
-                    key: "k-NEW-AUTO"
-                },
-                {
-                    label: "NEW (MANUAL)",
-                    key: "k-NEW-MANUAL"
-                },
-            ],
+            navActive: "",
+            navItem: [],
             loading: false,
             list_manifest_vehicle: [],
             selected_manifest_vehicle: "",
@@ -170,6 +163,7 @@ export default {
     computed: {
         listenActive() {
             if (this.active) {
+                this.setNavItem();
                 this.setDialogActive();
             }
             return this.active;
@@ -188,12 +182,43 @@ export default {
         },
         listenSelectedManifestVehicle() {
             return this.selected_manifest_vehicle || ''
-        }
+        },
     },
     methods: {
-        setDialogActive() {
-            this.getManifestVehicle();
+        setNavItem() {
+            if (this.submitType === 'api') {
+                this.navItem = [
+                    {
+                        label: "MANAGE",
+                        key: "k-MANAGE"
+                    },
+                    {
+                        label: "NEW (AUTO)",
+                        key: "k-NEW-AUTO"
+                    },
+                    {
+                        label: "NEW (MANUAL)",
+                        key: "k-NEW-MANUAL"
+                    },
+                ];
+                this.navActive = "k-MANAGE";
 
+                this.getManifestVehicle();
+            } else {
+                this.navItem = [
+                    {
+                        label: "NEW (AUTO)",
+                        key: "k-NEW-AUTO"
+                    },
+                    {
+                        label: "NEW (MANUAL)",
+                        key: "k-NEW-MANUAL"
+                    },
+                ];
+                this.navActive = "k-NEW-AUTO";
+            }
+        },
+        setDialogActive() {
             switch(this.listenManifestMethod){
                 case 1:
                     this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER_visible", true);
@@ -227,13 +252,29 @@ export default {
             this.moveTab();
         },
         formData(form){
-            form.origin_branch_code = form.origin_branch_code?.value || form.origin_branch_code;
-            form.destination_branch_code = form.destination_branch_code?.value || form.destination_branch_code;
-            form.vehicle_id = this.vehicle_id || form?.vehicle_id?.vehicle_id || form?.vehicle_id;
-            form.employee_driver_id = form?.employee_driver_id?.employee_id || "";
-            
-            this.form = form;
-            this.createManifestVehicle()
+            if (this.submitType === 'api') {
+                form.origin_branch_code = form.origin_branch_code?.value || form.origin_branch_code;
+                form.destination_branch_code = form.destination_branch_code?.value || form.destination_branch_code;
+                form.vehicle_id = this.vehicle_id || form?.vehicle_id?.vehicle_id || form?.vehicle_id;
+                form.employee_driver_id = form?.employee_driver_id?.employee_id || "";
+                
+                this.form = form;
+                this.createManifestVehicle();
+            } else {
+                let data = {
+                    origin_vehicle: form.origin_branch_code,
+                    destination_vehicle: form.destination_branch_code,
+                    vehicle_id: this.vehicle_data || form.vehicle_id,
+                    pic_employee_id: form.employee_driver_id || "",
+                    flight_number: form.flight_number || "",
+                    flight_schedule: form.flight_schedule || "",
+                    etd_vehicle: form.etd,
+                    eta_vehicle: form.eta
+                };
+                
+                this.$emit('updateVehicleValue', data);
+                this.cancel();
+            }
         },
         handleSubmit(){
             if (this.navActive === 'k-NEW-AUTO') {
@@ -366,6 +407,7 @@ export default {
                 this.openNotification('success', null, "Success", "Update manifest vehicle success");
                 this.moveTab();
                 this.navActive = 'k-MANAGE';
+                this.getManifestVehicle();
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
