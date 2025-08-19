@@ -381,7 +381,12 @@ export default {
         {
           label: `${this.listenBreadcrumbCode} Number`,
           key: "inbound_number",
-          width: "xxs",
+          width: "xxxs",
+        },
+        {
+          label: `${this.listenBreadcrumbCode} Type`,
+          key: "inbound_type",
+          width: "xxxs",
         },
         {
           label: "Status",
@@ -447,11 +452,6 @@ export default {
           label: "Node Origin",
           key: "inbound_node_name_origin",
           width: "md",
-        },
-        {
-          label: "Inbound Type",
-          key: "inbound_type",
-          width: "auto",
         },
         // {
         //   label: "Item",
