@@ -22,6 +22,7 @@
                         <span><p>Total Connote: {{ total_connote }} Pcs</p></span>
                         <span><p>Total Weight: {{ total_weight }} Kg</p></span>
                         <span><p>Actual Weight: {{ actual_weight }} Kg</p></span>
+                        <span><p>Cost Weight: {{ cost_weight }} Kg</p></span>
                     </vs-col>
                 </template>
                 <template v-else>
@@ -129,6 +130,16 @@ export default {
                   width: "auto"
                 },
                 {
+                  label: "Actual Weight",
+                  key: "bag_weight",
+                  width: "auto"
+                },
+                {
+                  label: "Cost Weight",
+                  key: "bag_weight",
+                  width: "auto"
+                },
+                {
                     label: "Destination Code",
                     key: "destination_code",
                     width: "auto"
@@ -165,6 +176,7 @@ export default {
             total_connote :'',
             total_weight :'',
             actual_weight :'',
+            cost_weight :'',
             bag_detail_qty:'',
             bag_destination:'',
             bag_destination_id:'',
@@ -243,6 +255,7 @@ export default {
           this.total_connote = val.data.total_item_connote
           this.total_weight = val.data.total_weight
           this.actual_weight = val.data.data.bag_actual_weight
+          this.cost_weight = val.data.data.cost_weight
           this.bag_destination = val?.data?.data?.destination?.node_code ?? ''
           this.bag_destination_id = val?.data?.data?.destination?.node_id ?? ''
           this.bag_destination_name = val?.data?.data?.destination?.node_name ?? ''
