@@ -1,8 +1,8 @@
 <template>
 	<div :class="['card', { disabled: listenIsDisabled }]">
 		<vs-row justify="flex-start" align="center">
-			<vs-col w="1"></vs-col>
-			<vs-col w="3" align="left">
+			<vs-col w="1" v-if="!listenData.transit_at"></vs-col>
+			<vs-col :w="listenData.transit_at ? 4 : 3" align="left">
 				<h1 class="text-header">{{ listenData.origin_code }}</h1>
 				<span class="text">REGIONAL CODE</span>
 			</vs-col>

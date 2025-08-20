@@ -6,14 +6,17 @@
         >
             <div 
                 v-if="cardType === 'transit-card'"
-                :style="{ cursor: item.transit_at ? 'default' : 'grab' }"
+                :style="{ cursor: item.transit_at ? 'not-allowed' : 'grab' }"
                 :draggable="!item.transit_at"
                 @dragstart="!item.transit_at && dragStart(index)"
                 @dragover.prevent="!item.transit_at && onDragOver($event)"
                 @drop="!item.transit_at && drop(index)"
             >
-                
-                <div class="drag-button" :style="{ cursor: item.transit_at ? 'not-allowed' : 'grab' }">
+                <div 
+                    v-if="!item.transit_at"
+                    class="drag-button" 
+                    style="cursor: grab"
+                >
                     <img src="@/assets/svg/dot-menu.svg" />
                 </div>
                 <div
