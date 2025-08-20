@@ -38,7 +38,13 @@
                 <vs-row justify="center">
                     <template v-if="data.length > 0">
                         <div>
-                            haii
+                            <draggable-card
+                                :cardType="'transit-card'"
+                                :valueData="data"
+                                :isRemoveButton="true"
+                                @update="updateTransit"
+                                @remove="removeTransit"
+                            />
                         </div>
                     </template>
                     <template v-else>
@@ -60,6 +66,7 @@ import master from "@/mixins/master";
 
 import AutoComplete from "@/components/input/autoComplete";
 import DialogMaster from "@/components/dialog/dialogMaster";
+import DragableCard from '@/components/input/draggableCard';
 
 export default {
     name:"transit-dialog",
@@ -67,6 +74,7 @@ export default {
     components: {
         "auto-complete": AutoComplete,
         "dialog-master": DialogMaster,
+        "draggable-card": DragableCard,
     },
     props: {
         active: Boolean,
@@ -92,6 +100,9 @@ export default {
         listenLoading() {
             return this.loading;
         },
+        listenSelectedManifestVehicle() {
+            return this.data || ''
+        },
     },
     watch: {
         active(newVal, oldVal) {
@@ -116,6 +127,45 @@ export default {
             } finally {
                 this.loading = false;
             }
+
+            this.data = [
+                {
+                    "bag_transit_route_id": "58c767c8-3f2c-479d-9ad7-464fe0157d00",
+                    "order": 1,
+                    "bag_number": "CGK2392042",
+                    "origin_code": "CGX10000",
+                    "transit_at": "2025-01-01 07:30:00",
+                    "is_planned": 1,
+                    "created_at": "2025-01-01 07:30:00"
+                },
+                {
+                    "bag_transit_route_id": "58c767c8-3f2c-479d-9ad7-464fe0157d01",
+                    "order": 2,
+                    "bag_number": "CGK2392042",
+                    "origin_code": "SUX10000",
+                    "transit_at": "2025-01-01 08:30:00",
+                    "is_planned": 1,
+                    "created_at": "2025-01-01 07:30:00"
+                },
+                {
+                    "bag_transit_route_id": "58c767c8-3f2c-479d-9ad7-464fe0157d02",
+                    "order": 3,
+                    "bag_number": "CGK2392042",
+                    "origin_code": "UPX10000",
+                    "transit_at": null,
+                    "is_planned": 1,
+                    "created_at": "2025-01-01 07:30:00"
+                },
+                {
+                    "bag_transit_route_id": "58c767c8-3f2c-479d-9ad7-464fe0157d03",
+                    "order": 4,
+                    "bag_number": "CGK2392042",
+                    "origin_code": "UPG10000",
+                    "transit_at": null,
+                    "is_planned": 1,
+                    "created_at": "2025-01-01 07:30:00"
+                }
+            ]
         },
         async createTransit() {
             if (Object.keys(this.form).length === 0) {
@@ -135,7 +185,7 @@ export default {
                 this.getDataTransit();
             }
         },
-        async updateTransit () {
+        async updateTransit() {
             this.loading = true;
             try {
                 const res = await axios.patch(`${this.URL.bag}/${this.bagNumber}/route-transit?n=${this.listenNodeId}`, this.form_order, this.Helper.header());
