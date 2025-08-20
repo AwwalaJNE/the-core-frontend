@@ -26,13 +26,7 @@
 
                 <transit-card :data="item" :isDisabled="!!item.transit_at" />
             </div>
-            <div 
-                v-else
-                :draggable="!item.transit_at"
-                @dragstart="!item.transit_at && dragStart(index)"
-                @dragover.prevent
-                @drop="drop(index)"
-            >
+            <div v-else>
                 <p>Type Not Found</p>
             </div>
         </vs-col>
