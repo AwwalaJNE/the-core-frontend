@@ -11,7 +11,7 @@
                     @dragstart="!item.transit_at && dragStart(index)"
                     @dragover.prevent="!item.transit_at && onDragOver($event)"
                     @drop="!item.transit_at && drop(index)"
-                    style="user-select: none;"
+                    style="user-select: none; cursor: grab;"
                 >
                     <div class="drag-button">
                         <img src="@/assets/svg/dot-menu.svg" />
@@ -107,6 +107,8 @@ export default {
     font-size: 30px;
     z-index: 2;
     transition: color 0.2s ease;
+    user-select: none;
+    cursor: grab;
 }
 
 
