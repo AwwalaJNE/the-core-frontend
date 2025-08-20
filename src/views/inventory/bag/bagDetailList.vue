@@ -312,7 +312,7 @@ export default {
                     if(res.data.detail.length > 0){
                         this.refresh()
                     }else{
-                        this.$router.push({ name: 'InventoryBag', params: { } });
+                        this.$router.push('/outgoing/bag');
                         this.setRoutePageHistory(this.$route.meta, false);
                     }
                     this.openNotification('success', null, 'Remove success', 'Remove bag item successfully')
