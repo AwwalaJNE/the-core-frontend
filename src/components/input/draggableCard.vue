@@ -9,8 +9,8 @@
                 :style="{ cursor: item.transit_at ? 'default' : 'grab' }"
                 :draggable="!item.transit_at"
                 @dragstart="!item.transit_at && dragStart(index)"
-                @dragover.prevent
-                @drop="drop(index)"
+                @dragover.prevent="!item.transit_at && onDragOver($event)"
+                @drop="!item.transit_at && drop(index)"
             >
                 
                 <div class="drag-button" :style="{ cursor: item.transit_at ? 'not-allowed' : 'grab' }">
@@ -76,7 +76,12 @@ export default {
         dragStart(index) {
             this.dragIndex = index;
         },
+        onDragOver(e) {
+            e.preventDefault();
+        },
         drop(dropIndex) {
+            if (this.dragIndex === null || this.DataArr[dropIndex].transit_at) return;
+
             const movedItem = this.DataArr[this.dragIndex];
             this.DataArr.splice(this.dragIndex, 1);
             this.DataArr.splice(dropIndex, 0, movedItem);
