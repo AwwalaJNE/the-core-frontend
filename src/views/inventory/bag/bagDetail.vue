@@ -15,6 +15,9 @@
         </div>
       </div>
       <div style="display: flex;" class="buttonPage" v-if="!loading">
+        <vs-button v-if="listenUserRoleName !== 'HELPDESK' && listenDataBag.tipe_bag === 'OM'" @click="newBag">
+          <i class="bx bx-plus"></i> Add Transit
+        </vs-button>
         <template v-if="listenUserRoleName === 'HELPDESK'">
           <vs-button
             @click="approveAction(true)"
