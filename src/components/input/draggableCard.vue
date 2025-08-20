@@ -4,34 +4,35 @@
             v-for="(item, index) in DataArr"
             :key="index"
         >
-            <div 
-                v-if="cardType === 'transit-card'"
-                :style="{ cursor: item.transit_at ? 'not-allowed' : 'grab' }"
-                :draggable="!item.transit_at"
-                @dragstart="!item.transit_at && dragStart(index)"
-                @dragover.prevent="!item.transit_at && onDragOver($event)"
-                @drop="!item.transit_at && drop(index)"
-            >
+            <template v-if="cardType === 'transit-card'">
                 <div 
                     v-if="!item.transit_at"
-                    class="drag-button" 
-                    style="cursor: grab"
+                    :draggable="!item.transit_at"
+                    @dragstart="!item.transit_at && dragStart(index)"
+                    @dragover.prevent="!item.transit_at && onDragOver($event)"
+                    @drop="!item.transit_at && drop(index)"
+                    style="user-select: none;"
                 >
-                    <img src="@/assets/svg/dot-menu.svg" />
-                </div>
-                <div
-                    v-if="listenRemoveButton && !item.transit_at"
-                    class="remove-button"
-                    @click.stop="remove(item.bag_transit_route_id)"
-                >
-                    <i class="bx bx-trash"></i>
-                </div>
+                    <div class="drag-button">
+                        <img src="@/assets/svg/dot-menu.svg" />
+                    </div>
+                    <div
+                        v-if="listenRemoveButton"
+                        class="remove-button"
+                        @click.stop="remove(item.bag_transit_route_id)"
+                    >
+                        <i class="bx bx-trash"></i>
+                    </div>
 
-                <transit-card :data="item" :isDisabled="!!item.transit_at" />
-            </div>
-            <div v-else>
+                    <transit-card :data="item" :isDisabled="!!item.transit_at" />
+                </div>
+                <div v-else style="user-select: none;">
+                    <transit-card :data="item" :isDisabled="!!item.transit_at" />
+                </div>
+            </template>
+            <template v-else>
                 <p>Type Not Found</p>
-            </div>
+            </template>
         </vs-col>
     </vs-row>
 </template>
