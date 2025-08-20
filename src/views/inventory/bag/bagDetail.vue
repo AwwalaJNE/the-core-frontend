@@ -15,7 +15,7 @@
         </div>
       </div>
       <div style="display: flex;" class="buttonPage" v-if="!loading">
-        <vs-button v-if="listenUserRoleName !== 'HELPDESK' && listenDataBag.tipe_bag === 'OM'" @click="newBag">
+        <vs-button v-if="listenUserRoleName !== 'HELPDESK'" @click="openDialogTransit">
           <i class="bx bx-plus"></i> Add Transit
         </vs-button>
         <template v-if="listenUserRoleName === 'HELPDESK'">
@@ -338,6 +338,13 @@
       :bagNumber="bag_id"
       :closeDialog="closeDialog"
     />
+
+    <dialog-create-edit-transit
+      title="Add Transit Route"
+      :active="dialogTransitActive"
+      :bagNumber="bag_id"
+      :closeDialog="closeDialogTransit"
+    />
   </div>
 </template>
 <script>
@@ -349,6 +356,7 @@ import Selector from "@/components/input/select"
 import CameraScanner from "@/components/scanner/camera.vue";
 import DialogConfirm from "@/components/dialog/dialogConfirm"
 import DialogHelpdeskEditBag from "@/views/helpdesk/bag/dialogHelpdeskEditBag";
+import DialogCreateEditTransit from "@/views/inventory/bag/transit/dialogCreateEdit.vue";
 
 import asynchronousSelect from "@/components/input/asynchronousSelect"
 
@@ -362,6 +370,7 @@ export default {
     CameraScanner,
     "dialog-confirm": DialogConfirm,
     "dialog-helpdesk-edit-bag": DialogHelpdeskEditBag,
+    "dialog-create-edit-transit": DialogCreateEditTransit,
     "asynchronousSelect": asynchronousSelect,
   },
   data() {
@@ -416,7 +425,8 @@ export default {
       disable_hub_delivery: false,
       validation: '',
       validation_reference: [], 
-      courierArr: []
+      courierArr: [],
+      dialogTransitActive: false,
     }
   },
   computed: {
@@ -728,6 +738,12 @@ export default {
       this.$router.push('/outgoing/bag')
       this.setRoutePageHistory(this.$route.meta, false);
       
+    },
+    openDialogTransit() {
+      this.dialogTransitActive = true;
+    },
+    closeDialogTransit() {
+      this.dialogTransitActive = false;
     },
     editBag() {
       this.dialogHelpdeskEditBag = true;
