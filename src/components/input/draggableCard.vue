@@ -1,8 +1,12 @@
 <template>
     <vs-row style="gap: 20px;">
         <vs-col
-            v-for="(item, key) in DataArr"
-            :key="key"
+            v-for="(item, index) in DataArr"
+            :key="item.bag_transit_route_id"
+            draggable="true"
+            @dragstart="dragStart(index)"
+            @dragover.prevent
+            @drop="drop(index)"
         >
             <div>
                 <template v-if="cardType === 'transit-card'">
@@ -50,8 +54,9 @@ export default {
     },
     data() {
         return {
-            DataArr: this.valueData || []
-        }
+            DataArr: this.valueData || [],
+            dragIndex: null
+        };
     },
     watch: {
         valueData: {
@@ -59,19 +64,30 @@ export default {
                 this.DataArr = newVal;
             },
             deep: true
-        },
+        }
     },
     computed: {
         listenRemoveButton() {
-            return this.isRemoveButton || false
+            return this.isRemoveButton || false;
         }
     },
     methods: {
         remove(id) {
             this.$emit("remove", id);
         },
-    },
-}
+        dragStart(index) {
+            this.dragIndex = index;
+        },
+        drop(dropIndex) {
+            const movedItem = this.DataArr[this.dragIndex];
+            this.DataArr.splice(this.dragIndex, 1);
+            this.DataArr.splice(dropIndex, 0, movedItem);
+            this.dragIndex = null;
+
+            this.$emit("update-order", this.DataArr);
+        }
+    }
+};
 </script>
 
 <style lang="scss" scoped>
