@@ -107,23 +107,23 @@ export default {
                 {
                     label: "No",
                     key: "no",
-                    width: "xs"
+                    width: "xxxxs"
                 },
                 {
                     label: "Item",
                     key: "item_number",
-                    width: "md"
+                    width: "sm"
                 },
                 {
                     label: "Quantity",
                     key: "koli_qty",
-                    width: "xs"
-                },
-                {
-                    label: "Of#",
-                    key: "koli_sequence",
                     width: "auto"
                 },
+                // {
+                //     label: "Of#",
+                //     key: "koli_sequence",
+                //     width: "auto"
+                // },
                 // {
                 //   label: "Weight",
                 //   key: "bag_weight",
@@ -132,39 +132,39 @@ export default {
                 {
                   label: "Actual Weight",
                   key: "actual_weight_item",
-                  width: "auto"
+                  width: "xxs"
                 },
                 {
                   label: "Cost Weight",
                   key: "cost_weight_item",
-                  width: "auto"
+                  width: "xxs"
                 },
                 {
                     label: "Destination Code",
                     key: "destination_code",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                     label: "Service",
                     key: "connote_service_code",
-                    width: "auto"
+                    width: "xxxs"
                 },                
                 {
                     label: "Type",
                     key: "item_type",
-                    width: "auto"
+                    width: "xxxs"
                 },
                 {
                     label: "Date",
                     key: "created_at",
-                    width: "xs"
+                    width: "sm"
                 },
             ],
             additionalColumn: [
                 {
                     label: "Runsheet Number",
                     key: "runsheet_number",
-                    width: "auto"
+                    width: "sm"
                 }
             ],
             loading: false,
