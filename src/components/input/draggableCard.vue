@@ -2,12 +2,13 @@
     <vs-row style="gap: 20px;">
         <vs-col
             v-for="(item, index) in DataArr"
-            :key="item.bag_transit_route_id"
+            :key="index"
         >
             <div 
                 v-if="cardType === 'transit-card'"
-                draggable="true"
-                @dragstart="dragStart(index)"
+                class="drag-card"
+                :draggable="!item.transit_at" 
+                @dragstart="!item.transit_at && dragStart(index)" 
                 @dragover.prevent
                 @drop="drop(index)"
             >
@@ -23,12 +24,12 @@
                     <i class="bx bx-trash"></i>
                 </div>
 
-                <transit-card :data="item" :isDisabled="item.transit_at ? true : false"/>
+                <transit-card :data="item" :isDisabled="!!item.transit_at" />
             </div>
             <div 
                 v-else
-                draggable="true"
-                @dragstart="dragStart(index)"
+                :draggable="!item.transit_at"
+                @dragstart="!item.transit_at && dragStart(index)"
                 @dragover.prevent
                 @drop="drop(index)"
             >
@@ -96,15 +97,18 @@ export default {
 <style lang="scss" scoped>
 
 ::v-deep .drag-button {
-  color: #909399;
-  position: absolute;
-  top: 50%;
-  left: 5%;
-  transform: translate(-50%, -50%);
-  font-size: 30px;
-  z-index: 2;
-  cursor: grab;
-  transition: color 0.2s ease;
+    cursor: grab;
+}
+
+::v-deep .drag-button {
+    color: #909399;
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    transform: translate(-50%, -50%);
+    font-size: 30px;
+    z-index: 2;
+    transition: color 0.2s ease;
 }
 
 
