@@ -124,11 +124,11 @@ export default {
                     key: "koli_sequence",
                     width: "auto"
                 },
-                {
-                  label: "Weight",
-                  key: "bag_weight",
-                  width: "auto"
-                },
+                // {
+                //   label: "Weight",
+                //   key: "bag_weight",
+                //   width: "auto"
+                // }, karena sudah ada actual weight dan cost weight maka tidak perlu lagi
                 {
                   label: "Actual Weight",
                   key: "actual_weight_item",
