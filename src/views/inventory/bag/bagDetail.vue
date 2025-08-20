@@ -722,7 +722,7 @@ export default {
       }
     },
     newBag() {
-      this.$router.push('/inventory/bagging')
+      this.$router.push('/outgoing/bag')
       this.setRoutePageHistory(this.$route.meta, false);
       
     },
