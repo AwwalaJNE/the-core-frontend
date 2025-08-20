@@ -209,7 +209,6 @@ export default {
             }
         },
         processLoading: function(val) {
-          console.log("processLoading", val);
           if (val !== undefined) {
             this.processLoading = val;
             if (val == true) {
