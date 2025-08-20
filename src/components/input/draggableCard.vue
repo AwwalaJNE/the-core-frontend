@@ -6,14 +6,14 @@
         >
             <div 
                 v-if="cardType === 'transit-card'"
-                class="drag-card"
-                :draggable="!item.transit_at" 
-                @dragstart="!item.transit_at && dragStart(index)" 
+                :style="{ cursor: item.transit_at ? 'default' : 'grab' }"
+                :draggable="!item.transit_at"
+                @dragstart="!item.transit_at && dragStart(index)"
                 @dragover.prevent
                 @drop="drop(index)"
             >
                 
-                <div class="drag-button">
+                <div class="drag-button" :style="{ cursor: item.transit_at ? 'not-allowed' : 'grab' }">
                     <img src="@/assets/svg/dot-menu.svg" />
                 </div>
                 <div
@@ -89,11 +89,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-::v-deep .drag-button {
-    cursor: grab;
-}
-
 ::v-deep .drag-button {
     color: #909399;
     position: absolute;
