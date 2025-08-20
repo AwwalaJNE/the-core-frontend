@@ -14,6 +14,7 @@
                 <vs-row align="center">
                     <vs-col w="10">
                         <auto-complete
+                            ref="origin_code"
                             formKey="origin_code"
                             name="Origin Code"
                             typeInput="autocomplete"
@@ -106,6 +107,10 @@ export default {
             try {
                 const res = await axios.get(`${this.URL.bag}/${this.bagNumber}/route-transit?n=${this.listenNodeId}`, this.Helper.header());
                 this.data = res?.data?.data || [];
+                this.form_order = this.data.map((item) => ({
+                    bag_transit_route_id: item.bag_transit_route_id,
+                    order: item.order
+                }));
             } catch (err) {
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
             } finally {
@@ -126,6 +131,7 @@ export default {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;
+                this.handleClear();
                 this.getDataTransit();
             }
         },
@@ -174,6 +180,7 @@ export default {
             }
         },
         handleClear() {
+            this.$refs.origin_code.clear()
             this.data = [];
             this.form = {};
             this.form_order = {};
