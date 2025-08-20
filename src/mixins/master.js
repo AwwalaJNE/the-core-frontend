@@ -546,7 +546,7 @@ const Master = {
         },
 
         sanitizeAlphanumeric(fieldName) {
-            this[fieldName] = this[fieldName].replace(/[^a-zA-Z0-9_-]/g, '');
+            this[fieldName] = this[fieldName].replace(/[^a-zA-Z0-9_/-]/g, '');
         },
         formatDateTimeId(datetime) {
             if (!datetime) return '-';
