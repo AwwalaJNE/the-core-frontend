@@ -225,6 +225,8 @@ export default {
                       item['bag_detail_qty'] = res.data.data.bag_detail_qty
                       item["isDisabled"] = res.data.data.is_approve === 1 ? true : false;
                       item["runsheet_number"] = item?.runsheet ? item?.runsheet?.[item?.runsheet?.length - 1]?.delivery_runsheet_number : '';
+                      item['actual_weight_item'] = item.actual_weight_item + ' Kg'
+                      item['cost_weight_item'] = item.cost_weight_item + ' Kg'
                     })
                     this.is_pra_runsheet = res.data.data.is_pra_runsheet === "1" ? true : false;
                     this.getSummaryBag(res)
