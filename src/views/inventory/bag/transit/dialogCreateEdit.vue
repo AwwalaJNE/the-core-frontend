@@ -37,15 +37,15 @@
                 </vs-row>
                 <vs-row justify="center">
                     <template v-if="data.length > 0">
-                        <div>
+                        <vs-col w="12">
                             <draggable-card
                                 :cardType="'transit-card'"
                                 :valueData="data"
                                 :isRemoveButton="true"
-                                @update="updateTransit"
+                                @update-order="updateTransit"
                                 @remove="removeTransit"
                             />
-                        </div>
+                        </vs-col>
                     </template>
                     <template v-else>
                         <div style="padding: 2rem;">
@@ -86,7 +86,6 @@ export default {
         return {
             data: [],
             form: {},
-            form_order: {},
             loading: false,
         }
     },
@@ -118,54 +117,11 @@ export default {
             try {
                 const res = await axios.get(`${this.URL.bag}/${this.bagNumber}/route-transit?n=${this.listenNodeId}`, this.Helper.header());
                 this.data = res?.data?.data || [];
-                this.form_order = this.data.map((item) => ({
-                    bag_transit_route_id: item.bag_transit_route_id,
-                    order: item.order
-                }));
             } catch (err) {
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;
             }
-
-            this.data = [
-                {
-                    "bag_transit_route_id": "58c767c8-3f2c-479d-9ad7-464fe0157d00",
-                    "order": 1,
-                    "bag_number": "CGK2392042",
-                    "origin_code": "CGX10000",
-                    "transit_at": "2025-01-01 07:30:00",
-                    "is_planned": 1,
-                    "created_at": "2025-01-01 07:30:00"
-                },
-                {
-                    "bag_transit_route_id": "58c767c8-3f2c-479d-9ad7-464fe0157d01",
-                    "order": 2,
-                    "bag_number": "CGK2392042",
-                    "origin_code": "SUX10000",
-                    "transit_at": "2025-01-01 08:30:00",
-                    "is_planned": 1,
-                    "created_at": "2025-01-01 07:30:00"
-                },
-                {
-                    "bag_transit_route_id": "58c767c8-3f2c-479d-9ad7-464fe0157d02",
-                    "order": 3,
-                    "bag_number": "CGK2392042",
-                    "origin_code": "UPX10000",
-                    "transit_at": null,
-                    "is_planned": 1,
-                    "created_at": "2025-01-01 07:30:00"
-                },
-                {
-                    "bag_transit_route_id": "58c767c8-3f2c-479d-9ad7-464fe0157d03",
-                    "order": 4,
-                    "bag_number": "CGK2392042",
-                    "origin_code": "UPG10000",
-                    "transit_at": null,
-                    "is_planned": 1,
-                    "created_at": "2025-01-01 07:30:00"
-                }
-            ]
         },
         async createTransit() {
             if (Object.keys(this.form).length === 0) {
@@ -185,10 +141,14 @@ export default {
                 this.getDataTransit();
             }
         },
-        async updateTransit() {
+        async updateTransit(arr) {
+            let form_order = {
+                data: arr.map(item => (item.bag_transit_route_id))
+            };
+
             this.loading = true;
             try {
-                const res = await axios.patch(`${this.URL.bag}/${this.bagNumber}/route-transit?n=${this.listenNodeId}`, this.form_order, this.Helper.header());
+                const res = await axios.patch(`${this.URL.bag}/${this.bagNumber}/route-transit?n=${this.listenNodeId}`, form_order, this.Helper.header());
                 this.openNotification('success', null, "Success", "Update manifest vehicle success");
 
                 await this.getManifestVehicle();
@@ -196,6 +156,7 @@ export default {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;
+                this.getDataTransit();
             }
         },
         async removeTransit(id) {
@@ -207,6 +168,7 @@ export default {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;
+                this.getDataTransit();
             }
         },
         async querySearch(queryString, cb){
@@ -233,7 +195,6 @@ export default {
             this.$refs.origin_code.clear()
             this.data = [];
             this.form = {};
-            this.form_order = {};
         },
         cancel() {
             this.handleClear();

@@ -3,33 +3,36 @@
         <vs-col
             v-for="(item, index) in DataArr"
             :key="item.bag_transit_route_id"
-            draggable="true"
-            @dragstart="dragStart(index)"
-            @dragover.prevent
-            @drop="drop(index)"
         >
-            <div>
-                <template v-if="cardType === 'transit-card'">
-                    
-                    <div class="drag-button">
-                        <img 
-                            src="@/assets/svg/dot-menu.svg"
-                        />
-                    </div>
-                    <div
-                        v-if="listenRemoveButton && !item.transit_at"
-                        class="remove-button"
-                        @click.stop="remove(item.bag_transit_route_id)"
-                    >
-                        <i class="bx bx-trash"></i>
-                    </div>
-
-                    <transit-card :data="item" :isDisabled="item.transit_at ? true : false"/>
-                </template>
-                <template v-else>
-                    <p>Type Not Found</p>
-                </template>
+            <div 
+                v-if="cardType === 'transit-card'"
+                draggable="true"
+                @dragstart="dragStart(index)"
+                @dragover.prevent
+                @drop="drop(index)"
+            >
                 
+                <div class="drag-button">
+                    <img src="@/assets/svg/dot-menu.svg" />
+                </div>
+                <div
+                    v-if="listenRemoveButton && !item.transit_at"
+                    class="remove-button"
+                    @click.stop="remove(item.bag_transit_route_id)"
+                >
+                    <i class="bx bx-trash"></i>
+                </div>
+
+                <transit-card :data="item" :isDisabled="item.transit_at ? true : false"/>
+            </div>
+            <div 
+                v-else
+                draggable="true"
+                @dragstart="dragStart(index)"
+                @dragover.prevent
+                @drop="drop(index)"
+            >
+                <p>Type Not Found</p>
             </div>
         </vs-col>
     </vs-row>
@@ -83,7 +86,7 @@ export default {
             this.DataArr.splice(this.dragIndex, 1);
             this.DataArr.splice(dropIndex, 0, movedItem);
             this.dragIndex = null;
-
+            
             this.$emit("update-order", this.DataArr);
         }
     }

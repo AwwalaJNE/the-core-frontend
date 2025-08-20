@@ -13,7 +13,7 @@
 				</template>
 			</vs-col>
 			<vs-col :w="listenData.transit_at ? 4 : 3" align="right">
-				<h1 class="text-header">{{ listenData.is_planned === 1 ? 'PLANNED' : '' }}</h1>
+				<h1 class="text-header">{{ listenData.is_planned === "1" ? 'PLANNED' : 'UNPLANNED' }}</h1>
 				<span class="text">STATUS</span>
 			</vs-col>
 		</vs-row>
