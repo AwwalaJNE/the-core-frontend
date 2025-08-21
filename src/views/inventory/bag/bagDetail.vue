@@ -15,7 +15,7 @@
         </div>
       </div>
       <div style="display: flex;" class="buttonPage" v-if="!loading">
-        <vs-button v-if="listenUserRoleName !== 'HELPDESK'  && listenDataBag.tipe_bag === 'OM'"  @click="openDialogTransit">
+        <vs-button v-if="listenUserRoleName !== 'HELPDESK'"  @click="openDialogTransit">
           <i class="bx bx-plus"></i> Add Transit
         </vs-button>
         <template v-if="listenUserRoleName === 'HELPDESK'">
