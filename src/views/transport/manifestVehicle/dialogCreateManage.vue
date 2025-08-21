@@ -264,18 +264,38 @@ export default {
                 this.form = form;
                 this.createManifestVehicle();
             } else {
-                let data = {
-                    origin_data: this.origin_data,
-                    destination_data: this.destination_data,
-                    origin_vehicle:  form.origin_branch_code,
-                    destination_vehicle: form.destination_branch_code,
-                    vehicle_id: this.vehicle_data || form.vehicle_id,
-                    pic_employee_id: form.employee_driver_id || "",
-                    flight_number: form.flight_number || "",
-                    flight_schedule: form.flight_schedule || "",
-                    etd_vehicle: form.etd,
-                    eta_vehicle: form.eta
-                };
+                let data = {};
+                if (this.navActive === 'k-NEW-AUTO') {
+                    data = {
+                        origin_vehicle:  form.origin_branch_code,
+                        origin_vehicle_name:  this.origin_data?.name,
+                        destination_vehicle: form.destination_branch_code,
+                        destination_vehicle_name: this.destination_data?.name,
+                        vehicle_name: this.vehicle_data?.vehicle_name,
+                        vehicle_id: this.vehicle_data.vehicle_id,
+                        vehicle_type_id: this.vehicle_data?.vehicle_type_id,
+                        pic_employee_id: form.employee_driver_id || "",
+                        flight_number: form.flight_number || "",
+                        flight_schedule: form.flight_schedule || "",
+                        etd_vehicle: form.etd,
+                        eta_vehicle: form.eta
+                    };
+                } else if (this.navActive === 'k-NEW-MANUAL') {
+                    data = {
+                        origin_vehicle:  form.origin_branch_code?.value,
+                        origin_vehicle_name:  form.origin_branch_code?.label,
+                        destination_vehicle: form.destination_branch_code?.value,
+                        destination_vehicle_name: form.destination_branch_code?.label,
+                        vehicle_name: form.vehicle_id?.vehicle_name,
+                        vehicle_id: form.vehicle_id?.vehicle_id,
+                        vehicle_type_id: form.vehicle_id?.vehicle_type_id,
+                        pic_employee_id: form.employee_driver_id || "",
+                        flight_number: form.flight_number || "",
+                        flight_schedule: form.flight_schedule || "",
+                        etd_vehicle: form.etd,
+                        eta_vehicle: form.eta
+                    };
+                }
                 
                 this.$emit('updateVehicleValue', data);
                 this.cancel();

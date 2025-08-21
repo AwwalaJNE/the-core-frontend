@@ -1169,11 +1169,11 @@ export default {
             let created_vehicle = {
                 key: form_id,
                 state: {
-                    origin_vehicle: form.origin_data?.name || "",
-                    destination_vehicle: form.destination_data?.name || "",
-                    origin_vehicle_tlc: form.origin_vehicle || "",
-                    destination_vehicle_tlc: form.destination_vehicle || "",
-                    vehicle_id: form.vehicle_id?.vehicle_name,
+                    origin_vehicle: form?.origin_vehicle_name || "",
+                    destination_vehicle: form?.destination_vehicle_name || "",
+                    origin_vehicle_tlc: form?.origin_vehicle?.value || form.origin_vehicle || "",
+                    destination_vehicle_tlc: form?.destination_vehicle?.value || form.destination_vehicle || "",
+                    vehicle_id: form.vehicle_name,
                     pic_employee_id: form.pic_employee_id?.employee_name || form?.pic_employee_id || "",
                     flight_number: form.flight_number,
                     flight_schedule: form.flight_schedule,
@@ -1186,8 +1186,8 @@ export default {
             let vehicle_form = {
                 key: form_id,
                 state: {
-                    vehicle_id: form?.vehicle_id?.vehicle_id || "",
-                    vehicle_type_id: form?.vehicle_id?.vehicle_type_id || "",
+                    vehicle_id: form?.vehicle_id || "",
+                    vehicle_type_id: form?.vehicle_type_id || "",
                     employee_driver_id: form?.pic_employee_id?.employee_id || "",
                     flight_number: form?.flight_number || "",
                     flight_schedule: form?.flight_schedule || "",
