@@ -66,11 +66,6 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Id",
-                    key: "facility_code_id",
-                    width: "auto"
-                },
-                {
                     label: "User",
                     key: "user_name",
                     width: "sm"
