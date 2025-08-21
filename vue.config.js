@@ -38,7 +38,7 @@ module.exports = {
 
     config.plugin("extract-css").use(ExtractTextPlugin, [
       {
-        filename: "[name].css",
+        filename: "[name].[contenthash:8].css",
         allChunks: true,
       },
     ]);
@@ -65,7 +65,8 @@ module.exports = {
   },
   configureWebpack: {
     output: {
-      filename: "[name].js",
+      filename: "[name].[contenthash:8].js",
+      chunkFilename: "[name].[contenthash:8].js",
     },
     resolve: {
       alias: {
