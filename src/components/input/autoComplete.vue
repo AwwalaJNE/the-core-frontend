@@ -97,6 +97,9 @@ export default {
             info['data'] = item.data
 
             this.$emit("updateValue", this.listenFormKey, item.value, info)
+        },
+        clear() {
+            this.value = '';
         }
     }
 }
