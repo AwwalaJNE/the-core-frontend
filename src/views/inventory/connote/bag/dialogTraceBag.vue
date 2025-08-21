@@ -125,7 +125,7 @@ export default {
             try {
                 const limit = this.pagination.limit;
                 const page = this.pagination.page;
-                const response = await axios.get(`${this.URL.bag}/${this.bag_number.replaceAll(/\//g, '~')}/history?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}`, this.Helper.header());
+                const response = await axios.get(`${this.URL.bag}/${this.bag_number}/history?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}`, this.Helper.header());
                 this.dataTable = response.data.data;
             } catch (error) {
                 this.openNotification(

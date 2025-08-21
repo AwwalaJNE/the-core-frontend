@@ -75,7 +75,7 @@ export default {
     methods:{
         updateValue(event){
             if (event && typeof event === 'string') {
-                this.value = event.replace(/[^a-zA-Z0-9_\-\*\(\)~ ,]/g, '');
+                this.value = event.replace(/[^a-zA-Z0-9_\-\*\(\)~ ,\/]/g, '');
             }
 
             this.$emit("updateValue", this.listenFormKey, this.value, {})

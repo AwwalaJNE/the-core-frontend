@@ -245,7 +245,7 @@ export default {
         },
         sanitizeInput(event) {
             const input = event.target;
-            const sanitized = input.value.replace(/[^a-zA-Z0-9_\-\*\(\)~ ,]/g, '');
+            const sanitized = input.value.replace(/[^a-zA-Z0-9_\-\*\(\)~ ,\/]/g, '');
             if (sanitized !== input.value) {
                 input.value = sanitized;
                 this.value = sanitized;

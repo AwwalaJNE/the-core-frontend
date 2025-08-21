@@ -205,7 +205,7 @@ export default {
             }
             await axios
                 .get(
-                    this.URL.bag + '/'+bagId.replace('/','-')+`?n=${this.listenNodeId}`,
+                    this.URL.bag + '/'+bagId+`?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
                     let arr = res.data.detail
@@ -303,7 +303,7 @@ export default {
             this.removeData()
         },
         async removeData(){
-            let bagNumberForRoute = this.parentId.replace(/\//g, '~');
+            let bagNumberForRoute = this.parentId;
             await axios
                 .delete(
                     this.URL.bag+`/${bagNumberForRoute}/detail/${this.id}?n=${this.listenNodeId}`,

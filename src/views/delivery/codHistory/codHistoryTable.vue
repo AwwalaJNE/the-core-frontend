@@ -234,7 +234,7 @@ export default {
         let routeData = this.$router.resolve({ 
             name: 'printGeneral', 
             params: { 
-                'id': val.sco.replaceAll("/","~"), 
+                'id': val.sco, 
                 'type': 'cod-history',
                 'node_id': this.listenNodeId
             }
@@ -257,7 +257,7 @@ export default {
             let routeData = this.$router.resolve({
                 name: 'printGeneral',
                 params: {
-                    'id': this.selectedRow.toString().replaceAll("/","~"),
+                    'id': this.selectedRow.toString(),
                     'type': 'cod-history',
                     'node_id':this.listenNodeId
                 }
