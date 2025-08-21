@@ -157,6 +157,7 @@ export default {
             hasFlightNumber: false,
 
             vehicle_id: "",
+            vehicle_data: {},
             is_found: false
         };
     },
@@ -279,7 +280,7 @@ export default {
         handleSubmit(){
             if (this.navActive === 'k-NEW-AUTO') {
                 if (this.hasFlightNumber) {
-                this.$refs.formSuratMuatanVehicleController.handleSubmit(); 
+                    this.$refs.formSuratMuatanVehicleController.handleSubmit(); 
                 } else {
                     this.processFlightNumber();
                 }
@@ -295,6 +296,7 @@ export default {
                 const data = res.data.data || [];
 
                 this.vehicle_id = res.data.data[0].vehicle_id
+                this.vehicle_data = res.data.data[0] || {};
             } catch (err) {
                 // this.openNotification('danger', '', 'Failed', 'Gagal mengambil data kendaraan: ' + (err.message || 'Unknown error'));
             } finally {
@@ -550,6 +552,7 @@ export default {
             this.is_found = false;
             this.flightNumber = "";
             this.vehicle_id = "";
+            this.vehicle_data = {};
 
             this.handleClearForm();
         }
