@@ -143,7 +143,7 @@ export default {
         },
         async updateTransit(arr) {
             let form_order = {
-                data: arr.map(item => (item.bag_transit_route_id))
+                bag_transit_route_ids: arr.map(item => (item.bag_transit_route_id))
             };
 
             this.loading = true;
