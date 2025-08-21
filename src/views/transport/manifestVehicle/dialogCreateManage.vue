@@ -158,6 +158,8 @@ export default {
 
             vehicle_id: "",
             vehicle_data: {},
+            origin_data: {},
+            destination_data: {},
             is_found: false
         };
     },
@@ -263,7 +265,9 @@ export default {
                 this.createManifestVehicle();
             } else {
                 let data = {
-                    origin_vehicle: form.origin_branch_code,
+                    origin_data: this.origin_data,
+                    destination_data: this.destination_data,
+                    origin_vehicle:  form.origin_branch_code,
                     destination_vehicle: form.destination_branch_code,
                     vehicle_id: this.vehicle_data || form.vehicle_id,
                     pic_employee_id: form.employee_driver_id || "",
@@ -483,6 +487,9 @@ export default {
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_ValueData", data?.detailJson?.routeInformation?.departure?.airport?.iata);
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_ValueData", data?.detailJson?.routeInformation?.arrival?.airport?.iata);
 
+                this.origin_data = data?.detailJson?.routeInformation?.departure?.airport || {};
+                this.destination_data = data?.detailJson?.routeInformation?.arrival?.airport || {}
+
                 await this.getVehicle(data?.detailJson?.flightSummary?.airline?.iata);
             } catch (err) {
                 this.is_found = false;
@@ -553,6 +560,8 @@ export default {
             this.flightNumber = "";
             this.vehicle_id = "";
             this.vehicle_data = {};
+            this.origin_data = {};
+            this.destination_data = {};
 
             this.handleClearForm();
         }
