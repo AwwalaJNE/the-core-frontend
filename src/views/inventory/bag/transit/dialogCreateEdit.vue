@@ -151,7 +151,7 @@ export default {
                 const res = await axios.patch(`${this.URL.bag}/${this.bagNumber}/route-transit?n=${this.listenNodeId}`, form_order, this.Helper.header());
                 this.openNotification('success', null, "Success", "Update manifest vehicle success");
 
-                await this.getManifestVehicle();
+                await this.getDataTransit();
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
