@@ -66,8 +66,8 @@ module.exports = {
   },
   configureWebpack: {
     output: {
-      filename: "[name].[contenthash:8].js",
-      chunkFilename: "[name].[contenthash:8].js",
+      filename: "[name].[hash:8].js",
+      chunkFilename: "[name].[hash:8].js",
     },
     resolve: {
       alias: {
