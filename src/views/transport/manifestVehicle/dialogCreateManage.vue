@@ -157,6 +157,9 @@ export default {
             hasFlightNumber: false,
 
             vehicle_id: "",
+            vehicle_data: {},
+            origin_data: {},
+            destination_data: {},
             is_found: false
         };
     },
@@ -261,16 +264,38 @@ export default {
                 this.form = form;
                 this.createManifestVehicle();
             } else {
-                let data = {
-                    origin_vehicle: form.origin_branch_code,
-                    destination_vehicle: form.destination_branch_code,
-                    vehicle_id: this.vehicle_data || form.vehicle_id,
-                    pic_employee_id: form.employee_driver_id || "",
-                    flight_number: form.flight_number || "",
-                    flight_schedule: form.flight_schedule || "",
-                    etd_vehicle: form.etd,
-                    eta_vehicle: form.eta
-                };
+                let data = {};
+                if (this.navActive === 'k-NEW-AUTO') {
+                    data = {
+                        origin_vehicle:  form.origin_branch_code,
+                        origin_vehicle_name:  this.origin_data?.name,
+                        destination_vehicle: form.destination_branch_code,
+                        destination_vehicle_name: this.destination_data?.name,
+                        vehicle_name: this.vehicle_data?.vehicle_name,
+                        vehicle_id: this.vehicle_data.vehicle_id,
+                        vehicle_type_id: this.vehicle_data?.vehicle_type_id,
+                        pic_employee_id: form.employee_driver_id || "",
+                        flight_number: form.flight_number || "",
+                        flight_schedule: form.flight_schedule || "",
+                        etd_vehicle: form.etd,
+                        eta_vehicle: form.eta
+                    };
+                } else if (this.navActive === 'k-NEW-MANUAL') {
+                    data = {
+                        origin_vehicle:  form.origin_branch_code?.value,
+                        origin_vehicle_name:  form.origin_branch_code?.label,
+                        destination_vehicle: form.destination_branch_code?.value,
+                        destination_vehicle_name: form.destination_branch_code?.label,
+                        vehicle_name: form.vehicle_id?.vehicle_name,
+                        vehicle_id: form.vehicle_id?.vehicle_id,
+                        vehicle_type_id: form.vehicle_id?.vehicle_type_id,
+                        pic_employee_id: form.employee_driver_id || "",
+                        flight_number: form.flight_number || "",
+                        flight_schedule: form.flight_schedule || "",
+                        etd_vehicle: form.etd,
+                        eta_vehicle: form.eta
+                    };
+                }
                 
                 this.$emit('updateVehicleValue', data);
                 this.cancel();
@@ -279,7 +304,7 @@ export default {
         handleSubmit(){
             if (this.navActive === 'k-NEW-AUTO') {
                 if (this.hasFlightNumber) {
-                this.$refs.formSuratMuatanVehicleController.handleSubmit(); 
+                    this.$refs.formSuratMuatanVehicleController.handleSubmit(); 
                 } else {
                     this.processFlightNumber();
                 }
@@ -295,6 +320,7 @@ export default {
                 const data = res.data.data || [];
 
                 this.vehicle_id = res.data.data[0].vehicle_id
+                this.vehicle_data = res.data.data[0] || {};
             } catch (err) {
                 // this.openNotification('danger', '', 'Failed', 'Gagal mengambil data kendaraan: ' + (err.message || 'Unknown error'));
             } finally {
@@ -481,6 +507,9 @@ export default {
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_ValueData", data?.detailJson?.routeInformation?.departure?.airport?.iata);
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_ValueData", data?.detailJson?.routeInformation?.arrival?.airport?.iata);
 
+                this.origin_data = data?.detailJson?.routeInformation?.departure?.airport || {};
+                this.destination_data = data?.detailJson?.routeInformation?.arrival?.airport || {}
+
                 await this.getVehicle(data?.detailJson?.flightSummary?.airline?.iata);
             } catch (err) {
                 this.is_found = false;
@@ -550,6 +579,9 @@ export default {
             this.is_found = false;
             this.flightNumber = "";
             this.vehicle_id = "";
+            this.vehicle_data = {};
+            this.origin_data = {};
+            this.destination_data = {};
 
             this.handleClearForm();
         }
