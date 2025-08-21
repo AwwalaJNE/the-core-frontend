@@ -1,21 +1,32 @@
 <template>
     <vs-row style="gap: 20px;">
-        <vs-col
-            v-for="(item, index) in DataArr"
-            :key="index"
-        >
+        <vs-col>
             <template v-if="cardType === 'transit-card'">
-                <div 
-                    v-if="!item.transit_at"
-                    :draggable="!item.transit_at"
-                    @dragstart="!item.transit_at && dragStart(index)"
-                    @dragover.prevent="!item.transit_at && onDragOver($event)"
-                    @drop="!item.transit_at && drop(index)"
-                    style="user-select: none; cursor: grab;"
+                <div
+                    v-for="(item, idx) in DataArr.filter(item => item.transit_at)"
+                    :key="item.id || idx"
+                    class="card-wrapper disabled-item"
                 >
-                    <div class="drag-button">
+                    <transit-card :data="item" :isDisabled="true" />
+                </div>
+
+                <draggable
+                    v-model="draggableItems"
+                    :options="dragOptions"
+                    @start="drag = true"
+                    @end="onDragEnd"
+                >
+                <transition-group tag="div" name="flip-list" :css="!drag">
+                    <div
+                        v-for="(item, idx) in draggableItems"
+                        :key="item.id || idx"
+                        class="card-wrapper"
+                    >
+
+                    <div v-if="listenRemoveButton" class="drag-button">
                         <img src="@/assets/svg/dot-menu.svg" />
                     </div>
+
                     <div
                         v-if="listenRemoveButton"
                         class="remove-button"
@@ -24,12 +35,12 @@
                         <i class="bx bx-trash"></i>
                     </div>
 
-                    <transit-card :data="item" :isDisabled="!!item.transit_at" />
-                </div>
-                <div v-else style="user-select: none;">
-                    <transit-card :data="item" :isDisabled="!!item.transit_at" />
-                </div>
+                    <transit-card :data="item" :isDisabled="false" />
+                    </div>
+                </transition-group>
+                </draggable>
             </template>
+
             <template v-else>
                 <p>Type Not Found</p>
             </template>
@@ -38,82 +49,93 @@
 </template>
 
 <script>
-import Inputan from "@/components/input/inputan";
-import InputGeneral from "@/components/input/general";
+import draggable from "vuedraggable";
 import TransitCard from "@/components/card/transitCard";
 
 export default {
     name: "draggable-card",
-    components: {
-        inputan: Inputan,
-        "input-general": InputGeneral,
-        "transit-card": TransitCard
-    },
+    components: { draggable, "transit-card": TransitCard },
     props: {
         cardType: String,
         valueData: Array,
-        isRemoveButton: Boolean
+        isRemoveButton: Boolean,
     },
     data() {
         return {
             DataArr: this.valueData || [],
-            dragIndex: null
+            drag: false,
         };
     },
     watch: {
-        valueData: {
-            handler(newVal) {
-                this.DataArr = newVal;
-            },
-            deep: true
-        }
+        valueData(newVal) {
+            this.DataArr = newVal;
+        },
     },
     computed: {
         listenRemoveButton() {
             return this.isRemoveButton || false;
-        }
+        },
+        draggableItems: {
+            get() {
+                return this.DataArr.filter(item => !item.transit_at);
+            },
+            set(newOrder) {
+                const transitItems = this.DataArr.filter(item => item.transit_at);
+                this.DataArr = [...transitItems, ...newOrder];
+            },
+        },
+        dragOptions() {
+            return {
+                animation: 200,
+                ghostClass: "ghost",
+                handle: ".drag-button",
+                filter: ".disabled-item",
+                preventOnFilter: false,
+            };
+        },
     },
     methods: {
         remove(id) {
             this.$emit("remove", id);
         },
-        dragStart(index) {
-            this.dragIndex = index;
-        },
-        onDragOver(e) {
-            e.preventDefault();
-        },
-        drop(dropIndex) {
-            if (this.dragIndex === null || this.DataArr[dropIndex].transit_at) return;
-
-            const movedItem = this.DataArr[this.dragIndex];
-            this.DataArr.splice(this.dragIndex, 1);
-            this.DataArr.splice(dropIndex, 0, movedItem);
-            this.dragIndex = null;
-            
+        onDragEnd() {
+            this.drag = false;
             this.$emit("update-order", this.DataArr);
-        }
-    }
+        },
+    },
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
+.flip-list-move {
+    transition: transform 0.5s;
+}
+
+.ghost {
+    opacity: 0.5;
+    background: #c8ebfb;
+}
+
+.disabled-item {
+    cursor: default;
+}
+
+.card-wrapper {
+    position: relative;
+    margin-bottom: 15px;
+}
+
 ::v-deep .drag-button {
-    color: #909399;
     position: absolute;
     top: 50%;
     left: 5%;
     transform: translate(-50%, -50%);
     font-size: 30px;
     z-index: 2;
-    transition: color 0.2s ease;
-    user-select: none;
     cursor: grab;
 }
 
-
 ::v-deep .remove-button {
-    color: #909399;
     position: absolute;
     top: 50%;
     right: 0%;
@@ -121,12 +143,10 @@ export default {
     font-size: 30px;
     z-index: 2;
     cursor: pointer;
-    transition: color 0.2s ease;
     padding: 0 10px;
 }
 
 ::v-deep .remove-button:hover {
     color: darkgrey;
 }
-
 </style>
