@@ -176,7 +176,7 @@ export default {
                 const res = await axios.get(`${this.URL.origin_code}?n=${this.listenNodeId}` + `&s=${queryString}`, this.Helper.header());
                 const result = res.data.data || [];
                 const suggestions = result.map(item => {
-                    const value = item.origin_code || '';
+                    const value = item.node_name || '';
                     return { value, data: item };
                 });
                 cb(suggestions);
@@ -187,7 +187,10 @@ export default {
         updateValue(key, val, info){
             switch(key) {
                 case "origin_code":
-                    this.form = info?.data;
+                    let data = info?.data;
+                    this.form = { 
+                        origin_code: data?.origin_code
+                    };
                     break;
             }
         },
