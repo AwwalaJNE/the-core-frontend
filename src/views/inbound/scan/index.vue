@@ -209,7 +209,6 @@ export default {
             }
         },
         processLoading: function(val) {
-          console.log("processLoading", val);
           if (val !== undefined) {
             this.processLoading = val;
             if (val == true) {
@@ -379,6 +378,10 @@ export default {
         async getTableData() {
             if (this.inbound_number) {
                 this.loading = true;
+                // check if inbound_number contain => for receiving bag (due to new bag number format)
+                if (this.inbound_number.includes('/')) {
+                  this.inbound_number = this.inbound_number.replaceAll('/', '~');
+                }
                 try {
                     const res = await axios.get(
                         `${this.URL.inbound}/${this.inbound_number}/inbound-status?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}`, 

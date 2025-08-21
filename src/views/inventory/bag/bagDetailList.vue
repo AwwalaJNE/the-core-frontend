@@ -107,64 +107,64 @@ export default {
                 {
                     label: "No",
                     key: "no",
-                    width: "xs"
+                    width: "xxxxs"
                 },
                 {
                     label: "Item",
                     key: "item_number",
-                    width: "md"
+                    width: "sm"
                 },
                 {
                     label: "Quantity",
                     key: "koli_qty",
-                    width: "xs"
-                },
-                {
-                    label: "Of#",
-                    key: "koli_sequence",
                     width: "auto"
                 },
-                {
-                  label: "Weight",
-                  key: "bag_weight",
-                  width: "auto"
-                },
+                // {
+                //     label: "Of#",
+                //     key: "koli_sequence",
+                //     width: "auto"
+                // },
+                // {
+                //   label: "Weight",
+                //   key: "bag_weight",
+                //   width: "auto"
+                // }, karena sudah ada actual weight dan cost weight maka tidak perlu lagi
                 {
                   label: "Actual Weight",
                   key: "actual_weight_item",
-                  width: "auto"
+                  width: "xxs"
                 },
                 {
                   label: "Cost Weight",
                   key: "cost_weight_item",
-                  width: "auto"
+                  width: "xxs"
                 },
                 {
                     label: "Destination Code",
                     key: "destination_code",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                     label: "Service",
                     key: "connote_service_code",
-                    width: "auto"
+                    width: "xxxs"
                 },                
                 {
                     label: "Type",
                     key: "item_type",
-                    width: "auto"
+                    width: "xxxs"
                 },
                 {
                     label: "Date",
                     key: "created_at",
-                    width: "xs"
+                    width: "sm"
                 },
             ],
             additionalColumn: [
                 {
                     label: "Runsheet Number",
                     key: "runsheet_number",
-                    width: "auto"
+                    width: "sm"
                 }
             ],
             loading: false,
@@ -225,6 +225,8 @@ export default {
                       item['bag_detail_qty'] = res.data.data.bag_detail_qty
                       item["isDisabled"] = res.data.data.is_approve === 1 ? true : false;
                       item["runsheet_number"] = item?.runsheet ? item?.runsheet?.[item?.runsheet?.length - 1]?.delivery_runsheet_number : '';
+                      item['actual_weight_item'] = item.actual_weight_item + ' Kg'
+                      item['cost_weight_item'] = item.cost_weight_item + ' Kg'
                     })
                     this.is_pra_runsheet = res.data.data.is_pra_runsheet === "1" ? true : false;
                     this.getSummaryBag(res)
