@@ -6,6 +6,7 @@ const host = '0.0.0.0'
 const port = 3000
 
 module.exports = {
+  productionSourceMap: false,
   lintOnSave: false,
   devServer: {
     port,
@@ -32,9 +33,9 @@ module.exports = {
   },
   runtimeCompiler: true,
   chainWebpack: (config) => {
-    config.optimization.delete("splitChunks");
-
-    config.output.filename("[name].js");
+    config.optimization.splitChunks({
+      chunks: 'all',
+    });
 
     config.plugin("extract-css").use(ExtractTextPlugin, [
       {
