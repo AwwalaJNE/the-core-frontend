@@ -3,8 +3,8 @@
         <vs-row justify="space-between">
             <vs-col xs="6" sm="4" lg="4">
                 <div class="titlePage">
-                    <breadcrumb />
-                    <h2>Trace Bag / Masterbag</h2>
+                    <!-- <breadcrumb />
+                    <h2>Trace Bag / Masterbag</h2> -->
                 </div>
             </vs-col>
         </vs-row>
@@ -138,25 +138,46 @@ export default {
         };
     },
     methods: {
-        removeBagNumber() {
-            this.bagNumber = "";
-            this.bag_number = "";
+        resetState() {
             this.hasBagNumber = false;
+            this.bagNumber = "";
             this.bag_found = false;
             this.loading = false;
-            this.$router.push("/trace-bag");
+            // bersihkan state lain di sini...
+        },
+        removeBagNumber() {
+            this.resetState();
+            this.$router.push("/trace/trace-bag");
             this.setRoutePageHistory(this.$route.meta, false);
         },
-        async processBagNumber() {         
-            this.bag_number = this.bagNumber.replace(/\//g, '~'); 
-            try {
-                await this.$router.push(`/trace-bag/${this.bag_number}`);
-                this.setRoutePageHistory(this.$route.meta, false);
-                this.hasBagNumber = true;
-                await this.getBag();
-            } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
-            }
+        async processBagNumber() {
+            const raw = (this.bagNumber || "").trim();
+            if (!raw) return;
+
+            // === format: '/' -> '~' ===
+            this.bag_number = this.bagNumber.replace(/\//g, '~');
+
+            const encoded = encodeURIComponent(this.bag_number);
+            await this.$router.push(`/trace/trace-bag/${encoded}`);
+            this.setRoutePageHistory(this.$route.meta, false);
+
+            this.hasBagNumber = true;
+            this.getBag();
+        },
+        updateValueBagFromScanner(value) {
+            const raw = (value || "").trim();
+            if (!raw) return;
+
+            this.bagNumber = raw;
+            // === format: '/' -> '~' ===
+            this.bag_number = this.bagNumber.replace(/\//g, '~');
+
+            const encoded = encodeURIComponent(this.bag_number);
+            this.$router.push(`/trace/trace-bag/${encoded}`);
+            this.setRoutePageHistory(this.$route.meta, false);
+
+            this.hasBagNumber = true;
+            this.getBag();
         },
         activeTab(val) {
             this.navActive = val;
@@ -166,6 +187,10 @@ export default {
             }
         },
         async getBag() {
+            if (!this.bagNumber) {
+            this.bag_found = false;
+            return;
+            }
             this.loading = true;
             try {
                 const bagNumberFromRoute = this.$route.params.bag_number;
@@ -188,9 +213,33 @@ export default {
         },
     },
     mounted() {
-        this.removeBagNumber();
-        this.getBag();
-        this.$refs.formInputBag.$el.querySelector("input").focus();
+        const param = this.$route.params?.bag_number;
+        if (param) {
+            const decoded = decodeURIComponent(param);
+            this.bag_number = decoded;                // URL-safe (mengandung '~')
+            this.bagNumber  = decoded.replace(/~/g, '/'); // versi asli untuk tampil & API
+            this.hasBagNumber = true;
+            this.getBag();
+        } else {
+            this.resetState();
+        }
+
+        this.$nextTick(() => {
+            try { this.$refs.formInputBag?.$el?.querySelector("input")?.focus(); } catch (_) {}
+        });
+    },
+    watch: {
+    '$route.params.bag_number'(val) {
+            if (val) {
+            const decoded = decodeURIComponent(val);
+            this.bag_number = decoded;                 // '~'
+            this.bagNumber  = decoded.replace(/~/g, '/'); // '/'
+            this.hasBagNumber = true;
+            this.getBag();
+            } else {
+            this.resetState();
+            }
+        }
     }
 };
 </script>

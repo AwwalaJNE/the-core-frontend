@@ -29,7 +29,7 @@
                 >
                   <vs-sidebar-item
                     :id="child.label.trim()"
-                    :class="{ active: activeItem === child.url }"
+                    :class="{ active: isActiveChild(child) }"
                   >
                     <template #icon>
                       <i :class="`bx ${child.icon}`" />
@@ -50,7 +50,7 @@
             >
               <vs-sidebar-item
                 :id="item.label.trim()"
-                :class="{ active: activeItem === item.url || activeItem.startsWith(item.url) }"
+                :class="{ active: isActive(item) }"
               >
                 <template #icon>
                   <i :class="`bx ${item.icon !== null ? item.icon : ''}`" />
@@ -98,43 +98,11 @@ export default {
           },
         },
         {
-          label: "Trace Connote",
-          url: "/trace-connote",
+          label: "Trace",
+          url: "/trace/trace-connote",
           icon: "bx-search-alt",
           permission: "",
-          children: [],
-          showAll: true,
-          meta: {
-            resource_type: resourceLookup["TRACE_CONNOTE"].resource_type,
-            resource_code: resourceLookup["TRACE_CONNOTE"].resource_code,
-            resource_name: resourceLookup["TRACE_CONNOTE"].resource_name
-          },
-        },
-        {
-          label: "Trace Bag / Masterbag",
-          url: "/trace-bag",
-          icon: "bx-search",
-          permission: "",
-          children: [],
-          showAll: true,
-          meta: {
-            resource_type: resourceLookup["TRACE_BAG"].resource_type,
-            resource_code: resourceLookup["TRACE_BAG"].resource_code,
-            resource_name: resourceLookup["TRACE_BAG"].resource_name
-          },
-        },
-        {
-          label: "Trace Flights",
-          url: "/trace-flight",
-          icon: "bx-search-alt-2",
-          permission: "",
-          children: [],
-          showAll: true,
-          meta: {
-            resource_type: resourceLookup["TRACE_FLIGHT"].resource_type,
-            resource_code: resourceLookup["TRACE_FLIGHT"].resource_code,
-            resource_name: resourceLookup["TRACE_FLIGHT"].resource_name
-          },
+          children: []
         },
         {
           label: "Outgoing",
@@ -1013,12 +981,30 @@ export default {
     this.customFilter();
   },
   methods: {
-    setActive(item) {
-      if (this.$route.path !== item.url) {
-        this.activeItem = item.url;
-        this.$router.push(item.url);
-        this.setRoutePageHistory(item.meta, false);
+    isActive(item) {
+      // 1) Kalau disediakan nama route parent (paling akurat)
+      if (item.toName) {
+        return this.$route.matched.some(r => r.name === item.toName);
       }
+
+      // 2) Fallback by path (inklusif)
+      if (!item?.url) return false;
+
+      const cur = (this.$route.path || '').replace(/\/+$/, '');
+      const url = item.url.replace(/\/+$/, '');
+
+      // exact atau di dalam subtree url
+      if (cur === url || cur.startsWith(url + '/')) return true;
+
+      // Prefix segmen pertama (contoh: /trace/trace-connote -> /trace)
+      const prefix = '/' + url.split('/').filter(Boolean)[0];
+      return cur === prefix || cur.startsWith(prefix + '/');
+    },
+    isActiveChild(child) {
+      if (!child?.url) return false;
+      const cur = (this.$route.path || '').replace(/\/+$/, '');
+      const url = child.url.replace(/\/+$/, '');
+      return cur === url || cur.startsWith(url + '/');
     },
     listenNodeType() {
       this.nodeTypeCode = this.listenCurrentNode.node_type.node_type_code;

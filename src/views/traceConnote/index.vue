@@ -3,8 +3,8 @@
         <vs-row justify="space-between">
             <vs-col xs="6" sm="4" lg="4">
                 <div class="titlePage">
-                    <breadcrumb />
-                    <h2>Trace Connote</h2>
+                    <!-- <breadcrumb />
+                    <h2>Trace Connote</h2> -->
                 </div>
             </vs-col>
         </vs-row>
@@ -312,15 +312,18 @@ export default {
             this.multiKolis = [];
             this.selectedConnote = "";
             this.activeTab("k-INFO");
-            this.$router.push("/trace-connote");
+            this.$router.push("/trace");            // kembali ke container trace (tanpa redirect)
             this.setRoutePageHistory(this.$route.meta, false);
         },
 
         async processConnoteNumber() {
             this.connote_number = this.connoteNumber;
             this.koli_number = this.connoteNumber;
-            const url = `/trace-connote/${encodeURIComponent(this.koli_number)}`;
-            await this.$router.push(url); 
+            // const url = `/trace-connote/${encodeURIComponent(this.koli_number)}`;
+            // await this.$router.push(url); 
+            // this.setRoutePageHistory(this.$route.meta, false);
+             const encoded = encodeURIComponent(this.koli_number);
+            await this.$router.push(`/trace/trace-connote/${encoded}`);
             this.setRoutePageHistory(this.$route.meta, false);
             this.hasConnoteNumber = true
             this.getConnote();
@@ -537,13 +540,13 @@ export default {
         },
 
         updateValueOrion() {
-            this.connote_number = this.connoteNumber;
-            this.koli_number = `${this.connoteNumber}`;
-            const url = `/trace-connote/${encodeURIComponent(this.koli_number)}`;
-            this.$router.push(url); 
-            this.setRoutePageHistory(this.$route.meta, false);
-            this.hasConnoteNumber = true
-            this.getConnote();
+          this.connote_number = this.connoteNumber;
+          this.koli_number = `${this.connoteNumber}`;
+          const encoded = encodeURIComponent(this.koli_number);
+          this.$router.push(`/trace/trace-connote/${encoded}`);
+          this.setRoutePageHistory(this.$route.meta, false);
+          this.hasConnoteNumber = true;
+          this.getConnote();
         },
 
         updateFilterStatus(key) {
@@ -564,9 +567,36 @@ export default {
         }
     },
     mounted() {
-        this.removeConnoteNumber();
-      this.getConnote();
-      this.$refs.formInputConnoteOrion.$el.querySelector("input").focus();
+      const id = this.$route.params?.id;
+      if (id) {
+        const decoded = decodeURIComponent(id);
+        this.connoteNumber = decoded;
+        this.connote_number = decoded;
+        this.koli_number = decoded;
+        this.hasConnoteNumber = true;
+        this.getConnote();
+      } else {
+        this.resetState();   // ⬅️ tanpa navigation
+      }
+      this.focusInput();
+      // this.removeConnoteNumber();
+      // this.getConnote();
+      // this.$refs.formInputConnoteOrion.$el.querySelector("input").focus();
+    },
+    watch: {
+      '$route.params.id'(val) {
+        if (val) {
+          const decoded = decodeURIComponent(val);
+          this.connoteNumber = decoded;
+          this.connote_number = decoded;
+          this.koli_number = decoded;
+          this.hasConnoteNumber = true;
+          this.getConnote();
+        } else {
+          this.resetState();
+          this.focusInput();
+        }
+      }
     }
 };
 </script>
