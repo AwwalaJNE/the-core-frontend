@@ -7,33 +7,30 @@
 <template>
     <div>
         <div class="summary-bag">
-          <vs-row>
-            <vs-col xs="12" sm="3" lg="3" align="left" class="bag-no">
-              <span><b>Bag No. </b></span><span><b>{{ bag_number }}</b></span>
-            </vs-col>
+          <vs-row align="center">
             <template v-if="!loading">
-                <template v-if="!is_pra_runsheet">
-                    <vs-col xs="12" sm="4" lg="4" align="left" >
-                        <span><p>Destination: {{bag_destination}}</p></span>
-                        <span><p>Destination Node ID: {{bag_destination_id}}</p></span>
-                        <span><p>Destination Name: {{bag_destination_name}}</p></span>
-                    </vs-col>
-                    <vs-col xs="12" sm="2" lg="2" align="left" >
-                        <span><p>Total Connote: {{ total_connote }} Pcs</p></span>
-                        <span><p>Total Weight: {{ total_weight }} Kg</p></span>
-                        <span><p>Actual Weight: {{ actual_weight }} Kg</p></span>
-                        <span><p>Cost Weight: {{ cost_weight }} Kg</p></span>
-                    </vs-col>
-                </template>
-                <template v-else>
-                    <vs-col xs="12" sm="3" lg="3" align="left" >
-                        <span><p>Total Connote: {{ total_connote }} Pcs</p></span>
-                    </vs-col>
-                    <vs-col xs="12" sm="3" lg="3" align="left" >
-                        <span><p>Total Weight: {{ total_weight }} Kg</p></span>
-                    </vs-col>
-                </template>
-                <vs-col xs="12" sm="3" lg="3" align="right"><span><h1>{{ bag_detail_qty }}</h1></span><p>Bagged</p></vs-col>
+                <vs-col xs="12" sm="3" lg="6" align="left" class="bag-no">
+                    <template v-if="!is_pra_runsheet">
+                        <div class="bag-header">
+                            <span class="bag-title"><b>Bag No. </b></span><span class="bag-number"><b>{{ bag_number }}</b></span>
+                        </div>
+                        <div class="bag-info">
+                            <span><p>Destination: {{bag_destination_name}} ( {{bag_destination}} )</p></span>
+                            <span><p>Total Connote: {{ total_connote }} Pcs | Actual Weight: {{ actual_weight }} Kg | Cost Weight: {{ cost_weight }} Kg</p></span>
+                        </div>
+                    </template>
+                    <template v-else>
+                            <vs-col xs="12" sm="3" lg="3" align="left" >
+                                <span><p>Total Connote: {{ total_connote }} Pcs</p></span>
+                            </vs-col>
+                            <vs-col xs="12" sm="3" lg="3" align="left" >
+                                <span><p>Total Weight: {{ total_weight }} Kg</p></span>
+                            </vs-col>
+                    </template>
+                </vs-col>
+            </template>
+            <template v-if="!loading">
+                <vs-col xs="12" sm="3" lg="6" align="right"><span><h1>{{ bag_detail_qty }}</h1></span><p>Bagged</p></vs-col>
             </template>
           </vs-row>
         </div>
@@ -348,6 +345,20 @@ export default {
   }
   .summary-bag{
     margin-bottom: 40px;
+  }
+  .bag-header {
+    margin-bottom: 15px;
+  }
+  .bag-title, .bag-number {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .bag-info {
+    margin-top: 10px;
+  }
+  .bag-info p {
+    font-size: 14px;
+    margin-bottom: 3px;
   }
   .bag-detail {
     @include for-phone-only {

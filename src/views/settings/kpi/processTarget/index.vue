@@ -72,11 +72,6 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Id",
-                    key: "kpi_process_target_id",
-                    width: "sm"
-                },
-                {
                     label: "Referece Value",
                     key: "reference_value",
                     width: "xs"

@@ -66,11 +66,6 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Id",
-                    key: "setting_id",
-                    width: "auto"
-                },
-                {
                     label: "Percentage",
                     key: "percentage",
                     width: "auto"
