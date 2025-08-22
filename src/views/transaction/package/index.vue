@@ -98,7 +98,7 @@
                 :rules="InputObject['package_description'].rule"
                 :form-key="InputObject['package_description'].key"
                 :value-data="InputObject['package_description'].value"
-                :type-input="InputObject['package_description'].typeInput +`|${listeninputDisabled == true ? 'disabled':''}`"
+                :type-input="InputObject['package_description'].typeInput +`${listeninputDisabled == true ? '|disabled':''}`"
                 @updateValue="updateValue"
               />
 
@@ -139,7 +139,7 @@
                 :rules="InputObject['package_cod'].rule"
                 :form-key="InputObject['package_cod'].key"
                 :value-data="InputObject['package_cod'].value"
-                :type-input="InputObject['package_cod'].typeInput +`|${listeninputDisabled == true ? 'disabled':''}`"
+                :type-input="InputObject['package_cod'].typeInput +`${listeninputDisabled == true ? '|disabled':''}`"
                 @updateValue="updateValue"
               />
               <input-general
@@ -147,7 +147,7 @@
                 :rules="InputObject['package_insured_goods_value'].rule"
                 :form-key="InputObject['package_insured_goods_value'].key"
                 :value-data="InputObject['package_insured_goods_value'].value"
-                :type-input="InputObject['package_insured_goods_value'].typeInput +`|${listeninputDisabled == true ? 'disabled':''}`"
+                :type-input="InputObject['package_insured_goods_value'].typeInput +`${listeninputDisabled == true ? '|disabled':''}`"
                 :currency-masking="true"
                 @updateValue="updateValue"
               />
@@ -157,7 +157,7 @@
                 :rules="InputObject['package_diskon'].rule"
                 :form-key="InputObject['package_diskon'].key"
                 :value-data="InputObject['package_diskon'].value"
-                :type-input="InputObject['package_diskon'].typeInput +`|${listeninputDisabled == true ? 'disabled':''}`"
+                :type-input="InputObject['package_diskon'].typeInput +`${listeninputDisabled == true ? '|disabled':''}`"
                 :currency-masking="true"
                 @updateValue="updateValue"
               />
@@ -167,7 +167,7 @@
                 :rules="InputObject['package_instruksi'].rule"
                 :form-key="InputObject['package_instruksi'].key"
                 :value-data="InputObject['package_instruksi'].value"
-                :type-input="InputObject['package_instruksi'].typeInput +`|${listeninputDisabled == true ? 'disabled':''}`"
+                :type-input="InputObject['package_instruksi'].typeInput +`${listeninputDisabled == true ? '|disabled':''}`"
                 @updateValue="updateValue"
               />
             </vs-col>
@@ -189,6 +189,7 @@
                     :value-data="InputObject['package_jumlah'].value"
                     :type-input="'number' +`${listeninputDisabled == true ? '|disabled':''}`"
                     :min-value="1"
+                    :only-number="true"
                     @updateValue="updateValue"
                   />
                 </vs-col>
@@ -224,7 +225,8 @@
                     :rules="InputObject['package_dimensi_weight'].rule"
                     :form-key="InputObject['package_dimensi_weight'].key"
                     :value-data="InputObject['package_dimensi_weight'].value"
-                    :type-input="koliinput +`|${listeninputDisabled == true ? 'disabled':''}`"
+                    :type-input="koliinput +`${listeninputDisabled == true ? '|disabled':''}`"
+                    :only-number="true"
                     @updateValue="updateValue"
                   />
                 </vs-col>
@@ -238,7 +240,8 @@
                     :rules="InputObject['package_dimensi_length'].rule"
                     :form-key="InputObject['package_dimensi_length'].key"
                     :value-data="InputObject['package_dimensi_length'].value"
-                    :type-input="koliinput +`|${listeninputDisabled == true ? 'disabled':''}`"
+                    :type-input="koliinput +`${listeninputDisabled == true ? '|disabled':''}`"
+                    :only-number="true"
                     @updateValue="updateValue"
                   />
                 </vs-col>
@@ -252,7 +255,8 @@
                     :rules="InputObject['package_dimensi_width'].rule"
                     :form-key="InputObject['package_dimensi_width'].key"
                     :value-data="InputObject['package_dimensi_width'].value"
-                    :type-input="koliinput +`|${listeninputDisabled == true ? 'disabled':''}`"
+                    :type-input="koliinput +`${listeninputDisabled == true ? '|disabled':''}`"
+                    :only-number="true"
                     @updateValue="updateValue"
                   />
                 </vs-col>
@@ -266,8 +270,8 @@
                     :rules="InputObject['package_dimensi_height'].rule"
                     :form-key="InputObject['package_dimensi_height'].key"
                     :value-data="InputObject['package_dimensi_height'].value"
-                    :type-input="koliinput +`|${listeninputDisabled == true ? 'disabled':''}`"
-                    
+                    :type-input="koliinput +`${listeninputDisabled == true ? '|disabled':''}`"
+                    :only-number="true"
                     @updateValue="updateValue"
                   />
                 </vs-col>
