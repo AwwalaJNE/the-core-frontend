@@ -1,62 +1,41 @@
-import { Autocomplete, Checkbox, CheckboxButton, CheckboxGroup, Collapse, CollapseItem, DatePicker, FormItem, Option, Select, TimePicker, Upload } from 'element-ui'
-import locale from 'element-ui/lib/locale'
-import lang from 'element-ui/lib/locale/lang/en'
-import 'element-ui/lib/theme-chalk/index.css'
 import Vue from 'vue'
-import VueClipboard from 'vue-clipboard2'
-import VueCurrencyInput from 'vue-currency-input'
-import Vuesax from 'vuesax'
-import 'vuesax/dist/vuesax.css'; //Vuesax styles
 import App from './App.vue'
 import router from './router'
 import store from './store'
 
-import axios from 'axios'
+import { Autocomplete, Checkbox, CheckboxButton, CheckboxGroup, Collapse, CollapseItem, DatePicker, FormItem, Option, Select, TimePicker, Upload } from 'element-ui'
+import locale from 'element-ui/lib/locale'
+import lang from 'element-ui/lib/locale/lang/en'
+import 'element-ui/lib/theme-chalk/index.css'
 
-axios.interceptors.response.use(
-  (response) => {
-    // Return successful responses as-is
-    return response;
-  },
-  (error) => {
-    if (error.response) {
-      const status = error.response.status;
-      const responseData = error.response.data;
-      
-      if (status === 401) {
-        localStorage.clear();
-        router.push('/login');
-        return Promise.reject(error);
-      }
-      
-      if (responseData && responseData.reason) {
-        const reason = responseData.reason.toLowerCase();
-        if (reason.includes("unauthenticated")) {
-          localStorage.clear();
-          router.push('/login');
-          return Promise.reject(error);
-        }
-      }
-      
-      if (responseData && responseData.type === "AuthenticationException") {
-        localStorage.clear();
-        router.push('/login');
-        return Promise.reject(error);
-      }
-    }
-    
-    // Return other errors as-is
-    return Promise.reject(error);
-  }
-);
-
-locale.use(lang)
+import VueClipboard from 'vue-clipboard2'
+import VueCurrencyInput from 'vue-currency-input'
+import Vuesax from 'vuesax'
+import 'vuesax/dist/vuesax.css'
 
 import Storage from 'vue-ls'
-Vue.use(Vuesax)
-// Vue.use(VueMoment, {
-//   moment,
-// })
+import axios from 'axios'
+
+// -------------------- Axios Interceptor --------------------
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      const status = error.response.status
+      const data = error.response.data
+
+      if (status === 401 || (data && data.reason && data.reason.toLowerCase().includes('unauthenticated')) || (data && data.type === "AuthenticationException")) {
+        localStorage.clear()
+        router.push('/login')
+        return Promise.reject(error)
+      }
+    }
+    return Promise.reject(error)
+  }
+)
+
+// -------------------- Element UI --------------------
+locale.use(lang)
 Vue.use(Upload)
 Vue.use(Autocomplete)
 Vue.use(Collapse)
@@ -71,8 +50,8 @@ Vue.use(Select)
 Vue.use(Option)
 Vue.use(FormItem)
 
-const pluginOptions = {
-  /* see config reference https://dm4t2.github.io/vue-currency-input/config/*/
+// -------------------- VueCurrencyInput --------------------
+Vue.use(VueCurrencyInput, {
   globalOptions: { 
     currency: {prefix: 'Rp ', suffix: ''},
     allowNegative: false,
@@ -83,58 +62,77 @@ const pluginOptions = {
     },
     autoDecimalMode: false
   }
-}
-Vue.use(VueCurrencyInput, pluginOptions)
+})
 
+// -------------------- Vue LS --------------------
+Vue.use(Storage, { namespace: 'vuejs__', name: 'ls', storage: 'local' })
 
-
-let options = {
-    namespace: 'vuejs__', // key prefix
-    name: 'ls', // name variable Vue.[ls] or this.[$ls],
-    storage: 'local', // storage name session, local, memory
-}
-Vue.use(Storage,options)
-
+Vue.use(Vuesax)
 Vue.config.productionTip = false
 Vue.prototype.$log = console.log
-
-// global variable dari https://vuejs.org/v2/api/#Vue-extend
-Vue.prototype.$VueExtend = Vue.util.extend 
-// global variable darihttps://vuejs.org/v2/api/#Vue-delete
+Vue.prototype.$VueExtend = Vue.util.extend
 Vue.prototype.$VueDelete = Vue.delete
-// global variable https://vuejs.org/v2/api/#Vue-nextTick
 Vue.prototype.$nextTick = Vue.nextTick
 
+// -------------------- Uppercase Directive --------------------
 Vue.directive('uppercase', {
   bind(el, binding) {
-    const inputElement = el.querySelector('input');
-
-    if (inputElement && binding.value) {
-      inputElement.value = binding.value.toUpperCase();
-    }
-
-    inputElement.addEventListener('input', () => {
-      const upperCaseValue = inputElement.value.toUpperCase();
-      inputElement.value = upperCaseValue;
-
-      inputElement.dispatchEvent(new Event('input'));
-    });
+    const input = el.querySelector('input')
+    if (!input) return
+    if (binding.value) input.value = binding.value.toUpperCase()
+    input.addEventListener('input', () => {
+      input.value = input.value.toUpperCase()
+      input.dispatchEvent(new Event('input'))
+    })
   },
-
   update(el, binding) {
-    const inputElement = el.querySelector('input');
-
-    if (inputElement && binding.value !== undefined) {
-      inputElement.value = binding.value.toUpperCase();
-      inputElement.dispatchEvent(new Event('input'));
+    const input = el.querySelector('input')
+    if (!input) return
+    if (binding.value !== undefined) {
+      input.value = binding.value.toUpperCase()
+      input.dispatchEvent(new Event('input'))
     }
-  },
-});
+  }
+})
 
+// -------------------- Version Auto-Refresh --------------------
+let currentVersion = null
 
+async function checkVersion() {
+  try {
+    const res = await fetch('/version.json?cacheBust=' + Date.now())
+    const { version } = await res.json()
+
+    if (!currentVersion) {
+      currentVersion = version
+    } else if (currentVersion !== version) {
+      // Popup notification via Vuesax
+      if (!document.querySelector('#version-update-notification')) {
+        const container = document.createElement('div')
+        container.id = 'version-update-notification'
+        document.body.appendChild(container)
+
+        Vue.prototype.$vs.notification({
+          color: 'primary',
+          title: 'Update Available',
+          text: 'New version deployed! Click refresh to update.',
+          position: 'top-right',
+          duration: 0,
+          onClick: () => window.location.reload(true)
+        })
+      }
+    }
+  } catch (e) {
+    console.error("❌ Version check failed:", e)
+  }
+}
+
+// Cek tiap 1 menit
+setInterval(checkVersion, 60000)
+
+// -------------------- Mount Vue --------------------
 new Vue({
   router,
   store,
-  render: (h) => h(App),
+  render: h => h(App),
 }).$mount('#app')
-

@@ -13,6 +13,7 @@
   "description": "Core",
   "private": true,
   "scripts": {
+    "prebuild": "node scripts/generate-version.js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
