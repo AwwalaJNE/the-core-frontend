@@ -380,7 +380,11 @@ export default {
           this.value = event.replace(/[^\x20-\x7E]/g, '');
         } else {
           if (this.isOnlyNumber) {
-            this.value = event.replace(/[^0-9.]/g, '');
+            if (this.rules.includes('decimal')) {
+              this.value = event.replace(/[^0-9.]/g, '');
+            } else {
+              this.value = event.replace(/[^0-9]/g, '');
+            }
           } else {
             this.value = event.replace(/[^a-zA-Z0-9_\/-]/g, '');
           }
