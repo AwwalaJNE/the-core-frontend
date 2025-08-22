@@ -290,17 +290,6 @@ export default {
                 resource_name: resourceLookup["TRANSPORT_INVENTORY_VEHICLE"].resource_name
               },
             },
-            {
-              label: "Manifest Vehicle",
-              url: "/transport/manifest-vehicle",
-              icon: "bx bxs-checkbox",
-              permission: "read-manifest-vehicle",
-              meta: {
-                resource_type: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_type,
-                resource_code: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_code,
-                resource_name: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_name
-              },
-            },
           ],
         },
         {
