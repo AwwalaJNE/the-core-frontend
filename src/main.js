@@ -96,27 +96,41 @@ Vue.directive('uppercase', {
 })
 
 // -------------------- Version Auto-Refresh --------------------
-let currentVersion = null
+let currentVersion = null;
+
+const channel = new BroadcastChannel('version_channel');
 
 async function checkVersion() {
   try {
-    const res = await fetch('/version.json?cacheBust=' + Date.now())
-    const { version } = await res.json()
+    const res = await fetch('/version.json?cacheBust=' + Date.now());
+    const { version } = await res.json();
 
     if (!currentVersion) {
-      currentVersion = version
+      currentVersion = version;
     } else if (currentVersion !== version) {
-      // Option: langsung auto-refresh tanpa popup
-      console.log("🔄 New version detected, auto-reloading...")
-      window.location.reload(true)
+      console.log('🔄 New version detected, broadcasting reload...');
+
+      channel.postMessage(version);
+
+      window.location.reload(true);
     }
   } catch (e) {
-    console.error("❌ Version check failed:", e)
+    console.error("❌ Version check failed:", e);
   }
 }
 
-// Cek tiap 1 menit
-setInterval(checkVersion, 60000)
+channel.onmessage = (event) => {
+  const newVersion = event.data;
+  if (newVersion && newVersion !== currentVersion) {
+    console.log('🔄 Reload triggered from another tab via BroadcastChannel');
+    window.location.reload(true);
+  }
+};
+
+checkVersion();
+
+setInterval(checkVersion, 60000);
+
 
 // -------------------- Mount Vue --------------------
 new Vue({
