@@ -4,7 +4,7 @@
 			<vs-col w="1" v-if="!listenData.transit_at"></vs-col>
 			<vs-col :w="listenData.transit_at ? 4 : 3" align="left">
 				<h1 class="text-header">{{ listenData.origin_code }}</h1>
-				<span class="text">REGIONAL CODE</span>
+				<span class="text">{{ listenData.node_name }}</span>
 			</vs-col>
 			<vs-col w="4" align="center">
 				<template v-if="listenData.transit_at">

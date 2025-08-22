@@ -379,7 +379,7 @@ export default {
         } else if (this.listenFormKey.toLowerCase().includes('email')) {
           this.value = event.replace(/[^\x20-\x7E]/g, '');
         } else {
-          this.value = event.replace(/[^a-zA-Z0-9_-]/g, '');
+          this.value = event.replace(/[^a-zA-Z0-9_/-]/g, '');
         }
       }
 
