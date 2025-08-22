@@ -704,7 +704,7 @@ export default {
         let routeData = this.$router.resolve({ 
             name: 'printGeneral', 
             params: { 
-                'id': this.bag_id.replaceAll("/","~"), 
+                'id': this.bag_id, 
                 'type': 'bag',
                 'node_id': this.listenNodeId,
             } 
@@ -836,10 +836,6 @@ export default {
 
 .in-get-bag {
   font-size: 16px;
-}
-
-.logo {
-
 }
 
 .box{

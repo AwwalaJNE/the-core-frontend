@@ -510,7 +510,7 @@ export default {
                 })
         },
         actionDetail(val){
-            let bag = val.bag_number.replaceAll("/", "~")
+            let bag = encodeURIComponent(val.bag_number)
             this.$router.push('/bagging-detail/'+bag)
             this.setRoutePageHistory(this.$route.meta, false);
         },
@@ -518,7 +518,7 @@ export default {
             let routeData = this.$router.resolve({ 
                 name: 'printGeneral', 
                 params: { 
-                    'id': val.bag_number.replaceAll("/","~"), 
+                    'id': val.bag_number, 
                     'type': 'bag',
                     'node_id': this.listenNodeId
                 }
@@ -550,7 +550,7 @@ export default {
                 let routeData = this.$router.resolve({ 
                     name: 'printGeneral', 
                     params: { 
-                        'id': this.selectedRow.toString().replaceAll("/","~"), 
+                        'id': this.selectedRow.toString(), 
                         'type': 'bag',
                         'node_id': this.listenNodeId
                     }

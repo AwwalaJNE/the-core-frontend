@@ -788,7 +788,7 @@ export default {
           .post(this.URL.revamp_bag+`?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header())
           .then(res => {
             let bagNumber = res.data.data.bag_number;
-            let bagNumberForRoute = bagNumber.replace(/\//g, '~');
+            let bagNumberForRoute = bagNumber;
             this.handleClearForm()
             this.openNotification("success", null, 'Success', 'Bagging is success')
 
