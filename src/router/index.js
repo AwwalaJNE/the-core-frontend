@@ -1813,6 +1813,20 @@ const routes = [
               permission: "",
             }
           },
+          {
+            path: "manifest-vehicle/:id?",
+            name: "transport-manifest-vehicle",
+            component: TransportManifestVehicle,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Manifest Vehicle",
+              resource_type: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_type,
+              resource_code: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_code,
+              resource_name: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-manifest-vehicle',
+            }
+          },
         ],
         meta: {
           requiresAuth: true,

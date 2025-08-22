@@ -3,8 +3,8 @@
         <vs-row justify="space-between">
             <vs-col xs="6" sm="6" lg="6">
                 <div class="titlePage">
-                    <breadcrumb />
-                    <h2>Manifest Vehicle</h2>
+                    <!-- <breadcrumb />
+                    <h2>Manifest Vehicle</h2> -->
                 </div>
             </vs-col>
             <vs-col xs="6" sm="6" lg="6" v-if="hasManifestNumber">
@@ -219,7 +219,7 @@ export default {
 
             const encoded = encodeURIComponent(this.manifestNumber);
             const currentPath = this.$route.path;
-            const newPath = `/transport/manifest-vehicle/${encoded}`;
+            const newPath = `/trace/manifest-vehicle/${encoded}`;
 
             if (currentPath !== newPath) {
                 this.$router.push(newPath);
@@ -294,8 +294,8 @@ export default {
             this.hasManifestNumber = false;
             this.manifestNumber = "";
 
-            if (this.$route.path !== "/transport/manifest-vehicle") {
-                this.$router.push("/transport/manifest-vehicle");
+            if (this.$route.path !== "/trace/manifest-vehicle") {
+                this.$router.push("/trace/manifest-vehicle");
                 this.setRoutePageHistory(this.$route.meta, false);
             }
 
