@@ -59,11 +59,6 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Id",
-                    key: "setting_id",
-                    width: "auto"
-                },
-                {
                     label: "Formula Type",
                     key: "formula_type",
                     width: "auto"
