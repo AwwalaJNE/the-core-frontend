@@ -799,7 +799,7 @@ export default {
             this.$store.dispatch("SET_IS_HUB_DELIVERY_VALIDATION_ValueData", this.is_hub_delivery_validation);
             this.closeLoading();
 
-            this.$router.push('/bagging-detail/'+bagNumberForRoute)
+            this.$router.push('/bagging-detail/'+encodeURIComponent(bagNumberForRoute))
             this.setRoutePageHistory(this.$route.meta, false);
           }).catch(err => {
               this.closeLoading();
