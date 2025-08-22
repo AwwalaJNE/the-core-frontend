@@ -106,22 +106,6 @@ async function checkVersion() {
     if (!currentVersion) {
       currentVersion = version
     } else if (currentVersion !== version) {
-      // Popup notification via Vuesax
-      // if (!document.querySelector('#version-update-notification')) {
-      //   const container = document.createElement('div')
-      //   container.id = 'version-update-notification'
-      //   document.body.appendChild(container)
-
-      //   Vue.prototype.$vs.notification({
-      //     color: 'primary',
-      //     title: 'Update Available',
-      //     text: 'New version deployed! Click refresh to update.',
-      //     position: 'top-right',
-      //     duration: 0,
-      //     onClick: () => window.location.reload(true)
-      //   })
-      // }
-
       // Option: langsung auto-refresh tanpa popup
       console.log("🔄 New version detected, auto-reloading...")
       window.location.reload(true)
