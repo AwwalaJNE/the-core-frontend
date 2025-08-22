@@ -386,7 +386,7 @@ export default {
               this.value = event.replace(/[^0-9]/g, '');
             }
           } else {
-            this.value = event.replace(/[^a-zA-Z0-9_\/-]/g, '');
+            this.value = event.replace(/[^a-zA-Z0-9_\/-\s]/g, '');
           }
           
         }

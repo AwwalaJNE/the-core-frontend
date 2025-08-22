@@ -241,6 +241,7 @@
                     :form-key="InputObject['package_dimensi_length'].key"
                     :value-data="InputObject['package_dimensi_length'].value"
                     :type-input="koliinput +`${listeninputDisabled == true ? '|disabled':''}`"
+                    :only-number="true"
                     @updateValue="updateValue"
                   />
                 </vs-col>
@@ -255,6 +256,7 @@
                     :form-key="InputObject['package_dimensi_width'].key"
                     :value-data="InputObject['package_dimensi_width'].value"
                     :type-input="koliinput +`${listeninputDisabled == true ? '|disabled':''}`"
+                    :only-number="true"
                     @updateValue="updateValue"
                   />
                 </vs-col>
@@ -269,7 +271,7 @@
                     :form-key="InputObject['package_dimensi_height'].key"
                     :value-data="InputObject['package_dimensi_height'].value"
                     :type-input="koliinput +`${listeninputDisabled == true ? '|disabled':''}`"
-                    
+                    :only-number="true"
                     @updateValue="updateValue"
                   />
                 </vs-col>
