@@ -148,9 +148,9 @@ export default {
             this.setRoutePageHistory(this.$route.meta, false);
         },
         async processBagNumber() {         
-            this.bag_number = this.bagNumber.replace(/\//g, '~'); 
+            this.bag_number = this.bagNumber; 
             try {
-                await this.$router.push(`/trace-bag/${this.bag_number}`);
+                await this.$router.push(`/trace-bag/${encodeURIComponent(this.bag_number)}`);
                 this.setRoutePageHistory(this.$route.meta, false);
                 this.hasBagNumber = true;
                 await this.getBag();
