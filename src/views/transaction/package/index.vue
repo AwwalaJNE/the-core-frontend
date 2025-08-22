@@ -224,7 +224,8 @@
                     :rules="InputObject['package_dimensi_weight'].rule"
                     :form-key="InputObject['package_dimensi_weight'].key"
                     :value-data="InputObject['package_dimensi_weight'].value"
-                    :type-input="koliinput +`|${listeninputDisabled == true ? 'disabled':''}`"
+                    :type-input="'number' +`${listeninputDisabled == true ? '|disabled':''}`"
+                    :only-number="true"
                     @updateValue="updateValue"
                   />
                 </vs-col>
