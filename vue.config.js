@@ -85,19 +85,4 @@ module.exports = {
       },
     },
   },
-  pwa: {
-    name: 'JNE CORE APP',
-    themeColor: '#4DBA87',
-    msTileColor: '#000000',
-    manifestOptions: {
-      short_name: 'JNE_CORE',
-      start_url: '.',
-      display: 'standalone',
-      background_color: '#ffffff'
-    },
-    workboxOptions: {
-      skipWaiting: true,
-      clientsClaim: true
-    }
-  }
 };
