@@ -188,8 +188,8 @@ export default {
                 })
         },
         actionDetail(val){
-            let bag = val.bag_number.replaceAll("/", "-")
-            this.$router.push('/bagging-detail/'+bag)
+            let bag = val.bag_number
+            this.$router.push('/bagging-detail/'+encodeURIComponent(bag))
             this.setRoutePageHistory(this.$route.meta, false);
         },
         actionLimit(val){
