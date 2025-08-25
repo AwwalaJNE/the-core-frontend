@@ -16,6 +16,7 @@
                     typeForm="bag_limit"
                     :dataItem="listenDataItem"
                     :querySearch="querySearch"
+                    :data-testid="`form`"
                     @formData="formData"
                     @inputFocus="inputFocus"
                     @onChangeCustom="onChangeCustom"
@@ -32,6 +33,7 @@
                         flat
                         transparent
                         :active="true"
+                        :data-testid="`cancel-button`"
                         @click="cancel"
                     >
                         Cancel
@@ -44,6 +46,7 @@
                         transparent
                         type="submit"
                         :active="true"
+                        :data-testid="`submit-button`"
                         @click="handleSubmit"
                     >
                         {{btnBlue || 'Add'}}

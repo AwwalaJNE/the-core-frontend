@@ -17,6 +17,7 @@
                         @focus="focus(true)"
                         @blur="focus(false)"
                         ref="generalInput"
+                        :data-testid="`input-${formKey}`"
                         :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
                     /> -->
           <vs-input
@@ -36,6 +37,7 @@
             :state="
               props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
             "
+            :data-testid="`input-${formKey}`"
           />
         </template>
         <template v-else-if="listenCurrencyMasking">
@@ -55,6 +57,7 @@
             @blur="focus(false)"
             ref="generalInput"
             :min="listenMinValue"
+            :data-testid="`input-${formKey}`"
             :state="
               props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
             "
@@ -74,6 +77,7 @@
             @focus="focus(true)"
             @blur="focus(false)"
             ref="generalInput"
+            :data-testid="`input-${formKey}`"
             :state="
               props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
             "
@@ -103,6 +107,7 @@
             @keydown="onlyNumberValidate"
             @keyup="handlerZero(value)"
             :min="listenMinValue"
+            :data-testid="`input-${formKey}`"
             :state="
               props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
             "
@@ -129,6 +134,7 @@
             @blur="focus(false)"
             ref="generalInput"
             :min="listenMinValue"
+            :data-testid="`input-${formKey}`"
             :state="
               props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
             "
@@ -155,6 +161,7 @@
               @blur="focus(false)"
               ref="generalInput"
               :min="listenMinValue"
+              :data-testid="`input-${formKey}`"
               :state="
                 props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
               "
@@ -184,6 +191,7 @@
             @blur="focus(false)"
             ref="generalInput"
             :min="listenMinValue"
+            :data-testid="`input-${formKey}`"
             :state="
               props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
             "
