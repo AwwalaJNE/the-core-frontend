@@ -19,6 +19,7 @@
                         :picker-options="isETDnETA ? pickerOptions : null"
                         :default-time="isETDnETA ? null : ['00:00:00', '23:59:59']"
                         :disabled="listenIsDisabled"
+                        :data-testid="`input-date-time`"
                         @change="updateValue"
                         @focus="attachInputSanitizer"
                     >

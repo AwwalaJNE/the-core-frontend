@@ -5,7 +5,7 @@
                 <template v-slot:inputan="props">
                     <!-- <vs-select
                         class="m-select"
-                        autocomplete="off"
+                        select="off"
                         filter
                         :multiple="listenIsMultiple"
                         :placeholder="placeholder"
@@ -45,7 +45,7 @@
                       :loading="loadingActive"
                       @change="updateValue"
                       @visible-change="setupSanitizeFilterInput"
-                      :data-testid="`autocomplete-${formKey}`"
+                      :data-testid="`select-${formKey}`"
                       :state="props.err !== undefined && props.err !== '' ?'danger':'gray'">
                           <el-option
                           v-for="(item,key) in DataArr"
@@ -73,7 +73,7 @@
                             :is-Multiple-Tag="listenIsMultipleTags"
                             @change="updateValue"
                             @visible-change="setupSanitizeFilterInput"
-                            :data-testid="`autocomplete-${formKey}`"
+                            :data-testid="`select-${formKey}`"
                             :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
                         >
                             <el-option
@@ -99,7 +99,7 @@
                       @visible-change="setupSanitizeFilterInput"
                       :clearable="listenHasClearButton"
                       :loading="loadingActive"
-                      :data-testid="`autocomplete-${formKey}`"
+                      :data-testid="`select-${formKey}`"
                       :state="props.err !== undefined && props.err !== '' ?'danger':'gray'">
                             <el-option
                                 v-for="(item, key) in DataArr"
