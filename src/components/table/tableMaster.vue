@@ -967,6 +967,7 @@
                       flat
                       size="small"
                       :active="true"
+                      :data-testid="`vehicle-button-${key}`"
                       @click="actionManageVehicle(item)"
                     >
                       <span>Vehicle</span>
@@ -978,6 +979,7 @@
                       flat
                       size="small"
                       :active="true"
+                      :data-testid="`edit-button-${key}`"
                       @click="actionUpdate(item)"
                     >
                       <span>Edit</span>
@@ -991,6 +993,7 @@
                       flat
                       :active="true"
                       type="submit"
+                      :data-testid="`remove-button-${key}`"
                       @click="actionRemove(item)"
                     >
                       <span>Remove</span>

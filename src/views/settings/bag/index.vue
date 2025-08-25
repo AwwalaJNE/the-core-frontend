@@ -14,6 +14,7 @@
                             flat
                             block
                             :active="true"
+                            :data-testid="`create-button-${navActive}`"
                             @click="openDialog"
                         > 
                             <i class="bx bx-plus"></i> New

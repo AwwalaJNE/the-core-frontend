@@ -31,6 +31,7 @@
                     :active="currentActive === item.key"
                     :id="item.key"
                     :class="item.key"
+                    :data-testid="`nav-${item.key}`"
                 >
                     {{ item.label }}
                 </vs-navbar-item>
