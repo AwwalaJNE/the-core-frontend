@@ -47,70 +47,80 @@ export default {
             handler: "buildTabs",
         },
     },
-    methods: {
-        buildTabs() {
-            const matched = this.$route.matched || [];
-            if (matched.length < 1) {
-                this.childrenData = [];
-                this.title = '';
-                return;
-            }
+   methods: {
+    buildTabs() {
+        const matched = this.$route.matched || [];
+        if (!matched.length) {
+        this.childrenData = [];
+        this.title = '';
+        return;
+        }
 
-            const parentRecord = matched.length > 1 && matched[matched.length - 2]?.path !== '' 
-                ? matched[matched.length - 2] 
-                : matched[matched.length - 1];
+        const parentRecord = matched.length > 1 && matched[matched.length - 2]?.path !== ''
+        ? matched[matched.length - 2]
+        : matched[matched.length - 1];
 
-            if (!parentRecord) {
-                this.childrenData = [];
-                this.title = '';
-                return;
-            }
+        const parentRoute = this.findRouteByName(this.$router.options.routes || [], parentRecord?.name);
+        if (!parentRoute) {
+        this.childrenData = [];
+        this.title = '';
+        return;
+        }
 
-            const parentRoute = this.findRouteByName(this.$router.options.routes || [], parentRecord.name);
-            if (!parentRoute) {
-                this.childrenData = [];
-                this.title = '';
-                return;
-            }
+        const parentPath = parentRoute.path.replace(/^\/?/, '');
 
-            const parentPath = parentRoute.path.replace(/^\/?/, "");
-            this.childrenData = (parentRoute.children || [])
-                .filter(child => {
-                    const perm = child.meta?.permission;
-                    return (
-                        perm === '' ||
-                        (typeof perm === 'string' && this.listenPermissions?.core?.includes(perm)) ||
-                        (Array.isArray(perm) && perm.some(p => this.listenPermissions?.core?.includes(p)))
-                    );
-                })
-                .map(child => {
-                    const childPath = child.path.replace(/^\/?/, "");
-                    return {
-                        label: child.name,
-                        url: `/${parentPath}/${childPath}`.replace(/\/+/g, "/"),
-                        permission: child.meta.permission,
-                        icon: child?.meta?.icon || 'bx bxs-checkbox'
-                    };
-                });
+        // Build daftar tab
+        this.childrenData = (parentRoute.children || [])
+        .filter(child => {
+            const perm = child.meta?.permission;
+            // izinkan jika:
+            // - permission tidak didefinisikan, atau
+            // - string kosong, atau
+            // - ada di permission user (string/array)
+            if (perm === undefined || perm === '') return true;
+            if (typeof perm === 'string') return this.listenPermissions?.core?.includes(perm);
+            if (Array.isArray(perm)) return perm.some(p => this.listenPermissions?.core?.includes(p));
+            return false;
+        })
+        .map(child => {
+            const childPath = child.path.replace(/^\/?/, '');
+            // BUANG segmen parameter opsional, contoh: "trace-bag/:bag_number?"
+            const baseChildPath = childPath.replace(/\/:.*\??$/, '');
 
+            const url = `/${parentPath}/${baseChildPath}`.replace(/\/+/g, '/');
+            const label = child.meta?.breadCrumb || child.meta?.title || child.name;
 
-            // Redirect otomatis ke child pertama jika route saat ini parent
-            if (this.childrenData.length && this.$route.path === `/${parentPath}`) {
-                this.$router.replace(this.childrenData[0].url);
-            }
+            return {
+                name: child.name,
+                label,
+                url,                    // fallback kalau TabMenu masih pakai string
+                to: { name: child.name }, // PAKAI INI di <router-link> (tanpa params)
+                permission: child.meta?.permission,
+                icon: child?.meta?.icon || 'bx bxs-checkbox'
+            };
+        });
 
-            // Update title sesuai child aktif
-            const activeChild = this.childrenData.find(c => c.url === this.$route.path);
-            this.title = activeChild ? activeChild.label : (this.childrenData[0]?.label || '');
-        },
-        findRouteByName(routes, name) {
-            for (const route of routes) {
-                if (route.name === name) return route;
-                const found = this.findRouteByName(route.children || [], name);
-                if (found) return found;
-            }
-            return null;
-        },
+        // Redirect ke child pertama jika sedang di parent persis
+        if (this.childrenData.length && this.$route.path.replace(/\/+$/, '') === `/${parentPath}`) {
+        this.$router.replace(this.childrenData[0].url);
+        }
+
+        // Tandai tab aktif (cocokkan berdasarkan name atau prefix path)
+        const activeByName = this.childrenData.find(c => c.name === this.$route.name);
+        const activeByPath = this.childrenData.find(c => this.$route.path.startsWith(c.url));
+        const activeChild = activeByName || activeByPath;
+
+        this.title = activeChild ? activeChild.label : (this.childrenData[0]?.label || '');
     },
+
+    findRouteByName(routes, name) {
+        for (const route of routes) {
+        if (route.name === name) return route;
+        const found = this.findRouteByName(route.children || [], name);
+        if (found) return found;
+        }
+        return null;
+    },
+    }
 };
 </script>

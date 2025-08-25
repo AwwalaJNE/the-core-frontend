@@ -667,51 +667,6 @@ const routes = [
         }
       },
       {
-        path: "trace-connote/:id?",
-        name: "trace-connote",
-        component: TraceConnote,
-        children: [],
-        meta: {
-          requiresAuth: true,
-          breadCrumb: "Trace Connote",
-          resource_type: resourceLookup["TRACE_CONNOTE"].resource_type,
-          resource_code: resourceLookup["TRACE_CONNOTE"].resource_code,
-          resource_name: resourceLookup["TRACE_CONNOTE"].resource_name,
-          isMaintenanceMode: false,
-          permission: '',
-        }
-      },
-      {
-        path: "trace-bag/:bag_number?",
-        name: "trace-bag",
-        component: TraceBag,
-        children: [],
-        meta: {
-          requiresAuth: true,
-          breadCrumb: "Trace Bag / Masterbag",
-          resource_type: resourceLookup["TRACE_BAG"].resource_type,
-          resource_code: resourceLookup["TRACE_BAG"].resource_code,
-          resource_name: resourceLookup["TRACE_BAG"].resource_name,
-          isMaintenanceMode: false,
-          permission: '',
-        }
-      },
-      {
-        path: "trace-flight/:id?",
-        name: "trace-flight",
-        component: TraceFlight,
-        children: [],
-        meta: {
-          requiresAuth: true,
-          breadCrumb: "Trace Flight",
-          resource_type: resourceLookup["TRACE_FLIGHT"].resource_type,
-          resource_code: resourceLookup["TRACE_FLIGHT"].resource_code,
-          resource_name: resourceLookup["TRACE_FLIGHT"].resource_name,
-          isMaintenanceMode: false,
-          permission: '',
-        }
-      },
-      {
         path: "sales",
         name: "sales",
         component: ContentChild,
@@ -1806,6 +1761,76 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "inventory"
+        }
+      },
+      {
+        path: "trace",
+        name: "Trace",
+        component: ContentChildWithTab,
+        children: [
+          {
+            path: "trace-connote/:id?",
+            name: "trace-connote",
+            component: TraceConnote,
+            props: true,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Trace Connote",
+              resource_type: resourceLookup["TRACE_CONNOTE"].resource_type,
+              resource_code: resourceLookup["TRACE_CONNOTE"].resource_code,
+              resource_name: resourceLookup["TRACE_CONNOTE"].resource_name,
+              isMaintenanceMode: false,
+              permission: "", // trace tdk perlu permission
+            }
+          },
+          {
+            path: "trace-bag/:bag_number?",
+            name: "trace-bag",
+            component: TraceBag,
+            props: true,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Trace Bag / Masterbag",
+              resource_type: resourceLookup["TRACE_BAG"].resource_type,
+              resource_code: resourceLookup["TRACE_BAG"].resource_code,
+              resource_name: resourceLookup["TRACE_BAG"].resource_name,
+              isMaintenanceMode: false,
+              permission: "",
+            }
+          },
+          {
+            path: "trace-flight/:id?",
+            name: "trace-flight",
+            component: TraceFlight,
+            props: true,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Trace Flight",
+              resource_type: resourceLookup["TRACE_FLIGHT"].resource_type,
+              resource_code: resourceLookup["TRACE_FLIGHT"].resource_code,
+              resource_name: resourceLookup["TRACE_FLIGHT"].resource_name,
+              isMaintenanceMode: false,
+              permission: "",
+            }
+          },
+          {
+            path: "manifest-vehicle/:id?",
+            name: "transport-manifest-vehicle",
+            component: TransportManifestVehicle,
+            meta: {
+              requiresAuth: true,
+              breadCrumb: "Manifest Vehicle",
+              resource_type: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_type,
+              resource_code: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_code,
+              resource_name: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-manifest-vehicle',
+            }
+          },
+        ],
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "trace"
         }
       },
       {
