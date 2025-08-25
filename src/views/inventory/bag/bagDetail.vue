@@ -803,7 +803,7 @@ export default {
       this.loadingConfirmUnpproveBag=true
       await axios
         .put(
-          `${this.URL.approval}-bag/${this.bag_id.replaceAll("/", "-")}?n=${this.listenNodeId}`,
+          `${this.URL.approval}-bag/${this.bag_id}?n=${this.listenNodeId}`,
           JSON.stringify(this.toggle_approve),
           this.Helper.header()
         )

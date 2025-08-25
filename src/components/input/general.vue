@@ -17,6 +17,7 @@
                         @focus="focus(true)"
                         @blur="focus(false)"
                         ref="generalInput"
+                        :data-testid="`input-${formKey}`"
                         :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
                     /> -->
           <vs-input
@@ -36,6 +37,7 @@
             :state="
               props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
             "
+            :data-testid="`input-${formKey}`"
           />
         </template>
         <template v-else-if="listenCurrencyMasking">
@@ -55,6 +57,7 @@
             @blur="focus(false)"
             ref="generalInput"
             :min="listenMinValue"
+            :data-testid="`input-${formKey}`"
             :state="
               props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
             "
@@ -74,6 +77,7 @@
             @focus="focus(true)"
             @blur="focus(false)"
             ref="generalInput"
+            :data-testid="`input-${formKey}`"
             :state="
               props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
             "
@@ -103,6 +107,7 @@
             @keydown="onlyNumberValidate"
             @keyup="handlerZero(value)"
             :min="listenMinValue"
+            :data-testid="`input-${formKey}`"
             :state="
               props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
             "
@@ -129,6 +134,7 @@
             @blur="focus(false)"
             ref="generalInput"
             :min="listenMinValue"
+            :data-testid="`input-${formKey}`"
             :state="
               props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
             "
@@ -155,6 +161,7 @@
               @blur="focus(false)"
               ref="generalInput"
               :min="listenMinValue"
+              :data-testid="`input-${formKey}`"
               :state="
                 props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
               "
@@ -184,6 +191,7 @@
             @blur="focus(false)"
             ref="generalInput"
             :min="listenMinValue"
+            :data-testid="`input-${formKey}`"
             :state="
               props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
             "
@@ -376,10 +384,19 @@ export default {
       if (event && typeof event === 'string') {
         if (this.listenFormKey.toLowerCase().includes('email')) {
           this.value = event.replace(/[^a-zA-Z0-9@._\-+!#$%&'*\/=?^`{|}~]/g, '');
-        } else if (this.listenFormKey.toLowerCase().includes('email')) {
+        } else if (this.listenFormKey.toLowerCase().includes('password')) {
           this.value = event.replace(/[^\x20-\x7E]/g, '');
         } else {
-          this.value = event.replace(/[^a-zA-Z0-9_\/-]/g, '');
+          if (this.isOnlyNumber) {
+            if (this.rules.includes('decimal')) {
+              this.value = event.replace(/[^0-9.]/g, '');
+            } else {
+              this.value = event.replace(/[^0-9]/g, '');
+            }
+          } else {
+            this.value = event.replace(/[^a-zA-Z0-9_\/-\s]/g, '');
+          }
+          
         }
       }
 
