@@ -10,6 +10,7 @@
                     :placeholder="`Search ${name}`"
                     :trigger-on-focus="false"
                     :debounce="400"
+                    :data-testid="`autocomplete-${formKey}`"
                     @select="handleSelect"
                     @input="updateValue"
                     @focus="inputFocus"

@@ -45,6 +45,7 @@
                       :loading="loadingActive"
                       @change="updateValue"
                       @visible-change="setupSanitizeFilterInput"
+                      :data-testid="`autocomplete-${formKey}`"
                       :state="props.err !== undefined && props.err !== '' ?'danger':'gray'">
                           <el-option
                           v-for="(item,key) in DataArr"
@@ -72,6 +73,7 @@
                             :is-Multiple-Tag="listenIsMultipleTags"
                             @change="updateValue"
                             @visible-change="setupSanitizeFilterInput"
+                            :data-testid="`autocomplete-${formKey}`"
                             :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
                         >
                             <el-option
@@ -97,6 +99,7 @@
                       @visible-change="setupSanitizeFilterInput"
                       :clearable="listenHasClearButton"
                       :loading="loadingActive"
+                      :data-testid="`autocomplete-${formKey}`"
                       :state="props.err !== undefined && props.err !== '' ?'danger':'gray'">
                             <el-option
                                 v-for="(item, key) in DataArr"
