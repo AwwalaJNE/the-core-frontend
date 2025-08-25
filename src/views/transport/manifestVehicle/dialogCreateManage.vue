@@ -302,7 +302,7 @@ export default {
                     return
                 }
                 if (data.etd_vehicle > data.eta_vehicle) {
-                    this.openNotification('warning', '', 'Failed', 'Tanggal ETD tidak boleh lebih besar dari Tanggal ETA');
+                    this.openNotification('warning', '', 'Failed', 'ETD tidak boleh lebih besar dari ETA');
                     return
                 }
 
