@@ -400,12 +400,12 @@ export default {
           width: "xxs",
         },
         {
-          label: "Received",
+          label: "Bag Received",
           key: "total_received",
           width: "xxxs",
         },
         {
-          label: "Outstanding",
+          label: "Bag Outstanding",
           key: "total_outstanding",
           width: "xxxs",
         },
@@ -419,16 +419,11 @@ export default {
         //   key: "total_bag",
         //   width: "xxxs",
         // },
-        {
-          label: "Total Master Bag",
-          key: "total_master_bag",
-          width: "xxxs",
-        },
-        {
-          label: "Total Connote",
-          key: "total_koli",
-          width: "xxxs",
-        },
+        // {
+        //   label: "Total Connote",
+        //   key: "total_koli",
+        //   width: "xxxs",
+        // },
         {
           label: "IM Numbers",
           key: "im_numbers",
