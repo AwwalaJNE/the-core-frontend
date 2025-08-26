@@ -383,7 +383,7 @@ export default {
           key: "inbound_number",
           width: "xxxs",
         },
-        ...(this.listenBreadcrumbCode === "Pre Alert"
+        ...(this.listenBreadcrumbTitle === "Pre-Alert"
           ? [
               {
                 label: `${this.listenBreadcrumbCode} Type`,
