@@ -50,17 +50,17 @@
 <template>
   <div>
     <template v-if="!listenHideIsFilterColumn">
-      <div ref="dropdownContainer" class="column-toggle-wrapper">
+      <div ref="dropdownContainer" class="column-toggle-wrapper" data-testid="column-toggle-wrapper">
         <!-- Header Row: Button + Total -->
-        <div class="column-toggle-header" style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
-          <vs-button @click="toggleDropdown" icon>
+        <div class="column-toggle-header" data-testid="column-toggle-header" style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+          <vs-button @click="toggleDropdown" icon data-testid="filter-column-btn">
             <i class="bx bx-slider"></i> Columns
           </vs-button>
-          <p v-if="!listenTotalPerPage" class="columns-label" style="margin: 0;">Total: {{ dataTable.length }}</p>
+          <p v-if="!listenTotalPerPage" class="columns-label" data-testid="columns-total" style="margin: 0;">Total: {{ dataTable.length }}</p>
         </div>
 
-        <div v-show="showColumnDropdown" class="column-dropdown-panel">
-          <vs-input v-model="columnSearch" placeholder="Search columns..." />
+        <div v-show="showColumnDropdown" class="column-dropdown-panel" data-testid="column-dropdown-panel">
+          <vs-input v-model="columnSearch" placeholder="Search columns..." data-testid="column-search" />
 
           <div class="checkbox-scroll">
             <vs-checkbox
@@ -68,13 +68,14 @@
               :key="col.key"
               v-model="visibleKeys"
               :val="col.key"
+              :data-testid="`column-checkbox-${col.key}`"
             >
               {{ col.label }}
             </vs-checkbox>
           </div>
 
           <div class="footer-actions">
-            <vs-checkbox v-model="toggleAllVisible" @change="toggleAllColumns">
+            <vs-checkbox v-model="toggleAllVisible" @change="toggleAllColumns" data-testid="toggle-all-columns">
               Show All Columns
             </vs-checkbox>
           </div>
