@@ -1774,6 +1774,7 @@ const routes = [
             component: TraceConnote,
             props: true,
             meta: {
+              icon: "bx bx-notepad",
               requiresAuth: true,
               breadCrumb: "Trace Connote",
               resource_type: resourceLookup["TRACE_CONNOTE"].resource_type,
@@ -1789,6 +1790,7 @@ const routes = [
             component: TraceBag,
             props: true,
             meta: {
+              icon: "bx bx-shopping-bag",
               requiresAuth: true,
               breadCrumb: "Trace Bag / Masterbag",
               resource_type: resourceLookup["TRACE_BAG"].resource_type,
@@ -1804,6 +1806,7 @@ const routes = [
             component: TraceFlight,
             props: true,
             meta: {
+              icon: "bx bx-paper-plane",
               requiresAuth: true,
               breadCrumb: "Trace Flight",
               resource_type: resourceLookup["TRACE_FLIGHT"].resource_type,
@@ -1818,6 +1821,7 @@ const routes = [
             name: "transport-manifest-vehicle",
             component: TransportManifestVehicle,
             meta: {
+              icon: "bx bxs-truck",
               requiresAuth: true,
               breadCrumb: "Manifest Vehicle",
               resource_type: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_type,
