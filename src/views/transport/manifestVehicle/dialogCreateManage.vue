@@ -296,7 +296,16 @@ export default {
                         eta_vehicle: form.eta
                     };
                 }
-                
+
+                if (data.pic_employee_id === '') {
+                    this.openNotification('warning', '', 'Failed', 'Driver belum dipilih. Silahkan pilih driver terlebih dahulu');
+                    return
+                }
+                if (data.etd_vehicle > data.eta_vehicle) {
+                    this.openNotification('warning', '', 'Failed', 'ETD tidak boleh lebih besar dari ETA');
+                    return
+                }
+
                 this.$emit('updateVehicleValue', data);
                 this.cancel();
             }

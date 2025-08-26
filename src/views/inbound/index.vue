@@ -116,7 +116,7 @@
                       </template>
                     </inputan>
                   </vs-col>
-                  <vs-col xs="6" sm="4" lg="3">
+                  <vs-col xs="6" sm="4" lg="3" v-if="listenBreadcrumbCode === 'Pre Alert'">
                     <inputan :name="name" :rules="rules">
                       <template v-slot:inputan="props">
                         <vs-select
@@ -157,7 +157,7 @@
                         @updateValue="searchDate" 
                     />
                   </vs-col>
-                  <vs-col xs="12" sm="8" lg="2" style="display: flex; justify-content: end;">
+                  <vs-col xs="12" sm="8" :lg="listenBreadcrumbCode === 'Pre Alert' ? 2: 5" style="display: flex; justify-content: end;">
                     <vs-button
                         border
                         style="margin: 0;"
