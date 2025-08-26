@@ -383,11 +383,16 @@ export default {
           key: "inbound_number",
           width: "xxxs",
         },
-        {
-          label: `${this.listenBreadcrumbCode} Type`,
-          key: "inbound_type",
-          width: "xxxs",
-        },
+        ...(this.listenBreadcrumbTitle === "Pre-Alert"
+          ? [
+              {
+                label: `${this.listenBreadcrumbCode} Type`,
+                key: "inbound_type",
+                width: "xxxs",
+              },
+            ]
+          : []
+        ),
         {
           label: "Status",
           key: "status",
