@@ -87,7 +87,8 @@ export default {
           this.tempDate[0],
           this.tempDate[1],
           this.searchBy,
-          this.filterDateBy
+          this.filterDateBy,
+          this.type
           );
           this.$emit("updateLocalStorage")
         }
@@ -108,7 +109,8 @@ export default {
           this.tempDate[0],
           this.tempDate[1],
           this.searchBy,
-          this.filterDateBy
+          this.filterDateBy,
+          this.type
           );
           this.$emit("updateLocalStorage")
         }
@@ -129,7 +131,8 @@ export default {
           this.tempDate[0],
           this.tempDate[1],
           this.searchBy,
-          this.filterDateBy
+          this.filterDateBy,
+          this.type
           );
           this.$emit("updateLocalStorage")
         }
@@ -150,7 +153,8 @@ export default {
           this.tempDate[0],
           this.tempDate[1],
           this.searchBy,
-          this.filterDateBy
+          this.filterDateBy,
+          this.type
           );
           this.$emit("updateLocalStorage")
         }
@@ -171,7 +175,8 @@ export default {
           this.tempDate[0],
           this.tempDate[1],
           this.searchBy,
-          this.filterDateBy
+          this.filterDateBy,
+          this.type
           );
           this.$emit("updateLocalStorage")
         }
@@ -197,7 +202,8 @@ export default {
           this.tempDate[0],
           this.tempDate[1],
           this.searchBy,
-          this.filterDateBy
+          this.filterDateBy,
+          this.type
           );
           this.$emit("updateLocalStorage")
         }
@@ -217,7 +223,8 @@ export default {
           this.tempDate[0],
           this.tempDate[1],
           val,
-          this.filterDateBy
+          this.filterDateBy,
+          this.type
           );
           this.$emit("updateLocalStorage")
         }
@@ -237,7 +244,29 @@ export default {
           this.tempDate[0],
           this.tempDate[1],
           this.searchBy,
-          val || savedFilters
+          val || savedFilters,
+          this.type
+          );
+          this.$emit("updateLocalStorage")
+        }
+      }
+    },
+    type: function(val, old) {
+      if (val !== undefined) {
+        if (val !== old) {
+          this.getTableData(
+            this.pagination.limit,
+            this.pagination.page,
+            this.tempSearch,
+            this.nodeOrigin,
+            this.node_type,
+            this.statusReceived,
+            this.prealertFilter,
+            this.tempDate[0],
+            this.tempDate[1],
+            this.searchBy,
+            this.filterDateBy,
+            val
           );
           this.$emit("updateLocalStorage")
         }
@@ -279,7 +308,8 @@ export default {
     from,
     to,
     qFilter,
-    qDate
+    qDate,
+    type
     ) {
       this.loading = true;
       let query = "";
@@ -289,6 +319,7 @@ export default {
       let isPrealert = "";
       let queryFilter = "";
       let queryDate = "";
+      let inboundType = "";
       if (q !== undefined) {
         query = q;
       }
@@ -308,10 +339,13 @@ export default {
       if (qDate !== undefined) {
         queryDate = qDate;
       }
+      if (type !== undefined) {
+        inboundType = type;
+      }
       await axios
       .get(
       this.URL.inbound_incoming +
-      `?n=${this.listenNodeId}&type=${node_type}&status=${isReceived}&origin=${origin}&prealert=${isPrealert}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&search_by=${queryFilter}&filter_date_by=${queryDate}&start_date=${startDate}&end_date=${endDate}`,
+      `?n=${this.listenNodeId}&type=${node_type}&status=${isReceived}&origin=${origin}&prealert=${isPrealert}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&search_by=${queryFilter}&filter_date_by=${queryDate}&start_date=${startDate}&end_date=${endDate}&inbound_type=${inboundType}`,
       this.Helper.header()
       )
       .then((res) => {
@@ -559,7 +593,8 @@ export default {
       this.tempDate[0],
       this.tempDate[1],
       this.searchBy,
-      this.filterDateBy
+      this.filterDateBy,
+      this.type
       );
     },
     
