@@ -297,7 +297,7 @@ export default {
                     };
                 }
 
-                if (data.pic_employee_id === '') {
+                if (data.vehicle_type_id !== 1053 && data.pic_employee_id === '') {
                     this.openNotification('warning', '', 'Failed', 'Driver belum dipilih. Silahkan pilih driver terlebih dahulu');
                     return
                 }
