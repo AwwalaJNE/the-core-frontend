@@ -2,6 +2,7 @@
   <div>
     <table-master 
     hideColumnKey="receiving"
+    :key="listenBreadcrumbTitle"
     :dataTable="dataTable"
     :dataColumn="datacolumn"
     :tableLoading="loading"
