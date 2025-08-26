@@ -16,7 +16,7 @@
             :class="['tab', { active: isActiveUrl(item.url) }]"
             @click.native="handleSelect(item.url)"
             >
-            {{ item.label }}
+            <i :class="`${item.icon}`" /> {{ item.label }}
             </router-link>
         </div>
         
