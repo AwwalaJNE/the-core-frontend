@@ -467,7 +467,7 @@ export default {
           this.loading = true
           await axios
               .get(this.URL.node_type +
-                  `?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
+                  `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1&s=&is_active=1`,
                   this.Helper.header())
               .then(res => {
                 if(res.data.data.length > 0) {
