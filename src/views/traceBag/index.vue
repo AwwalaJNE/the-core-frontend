@@ -154,10 +154,9 @@ export default {
             const raw = (this.bagNumber || "").trim();
             if (!raw) return;
 
-            // === format: '/' -> '~' ===
-            this.bag_number = this.bagNumber.replace(/\//g, '~');
-
+            this.bag_number = raw; // simpan asli
             const encoded = encodeURIComponent(this.bag_number);
+
             await this.$router.push(`/trace/trace-bag/${encoded}`);
             this.setRoutePageHistory(this.$route.meta, false);
 
@@ -169,8 +168,7 @@ export default {
             if (!raw) return;
 
             this.bagNumber = raw;
-            // === format: '/' -> '~' ===
-            this.bag_number = this.bagNumber.replace(/\//g, '~');
+            this.bag_number = raw; // langsung pakai raw
 
             const encoded = encodeURIComponent(this.bag_number);
             this.$router.push(`/trace/trace-bag/${encoded}`);
@@ -213,11 +211,11 @@ export default {
         },
     },
     mounted() {
-        const param = this.$route.params?.bag_number;
+         const param = this.$route.params?.bag_number;
         if (param) {
             const decoded = decodeURIComponent(param);
-            this.bag_number = decoded;                // URL-safe (mengandung '~')
-            this.bagNumber  = decoded.replace(/~/g, '/'); // versi asli untuk tampil & API
+            this.bag_number = decoded;
+            this.bagNumber  = decoded; 
             this.hasBagNumber = true;
             this.getBag();
         } else {
@@ -229,15 +227,15 @@ export default {
         });
     },
     watch: {
-    '$route.params.bag_number'(val) {
+        '$route.params.bag_number'(val) {
             if (val) {
-            const decoded = decodeURIComponent(val);
-            this.bag_number = decoded;                 // '~'
-            this.bagNumber  = decoded.replace(/~/g, '/'); // '/'
-            this.hasBagNumber = true;
-            this.getBag();
+                const decoded = decodeURIComponent(val);
+                this.bag_number = decoded;
+                this.bagNumber  = decoded;
+                this.hasBagNumber = true;
+                this.getBag();
             } else {
-            this.resetState();
+                this.resetState();
             }
         }
     }
