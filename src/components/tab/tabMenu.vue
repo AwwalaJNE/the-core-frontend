@@ -9,14 +9,14 @@
         </button>
 
         <div class="tab-container" ref="tabContainer" @scroll="updateScrollButtons">
-            <router-link
-                v-for="(item, key) in listenTab"
-                :key="key"
-                :to="item.url"
-                :class="['tab', { active: isActive === item.url }]"
-                @click.native="handleSelect(item.url)"
+           <router-link
+            v-for="(item, key) in listenTab"
+            :key="key"
+            :to="item.url"
+            :class="['tab', { active: isActiveUrl(item.url) }]"
+            @click.native="handleSelect(item.url)"
             >
-                <i :class="`${item.icon}`" /> {{ item.label }}
+            {{ item.label }}
             </router-link>
         </div>
         
@@ -54,8 +54,15 @@ export default {
         }
     },
     methods: {
-        handleSelect(key) {
-            this.isActive = key;
+        handleSelect(url) {
+            this.isActive = url
+        },
+        isActiveUrl(baseUrl) {
+            // ambil path sekarang
+            const current = this.$route.path
+
+            // cocokkan baseUrl (dengan atau tanpa id di belakang)
+            return current === baseUrl || current.startsWith(baseUrl + '/')
         },
         updateScrollButtons() {
             const el = this.$refs.tabContainer;
