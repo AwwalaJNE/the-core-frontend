@@ -476,6 +476,11 @@ export default {
 
             this.form = formWithoutId;
 
+            if (this.form.etd > this.form.eta) {
+                this.openNotification("warning", "Wrong Input in ETA/ETD field", "ETA must more than ETD");
+                return
+            }
+
             this.handleSubmitData();
         },
         updateValue(key, val, info){
