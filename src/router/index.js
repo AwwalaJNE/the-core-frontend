@@ -1644,7 +1644,7 @@ const routes = [
             meta: {
               icon: "bx bx-notepad",
               requiresAuth: true,
-              breadCrumb: "Receiving CONNOTE",
+              breadCrumb: "Receiving Connote",
               breadCrumbCode: "Connote",
               resource_type: resourceLookup["RECEIVING"].resource_type,
               resource_code: resourceLookup["RECEIVING"].resource_code,
