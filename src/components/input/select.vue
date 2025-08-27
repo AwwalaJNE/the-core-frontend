@@ -28,7 +28,7 @@
                         
                     </vs-select> -->
                     <template v-if="listenHiddenTitle == false">
-                      <span class="c-label">{{name}}</span>
+                        <span class="c-label">{{ name }}<span v-if="rules && rules.includes('required')">*</span></span>
                     </template>
                     
                     

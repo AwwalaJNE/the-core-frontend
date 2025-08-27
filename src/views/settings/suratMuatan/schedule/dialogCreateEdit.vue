@@ -24,7 +24,7 @@
         </template>
 
         <template v-slot:footer>
-            <vs-row justify="flex-end">
+            <vs-row justify="flex-end" style="margin-top: 2pc;">
                 <vs-col w="3">
                     <vs-button
                         block

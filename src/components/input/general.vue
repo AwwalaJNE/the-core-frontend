@@ -45,7 +45,7 @@
           <vs-input
             :class="`mt-input`"
             :type="'text'"
-            :label="name"
+            :label="computedLabel"
             :label-placeholder="name"
             v-currency
             v-model="value"
@@ -67,7 +67,7 @@
           <vs-input
             :class="`mt-input`"
             :type="listenTypeInput.includes('date') == true ? 'date' : 'text'"
-            :label="name"
+            :label="computedLabel"
             :label-placeholder="name"
             v-model="value"
             format="yyyy-mm-dd HH:i"
@@ -94,7 +94,7 @@
                   : listenTypeInput
                 : 'text'
             "
-            :label="name"
+            :label="computedLabel"
             placeholder="0"
             v-model="value"
             :autofocus="isFocusToInput"
@@ -123,7 +123,7 @@
                   : listenTypeInput
                 : 'text'
             "
-            :label="name"
+            :label="computedLabel"
             :label-placeholder="name"
             v-model="value"
             :autofocus="isFocusToInput"
@@ -151,7 +151,7 @@
                     : listenTypeInput
                   : 'text'
               "
-              :label="name"
+              :label="computedLabel"
               :label-placeholder="name"
               v-model="value"
               :autofocus="isFocusToInput"
@@ -178,7 +178,7 @@
                   : listenTypeInput
                 : 'text'
             "
-            :label="name"
+            :label="computedLabel"
             :label-placeholder="name"
             :placeholder="placeholder"
             :border="isBorder"
@@ -290,6 +290,11 @@ export default {
     listenPlaceholder() {
       return this.placeholder;
     },
+    computedLabel() {
+      return this.rules && this.rules.includes('required')
+        ? `${this.name} *`
+        : this.name
+    }
   },
   watch: {
     valueData: function(val) {

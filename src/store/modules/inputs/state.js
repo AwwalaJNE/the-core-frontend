@@ -2788,17 +2788,19 @@ export default {
       arrData: [],
       valueData: null,
       value: '',
-      isDisabled: false
+      isDisabled: false,
+      width: 6
     },
     vehicle_id: {
       label: "Vehicle",
       key: "vehicle_id",
       rule:"required",
-      typeInput: "select",
+      typeInput: "autocomplete",
       typeData: "String",
+      arrData: [],
       valueData: null,
       value: '',
-      arrData: [],
+      width: 6
     },
     shipment_number: {
       label: "Shipment Number",
@@ -2807,7 +2809,18 @@ export default {
       typeInput: "text",
       typeData: "String",
       valueData: null,
-      value: ''
+      value: '',
+      width: 6
+    },
+    registration_number: {
+      label: "Registration Number",
+      key: "registration_number",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: 6
     },
     origin_name: {
       label: "Origin Name",
@@ -2817,27 +2830,27 @@ export default {
       typeData: "String",
       valueData: null,
       value: '',
-      width: '4'
+      width: 6
     },
-     origin_identifier: {
-      label: "Origin Identifier",
-      key: "origin_identifier",
-      rule: "required",
-      typeInput: "text",
-      typeData: "String",
-      valueData: null,
-      value: '',
-      width: '4'
-    },
+    //  origin_identifier: {
+    //   label: "Origin Identifier",
+    //   key: "origin_identifier",
+    //   rule: "required",
+    //   typeInput: "text",
+    //   typeData: "String",
+    //   valueData: null,
+    //   value: '',
+    //   width: '4'
+    // },
      origin_point: {
       label: "Origin Point",
       key: "origin_point",
-      rule: "required",
+      rule: "",
       typeInput: "text",
       typeData: "String",
       valueData: null,
       value: '',
-      width: '4'
+      width: 6
     },
     destination_name: {
       label: "Destination Name",
@@ -2847,27 +2860,27 @@ export default {
       typeData: "String",
       valueData: null,
       value: '',
-      width: '4'
+      width: 6
     },
-    destination_identifier: {
-      label: "Destination Identifier",
-      key: "destination_identifier",
-      rule: "required",
-      typeInput: "text",
-      typeData: "String",
-      valueData: null,
-      value: '',
-      width: '4'
-    },
+    // destination_identifier: {
+    //   label: "Destination Identifier",
+    //   key: "destination_identifier",
+    //   rule: "required",
+    //   typeInput: "text",
+    //   typeData: "String",
+    //   valueData: null,
+    //   value: '',
+    //   width: '4'
+    // },
     destination_point: {
       label: "Destination Point",
       key: "destination_point",
-      rule: "required",
+      rule: "",
       typeInput: "text",
       typeData: "String",
       valueData: null,
       value: '',
-      width: '4'
+      width: 6
     },
     etd: {
       label: "ETD",
@@ -2937,24 +2950,15 @@ export default {
         }
       ],
     },
-    vehicle_information: {
-      label: "Vehicle Information",
-      key: "vehicle_information",
-      rule: "required",
-      typeInput: "text",
-      typeData: "String",
-      valueData: null,
-      value: '',
-    },
-    registration_number: {
-      label: "Registration Number",
-      key: "registration_number",
-      rule: "required",
-      typeInput: "text",
-      typeData: "String",
-      valueData: null,
-      value: '',
-    },
+    // vehicle_information: {
+    //   label: "Vehicle Information",
+    //   key: "vehicle_information",
+    //   rule: "required",
+    //   typeInput: "text",
+    //   typeData: "String",
+    //   valueData: null,
+    //   value: '',
+    // },
   },
 
   sync_surat_muatan: {
