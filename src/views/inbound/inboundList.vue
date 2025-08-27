@@ -433,21 +433,56 @@ export default {
           key: "status",
           width: "xxs",
         },
-        {
-          label: "Bag Received",
-          key: "total_received",
-          width: "xxxs",
-        },
-        {
-          label: "Bag Outstanding",
-          key: "total_outstanding",
-          width: "xxxs",
-        },
-        {
-          label: "Total Bag",
-          key: "total_item",
-          width: "xxxs",
-        },
+        ...(!["Receiving Connote", "Receiving Bag", "RCVB"].includes(this.listenBreadcrumbTitle)
+          ? [
+              {
+                label: "Bag Received",
+                key: "total_received",
+                width: "xxxs",
+              },
+              {
+                label: "Bag Outstanding",
+                key: "total_outstanding",
+                width: "xxxs",
+              },
+              {
+                label: "Total Bag",
+                key: "total_item",
+                width: "xxxs",
+              },
+              {
+                label: "IM Numbers",
+                key: "im_numbers",
+                width: "xxxs",
+              },
+              {
+                label: "Flight Number",
+                key: "flight_number",
+                width: "xxxs",
+              },
+              {
+                label: "Vehicle",
+                key: "vehicle",
+                width: "xxxs",
+              },
+              {
+                label: "Driver",
+                key: "carrier_employee_name",
+                width: "auto",
+              },
+            ]
+          : []
+        ),
+        ...(this.listenBreadcrumbTitle === "Receiving Connote"
+          ? [
+              {
+                label: "Receiving Number",
+                key: "receiving_number",
+                width: "xxs",
+              },
+            ]
+          : []
+        ),
         // {
         //   label: "Total Bag",
         //   key: "total_bag",
@@ -458,26 +493,6 @@ export default {
         //   key: "total_koli",
         //   width: "xxxs",
         // },
-        {
-          label: "IM Numbers",
-          key: "im_numbers",
-          width: "xxxs",
-        },
-        {
-          label: "Receiving Number",
-          key: "receiving_number",
-          width: "xxs",
-        },
-        {
-          label: "Flight Number",
-          key: "flight_number",
-          width: "xxxs",
-        },
-        {
-          label: "Vehicle",
-          key: "vehicle",
-          width: "xxxs",
-        },
         {
           label: "Branch Origin",
           key: "inbound_branch",
@@ -518,11 +533,6 @@ export default {
           //   key: "live_actual_weight",
           //   width: "auto"
           // },
-        {
-          label: "Driver",
-          key: "carrier_employee_name",
-          width: "auto",
-        },
         {
           label: "Created ",
           key: "created_orion",
