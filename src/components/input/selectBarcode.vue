@@ -6,7 +6,7 @@
                 <template #inputan="props">
                     <!-- Title -->
                     <template v-if="!listenHiddenTitle">
-                        <span class="c-label">{{ name }}</span>
+                        <span class="c-label">{{ name }}<span v-if="rules && rules.includes('required')"> *</span></span>
                     </template>
 
                     <div style="display: flex; width: 100%; gap: 1rem;">

@@ -3,7 +3,7 @@
         <template v-slot:inputan="props">
             <div :class="`custom_datePicker ${props.err !== undefined && props.err !== '' ?'danger':''}`">
                 <template v-if="listenName">
-                    <span class="c-label">{{ name }}<span v-if="rules && rules.includes('required')">*</span></span>
+                    <span class="c-label">{{ name }}<span v-if="rules && rules.includes('required')"> *</span></span>
                 </template>
                 <template>
                     <el-date-picker
