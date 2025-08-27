@@ -227,7 +227,7 @@ export default {
                     case 4:
                         this.navItem = [
                             {
-                                label: "NEW (MANUAL)",
+                                label: "NEW",
                                 key: "k-NEW-MANUAL"
                             },
                         ];

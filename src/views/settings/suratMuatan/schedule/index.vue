@@ -147,11 +147,11 @@ export default {
                     key: "eta",
                     width: "auto",
                 },
-                {
-                    label: "Vehicle Info",
-                    key: "vehicle_information",
-                    width: "auto",
-                },
+                // {
+                //     label: "Vehicle Info",
+                //     key: "vehicle_information",
+                //     width: "auto",
+                // },
                 {
                     label: "Reg No",
                     key: "registration_number",
@@ -241,14 +241,10 @@ export default {
         },
     },
     methods: {
-        searchValueHandler(val) {
-            this.searchValue = val;
-            this.refresh();
-        },
         refresh(){
             this.getTableData(this.pagination.limit, this.pagination.page, this.searchValue, this.dateRange[0], this.dateRange[1], this.searchBy)
         },
-       updateValue(key, val, info){
+        updateValue(key, val, info){
             switch(key) {
                 case "filter_status":
                     this.filterVehicleTypeBy = val;
@@ -323,11 +319,9 @@ export default {
             switch (ref) {
                 case 'dialog_edit':
                     this.dialogEditActive = false;
-                    this.refresh();
                     break;
                 case 'dialog_remove':
                     this.dialogRemoveActive = false;
-                    this.refresh();
                     break;
                 default:
                     break;
