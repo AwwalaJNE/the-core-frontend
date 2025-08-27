@@ -121,6 +121,10 @@ export default {
                     label: "Vehicle Mode Name",
                     value: "vehicle mode name",
                 },
+                {
+                    label: "Created Date",
+                    value: "created_at",
+                },
             ],
             dateParams: [
               {
