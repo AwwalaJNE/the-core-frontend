@@ -98,6 +98,11 @@ export default {
                     key: "vehicle_mode_name",
                     width: "sm"
                 },
+                {
+                    label: "Created Date",
+                    key: "created_at",
+                    width: "xs"
+                },
             ],
             loading: false,
             dataItem: {},
@@ -120,11 +125,7 @@ export default {
                 {
                     label: "Vehicle Mode Name",
                     value: "vehicle mode name",
-                },
-                {
-                    label: "Created Date",
-                    value: "created_at",
-                },
+                }
             ],
             dateParams: [
               {
