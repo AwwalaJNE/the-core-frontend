@@ -1025,6 +1025,7 @@ export default {
             this.dataTable = [];
             
             this.is_sm_edit = false;
+            this.manifest_method_id = 0;
         },
         updateValue() {
             this.$refs.formSuratMuatanController.handleSubmit();
