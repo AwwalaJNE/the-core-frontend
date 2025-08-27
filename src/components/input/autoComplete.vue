@@ -2,7 +2,7 @@
     <inputan :name="name" :rules="rules">
         <template v-slot:inputan="props">
             <div style="text-align:left;">
-                <span class="c-label">{{ name }}<span v-if="rules && rules.includes('required')">*</span></span>
+                <span class="c-label">{{ name }}<span v-if="rules && rules.includes('required')"> *</span></span>
                 <el-autocomplete
                     class="inline-input"
                     v-model="value"

@@ -23,7 +23,7 @@ export default {
   },
   user: {
     user_login: {
-      label: "User login*",
+      label: "User login",
       key: "user_login",
       rule: "required",
       typeInput: "text",
@@ -32,7 +32,7 @@ export default {
       value: ''
     },
     user_nik: {
-      label: "User NIK*",
+      label: "User NIK",
       key: "user_nik",
       rule: "required",
       typeInput: "text",
@@ -41,7 +41,7 @@ export default {
       value: ''
     },
     user_name: {
-      label: "Name*",
+      label: "Name",
       key: "user_name",
       rule: "required",
       typeInput: "text",
@@ -50,7 +50,7 @@ export default {
       value: ''
     },
     user_email: {
-      label: "Email*",
+      label: "Email",
       key: "user_email",
       rule: "email|required",
       typeInput: "text|email",
@@ -68,7 +68,7 @@ export default {
       value: ''
     },
     user_node_id: {
-      label: "User Node*",
+      label: "User Node",
       key: "user_node_id",
       rule: "required",
       typeInput: "multipleSelector",
@@ -174,7 +174,7 @@ export default {
 
   role: {
     user_role_name: {
-      label: "Role*",
+      label: "Role",
       key: "user_role_name",
       rule: "required",
       typeInput: "text",
@@ -183,7 +183,7 @@ export default {
       value: ''
     },
     user_role_code: {
-      label: "Role code*",
+      label: "Role code",
       key: "user_role_code",
       rule: "required",
       typeInput: "text",
@@ -195,7 +195,7 @@ export default {
 
   geolocation_country: {
     geolocation_country_code: {
-      label: "Country code*",
+      label: "Country code",
       key: "geolocation_country_code",
       rule: "required",
       typeInput: "text",
@@ -204,7 +204,7 @@ export default {
       value: ''
     },
     geolocation_country_name: {
-      label: "Country name*",
+      label: "Country name",
       key: "geolocation_country_name",
       rule: "required",
       typeInput: "text",
@@ -213,7 +213,7 @@ export default {
       value: ''
     },
     tariff_currency_code: {
-      label: "Currency code*",
+      label: "Currency code",
       key: "tariff_currency_code",
       rule: "required",
       typeInput: "text",
@@ -235,7 +235,7 @@ export default {
 
   geolocation_province: {
     geolocation_country_id: {
-      label: "Country*",
+      label: "Country",
       key: "geolocation_country_id",
       rule: "required",
       typeInput: "select",
@@ -245,7 +245,7 @@ export default {
       value: ''
     },
     geolocation_province_time_zone: {
-      label: "Timezone*",
+      label: "Timezone",
       key: "geolocation_province_time_zone",
       rule: "required",
       typeInput: "select",
@@ -255,7 +255,7 @@ export default {
       value: ''
     },
     geolocation_province_name: {
-      label: "Province Name*",
+      label: "Province Name",
       key: "geolocation_province_name",
       rule: "required",
       typeInput: "text",
@@ -435,7 +435,7 @@ export default {
   },
   employee_type: {
     employee_type_name: {
-      label: "Employee Type Name*",
+      label: "Employee Type Name",
       key: "employee_type_name",
       rule: "required",
       typeInput: "text",
@@ -456,7 +456,7 @@ export default {
 
   geolocation_city: {
     geolocation_province_id: {
-      label: "Province*",
+      label: "Province",
       key: "geolocation_province_id",
       rule: "required",
       typeInput: "select",
@@ -466,7 +466,7 @@ export default {
       value: ''
     },
     geolocation_city_name: {
-      label: "City Name*",
+      label: "City Name",
       key: "geolocation_city_name",
       rule: "required",
       typeInput: "text",
@@ -487,7 +487,7 @@ export default {
 
   geolocation_district: {
     geolocation_city_id: {
-      label: "City*",
+      label: "City",
       key: "geolocation_city_id",
       rule: "required",
       typeInput: "select",
@@ -497,7 +497,7 @@ export default {
       value: ''
     },
     geolocation_district_name: {
-      label: "District Name*",
+      label: "District Name",
       key: "geolocation_district_name",
       rule: "required",
       typeInput: "text",
@@ -518,7 +518,7 @@ export default {
 
   geolocation_subdistrict: {
     geolocation_district_id: {
-      label: "District*",
+      label: "District",
       key: "geolocation_district_id",
       rule: "required",
       typeInput: "select",
@@ -528,7 +528,7 @@ export default {
       value: ''
     },
     geolocation_subdistrict_name: {
-      label: "Subdistrict Name*",
+      label: "Subdistrict Name",
       key: "geolocation_subdistrict_name",
       rule: "required",
       typeInput: "text",
@@ -537,7 +537,7 @@ export default {
       value: ''
     },
     geolocation_subdistrict_zip_code: {
-      label: "Zip code*",
+      label: "Zip code",
       key: "geolocation_subdistrict_zip_code",
       rule: "required",
       typeInput: "text",
@@ -546,7 +546,7 @@ export default {
       value: ''
     },
     geolocation_subdistrict_tarif_code: {
-      label: "Subdistrict tarif code*",
+      label: "Subdistrict tarif code",
       key: "geolocation_subdistrict_tarif_code",
       rule: "required",
       typeInput: "text",
@@ -555,7 +555,7 @@ export default {
       value: ''
     },
     geolocation_subdistrict_zona_wilayah: {
-      label: "Subdistrict zona wilayah*",
+      label: "Subdistrict zona wilayah",
       key: "geolocation_subdistrict_zona_wilayah",
       rule: "required",
       typeInput: "text",
@@ -564,7 +564,7 @@ export default {
       value: ''
     },
     geolocation_subdistrict_kode_routing: {
-      label: "Subdistrict kode routing*",
+      label: "Subdistrict kode routing",
       key: "geolocation_subdistrict_kode_routing",
       rule: "required",
       typeInput: "text",
@@ -586,7 +586,7 @@ export default {
 
   customer: {
     n: {
-      label: "node*",
+      label: "node",
       key: "n",
       rule: "required",
       typeInput: "autocomplete",
@@ -596,7 +596,7 @@ export default {
       value: ''
     },
     customer_name: {
-      label: "Customer name*",
+      label: "Customer name",
       key: "customer_name",
       rule: "required",
       typeInput: "text",
@@ -606,7 +606,7 @@ export default {
       placeholder: 'Masukan Nama Customer'
     },
     customer_code: {
-      label: "Customer code*",
+      label: "Customer code",
       key: "customer_code",
       rule: "required",
       typeInput: "text",
@@ -626,7 +626,7 @@ export default {
       placeholder: 'Masukan Tanggal Lahir'
     },
     customer_address: {
-      label: "Customer address*",
+      label: "Customer address",
       key: "customer_address",
       rule: "required",
       typeInput: "text",
@@ -636,7 +636,7 @@ export default {
       placeholder: 'Masukan alamat customer'
     },
     customer_subdistrict_id: {
-      label: "Customer subdistrict*",
+      label: "Customer subdistrict",
       key: "customer_subdistrict_id",
       rule: "required",
       typeInput: "select",
@@ -646,7 +646,7 @@ export default {
       value: ''
     },
     customer_email: {
-      label: "Customer email*",
+      label: "Customer email",
       key: "customer_email",
       rule: "required",
       typeInput: "text",
@@ -656,7 +656,7 @@ export default {
       placeholder: 'Masukan email customer'
     },
     customer_phone: {
-      label: "Customer phone*",
+      label: "Customer phone",
       key: "customer_phone",
       rule: "required",
       typeInput: "text",
@@ -666,7 +666,7 @@ export default {
       placeholder: 'Masukan nomor telepon customer'
     },
     customer_type_id: {
-      label: "Customer type*",
+      label: "Customer type",
       key: "customer_type_id",
       rule: "required",
       typeInput: "select",
@@ -676,7 +676,7 @@ export default {
       value: ''
     },
     customer_fax: {
-      label: "Customer fax*",
+      label: "Customer fax",
       key: "customer_fax",
       rule: "required",
       typeInput: "text",
@@ -686,7 +686,7 @@ export default {
       placeholder: 'Masukan nomor fax customer'
     },
     customer_identity_card_number: {
-      label: "Customer identity card number*",
+      label: "Customer identity card number",
       key: "customer_identity_card_number",
       rule: "required",
       typeInput: "text",
@@ -696,7 +696,7 @@ export default {
       placeholder: 'Masukan nomor kartu identitas customer'
     },
     customer_tax_number: {
-      label: "Customer tax number*",
+      label: "Customer tax number",
       key: "customer_tax_number",
       rule: "required",
       typeInput: "text",
@@ -706,7 +706,7 @@ export default {
       placeholder: 'Masukan tax number customer'
     },
     customer_tax_number_address: {
-      label: "Customer tax number address*",
+      label: "Customer tax number address",
       key: "customer_tax_number_address",
       rule: "required",
       typeInput: "text",
@@ -716,7 +716,7 @@ export default {
       placeholder: 'Masukan alamat nomor tax'
     },
     customer_commodity: {
-      label: "Customer commodity*",
+      label: "Customer commodity",
       key: "customer_commodity",
       rule: "required",
       typeInput: "text",
@@ -770,7 +770,7 @@ export default {
       placeholder: 'Masukan type alamat (rumah / kantor)'
     },
     customer_corporate_credit: {
-      titleLabel: "Customer corporate credit*",
+      titleLabel: "Customer corporate credit",
       label: "True|False",
       key: "customer_corporate_credit",
       rule: "required",
@@ -783,7 +783,7 @@ export default {
   },
   customer_type: {
     customer_type_name: {
-      label: "Customer Type Name*",
+      label: "Customer Type Name",
       key: "customer_type_name",
       rule: "required",
       typeInput: "text",
@@ -815,7 +815,7 @@ export default {
 
     },
     node_name: {
-      label: "Node Name*",
+      label: "Node Name",
       key: "node_name",
       rule: "required",
       typeInput: "text",
@@ -834,7 +834,7 @@ export default {
       value: ''
     },
     node_type_id: {
-      label: "Node Type*",
+      label: "Node Type",
       key: "node_type_id",
       rule: "required",
       typeInput: "select",
@@ -844,7 +844,7 @@ export default {
       value: ''
     },
     node_phone: {
-      label: "Node Phone*",
+      label: "Node Phone",
       key: "node_phone",
       rule: "required",
       typeInput: "text",
@@ -853,7 +853,7 @@ export default {
       value: ''
     },
     node_npwp: {
-      label: "Node NPWP*",
+      label: "Node NPWP",
       key: "node_npwp",
       rule: "required",
       typeInput: "text",
@@ -862,7 +862,7 @@ export default {
       value: ''
     },
     node_code: {
-      label: "Node Code*",
+      label: "Node Code",
       key: "node_code",
       rule: "required",
       typeInput: "text",
@@ -871,7 +871,7 @@ export default {
       value: ''
     },
     regional_code: {
-      label: "Regional Code*",
+      label: "Regional Code",
       key: "regional_code",
       rule: "required",
       typeInput: "text",
@@ -880,7 +880,7 @@ export default {
       value: ''
     },
     branch_code: {
-      label: "Branch Code*",
+      label: "Branch Code",
       key: "branch_code",
       rule: "required",
       typeInput: "text",
@@ -889,7 +889,7 @@ export default {
       value: ''
     },
     origin_code: {
-      label: "Origin Code*",
+      label: "Origin Code",
       key: "origin_code",
       rule: "required",
       typeInput: "text",
@@ -898,7 +898,7 @@ export default {
       value: ''
     },
     sj_same_parent: {
-      label: "SJ Same Parent*",
+      label: "SJ Same Parent",
       key: "sj_same_parent",
       rule: "required",
       typeInput: "text",
@@ -907,7 +907,7 @@ export default {
       value: ''
     },
     sj_diff_parent: {
-      label: "SJ Diff Parent*",
+      label: "SJ Diff Parent",
       key: "sj_diff_parent",
       rule: "required",
       typeInput: "text",
@@ -941,7 +941,7 @@ export default {
       label: ''
     },
     node_lat: {
-      label: "Node latitude*",
+      label: "Node latitude",
       key: "node_lat",
       rule: "required",
       mapPicker: true,
@@ -951,7 +951,7 @@ export default {
       value: 0
     },
     node_lon: {
-      label: "Node longitude*",
+      label: "Node longitude",
       key: "node_lon",
       rule: "required",
       mapPicker: true,
@@ -971,7 +971,7 @@ export default {
       value: ''
     },
     default_node_link_id: {
-      label: "Default node link*",
+      label: "Default node link",
       key: "default_node_link_id",
       rule: "",
       typeInput: "select",
@@ -1077,7 +1077,7 @@ export default {
 
   node_type: {
     node_type_name: {
-      label: "Node type name*",
+      label: "Node type name",
       key: "node_type_name",
       rule: "required",
       typeInput: "text",
@@ -1109,7 +1109,7 @@ export default {
       value: ''
     },
     node_commision_service_code: {
-      label: "Node Commision Service Code*",
+      label: "Node Commision Service Code",
       key: "node_commision_service_code",
       rule: "required",
       typeInput: "text",
@@ -1119,7 +1119,7 @@ export default {
       value: ''
     },
     node_commision_type: {
-      label: "Node Commision Type*",
+      label: "Node Commision Type",
       key: "node_commision_type",
       rule: "required",
       typeInput: "text",
@@ -1129,7 +1129,7 @@ export default {
       value: ''
     },
     node_commision_daily: {
-      label: "Node Commision Daily*",
+      label: "Node Commision Daily",
       key: "node_commision_daily",
       rule: "required",
       typeInput: "text",
@@ -1139,7 +1139,7 @@ export default {
       value: ''
     },
     node_commision_1: {
-      label: "Node Commision 1*",
+      label: "Node Commision 1",
       key: "node_commision_1",
       rule: "required",
       typeInput: "text",
@@ -1149,7 +1149,7 @@ export default {
       value: ''
     },
     node_commision_amount_1: {
-      label: "Node Commision amount 1 (Rp)*",
+      label: "Node Commision amount 1 (Rp)",
       key: "node_commision_amount_1",
       rule: "required",
       typeInput: "text",
@@ -1159,7 +1159,7 @@ export default {
       value: 0
     },
     node_commision_2: {
-      label: "Node Commision 2*",
+      label: "Node Commision 2",
       key: "node_commision_2",
       rule: "required",
       typeInput: "text",
@@ -1169,7 +1169,7 @@ export default {
       value: ''
     },
     node_commision_amount_2: {
-      label: "Node Commision amount 2*",
+      label: "Node Commision amount 2",
       key: "node_commision_amount_2",
       rule: "required",
       typeInput: "text",
@@ -1179,7 +1179,7 @@ export default {
       value: 0
     },
     node_commision_3: {
-      label: "Node Commision 3*",
+      label: "Node Commision 3",
       key: "node_commision_3",
       rule: "required",
       typeInput: "text",
@@ -1189,7 +1189,7 @@ export default {
       value: ''
     },
     node_commision_amount_3: {
-      label: "Node Commision amount 3*",
+      label: "Node Commision amount 3",
       key: "node_commision_amount_3",
       rule: "required",
       typeInput: "text",
@@ -1199,7 +1199,7 @@ export default {
       value: 0
     },
     node_commision_4: {
-      label: "Node Commision 4*",
+      label: "Node Commision 4",
       key: "node_commision_4",
       rule: "required",
       typeInput: "text",
@@ -1209,7 +1209,7 @@ export default {
       value: ''
     },
     node_commision_amount_4: {
-      label: "Node Commision amount 4*",
+      label: "Node Commision amount 4",
       key: "node_commision_amount_4",
       rule: "required",
       typeInput: "text",
@@ -1219,7 +1219,7 @@ export default {
       value: 0
     },
     node_commision_5: {
-      label: "Node Commision 5*",
+      label: "Node Commision 5",
       key: "node_commision_5",
       rule: "required",
       typeInput: "text",
@@ -1229,7 +1229,7 @@ export default {
       value: ''
     },
     node_commision_amount_5: {
-      label: "Node Commision amount 5*",
+      label: "Node Commision amount 5",
       key: "node_commision_amount_5",
       rule: "required",
       typeInput: "text",
@@ -1239,7 +1239,7 @@ export default {
       value: 0
     },
     node_commision_6: {
-      label: "Node Commision 6*",
+      label: "Node Commision 6",
       key: "node_commision_6",
       rule: "required",
       typeInput: "text",
@@ -1249,7 +1249,7 @@ export default {
       value: ''
     },
     node_commision_amount_6: {
-      label: "Node Commision amount 6*",
+      label: "Node Commision amount 6",
       key: "node_commision_amount_6",
       rule: "required",
       typeInput: "text",
@@ -1259,7 +1259,7 @@ export default {
       value: 0
     },
     node_commision_7: {
-      label: "Node Commision 7*",
+      label: "Node Commision 7",
       key: "node_commision_7",
       rule: "required",
       typeInput: "text",
@@ -1269,7 +1269,7 @@ export default {
       value: ''
     },
     node_commision_amount_7: {
-      label: "Node Commision amount 7*",
+      label: "Node Commision amount 7",
       key: "node_commision_amount_7",
       rule: "required",
       typeInput: "text",
@@ -1279,7 +1279,7 @@ export default {
       value: 0
     },
     node_commision_8: {
-      label: "Node Commision 8*",
+      label: "Node Commision 8",
       key: "node_commision_8",
       rule: "required",
       typeInput: "text",
@@ -1289,7 +1289,7 @@ export default {
       value: ''
     },
     node_commision_amount_8: {
-      label: "Node Commision amount 8*",
+      label: "Node Commision amount 8",
       key: "node_commision_amount_8",
       rule: "required",
       typeInput: "text",
@@ -1299,7 +1299,7 @@ export default {
       value: 0
     },
     node_commision_9: {
-      label: "Node Commision 9*",
+      label: "Node Commision 9",
       key: "node_commision_9",
       rule: "required",
       typeInput: "text",
@@ -1309,7 +1309,7 @@ export default {
       value: ''
     },
     node_commision_amount_9: {
-      label: "Node Commision amount 9*",
+      label: "Node Commision amount 9",
       key: "node_commision_amount_9",
       rule: "required",
       typeInput: "text",
@@ -1332,7 +1332,7 @@ export default {
       value: ''
     },
     node_alternate_address_name: {
-      label: "Node alternate address name*",
+      label: "Node alternate address name",
       key: "node_alternate_address_name",
       rule: "required",
       typeInput: "text",
@@ -1341,7 +1341,7 @@ export default {
       value: ''
     },
     node_alternate_address_address: {
-      label: "Node alternate address address*",
+      label: "Node alternate address address",
       key: "node_alternate_address_address",
       rule: "required",
       typeInput: "text",
@@ -1350,7 +1350,7 @@ export default {
       value: ''
     },
     node_alternate_address_subdistrict_id: {
-      label: "Node alternate address subdistrict*",
+      label: "Node alternate address subdistrict",
       key: "node_alternate_address_subdistrict_id",
       rule: "required",
       typeInput: "autocomplete",
@@ -1365,7 +1365,7 @@ export default {
       typeInput: "mapPicker",
     },
     node_alternate_address_latitude: {
-      label: "Node alternate address latitude*",
+      label: "Node alternate address latitude",
       key: "node_alternate_address_latitude",
       rule: "required",
       mapPicker: true,
@@ -1375,7 +1375,7 @@ export default {
       value: 0
     },
     node_alternate_address_longitude: {
-      label: "Node alternate address longitude*",
+      label: "Node alternate address longitude",
       key: "node_alternate_address_longitude",
       rule: "required",
       mapPicker: true,
@@ -1385,7 +1385,7 @@ export default {
       value: 0
     },
     node_alternate_address_phone: {
-      label: "Node_alternate_address_phone*",
+      label: "Node_alternate_address_phone",
       key: "node_alternate_address_phone",
       rule: "required",
       typeInput: "text",
@@ -1501,7 +1501,7 @@ export default {
       value: '',
     },
     group_name: {
-      label: "Group Name*",
+      label: "Group Name",
       key: "group_name",
       rule: "required",
       typeInput: "text",
@@ -1510,7 +1510,7 @@ export default {
       value: '',
     },
     start_date: {
-      label: "Start Date*",
+      label: "Start Date",
       key: "start_date",
       rule: "required",
       typeInput: "date",
@@ -1521,7 +1521,7 @@ export default {
       value: ''
     },
     end_date: {
-      label: "End Date*",
+      label: "End Date",
       key: "end_date",
       rule: "required",
       typeInput: "date",
@@ -1532,7 +1532,7 @@ export default {
       value: ''
     },
     origin: {
-      label: "Origin*",
+      label: "Origin",
       key: "origin",
       rule: "required",
       typeInput: "autocomplete1",
@@ -1542,7 +1542,7 @@ export default {
       value: ''
     },
     destination: {
-      label: "Destination*",
+      label: "Destination",
       key: "destination",
       rule: "required",
       typeInput: "autocomplete2",
@@ -1552,7 +1552,7 @@ export default {
       value: ''
     },
     service_code: {
-      label: "Service*",
+      label: "Service",
       key: "service_code",
       rule: "required",
       typeInput: "select",
@@ -1628,7 +1628,7 @@ export default {
       value: '',
     },
     group_name: {
-      label: "Group Name*",
+      label: "Group Name",
       key: "group_name",
       rule: "required",
       typeInput: "text",
@@ -1637,7 +1637,7 @@ export default {
       value: '',
     },
     start_date: {
-      label: "Start Date*",
+      label: "Start Date",
       key: "start_date",
       rule: "required",
       typeInput: "date",
@@ -1648,7 +1648,7 @@ export default {
       value: ''
     },
     end_date: {
-      label: "End Date*",
+      label: "End Date",
       key: "end_date",
       rule: "required",
       typeInput: "date",
@@ -1659,7 +1659,7 @@ export default {
       value: ''
     },
     origin: {
-      label: "Origin*",
+      label: "Origin",
       key: "origin",
       rule: "required",
       typeInput: "autocomplete1",
@@ -1669,7 +1669,7 @@ export default {
       value: ''
     },
     destination: {
-      label: "Destination*",
+      label: "Destination",
       key: "destination",
       rule: "required",
       typeInput: "autocomplete2",
@@ -1679,7 +1679,7 @@ export default {
       value: ''
     },
     service_code: {
-      label: "Service*",
+      label: "Service",
       key: "service_code",
       rule: "required",
       typeInput: "select",
@@ -1709,7 +1709,7 @@ export default {
       value: ''
     },
     // node_code: {
-    //   label: "Node Code*",
+    //   label: "Node Code",
     //   key: "node_code",
     //   rule: "required",
     //   typeInput: "autocomplete",
@@ -1720,7 +1720,7 @@ export default {
     //   value: ''
     // },
     previous_activity: {
-      label: "Current Activity*",
+      label: "Current Activity",
       key: "previous_activity",
       rule: "required",
       typeInput: "selectallowcreate",
@@ -1730,7 +1730,7 @@ export default {
       value: ''
     },
     next_activity: {
-      label: "Next Activity*",
+      label: "Next Activity",
       key: "next_activity",
       rule: "required",
       typeInput: "selectallowcreate",
@@ -1786,7 +1786,7 @@ export default {
       value: '',
     },
     group_name: {
-      label: "Group Name*",
+      label: "Group Name",
       key: "group_name",
       rule: "required",
       typeInput: "text",
@@ -1795,7 +1795,7 @@ export default {
       value: '',
     },
     start_date: {
-      label: "Start Date*",
+      label: "Start Date",
       key: "start_date",
       rule: "required",
       typeInput: "date",
@@ -1806,7 +1806,7 @@ export default {
       value: ''
     },
     end_date: {
-      label: "End Date*",
+      label: "End Date",
       key: "end_date",
       rule: "required",
       typeInput: "date",
@@ -1817,7 +1817,7 @@ export default {
       value: ''
     },
     type: {
-      label: "Type*",
+      label: "Type",
       key: "type",
       rule: "required",
       typeInput: "select",
@@ -1827,7 +1827,7 @@ export default {
       value: ''
     },
     node_origin: {
-      label: "Node Origin*",
+      label: "Node Origin",
       key: "node_origin",
       rule: "required",
       typeInput: "autocomplete1",
@@ -1837,7 +1837,7 @@ export default {
       value: ''
     },
     node_destination: {
-      label: "Node Destination*",
+      label: "Node Destination",
       key: "node_destination",
       rule: "required",
       typeInput: "autocomplete2",
@@ -1893,7 +1893,7 @@ export default {
       value: '',
     },
     group_name: {
-      label: "Group Name*",
+      label: "Group Name",
       key: "group_name",
       rule: "required",
       typeInput: "text",
@@ -1902,7 +1902,7 @@ export default {
       value: '',
     },
     start_date: {
-      label: "Start Date*",
+      label: "Start Date",
       key: "start_date",
       rule: "required",
       typeInput: "date",
@@ -1913,7 +1913,7 @@ export default {
       value: ''
     },
     end_date: {
-      label: "End Date*",
+      label: "End Date",
       key: "end_date",
       rule: "required",
       typeInput: "date",
@@ -1924,7 +1924,7 @@ export default {
       value: ''
     },
     origin: {
-      label: "Origin*",
+      label: "Origin",
       key: "origin",
       rule: "required",
       typeInput: "autocomplete3",
@@ -1934,7 +1934,7 @@ export default {
       value: ''
     },
     type: {
-      label: "Type*",
+      label: "Type",
       key: "type",
       rule: "required",
       typeInput: "select",
@@ -1944,7 +1944,7 @@ export default {
       value: ''
     },
     node_origin: {
-      label: "Node Origin*",
+      label: "Node Origin",
       key: "node_origin",
       rule: "required",
       typeInput: "autocomplete1",
@@ -1954,7 +1954,7 @@ export default {
       value: ''
     },
     node_destination: {
-      label: "Node Destination*",
+      label: "Node Destination",
       key: "node_destination",
       rule: "required",
       typeInput: "autocomplete2",
@@ -1964,7 +1964,7 @@ export default {
       value: ''
     },
     delivery_zone: {
-      label: "Delivery Zone*",
+      label: "Delivery Zone",
       key: "delivery_zone",
       rule: "required",
       typeInput: "text",
@@ -2018,7 +2018,7 @@ export default {
       value: '',
     },
     group_name: {
-      label: "Group Name*",
+      label: "Group Name",
       key: "group_name",
       rule: "required",
       typeInput: "text",
@@ -2027,7 +2027,7 @@ export default {
       value: '',
     },
     start_date: {
-      label: "Start Date*",
+      label: "Start Date",
       key: "start_date",
       rule: "required",
       typeInput: "date",
@@ -2038,7 +2038,7 @@ export default {
       value: ''
     },
     end_date: {
-      label: "End Date*",
+      label: "End Date",
       key: "end_date",
       rule: "required",
       typeInput: "date",
@@ -2049,7 +2049,7 @@ export default {
       value: ''
     },
     bag_type: {
-      label: "Bag Type*",
+      label: "Bag Type",
       key: "bag_type",
       rule: "required",
       typeInput: "select",
@@ -2059,7 +2059,7 @@ export default {
       value: ''
     },
     reference_entity: {
-      label: "Reference Entity*",
+      label: "Reference Entity",
       key: "reference_entity",
       rule: "required",
       typeInput: "select",
@@ -2069,7 +2069,7 @@ export default {
       value: '',
     },
     reference_value: {
-      label: "Reference Value*",
+      label: "Reference Value",
       key: "reference_value",
       rule: "required",
       typeInput: "autocomplete",
@@ -2080,7 +2080,7 @@ export default {
       value: '',
     },
     sla_type: {
-      label: "SLA Type*",
+      label: "SLA Type",
       key: "sla_type",
       rule: "required",
       typeInput: "select",
@@ -2145,7 +2145,7 @@ export default {
       value: '',
     },
     percentage: {
-      label: "Percentage*",
+      label: "Percentage",
       key: "percentage",
       rule: "required|decimal|min_value:1",
       typeInput: "number",
@@ -2154,7 +2154,7 @@ export default {
       value: '',
     },
     minimum_count: {
-      label: "Minimum Connote*",
+      label: "Minimum Connote",
       key: "minimum_count",
       rule: "required|numeric|min_value:1",
       typeInput: "number",
@@ -2163,7 +2163,7 @@ export default {
       value: '',
     },
     reference: {
-      label: "Configure By*",
+      label: "Configure By",
       key: "reference",
       rule: "required",
       typeInput: "select",
@@ -2173,7 +2173,7 @@ export default {
       value: ''
     },
     node_id: {
-      label: "Node Name*",
+      label: "Node Name",
       key: "node_id",
       rule: "required",
       typeInput: "multipleSelector",
@@ -2196,7 +2196,7 @@ export default {
       value: '',
     },
     formula_type: {
-      label: "Formula Type*",
+      label: "Formula Type",
       key: "formula_type",
       rule: "required",
       typeInput: "select",
@@ -2206,7 +2206,7 @@ export default {
       value: ''
     },
     value: {
-      label: "Value*",
+      label: "Value",
       key: "value",
       rule: "required|numeric|min_value:1",
       typeInput: "text",
@@ -2215,7 +2215,7 @@ export default {
       value: '',
     },
     node_id: {
-      label: "Node Name*",
+      label: "Node Name",
       key: "node_id",
       rule: "required",
       typeInput: "multipleSelector",
@@ -2228,7 +2228,7 @@ export default {
 
   kpi_process_target: {
     reference_entity: {
-      label: "Reference Entity*",
+      label: "Reference Entity",
       key: "reference_entity",
       rule: "required",
       typeInput: "select",
@@ -2263,7 +2263,7 @@ export default {
       value: '',
     },
     reference_value: {
-      label: "Reference Value*",
+      label: "Reference Value",
       key: "reference_value",
       rule: "required",
       typeInput: "autocomplete",
@@ -2274,7 +2274,7 @@ export default {
       value: '',
     },
     process_name: {
-      label: "Process Name*",
+      label: "Process Name",
       key: "process_name",
       rule: "required",
       typeInput: "select",
@@ -2284,7 +2284,7 @@ export default {
       value: ''
     },
     value: {
-      label: "Value*",
+      label: "Value",
       key: "value",
       rule: "required|numeric|min_value:1",
       typeInput: "number",
@@ -2293,7 +2293,7 @@ export default {
       value: null
     },
     description: {
-      label: "Description*",
+      label: "Description",
       key: "description",
       rule: "required",
       typeInput: "text",
@@ -2302,7 +2302,7 @@ export default {
       value: '',
     },
     start_date: {
-      label: "Start Date*",
+      label: "Start Date",
       key: "start_date",
       rule: "required",
       typeInput: "date",
@@ -2313,7 +2313,7 @@ export default {
       value: ''
     },
     end_date: {
-      label: "End Date*",
+      label: "End Date",
       key: "end_date",
       rule: "required",
       typeInput: "date",
@@ -2327,7 +2327,7 @@ export default {
 
   destination_zip_code: {
     reference_entity: {
-      label: "Reference Entity*",
+      label: "Reference Entity",
       key: "reference_entity",
       rule: "required",
       typeInput: "select",
@@ -2358,7 +2358,7 @@ export default {
       value: '',
     },
     reference_value: {
-      label: "Reference Value*",
+      label: "Reference Value",
       key: "reference_value",
       rule: "required",
       typeInput: "autocomplete",
@@ -2369,7 +2369,7 @@ export default {
       value: '',
     },
     zip_code: {
-      label: "Zip Code*",
+      label: "Zip Code",
       key: "zip_code",
       rule: "required",
       typeInput: "multipleSelector",
@@ -2383,7 +2383,7 @@ export default {
 
   destination_sorting_lov: {
     reference_to: {
-      label: "Reference To*",
+      label: "Reference To",
       key: "reference_to",
       rule: "required",
       typeInput: "select",
@@ -2403,7 +2403,7 @@ export default {
       value: 'SORTING',
     },
     reference_entity: {
-      label: "Reference Entity*",
+      label: "Reference Entity",
       key: "reference_entity",
       rule: "required",
       typeInput: "select",
@@ -2431,7 +2431,7 @@ export default {
       value: 'NODE',
     },
     reference_value: {
-      label: "Reference Value*",
+      label: "Reference Value",
       key: "reference_value",
       rule: "required",
       typeInput: "autocomplete",
@@ -2442,7 +2442,7 @@ export default {
       value: '',
     },
     item_type: {
-      label: "Item Type*",
+      label: "Item Type",
       key: "item_type",
       rule: "required",
       typeInput: "select",
@@ -2461,7 +2461,7 @@ export default {
       value: '',
     },
     destination_node_code: {
-      label: "Destination Node Code*",
+      label: "Destination Node Code",
       key: "destination_node_code",
       rule: "required",
       typeInput: "multipleSelector",
@@ -2496,7 +2496,7 @@ export default {
 
   bag_weight: {
     bag_type: {
-      label: "Bag Type*",
+      label: "Bag Type",
       key: "bag_type",
       rule: "required",
       typeInput: "select",
@@ -2527,7 +2527,7 @@ export default {
       value: '',
     },
     routing_type: {
-      label: "Routing Type*",
+      label: "Routing Type",
       key: "routing_type",
       rule: "required",
       typeInput: "select",
@@ -2558,7 +2558,7 @@ export default {
       value: '',
     },
     service_type: {
-      label: "Service*",
+      label: "Service",
       key: "service_type",
       rule: "required",
       typeInput: "select",
@@ -2568,7 +2568,7 @@ export default {
       value: ''
     },
     destination: {
-      label: "Destination*",
+      label: "Destination",
       key: "destination",
       rule:"required",
       typeInput: "autocomplete",
@@ -2581,7 +2581,7 @@ export default {
 
   bag_limit: {
     bag_type: {
-      label: "Bag Type*",
+      label: "Bag Type",
       key: "bag_type",
       rule: "required",
       typeInput: "select",
@@ -2612,7 +2612,7 @@ export default {
       value: '',
     },
     reference_entity: {
-      label: "Reference Entity*",
+      label: "Reference Entity",
       key: "reference_entity",
       rule: "required",
       typeInput: "select",
@@ -2639,7 +2639,7 @@ export default {
       value: '',
     },
     reference_value: {
-      label: "Reference Value*",
+      label: "Reference Value",
       key: "reference_value",
       rule: "required",
       typeInput: "autocomplete",
@@ -2650,7 +2650,7 @@ export default {
       value: '',
     },
     limit: {
-      label: "Limit*",
+      label: "Limit",
       key: "limit",
       rule: "required|numeric|min_value:1",
       typeInput: "number",
@@ -2662,7 +2662,7 @@ export default {
 
   surat_muatan_stock: {
     manifest_number: {
-      label: "Surat Muatan*",
+      label: "Surat Muatan",
       key: "manifest_number",
       rule: "required",
       typeInput: "text",
@@ -2673,7 +2673,7 @@ export default {
       width: '4'
     },
     node_id_origin: {
-      label: "Origin*",
+      label: "Origin",
       key: "node_id_origin",
       rule:"required",
       typeInput: "autocomplete",
@@ -2684,7 +2684,7 @@ export default {
       width: '4'
     },
     node_id_destination: {
-      label: "Destination*",
+      label: "Destination",
       key: "node_id_destination",
       rule:"required",
       typeInput: "autocomplete",
@@ -2706,7 +2706,7 @@ export default {
       isDisabled: false,
     },
     etd_timezone: {
-      label: "ETD Timezone*",
+      label: "ETD Timezone",
       key: "etd_timezone",
       rule: "required",
       typeInput: "select",
@@ -2742,7 +2742,7 @@ export default {
       isDisabled: false,
     },
     eta_timezone: {
-      label: "ETA Timezone*",
+      label: "ETA Timezone",
       key: "eta_timezone",
       rule: "required",
       typeInput: "select",
@@ -3048,7 +3048,7 @@ export default {
   
   runsheet_limit: {
     reference_to: {
-      label: "Reference To*",
+      label: "Reference To",
       key: "reference_to",
       rule: "required",
       typeInput: "select",
@@ -3067,7 +3067,7 @@ export default {
       value: '',
     },
     reference_entity: {
-      label: "Reference Entity*",
+      label: "Reference Entity",
       key: "reference_entity",
       rule: "required",
       typeInput: "select",
@@ -3094,7 +3094,7 @@ export default {
       value: '',
     },
     reference_value: {
-      label: "Reference Value*",
+      label: "Reference Value",
       key: "reference_value",
       rule: "required",
       typeInput: "autocomplete",
@@ -3118,7 +3118,7 @@ export default {
 
   courier_delivery_area: {
     courier_id: {
-      label: "Courier*",
+      label: "Courier",
       key: "courier_id",
       rule: "required",
       typeInput: "select",
@@ -3129,7 +3129,7 @@ export default {
       value: '',
     },
     area_type: {
-      label: "Area Type*",
+      label: "Area Type",
       key: "area_type",
       rule: "required",
       typeInput: "select",
@@ -3156,7 +3156,7 @@ export default {
       value: '',
     },
     area_value: {
-      label: "Area Value*",
+      label: "Area Value",
       key: "area_value",
       rule: "required",
       typeInput: "search-preview",
@@ -3170,7 +3170,7 @@ export default {
 
   application_role: {
     app: {
-      label: "Application*",
+      label: "Application",
       key: "app",
       rule: "required",
       typeInput: "select",
@@ -3180,7 +3180,7 @@ export default {
       value: '',
     },
     app_role_name: {
-      label: "Role*",
+      label: "Role",
       key: "app_role_name",
       rule: "required",
       typeInput: "text",
@@ -3189,7 +3189,7 @@ export default {
       value: ''
     },
     app_role_code: {
-      label: "Role Code*",
+      label: "Role Code",
       key: "app_role_code",
       rule: "required",
       typeInput: "text",
@@ -3226,7 +3226,7 @@ export default {
     //   value: ''
     // },
     tariff_customer_code: {
-      label: "Tariff Customer Code*",
+      label: "Tariff Customer Code",
       key: "tariff_customer_code",
       rule: "",
       typeInput: "select",
@@ -3236,7 +3236,7 @@ export default {
       value: ''
     },
     tariff_origin: {
-      label: "Tariff origin*",
+      label: "Tariff origin",
       key: "tariff_origin",
       rule: "required",
       typeInput: "text",
@@ -3245,7 +3245,7 @@ export default {
       value: ''
     },
     tariff_destination: {
-      label: "Tariff destination*",
+      label: "Tariff destination",
       key: "tariff_destination",
       rule: "required",
       typeInput: "text",
@@ -3254,7 +3254,7 @@ export default {
       value: ''
     },
     tariff_start_date: {
-      label: "Tariff start date*",
+      label: "Tariff start date",
       key: "tariff_start_date",
       rule: "required",
       typeInput: "date",
@@ -3264,7 +3264,7 @@ export default {
       value: ''
     },
     tariff_expiry_date: {
-      label: "Tariff expiry date*",
+      label: "Tariff expiry date",
       key: "tariff_expiry_date",
       rule: "required",
       width: '6',
@@ -3274,7 +3274,7 @@ export default {
       value: ''
     },
     tariff_service_code: {
-      label: "Tariff service code*",
+      label: "Tariff service code",
       key: "tariff_service_code",
       rule: "required",
       typeInput: "text",
@@ -3283,7 +3283,7 @@ export default {
       value: ''
     },
     tariff_currency: {
-      label: "Tariff currency*",
+      label: "Tariff currency",
       key: "tariff_currency",
       rule: "required",
       typeInput: "text",
@@ -3292,7 +3292,7 @@ export default {
       value: ''
     },
     tariff_vehicle_mode_id: {
-      label: "Tariff vehicle mode*",
+      label: "Tariff vehicle mode",
       key: "tariff_vehicle_mode_id",
       rule: "required",
       typeInput: "select",
@@ -3302,7 +3302,7 @@ export default {
       value: ''
     },
     tariff_amount_1: {
-      label: "Tariff amount 1 (Rp)*",
+      label: "Tariff amount 1 (Rp)",
       key: "tariff_amount_1",
       rule: "required",
       typeInput: "text",
@@ -3311,7 +3311,7 @@ export default {
       value: ''
     },
     tariff_weight_1: {
-      label: "Tariff weight 1*",
+      label: "Tariff weight 1",
       key: "tariff_weight_1",
       rule: "required",
       typeInput: "text",
@@ -3332,7 +3332,7 @@ export default {
 
   tariff_discount: {
     discount_tariff_origin: {
-      label: "Discount Tariff Origin*",
+      label: "Discount Tariff Origin",
       key: "discount_tariff_origin",
       rule: "required",
       typeInput: "text",
@@ -3342,7 +3342,7 @@ export default {
       value: ''
     },
     discount_tariff_destination: {
-      label: "Discount Tariff Destination*",
+      label: "Discount Tariff Destination",
       key: "discount_tariff_destination",
       rule: "required",
       typeInput: "text",
@@ -3352,7 +3352,7 @@ export default {
       value: ''
     },
     discount_tariff_service_code: {
-      label: "Discount Tariff service code*",
+      label: "Discount Tariff service code",
       key: "discount_tariff_service_code",
       rule: "required",
       typeInput: "text",
@@ -3362,7 +3362,7 @@ export default {
       value: ''
     },
     discount_tariff_persentase: {
-      label: "Daily Diskon (%)*",
+      label: "Daily Diskon (%)",
       key: "discount_tariff_persentase",
       rule: "required",
       typeInput: "text",
@@ -3372,7 +3372,7 @@ export default {
       value: ''
     },
     up_to_amount_1: {
-      label: "Up To Amount 1*",
+      label: "Up To Amount 1",
       key: "up_to_amount_1",
       rule: "required",
       typeInput: "text",
@@ -3382,7 +3382,7 @@ export default {
       value: ''
     },
     up_to_discount_1: {
-      label: "Up To Discount 1*",
+      label: "Up To Discount 1",
       key: "up_to_discount_1",
       rule: "required",
       typeInput: "text",
@@ -3456,7 +3456,7 @@ export default {
 
   tariff_special: {
     tariff_special_name: {
-      label: "Tariff special name*",
+      label: "Tariff special name",
       key: "tariff_special_name",
       rule: "required",
       typeInput: "text",
@@ -3465,7 +3465,7 @@ export default {
       value: ''
     },
     tariff_special_condition_service_code: {
-      label: "Tariff special condition service code*",
+      label: "Tariff special condition service code",
       key: "tariff_special_condition_service_code",
       rule: "required",
       typeInput: "text",
@@ -3474,7 +3474,7 @@ export default {
       value: ''
     },
     tariff_special_start_date: {
-      label: "Tariff special start date*",
+      label: "Tariff special start date",
       key: "tariff_special_start_date",
       rule: "required",
       typeInput: "date",
@@ -3483,7 +3483,7 @@ export default {
       value: ''
     },
     tariff_special_expiry_date: {
-      label: "Tariff special expiry date*",
+      label: "Tariff special expiry date",
       key: "tariff_special_expiry_date",
       rule: "required",
       typeInput: "date",
@@ -3492,7 +3492,7 @@ export default {
       value: ''
     },
     tariff_special_type: {
-      label: "Tariff special type*",
+      label: "Tariff special type",
       key: "tariff_special_type",
       rule: "required",
       typeInput: "text",
@@ -3501,7 +3501,7 @@ export default {
       value: ''
     },
     tariff_special_amount: {
-      label: "Tariff special amount*",
+      label: "Tariff special amount",
       key: "tariff_special_amount",
       rule: "required",
       typeInput: "text",
@@ -3716,7 +3716,7 @@ export default {
 
   surcharge: {
     surcharge_name: {
-      label: "Surcharge name*",
+      label: "Surcharge name",
       key: "surcharge_name",
       rule: "required",
       typeInput: "text",
@@ -3735,7 +3735,7 @@ export default {
       value: ''
     },
     surcharge_condition: {
-      label: "Surcharge condition*",
+      label: "Surcharge condition",
       key: "surcharge_condition",
       rule: "required",
       typeInput: "text",
@@ -3744,7 +3744,7 @@ export default {
       value: ''
     },
     surcharge_formula: {
-      label: "Surcharge formula*",
+      label: "Surcharge formula",
       key: "surcharge_formula",
       rule: "required",
       typeInput: "text",
@@ -3775,7 +3775,7 @@ export default {
 
   surcharge_type: {
     surcharge_type_name: {
-      label: "Surcharge type name*",
+      label: "Surcharge type name",
       key: "surcharge_type_name",
       rule: "required",
       typeInput: "text",
@@ -3796,7 +3796,7 @@ export default {
 
   vehicle: {
     vehicle_name: {
-      label: "Vehicle Name / Maskapai *",
+      label: "Vehicle Name / Maskapai ",
       key: "vehicle_name",
       rule: "required",
       typeInput: "text",
@@ -3805,7 +3805,7 @@ export default {
       value: ''
     },
     vehicle_police_no: {
-      label: "Vehicle No / Plate Number / Flight Number *",
+      label: "Vehicle No / Plate Number / Flight Number ",
       key: "vehicle_police_no",
       rule: "required",
       typeInput: "text",
@@ -3890,7 +3890,7 @@ export default {
 
   vehicle_mode: {
     vehicle_mode_name: {
-      label: "Vehicle mode name*",
+      label: "Vehicle mode name",
       key: "vehicle_mode_name",
       rule: "required",
       typeInput: "text",
@@ -3911,7 +3911,7 @@ export default {
 
   vehicle_type: {
     vehicle_type_name: {
-      label: "Vehicle type name*",
+      label: "Vehicle type name",
       key: "vehicle_type_name",
       rule: "required",
       typeInput: "text",
@@ -3957,7 +3957,7 @@ export default {
   //form pickup list
   pickup_list: {
     pickup_name: {
-      label: "Name*",
+      label: "Name",
       key: "pickup_name",
       rule: "required",
       typeInput: "text",
@@ -3976,7 +3976,7 @@ export default {
       value: ''
     },
     pickup_phone_number: {
-      label: "Phone*",
+      label: "Phone",
       key: "pickup_phone_number",
       rule: "required|phone",
       typeInput: "text",
@@ -3985,7 +3985,7 @@ export default {
       value: ''
     },
     pickup_address: {
-      label: "Address*",
+      label: "Address",
       key: "pickup_address",
       rule: "required",
       typeInput: "text",
@@ -4037,7 +4037,7 @@ export default {
       typeInput: "mapPicker",
     },
     pickup_latitude: {
-      label: "Latitude*",
+      label: "Latitude",
       key: "pickup_latitude",
       rule: "required|coordinate",
       mapPicker: true,
@@ -4047,7 +4047,7 @@ export default {
       value: 0
     },
     pickup_longitude: {
-      label: "Longitude*",
+      label: "Longitude",
       key: "pickup_longitude",
       rule: "required|coordinate",
       mapPicker: true,
@@ -4091,7 +4091,7 @@ export default {
       value: ''
     },
     pickup_schedule_name: {
-      label: "Name*",
+      label: "Name",
       key: "pickup_schedule_name",
       rule: "required",
       typeInput: "text",
@@ -4100,7 +4100,7 @@ export default {
       value: ''
     },
     pickup_schedule_phone_number: {
-      label: "Phone*",
+      label: "Phone",
       key: "pickup_schedule_phone_number",
       rule: "required|min:8",
       typeInput: "text",
@@ -4109,7 +4109,7 @@ export default {
       value: ''
     },
     pickup_schedule_address: {
-      label: "Address*",
+      label: "Address",
       key: "pickup_schedule_address",
       rule: "required",
       typeInput: "text",
@@ -4161,7 +4161,7 @@ export default {
       typeInput: "mapPicker",
     },
     pickup_schedule_latitude: {
-      label: "Latitude*",
+      label: "Latitude",
       key: "pickup_schedule_latitude",
       rule: "required|coordinate",
       mapPicker: true,
@@ -4171,7 +4171,7 @@ export default {
       value: 0
     },
     pickup_schedule_longitude: {
-      label: "Longitude*",
+      label: "Longitude",
       key: "pickup_schedule_longitude",
       rule: "required|coordinate",
       mapPicker: true,
@@ -4231,7 +4231,7 @@ export default {
   },
   surat_muatan_vehicle: {
     vehicle_id: {
-      label: "Vehicle*",
+      label: "Vehicle",
       key: "vehicle_id",
       rule:"required",
       typeInput: "autocomplete",
@@ -4276,7 +4276,7 @@ export default {
       width: "12"
     },
     origin_branch_code: {
-      label: "Origin*",
+      label: "Origin",
       key: "origin_branch_code",
       rule: "required",
       typeInput: "autocomplete",
@@ -4287,7 +4287,7 @@ export default {
       width: "12"
     },
     destination_branch_code: {
-      label: "Destination*",
+      label: "Destination",
       key: "destination_branch_code",
       rule:"required",
       typeInput: "autocomplete",
@@ -4527,7 +4527,7 @@ export default {
       value: 'rumah'
     },
     destination_name: {
-      label: "Nama Penerima*",
+      label: "Nama Penerima",
       key: "destination_name",
       rule: "required",
       typeInput: "text",
@@ -4536,7 +4536,7 @@ export default {
       value: ''
     },
     destination_phone: {
-      label: "Telepon Penerima*",
+      label: "Telepon Penerima",
       key: "destination_phone",
       rule: "min:8",
       typeInput: "text",
@@ -4563,7 +4563,7 @@ export default {
       value: ''
     },
     destination_onchange_address: {
-      label: "Provinsi / Kota / Kecamatan / Kelurahan / Kode Pos*",
+      label: "Provinsi / Kota / Kecamatan / Kelurahan / Kode Pos",
       key: "destination_onchange_address",
       rule: "required",
       typeInput: "text|onchange|location_selector",
@@ -4574,7 +4574,7 @@ export default {
       value: ''
     },
     destination_subdistrict_id: {
-      label: "Kode Pos*",
+      label: "Kode Pos",
       key: "destination_subdistrict_id",
       rule: "",
       typeInput: "hidden|disabled|dotted",
@@ -4593,7 +4593,7 @@ export default {
       value: ''
     },
     tariff_code: {
-      label: "Kode Tujuan*",
+      label: "Kode Tujuan",
       key: "tariff_code",
       rule: "required",
       width: '6',
@@ -4889,7 +4889,7 @@ export default {
   },
   packingkayu:{
     koli_number: {
-      label: "Koli Number*",
+      label: "Koli Number",
       key: "koli_number",
       rule: "required",
       isDisabled: true,
@@ -5149,7 +5149,7 @@ export default {
       value: '',
     },
     connote_service_code: {
-      label: "Service*",
+      label: "Service",
       key: "connote_service_code",
       rule: "",
       typeInput: "select",
@@ -5171,7 +5171,7 @@ export default {
 
   facility_code: {
     user_id: {
-      label: "User Name*",
+      label: "User Name",
       key: "user_id",
       rule: "required",
       typeInput: "multipleSelector",
@@ -5181,7 +5181,7 @@ export default {
       value: []
     },
     code: {
-      label: "Facility Code*",
+      label: "Facility Code",
       key: "code",
       rule: "required",
       typeInput: "text",
@@ -5190,7 +5190,7 @@ export default {
       value: '',
     },
     name: {
-      label: "Facility Name*",
+      label: "Facility Name",
       key: "name",
       rule: "required",
       typeInput: "text",
@@ -5199,7 +5199,7 @@ export default {
       value: ''
     },
     address: {
-      label: "Address*",
+      label: "Address",
       key: "address",
       rule: "required",
       typeInput: "text",
@@ -5248,7 +5248,7 @@ export default {
       value: 'rumah'
     },
     connote_shipper_name: {
-      label: "Nama Pengirim*",
+      label: "Nama Pengirim",
       key: "connote_shipper_name",
       rule: "required",
       typeInput: "text",
@@ -5259,7 +5259,7 @@ export default {
       value: ''
     },
     connote_receiver_name: {
-      label: "Nama Penerima*",
+      label: "Nama Penerima",
       key: "connote_receiver_name",
       rule: "required",
       typeInput: "text",
@@ -5270,7 +5270,7 @@ export default {
       value: ''
     },
     connote_shipper_phone_number: {
-      label: "Telepon Pengirim*",
+      label: "Telepon Pengirim",
       key: "connote_shipper_phone_number",
       rule: "min:8",
       typeInput: "text",
@@ -5281,7 +5281,7 @@ export default {
       value: ''
     },
     connote_receiver_phone_number: {
-      label: "Telepon Penerima*",
+      label: "Telepon Penerima",
       key: "connote_receiver_phone_number",
       rule: "min:8",
       typeInput: "text",
@@ -5336,7 +5336,7 @@ export default {
       value: ''
     },
     connote_shipper_administrative_address: {
-      label: "Provinsi / Kota / Kecamatan / Kelurahan / Kode Pos*",
+      label: "Provinsi / Kota / Kecamatan / Kelurahan / Kode Pos",
       key: "connote_shipper_administrative_address",
       rule: "required",
       // typeInput: "text|onchange|location_selector",
@@ -5350,7 +5350,7 @@ export default {
       value: ''
     },
     connote_receiver_administrative_address: {
-      label: "Provinsi / Kota / Kecamatan / Kelurahan / Kode Pos*",
+      label: "Provinsi / Kota / Kecamatan / Kelurahan / Kode Pos",
       key: "connote_receiver_administrative_address",
       rule: "required",
       // typeInput: "text|onchange|location_selector",
@@ -5375,7 +5375,7 @@ export default {
       value: ''
     },
     connote_shipper_tariff_code: {
-      label: "Kode Asal*",
+      label: "Kode Asal",
       key: "connote_shipper_tariff_code",
       typeInput: "hidden|disabled|dotted",
       isDisabled: true,
@@ -5397,7 +5397,7 @@ export default {
       value: ''
     },
     connote_receiver_tariff_code: {
-      label: "Kode Tujuan*",
+      label: "Kode Tujuan",
       key: "connote_receiver_tariff_code",
       rule: "required",
       isDisabled: false,
@@ -5453,7 +5453,7 @@ export default {
       value: '',
     },
     status: {
-      label: "Status*",
+      label: "Status",
       key: "status",
       rule: "required",
       typeInput: "select",
