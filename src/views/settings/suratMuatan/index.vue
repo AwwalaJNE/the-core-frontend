@@ -211,11 +211,11 @@ export default {
                 }
             ],
             searchPlaceholderShedule: "Search Vehicle",
-            searchBySchedule: "vehicle_name",
+            searchBySchedule: "vehicle",
             searchParamsShedule: [
                 {
                     label: "Vehicle",
-                    value: "vehicle_name",
+                    value: "vehicle",
                 },
                 {
                     label: "Origin",
