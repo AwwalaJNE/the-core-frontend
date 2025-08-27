@@ -208,17 +208,32 @@ export default {
 
                 this.getManifestVehicle();
             } else {
-                this.navItem = [
-                    {
-                        label: "NEW (AUTO)",
-                        key: "k-NEW-AUTO"
-                    },
-                    {
-                        label: "NEW (MANUAL)",
-                        key: "k-NEW-MANUAL"
-                    },
-                ];
-                this.navActive = "k-NEW-AUTO";
+                switch(this.listenManifestMethod){
+                    case 1:
+                        this.navItem = [
+                            {
+                                label: "NEW (AUTO)",
+                                key: "k-NEW-AUTO"
+                            },
+                            {
+                                label: "NEW (MANUAL)",
+                                key: "k-NEW-MANUAL"
+                            },
+                        ];
+                        this.navActive = "k-NEW-AUTO";
+                        break;
+                    case 2:
+                    case 3:
+                    case 4:
+                        this.navItem = [
+                            {
+                                label: "NEW (MANUAL)",
+                                key: "k-NEW-MANUAL"
+                            },
+                        ];
+                        this.navActive = "k-NEW-MANUAL";
+                        break;
+                }
             }
         },
         setDialogActive() {
@@ -282,10 +297,10 @@ export default {
                     };
                 } else if (this.navActive === 'k-NEW-MANUAL') {
                     data = {
-                        origin_vehicle:  form.origin_branch_code?.value,
-                        origin_vehicle_name:  form.origin_branch_code?.label,
-                        destination_vehicle: form.destination_branch_code?.value,
-                        destination_vehicle_name: form.destination_branch_code?.label,
+                        origin_vehicle:  form.origin_branch_code?.value || form?.origin_branch_code?.branch_code?.slice(0, 3),
+                        origin_vehicle_name:  form.origin_branch_code?.label || form?.origin_branch_code?.node_name,
+                        destination_vehicle: form.destination_branch_code?.value || form?.destination_branch_code?.branch_code?.slice(0, 3),
+                        destination_vehicle_name: form.destination_branch_code?.label || form?.destination_branch_code?.node_name,
                         vehicle_name: form.vehicle_id?.vehicle_name,
                         vehicle_id: form.vehicle_id?.vehicle_id,
                         vehicle_type_id: form.vehicle_id?.vehicle_type_id,
@@ -530,10 +545,22 @@ export default {
             if (info?.key) {
                 switch (info.key) {
                     case "origin_branch_code":
-                        this.autoComplateUrl = `${this.URL.airports_list}?n=${this.listenNodeId}`;
-                        break;
                     case "destination_branch_code":
-                        this.autoComplateUrl = `${this.URL.airports_list}?n=${this.listenNodeId}`;
+                        // TODO: ADJUST LATER IF NEEDED
+                        switch(this.listenManifestMethod){
+                            case 1:
+                                this.autoComplateUrl = `${this.URL.airports_list}?n=${this.listenNodeId}`;
+                                break;
+                            case 2:
+                                this.autoComplateUrl = `${this.URL.branch_list_v2}?n=${this.listenNodeId}`;
+                                break;
+                            case 3:
+                                this.autoComplateUrl = `${this.URL.branch_list_v2}?n=${this.listenNodeId}`;
+                                break;
+                            case 4:
+                                this.autoComplateUrl = `${this.URL.branch_list_v2}?n=${this.listenNodeId}`;
+                                break;
+                        }
                         break;
                     case "employee_driver_id":
                         this.autoComplateUrl = `${this.URL.employee}/driver?n=${this.listenNodeId}`;
@@ -551,7 +578,7 @@ export default {
                 const res = await axios.get(this.autoComplateUrl + `&s=${queryString}`, this.Helper.header());
                 const result = res.data.data || [];
                 const suggestions = result.map(item => {
-                    const value = item.label || item.vehicle_name || item.employee_name || '';
+                    const value = item.label || item.vehicle_name || item.employee_name || item.node_name || '';
                     return { value, data: item };
                 });
                 cb(suggestions);
