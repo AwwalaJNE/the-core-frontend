@@ -15,7 +15,7 @@
         </div>
       </div>
       <div style="display: flex;" class="buttonPage" v-if="!loading">
-        <vs-button v-if="listenUserRoleName !== 'HELPDESK'"  @click="openDialogTransit">
+        <vs-button v-if="listenUserRoleName !== 'HELPDESK'"  @click="openDialogTransit" :disabled="disabledAddTransit">
           <i class="bx bx-plus"></i> Add Transit
         </vs-button>
         <template v-if="listenUserRoleName === 'HELPDESK'">
@@ -415,6 +415,7 @@ export default {
       is_orion: false,
       toggle_approve: {},
       disabledApprove: false,
+      disabledAddTransit: false,
       activeDialogConfirmUnpproveBag: false,
       loadingConfirmUnpproveBag: false,
       dialogHelpdeskEditBag: false,
@@ -536,6 +537,7 @@ export default {
 
       this.employee = data.employee_name ? data.employee_name : ""
       this.disabledApprove = data.data.is_approve === 0 ? false : true
+      this.disabledAddTransit = data.data.is_approve === 0 ? false : true
       this.is_approve = data.data.is_approve === 0 ? false : true
       this.actual_weight = data.data.bag_actual_weight
 
