@@ -77,6 +77,29 @@
                                     </vs-col>
                                 </vs-row>
                             </template>
+                            <template v-else-if="navActive === 'k-SCHEDULE' && !loading">
+                                <vs-row>
+                                    <vs-col vs-align="center" w="6">
+                                        <select-search-by
+                                            key="searchBySchedule"
+                                            :border="true"
+                                            :isMultiple="false"
+                                            :selectedValue="searchBySchedule" 
+                                            :valueData="searchParamsShedule" 
+                                            @updateSearchBy="updateSearchBy" 
+                                        />
+                                    </vs-col>
+                                    <vs-col vs-align="center" w="6">
+                                        <search-input 
+                                            class="search-input"
+                                            key="searchInput"
+                                            ref="searchInput"  
+                                            :placeholder="searchPlaceholderShedule" 
+                                            @searchValue="searchValue"
+                                        />
+                                    </vs-col>
+                                </vs-row>
+                            </template>
                         </vs-col>
                     </vs-row>
                 </div>
@@ -91,7 +114,11 @@
                     </template>
                     <template v-else-if="navActive === 'k-SCHEDULE'">
                         <transition name="slide-fade">
-                            <schedule-table :ref="navActive" :query="tempSearch"/>
+                            <schedule-table 
+                                :ref="navActive" 
+                                :query="tempSearch"
+                                :searchBy="searchBySchedule"
+                            />
                         </transition>
                     </template>
             </div>
@@ -181,6 +208,30 @@ export default {
                 {
                     label: "Vehicle Mode",
                     value: "vehicle_mode"
+                }
+            ],
+            searchPlaceholderShedule: "Search Vehicle",
+            searchBySchedule: "vehicle_name",
+            searchParamsShedule: [
+                {
+                    label: "Vehicle",
+                    value: "vehicle_name",
+                },
+                {
+                    label: "Origin",
+                    value: "origin",
+                },
+                {
+                    label: "Destination",
+                    value: "destination",
+                },
+                {
+                    label: "Vehicle Info",
+                    value: "vehicle_info",
+                },
+                {
+                    label: "Reg No",
+                    value: "registration_number",
                 }
             ],
             dialogActiveSchedule:false,
