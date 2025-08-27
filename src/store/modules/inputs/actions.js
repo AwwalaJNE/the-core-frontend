@@ -4570,10 +4570,6 @@ SET_SYNC_SURAT_MUATAN_FLIGHT_IATA({ commit }, payload) {
     commit('SET_RECEIVING_LOG_REMARK_ValueData', payload)
   },
 
-  SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ArrData({ commit }, payload) {
-  commit('SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID_ArrData', payload)
-},
-
   SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID({ commit }, payload) {
     commit('SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID', payload)
   },
