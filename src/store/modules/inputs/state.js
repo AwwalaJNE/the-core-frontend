@@ -2810,6 +2810,7 @@ export default {
       typeData: "String",
       valueData: null,
       value: '',
+      placeholder: "Ex: GA246 (Air), JNE13 (Road), 33 80 7920 123-4 D-DB (Train)",
       width: 6
     },
     registration_number: {
@@ -2820,6 +2821,7 @@ export default {
       typeData: "String",
       valueData: null,
       value: '',
+      placeholder: "Ex: PK-GNH (Air), B 1234 XYZ (Road), CC206 13 55 (Train)",
       width: 6
     },
     origin_name: {
@@ -2850,6 +2852,7 @@ export default {
       typeData: "String",
       valueData: null,
       value: '',
+      placeholder: "Ex: Terminal 1",
       width: 6
     },
     destination_name: {
@@ -2880,6 +2883,7 @@ export default {
       typeData: "String",
       valueData: null,
       value: '',
+      placeholder: "Ex: Terminal 1",
       width: 6
     },
     etd: {

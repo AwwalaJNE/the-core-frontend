@@ -17,6 +17,7 @@
                                             :formKey="InputObject[item].key"
                                             :valueData="InputObject[item].value"
                                             :typeInput="InputObject[item].typeInput"
+                                            :placeholder="InputObject[item].placeholder"
                                             :disabled="listenIsDisabled || InputObject[item].isDisabled"
                                             @updateValue="updateValue" 
                                             @inputFocus="onfocuslah"
