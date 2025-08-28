@@ -466,7 +466,6 @@ export default {
             this.vehicle_form.push(vehicle_form);
         },
         updateVehicleValueBySchedule(vehicle, vehicle_form) {
-            console.log("JAWAB", vehicle, vehicle_form)
             this.vehicle = [...this.vehicle, ...vehicle];
             this.vehicle_form = [...this.vehicle_form, ...vehicle_form];
 

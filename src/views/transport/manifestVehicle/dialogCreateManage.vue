@@ -894,7 +894,6 @@ export default {
             this.refresh()
         },
         updateSelected(val, checkedItem) {
-            console.log("VEK", val, checkedItem)
             // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING CHECKBOX
             if (val.shipment_schedule_id === this.selected_manifest_vehicle) this.selected_manifest_vehicle = '';
 
