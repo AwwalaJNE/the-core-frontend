@@ -106,7 +106,7 @@
                                 :rules="''" 
                                 :valueData="dateRange"
                                 typeInput="daterange" 
-                                @updateValue="updateDateRang" 
+                                @updateValue="updateDateRange" 
                             />
                         </vs-col>
                     </vs-row>
@@ -471,11 +471,11 @@ export default {
         clearSearch() {
             this.$refs?.searchInput?.clear()
         },
-        updateDateRang(key, val, info){
+        updateDateRange(key, val, info){
             switch(key) {
                 case "date_range":
                     this.dateRange = val;
-                    // this.refresh();
+                    this.refresh();
                     break;
                 default:
             }
@@ -522,10 +522,6 @@ export default {
                         eta_vehicle: form.eta
                     };
                 }
-                if (data.vehicle_type_id == 2 && data.pic_employee_id === '') {
-                    this.openNotification('warning', '', 'Failed', 'Driver belum dipilih. Silahkan pilih driver terlebih dahulu');
-                    return
-                }
                 if (data.etd_vehicle > data.eta_vehicle) {
                     this.openNotification('warning', '', 'Failed', 'ETD tidak boleh lebih besar dari ETA');
                     return
@@ -570,69 +566,6 @@ export default {
                 const res = await axios.get(`${this.URL.manifest_vehicle}/${this.listenManifestNumber}?n=${this.listenNodeId}`, this.Helper.header());
 
                 let arr = res.data.data;
-                
-                // NOTES: BELOW FOR RADIO - FORM
-                // const revamp_arr = arr.map(item => ({
-                //     key: item.manifest_vehicle_log_id,
-                //     state: [
-                //         {
-                //             label: '',
-                //             key: 'label',
-                //             value: item.status_flight,
-                //             typeInput: 'badge',
-                //             width: "12"
-                //         },
-                //         {
-                //             label: 'Origin*',
-                //             key: 'origin',
-                //             value: `${item.origin_branch_name} (${item.origin_branch_code})`,
-                //             typeInput: 'text',
-                //             width: "6"
-                //         },
-                //         {
-                //             label: 'Destination*',
-                //             key: 'destination',
-                //             value: `${item.destination_branch_name} (${item.destination_branch_code})`,
-                //             typeInput: 'text',
-                //             width: "6"
-                //         },
-                //         {
-                //             label: 'Flight Number',
-                //             key: 'flight_number',
-                //             value: item.flight_number,
-                //             typeInput: 'text',
-                //             width: "6"
-                //         },
-                //         {
-                //             label: 'Flight Schedule',
-                //             key: 'flight_schedule',
-                //             value: item.flight_schedule,
-                //             typeInput: 'text',
-                //             width: "6"
-                //         },
-                //         {
-                //             label: 'Vehicle',
-                //             key: 'vehicle',
-                //             value: item.vehicle_name,
-                //             typeInput: 'text',
-                //             width: "4"
-                //         },
-                //         {
-                //             label: 'ETD',
-                //             key: 'etd',
-                //             value: item.etd,
-                //             typeInput: 'text',
-                //             width: "4"
-                //         },
-                //         {
-                //             label: 'ETA',
-                //             key: 'eta',
-                //             value: item.eta,
-                //             typeInput: 'text',
-                //             width: "4"
-                //         }
-                //     ]
-                // }));
 
                 // NOTES: BELOW FOR RADIO - CARD
                 const revamp_arr = arr.map(item => ({
@@ -852,8 +785,8 @@ export default {
                     let arr = res.data.data;
                     arr.map(item => {
                         item,
-                        item["origin"] = item?.origin_name + "\n" + item?.origin_identifier + "\n" + item?.origin_point;
-                        item["destination"] = item?.destination_name + "\n" + item?.destination_identifier + "\n" + item?.destination_point;
+                        item["origin"] = item?.origin_name + "\n" + item?.origin_point;
+                        item["destination"] = item?.destination_name + "\n" + item?.destination_point;
                         item["etd_formatted"] = item?.etd + " " + item?.etd_timezone;
                         item["eta_formatted"] = item?.eta + " " + item?.eta_timezone;
                     })
@@ -894,7 +827,7 @@ export default {
             this.refresh()
         },
         updateSelected(val, checkedItem) {
-            // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING CHECKBOX
+            // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING CHECKBOX (k-NEW-SCHEDULE)
             if (val.shipment_schedule_id === this.selected_manifest_vehicle) this.selected_manifest_vehicle = '';
 
             if (this.selected_manifest_vehicle === '') this.selected_manifest_vehicle = checkedItem?.[0]?.shipment_schedule_id;
@@ -905,8 +838,8 @@ export default {
                     shipment_schedule_id: item?.shipment_schedule_id,
                     origin_vehicle: item?.origin_name || "",
                     destination_vehicle: item?.destination_name || "",
-                    origin_vehicle_tlc: item?.origin_identifier || "",
-                    destination_vehicle_tlc: item?.destination_identifier || "",
+                    origin_vehicle_tlc: this.getTLC(item?.origin_name) || "",
+                    destination_vehicle_tlc: this.getTLC(item?.destination_name) || "",
                     vehicle_id: item?.vehicle_name || "",
                     pic_employee_id: "",
                     flight_number: item?.shipment_number || "",
@@ -924,8 +857,8 @@ export default {
                 key: item?.shipment_schedule_id,
                 state: {
                     shipment_schedule_id: item?.shipment_schedule_id,
-                    tlc_origin: item?.origin_identifier || "",
-                    tlc_destination: item?.destination_identifier || "",
+                    origin_branch_code: this.getTLC(item?.origin_name) || "",
+                    destination_branch_code: this.getTLC(item?.destination_name) || "",
                     vehicle_id: item?.vehicle_id || "",
                     flight_number: item?.shipment_number || "",
                     etd: item?.etd || "",
@@ -939,7 +872,7 @@ export default {
             if (checkedItem.length === 0) this.selected_manifest_vehicle = '';
         },
         onRowClickCallback(event, val, checkedItem) {
-            // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING ROW
+            // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING ROW (k-NEW-SCHEDULE)
             if (val.shipment_schedule_id === this.selected_manifest_vehicle) this.selected_manifest_vehicle = '';
 
             if (this.selected_manifest_vehicle === '') this.selected_manifest_vehicle = checkedItem?.[0]?.shipment_schedule_id;
@@ -950,8 +883,8 @@ export default {
                     shipment_schedule_id: item?.shipment_schedule_id,
                     origin_vehicle: item?.origin_name || "",
                     destination_vehicle: item?.destination_name || "",
-                    origin_vehicle_tlc: item?.origin_identifier || "",
-                    destination_vehicle_tlc: item?.destination_identifier || "",
+                    origin_vehicle_tlc: this.getTLC(item?.origin_name) || "",
+                    destination_vehicle_tlc: this.getTLC(item?.destination_name) || "",
                     vehicle_id: item?.vehicle_name || "",
                     pic_employee_id: "",
                     flight_number: item?.shipment_number || "",
@@ -969,8 +902,8 @@ export default {
                 key: item?.shipment_schedule_id,
                 state: {
                     shipment_schedule_id: item?.shipment_schedule_id,
-                    tlc_origin: item?.origin_identifier || "",
-                    tlc_destination: item?.destination_identifier || "",
+                    origin_branch_code: this.getTLC(item?.origin_name) || "",
+                    destination_branch_code: this.getTLC(item?.destination_name) || "",
                     vehicle_id: item?.vehicle_id || "",
                     flight_number: item?.shipment_number || "",
                     etd: item?.etd || "",
