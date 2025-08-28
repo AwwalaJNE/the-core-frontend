@@ -848,8 +848,8 @@ export default {
                     let arr = res.data.data;
                     arr.map(item => {
                         item,
-                        item["origin"] = item?.origin_name + "\n" + item?.origin_identifier + "\n" + item?.origin_point;
-                        item["destination"] = item?.destination_name + "\n" + item?.destination_identifier + "\n" + item?.destination_point;
+                        item["origin"] = item?.origin_name + "\n" + item?.origin_point;
+                        item["destination"] = item?.destination_name + "\n" + item?.destination_point;
                         item["etd_formatted"] = item?.etd + " " + item?.etd_timezone;
                         item["eta_formatted"] = item?.eta + " " + item?.eta_timezone;
                     })
@@ -901,8 +901,8 @@ export default {
                     shipment_schedule_id: item?.shipment_schedule_id,
                     origin_vehicle: item?.origin_name || "",
                     destination_vehicle: item?.destination_name || "",
-                    origin_vehicle_tlc: item?.origin_identifier || "",
-                    destination_vehicle_tlc: item?.destination_identifier || "",
+                    origin_vehicle_tlc: this.getTLC(item?.origin_name) || "",
+                    destination_vehicle_tlc: this.getTLC(item?.destination_name) || "",
                     vehicle_id: item?.vehicle_name || "",
                     pic_employee_id: "",
                     flight_number: item?.shipment_number || "",
@@ -920,8 +920,8 @@ export default {
                 key: item?.shipment_schedule_id,
                 state: {
                     shipment_schedule_id: item?.shipment_schedule_id,
-                    origin_branch_code: item?.origin_identifier || "",
-                    destination_branch_code: item?.destination_identifier || "",
+                    origin_branch_code: this.getTLC(item?.origin_name) || "",
+                    destination_branch_code: this.getTLC(item?.destination_name) || "",
                     vehicle_id: item?.vehicle_id || "",
                     flight_number: item?.shipment_number || "",
                     etd: item?.etd || "",
@@ -946,8 +946,8 @@ export default {
                     shipment_schedule_id: item?.shipment_schedule_id,
                     origin_vehicle: item?.origin_name || "",
                     destination_vehicle: item?.destination_name || "",
-                    origin_vehicle_tlc: item?.origin_identifier || "",
-                    destination_vehicle_tlc: item?.destination_identifier || "",
+                    origin_vehicle_tlc: this.getTLC(item?.origin_name) || "",
+                    destination_vehicle_tlc: this.getTLC(item?.destination_name) || "",
                     vehicle_id: item?.vehicle_name || "",
                     pic_employee_id: "",
                     flight_number: item?.shipment_number || "",
@@ -965,8 +965,8 @@ export default {
                 key: item?.shipment_schedule_id,
                 state: {
                     shipment_schedule_id: item?.shipment_schedule_id,
-                    origin_branch_code: item?.origin_identifier || "",
-                    destination_branch_code: item?.destination_identifier || "",
+                    origin_branch_code: this.getTLC(item?.origin_name) || "",
+                    destination_branch_code: this.getTLC(item?.destination_name) || "",
                     vehicle_id: item?.vehicle_id || "",
                     flight_number: item?.shipment_number || "",
                     etd: item?.etd || "",

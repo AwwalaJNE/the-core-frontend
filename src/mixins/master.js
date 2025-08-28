@@ -559,6 +559,12 @@ const Master = {
             const timeStr = d.toLocaleTimeString('id-ID', timeOptions).replace('.', ':');
 
             return `${dateStr} ${timeStr}`;
+        },
+        getTLC(text) {
+            let match = text.match(/\(\s*([A-Z]{3})|^([A-Z]{3})(?=-)|([A-Z]{3})/);
+
+            if (!match) return null;
+            return (match[1] || match[2] || match[3]);
         }
     },
     mounted() {
