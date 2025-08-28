@@ -508,8 +508,23 @@ export default {
             }
         },
         updateVehicleValueBySchedule(vehicle, vehicle_form) {
-            this.vehicle = [...this.vehicle, ...vehicle];
-            this.vehicle_form = [...this.vehicle_form, ...vehicle_form];
+            let dataVehicle = vehicle;
+            let dataVehicleForm = vehicle_form;
+
+            if (this.vehicle.length !== 0) {
+                dataVehicle = vehicle.map(v => ({
+                    ...v,
+                    state: { ...(v.state || {}), is_active: false }
+                }));
+
+                dataVehicleForm = vehicle_form.map(v => ({
+                    ...v,
+                    state: { ...(v.state || {}), is_active: false }
+                }));
+            }
+
+            this.vehicle = [...this.vehicle, ...dataVehicle];
+            this.vehicle_form = [...this.vehicle_form, ...dataVehicleForm];
 
             if (this.selected_manifest_vehicle === '') this.selected_manifest_vehicle = this.vehicle.find(item => item.state.is_active === true)?.key;
         },
