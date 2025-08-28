@@ -205,7 +205,8 @@ export default {
             default: 'api',
             validator: v => ['api', 'prefill', 'prefill-stock'].includes(v)
         },
-        updateVehicleValue: Function
+        updateVehicleValue: Function,
+        updateVehicleValueBySchedule: Function
     },
     data() {
         return {
@@ -300,10 +301,11 @@ export default {
                 },
             ],
             pagination: {
-                limit: 3,
+                limit: 20,
                 page_size: 1,
                 page: 1
             },
+            selectedData: [],
         };
     },
     computed: {
@@ -328,6 +330,17 @@ export default {
         },
         listenSelectedManifestVehicle() {
             return this.selected_manifest_vehicle || ''
+        },
+    },
+    watch: {
+        query: function(val, old) {
+            if(val !== undefined) {
+                this.searchValue = val
+                if(this.searchValue !== old) {
+                    this.pagination.page = 1
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate, this.searchBy)
+                }
+            }
         },
     },
     methods: {
@@ -449,11 +462,14 @@ export default {
         },
         searchValue (val) {
             this.tempSearch = val;
-            // this.refresh();
+            this.refresh();
         },
         updateSearchBy(key, val) {
             this.searchBy = val;
             this.searchPlaceholder = key;
+        },
+        clearSearch() {
+            this.$refs?.searchInput?.clear()
         },
         updateDateRang(key, val, info){
             switch(key) {
@@ -528,6 +544,9 @@ export default {
                 }
             } else if (this.navActive === 'k-NEW-MANUAL') {
                 this.$refs.formSuratMuatanVehicleController.handleSubmit(); 
+            } else if (this.navActive === 'k-NEW-SCHEDULE') {
+                this.$emit('updateVehicleValueBySchedule', this.vehicle, this.vehicle_form);
+                this.cancel();
             }
         },
         async getVehicle(query) {
@@ -812,9 +831,159 @@ export default {
             this.vehicle_data = {};
             this.origin_data = {};
             this.destination_data = {};
+            this.dataTable = [];
+            this.vehicle = [];
+            this.vehicle_form = [];
+            this.selectedData = [];
 
             this.handleClearForm();
-        }
+        },
+        async getTableData(limit, page, q, from, to, searchBy) {
+            this.loadingTableData = true
+
+            let query = q || '';            
+            let startDate = from || "";
+            let endDate = to || "";
+            
+            try {
+                const res = await axios.get(`${this.URL.schedule}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&filter_date_by=etd&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}&vehicle_type=${this.listenManifestMethod}`, this.Helper.header());
+
+                if(res.data.data.length > 0) {
+                    let arr = res.data.data;
+                    arr.map(item => {
+                        item,
+                        item["origin"] = item?.origin_name + "\n" + item?.origin_identifier + "\n" + item?.origin_point;
+                        item["destination"] = item?.destination_name + "\n" + item?.destination_identifier + "\n" + item?.destination_point;
+                        item["etd_formatted"] = item?.etd + " " + item?.etd_timezone;
+                        item["eta_formatted"] = item?.eta + " " + item?.eta_timezone;
+                    })
+                    
+                    this.dataTable = arr
+                    this.pagination = {
+                        page: res.data.meta.current_page,
+                        limit: parseInt(res.data.meta.per_page, 10),
+                        page_size: res.data.meta.last_page,
+                    };
+                } else {
+                    this.dataTable = [];
+                }  
+                
+            } catch (err) {
+                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loadingTableData = false;
+            }
+        },
+        refresh() {
+            const isTempSearchEmpty = this.tempSearch === "";
+            const isDateRangeEmpty = !this.dateRange || this.dateRange.length === 0;
+
+            if (isTempSearchEmpty && isDateRangeEmpty) {
+                this.dataTable = [];
+            } else {
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.dateRange?.[0] || null, this.dateRange?.[1] || null, this.searchBy);
+            }
+        },
+        actionLimit(val){
+            this.pagination.limit = val
+            this.pagination.page = 1
+            this.refresh()
+        },
+        actionPagination(val) {
+            this.pagination.page = val
+            this.refresh()
+        },
+        updateSelected(val, checkedItem) {
+            console.log("VEK", val, checkedItem)
+            // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING CHECKBOX
+            if (val.shipment_schedule_id === this.selected_manifest_vehicle) this.selected_manifest_vehicle = '';
+
+            if (this.selected_manifest_vehicle === '') this.selected_manifest_vehicle = checkedItem?.[0]?.shipment_schedule_id;
+
+            this.vehicle = checkedItem.map((item, idx) => ({
+                key: item?.shipment_schedule_id,
+                state: {
+                    shipment_schedule_id: item?.shipment_schedule_id,
+                    origin_vehicle: item?.origin_name || "",
+                    destination_vehicle: item?.destination_name || "",
+                    origin_vehicle_tlc: item?.origin_identifier || "",
+                    destination_vehicle_tlc: item?.destination_identifier || "",
+                    vehicle_id: item?.vehicle_name || "",
+                    pic_employee_id: "",
+                    flight_number: item?.shipment_number || "",
+                    flight_schedule: item?.etd || "",
+                    flight_schedule_timezone: item?.etd_timezone || "",
+                    etd_vehicle: item?.etd || "",
+                    etd_vehicle_timezone: item?.etd_timezone || "",
+                    eta_vehicle: item?.eta || "",
+                    eta_vehicle_timezone: item?.eta_timezone || "",
+                    is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
+                }
+            }));
+
+            this.vehicle_form = checkedItem.map((item, idx) => ({
+                key: item?.shipment_schedule_id,
+                state: {
+                    shipment_schedule_id: item?.shipment_schedule_id,
+                    tlc_origin: item?.origin_identifier || "",
+                    tlc_destination: item?.destination_identifier || "",
+                    vehicle_id: item?.vehicle_id || "",
+                    flight_number: item?.shipment_number || "",
+                    etd: item?.etd || "",
+                    etd_timezone: item?.etd_timezone || "",
+                    eta: item?.eta || "",
+                    eta_timezone: item?.eta_timezone || "",
+                    is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
+                }
+            }));
+
+            if (checkedItem.length === 0) this.selected_manifest_vehicle = '';
+        },
+        onRowClickCallback(event, val, checkedItem) {
+            // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING ROW
+            if (val.shipment_schedule_id === this.selected_manifest_vehicle) this.selected_manifest_vehicle = '';
+
+            if (this.selected_manifest_vehicle === '') this.selected_manifest_vehicle = checkedItem?.[0]?.shipment_schedule_id;
+
+            this.vehicle = checkedItem.map((item, idx) => ({
+                key: item?.shipment_schedule_id,
+                state: {
+                    shipment_schedule_id: item?.shipment_schedule_id,
+                    origin_vehicle: item?.origin_name || "",
+                    destination_vehicle: item?.destination_name || "",
+                    origin_vehicle_tlc: item?.origin_identifier || "",
+                    destination_vehicle_tlc: item?.destination_identifier || "",
+                    vehicle_id: item?.vehicle_name || "",
+                    pic_employee_id: "",
+                    flight_number: item?.shipment_number || "",
+                    flight_schedule: item?.etd || "",
+                    flight_schedule_timezone: item?.etd_timezone || "",
+                    etd_vehicle: item?.etd || "",
+                    etd_vehicle_timezone: item?.etd_timezone || "",
+                    eta_vehicle: item?.eta || "",
+                    eta_vehicle_timezone: item?.eta_timezone || "",
+                    is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
+                }
+            }));
+
+            this.vehicle_form = checkedItem.map((item, idx) => ({
+                key: item?.shipment_schedule_id,
+                state: {
+                    shipment_schedule_id: item?.shipment_schedule_id,
+                    tlc_origin: item?.origin_identifier || "",
+                    tlc_destination: item?.destination_identifier || "",
+                    vehicle_id: item?.vehicle_id || "",
+                    flight_number: item?.shipment_number || "",
+                    etd: item?.etd || "",
+                    etd_timezone: item?.etd_timezone || "",
+                    eta: item?.eta || "",
+                    eta_timezone: item?.eta_timezone || "",
+                    is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
+                }
+            }));
+
+            if (checkedItem.length === 0) this.selected_manifest_vehicle = '';
+        },
     },
     mounted() {
         this.handlePrintShortcut(this.print)
