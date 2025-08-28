@@ -106,7 +106,7 @@
                                 :rules="''" 
                                 :valueData="dateRange"
                                 typeInput="daterange" 
-                                @updateValue="updateDateRang" 
+                                @updateValue="updateDateRange" 
                             />
                         </vs-col>
                     </vs-row>
@@ -471,11 +471,11 @@ export default {
         clearSearch() {
             this.$refs?.searchInput?.clear()
         },
-        updateDateRang(key, val, info){
+        updateDateRange(key, val, info){
             switch(key) {
                 case "date_range":
                     this.dateRange = val;
-                    // this.refresh();
+                    this.refresh();
                     break;
                 default:
             }
