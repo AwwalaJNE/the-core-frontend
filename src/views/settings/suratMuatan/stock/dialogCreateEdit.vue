@@ -68,8 +68,9 @@
                                     :name="'manifest_vehicle'"
                                     :value-data="vehicle"
                                     :selected-value="listenSelectedManifestVehicle"
-                                    :isRemoveButton="false"
+                                    :isRemoveButton="true"
                                     @updateValue="chooseRow"
+                                    @removeRow="removeRow"
                                 />
                             </vs-col>
                         </template>
@@ -423,6 +424,10 @@ export default {
                     is_active: item.key === newKey
                 }
             }));
+        },
+        removeRow(row_id) {
+            this.vehicle = this.vehicle.filter(item => item.key !== row_id);
+            this.vehicle_form = this.vehicle_form.filter(item => item.key !== row_id);
         },
         updateVehicleValue(form) {
             if (!this.is_edit) {
