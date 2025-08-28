@@ -425,45 +425,87 @@ export default {
             }));
         },
         updateVehicleValue(form) {
-            let form_id =  Date.now() + Math.random();
+            if (!this.is_edit) {
+                let form_id =  Date.now() + Math.random();
             
-            if (this.selected_manifest_vehicle === '') this.selected_manifest_vehicle = form_id;
+                if (this.selected_manifest_vehicle === '') this.selected_manifest_vehicle = form_id;
 
-            let created_vehicle = {
-                key: form_id,
-                state: {
-                    origin_vehicle: form?.origin_vehicle_name || "",
-                    destination_vehicle: form?.destination_vehicle_name || "",
-                    origin_vehicle_tlc: form?.origin_vehicle?.value || form.origin_vehicle || "",
-                    destination_vehicle_tlc: form?.destination_vehicle?.value || form.destination_vehicle || "",
-                    vehicle_id: form.vehicle_name,
-                    pic_employee_id: form.pic_employee_id?.employee_name || form?.pic_employee_id || "",
-                    flight_number: form.flight_number,
-                    flight_schedule: form.flight_schedule,
-                    etd_vehicle: form.etd_vehicle,
-                    eta_vehicle: form.eta_vehicle,
-                    is_active: this.vehicle.length === 0
-                }
-            };
+                let created_vehicle = {
+                    key: form_id,
+                    state: {
+                        origin_vehicle: form?.origin_vehicle_name || "",
+                        destination_vehicle: form?.destination_vehicle_name || "",
+                        origin_vehicle_tlc: form?.origin_vehicle?.value || form.origin_vehicle || "",
+                        destination_vehicle_tlc: form?.destination_vehicle?.value || form.destination_vehicle || "",
+                        vehicle_id: form.vehicle_name,
+                        pic_employee_id: form.pic_employee_id?.employee_name || form?.pic_employee_id || "",
+                        flight_number: form.flight_number,
+                        flight_schedule: form.flight_schedule,
+                        etd_vehicle: form.etd_vehicle,
+                        eta_vehicle: form.eta_vehicle,
+                        is_active: this.vehicle.length === 0
+                    }
+                };
 
-            let vehicle_form = {
-                key: form_id,
-                state: {
-                    vehicle_id: form?.vehicle_id || "",
-                    vehicle_type_id: form?.vehicle_type_id || "",
-                    employee_driver_id: form?.pic_employee_id?.employee_id || "",
-                    flight_number: form?.flight_number || "",
-                    flight_schedule: form?.flight_schedule || "",
-                    etd: form?.etd_vehicle || "",
-                    eta: form?.eta_vehicle || "",
-                    origin_branch_code: form?.origin_vehicle || "",
-                    destination_branch_code: form?.destination_vehicle || "",
-                    is_active: this.vehicle.length === 0
-                }
-            };
+                let vehicle_form = {
+                    key: form_id,
+                    state: {
+                        shipment_schedule_id: null,
+                        origin_branch_code: form?.origin_vehicle?.value || form.origin_vehicle || "",
+                        destination_branch_code: form?.destination_vehicle?.value || form.destination_vehicle || "",
+                        vehicle_id: form?.vehicle_id || "",
+                        flight_number: form?.shipment_number || "",
+                        etd: form?.etd_vehicle || "",
+                        etd_timezone: form?.etd_timezone || "WIB",
+                        eta: form?.eta_vehicle || "",
+                        eta_timezone: form?.eta_timezone || "WIB",
+                        is_active: this.vehicle.length === 0
+                    }
+                };
 
-            this.vehicle.push(created_vehicle);
-            this.vehicle_form.push(vehicle_form);
+                this.vehicle.push(created_vehicle);
+                this.vehicle_form.push(vehicle_form);
+            } else {
+                let form_id =  Date.now() + Math.random();
+            
+                if (this.selected_manifest_vehicle === '') this.selected_manifest_vehicle = form_id;
+
+                let created_vehicle = {
+                    key: form_id,
+                    state: {
+                        origin_vehicle: form?.origin_vehicle_name || "",
+                        destination_vehicle: form?.destination_vehicle_name || "",
+                        origin_vehicle_tlc: form?.origin_vehicle?.value || form.origin_vehicle || "",
+                        destination_vehicle_tlc: form?.destination_vehicle?.value || form.destination_vehicle || "",
+                        vehicle_id: form.vehicle_name,
+                        pic_employee_id: form.pic_employee_id?.employee_name || form?.pic_employee_id || "",
+                        flight_number: form.flight_number,
+                        flight_schedule: form.flight_schedule,
+                        etd_vehicle: form.etd_vehicle,
+                        eta_vehicle: form.eta_vehicle,
+                        is_active: this.vehicle.length === 0
+                    }
+                };
+
+                let vehicle_form = {
+                    key: form_id,
+                    state: {
+                        vehicle_id: form?.vehicle_id || "",
+                        vehicle_type_id: form?.vehicle_type_id || "",
+                        employee_driver_id: form?.pic_employee_id?.employee_id || "",
+                        flight_number: form?.flight_number || "",
+                        flight_schedule: form?.flight_schedule || "",
+                        etd: form?.etd_vehicle || "",
+                        eta: form?.eta_vehicle || "",
+                        origin_branch_code: form?.origin_vehicle || "",
+                        destination_branch_code: form?.destination_vehicle || "",
+                        is_active: this.vehicle.length === 0
+                    }
+                };
+
+                this.vehicle.push(created_vehicle);
+                this.vehicle_form.push(vehicle_form);
+            }
         },
         updateVehicleValueBySchedule(vehicle, vehicle_form) {
             this.vehicle = [...this.vehicle, ...vehicle];
