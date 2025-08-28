@@ -78,10 +78,64 @@
                         @inputFocus="inputFocus"
                     />
                 </template>
+                <template v-else-if="navActive === 'k-NEW-SCHEDULE'">
+                    <vs-row align="center">
+                        <vs-col xs="12" sm="4" lg="4">
+                            <select-search-by
+                                key="searchBy"
+                                :border="true"
+                                :isMultiple="false"
+                                :selectedValue="searchBy" 
+                                :valueData="searchParams" 
+                                @updateSearchBy="updateSearchBy" 
+                            />
+                        </vs-col>
+                        <vs-col xs="12" sm="8" lg="8">
+                            <search-input 
+                                ref="searchInput"  
+                                :placeholder="searchPlaceholder" 
+                                @searchValue="searchValue"
+                            />
+                        </vs-col>
+                    </vs-row>
+                    <vs-row>
+                        <vs-col xs="12" sm="12" lg="12">
+                            <date-time 
+                                formKey="date_range"
+                                :name="''" 
+                                :rules="''" 
+                                :valueData="dateRange"
+                                typeInput="daterange" 
+                                @updateValue="updateDateRang" 
+                            />
+                        </vs-col>
+                    </vs-row>
+
+                    <div style="margin-top: 10px;">
+                        <table-master 
+                            hideColumnKey="dialog-surat-muatan-stock" 
+                            :dataTable="dataTable" 
+                            :dataColumn="datacolumn" 
+                            :tableLoading="loadingTableData"
+                            :selectedData="selectedData"
+                            :hasPagination="true"
+                            :pageSize="pagination.page_size"
+                            :page="pagination.page"
+                            :limit="pagination.limit"
+                            :isMultipleSelectWithIndex="true"
+                            :onRowClickCallback="onRowClickCallback"
+                            :isShowCheckboxAll="false"
+                            @actionLimit="actionLimit"
+                            @actionPagination="actionPagination"
+                            @updateSelected2="updateSelected"
+                        />
+                    </div>
+                </template>
+
             </vs-col>
         </template>
 
-        <template v-slot:footer v-if="navActive === 'k-NEW-AUTO' || navActive === 'k-NEW-MANUAL'">
+        <template v-slot:footer v-if="navActive === 'k-NEW-AUTO' || navActive === 'k-NEW-MANUAL' || navActive === 'k-NEW-SCHEDULE'">
             <vs-row justify="flex-end" style="margin-top: 1pc;">
                 <vs-col w="3">
                     <vs-button
@@ -117,19 +171,27 @@ import axios from "axios";
 
 import master from "@/mixins/master";
 
+import DateTime from "@/components/input/dateTime";
 import DialogMaster from "@/components/dialog/dialogMaster";
 import FormInputController from "@/components/form/formInputController";
 import RadioWithCard from "@/components/input/radioWithCard";
 import NavItem from "@/components/navbar/navTab";
+import SearchInput from "@/components/search/searchInput";
+import SelectSearchBy from "@/components/search/selectSearchBy";
+import TableMaster from "@/components/table/tableMaster";
 
 export default {
     name: "dialog-manage-vehicle-manifest",
     mixins: [master],
     components: {
+        "date-time": DateTime,
         "dialog-master": DialogMaster,
         "form-input-controller": FormInputController,
         "nav-item": NavItem,
         "radio": RadioWithCard,
+        "search-input": SearchInput,
+        "select-search-by": SelectSearchBy,
+        "table-master" : TableMaster,
     },
     props: {
         active: Boolean,
@@ -141,7 +203,7 @@ export default {
         submitType: {
             type: String,
             default: 'api',
-            validator: v => ['api', 'prefill'].includes(v)
+            validator: v => ['api', 'prefill', 'prefill-stock'].includes(v)
         },
         updateVehicleValue: Function
     },
@@ -160,7 +222,88 @@ export default {
             vehicle_data: {},
             origin_data: {},
             destination_data: {},
-            is_found: false
+            is_found: false,
+
+            tempSearch: "",
+            dateRange: [],
+            searchBy: "vehicle",
+            searchPlaceholder: "Search Schedule Vehicle",
+            searchParams: [
+                {
+                    label: 'Vehicle',
+                    value: 'vehicle'
+                },
+                {
+                    label: 'Origin',
+                    value: 'origin'
+                },
+                {
+                    label: 'Destination',
+                    value: 'destination'
+                },
+                {
+                    label: 'Vehicle Info',
+                    value: 'vehicle_info'
+                },
+                {
+                    label: 'Registration Number',
+                    value: 'registration_number'
+                },
+            ],
+            loadingTableData: false,
+            dataTable: [],
+            datacolumn: [
+                {
+                    label: "Vehicle",
+                    key: "vehicle_name",
+                    width: "sm"
+                },
+                {
+                    label: "Type",
+                    key: "vehicle_mode_name",
+                    width: "sm"
+                },
+                {
+                    label: "SHP No",
+                    key: "shipment_number",
+                    width: "xs"
+                },
+                {
+                    label: "Origin",
+                    key: "origin",
+                    width: "md"
+                },
+                {
+                    label: "Destination",
+                    key: "destination",
+                    width: "md"
+                },
+                {
+                    label: "ETD",
+                    key: "etd_formatted",
+                    width: "sm"
+                },
+                {
+                    label: "ETA",
+                    key: "eta_formatted",
+                    width: "sm"
+                },
+                {
+                    label: "Vehicle Info",
+                    key: "vehicle_information",
+                    width: "xs"
+                },
+                {
+                    label: "Reg No",
+                    key: "registration_number",
+                    width: "xs"
+                },
+            ],
+            pagination: {
+                limit: 3,
+                page_size: 1,
+                page: 1
+            },
         };
     },
     computed: {
@@ -207,7 +350,42 @@ export default {
                 this.navActive = "k-MANAGE";
 
                 this.getManifestVehicle();
-            } else {
+            } else if (this.submitType === 'prefill-stock') {
+                switch(this.listenManifestMethod){
+                    case 1:
+                        this.navItem = [
+                            {
+                                label: "NEW (AUTO)",
+                                key: "k-NEW-AUTO"
+                            },
+                            {
+                                label: "NEW (MANUAL)",
+                                key: "k-NEW-MANUAL"
+                            },
+                            {
+                                label: "NEW (SCHEDULE)",
+                                key: "k-NEW-SCHEDULE"
+                            },
+                        ];
+                        this.navActive = "k-NEW-AUTO";
+                        break;
+                    case 2:
+                    case 3:
+                    case 4:
+                        this.navItem = [
+                            {
+                                label: "NEW (MANUAL)",
+                                key: "k-NEW-MANUAL"
+                            },
+                            {
+                                label: "NEW (SCHEDULE)",
+                                key: "k-NEW-SCHEDULE"
+                            },
+                        ];
+                        this.navActive = "k-NEW-MANUAL";
+                        break;
+                }
+            } else if (this.submitType === 'prefill') {
                 switch(this.listenManifestMethod){
                     case 1:
                         this.navItem = [
@@ -268,6 +446,23 @@ export default {
             }
 
             this.moveTab();
+        },
+        searchValue (val) {
+            this.tempSearch = val;
+            // this.refresh();
+        },
+        updateSearchBy(key, val) {
+            this.searchBy = val;
+            this.searchPlaceholder = key;
+        },
+        updateDateRang(key, val, info){
+            switch(key) {
+                case "date_range":
+                    this.dateRange = val;
+                    // this.refresh();
+                    break;
+                default:
+            }
         },
         formData(form){
             if (this.submitType === 'api') {

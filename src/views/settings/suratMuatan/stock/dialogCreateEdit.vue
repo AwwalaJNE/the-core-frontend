@@ -12,7 +12,7 @@
 
             <template v-slot:content>
                 <div>
-                    <template v-if="Object.keys(edit_data).length === 0">
+                    <!-- <template v-if="Object.keys(edit_data).length === 0">
                         <vs-row align="center">
                             <vs-col xs="12" sm="4" lg="4">
                                 <select-search-by
@@ -64,7 +64,7 @@
                                 @updateSelected2="updateSelected"
                             />
                         </div>
-                    </template>
+                    </template> -->
 
                     <div v-if="!is_edit" class="parent-container">
                         <div class="container-clear-item" @click="handleClearAll">
@@ -80,47 +80,77 @@
                         @formData="formData"
                     />
 
-                    <vs-row v-if="vehicle.length > 0">
-                        <template v-if="!is_edit">
-                            <vs-row>
-                                <h3 class="title">List Vehicle</h3>
+                    <template v-if="!is_edit">
+                        <template v-if="vehicle.length === 0">
+                            <vs-row justify="space-between" align="center">
+                                <vs-col w="10">
+                                    <selector 
+                                        formKey="vehicle_mode"
+                                        name="" 
+                                        rules="" 
+                                        placeholder="Select Vehicle Mode"
+                                        :valueData="vehicleModeArray"
+                                        :selectedValue="vehicle_mode"
+                                        @updateValue="updateValue" 
+                                    />
+                                </vs-col>
+                                <vs-col w=2>
+                                    <vs-button
+                                        shadow
+                                        :active="false"
+                                        @click="openDialogManageVehicleManifest"
+                                    >
+                                        <i class='bx bx-plus'></i> Vehicle
+                                    </vs-button>
+                                </vs-col>
                             </vs-row>
-                            <radio
-                                :name="'manifest_vehicle'"
-                                :value-data="vehicle"
-                                :selected-value="listenSelectedManifestVehicle"
-                                :isRemoveButton="false"
-                                @updateValue="chooseRow"
-                            />
+                            <img src="@/assets/svg/defaultVehicle.svg" alt="Core JNE Default Vehicle" style="width: 100%; margin-bottom: 20px;"/>
                         </template>
                         <template v-else>
-                            <vs-row justify="space-between">
-                                <h3 class="title">Active Vehicle</h3>
+                            <vs-row justify="space-between" align="center">
+                                <h3 class="title">List Vehicle</h3>
                                 <vs-button
                                     shadow
                                     :active="false"
                                     @click="openDialogManageVehicleManifest"
                                 >
-                                    <i class='bx bx-cog'></i> Manage
+                                    <i class='bx bx-plus'></i> Vehicle
                                 </vs-button>
                             </vs-row>
-                            <vs-row
-                                v-for="(item, index) in vehicle"
-                                :key="index"
-                            >
-                                <vs-col w="12" v-if="item.is_active">
-                                    <vehicle-card 
-                                        :data="item" 
-                                        :isActive="item.is_active"
-                                    />
-                                </vs-col>
-                            </vs-row>
+                            <vs-col w="12">
+                                <radio
+                                    :name="'manifest_vehicle'"
+                                    :value-data="vehicle"
+                                    :selected-value="listenSelectedManifestVehicle"
+                                    :isRemoveButton="false"
+                                    @updateValue="chooseRow"
+                                />
+                            </vs-col>
                         </template>
-                    </vs-row>
-                    <vs-row v-else>
-                        <img src="@/assets/svg/defaultVehicle.svg" alt="Core JNE Default Vehicle" style="width: 100%; margin: 20px 0;"/>
-                    </vs-row>
-                    
+                    </template>
+                    <template v-else>
+                        <vs-row justify="space-between">
+                            <h3 class="title">Active Vehicle</h3>
+                            <vs-button
+                                shadow
+                                :active="false"
+                                @click="openDialogManageVehicleManifest"
+                            >
+                                <i class='bx bx-cog'></i> Manage
+                            </vs-button>
+                        </vs-row>
+                        <vs-row
+                            v-for="(item, index) in vehicle"
+                            :key="index"
+                        >
+                            <vs-col w="12" v-if="item.is_active">
+                                <vehicle-card 
+                                    :data="item" 
+                                    :isActive="item.is_active"
+                                />
+                            </vs-col>
+                        </vs-row>
+                    </template>
                 </div>
             </template>
 
@@ -154,12 +184,15 @@
             </template>
         </dialog-master>
 
+        <!--  --TODO: INI DIBENERIN NANTI -->
         <dialog-manage-vehicle-manifest
             title="Manifest Vehicle"
             :manifest_number="edit_data.manifest_number"
-            :manifest_method="parseInt(edit_data.vehicle_mode_id)"
+            :manifest_method="is_edit ? parseInt(edit_data.vehicle_mode_id) : parseInt(vehicle_mode)"
             :active="dialogManageVehicleManifest"
             :closeDialog="closeDialogManageVehicleManifest"
+            :submitType="is_edit ? 'api' : 'prefill-stock'"
+            @updateVehicleValue="updateVehicleValue"
         />
     </div>
 </template>
@@ -298,6 +331,9 @@ export default {
             dialogManageVehicleManifest: false,
             selected_manifest_vehicle: "",
             is_edit: false,
+
+            vehicle_mode: "",
+            vehicleModeArray: []
         }
     },
     computed: {
@@ -320,6 +356,11 @@ export default {
         }
     },
     watch: {
+        active: async function(val) {
+            if (val == true) {
+                this.getDataVehicleMode();
+            }
+        },
         dataItem: function (val) {
             if(val !== undefined) {
                 this.is_edit = true;
@@ -489,7 +530,28 @@ export default {
                     this.dateRange = val;
                     this.refresh()
                     break;
+                case "vehicle_mode":
+                    this.vehicle_mode = val;
+                    break;
                 default:
+            }
+        },
+        async getDataVehicleMode() {
+            this.loading = true;
+            try {
+                const { data } = await axios.get(`${this.URL.vehicle_mode_list_v2}?n=${this.listenNodeId}`, this.Helper.header() );
+
+                const options = data.data.map(item => ({
+                    value: item.vehicle_mode_id,
+                    label: item.vehicle_mode_name,
+                    data: item
+                }));
+
+                this.vehicleModeArray = options;
+            } catch (err) {
+                console.error('Failed to load vehicle modes:', err);
+            } finally {
+                this.loading = false;
             }
         },
         async handleSubmitData() {
@@ -537,18 +599,32 @@ export default {
             this.$refs?.searchInput?.clear()
         },
         handleClearAll() {
+            this.vehicle_mode = "";
+            this.vehicle = [];
+            this.vehicle_form = [];
             this.is_edit = false;
             this.schedule_id = "";
             this.selectedData = [];
-            this.$refs.formDataController.handleEmptyForm();
+            this.$refs?.formDataController?.handleEmptyForm();
             this.form = {}; 
         },
         openDialogManageVehicleManifest() {
-            this.dialogManageVehicleManifest = true;
+            if (this.is_edit) {
+                this.dialogManageVehicleManifest = true;
+            } else {
+                if (!this.vehicle_mode) {
+                    this.openNotification("warn", null, "Failed", 'Please choose manifest mode first');
+                } else {
+                    this.dialogManageVehicleManifest = true;
+                }
+            }
         },
         closeDialogManageVehicleManifest() {
             this.dialogManageVehicleManifest = false;
-            this.getManifestVehicle();
+
+            if (this.is_edit) {
+                this.getManifestVehicle();
+            }
         },
         updateSelected(val, checkedItem) {
             // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING CHECKBOX
@@ -656,6 +732,47 @@ export default {
                     is_active: item.key === newKey
                 }
             }));
+        },
+        updateVehicleValue(form) {
+            let form_id =  Date.now() + Math.random();
+            
+            if (this.selected_manifest_vehicle === '') this.selected_manifest_vehicle = form_id;
+
+            let created_vehicle = {
+                key: form_id,
+                state: {
+                    origin_vehicle: form?.origin_vehicle_name || "",
+                    destination_vehicle: form?.destination_vehicle_name || "",
+                    origin_vehicle_tlc: form?.origin_vehicle?.value || form.origin_vehicle || "",
+                    destination_vehicle_tlc: form?.destination_vehicle?.value || form.destination_vehicle || "",
+                    vehicle_id: form.vehicle_name,
+                    pic_employee_id: form.pic_employee_id?.employee_name || form?.pic_employee_id || "",
+                    flight_number: form.flight_number,
+                    flight_schedule: form.flight_schedule,
+                    etd_vehicle: form.etd_vehicle,
+                    eta_vehicle: form.eta_vehicle,
+                    is_active: this.vehicle.length === 0
+                }
+            };
+
+            let vehicle_form = {
+                key: form_id,
+                state: {
+                    vehicle_id: form?.vehicle_id || "",
+                    vehicle_type_id: form?.vehicle_type_id || "",
+                    employee_driver_id: form?.pic_employee_id?.employee_id || "",
+                    flight_number: form?.flight_number || "",
+                    flight_schedule: form?.flight_schedule || "",
+                    etd: form?.etd_vehicle || "",
+                    eta: form?.eta_vehicle || "",
+                    origin_branch_code: form?.origin_vehicle || "",
+                    destination_branch_code: form?.destination_vehicle || "",
+                    is_active: this.vehicle.length === 0
+                }
+            };
+
+            this.vehicle.push(created_vehicle);
+            this.vehicle_form.push(vehicle_form);
         },
     },
     mounted() {
