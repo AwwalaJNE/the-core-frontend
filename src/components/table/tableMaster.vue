@@ -2155,7 +2155,9 @@ export default {
 </script>
 <style lang="scss">
 .vs-table-content > .vs-table > table {
+  width: max-content !important;
   min-width: 100% !important;
+  table-layout: auto;
 }
 .vs-table {
   table {
