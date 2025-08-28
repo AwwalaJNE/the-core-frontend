@@ -522,10 +522,6 @@ export default {
                         eta_vehicle: form.eta
                     };
                 }
-                if (data.vehicle_type_id == 2 && data.pic_employee_id === '') {
-                    this.openNotification('warning', '', 'Failed', 'Driver belum dipilih. Silahkan pilih driver terlebih dahulu');
-                    return
-                }
                 if (data.etd_vehicle > data.eta_vehicle) {
                     this.openNotification('warning', '', 'Failed', 'ETD tidak boleh lebih besar dari ETA');
                     return
@@ -924,8 +920,8 @@ export default {
                 key: item?.shipment_schedule_id,
                 state: {
                     shipment_schedule_id: item?.shipment_schedule_id,
-                    tlc_origin: item?.origin_identifier || "",
-                    tlc_destination: item?.destination_identifier || "",
+                    origin_branch_code: item?.origin_identifier || "",
+                    destination_branch_code: item?.destination_identifier || "",
                     vehicle_id: item?.vehicle_id || "",
                     flight_number: item?.shipment_number || "",
                     etd: item?.etd || "",
@@ -969,8 +965,8 @@ export default {
                 key: item?.shipment_schedule_id,
                 state: {
                     shipment_schedule_id: item?.shipment_schedule_id,
-                    tlc_origin: item?.origin_identifier || "",
-                    tlc_destination: item?.destination_identifier || "",
+                    origin_branch_code: item?.origin_identifier || "",
+                    destination_branch_code: item?.destination_identifier || "",
                     vehicle_id: item?.vehicle_id || "",
                     flight_number: item?.shipment_number || "",
                     etd: item?.etd || "",

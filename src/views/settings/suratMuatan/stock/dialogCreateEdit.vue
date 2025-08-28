@@ -299,8 +299,8 @@ export default {
             if (!this.is_edit) {
                 formWithoutId.vehicle = this.vehicle_form?.map(item => item.state)?.map(item => ({
                     vehicle_id: item.vehicle_id,
-                    tlc_origin: item.tlc_origin,
-                    tlc_destination: item.tlc_destination,
+                    tlc_origin: item.origin_branch_code,
+                    tlc_destination: item.destination_branch_code,
                     flight_number: item.flight_number,
                     etd: item.etd,
                     etd_timezone: item.etd_timezone,
