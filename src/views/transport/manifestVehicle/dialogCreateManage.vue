@@ -566,69 +566,6 @@ export default {
                 const res = await axios.get(`${this.URL.manifest_vehicle}/${this.listenManifestNumber}?n=${this.listenNodeId}`, this.Helper.header());
 
                 let arr = res.data.data;
-                
-                // NOTES: BELOW FOR RADIO - FORM
-                // const revamp_arr = arr.map(item => ({
-                //     key: item.manifest_vehicle_log_id,
-                //     state: [
-                //         {
-                //             label: '',
-                //             key: 'label',
-                //             value: item.status_flight,
-                //             typeInput: 'badge',
-                //             width: "12"
-                //         },
-                //         {
-                //             label: 'Origin*',
-                //             key: 'origin',
-                //             value: `${item.origin_branch_name} (${item.origin_branch_code})`,
-                //             typeInput: 'text',
-                //             width: "6"
-                //         },
-                //         {
-                //             label: 'Destination*',
-                //             key: 'destination',
-                //             value: `${item.destination_branch_name} (${item.destination_branch_code})`,
-                //             typeInput: 'text',
-                //             width: "6"
-                //         },
-                //         {
-                //             label: 'Flight Number',
-                //             key: 'flight_number',
-                //             value: item.flight_number,
-                //             typeInput: 'text',
-                //             width: "6"
-                //         },
-                //         {
-                //             label: 'Flight Schedule',
-                //             key: 'flight_schedule',
-                //             value: item.flight_schedule,
-                //             typeInput: 'text',
-                //             width: "6"
-                //         },
-                //         {
-                //             label: 'Vehicle',
-                //             key: 'vehicle',
-                //             value: item.vehicle_name,
-                //             typeInput: 'text',
-                //             width: "4"
-                //         },
-                //         {
-                //             label: 'ETD',
-                //             key: 'etd',
-                //             value: item.etd,
-                //             typeInput: 'text',
-                //             width: "4"
-                //         },
-                //         {
-                //             label: 'ETA',
-                //             key: 'eta',
-                //             value: item.eta,
-                //             typeInput: 'text',
-                //             width: "4"
-                //         }
-                //     ]
-                // }));
 
                 // NOTES: BELOW FOR RADIO - CARD
                 const revamp_arr = arr.map(item => ({
@@ -890,7 +827,7 @@ export default {
             this.refresh()
         },
         updateSelected(val, checkedItem) {
-            // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING CHECKBOX
+            // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING CHECKBOX (k-NEW-SCHEDULE)
             if (val.shipment_schedule_id === this.selected_manifest_vehicle) this.selected_manifest_vehicle = '';
 
             if (this.selected_manifest_vehicle === '') this.selected_manifest_vehicle = checkedItem?.[0]?.shipment_schedule_id;
@@ -935,7 +872,7 @@ export default {
             if (checkedItem.length === 0) this.selected_manifest_vehicle = '';
         },
         onRowClickCallback(event, val, checkedItem) {
-            // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING ROW
+            // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING ROW (k-NEW-SCHEDULE)
             if (val.shipment_schedule_id === this.selected_manifest_vehicle) this.selected_manifest_vehicle = '';
 
             if (this.selected_manifest_vehicle === '') this.selected_manifest_vehicle = checkedItem?.[0]?.shipment_schedule_id;
