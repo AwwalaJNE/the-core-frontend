@@ -349,6 +349,10 @@ export default {
               ) {
                 buttonStatus.vehicle = true; // Bisa edit vehicle
                 buttonStatus.print = true; // Bisa print
+
+                if (!item.auto_depart) {
+                  buttonStatus.depart = true;
+                }
                 // Depart tidak bisa dilakukan jika sudah depart/receive/complete
               } else if (strStatus.includes("cancel")) {
                 // Semua aksi dinonaktifkan jika status cancel
