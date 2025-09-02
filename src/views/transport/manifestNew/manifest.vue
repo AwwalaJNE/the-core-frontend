@@ -102,12 +102,12 @@ export default {
           width: "xxs",
         },
         {
-          label: "Received",
+          label: "Received Bag",
           key: "total_received",
           width: "xxxs",
         },
         {
-          label: "Outstanding",
+          label: "Outstanding Bag",
           key: "total_outstanding",
           width: "xxxs",
         },
