@@ -85,11 +85,11 @@ export default {
                 },
                 { 
                     label: 'From', 
-                    value: 'city_origin' 
+                    value: 'from' 
                 },
                 { 
                     label: 'To', 
-                    value: 'city_destination' 
+                    value: 'to' 
                 },
                 { 
                     label: 'Estimate Delivery', 
@@ -114,6 +114,8 @@ export default {
                 if (res.data) {
                     this.activity_master_info = {
                         ...res.data,
+                        from: [res?.data?.district_origin ?? "", res?.data?.city_origin ?? ""].filter(Boolean).join(", "),
+                        to: [res?.data?.district_destination ?? "", res?.data?.city_destination ?? ""].filter(Boolean).join(", "),
                         sla: res.data.sla_days ? res.data.sla_days + ' days' : '-'
                     }
                 }
