@@ -1702,13 +1702,13 @@ const routes = [
             }
           },
           {
-            path: "log",
-            name: "Log",
+            path: "Irregularities",
+            name: "Irregularities",
             component: ReceivingLog,
             meta: {
               icon: "bx bx-history",
               requiresAuth: true,
-              breadCrumb: "Log",
+              breadCrumb: "Irregularities",
               resource_type: resourceLookup["RECEIVING_LOG"].resource_type,
               resource_code: resourceLookup["RECEIVING_LOG"].resource_code,
               resource_name: resourceLookup["RECEIVING_LOG"].resource_name,

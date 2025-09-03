@@ -300,6 +300,7 @@
                          v-on:keyup.enter="updateValue"
                          ref="formInputBagging" icon-after
                          :disabled="(disabledApprove) && !loading"
+                         @keypress="onlyNumber"
                          >
                  <template #icon>Kg</template>
                </vs-input>
@@ -463,6 +464,12 @@ export default {
     }
   },
   methods: {
+    onlyNumber(e) {
+      // hanya boleh angka 0–9
+      if (!/[0-9]/.test(e.key)) {
+        e.preventDefault()
+      }
+    },
     refresh() {
       this.$refs.detailbagList.refresh()
     },

@@ -78,10 +78,64 @@
                         @inputFocus="inputFocus"
                     />
                 </template>
+                <template v-else-if="navActive === 'k-NEW-SCHEDULE'">
+                    <vs-row align="center">
+                        <vs-col xs="12" sm="4" lg="4">
+                            <select-search-by
+                                key="searchBy"
+                                :border="true"
+                                :isMultiple="false"
+                                :selectedValue="searchBy" 
+                                :valueData="searchParams" 
+                                @updateSearchBy="updateSearchBy" 
+                            />
+                        </vs-col>
+                        <vs-col xs="12" sm="8" lg="8">
+                            <search-input 
+                                ref="searchInput"  
+                                :placeholder="searchPlaceholder" 
+                                @searchValue="searchValue"
+                            />
+                        </vs-col>
+                    </vs-row>
+                    <vs-row>
+                        <vs-col xs="12" sm="12" lg="12">
+                            <date-time 
+                                formKey="date_range"
+                                :name="''" 
+                                :rules="''" 
+                                :valueData="dateRange"
+                                typeInput="daterange" 
+                                @updateValue="updateDateRange" 
+                            />
+                        </vs-col>
+                    </vs-row>
+
+                    <div style="margin-top: 10px;">
+                        <table-master 
+                            hideColumnKey="dialog-surat-muatan-stock" 
+                            :dataTable="dataTable" 
+                            :dataColumn="datacolumn" 
+                            :tableLoading="loadingTableData"
+                            :selectedData="selectedData"
+                            :hasPagination="true"
+                            :pageSize="pagination.page_size"
+                            :page="pagination.page"
+                            :limit="pagination.limit"
+                            :isMultipleSelectWithIndex="true"
+                            :onRowClickCallback="onRowClickCallback"
+                            :isShowCheckboxAll="false"
+                            @actionLimit="actionLimit"
+                            @actionPagination="actionPagination"
+                            @updateSelected2="updateSelected"
+                        />
+                    </div>
+                </template>
+
             </vs-col>
         </template>
 
-        <template v-slot:footer v-if="navActive === 'k-NEW-AUTO' || navActive === 'k-NEW-MANUAL'">
+        <template v-slot:footer v-if="navActive === 'k-NEW-AUTO' || navActive === 'k-NEW-MANUAL' || navActive === 'k-NEW-SCHEDULE'">
             <vs-row justify="flex-end" style="margin-top: 1pc;">
                 <vs-col w="3">
                     <vs-button
@@ -117,19 +171,27 @@ import axios from "axios";
 
 import master from "@/mixins/master";
 
+import DateTime from "@/components/input/dateTime";
 import DialogMaster from "@/components/dialog/dialogMaster";
 import FormInputController from "@/components/form/formInputController";
 import RadioWithCard from "@/components/input/radioWithCard";
 import NavItem from "@/components/navbar/navTab";
+import SearchInput from "@/components/search/searchInput";
+import SelectSearchBy from "@/components/search/selectSearchBy";
+import TableMaster from "@/components/table/tableMaster";
 
 export default {
     name: "dialog-manage-vehicle-manifest",
     mixins: [master],
     components: {
+        "date-time": DateTime,
         "dialog-master": DialogMaster,
         "form-input-controller": FormInputController,
         "nav-item": NavItem,
         "radio": RadioWithCard,
+        "search-input": SearchInput,
+        "select-search-by": SelectSearchBy,
+        "table-master" : TableMaster,
     },
     props: {
         active: Boolean,
@@ -141,9 +203,10 @@ export default {
         submitType: {
             type: String,
             default: 'api',
-            validator: v => ['api', 'prefill'].includes(v)
+            validator: v => ['api', 'prefill', 'prefill-stock'].includes(v)
         },
-        updateVehicleValue: Function
+        updateVehicleValue: Function,
+        updateVehicleValueBySchedule: Function
     },
     data() {
         return {
@@ -160,7 +223,89 @@ export default {
             vehicle_data: {},
             origin_data: {},
             destination_data: {},
-            is_found: false
+            is_found: false,
+
+            tempSearch: "",
+            dateRange: [],
+            searchBy: "vehicle",
+            searchPlaceholder: "Search Schedule Vehicle",
+            searchParams: [
+                {
+                    label: 'Vehicle',
+                    value: 'vehicle'
+                },
+                {
+                    label: 'Origin',
+                    value: 'origin'
+                },
+                {
+                    label: 'Destination',
+                    value: 'destination'
+                },
+                {
+                    label: 'Vehicle Info',
+                    value: 'vehicle_info'
+                },
+                {
+                    label: 'Registration Number',
+                    value: 'registration_number'
+                },
+            ],
+            loadingTableData: false,
+            dataTable: [],
+            datacolumn: [
+                {
+                    label: "Vehicle",
+                    key: "vehicle_name",
+                    width: "sm"
+                },
+                {
+                    label: "Type",
+                    key: "vehicle_mode_name",
+                    width: "sm"
+                },
+                {
+                    label: "SHP No",
+                    key: "shipment_number",
+                    width: "xs"
+                },
+                {
+                    label: "Origin",
+                    key: "origin",
+                    width: "md"
+                },
+                {
+                    label: "Destination",
+                    key: "destination",
+                    width: "md"
+                },
+                {
+                    label: "ETD",
+                    key: "etd_formatted",
+                    width: "sm"
+                },
+                {
+                    label: "ETA",
+                    key: "eta_formatted",
+                    width: "sm"
+                },
+                {
+                    label: "Vehicle Info",
+                    key: "vehicle_information",
+                    width: "xs"
+                },
+                {
+                    label: "Reg No",
+                    key: "registration_number",
+                    width: "xs"
+                },
+            ],
+            pagination: {
+                limit: 20,
+                page_size: 1,
+                page: 1
+            },
+            selectedData: [],
         };
     },
     computed: {
@@ -187,6 +332,17 @@ export default {
             return this.selected_manifest_vehicle || ''
         },
     },
+    watch: {
+        query: function(val, old) {
+            if(val !== undefined) {
+                this.searchValue = val
+                if(this.searchValue !== old) {
+                    this.pagination.page = 1
+                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate, this.searchBy)
+                }
+            }
+        },
+    },
     methods: {
         setNavItem() {
             if (this.submitType === 'api') {
@@ -207,18 +363,68 @@ export default {
                 this.navActive = "k-MANAGE";
 
                 this.getManifestVehicle();
-            } else {
-                this.navItem = [
-                    {
-                        label: "NEW (AUTO)",
-                        key: "k-NEW-AUTO"
-                    },
-                    {
-                        label: "NEW (MANUAL)",
-                        key: "k-NEW-MANUAL"
-                    },
-                ];
-                this.navActive = "k-NEW-AUTO";
+            } else if (this.submitType === 'prefill-stock') {
+                switch(this.listenManifestMethod){
+                    case 1:
+                        this.navItem = [
+                            {
+                                label: "NEW (AUTO)",
+                                key: "k-NEW-AUTO"
+                            },
+                            {
+                                label: "NEW (MANUAL)",
+                                key: "k-NEW-MANUAL"
+                            },
+                            {
+                                label: "NEW (SCHEDULE)",
+                                key: "k-NEW-SCHEDULE"
+                            },
+                        ];
+                        this.navActive = "k-NEW-AUTO";
+                        break;
+                    case 2:
+                    case 3:
+                    case 4:
+                        this.navItem = [
+                            {
+                                label: "NEW (MANUAL)",
+                                key: "k-NEW-MANUAL"
+                            },
+                            {
+                                label: "NEW (SCHEDULE)",
+                                key: "k-NEW-SCHEDULE"
+                            },
+                        ];
+                        this.navActive = "k-NEW-MANUAL";
+                        break;
+                }
+            } else if (this.submitType === 'prefill') {
+                switch(this.listenManifestMethod){
+                    case 1:
+                        this.navItem = [
+                            {
+                                label: "NEW (AUTO)",
+                                key: "k-NEW-AUTO"
+                            },
+                            {
+                                label: "NEW (MANUAL)",
+                                key: "k-NEW-MANUAL"
+                            },
+                        ];
+                        this.navActive = "k-NEW-AUTO";
+                        break;
+                    case 2:
+                    case 3:
+                    case 4:
+                        this.navItem = [
+                            {
+                                label: "NEW",
+                                key: "k-NEW-MANUAL"
+                            },
+                        ];
+                        this.navActive = "k-NEW-MANUAL";
+                        break;
+                }
             }
         },
         setDialogActive() {
@@ -254,6 +460,26 @@ export default {
 
             this.moveTab();
         },
+        searchValue (val) {
+            this.tempSearch = val;
+            this.refresh();
+        },
+        updateSearchBy(key, val) {
+            this.searchBy = val;
+            this.searchPlaceholder = key;
+        },
+        clearSearch() {
+            this.$refs?.searchInput?.clear()
+        },
+        updateDateRange(key, val, info){
+            switch(key) {
+                case "date_range":
+                    this.dateRange = val;
+                    this.refresh();
+                    break;
+                default:
+            }
+        },
         formData(form){
             if (this.submitType === 'api') {
                 form.origin_branch_code = form.origin_branch_code?.value || form.origin_branch_code;
@@ -282,10 +508,10 @@ export default {
                     };
                 } else if (this.navActive === 'k-NEW-MANUAL') {
                     data = {
-                        origin_vehicle:  form.origin_branch_code?.value,
-                        origin_vehicle_name:  form.origin_branch_code?.label,
-                        destination_vehicle: form.destination_branch_code?.value,
-                        destination_vehicle_name: form.destination_branch_code?.label,
+                        origin_vehicle:  form.origin_branch_code?.value || form?.origin_branch_code?.branch_code?.slice(0, 3),
+                        origin_vehicle_name:  form.origin_branch_code?.label || form?.origin_branch_code?.node_name,
+                        destination_vehicle: form.destination_branch_code?.value || form?.destination_branch_code?.branch_code?.slice(0, 3),
+                        destination_vehicle_name: form.destination_branch_code?.label || form?.destination_branch_code?.node_name,
                         vehicle_name: form.vehicle_id?.vehicle_name,
                         vehicle_id: form.vehicle_id?.vehicle_id,
                         vehicle_type_id: form.vehicle_id?.vehicle_type_id,
@@ -295,10 +521,6 @@ export default {
                         etd_vehicle: form.etd,
                         eta_vehicle: form.eta
                     };
-                }
-                if (data.vehicle_type_id == 2 && data.pic_employee_id === '') {
-                    this.openNotification('warning', '', 'Failed', 'Driver belum dipilih. Silahkan pilih driver terlebih dahulu');
-                    return
                 }
                 if (data.etd_vehicle > data.eta_vehicle) {
                     this.openNotification('warning', '', 'Failed', 'ETD tidak boleh lebih besar dari ETA');
@@ -318,6 +540,9 @@ export default {
                 }
             } else if (this.navActive === 'k-NEW-MANUAL') {
                 this.$refs.formSuratMuatanVehicleController.handleSubmit(); 
+            } else if (this.navActive === 'k-NEW-SCHEDULE') {
+                this.$emit('updateVehicleValueBySchedule', this.vehicle, this.vehicle_form);
+                this.cancel();
             }
         },
         async getVehicle(query) {
@@ -341,69 +566,6 @@ export default {
                 const res = await axios.get(`${this.URL.manifest_vehicle}/${this.listenManifestNumber}?n=${this.listenNodeId}`, this.Helper.header());
 
                 let arr = res.data.data;
-                
-                // NOTES: BELOW FOR RADIO - FORM
-                // const revamp_arr = arr.map(item => ({
-                //     key: item.manifest_vehicle_log_id,
-                //     state: [
-                //         {
-                //             label: '',
-                //             key: 'label',
-                //             value: item.status_flight,
-                //             typeInput: 'badge',
-                //             width: "12"
-                //         },
-                //         {
-                //             label: 'Origin*',
-                //             key: 'origin',
-                //             value: `${item.origin_branch_name} (${item.origin_branch_code})`,
-                //             typeInput: 'text',
-                //             width: "6"
-                //         },
-                //         {
-                //             label: 'Destination*',
-                //             key: 'destination',
-                //             value: `${item.destination_branch_name} (${item.destination_branch_code})`,
-                //             typeInput: 'text',
-                //             width: "6"
-                //         },
-                //         {
-                //             label: 'Flight Number',
-                //             key: 'flight_number',
-                //             value: item.flight_number,
-                //             typeInput: 'text',
-                //             width: "6"
-                //         },
-                //         {
-                //             label: 'Flight Schedule',
-                //             key: 'flight_schedule',
-                //             value: item.flight_schedule,
-                //             typeInput: 'text',
-                //             width: "6"
-                //         },
-                //         {
-                //             label: 'Vehicle',
-                //             key: 'vehicle',
-                //             value: item.vehicle_name,
-                //             typeInput: 'text',
-                //             width: "4"
-                //         },
-                //         {
-                //             label: 'ETD',
-                //             key: 'etd',
-                //             value: item.etd,
-                //             typeInput: 'text',
-                //             width: "4"
-                //         },
-                //         {
-                //             label: 'ETA',
-                //             key: 'eta',
-                //             value: item.eta,
-                //             typeInput: 'text',
-                //             width: "4"
-                //         }
-                //     ]
-                // }));
 
                 // NOTES: BELOW FOR RADIO - CARD
                 const revamp_arr = arr.map(item => ({
@@ -530,10 +692,22 @@ export default {
             if (info?.key) {
                 switch (info.key) {
                     case "origin_branch_code":
-                        this.autoComplateUrl = `${this.URL.airports_list}?n=${this.listenNodeId}`;
-                        break;
                     case "destination_branch_code":
-                        this.autoComplateUrl = `${this.URL.airports_list}?n=${this.listenNodeId}`;
+                        // TODO: ADJUST LATER IF NEEDED
+                        switch(this.listenManifestMethod){
+                            case 1:
+                                this.autoComplateUrl = `${this.URL.airports_list}?n=${this.listenNodeId}`;
+                                break;
+                            case 2:
+                                this.autoComplateUrl = `${this.URL.branch_list_v2}?n=${this.listenNodeId}`;
+                                break;
+                            case 3:
+                                this.autoComplateUrl = `${this.URL.branch_list_v2}?n=${this.listenNodeId}`;
+                                break;
+                            case 4:
+                                this.autoComplateUrl = `${this.URL.branch_list_v2}?n=${this.listenNodeId}`;
+                                break;
+                        }
                         break;
                     case "employee_driver_id":
                         this.autoComplateUrl = `${this.URL.employee}/driver?n=${this.listenNodeId}`;
@@ -551,7 +725,7 @@ export default {
                 const res = await axios.get(this.autoComplateUrl + `&s=${queryString}`, this.Helper.header());
                 const result = res.data.data || [];
                 const suggestions = result.map(item => {
-                    const value = item.label || item.vehicle_name || item.employee_name || '';
+                    const value = item.label || item.vehicle_name || item.employee_name || item.node_name || '';
                     return { value, data: item };
                 });
                 cb(suggestions);
@@ -590,9 +764,158 @@ export default {
             this.vehicle_data = {};
             this.origin_data = {};
             this.destination_data = {};
+            this.dataTable = [];
+            this.vehicle = [];
+            this.vehicle_form = [];
+            this.selectedData = [];
 
             this.handleClearForm();
-        }
+        },
+        async getTableData(limit, page, q, from, to, searchBy) {
+            this.loadingTableData = true
+
+            let query = q || '';            
+            let startDate = from || "";
+            let endDate = to || "";
+            
+            try {
+                const res = await axios.get(`${this.URL.schedule}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&filter_date_by=etd&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}&vehicle_type=${this.listenManifestMethod}`, this.Helper.header());
+
+                if(res.data.data.length > 0) {
+                    let arr = res.data.data;
+                    arr.map(item => {
+                        item,
+                        item["origin"] = item?.origin_name + "\n" + item?.origin_point;
+                        item["destination"] = item?.destination_name + "\n" + item?.destination_point;
+                        item["etd_formatted"] = item?.etd + " " + item?.etd_timezone;
+                        item["eta_formatted"] = item?.eta + " " + item?.eta_timezone;
+                    })
+                    
+                    this.dataTable = arr
+                    this.pagination = {
+                        page: res.data.meta.current_page,
+                        limit: parseInt(res.data.meta.per_page, 10),
+                        page_size: res.data.meta.last_page,
+                    };
+                } else {
+                    this.dataTable = [];
+                }  
+                
+            } catch (err) {
+                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loadingTableData = false;
+            }
+        },
+        refresh() {
+            const isTempSearchEmpty = this.tempSearch === "";
+            const isDateRangeEmpty = !this.dateRange || this.dateRange.length === 0;
+
+            if (isTempSearchEmpty && isDateRangeEmpty) {
+                this.dataTable = [];
+            } else {
+                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.dateRange?.[0] || null, this.dateRange?.[1] || null, this.searchBy);
+            }
+        },
+        actionLimit(val){
+            this.pagination.limit = val
+            this.pagination.page = 1
+            this.refresh()
+        },
+        actionPagination(val) {
+            this.pagination.page = val
+            this.refresh()
+        },
+        updateSelected(val, checkedItem) {
+            // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING CHECKBOX (k-NEW-SCHEDULE)
+            if (val.shipment_schedule_id === this.selected_manifest_vehicle) this.selected_manifest_vehicle = '';
+
+            if (this.selected_manifest_vehicle === '') this.selected_manifest_vehicle = checkedItem?.[0]?.shipment_schedule_id;
+
+            this.vehicle = checkedItem.map((item, idx) => ({
+                key: item?.shipment_schedule_id,
+                state: {
+                    shipment_schedule_id: item?.shipment_schedule_id,
+                    origin_vehicle: item?.origin_name || "",
+                    destination_vehicle: item?.destination_name || "",
+                    origin_vehicle_tlc: this.getTLC(item?.origin_name) || "",
+                    destination_vehicle_tlc: this.getTLC(item?.destination_name) || "",
+                    vehicle_id: item?.vehicle_name || "",
+                    pic_employee_id: "",
+                    flight_number: item?.shipment_number || "",
+                    flight_schedule: item?.etd || "",
+                    flight_schedule_timezone: item?.etd_timezone || "",
+                    etd_vehicle: item?.etd || "",
+                    etd_vehicle_timezone: item?.etd_timezone || "",
+                    eta_vehicle: item?.eta || "",
+                    eta_vehicle_timezone: item?.eta_timezone || "",
+                    is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
+                }
+            }));
+
+            this.vehicle_form = checkedItem.map((item, idx) => ({
+                key: item?.shipment_schedule_id,
+                state: {
+                    shipment_schedule_id: item?.shipment_schedule_id,
+                    origin_branch_code: this.getTLC(item?.origin_name) || "",
+                    destination_branch_code: this.getTLC(item?.destination_name) || "",
+                    vehicle_id: item?.vehicle_id || "",
+                    flight_number: item?.shipment_number || "",
+                    etd: item?.etd || "",
+                    etd_timezone: item?.etd_timezone || "",
+                    eta: item?.eta || "",
+                    eta_timezone: item?.eta_timezone || "",
+                    is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
+                }
+            }));
+
+            if (checkedItem.length === 0) this.selected_manifest_vehicle = '';
+        },
+        onRowClickCallback(event, val, checkedItem) {
+            // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING ROW (k-NEW-SCHEDULE)
+            if (val.shipment_schedule_id === this.selected_manifest_vehicle) this.selected_manifest_vehicle = '';
+
+            if (this.selected_manifest_vehicle === '') this.selected_manifest_vehicle = checkedItem?.[0]?.shipment_schedule_id;
+
+            this.vehicle = checkedItem.map((item, idx) => ({
+                key: item?.shipment_schedule_id,
+                state: {
+                    shipment_schedule_id: item?.shipment_schedule_id,
+                    origin_vehicle: item?.origin_name || "",
+                    destination_vehicle: item?.destination_name || "",
+                    origin_vehicle_tlc: this.getTLC(item?.origin_name) || "",
+                    destination_vehicle_tlc: this.getTLC(item?.destination_name) || "",
+                    vehicle_id: item?.vehicle_name || "",
+                    pic_employee_id: "",
+                    flight_number: item?.shipment_number || "",
+                    flight_schedule: item?.etd || "",
+                    flight_schedule_timezone: item?.etd_timezone || "",
+                    etd_vehicle: item?.etd || "",
+                    etd_vehicle_timezone: item?.etd_timezone || "",
+                    eta_vehicle: item?.eta || "",
+                    eta_vehicle_timezone: item?.eta_timezone || "",
+                    is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
+                }
+            }));
+
+            this.vehicle_form = checkedItem.map((item, idx) => ({
+                key: item?.shipment_schedule_id,
+                state: {
+                    shipment_schedule_id: item?.shipment_schedule_id,
+                    origin_branch_code: this.getTLC(item?.origin_name) || "",
+                    destination_branch_code: this.getTLC(item?.destination_name) || "",
+                    vehicle_id: item?.vehicle_id || "",
+                    flight_number: item?.shipment_number || "",
+                    etd: item?.etd || "",
+                    etd_timezone: item?.etd_timezone || "",
+                    eta: item?.eta || "",
+                    eta_timezone: item?.eta_timezone || "",
+                    is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
+                }
+            }));
+
+            if (checkedItem.length === 0) this.selected_manifest_vehicle = '';
+        },
     },
     mounted() {
         this.handlePrintShortcut(this.print)

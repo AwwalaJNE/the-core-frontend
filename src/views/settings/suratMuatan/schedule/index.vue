@@ -1,9 +1,9 @@
 <template>
     <div>
         <vs-row justify="space-between">
-            <vs-col xs="12" sm="12" lg="6">
+            <vs-col xs="12" sm="12" lg="12">
                 <vs-row>
-                    <vs-col xs="6" sm="3" lg="3">
+                    <vs-col xs="6" sm="3" lg="2">
                         <div class="select-surat-muatan-schedule">
                             <selector 
                                 formKey="filter_status"
@@ -14,7 +14,7 @@
                             />
                         </div>
                     </vs-col>
-                    <vs-col xs="6" sm="3" lg="3">
+                    <vs-col xs="6" sm="3" lg="2">
                         <select-search-by 
                             :border="true"
                             :isMultiple="false" 
@@ -23,7 +23,7 @@
                             @updateSearchBy="updateFilterDateBy"
                         />
                     </vs-col>
-                    <vs-col xs="12" sm="6" lg="6">
+                    <vs-col xs="12" sm="6" lg="4">
                         <date-time 
                             formKey="date_range"
                             :name="''" 
@@ -32,22 +32,6 @@
                             typeInput="daterange" 
                             @updateValue="updateValue" 
                         />
-                    </vs-col>
-                </vs-row>
-            </vs-col>
-            <vs-col xs="12" sm="12" lg="6">
-                <vs-row justify="end">
-                    <vs-col xs="6" sm="8" lg="4">
-                        <select-search-by 
-                        :isMultiple="false" 
-                        :border="true" 
-                        :selectedValue="searchBySchedule" 
-                        :valueData="searchParamsSchedule" 
-                        @updateSearchBy="updateSearchBy"
-                        />
-                    </vs-col>
-                    <vs-col xs="6" sm="4" lg="4">
-                        <search-input ref="searchInput" @searchValue="searchValueHandler" />
                     </vs-col>
                 </vs-row>
             </vs-col>
@@ -163,11 +147,11 @@ export default {
                     key: "eta",
                     width: "auto",
                 },
-                {
-                    label: "Vehicle Info",
-                    key: "vehicle_information",
-                    width: "auto",
-                },
+                // {
+                //     label: "Vehicle Info",
+                //     key: "vehicle_information",
+                //     width: "auto",
+                // },
                 {
                     label: "Reg No",
                     key: "registration_number",
@@ -233,29 +217,6 @@ export default {
                     value: '4'
                 }
             ],
-            searchBySchedule: "vehicle_name",
-            searchParamsSchedule: [
-                {
-                    label: "Vehicle",
-                    value: "vehicle_name",
-                },
-                {
-                    label: "Origin",
-                    value: "origin",
-                },
-                {
-                    label: "Destination",
-                    value: "destination",
-                },
-                {
-                    label: "Vehicle Info",
-                    value: "vehicle_info",
-                },
-                {
-                    label: "Reg No",
-                    value: "registration_number",
-                }
-            ],
         }
     },
     computed: {
@@ -280,17 +241,10 @@ export default {
         },
     },
     methods: {
-       updateSearchBy(key, val) {
-            this.searchBySchedule = val;
-        },
-        searchValueHandler(val) {
-            this.searchValue = val;
-            this.refresh();
-        },
         refresh(){
-            this.getTableData(this.pagination.limit, this.pagination.page, this.searchValue, this.dateRange[0], this.dateRange[1], this.searchBySchedule)
+            this.getTableData(this.pagination.limit, this.pagination.page, this.searchValue, this.dateRange[0], this.dateRange[1], this.searchBy)
         },
-       updateValue(key, val, info){
+        updateValue(key, val, info){
             switch(key) {
                 case "filter_status":
                     this.filterVehicleTypeBy = val;
@@ -315,7 +269,6 @@ export default {
         const query = q || this.searchValue || '';
         const startDate = from || this.startDate || '';
         const endDate = to || this.endDate || '';
-        const searchColumn = searchBy !== undefined ? searchBy : this.searchBySchedule;
 
         try {
             const res = await axios.get(this.URL.schedule, {
@@ -329,7 +282,7 @@ export default {
                 filter_date_by: this.filterDateBy,
                 start_date: startDate,
                 end_date: endDate,
-                search_by: searchColumn,
+                search_by: searchBy,
                 vehicle_type: this.filterVehicleTypeBy !== "ALL" ? this.filterVehicleTypeBy : undefined
             }
             });
@@ -366,11 +319,9 @@ export default {
             switch (ref) {
                 case 'dialog_edit':
                     this.dialogEditActive = false;
-                    this.refresh();
                     break;
                 case 'dialog_remove':
                     this.dialogRemoveActive = false;
-                    this.refresh();
                     break;
                 default:
                     break;

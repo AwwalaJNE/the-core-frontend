@@ -1,13 +1,5 @@
 <template>
     <div>
-        <vs-row justify="space-between">
-            <vs-col xs="12" sm="6" lg="4">
-                <div class="titlePage">
-                    <breadcrumb />
-                    <h2>{{ title }}</h2>
-                </div>
-            </vs-col>
-        </vs-row>
         <section>
             <vs-row justify="space-around">
                 <vs-col vs-type="flex" vs-justify="center" vs-align="center">
