@@ -14,7 +14,7 @@
                     @formData="formData"
                     :dataItem="listenDataItem"
                     typeForm="vehicle"
-
+                    :data-testid="`form`"
                     :querySearch="querySearch"
                     @onChangeCustom="onFormChanged"
                 />
@@ -30,6 +30,7 @@
                     danger
                     flat
                     :active="true"
+                    :data-testid="`cancel-button`"
                     @click="cancel"
                     >
                         Cancel
@@ -42,6 +43,7 @@
                     flat
                     :active="true"
                     type="submit"
+                    :data-testid="`submit-button`"
                     @click="handleSubmit"
                     >
                         {{btnBlue || 'Add'}}

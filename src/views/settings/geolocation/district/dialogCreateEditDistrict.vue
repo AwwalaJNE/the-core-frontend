@@ -13,6 +13,7 @@
                     ref="formGeoLocationDistrictController"
                     @formData="formData"
                     :dataItem="listenDataItem"
+                    :data-testid="`form`"
                     typeForm="geolocation_district"
                 />
             </div>

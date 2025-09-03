@@ -13,6 +13,7 @@
                     ref="formTariffController"
                     @formData="formData"
                     :dataItem="listenDataItem"
+                    :data-testid="`form`"
                     typeForm="tariff"
                 />
             </div>
@@ -27,6 +28,7 @@
                     danger
                     flat
                     :active="true"
+                    :data-testid="`cancel-button`"
                     @click="cancel"
                     >
                         Cancel
@@ -39,6 +41,7 @@
                     flat
                     :active="true"
                     type="submit"
+                    :data-testid="`submit-button`"
                     @click="handleSubmit"
                     >
                         {{btnBlue || 'Add'}}
