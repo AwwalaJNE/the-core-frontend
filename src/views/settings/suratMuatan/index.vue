@@ -15,6 +15,7 @@
                                 flat
                                 block
                                 :active="true"
+                                :data-testid="`create-button-${navActive}`"
                                 @click="openDialog"
                             > 
                                 <i class="bx bx-plus"></i> New
@@ -27,6 +28,7 @@
                                 flat
                                 block
                                 :active="true"
+                                :data-testid="`sync-button-${navActive}`"
                                 @click="openSyncDialog"
                             > 
                                 Sync API
@@ -37,6 +39,7 @@
                                 flat
                                 block
                                 :active="true"
+                                :data-testid="`create-button-${navActive}`"
                                 @click="openDialog"
                             > 
                                 <i class="bx bx-plus"></i> New

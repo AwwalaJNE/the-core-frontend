@@ -18,6 +18,7 @@
                     :querySearch1="getDataOrigin"
                     :querySearch2="getDataDestination"
                     :permissionCreateSelect="checkPermission('create-sla-inter-activity')"
+                    :data-testid="`form`"
                 />
             </div>
         </template>
@@ -31,6 +32,7 @@
                         danger
                         flat
                         :active="true"
+                        :data-testid="`cancel-button`"
                         @click="cancel"
                     >
                         Cancel
@@ -43,6 +45,7 @@
                         flat
                         :active="true"
                         type="submit"
+                        :data-testid="`submit-button`"
                         @click="handleSubmit"
                     >
                         {{btnBlue || 'Add'}}

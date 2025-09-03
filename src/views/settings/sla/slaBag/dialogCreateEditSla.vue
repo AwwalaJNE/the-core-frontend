@@ -20,6 +20,7 @@
                     :querySearch1="getBagDataType"
                     :querySearch2="getReferenceEntity"
                     :querySearch3="getSlaType"
+                    :data-testid="`form`"
                     
                 />
             </div>
@@ -33,6 +34,7 @@
                         danger
                         flat
                         :active="true"
+                        :data-testid="`cancel-button`"
                         @click="cancel"
                     >
                         Cancel
@@ -45,6 +47,7 @@
                         flat
                         :active="true"
                         type="submit"
+                        :data-testid="`submit-button`"
                         @click="handleSubmit"
                     >
                         {{btnBlue || 'Add'}}

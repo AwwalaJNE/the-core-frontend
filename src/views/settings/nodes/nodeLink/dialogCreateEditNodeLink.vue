@@ -15,6 +15,7 @@
                     @formData="formData"
                     :dataItem="listenDataItem"
                     :querySearch="querySearch"
+                    :data-testid="`form`"
                     @inputFocus="inputFocus"
                     typeForm="nodeLink"
                 />
@@ -30,6 +31,7 @@
                     danger
                     flat
                     :active="true"
+                    :data-testid="`cancel-button`"
                     @click="cancel"
                     >
                         Cancel
@@ -42,6 +44,7 @@
                     flat
                     :active="true"
                     type="submit"
+                    :data-testid="`submit-button`"
                     @click="handleSubmit"
                     >
                         {{btnBlue || 'Add'}}
