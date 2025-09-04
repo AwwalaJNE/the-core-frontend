@@ -112,9 +112,16 @@ const Master = {
                 progress: 'auto',
                 color: type,
                 position: 'top-right',
-                title: title,
-                text: msg,
-                width: '80%',
+                title: `
+                    <div style="padding-left: 2rem;">
+                        ${title}
+                    </div>
+                `,
+                text: `
+                    <div style="padding-left: 2rem;">
+                        ${msg}
+                    </div>
+                `,
                 icon: `
                     <div style="display: flex; flex-direction: column; align-items: center; min-width: 64px; margin-left: 30px;">
                         <i class="bx ${type === 'success' || type === 'success-with-notif' ? 'bx-select-multiple' : 'bx-error'}" style="font-size: 24px;"></i>
