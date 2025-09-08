@@ -19,6 +19,7 @@
                     :selectLabel="input_label"
                     :isNestedData="isNestedData"
                     :nestedKey="nestedKey"
+                    :data-testid="`form`"
                     @formData="formData"
                     @inputFocus="inputFocus"
                     @onChangeCustom="onChangeCustom"
@@ -34,6 +35,7 @@
                         danger
                         flat
                         :active="true"
+                        :data-testid="`cancel-button`"
                         @click="cancel"
                     >
                         Cancel
@@ -44,6 +46,7 @@
                         block
                         flat
                         :active="true"
+                        :data-testid="`submit-button`"
                         @click="handleSubmit"
                     >
                         {{btnBlue || 'Add'}}

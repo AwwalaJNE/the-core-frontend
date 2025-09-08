@@ -1601,6 +1601,7 @@
         <vs-col w="2">
           <vs-button
             @click="handleExportCSV"
+            :data-testid="`export-button`"
             >
               Export
             </vs-button>

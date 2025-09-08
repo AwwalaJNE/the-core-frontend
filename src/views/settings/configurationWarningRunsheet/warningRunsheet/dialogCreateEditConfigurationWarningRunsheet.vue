@@ -16,6 +16,7 @@
                     :dataItem="listenDataItem"
                     :asynchronousSelect_url="autoCompleteUrl"
                     :permissionCreateSelect="checkPermission('create-warning-koli-setting')"
+                    :data-testid="`form`"
                     @formData="formData"
                 />
             </div>
@@ -30,6 +31,7 @@
                         danger
                         flat
                         :active="true"
+                        :data-testid="`cancel-button`"
                         @click="cancel"
                     >
                         Cancel
@@ -42,6 +44,7 @@
                         flat
                         type="submit"
                         :active="true"
+                        :data-testid="`submit-button`"
                         @click="handleSubmit"
                     >
                         {{btnBlue || 'Add'}}

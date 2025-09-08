@@ -19,6 +19,7 @@
                     :selectLabel="input_label"
                     :isNestedData="isNestedData"
                     :nestedKey="nestedKey"
+                    :data-testid="`form`"
                     @formData="formData"
                     @inputFocus="inputFocus"
                     @onChangeCustom="onChangeCustom"

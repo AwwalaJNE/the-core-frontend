@@ -10,6 +10,7 @@
             <vs-select
               placeholder="Limit"
               v-model="limit_page"
+              :data-testid="`select-rows-per-page`"
               @change="actionLimit"
             >
               <vs-option
@@ -30,6 +31,7 @@
             v-model="current_page"
             :dotted-number="limit_page"
             :length="page_size"
+            :data-testid="`pagination`"
             @input="actionPagination"
           />
         </template>
@@ -38,6 +40,7 @@
             only-arrows
             v-model="current_page"
             :length="page_size"
+            :data-testid="`pagination`"
             @input="actionPagination"
           />
         </template>

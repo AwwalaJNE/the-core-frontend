@@ -15,6 +15,7 @@
                     ref="formDataController" 
                     typeForm="application_role"
                     :dataItem="listenDataItem"
+                    :data-testid="`form`"
                     @formData="formData"
                 />
             </div>
@@ -29,6 +30,7 @@
                         flat
                         transparent
                         :active="true"
+                        :data-testid="`cancel-button`"
                         @click="cancel"
                     >
                         Cancel
@@ -41,6 +43,7 @@
                         transparent
                         type="submit"
                         :active="true"
+                        :data-testid="`submit-button`"
                         @click="handleSubmit"
                     >
                         {{btnBlue || 'Add'}}
