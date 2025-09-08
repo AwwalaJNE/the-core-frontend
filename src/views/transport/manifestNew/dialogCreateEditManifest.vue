@@ -197,6 +197,7 @@
             title="Pilih Stock"
             :active="showSelectStockModal"
             :close="() => showSelectStockModal = false"
+            :mode="manifest_method_id"
             @selectManifest="handleSelectManifest"
         />
 
