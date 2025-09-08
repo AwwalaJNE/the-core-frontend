@@ -189,7 +189,7 @@ export default {
                 },  
                 {
                     label: "Created By",
-                    key: "created_by_user_name",
+                    key: "created_by_user",
                     width: "xs"
                 },                
                 {
@@ -242,6 +242,7 @@ export default {
                 .then(res => {
                     let arr = res.data.data
                     arr.map(item => {
+                        item["created_by_user"] = item?.koli?.[0]?.created_by_user || '-',
                         item["is_void_status"] = item.is_void == 1 ? 'YES' : '-'
                         item["is_cod"] = item.is_cod == 1 ? 'YES' : '-'
                         item['children_width'] = {
