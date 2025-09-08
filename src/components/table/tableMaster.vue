@@ -913,6 +913,7 @@
                           block
                           flat
                           size="small"
+                          :data-testid="`${actionItem.key}-button-${keyActionItem}`"
                           :disabled="listenDisableAction
                               ? listenDisableAction === true
                               : item.hasOwnProperty('isDisabled')
