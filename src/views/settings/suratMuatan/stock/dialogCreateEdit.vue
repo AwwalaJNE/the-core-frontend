@@ -462,7 +462,7 @@ export default {
                         origin_branch_code: form?.origin_vehicle?.value || form.origin_vehicle || "",
                         destination_branch_code: form?.destination_vehicle?.value || form.destination_vehicle || "",
                         vehicle_id: form?.vehicle_id || "",
-                        flight_number: form?.shipment_number || "",
+                        flight_number: form?.flight_number || "",
                         etd: form?.etd_vehicle || "",
                         etd_timezone: form?.etd_timezone || "WIB",
                         eta: form?.eta_vehicle || "",
