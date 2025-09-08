@@ -714,7 +714,6 @@
                   <vs-td
                     :key="key"
                     :class="[column.textAlign ? column.textAlign : '', item.width ? item.width : '']"
-                    class="manual-padding"
                     :style="column['textColor'] ? { color: column['textColor'] } : {}"
                   >
                     <template
@@ -2159,7 +2158,14 @@ export default {
   width: max-content !important;
   min-width: 100% !important;
   table-layout: auto;
+  white-space: nowrap; 
 }
+.vs-table-content th,
+.vs-table-content td,
+.vs-table-content td span {
+  white-space: nowrap;
+}
+
 .vs-table {
   table {
     width: max-content;
@@ -2287,7 +2293,6 @@ export default {
 
 span.text-link {
   display: inline-block;
-  padding-top: 18px;
   color: rgb(53, 92, 255);
   cursor: pointer;
 }
@@ -2297,7 +2302,6 @@ p.text-link {
 }
 span.text-danger {
   display: inline-block;
-  padding-top: 18px;
   color: rgba(255,71,87,255);
   cursor: pointer;
 }
@@ -2310,11 +2314,9 @@ span.text-danger {
     margin: 0.5rem 0 !important;
   }
 }
-.manual-padding {
-  padding-bottom: 0px;
-}
-.vs-table__th {
-  padding: 10px 5px !important;
+.vs-table__th,
+.vs-table__td {
+  padding: 1rem !important;
 }
 .greenBackground {
   background-color: rgb(21, 224, 21);
