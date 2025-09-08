@@ -31,7 +31,7 @@
             v-model="current_page"
             :dotted-number="limit_page"
             :length="page_size"
-            :data-testid="`pagination-button`"
+            :data-testid="`pagination`"
             @input="actionPagination"
           />
         </template>
@@ -40,7 +40,7 @@
             only-arrows
             v-model="current_page"
             :length="page_size"
-            :data-testid="`pagination-button`"
+            :data-testid="`pagination`"
             @input="actionPagination"
           />
         </template>
