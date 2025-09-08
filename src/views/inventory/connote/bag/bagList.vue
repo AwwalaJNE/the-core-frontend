@@ -275,7 +275,7 @@ export default {
                 },
                 {
                     label: "Created By",
-                    key: "created_by",
+                    key: "created_by_user",
                     width: "xs"
                 },
                 {
