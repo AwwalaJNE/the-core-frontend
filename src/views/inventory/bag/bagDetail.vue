@@ -448,7 +448,7 @@ export default {
       return this.$store.getters["getInputs"]["bagging"]["destination"]["dataArray"] || []
     },
     listenDataBag(){
-      return this.$ls.get('getDataBag')
+      return this.$ls.get('getDataBag') || {}
     }
   },
   watch: {
