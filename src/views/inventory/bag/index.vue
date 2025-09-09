@@ -348,8 +348,8 @@ export default {
               "value":"intercity"
             },
             {
-              "label":"Domestik",
-              "value":"domestik"
+              "label":"Domestic",
+              "value":"domestic"
             },
             {
               "label":"International",
