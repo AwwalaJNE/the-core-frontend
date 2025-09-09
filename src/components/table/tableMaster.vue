@@ -854,7 +854,8 @@
                     <template v-else>
                       <span>
                         <span 
-                          :style="column.isTransitTag && item[column.isTransitTag] === 1 ? { borderBottom: '1px solid #666' }  : {}"
+                          class="do-not-wrap"
+                          :style="column.isTransitTag && item[column.isTransitTag] === 1 ? { borderBottom: '1px solid #666'  }  : {}"
                         >
                           {{ item[column.key] 
                               ? column.type_amount 
@@ -2165,6 +2166,10 @@ export default {
 .vs-table-content td,
 .vs-table-content td span {
   white-space: nowrap;
+}
+
+.vs-table-content td span .do-not-wrap {
+  white-space: pre-line !important;
 }
 
 .vs-table {
