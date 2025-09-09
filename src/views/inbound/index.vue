@@ -279,13 +279,17 @@ export default {
                 value: 'SJ'
               },
               {
-                label: 'BAG',
-                value: 'BAG'
+                label: 'DO',
+                value: 'DO'
               },
               {
-                label: 'Receving Orion',
-                value: 'RECEIVING ORION'
-              }
+                label: 'HBAG',
+                value: 'HBAG'
+              },
+              {
+                label: 'MTS',
+                value: 'MTS'
+              },
             ],
             value: JSON.parse(localStorage.getItem("InboundFilters"))?.value || '-',
             arrValue: this.selectedValue ? this.selectedValue : [ {

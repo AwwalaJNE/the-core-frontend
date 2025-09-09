@@ -422,7 +422,7 @@ export default {
           ? [
               {
                 label: `${this.listenBreadcrumbCode} Type`,
-                key: "inbound_type",
+                key: "document_type",
                 width: "xxxs",
               },
             ]
