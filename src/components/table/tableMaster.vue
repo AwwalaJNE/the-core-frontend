@@ -854,7 +854,7 @@
                     <template v-else>
                       <span>
                         <span 
-                          class="do-not-wrap"
+                          :class="{ 'do-not-wrap': column.isTransitTag }"
                           :style="column.isTransitTag && item[column.isTransitTag] === 1 ? { borderBottom: '1px solid #666'  }  : {}"
                         >
                           {{ item[column.key] 
@@ -2168,7 +2168,7 @@ export default {
   white-space: nowrap;
 }
 
-.vs-table-content td span .do-not-wrap {
+.do-not-wrap {
   white-space: pre-line !important;
 }
 
