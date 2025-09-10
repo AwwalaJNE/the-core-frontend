@@ -422,7 +422,7 @@ export default {
           ? [
               {
                 label: `${this.listenBreadcrumbCode} Type`,
-                key: "inbound_type",
+                key: "document_type",
                 width: "xxxs",
               },
             ]
@@ -540,7 +540,7 @@ export default {
         },
         {
           label: "Created By",
-          key: "created_by_user_name",
+          key: "created_by_user",
           width: "auto",
         },
         {
@@ -565,7 +565,7 @@ export default {
         },
         {
           label: "Received By",
-          key: "received_by_user_name",
+          key: "received_by_user",
           width: "auto"
         },
         {

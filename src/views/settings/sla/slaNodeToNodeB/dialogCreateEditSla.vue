@@ -20,6 +20,7 @@
                     :querySearch2="getDataNodeDestination"
                     :querySearch3="getDataOrigin"
                     :permissionCreateSelect="checkPermission('create-sla-node-to-node-b')"
+                    :data-testid="`form`"
                 />
             </div>
         </template>
@@ -33,6 +34,7 @@
                         danger
                         flat
                         :active="true"
+                        :data-testid="`cancel-button`"
                         @click="cancel"
                     >
                         Cancel
@@ -45,6 +47,7 @@
                         flat
                         :active="true"
                         type="submit"
+                        :data-testid="`submit-button`"
                         @click="handleSubmit"
                     >
                         {{btnBlue || 'Add'}}

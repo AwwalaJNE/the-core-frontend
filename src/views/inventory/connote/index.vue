@@ -30,16 +30,6 @@
                                         </vs-col>
                                     </vs-row>
                                 </template>
-                                <template v-if="navActive === 'k-BAG'" >
-                                    <vs-row>
-                                        <vs-col vs-align="center" w="6">
-                                            <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateSearchByBag"  :selectedValue="searchByBag" :valueData="searchParamsBag"/>
-                                        </vs-col>
-                                        <vs-col vs-align="center" w="6">
-                                            <search-input ref="searchInput" @handleSearch="handleSearch" @searchValue="searchValue" :placeholder="searchPlaceholderBag" class="search-input"/>
-                                        </vs-col>
-                                    </vs-row>
-                                </template>
                             </vs-col>
                         </vs-row>
 
@@ -96,79 +86,6 @@
                                 <koli-list :ref="navActive" :dateFilter="tempDate" :query="tempSearch" :queryInventory="statusinventory" :queryBag="status_bag" :querySearch="searchBy" :queryDate="filterDateBy" />
                             </transition>
                         </template>
-                        <template v-if="navActive === 'k-BAG'">
-                            <vs-row align="center">
-                               <vs-col vs-align="center" xs="12" sm="6" lg="4">
-                                    <select-bag-origin
-                                        ref="bag_origin"
-                                        :isMultiple="false"
-                                        :border="true"
-                                        @updateBagOrigin="updateBagOrigin" 
-                                    />
-                                </vs-col>
-                                <vs-col vs-align="center" xs="12" sm="6" lg="4">
-                                    <select-bag-destination
-                                        ref="bag_destination"
-                                        :isMultiple="false"
-                                        :border="true"
-                                        @updateBagDestination="updateBagDestination" 
-                                    />
-                                </vs-col>
-                                <vs-col vs-align="center" xs="6" sm="6" lg="4">
-                                <select-bag-routing
-                                    ref="bag_routing"
-                                    :isMultiple="false"
-                                    :border="true"
-                                    @updateBagRouting="updateBagRouting" />
-                                </vs-col>
-                                <vs-col vs-align="center" xs="6" sm="4" lg="4">
-                                <select-bag-tipe
-                                    ref="bag_tipe"
-                                    :isMultiple="false"
-                                    :border="true"
-                                    @updateBagTipe="updateBagTipe" />
-                                </vs-col>
-                                <vs-col vs-align="center" xs="6" sm="4" lg="4">
-                                <select-bag-status
-                                    ref="bag_status"
-                                    :isMultiple="false"
-                                    :border="true"
-                                    @updateBagStatus="updateBagStatus" />
-                                </vs-col>
-                                <vs-col vs-align="center" xs="6" sm="4" lg="4">
-                                <select-bag-irreg
-                                    ref="bag_irreg"
-                                    :isMultiple="false"
-                                    :border="true"
-                                    @updateBagIrreg="updateBagIrreg" />
-                                </vs-col>
-                                <vs-col vs-align="center" xs="6" sm="4" lg="4">
-                                    <select-bag-source
-                                        ref="bag_source"
-                                        :isMultiple="false"
-                                        :border="true"
-                                        @updateBagSource="updateBagSource" />
-                                </vs-col>
-                                <vs-col vs-align="center" xs="12" sm="6" lg="4">
-                                    <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy"/>
-                                </vs-col>
-                                <vs-col xs="12" sm="6" lg="4">
-                                    <date-time
-                                        :name="''"
-                                        :rules="''"
-                                        :formKey="'DATE_TIME_WITHOUT_SECONDS'"
-                                        :valueData="tempDate"
-                                        typeInput="datetimerange"
-                                        @updateValue="searchDate" 
-                                    />
-                                </vs-col>
-                            
-                          </vs-row>
-                            <transition name="slide-fade">
-                                <bag-list :ref="navActive" :bagDestination="bagDestination" :bagOrigin="bagOrigin" :bagRouting="bagRouting" :bagTipe="bagTipe" :bagStatus="bagStatus" :bagIrreg="bagIrreg" :bagSource="bagSource" :query="tempSearch" :dateFilter="tempDate" :searchDateBy="filterDateBy" :searchBy="searchByBag"/>
-                            </transition>
-                        </template>
-                        
                     </div>
                 </vs-col>
                 
@@ -178,7 +95,6 @@
     </div>
 </template>
 <script>
-import axios from "axios";
 import master from "@/mixins/master"
 import TableMaster from "@/components/table/tableMaster.vue"
 import NavItem from "@/components/navbar/navTab"
@@ -190,13 +106,6 @@ import SelectInventoryVue from "@/views/inventory/connote/item/selectInventorySt
 import SelectSearchByConnote from "@/views/inventory/connote/item/selectSearchBy"
 import SelectSearchBy from "@/components/search/selectSearchBy"
 import SelectFilterDateBy from "@/views/inventory/connote/item/selectFilterDateBy"
-import SelectBagDestinationVue from "@/views/inventory/connote/bag/selectBagDestination"
-import SelectBagOrigin from "@/views/inventory/connote/bag/selectBagOrigin"
-import SelectBagRouting from "@/views/inventory/connote/bag/selectBagRouting"
-import SelectBagTipe from "@/views/inventory/connote/bag/selectBagTipe"
-import SelectBagStatus from "@/views/inventory/connote/bag/selectBagOpened"
-import SelectBagStatusIrreg from "@/views/inventory/connote/bag/selectBagIrreg"
-import SelectBagSource from "@/views/inventory/connote/bag/selectBagSource"
 import DateTime from "@/components/input/dateTime"
 import SelectBagStatusConnote from "@/views/inventory/connote/connote/selectBagStatus"
 import SelectInventoryConnote from "@/views/inventory/connote/connote/selectInventoryStatus"
@@ -208,8 +117,7 @@ import SelectFilterDateByConnote from "@/views/inventory/connote/connote/selectF
 import ConnoteList from "@/views/inventory/connote/connote/cnoteList"
 // Koli
 import KoliList from "@/views/inventory/connote/item/connoteList"
-// Bag
-import BagList from "@/views/inventory/connote/bag/bagList"
+
 
 export default {
     name:"Inventory Item",
@@ -221,20 +129,12 @@ export default {
         "search-input": SearchInput,
         "connote-list": ConnoteList,
         "koli-list": KoliList,
-        "bag-list": BagList,
         "selector": Selector,
         "select-status-bag": SelectBagStatusVue,
         "select-status-inventory": SelectInventoryVue,
         "select-search-by-connote": SelectSearchByConnote,
         "select-search-by": SelectSearchBy,
         "select-filter-date-by": SelectFilterDateBy,
-        "select-bag-destination": SelectBagDestinationVue,
-        "select-bag-origin": SelectBagOrigin,
-        "select-bag-routing": SelectBagRouting,
-        "select-bag-tipe": SelectBagTipe,
-        "select-bag-status": SelectBagStatus,
-        "select-bag-irreg": SelectBagStatusIrreg,
-        "select-bag-source": SelectBagSource,
         "date-time": DateTime,
         "select-status-bag-cnote": SelectBagStatusConnote,
         "select-status-inventory-cnote": SelectInventoryConnote,
@@ -254,11 +154,6 @@ export default {
                     key: "k-CONNOTE",
                     title: "Connote List"
                 },
-                {
-                    label: "BAG",
-                    key: "k-BAG",
-                    title: "Bag List"
-                }
             ],
             navActive: "k-KOLI",
             title: "Connote List",
@@ -276,56 +171,10 @@ export default {
             statusinventory:"",
             status_bag_cnote:"",
             statusinventorycnote:"",
-            bagDestination:"",
-            bagOrigin: "",
             searchBy:"connote",
-            searchByBag:"bag_number",
             searchByCnote:"connote",
             searchPlaceholder: "Search Koli",
-            searchPlaceholderBag: "Search Bag",
             searchPlaceholderCnote: "Search Connote",
-            searchParamsBag: [
-                {
-                    label: "Bag Number",
-                    value: "bag_number",
-
-                },
-                {
-                    label: "Bag Detail Qty",
-                    value: "bag_detail_qty",
-
-                },
-                {
-                    label: "Weight",
-                    value: "bag_weight",
-
-                },
-                {
-                    label: "Origin",
-                    value: "origin_tariff_code",
-
-                },
-                {
-                    label: "Destination",
-                    value: "destination_tariff_code",
-
-                },
-                {
-                    label: "Courier",
-                    value: "courier",
-
-                },
-                {
-                    label: "Surat Muatan",
-                    value: "sm",
-
-                },
-                {
-                    label: "Surat Jalan",
-                   value: "sj",
-
-                }
-            ],
             filterDateBy: "create",
             dateParams: [
                 {
@@ -341,11 +190,6 @@ export default {
                     value: 'received'
                 }
             ],
-            bagRouting:"",
-            bagTipe:"",
-            bagStatus: "",
-            bagIrreg: "",
-            bagSource: "",
             searchByDataType: false,
             searchByDataTypeCnote: false,
         }
@@ -368,10 +212,6 @@ export default {
             this.searchPlaceholder = key;
             this.searchByDataType = dataType;
         },
-        updateSearchByBag(key,val) {
-            this.searchByBag = val;
-            this.searchPlaceholderBag = key;
-        },
         updateSearchByCnote(key,val, dataType) {
             this.searchByCnote = val;
             this.searchPlaceholderCnote = key;
@@ -383,27 +223,6 @@ export default {
           if (this.tempDate.length !== 0) {
                 this.tempDate = [];
             }
-        },
-        updateBagDestination(key,val) {
-          this.bagDestination = val
-        },
-        updateBagOrigin(key,val) {
-          this.bagOrigin = val
-        },
-        updateBagRouting(key,val){
-            this.bagRouting = val
-        },
-        updateBagTipe(key,val){
-            this.bagTipe = val
-        },
-        updateBagStatus(key,val){
-            this.bagStatus = val
-        },
-        updateBagIrreg(key,val){
-            this.bagIrreg = val
-        },
-        updateBagSource(key,val){
-            this.bagSource = val
         },
         refresh(){
             let el = this.refreshInject
@@ -418,9 +237,6 @@ export default {
         clearSearch() {
             this.tempSearch = ""
             this.$refs.searchInput.clear()
-            if (this.navActive === 'k-BAG') {
-                this.filterDateBy = 'create'
-            }
             this.tempDate = []
         },
         activeTab(val) {

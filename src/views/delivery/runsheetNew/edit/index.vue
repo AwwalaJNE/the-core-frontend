@@ -220,7 +220,7 @@
                     </div>
                 </vs-col>
             </vs-row>
-            <vs-row justify="flex-end">
+            <vs-row justify="flex-end" style="padding-top: 40px;">
                 <template v-if="is_approve === '1'">
                     <vs-button
                         class="mt-1"
@@ -235,7 +235,7 @@
                 
                 <vs-button
                     class="mt-1"
-                    style="float: right"
+                    style="float: right;"
                     square
                     active
                     @click="back"

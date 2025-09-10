@@ -26,6 +26,7 @@
                     @focus="inputFocus"
                     :loading="loading"
                     :disabled="listenIsDisabled"
+                    :data-testid="`select-${formKey}`"
                 >
                         <template v-if="options.length > 0">
                             <el-option

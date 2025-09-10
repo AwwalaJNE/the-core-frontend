@@ -99,32 +99,32 @@ export default {
         {
           label: "Status",
           key: "status_with_tooltip",
-          width: "xxs",
+          width: "xxxs",
         },
         {
           label: "Received Bag",
           key: "total_received",
-          width: "xxxs",
+          width: "xxxxs",
         },
         {
           label: "Outstanding Bag",
           key: "total_outstanding",
-          width: "xxxs",
+          width: "xxxxs",
         },
         {
           label: "Type SM",
           key: "manifest_type_name",
-          width: "xxxxs",
+          width: "xxxs",
         },
         {
           label: "Flight Number",
           key: "flight_number",
-          width: "xxxxs",
+          width: "xxxs",
         },
         {
           label: "Vehicle",
           key: "formatted_vehicle",
-          width: "xxxs",
+          width: "sm",
         },
         {
           label: "Moda Transportasi",
@@ -135,17 +135,17 @@ export default {
         {
           label: "Origin",
           key: "origin_name",
-          width: "xxs",
+          width: "xs",
         },
         {
           label: "Destination",
           key: "destination_name",
-          width: "xxs",
+          width: "xs",
         },
         {
           label: "Actual Weight",
           key: "actual_weight",
-          width: "auto",
+          width: "xxxxs",
         },
         // {
         //   label: "Fix Cost Weight",
@@ -181,34 +181,34 @@ export default {
           label: "Approved",
           key: "approved",
           type: "status",
-          width: "auto",
+          width: "xxxxs",
         },
         {
           label: "Received At",
           key: "latest_node_receiver",
-          width: "xxxs",
+          width: "sm",
         },
         {
           label: "Total Irregularity",
           key: "total_irregularity",
-          width: "xxxs",
+          width: "xxxxs",
           textAlign: "center",
           textColor: "red",
         },
         {
           label: "Total Master Bag",
           key: "total_masterbag",
-          width: "xxxs",
+          width: "xxxxs",
         },
         {
           label: "Total Bag",
           key: "total_bag",
-          width: "xxxs",
+          width: "xxxxs",
         },
         {
           label: "Total Connote",
           key: "total_connote",
-          width: "xxxs",
+          width: "xxxxs",
         },
         {
           label: "Created Date",
@@ -217,7 +217,7 @@ export default {
         },
         {
           label: "Created By",
-          key: "created_by_user_name",
+          key: "created_by_user",
           width: "xxxxs",
         },
       ],

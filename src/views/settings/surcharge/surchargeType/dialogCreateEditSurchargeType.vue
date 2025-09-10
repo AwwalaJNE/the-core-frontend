@@ -13,6 +13,7 @@
                     ref="formSurchargeTypeController"
                     @formData="formData"
                     :dataItem="listenDataItem"
+                    :data-testid="`form`"
                     typeForm="surcharge_type"
                 />
             </div>
@@ -27,6 +28,7 @@
                     danger
                     flat
                     :active="true"
+                    :data-testid="`cancel-button`"
                     @click="cancel"
                     >
                         Cancel
@@ -38,6 +40,7 @@
                     block
                     flat
                     :active="true"
+                    :data-testid="`submit-button`"
                     type="submit"
                     @click="handleSubmit"
                     >

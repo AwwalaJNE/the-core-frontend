@@ -13,6 +13,7 @@
                     ref="formUserRoleController"
                     @formData="formData"
                     :dataItem="listenDataItem"
+                    :data-testid="`form`"
                     typeForm="role"
                 />
             </div>

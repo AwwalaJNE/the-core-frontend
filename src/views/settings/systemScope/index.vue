@@ -14,6 +14,7 @@
                             flat
                             block
                             :active="true"
+                            :data-testid="`create-button-${navActive}`"
                             @click="openDialog"
                         > 
                             <i v-if="navActive !== 'role-permission'" class="bx bx-plus"></i> 

@@ -206,7 +206,7 @@ export default {
             validator: v => ['api', 'prefill', 'prefill-stock'].includes(v)
         },
         updateVehicleValue: Function,
-        updateVehicleValueBySchedule: Function
+        updateVehicleValueBySchedule: Function,
     },
     data() {
         return {
@@ -525,6 +525,13 @@ export default {
                 if (data.etd_vehicle > data.eta_vehicle) {
                     this.openNotification('warning', '', 'Failed', 'ETD tidak boleh lebih besar dari ETA');
                     return
+                }
+
+                if (this.listenManifestMethod == 1) {
+                    if (data.flight_number === "") {
+                        this.openNotification('warning', '', 'Failed', 'Flight Number tidak boleh kosong');
+                        return
+                    }
                 }
 
                 this.$emit('updateVehicleValue', data);

@@ -714,7 +714,6 @@
                   <vs-td
                     :key="key"
                     :class="[column.textAlign ? column.textAlign : '', item.width ? item.width : '']"
-                    class="manual-padding"
                     :style="column['textColor'] ? { color: column['textColor'] } : {}"
                   >
                     <template
@@ -855,7 +854,8 @@
                     <template v-else>
                       <span>
                         <span 
-                          :style="column.isTransitTag && item[column.isTransitTag] === 1 ? { borderBottom: '1px solid #666' }  : {}"
+                          :class="{ 'do-not-wrap': column.isTransitTag }"
+                          :style="column.isTransitTag && item[column.isTransitTag] === 1 ? { borderBottom: '1px solid #666'  }  : {}"
                         >
                           {{ item[column.key] 
                               ? column.type_amount 
@@ -914,6 +914,7 @@
                           block
                           flat
                           size="small"
+                          :data-testid="`${actionItem.key}-button-${keyActionItem}`"
                           :disabled="listenDisableAction
                               ? listenDisableAction === true
                               : item.hasOwnProperty('isDisabled')
@@ -1601,6 +1602,7 @@
         <vs-col w="2">
           <vs-button
             @click="handleExportCSV"
+            :data-testid="`export-button`"
             >
               Export
             </vs-button>
@@ -2155,8 +2157,21 @@ export default {
 </script>
 <style lang="scss">
 .vs-table-content > .vs-table > table {
+  width: max-content !important;
   min-width: 100% !important;
+  table-layout: auto;
+  white-space: nowrap; 
 }
+.vs-table-content th,
+.vs-table-content td,
+.vs-table-content td span {
+  white-space: nowrap;
+}
+
+.do-not-wrap {
+  white-space: pre-line !important;
+}
+
 .vs-table {
   table {
     width: max-content;
@@ -2284,7 +2299,6 @@ export default {
 
 span.text-link {
   display: inline-block;
-  padding-top: 18px;
   color: rgb(53, 92, 255);
   cursor: pointer;
 }
@@ -2294,7 +2308,6 @@ p.text-link {
 }
 span.text-danger {
   display: inline-block;
-  padding-top: 18px;
   color: rgba(255,71,87,255);
   cursor: pointer;
 }
@@ -2307,11 +2320,9 @@ span.text-danger {
     margin: 0.5rem 0 !important;
   }
 }
-.manual-padding {
-  padding-bottom: 0px;
-}
-.vs-table__th {
-  padding: 10px 5px !important;
+.vs-table__th,
+.vs-table__td {
+  padding: 1rem !important;
 }
 .greenBackground {
   background-color: rgb(21, 224, 21);

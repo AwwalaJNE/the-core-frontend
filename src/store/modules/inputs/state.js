@@ -2546,8 +2546,8 @@ export default {
           "value":"intercity"
         },
         {
-          "label":"Domestik",
-          "value":"domestik"
+          "label":"Domestic",
+          "value":"domestic"
         },
         {
           "label":"International",
@@ -2766,16 +2766,16 @@ export default {
       width: '2',
       isDisabled: false,
     },
-    is_active: {
-      label: "Active|Unactive",
-      key: "is_active",
-      rule: "",
-      typeInput: "Boolean",
-      typeData: "Boolean",
-      valueData: true,
-      value: true,
-      isDisabled: false,
-    },
+    // is_active: {
+    //   label: "Active|Unactive",
+    //   key: "is_active",
+    //   rule: "",
+    //   typeInput: "Boolean",
+    //   typeData: "Boolean",
+    //   valueData: true,
+    //   value: true,
+    //   isDisabled: false,
+    // },
   },
 
   surat_muatan_schedule: {

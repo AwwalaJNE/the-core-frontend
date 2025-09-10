@@ -60,8 +60,8 @@ export default {
           value: 'INTERCITY'
         },
         {
-          label: 'Domestik',
-          value: 'DOMESTIK'
+          label: 'Domestic',
+          value: 'DOMESTIC'
         },
         {
           label: 'International',

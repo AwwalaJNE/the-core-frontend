@@ -11,6 +11,7 @@
                                 v-model="filterStatusBy"
                                 :border="true"
                                 :multiple="false"
+                                :data-testid="`select-status`"
                                 @change="updateFilterStatus"
                             >
                             <template v-if="filterStatus.length > 1">
