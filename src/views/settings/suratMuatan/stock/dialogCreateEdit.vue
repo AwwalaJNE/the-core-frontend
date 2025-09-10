@@ -24,6 +24,7 @@
                         :dataItem="dataItem"
                         :querySearch="querySearch"
                         :data-testid="`form`"
+                        :isDisabled="is_edit && !edit_data.is_active"
                         @formData="formData"
                     />
 
@@ -77,7 +78,7 @@
                         </template>
                     </template>
                     <template v-else>
-                        <vs-row justify="space-between">
+                        <vs-row justify="space-between" align="center">
                             <h3 class="title">Active Vehicle</h3>
                             <vs-button
                                 shadow
@@ -102,7 +103,7 @@
                 </div>
             </template>
 
-            <template v-slot:footer>
+            <template v-slot:footer v-if="!is_edit || edit_data.is_active">
                 <vs-row justify="flex-end">
                     <vs-col w="3">
                         <vs-button
@@ -313,7 +314,7 @@ export default {
                     is_active: item.is_active ? 1 : 0
                 }));
             }
-            formWithoutId.is_active = formWithoutId.is_active === true ? "1" : "0";
+            // formWithoutId.is_active = formWithoutId.is_active === true ? "1" : "0";
             formWithoutId.schedule_id = this.vehicle.find(item => item?.state?.is_active)?.state?.shipment_schedule_id || this.edit_data?.schedule_id || null; // TODO: CONFIRM AGAIN
 
             this.form = formWithoutId;

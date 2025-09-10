@@ -212,7 +212,7 @@ export default {
                     width: "xxxxs"
                 },
                 {
-                    label: "Active",
+                    label: "Available",
                     key: "is_active",
                     width: "auto",
                     type: "boolean|disabled",
