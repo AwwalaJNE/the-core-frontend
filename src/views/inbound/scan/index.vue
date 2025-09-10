@@ -158,6 +158,7 @@
                       :actionPagination="actionPagination"
                       :receivingLogs="receivingLogs"
                       :inboundNumber="inboundNumber"
+                      @refresh="refresh"
                     />
                   </transition>
                 </div>
