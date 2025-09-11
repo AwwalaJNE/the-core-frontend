@@ -854,7 +854,9 @@
                     <template v-else>
                       <span>
                         <span 
-                          :class="{ 'do-not-wrap': column.isTransitTag }"
+                          :class="{ 
+                            'do-not-wrap': column.isTransitTag || typeof item[column.key] === 'string' && item[column.key].includes('\n')
+                          }"
                           :style="column.isTransitTag && item[column.isTransitTag] === 1 ? { borderBottom: '1px solid #666'  }  : {}"
                         >
                           {{ item[column.key] 
