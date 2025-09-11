@@ -47,7 +47,7 @@
                             :loading="loading"
                             :selectedValue="removeKoliCode"
                             :isMultiple="false"
-                            :disabled="false"
+                            :disabled="!hasPermission('delete-irregularity')"
                             :isAllowCreate="true"
                             @updateValue="updateValue"  
                         />
@@ -57,6 +57,7 @@
                     <vs-button
                         danger
                         :active="true"
+                        :disabled="!hasPermission('delete-irregularity')"
                         @click="actionRemoveBulk"
                     >
                         Remove
@@ -114,6 +115,7 @@
                         :limit="pagination.limit"
                         :hasAction="true"
                         :hasPagination="true"
+                        :isAllowedRemove="hasPermission('delete-irregularity')"
                         @actionLimit="actionLimit"
                         @actionPagination="actionPagination"
                         @actionUpdate="editIrreg"

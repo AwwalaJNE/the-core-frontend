@@ -996,6 +996,7 @@
                       :active="true"
                       type="submit"
                       :data-testid="`remove-button-${key}`"
+                      :disabled="!isAllowedRemove"
                       @click="actionRemove(item)"
                     >
                       <span>Remove</span>
@@ -1037,6 +1038,7 @@
                       flat
                       :active="true"
                       type="submit"
+                      :disabled="!isAllowedRemove"
                       @click="actionRemove(item)"
                     >
                       <span>Remove</span>
@@ -1078,7 +1080,7 @@
                       :active="true"
                       :disabled="
                         item.hasOwnProperty('isDisabled') &&
-                          item.isDisabled == true
+                          item.isDisabled == true && !isAllowedRemove
                       "
                       type="submit"
                       @click="actionRemove(item)"
@@ -1123,7 +1125,7 @@
                       :active="true"
                       :disabled="
                         item.hasOwnProperty('isDisabled') &&
-                          item.isDisabled == true
+                          item.isDisabled == true && !isAllowedRemove
                       "
                       type="submit"
                       @click="actionRemove(item)"
@@ -1659,6 +1661,10 @@ export default {
     hasSelectValue: String,
     hasDuplicateEditRemove: Boolean,
     hasPagination: Boolean,
+    isAllowedRemove: {
+      type: Boolean,
+      default: true
+    },
     expandable: Boolean,
     hasLinkedDanger: String,
     textDanger: String,
