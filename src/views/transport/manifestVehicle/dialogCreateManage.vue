@@ -764,6 +764,7 @@ export default {
             this.closeDialog();
         },
         moveTab() {
+            this.selected_manifest_vehicle = "";
             this.hasFlightNumber = false;
             this.is_found = false;
             this.flightNumber = "";
