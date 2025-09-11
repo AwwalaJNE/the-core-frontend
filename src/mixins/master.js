@@ -581,7 +581,11 @@ const Master = {
             if (anyMatch) return anyMatch[1];
 
             return null;
-        }
+        },
+        hasPermission(permission) {
+            const permissions = this.listenPermissions?.core || [];
+            return permissions.includes(permission);
+        },
     },
     mounted() {
         this.checkIfMobile();

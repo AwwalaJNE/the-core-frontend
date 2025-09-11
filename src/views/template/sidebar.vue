@@ -444,7 +444,7 @@ export default {
               label: "Receiving & Inventory",
               url: "/tracing-outstanding",
               icon: "bx bxs-checkbox",
-              permission: "read-irreg",
+              permission: "read-irregularity",
               meta: {
                 resource_type: resourceLookup["TRACING"].resource_type,
                 resource_code: resourceLookup["TRACING"].resource_code,
@@ -455,7 +455,7 @@ export default {
               label: "Archive",
               url: "/tracing-history",
               icon: "bx bxs-checkbox",
-              permission: "read-irreg",
+              permission: "read-irregularity",
               meta: {
                 resource_type: resourceLookup["TRACING_HISTORY"].resource_type,
                 resource_code: resourceLookup["TRACING_HISTORY"].resource_code,
@@ -502,7 +502,7 @@ export default {
               label: "Inventory Irreguralities",
               url: "/irreguralities/inventory",
               icon: "bx bxs-checkbox",
-              permission: "read-irreg",
+              permission: "read-irregularity",
               meta: {
                 resource_type: resourceLookup["IRREGURALITIES_INVENTORY"].resource_type,
                 resource_code: resourceLookup["IRREGURALITIES_INVENTORY"].resource_code,
@@ -513,7 +513,7 @@ export default {
               label: "Irreguralities - Entry Status",
               url: "/irreguralities/entry-status",
               icon: "bx bxs-checkbox",
-              permission: "read-irreg",
+              permission: "read-irregularity",
               meta: {
                 resource_type: resourceLookup["IRREGURALITIES_ENTRY_STATUS"].resource_type,
                 resource_code: resourceLookup["IRREGURALITIES_ENTRY_STATUS"].resource_code,
@@ -525,20 +525,20 @@ export default {
             //   label: "Irreguralities - Cancel",
             //   url: "/irreguralities/cancel",
             //   icon: "",
-            //   permission: "read-irreg",
+            //   permission: "read-irregularity",
             // },
             // // TODO: DELETE SOON
             // {
             //   label: "Irreguralities - Return",
             //   url: "/irreguralities/return",
             //   icon: "",
-            //   permission: "read-irreg",
+            //   permission: "read-irregularity",
             // },
             {
               label: "Irreguralities - Hold",
               url: "/irreguralities/hold",
               icon: "bx bxs-checkbox",
-              permission: "read-irreg",
+              permission: "read-irregularity",
               meta: {
                 resource_type: resourceLookup["IRREGURALITIES_HOLD"].resource_type,
                 resource_code: resourceLookup["IRREGURALITIES_HOLD"].resource_code,
@@ -549,7 +549,7 @@ export default {
               label: "Irreguralities - Failed",
               url: "/irreguralities/failed",
               icon: "bx bxs-checkbox",
-              permission: "read-irreg",
+              permission: "read-irregularity",
               meta: {
                 resource_type: resourceLookup["IRREGURALITIES_FAILED"].resource_type,
                 resource_code: resourceLookup["IRREGURALITIES_FAILED"].resource_code,

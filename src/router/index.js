@@ -761,7 +761,7 @@ const routes = [
               resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL"].resource_code,
               resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL"].resource_name,
               isMaintenanceMode: false,
-              permission: 'read-irreg',
+              permission: 'read-irregularity',
             }
           },
           {
@@ -775,7 +775,7 @@ const routes = [
               resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL_HISTORY"].resource_code,
               resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL_HISTORY"].resource_name,
               isMaintenanceMode: false,
-              permission: 'read-irreg',
+              permission: 'read-irregularity',
             }
           },
           {
@@ -789,7 +789,7 @@ const routes = [
               resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_FORWARD"].resource_code,
               resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_FORWARD"].resource_name,
               isMaintenanceMode: false,
-              permission: 'read-irreg',
+              permission: 'read-irregularity',
             }
           },
           {
@@ -803,7 +803,7 @@ const routes = [
               resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_RETURN"].resource_code,
               resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_RETURN"].resource_name,
               isMaintenanceMode: false,
-              permission: 'read-irreg',
+              permission: 'read-irregularity',
             }
           },
         ],
@@ -828,7 +828,7 @@ const routes = [
               resource_code: resourceLookup["TRACING"].resource_code,
               resource_name: resourceLookup["TRACING"].resource_name,
               isMaintenanceMode: false,
-              permission: 'read-irreg',
+              permission: 'read-irregularity',
             },
           },
           {
@@ -857,7 +857,7 @@ const routes = [
               resource_code: resourceLookup["TRACING_HISTORY"].resource_code,
               resource_name: resourceLookup["TRACING_HISTORY"].resource_name,
               isMaintenanceMode: false,
-              permission: 'read-irreg',
+              permission: 'read-irregularity',
             },
           },
           {
@@ -897,7 +897,7 @@ const routes = [
               resource_code: resourceLookup["IRREGURALITIES_INVENTORY"].resource_code,
               resource_name: resourceLookup["IRREGURALITIES_INVENTORY"].resource_name,
               isMaintenanceMode: false,
-              permission: 'read-irreg',
+              permission: 'read-irregularity',
             }
           },
           {
@@ -911,7 +911,7 @@ const routes = [
               resource_code: resourceLookup["IRREGURALITIES_ENTRY_STATUS"].resource_code,
               resource_name: resourceLookup["IRREGURALITIES_ENTRY_STATUS"].resource_name,
               isMaintenanceMode: false,
-              permission: 'read-irreg',
+              permission: 'read-irregularity',
             }
           },
           // {
@@ -943,7 +943,7 @@ const routes = [
               resource_code: resourceLookup["IRREGURALITIES_HOLD"].resource_code,
               resource_name: resourceLookup["IRREGURALITIES_HOLD"].resource_name,
               isMaintenanceMode: false,
-              permission: 'read-irreg',
+              permission: 'read-irregularity',
             }
           },
           {
@@ -957,7 +957,7 @@ const routes = [
               resource_code: resourceLookup["IRREGURALITIES_FAILED"].resource_code,
               resource_name: resourceLookup["IRREGURALITIES_FAILED"].resource_name,
               isMaintenanceMode: false,
-              permission: 'read-irreg',
+              permission: 'read-irregularity',
             }
           },
         ],
