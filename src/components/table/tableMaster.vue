@@ -996,7 +996,10 @@
                       :active="true"
                       type="submit"
                       :data-testid="`remove-button-${key}`"
-                      :disabled="!isAllowedRemove"
+                      :disabled="
+                        (item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true) || !isAllowedRemove
+                      "
                       @click="actionRemove(item)"
                     >
                       <span>Remove</span>
@@ -1038,7 +1041,10 @@
                       flat
                       :active="true"
                       type="submit"
-                      :disabled="!isAllowedRemove"
+                      :disabled="
+                        (item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true) || !isAllowedRemove
+                      "
                       @click="actionRemove(item)"
                     >
                       <span>Remove</span>
@@ -1079,8 +1085,8 @@
                       flat
                       :active="true"
                       :disabled="
-                        item.hasOwnProperty('isDisabled') &&
-                          item.isDisabled == true && !isAllowedRemove
+                        (item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true) || !isAllowedRemove
                       "
                       type="submit"
                       @click="actionRemove(item)"
@@ -1124,8 +1130,8 @@
                       danger
                       :active="true"
                       :disabled="
-                        item.hasOwnProperty('isDisabled') &&
-                          item.isDisabled == true && !isAllowedRemove
+                        (item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true) || !isAllowedRemove
                       "
                       type="submit"
                       @click="actionRemove(item)"
