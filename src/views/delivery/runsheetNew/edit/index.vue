@@ -608,7 +608,6 @@ export default {
                 .post(`${this.URL.validation}/create-runsheet?n=${this.listenNodeId}`, valForm, this.Helper.header())
                 .then((res) => {
                     this.checkItemSla('KOLI')
-                    this.validateCourier(postData)
                 })
                 .catch((err) => {
                     this.openNotification("danger", err.response ? err.response.data.code : '', err.response.data.status, err.response.data.message);
