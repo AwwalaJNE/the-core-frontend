@@ -84,6 +84,7 @@
                                                 <vs-button
                                                     shadow
                                                     :active="false"
+                                                    :data-testid="`surcharge-button`"
                                                     @click="openSurchargeDialog(key)"
                                                 >
                                                     <i class='bx bx-plus' style="margin-right:5px"></i> SURCHARGE
@@ -112,6 +113,7 @@
                         danger
                         flat
                         :active="true"
+                        :data-testid="`cancel-button`"
                         @click="cancel"
                         >
                             Cancel
@@ -126,6 +128,7 @@
                         :active="true"
                         type="submit"
                         v-on:keydown.tab="disable_tab_button($event)"
+                        :data-testid="`submit-button`"
                         @click="formSubmit"
                         >
                             Submit
@@ -140,6 +143,7 @@
                 :closeDialog="closeDialogSurcharge"
                 :index="indexSurcharge"
                 :koliObj="koliObj"
+                :data-testid="`dialog-surcharge`"
                 @updateValue="updateValue"
                 />
     </div>

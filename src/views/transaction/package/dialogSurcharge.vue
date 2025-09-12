@@ -104,6 +104,7 @@
                     :active="true"
                     @click="cancel"
                     style="display: none"
+                    :data-testid="`cancel-button`"
                     >
                         Cancel
                     </vs-button>
@@ -117,6 +118,7 @@
                     type="submit"
                     class="outline"
                     v-on:keydown.tab="disable_tab_button($event)"
+                    :data-testid="`submit-button`"
                     @click="handleSubmit"
                     >
                         Submit

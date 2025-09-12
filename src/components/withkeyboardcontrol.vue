@@ -1,5 +1,5 @@
 <template>
-    <div style="display: contents;">
+    <div style="display: contents;" data-testid="with-keyboard-controll-wrapper">
         <slot name='listcontent' v-bind:selectedIndex="selectedIndex"></slot>
     </div>
 </template>

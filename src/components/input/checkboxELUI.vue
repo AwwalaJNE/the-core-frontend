@@ -1,6 +1,6 @@
 <template>
-    <div @keyup.enter="keyHandler" style="text-align: left;">
-        <el-checkbox ref="elBoxc" :disabled="listenIsDisabled" v-model="option1" @change="updateValue">{{listenName}}</el-checkbox>
+    <div @keyup.enter="keyHandler" style="text-align: left;" data-testid="checkbox-wrapper">
+        <el-checkbox ref="elBoxc" :disabled="listenIsDisabled" v-model="option1" @change="updateValue" :data-testid="`checkbox-${listenName}`">{{listenName}}</el-checkbox>
     </div>
 </template>
 <script>

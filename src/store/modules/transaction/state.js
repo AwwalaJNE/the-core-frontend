@@ -1,7 +1,7 @@
 export default {
   origin: {
     origin_name: {
-      label: "Nama Pengirim*",
+      label: "Nama Pengirim",
       key: "connote_shipper_name",
       rule: "required",
       typeInput: "text",
@@ -10,7 +10,7 @@ export default {
       value: ''
     },
     origin_phone: {
-      label: "Telepon Pengirim*",
+      label: "Telepon Pengirim",
       key: "connote_shipper_phone_number",
       rule: "required|phone",
       typeInput: "text",
@@ -28,7 +28,7 @@ export default {
       value: ''
     },
     origin_onchange_address: {
-      label: "Provinsi / Kota / Kecamatan / Kelurahan / Kode Pos*",
+      label: "Provinsi / Kota / Kecamatan / Kelurahan / Kode Pos",
       key: "origin_onchange_address",
       rule: "required",
       typeInput: "text|onchange|calc_switch",
@@ -38,7 +38,7 @@ export default {
       value: ''
     },
     origin_subdistrict_id: {
-      label: "subdistrict id*",
+      label: "subdistrict id",
       key: "connote_shipper_geolocation_subdistrict_id",
       rule: "",
       typeInput: "hidden|disabled|dotted",
@@ -47,7 +47,7 @@ export default {
       value: ''
     },
     origin_zip_code: {
-      label: "Kode Pos*",
+      label: "Kode Pos",
       key: "connote_shipper_zip_code",
       rule: "required",
       typeInput: "text|disabled|dotted",
@@ -78,7 +78,7 @@ export default {
       value: 'rumah'
     },
     destination_name: {
-      label: "Nama Penerima*",
+      label: "Nama Penerima",
       key: "connote_receiver_name",
       rule: "required",
       typeInput: "text",
@@ -87,7 +87,7 @@ export default {
       value: ''
     },
     destination_phone: {
-      label: "Telepon Penerima*",
+      label: "Telepon Penerima",
       key: "connote_receiver_phone_number",
       rule: "required|phone",
       typeInput: "text",
@@ -105,7 +105,7 @@ export default {
       value: ''
     },
     destination_onchange_address: {
-      label: "Provinsi / Kota / Kecamatan / Kelurahan / Kode Pos*",
+      label: "Provinsi / Kota / Kecamatan / Kelurahan / Kode Pos",
       key: "destination_onchange_address",
       rule: "required",
       typeInput: "text|onchange|calc_switch",
@@ -116,7 +116,7 @@ export default {
       value: ''
     },
     destination_subdistrict_id: {
-      label: "Kode Pos*",
+      label: "Kode Pos",
       key: "connote_receiver_geolocation_subdistrict_id",
       rule: "",
       typeInput: "hidden|disabled|dotted",
@@ -141,7 +141,7 @@ export default {
           value: ''
         },
         {
-          label: "Kode Tujuan*",
+          label: "Kode Tujuan",
           key: "connote_receiver_tariff_code",
           rule: "required",
           typeInput: "text|disabled",
@@ -157,7 +157,7 @@ export default {
   },
   package: {
     package_description: {
-      label: "Deskripsi Barang*",
+      label: "Deskripsi Barang",
       key: "koli_description",
       rule: "required",
       typeInput: "text|col_left",
@@ -166,7 +166,7 @@ export default {
       value: " "
     },
     package_category: {
-      label: "Kategori*",
+      label: "Kategori",
       key: "connote_category",
       rule: "",
       typeInput: "select|col_left",
@@ -221,7 +221,7 @@ export default {
       value: ''
     },
     package_service: {
-      label: "Service*",
+      label: "Service",
       key: "connote_service_code",
       rule: "required",
       typeInput: "radio|col_left",
@@ -268,7 +268,7 @@ export default {
 
 
     package_jumlah: {
-      label: "Jumlah*",
+      label: "Jumlah",
       key: "koli_jumlah",
       rule: "numeric|min_value:1",
       typeInput: "text|col_right",
@@ -277,7 +277,7 @@ export default {
       value: 1
     },
     package_dimensi_weight: {
-      label: "Weight*",
+      label: "Weight",
       key: "koli_weight",
       rule: "required|decimal|min_value:0.1",
       typeInput: "text",
@@ -333,7 +333,7 @@ export default {
       value: false
     },
     package_surcharge: {
-      label: "Height*",
+      label: "Height",
       key: "koli_surcharge",
       rule: "",
       typeInput: "tags",
@@ -353,7 +353,7 @@ export default {
       value: false
     },
     package_cod: {
-      label: "Amount Cod*",
+      label: "Amount Cod",
       key: "amount_cod",
       rule: "numeric|maxlength:20",
       typeInput: "text|col_right",

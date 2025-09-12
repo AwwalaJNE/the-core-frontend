@@ -30,6 +30,7 @@
                     :tabindex="-1"
                     style="float:right"
                     :disabled="listeninputDisabled"
+                    :data-testid="`bpik-button`"
                     @click="openBpikComponent()"
                   >
                     <i class="bx bx-plus" /> BPIK
@@ -51,6 +52,7 @@
                     :tabindex="-1"
                     style="float:right"
                     :disabled="listeninputDisabled"
+                    :data-testid="`pra-connote-button`"
                     @click="connoteNumberDialog('pra')"
                   >
                     <i class="bx bx-plus" /> Pra Connote
@@ -72,6 +74,7 @@
                     :tabindex="-1"
                     style="float:right"
                     :disabled="listeninputDisabled"
+                    :data-testid="`single-connote-button`"
                     @click="connoteNumberDialog('single')"
                   >
                     <i class="bx bx-plus" /> Single Connote
@@ -204,6 +207,7 @@
                     style="margin-top:1.5em"
                     class="withFocus"
                     :disabled="disableBtnMultipleKoli"
+                    :data-testid="`atur-berat-button`"
                     @click="openSettingMultipleKoli"
                   >
                     <i
@@ -312,6 +316,7 @@
                     style="margin-top:0"
                     class="withFocus"
                     :disabled="btnPrintASRdanSJ == false"
+                    :data-testid="`print-button`"
                     @click="printASRdanSJ"
                   >
                     <i
@@ -334,6 +339,7 @@
                     :active="false"
                     class="withFocus"
                     :disabled="!disableBtnMultipleKoli || listeninputDisabled == true"
+                    :data-testid="`surcharge-button`"
                     @click="openSurchargeDialog"
                   >
                     <i
@@ -349,11 +355,13 @@
                         :data-value="item"
                         class="vs-select__chips__chip"
                         style="width: fit-content;"
+                        :data-testid="`surcharge-chip-${item}`"
                       >
                         {{ `${surchargeshow[item].surcharge_name} | ${surchargeshow[item]['jumlah'] || ''}x` }}
                         <template v-if="!surchargeshow[item].hasOwnProperty('jumlah') && !surchargeshow[item].surcharge_name.toLowerCase().includes('overweight')">
                           <span
                             class="vs-select__chips__chip__close"
+                            :data-testid="`surcharge-remove-${item}`"
                             @click="removeSurcharge(item, 0, surchargeshow[item].surcharge_name)"
                           >
                             <i class="vs-icon-close vs-icon-hover-less" />
@@ -390,6 +398,7 @@
         :close-dialog="closeBpikComponent"
         :active="bpikComponent"
         :arr-data="[]"
+        :data-testid="`bpik`"
       />
     </template>
 
@@ -398,12 +407,14 @@
       :close-dialog="closeDialogSurcharge"
       :koli-obj="koliObj"
       :index="0"
+      :data-testid="`dialog-surcharge`"
       @updateValue="updateValue"
     />
     <dialog-multipleKoli
       :active="dialogSettingMultipleKoli"
       :close-dialog="closeSettingMultipleKoli"
       :surcharge-by-i-d="surchargeByID"
+      :data-testid="`dialog-multiple-koli`"
       @prosesmultipleKoli="prosesmultipleKoli"
     />
 
@@ -412,6 +423,7 @@
       :close-dialog="closeConnoteNumberDialog"
       :title="connote_number_type"
       :type="connote_number_type"
+      :data-testid="`dialog-connote-number`"
       @updateValue="updateValue"
     />
   </div>
