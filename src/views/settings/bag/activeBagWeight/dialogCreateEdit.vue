@@ -132,19 +132,21 @@ export default {
                 this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_TYPE", mainDestination.destination_type);
                 this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE", mainDestination.destination_value);
                 this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE_ValueData", mainDestination.destination_value);
+                this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_TYPE", mainDestination.active_bag_weight_detail_id); // NOTES: HELPER TO GET ID
 
                 if (otherDestination.length) {
                     const template = this.$store.getters.getInputs.active_bag_weight.dynamicinputcomponent_other_destination.inputs;
 
-                    const arr = otherDestination.map(({ destination_type, destination_value }) => ({
+                    const arr = otherDestination.map(({ active_bag_weight_detail_id, destination_type, destination_value }) => ({
                         inputs: template.map(field => ({
                             ...field,
+                            id: active_bag_weight_detail_id,
                             value:
-                            field.key === "helper_dynamic_destination_type"
-                                ? destination_type
-                                : field.key === "helper_dynamic_destination_value"
-                                    ? destination_value || ""
-                                    : field.value
+                                field.key === "helper_dynamic_destination_type"
+                                    ? destination_type
+                                    : field.key === "helper_dynamic_destination_value"
+                                        ? destination_value || ""
+                                        : field.value
                         }))
                     }));
 
@@ -164,6 +166,9 @@ export default {
             } = form;
 
             formPayload['destination'] = [{
+                ...(this.active_bag_weight_id && {
+                    active_bag_weight_detail_id: helper_dynamic_destination_type || ""
+                }),
                 destination_type,
                 destination_value
             }]
@@ -172,6 +177,9 @@ export default {
                 formPayload['destination'].push(
                     ...form.dynamicinputcomponent_other_destination
                         .map(item => ({
+                            ...(this.active_bag_weight_id && {
+                                active_bag_weight_detail_id: item?.inputs?.[0]?.id || ""
+                            }),
                             destination_type: item.inputs?.[0]?.value || "",
                             destination_value: item.inputs?.[1]?.value || ""
                         }))
@@ -188,7 +196,7 @@ export default {
         async handleSubmitData() {
             this.loading = true;
             try {
-                const res = this.id ? await axios.put(`${this.URL.active_bag_weight}/${this.active_bag_weight_id}?n=${this.listenNodeId}`, this.form, this.Helper.header()) : await axios.post(`${this.URL.active_bag_weight}?n=${this.listenNodeId}`, this.form, this.Helper.header());
+                const res = this.active_bag_weight_id ? await axios.put(`${this.URL.active_bag_weight}/${this.active_bag_weight_id}?n=${this.listenNodeId}`, this.form, this.Helper.header()) : await axios.post(`${this.URL.active_bag_weight}?n=${this.listenNodeId}`, this.form, this.Helper.header());
                 this.openNotification('success', null, "Success", res?.data?.message || this.active_bag_weight_id ? "Success Update Data" : "Success Create Data");
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
