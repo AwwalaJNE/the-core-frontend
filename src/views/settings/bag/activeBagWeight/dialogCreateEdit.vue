@@ -123,11 +123,63 @@ export default {
     methods: {
         getEditData(val) {
             this.active_bag_weight_id = val.active_bag_weight_id;
+            
+            if (val.destination.length > 0) {
+                const { destination } = val;
+
+                const [mainDestination, ...otherDestination] = destination;
+
+                this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_TYPE", mainDestination.destination_type);
+                this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE", mainDestination.destination_value);
+                this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE_ValueData", mainDestination.destination_value);
+
+                if (otherDestination.length) {
+                    const template = this.$store.getters.getInputs.active_bag_weight.dynamicinputcomponent_other_destination.inputs;
+
+                    const arr = otherDestination.map(({ destination_type, destination_value }) => ({
+                        inputs: template.map(field => ({
+                            ...field,
+                            value:
+                            field.key === "helper_dynamic_destination_type"
+                                ? destination_type
+                                : field.key === "helper_dynamic_destination_value"
+                                    ? destination_value || ""
+                                    : field.value
+                        }))
+                    }));
+
+                    this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DYNAMICINPUTCOMPONENT_OTHER_DESTINATION", arr);
+                }
+            }
             this.dataItem = val;
         },
         formData(form){
-            this.form = form;
-            
+            const { 
+                dynamicinputcomponent_other_destination, 
+                destination_type, 
+                destination_value,
+                helper_dynamic_destination_type, 
+                helper_dynamic_destination_value,
+                ...formPayload 
+            } = form;
+
+            formPayload['destination'] = [{
+                destination_type,
+                destination_value
+            }]
+
+            if (Array.isArray(form.dynamicinputcomponent_other_destination) && form.dynamicinputcomponent_other_destination.length) {
+                formPayload['destination'].push(
+                    ...form.dynamicinputcomponent_other_destination
+                        .map(item => ({
+                            destination_type: item.inputs?.[0]?.value || "",
+                            destination_value: item.inputs?.[1]?.value || ""
+                        }))
+                        .filter(item => item.destination_type && item.destination_value) // Remove empty values
+                );
+            }
+
+            this.form = formPayload;
             this.handleSubmitData();
         },
         handleSubmit(){
@@ -146,7 +198,7 @@ export default {
             }
         },
         handleClearForm(){
-            this.$refs.formActiveBagWeight.handleClearForm();
+            this.$refs.formActiveBagWeight.handleClearAllForm();
             this.form = {}
             this.active_bag_weight_id = ""
         },
@@ -171,7 +223,6 @@ export default {
             }
         },
         inputFocus(obj){
-            
             if (obj.key.includes("destination_value")) {
                 let destination_type = this.listenDestinationType;
 
@@ -183,8 +234,6 @@ export default {
                         ? this.$store.getters.getInputs.active_bag_weight.dynamicinputcomponent_other_destination.arrData?.[parsedIndex]?.inputs[0]?.value
                         : this.$store.getters.getInputs.active_bag_weight.destination_value.value;
                 }
-
-                console.log("CEK", destination_type)
 
                 switch(destination_type) {
                     case "REGION":
@@ -212,7 +261,6 @@ export default {
             }
         },
         onChangeCustom(type, val, obj) {
-            console.log("CEKKK DATA", type, val, obj)
             switch (type) {
                 case "destination_type":
                     this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE", "");
@@ -221,24 +269,7 @@ export default {
                     switch (obj?.typeInput) {
                         case "select":
                         case "select|hidden":
-                            let index = obj?.option?.index;
-
-                            let latest_data = this.$store.getters.getInputs.active_bag_weight.dynamicinputcomponent_other_destination.arrData;
-                            latest_data[index].inputs[1].value = [];
-
-                            console.log("CEKISI", latest_data, val)
-
-                            this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DYNAMICINPUTCOMPONENT_OTHER_DESTINATION", latest_data);
-                            break;
-                        case "autocomplete":
-                        case "autocomplete|hidden":
-                            // let index_ = obj?.option?.index;
-                            // let selected_ = obj?.option?.value;
-
-                            // let latest_data_ = this.$store.getters.getInputs.user.dynamicinputcomponent_user_other_application_role.arrData;
-                            // latest_data_[index_].inputs[1].value = selected_;
-
-                            // this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DYNAMICINPUTCOMPONENT_OTHER_DESTINATION", val);
+                            this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DYNAMICINPUTCOMPONENT_OTHER_DESTINATION", val);
                             break;
                         default:
                             break;

@@ -89,7 +89,7 @@
                                             :selectedValue="input.value"
                                             :typeForm="listenTypeForm"
                                             :typeInput="InputObject[input.key].typeInput"
-                                            @updateValue="updateValue"
+                                            @updateValue="updateValue(InputObject[input.key].typeInput, ...arguments)"
                                             @inputFocus="onfocuslah" />
                                         </template>
                                     </template>
