@@ -13,20 +13,46 @@
                             />
                         </vs-col>
                         <vs-col xs="12" sm="6" lg="4">
-                            <template>
+                            <template v-if="navActive === 'k-ACTIVE-WEIGHT'">
                                 <vs-row>
                                     <vs-col vs-align="center" w="6">
                                         <select-search-by 
+                                            :key="'active-weight'"
                                             :border="true" 
                                             :isMultiple="false" 
-                                            :selectedValue="searchByBag" 
-                                            :valueData="searchParamsBag"
-                                            @updateSearchBy="updateSearchByBag"
+                                            :selectedValue="searchActiveWeightBy" 
+                                            :valueData="searchActiveWeightParams" 
+                                            @updateSearchBy="updateSearchBy" 
                                         />
                                     </vs-col>
                                     <vs-col vs-align="center" w="6">
                                         <search-input 
                                             ref="searchInput" 
+                                            :key="'active-weight'"
+                                            :placeholder="searchActiveWeightPlaceholder" 
+                                            @handleSearch="handleSearch" 
+                                            @searchValue="searchValue" 
+                                            
+                                        />
+                                    </vs-col>
+                                </vs-row>
+                            </template>
+                            <template v-else>
+                                <vs-row>
+                                    <vs-col vs-align="center" w="6">
+                                        <select-search-by 
+                                            :key="navActive"
+                                            :border="true" 
+                                            :isMultiple="false" 
+                                            :selectedValue="searchByBag" 
+                                            :valueData="searchParamsBag"
+                                            @updateSearchBy="updateSearchBy"
+                                        />
+                                    </vs-col>
+                                    <vs-col vs-align="center" w="6">
+                                        <search-input 
+                                            ref="searchInput" 
+                                            :key="navActive"
                                             :placeholder="searchPlaceholderBag" 
                                             @handleSearch="handleSearch" 
                                             @searchValue="searchValue" 
@@ -39,118 +65,133 @@
                     </vs-row>
 
                     <template>
-                        <vs-row align="center">
-                            <vs-col vs-align="center" xs="12" sm="6" :lg="navActive !== 'k-BAG' ? 4 : 3">
-                                <select-bag-origin
-                                    ref="bag_origin"
-                                    :isMultiple="false"
-                                    :border="true"
-                                    @updateBagOrigin="updateBagOrigin" 
+                        <template v-if="navActive !== 'k-ACTIVE-WEIGHT'">
+                            <vs-row align="center">
+                                <vs-col vs-align="center" xs="12" sm="6" :lg="navActive !== 'k-BAG' ? 4 : 3">
+                                    <select-bag-origin
+                                        ref="bag_origin"
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateBagOrigin="updateBagOrigin" 
+                                    />
+                                </vs-col>
+                                <vs-col vs-align="center" xs="12" sm="6" :lg="navActive !== 'k-BAG' ? 4 : 3">
+                                    <select-bag-destination
+                                        ref="bag_destination"
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateBagDestination="updateBagDestination" 
+                                    />
+                                </vs-col>
+                                <vs-col vs-align="center" xs="6" sm="6"  :lg="navActive !== 'k-BAG' ? 4 : 3">
+                                    <select-bag-routing
+                                        ref="bag_routing"
+                                        :selectedValue="bagRouting"
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateBagRouting="updateBagRouting" 
+                                    />
+                                </vs-col>
+                                <vs-col vs-align="center" xs="6" sm="4"  :lg="navActive !== 'k-BAG' ? 4 : 3" v-if="navActive === 'k-BAG'">
+                                    <select-bag-tipe
+                                        ref="bag_tipe"
+                                        :selectedValue="bagTipe"
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateBagTipe="updateBagTipe" 
+                                    />
+                                </vs-col>
+                                <vs-col vs-align="center" xs="6" sm="4"  :lg="navActive !== 'k-BAG' ? 4 : 3" v-if="navActive !== 'k-ARCHIVE'">
+                                    <select-bag-status
+                                        ref="bag_status"
+                                        :selectedValue="bagStatus"
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateBagStatus="updateBagStatus" 
+                                    />
+                                </vs-col>
+                                <vs-col vs-align="center" xs="6" sm="4" :lg="navActive !== 'k-BAG' ? 4 : 3">
+                                    <select-bag-irreg
+                                        ref="bag_irreg"
+                                        :selectedValue="bagIrreg"
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateBagIrreg="updateBagIrreg" 
+                                    />
+                                </vs-col>
+                                <vs-col vs-align="center" xs="6" sm="4" :lg="navActive !== 'k-BAG' ? 4 : 3">
+                                    <select-bag-source
+                                        ref="bag_source"
+                                        :selectedValue="bagSource"
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateBagSource="updateBagSource" 
+                                    />
+                                </vs-col>
+                                <vs-col vs-align="center" xs="6" sm="4" :lg="navActive !== 'k-BAG' ? 4 : 3">
+                                    <select-bag-status-inventory
+                                        ref="bag_status_inventory"
+                                        :selectedValue="bagStatusInventory"
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateBagStatusInventory="updateBagStatusInventory"
+                                    />
+                                </vs-col>
+                                <vs-col vs-align="center" xs="12" sm="6" :lg="navActive !== 'k-BAG' ? 4 : 3">
+                                    <select-search-by 
+                                        :border="true" 
+                                        :isMultiple="false" 
+                                        :selectedValue="filterDateBy"
+                                        :valueData="dateParams" 
+                                        @updateSearchBy="updateFilterDateBy" 
+                                    />
+                                </vs-col>
+                                <vs-col xs="12" sm="6" :lg="navActive !== 'k-BAG' ? 4 : 3">
+                                    <date-time
+                                        :name="''"
+                                        :rules="''"
+                                        :formKey="'DATE_TIME_WITHOUT_SECONDS'"
+                                        :valueData="tempDate"
+                                        typeInput="datetimerange"
+                                        @updateValue="searchDate" 
+                                    />
+                                </vs-col>
+                            
+                            </vs-row>
+                        </template>
+
+                        <template v-if="navActive === 'k-ACTIVE-WEIGHT'">
+                            <transition name="slide-fade" >
+                                <active-weight
+                                    :ref="navActive" 
+                                    :query="tempSearch" 
+                                    :searchBy="searchActiveWeightBy"
+                                    @clearSearch="clearSearch"
                                 />
-                            </vs-col>
-                            <vs-col vs-align="center" xs="12" sm="6" :lg="navActive !== 'k-BAG' ? 4 : 3">
-                                <select-bag-destination
-                                    ref="bag_destination"
-                                    :isMultiple="false"
-                                    :border="true"
-                                    @updateBagDestination="updateBagDestination" 
+                            </transition>
+                        </template>
+                        <template v-else>
+                            <transition name="slide-fade" >
+                                <bag-list 
+                                    :ref="navActive" 
+                                    :key="navActive" 
+                                    :bagDestination="bagDestination" 
+                                    :bagIrreg="bagIrreg" 
+                                    :bagOrigin="bagOrigin" 
+                                    :bagRouting="bagRouting" 
+                                    :bagSource="bagSource" 
+                                    :bagStatusInventory="bagStatusInventory"
+                                    :bagStatus="navActive === 'k-ARCHIVE' ? 'fullyOpened' : bagStatus" 
+                                    :bagTipe="bagTipe" 
+                                    :dateFilter="tempDate" 
+                                    :query="tempSearch" 
+                                    :searchDateBy="filterDateBy" 
+                                    :searchBy="searchByBag"
+                                    :isMasterbag="navActive === 'k-BAG' ? '0' : '1'"
+                                    :isArchive="navActive === 'k-ARCHIVE'"
                                 />
-                            </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="6"  :lg="navActive !== 'k-BAG' ? 4 : 3">
-                                <select-bag-routing
-                                    ref="bag_routing"
-                                    :selectedValue="bagRouting"
-                                    :isMultiple="false"
-                                    :border="true"
-                                    @updateBagRouting="updateBagRouting" 
-                                />
-                            </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="4"  :lg="navActive !== 'k-BAG' ? 4 : 3" v-if="navActive === 'k-BAG'">
-                                <select-bag-tipe
-                                    ref="bag_tipe"
-                                    :selectedValue="bagTipe"
-                                    :isMultiple="false"
-                                    :border="true"
-                                    @updateBagTipe="updateBagTipe" 
-                                />
-                            </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="4"  :lg="navActive !== 'k-BAG' ? 4 : 3" v-if="navActive !== 'k-ARCHIVE'">
-                                <select-bag-status
-                                    ref="bag_status"
-                                    :selectedValue="bagStatus"
-                                    :isMultiple="false"
-                                    :border="true"
-                                    @updateBagStatus="updateBagStatus" 
-                                />
-                            </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="4" :lg="navActive !== 'k-BAG' ? 4 : 3">
-                                <select-bag-irreg
-                                    ref="bag_irreg"
-                                    :selectedValue="bagIrreg"
-                                    :isMultiple="false"
-                                    :border="true"
-                                    @updateBagIrreg="updateBagIrreg" 
-                                />
-                            </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="4" :lg="navActive !== 'k-BAG' ? 4 : 3">
-                                <select-bag-source
-                                    ref="bag_source"
-                                    :selectedValue="bagSource"
-                                    :isMultiple="false"
-                                    :border="true"
-                                    @updateBagSource="updateBagSource" 
-                                />
-                            </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="4" :lg="navActive !== 'k-BAG' ? 4 : 3">
-                                <select-bag-status-inventory
-                                    ref="bag_status_inventory"
-                                    :selectedValue="bagStatusInventory"
-                                    :isMultiple="false"
-                                    :border="true"
-                                    @updateBagStatusInventory="updateBagStatusInventory"
-                                />
-                            </vs-col>
-                            <vs-col vs-align="center" xs="12" sm="6" :lg="navActive !== 'k-BAG' ? 4 : 3">
-                                <select-search-by 
-                                    :border="true" 
-                                    :isMultiple="false" 
-                                    :selectedValue="filterDateBy"
-                                    :valueData="dateParams" 
-                                    @updateSearchBy="updateFilterDateBy" 
-                                />
-                            </vs-col>
-                            <vs-col xs="12" sm="6" :lg="navActive !== 'k-BAG' ? 4 : 3">
-                                <date-time
-                                    :name="''"
-                                    :rules="''"
-                                    :formKey="'DATE_TIME_WITHOUT_SECONDS'"
-                                    :valueData="tempDate"
-                                    typeInput="datetimerange"
-                                    @updateValue="searchDate" 
-                                />
-                            </vs-col>
-                        
-                        </vs-row>
-                        <transition name="slide-fade" >
-                            <bag-list 
-                                :ref="navActive" 
-                                :key="navActive" 
-                                :bagDestination="bagDestination" 
-                                :bagIrreg="bagIrreg" 
-                                :bagOrigin="bagOrigin" 
-                                :bagRouting="bagRouting" 
-                                :bagSource="bagSource" 
-                                :bagStatusInventory="bagStatusInventory"
-                                :bagStatus="navActive === 'k-ARCHIVE' ? 'fullyOpened' : bagStatus" 
-                                :bagTipe="bagTipe" 
-                                :dateFilter="tempDate" 
-                                :query="tempSearch" 
-                                :searchDateBy="filterDateBy" 
-                                :searchBy="searchByBag"
-                                :isMasterbag="navActive === 'k-BAG' ? '0' : '1'"
-                                :isArchive="navActive === 'k-ARCHIVE'"
-                            />
-                        </transition>
+                            </transition>
+                        </template>
                     </template>
                     
                 </div>
@@ -178,6 +219,7 @@ import DateTime from "@/components/input/dateTime"
 
 // Bag
 import BagList from "@/views/inventory/connote/bag/bagList"
+import ActiveWeight from "@/views/inventory/inventory-bag/activeWeight"
 
 export default {
     name:"Inventory-Bag",
@@ -186,6 +228,7 @@ export default {
         "nav-item": NavItem,
         "breadcrumb": Breadcrumb,
         "search-input": SearchInput,
+        "active-weight": ActiveWeight,
         "bag-list": BagList,
         "select-search-by": SelectSearchBy,
         "select-bag-destination": SelectBagDestinationVue,
@@ -215,9 +258,14 @@ export default {
                     label: "ARCHIVE",
                     key: "k-ARCHIVE",
                     title: "Archive List"
+                },
+                {
+                    label: "ACTIVE WEIGHT",
+                    key: "k-ACTIVE-WEIGHT",
+                    title: "Active Weigth"
                 }
             ],
-            navActive: "k-BAG",
+            navActive: "k-ACTIVE-WEIGHT",
             title: "Bag List",
             loading: false,
             dataItem: {},
@@ -296,12 +344,37 @@ export default {
             bagIrreg: "",
             bagSource: "",
             bagStatusInventory: "",
+            searchActiveWeightPlaceholder: "Search Reference",
+            searchActiveWeightBy: "reference",
+            searchActiveWeightByDataType: false,
+            searchActiveWeightParams: [
+                {
+                    label: "Reference",
+                    value: "reference"
+                },
+                {
+                    label: "Destination",
+                    value: "destination_value"
+                }
+            ],
         }
     },
     methods: {
-        updateSearchByBag(key,val) {
-            this.searchByBag = val;
-            this.searchPlaceholderBag = key;
+        updateSearchBy(key, val, dataType) {
+            switch(this.navActive) {
+                case "k-BAG":
+                case "k-MASTERBAG":
+                case "k-ARCHIVE":
+                    this.searchByBag = val;
+                    this.searchPlaceholderBag = key;
+                    break;
+                case "k-ACTIVE-WEIGHT":
+                    this.searchActiveWeightBy = val;
+                    this.searchActiveWeightPlaceholder = key;
+                    this.searchActiveWeightByDataType = dataType;
+                    break;
+                default:
+            }
         },
         updateFilterDateBy(key,val) {
           this.filterDateBy = val;

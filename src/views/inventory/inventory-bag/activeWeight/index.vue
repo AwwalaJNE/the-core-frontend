@@ -20,34 +20,11 @@
             :pageSize="pagination.page_size"
             :page="pagination.page"
             :limit="pagination.limit"
-            :hasAction="true"
+            :hasAction="false"
             :hasPagination="true"
             :expandable="true"
-            @actionUpdate="actionUpdate"
-            @actionRemove="actionRemove"
             @actionLimit="actionLimit"
             @actionPagination="actionPagination"
-        />
-
-        <dialog-create-edit
-            btnBlue="Edit"
-            ref="dialog_create_edit"
-            title="Edit Bag Weight Setting"
-            :active="dialogCreateEditActive" 
-            :closeDialog="() => closeDialog('dialog_create_edit')"
-            :dataItem="dataItem"
-            @refresh="refresh"
-        />
-
-        <dialog-confirm
-            ref="dialog_remove"
-            title="Remove Active Bag Weight Setting"
-            :active="dialogRemoveActive"
-            :closeDialog="() => closeDialog('dialog_remove')"
-            :message="`Are you sure you want to remove this data?`"
-            :loading="loading"
-            @confirm="confirmRemove"
-            @cancel="() => closeDialog('dialog_remove')"
         />
     </div>
 </template>
@@ -56,22 +33,17 @@ import axios from "axios";
 
 import master from "@/mixins/master";
 
-import DialogConfirm from "@/components/dialog/dialogConfirm";
 import Selector from "@/components/input/select";
 import TableMaster from "@/components/table/tableMaster";
 
-import DialogCreateEdit from "@/views/settings/bag/activeBagWeight/dialogCreateEdit";
-
 export default {
-    name:"active-bag-weight-data-tabel",
+    name:"active-weight-data-tabel",
     mixins: [master],
     props: {
         query: String,
         searchBy: String,
     },
     components: {
-        "dialog-confirm": DialogConfirm,
-        "dialog-create-edit": DialogCreateEdit,
         "selector": Selector,
         "table-master" : TableMaster,
     },
@@ -86,15 +58,20 @@ export default {
                     width: "auto"
                 },
                 {
-                    label: "Max Weight (kg)",
+                    label: "Threshold",
+                    key: "threshold",
+                    width: "auto"
+                },
+                {
+                    label: "Current / Max Weight (kg)",
                     key: "max_weight",
                     width: "auto"
                 },
                 {
-                    label: "Threshold (%)",
-                    key: "threshold",
+                    label: "Status",
+                    key: "status",
                     width: "auto"
-                }
+                },
             ],
             pagination: {
                 limit: 20,
@@ -103,9 +80,6 @@ export default {
             },
             loading: false,
             tempSearch: "",
-            active_bag_weight_id: '',            
-            dialogCreateEditActive: false,
-            dialogRemoveActive: false,
             filterDestinationTypeBy: "ALL",
             filterDestinationType: [
                 {
@@ -152,16 +126,17 @@ export default {
             let query = q || '';
             
             try {
-                const res = await axios.get(`${this.URL.active_bag_weight}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&search_by=${searchBy}&destination_type=${this.filterDestinationTypeBy}`, this.Helper.header());
+                const res = await axios.get(`${this.URL.active_bag_weight}/report?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&search_by=${searchBy}&destination_type=${this.filterDestinationTypeBy}`, this.Helper.header());
 
                 let arr = (res?.data?.data || []).map(item => {
                     const children = item?.destination?.reduce(
                         (acc, k) => {
                             acc['Destination Type'].push(k.destination_type);
                             acc['Destination Value'].push(k.destination_value ?? " ");
+                            acc['Current Weight (kg)'].push(k.current_weight ?? " ");
                             return acc;
                         },
-                        { 'Destination Type': [], 'Destination Value': [] }
+                        { 'Destination Type': [], 'Destination Value': [], 'Current Weight (kg)': [] }
                     );
 
                     return {
@@ -191,42 +166,6 @@ export default {
         actionPagination(val) {
             this.pagination.page = val;
             this.refresh();
-        },
-        actionUpdate(val){
-            this.dataItem = val;
-            this.dialogCreateEditActive = true;
-        },
-        actionRemove(val){
-            this.active_bag_weight_id = val.active_bag_weight_id;
-            this.dialogRemoveActive = true;
-        },
-        confirmRemove() {
-            this.removeData()
-        },
-        async removeData() {
-            this.loading = true;
-            try {
-                const res = await axios.delete(`${this.URL.active_bag_weight}/${this.active_bag_weight_id}?n=${this.listenNodeId}`, this.Helper.header());
-                this.openNotification('success', null, "Success", res?.data?.message || "Remove success");
-            } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
-            } finally {
-                this.loading = false;
-                this.closeDialog('dialog_remove');
-            }
-        },
-        closeDialog(ref) {
-            switch (ref) {
-                case 'dialog_create_edit':
-                    this.dialogCreateEditActive = false;
-                    break;
-                case 'dialog_remove':
-                    this.dialogRemoveActive = false;
-                    this.refresh();
-                    break;
-                default:
-                    break;
-            }
         },
         updateFilterDestinationTypeBy(key, val) {
             this.filterDestinationTypeBy = val;
