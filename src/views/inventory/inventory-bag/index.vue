@@ -265,7 +265,7 @@ export default {
                     title: "Active Weigth"
                 }
             ],
-            navActive: "k-ACTIVE-WEIGHT",
+            navActive: "k-BAG",
             title: "Bag List",
             loading: false,
             dataItem: {},
