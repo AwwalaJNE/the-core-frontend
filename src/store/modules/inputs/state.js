@@ -2711,10 +2711,6 @@ export default {
         {
           label: 'Node',
           value: 'NODE'
-        },
-        {
-          label: 'All',
-          value: 'ALL'
         }
       ],
       valueData: null,
