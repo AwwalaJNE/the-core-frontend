@@ -67,6 +67,7 @@
                                             :typeInput="InputObject[item].typeInput"
                                             :disabled="listenIsDisabled"
                                             :onlyNumber="true"
+                                            :tooltipMessage="InputObject[item].tooltipMessage"
                                             @updateValue="updateValue" 
                                             @inputFocus="onfocuslah"/>
                                         </div>
@@ -85,6 +86,7 @@
                                     :placeholder="InputObject[item].placeholder"
                                     :disabled="listenIsDisabled"
                                     :onlyNumber="true"
+                                    :tooltipMessage="InputObject[item].tooltipMessage"
                                     @updateValue="updateValue" 
                                     @inputFocus="onfocuslah"/>
                                 </template>
