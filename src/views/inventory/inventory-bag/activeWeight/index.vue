@@ -69,7 +69,7 @@ export default {
                 },
                 {
                     label: "Status",
-                    key: "status",
+                    key: "status_with_color",
                     width: "auto"
                 },
             ],
