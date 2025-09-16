@@ -64,7 +64,7 @@ export default {
                 },
                 {
                     label: "Current / Max Weight (kg)",
-                    key: "max_weight",
+                    key: "summary",
                     width: "auto"
                 },
                 {
@@ -141,6 +141,8 @@ export default {
 
                     return {
                         ...item,
+                        status_with_color: item?.status,
+                        summary: item?.total_current_weight + "/" + item?.max_weight + " (" + item?.percentage + "%)",
                         children
                     };
                 });
