@@ -252,6 +252,7 @@
                                     :itterateUrlAutoComplete="listenItterateUrlAutoComplete"
                                     :itterateFlagAutoComplete="listenItterateFlagAutoComplete"
                                     :asynchronousSelect_url="listenAsynchronousSelectUrl"
+                                    :querySearch2="querySearch"
                                     :selectLabel="selectLabel"
                                     :selectValue="selectValue"
                                     :isSingleInput="InputObject[item].isSingleInput"

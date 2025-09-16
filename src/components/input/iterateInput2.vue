@@ -85,7 +85,7 @@
                                             :rules="InputObject[input.key].rule"
                                             :formKey="`${index}|${input.key}`"
                                             :valueData="InputObject[input.key].value"
-                                            :querySearch="querySearch"
+                                            :querySearch="querySearch2"
                                             :selectedValue="input.value"
                                             :typeForm="listenTypeForm"
                                             :typeInput="InputObject[input.key].typeInput"
@@ -148,7 +148,8 @@ export default {
         selectValue: String,
         isSingleInput: Boolean,
         isNestedData: Boolean,
-        nestedKey: String
+        nestedKey: String,
+        querySearch2: Function
     },
     components: {
         "input-general": InputGeneral,

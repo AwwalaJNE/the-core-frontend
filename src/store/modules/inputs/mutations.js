@@ -5172,5 +5172,65 @@ SET_SYNC_SURAT_MUATAN_FLIGHT_IATA(state, payload) {
     state.active_bag_weight.destination_value.arrData = []
   },
 
+
+  SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_TYPE(state, payload) {
+    state.active_bag_weight.helper_dynamic_destination_type.value = payload
+  },
+  SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_TYPE_ValueData(state, payload) {
+    state.active_bag_weight.helper_dynamic_destination_type.valueData = payload
+  },
+  SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_TYPE_ArrData(state, payload) {
+    state.active_bag_weight.helper_dynamic_destination_type.hasOwnProperty('arrData') ?
+    state.active_bag_weight.helper_dynamic_destination_type.arrData = payload :
+    state.active_bag_weight.helper_dynamic_destination_type.arrData = []
+  },
+
+
+  SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_VALUE(state, payload) {
+    state.active_bag_weight.helper_dynamic_destination_value.value = payload
+  },
+  SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_VALUE_ValueData(state, payload) {
+    state.active_bag_weight.helper_dynamic_destination_value.valueData = payload
+  },
+  SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_VALUE_ArrData(state, payload) {
+    state.active_bag_weight.helper_dynamic_destination_value.hasOwnProperty('arrData') ?
+    state.active_bag_weight.helper_dynamic_destination_value.arrData = payload :
+    state.active_bag_weight.helper_dynamic_destination_value.arrData = []
+  },
+
+
+  SET_ACTIVE_BAG_WEIGHT_DYNAMICINPUTCOMPONENT_OTHER_DESTINATION(state, payload) {
+    let arr = state.active_bag_weight.dynamicinputcomponent_other_destination.inputs
+    let final = []
+    if (payload && payload.length > 0) {
+      let obj = {}
+      let template = arr
+
+      payload.map(item => {
+        let newArr = []
+        template.map(tmpl => {
+          if (item.hasOwnProperty(tmpl.key.toLowerCase())) {
+            let val = item[tmpl.key.toLowerCase()]
+            let newObj = {}
+            newObj['key'] = tmpl.key
+            newObj['typeInput'] = tmpl.typeInput
+            newObj['value'] = val
+
+            newArr.push(newObj)
+          } else if (item.hasOwnProperty("inputs")) {
+            newArr = item["inputs"]
+          }
+        })
+
+        let newData = { 'inputs': [] }
+        newData['inputs'] = newArr
+        final.push(newData)
+      })
+    }
+    state.active_bag_weight.dynamicinputcomponent_other_destination.hasOwnProperty('arrData') ?
+    state.active_bag_weight.dynamicinputcomponent_other_destination.arrData = final :
+    state.active_bag_weight.dynamicinputcomponent_other_destination.arrData = []
+  },
+
   // ====== END ACTIVE BAG WEIGHT ====== //
 }

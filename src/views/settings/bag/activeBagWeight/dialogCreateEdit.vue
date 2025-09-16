@@ -105,7 +105,7 @@ export default {
         },
         listenDestinationType() {
             return this.$store.getters.getInputs.active_bag_weight.destination_type.value;
-        }
+        },
     },
     watch: {
         dataItem: function (val) {
@@ -171,8 +171,22 @@ export default {
             }
         },
         inputFocus(obj){
-            if(obj.key == 'destination_value' && this.listenDestinationType){
-                switch(this.listenDestinationType) {
+            
+            if (obj.key.includes("destination_value")) {
+                let destination_type = this.listenDestinationType;
+
+                if (obj.key.includes("|")) {
+                    let index = obj.key.split("|")[0];
+                    let parsedIndex = isNaN(index) ? index : parseInt(index, 10);
+
+                    destination_type = Number.isInteger(parsedIndex)
+                        ? this.$store.getters.getInputs.active_bag_weight.dynamicinputcomponent_other_destination.arrData?.[parsedIndex]?.inputs[0]?.value
+                        : this.$store.getters.getInputs.active_bag_weight.destination_value.value;
+                }
+
+                console.log("CEK", destination_type)
+
+                switch(destination_type) {
                     case "REGION":
                         this.autoCompleteUrl = this.URL.regional_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
                         this.input_value = "regional_code";
@@ -198,9 +212,37 @@ export default {
             }
         },
         onChangeCustom(type, val, obj) {
+            console.log("CEKKK DATA", type, val, obj)
             switch (type) {
                 case "destination_type":
                     this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE", "");
+                    break;
+                case "dynamicinputcomponent_other_destination":
+                    switch (obj?.typeInput) {
+                        case "select":
+                        case "select|hidden":
+                            let index = obj?.option?.index;
+
+                            let latest_data = this.$store.getters.getInputs.active_bag_weight.dynamicinputcomponent_other_destination.arrData;
+                            latest_data[index].inputs[1].value = [];
+
+                            console.log("CEKISI", latest_data, val)
+
+                            this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DYNAMICINPUTCOMPONENT_OTHER_DESTINATION", latest_data);
+                            break;
+                        case "autocomplete":
+                        case "autocomplete|hidden":
+                            // let index_ = obj?.option?.index;
+                            // let selected_ = obj?.option?.value;
+
+                            // let latest_data_ = this.$store.getters.getInputs.user.dynamicinputcomponent_user_other_application_role.arrData;
+                            // latest_data_[index_].inputs[1].value = selected_;
+
+                            // this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DYNAMICINPUTCOMPONENT_OTHER_DESTINATION", val);
+                            break;
+                        default:
+                            break;
+                    }
                     break;
                 default:
             }

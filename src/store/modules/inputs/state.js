@@ -2664,7 +2664,7 @@ export default {
     reference: {
       label: "Reference",
       key: "reference",
-      rule: "",
+      rule: "required",
       typeInput: "text",
       typeData: "String",
       valueData: null,
@@ -2674,7 +2674,7 @@ export default {
     max_weight: {
       label: "Max Weight (kg)",
       key: "max_weight",
-      rule: "",
+      rule: "required",
       typeInput: "number",
       typeData: "Number",
       valueData: null,
@@ -2683,7 +2683,7 @@ export default {
     threshold: {
       label: "Threshold (%)",
       key: "threshold",
-      rule: "",
+      rule: "required",
       typeInput: "number",
       typeData: "Number",
       valueData: null,
@@ -2715,7 +2715,7 @@ export default {
       ],
       valueData: null,
       value: '',
-      width: 6
+      width: 4
     },
     destination_value: {
       label: "Destination Value",
@@ -2726,7 +2726,74 @@ export default {
       arrData: [],
       valueData: null,
       value: '',
-      width: "6"
+      width: 8
+    },
+    dynamicinputcomponent_other_destination: {
+      label: "Add Other Destination",
+      key: "dynamicinputcomponent_other_destination",
+      rule:"",
+      typeInput: "dynamicinputcomponent",
+      typeData: "Array",
+      inputs: [
+        {
+          key: "helper_dynamic_destination_type",
+          rule:"",
+          typeInput: "select",
+          value: '',
+          width: 4
+        },
+        {
+          key: "helper_dynamic_destination_value",
+          rule:"",
+          typeInput: "autocomplete",
+          value: "",
+          width: 8,
+        },
+      ],
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    helper_dynamic_destination_type: {
+      label: "Destination Type",
+      key: "helper_dynamic_destination_type",
+      rule: "",
+      typeInput: "select|hidden",
+      typeData: "String",
+      arrData: [
+        {
+          label: 'Region',
+          value: 'REGION'
+        },
+        {
+          label: 'Branch',
+          value: 'BRANCH'
+        },
+        {
+          label: 'Origin',
+          value: 'ORIGIN'
+        },
+        {
+          label: 'Node',
+          value: 'NODE'
+        }
+      ],
+      valueData: null,
+      visible: false,
+      value: '',
+      width: 4
+    },
+    helper_dynamic_destination_value: {
+      label: "Destination Value",
+      key: "helper_dynamic_destination_value",
+      rule: "",
+      typeInput: "autocomplete|hidden",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: "",
+      visible: false,
+      width: 8,
     },
   },
 
