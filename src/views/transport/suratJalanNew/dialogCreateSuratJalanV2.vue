@@ -22,7 +22,7 @@
                                 <vs-button  
                                     class="button-item"
                                     :danger="is_approve === 1"
-                                    :disabled="isDisabledApprove"
+                                    :disabled="!isDisabledApprove"
                                     @click="approve" 
                                 >
                                     {{ is_approve === 1 ? 'Unapprove' : 'Approve' }}
