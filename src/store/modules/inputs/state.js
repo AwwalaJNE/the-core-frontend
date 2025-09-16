@@ -2659,6 +2659,80 @@ export default {
       value: null
     }
   },
+  
+  active_bag_weight: {
+    reference: {
+      label: "Reference",
+      key: "reference",
+      rule: "",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      isDisabled: false
+    },
+    max_weight: {
+      label: "Max Weight (kg)",
+      key: "max_weight",
+      rule: "",
+      typeInput: "number",
+      typeData: "Number",
+      valueData: null,
+      value: null,
+    },
+    threshold: {
+      label: "Threshold (%)",
+      key: "threshold",
+      rule: "",
+      typeInput: "number",
+      typeData: "Number",
+      valueData: null,
+      value: null,
+    },
+    destination_type: {
+      label: "Destination Type",
+      key: "destination_type",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+        {
+          label: 'Region',
+          value: 'REGION'
+        },
+        {
+          label: 'Branch',
+          value: 'BRANCH'
+        },
+        {
+          label: 'Origin',
+          value: 'ORIGIN'
+        },
+        {
+          label: 'Node',
+          value: 'NODE'
+        },
+        {
+          label: 'All',
+          value: 'ALL'
+        }
+      ],
+      valueData: null,
+      value: '',
+      width: 6
+    },
+    destination_value: {
+      label: "Destination Value",
+      key: "destination_value",
+      rule: "required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+      width: "6"
+    },
+  },
 
   surat_muatan_stock: {
     manifest_number: {

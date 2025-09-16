@@ -5120,4 +5120,57 @@ SET_SYNC_SURAT_MUATAN_FLIGHT_IATA(state, payload) {
 
 
   // ====== END SURAT MUATAN VEHICLE ====== //
+
+
+  // ====== ACTIVE BAG WEIGHT ====== //
+  SET_ACTIVE_BAG_WEIGHT_REFERENCE(state, payload) {
+    state.active_bag_weight.reference.value = payload
+  },
+  SET_ACTIVE_BAG_WEIGHT_REFERENCE_ValueData(state, payload) {
+    state.active_bag_weight.reference.valueData = payload
+  },
+
+
+  SET_ACTIVE_BAG_WEIGHT_MAX_WEIGHT(state, payload) {
+    state.active_bag_weight.max_weight.value = payload
+  },
+  SET_ACTIVE_BAG_WEIGHT_MAX_WEIGHT_ValueData(state, payload) {
+    state.active_bag_weight.max_weight.valueData = payload
+  },
+  
+
+  SET_ACTIVE_BAG_WEIGHT_THRESHOLD(state, payload) {
+    state.active_bag_weight.threshold.value = payload
+  },
+  SET_ACTIVE_BAG_WEIGHT_THRESHOLD_ValueData(state, payload) {
+    state.active_bag_weight.threshold.valueData = payload
+  },
+  
+
+  SET_ACTIVE_BAG_WEIGHT_DESTINATION_TYPE(state, payload) {
+    state.active_bag_weight.destination_type.value = payload
+  },
+  SET_ACTIVE_BAG_WEIGHT_DESTINATION_TYPE_ValueData(state, payload) {
+    state.active_bag_weight.destination_type.valueData = payload
+  },
+  SET_ACTIVE_BAG_WEIGHT_DESTINATION_TYPE_ArrData(state, payload) {
+    state.active_bag_weight.destination_type.hasOwnProperty('arrData') ?
+    state.active_bag_weight.destination_type.arrData = payload :
+    state.active_bag_weight.destination_type.arrData = []
+  },
+
+
+  SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE(state, payload) {
+    state.active_bag_weight.destination_value.value = payload
+  },
+  SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE_ValueData(state, payload) {
+    state.active_bag_weight.destination_value.valueData = payload
+  },
+  SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE_ArrData(state, payload) {
+    state.active_bag_weight.destination_value.hasOwnProperty('arrData') ?
+    state.active_bag_weight.destination_value.arrData = payload :
+    state.active_bag_weight.destination_value.arrData = []
+  },
+
+  // ====== END ACTIVE BAG WEIGHT ====== //
 }
