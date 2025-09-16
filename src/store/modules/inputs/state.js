@@ -2688,6 +2688,8 @@ export default {
       typeData: "Number",
       valueData: null,
       value: null,
+      minValue: 1,
+      maxValue: 99,
       tooltipMessage: "Batas persentase maksimum sebelum pengguna mendapatkan status peringatan"
     },
     destination_type: {

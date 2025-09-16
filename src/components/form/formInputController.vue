@@ -67,6 +67,8 @@
                                             :typeInput="InputObject[item].typeInput"
                                             :disabled="listenIsDisabled"
                                             :onlyNumber="true"
+                                            :minValue="InputObject[item].minValue"
+                                            :maxValue="InputObject[item].maxValue"
                                             :tooltipMessage="InputObject[item].tooltipMessage"
                                             @updateValue="updateValue" 
                                             @inputFocus="onfocuslah"/>
@@ -86,6 +88,8 @@
                                     :placeholder="InputObject[item].placeholder"
                                     :disabled="listenIsDisabled"
                                     :onlyNumber="true"
+                                    :minValue="InputObject[item].minValue"
+                                    :maxValue="InputObject[item].maxValue"
                                     :tooltipMessage="InputObject[item].tooltipMessage"
                                     @updateValue="updateValue" 
                                     @inputFocus="onfocuslah"/>

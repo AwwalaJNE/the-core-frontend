@@ -229,6 +229,7 @@ export default {
     typeInput: String,
     prefix: String,
     minValue: Number,
+    maxValue: Number,
     placeholderGabung: Boolean,
     focusToInput: Boolean,
     tabindex: [Number, String],
@@ -244,7 +245,7 @@ export default {
       default: () => false,
     },
     disabled: Boolean,
-    tooltipMessage: String
+    tooltipMessage: String,
   },
   components: {
     inputan: Inputan,
@@ -403,6 +404,17 @@ export default {
               this.value = event.replace(/[^0-9.]/g, '');
             } else {
               this.value = event.replace(/[^0-9]/g, '');
+            }
+            
+            let num = parseInt(this.value, 10);
+            if (!isNaN(num)) {
+              if (this.minValue !== undefined && num < this.minValue) {
+                num = this.minValue;
+              }
+              if (this.maxValue !== undefined && num > this.maxValue) {
+                num = this.maxValue;
+              }
+              this.value = String(num);
             }
           } else {
             this.value = event.replace(/[^a-zA-Z0-9_\/-\s]/g, '');
