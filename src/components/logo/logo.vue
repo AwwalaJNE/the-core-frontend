@@ -15,7 +15,7 @@ export default {
     mixins: [master],
     computed: {
         jne_core() {
-            return this.URL.app_jne_main;
+            return this.URL.app_jne_core;
         },
     },
 };
