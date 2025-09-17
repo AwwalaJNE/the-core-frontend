@@ -5231,6 +5231,9 @@ SET_SYNC_SURAT_MUATAN_FLIGHT_IATA(state, payload) {
     state.active_bag_weight.dynamicinputcomponent_other_destination.arrData = final :
     state.active_bag_weight.dynamicinputcomponent_other_destination.arrData = []
   },
+  SET_ACTIVE_BAG_WEIGHT_DYNAMICINPUTCOMPONENT_OTHER_DESTINATION_ValueData(state, payload) {
+    state.active_bag_weight.dynamicinputcomponent_other_destination.valueData = payload
+  },
 
   // ====== END ACTIVE BAG WEIGHT ====== //
 }
