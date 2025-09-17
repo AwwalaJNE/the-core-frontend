@@ -272,12 +272,20 @@ export default {
             switch (type) {
                 case "destination_type":
                     this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE", "");
+                    this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE_ValueData", "");
                     break;
                 case "dynamicinputcomponent_other_destination":
                     switch (obj?.typeInput) {
                         case "select":
                         case "select|hidden":
-                            this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DYNAMICINPUTCOMPONENT_OTHER_DESTINATION", val);
+                            let index = obj?.option?.index;
+
+                            let latest_data = this.$store.getters.getInputs.active_bag_weight.dynamicinputcomponent_other_destination.arrData;
+                            latest_data[index].inputs[1].value = "";
+                            latest_data[index].inputs[1].data = "";
+                            latest_data[index].inputs[1].id = "";
+
+                            this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DYNAMICINPUTCOMPONENT_OTHER_DESTINATION", latest_data);
                             break;
                         default:
                             break;
