@@ -198,11 +198,11 @@ export default {
             try {
                 const res = this.active_bag_weight_id ? await axios.put(`${this.URL.active_bag_weight}/${this.active_bag_weight_id}?n=${this.listenNodeId}`, this.form, this.Helper.header()) : await axios.post(`${this.URL.active_bag_weight}?n=${this.listenNodeId}`, this.form, this.Helper.header());
                 this.openNotification('success', null, "Success", res?.data?.message || this.active_bag_weight_id ? "Success Update Data" : "Success Create Data");
+                this.cancel();
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;
-                this.cancel();
             }
         },
         handleClearForm(){
