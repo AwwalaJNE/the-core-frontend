@@ -287,6 +287,18 @@ export default {
 
                             this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DYNAMICINPUTCOMPONENT_OTHER_DESTINATION", latest_data);
                             break;
+                        case "autocomplete":
+                        case "autocomplete|hidden":
+                            let index_ = obj?.option?.index;
+                            let selected_ = obj?.option?.value;
+
+                            let latest_data_ = this.$store.getters.getInputs.active_bag_weight.dynamicinputcomponent_other_destination.arrData;
+                            latest_data_[index_].inputs[1].value = selected_;
+                            latest_data_[index_].inputs[1].id = "";
+                            latest_data_[index_].inputs[0].id = "";
+
+                            this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DYNAMICINPUTCOMPONENT_OTHER_DESTINATION", latest_data_);
+                            break;
                         default:
                             break;
                     }
