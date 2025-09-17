@@ -1,5 +1,5 @@
 <template>
-    <a href="https://core.jne.co.id/">
+    <a :href="jne_core">
         <img 
             :src="require('../../assets/img/jne.jpg')" 
             class="logo" 
@@ -8,7 +8,16 @@
     </a>
 </template>
 <script>
+import master from "@/mixins/master";
+
 export default {
-    name:"logo"
-}
+    name: "logo",
+    mixins: [master],
+    computed: {
+        jne_core() {
+            return this.URL.app_jne_main;
+        },
+    },
+};
 </script>
+
