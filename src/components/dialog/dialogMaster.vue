@@ -91,6 +91,10 @@ export default {
 };
 </script>
 <style lang="scss">
+.con-form {
+  margin-bottom: 1em;
+}
+
 .not-margin {
   margin: 0px;
   font-weight: normal;
