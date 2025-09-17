@@ -166,7 +166,7 @@ export default {
             } = form;
 
             formPayload['destination'] = [{
-                ...(this.active_bag_weight_id && {
+                ...(this.active_bag_weight_id && helper_dynamic_destination_type && {
                     active_bag_weight_detail_id: helper_dynamic_destination_type || ""
                 }),
                 destination_type,
@@ -177,7 +177,7 @@ export default {
                 formPayload['destination'].push(
                     ...form.dynamicinputcomponent_other_destination
                         .map(item => ({
-                            ...(this.active_bag_weight_id && {
+                            ...(this.active_bag_weight_id && item?.inputs?.[0]?.id &&{
                                 active_bag_weight_detail_id: item?.inputs?.[0]?.id || ""
                             }),
                             destination_type: item.inputs?.[0]?.value || "",
