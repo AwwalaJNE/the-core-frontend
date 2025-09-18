@@ -116,6 +116,7 @@
             ref="generalInput"
             @keydown="onlyNumberValidate"
             @keyup="handlerZero(value)"
+            @keypress="checkOnlyNumber"
             :min="listenMinValue"
             :data-testid="`input-${formKey}`"
             :state="
@@ -377,6 +378,13 @@ export default {
         }
       }
     },
+    checkOnlyNumber(e) {
+      if (this.isOnlyNumber && !this.rules.includes('decimal')) {
+        if (!/[0-9]/.test(e.key)) {
+          e.preventDefault()
+        }
+      }
+    },
     focus(status) {
       let info = {};
       info["name"] = this.name;
@@ -405,16 +413,13 @@ export default {
             } else {
               this.value = event.replace(/[^0-9]/g, '');
             }
-            
-            let num = parseInt(this.value, 10);
-            if (!isNaN(num)) {
-              if (this.minValue !== undefined && num < this.minValue) {
-                num = this.minValue;
+
+            if (this.minValue && this.maxValue) {
+              let num = +event.replace(/\D/g, '');
+              if (!isNaN(num)) {
+                num = Math.max(this.minValue ?? num, Math.min(num, this.maxValue ?? num));
+                this.value = num;
               }
-              if (this.maxValue !== undefined && num > this.maxValue) {
-                num = this.maxValue;
-              }
-              this.value = String(num);
             }
           } else {
             this.value = event.replace(/[^a-zA-Z0-9_\/-\s]/g, '');

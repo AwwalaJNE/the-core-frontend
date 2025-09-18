@@ -1943,6 +1943,9 @@ export default {
   SET_SURAT_MUATAN_MANIFEST_NUMBER_ValueData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_MANIFEST_NUMBER_ValueData', payload)
   },
+  SET_SURAT_MUATAN_MANIFEST_NUMBER_width({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_NUMBER_width', payload)
+  },
 
   SET_SURAT_MUATAN_MAX_WEIGHT({ commit }, payload) {
     commit('SET_SURAT_MUATAN_MAX_WEIGHT', payload)
@@ -2182,6 +2185,12 @@ export default {
   },
   SET_SURAT_MUATAN_MANIFEST_PREFIX_isDisabled({ commit }, payload) {
     commit('SET_SURAT_MUATAN_MANIFEST_PREFIX_isDisabled', payload)
+  },
+  SET_SURAT_MUATAN_MANIFEST_PREFIX_visible({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_PREFIX_visible', payload)
+  },
+  SET_SURAT_MUATAN_MANIFEST_PREFIX_width({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_MANIFEST_PREFIX_width', payload)
   },
 
   /* End Suart Muatan */

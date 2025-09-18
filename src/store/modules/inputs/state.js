@@ -4484,7 +4484,8 @@ export default {
       arrData: [],
       valueData: null,
       value: '',
-      width: "12"
+      width: "12",
+      visible: true
     },
     manifest_prefix: {
       label: "Prefix",

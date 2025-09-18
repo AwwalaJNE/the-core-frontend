@@ -2081,6 +2081,9 @@ export default {
   SET_SURAT_MUATAN_MANIFEST_NUMBER_ValueData(state, payload) {
     state.surat_muatan.manifest_number.valueData = payload
   },
+  SET_SURAT_MUATAN_MANIFEST_NUMBER_width(state, payload) {
+    state.surat_muatan.manifest_number.width = payload
+  },
 
   SET_SURAT_MUATAN_MANIFEST_PREFIX(state, payload) {
     state.surat_muatan.manifest_prefix.value = payload
@@ -2093,6 +2096,12 @@ export default {
   },
   SET_SURAT_MUATAN_MANIFEST_PREFIX_isDisabled(state, payload) {
     state.surat_muatan.manifest_prefix.isDisabled = payload
+  },
+  SET_SURAT_MUATAN_MANIFEST_PREFIX_visible(state, payload) {
+    state.surat_muatan.manifest_prefix.visible = payload
+  },
+  SET_SURAT_MUATAN_MANIFEST_PREFIX_width(state, payload) {
+    state.surat_muatan.manifest_prefix.width = payload
   },
 
   SET_SURAT_MUATAN_FLIGHT_NUMBER(state, payload) {
