@@ -475,6 +475,9 @@ export default {
 
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled", true);
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_visible", false)
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_width", 0)
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_width", 6)
 
             this.manifest_number = val.manifest_number;            
             this.is_approve = val.is_approve;
@@ -586,6 +589,9 @@ export default {
             }
         },
         getDataPreview(val) {
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_visible", false)
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_width", 0)
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_width", 6)
 
             this.manifest_method_id = parseInt(val.manifest_method_id);
             val.manifest_method_id = parseInt(val.manifest_method_id);
@@ -1018,6 +1024,9 @@ export default {
 
         },
         cancel() {
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_visible", true)
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_width", 2)
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_width", 4)
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", false);
             this.isDisabledApprove = false;
             this.isDisabled = false
