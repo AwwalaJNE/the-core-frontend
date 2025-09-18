@@ -132,11 +132,12 @@ export default {
                     const children = (item?.destination ?? []).reduce(
                         (acc, k) => {
                             acc['Destination Type'].push(k?.destination_type ?? " ");
+                            acc['Destination Name'].push(k.destination_name ?? k?.destination_value ?? "");
                             acc['Destination Value'].push(k?.destination_value ?? " ");
                             acc['Current Weight (kg)'].push(k?.current_weight ?? " ");
                             return acc;
                         },
-                        { 'Destination Type': [], 'Destination Value': [], 'Current Weight (kg)': [] }
+                        { 'Destination Type': [], 'Destination Name': [], 'Destination Value': [], 'Current Weight (kg)': [] }
                     );
 
                     return {
