@@ -130,7 +130,7 @@ export default {
                 const [mainDestination, ...otherDestination] = destination;
 
                 this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_TYPE", mainDestination.destination_type);
-                this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE", mainDestination.destination_name);
+                this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE", mainDestination.destination_name ?? mainDestination.destination_value);
                 this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE_ValueData", mainDestination.destination_value);
                 this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_TYPE", mainDestination.active_bag_weight_detail_id); // NOTES: HELPER TO GET ID
 
@@ -150,7 +150,7 @@ export default {
                                 field.key === "helper_dynamic_destination_type"
                                     ? destination_type
                                     : field.key === "helper_dynamic_destination_value"
-                                        ? destination_name || ""
+                                        ? destination_name ?? destination_value ?? ""
                                         : field.value
                         }))
                     }));
