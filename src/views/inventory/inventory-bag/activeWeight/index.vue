@@ -148,9 +148,9 @@ export default {
                 });
                 this.dataTable = arr;
                 this.pagination = {
-                    page: result.meta.current_page,
-                    limit: parseInt(result.meta.per_page, 10),
-                    page_size: result.meta.last_page,
+                    page: res.data.meta.current_page,
+                    limit: parseInt(res.data.meta.per_page, 10),
+                    page_size: res.data.meta.last_page,
                 };
                 
                 this.openNotification("success", null, "Success", res?.data?.message);
