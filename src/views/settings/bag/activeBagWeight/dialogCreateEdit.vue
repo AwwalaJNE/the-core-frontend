@@ -165,13 +165,15 @@ export default {
                 ...formPayload 
             } = form;
 
-            formPayload['destination'] = [{
-                ...(this.active_bag_weight_id && helper_dynamic_destination_type && {
-                    active_bag_weight_detail_id: helper_dynamic_destination_type || ""
-                }),
-                destination_type,
-                destination_value
-            }]
+            formPayload['destination'] = destination_type && destination_value
+                ? [{
+                    ...(this.active_bag_weight_id && helper_dynamic_destination_type
+                        ? { active_bag_weight_detail_id: helper_dynamic_destination_type }
+                        : {}),
+                    destination_type,
+                    destination_value
+                }]
+                : [];
 
             if (Array.isArray(form.dynamicinputcomponent_other_destination) && form.dynamicinputcomponent_other_destination.length) {
                 formPayload['destination'].push(
@@ -207,8 +209,14 @@ export default {
         },
         handleClearForm(){
             this.$refs.formActiveBagWeight.handleClearAllForm();
+            this.clearAutocomplete();
             this.form = {}
             this.active_bag_weight_id = ""
+        },
+        clearAutocomplete() {
+            this.autoCompleteUrl = "";
+            this.input_value = "";
+            this.input_label = "";
         },
         cancel() {
             this.closeDialog();
@@ -232,6 +240,8 @@ export default {
         },
         inputFocus(obj){
             if (obj.key.includes("destination_value")) {
+                this.clearAutocomplete();
+
                 let destination_type = this.listenDestinationType;
 
                 if (obj.key.includes("|")) {
@@ -250,9 +260,9 @@ export default {
                         this.input_label = "regional_code";
                         break;
                     case "BRANCH":
-                        this.autoCompleteUrl = this.URL.branch_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
+                        this.autoCompleteUrl = this.URL.branch_list_v2 +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
                         this.input_value = "branch_code";
-                        this.input_label = "branch_code";
+                        this.input_label = "node_name";
                         break;
                     case "ORIGIN":
                         this.autoCompleteUrl = this.URL.origin_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
@@ -262,13 +272,14 @@ export default {
                     case "NODE":
                         this.autoCompleteUrl = this.URL.node_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
                         this.input_value = "node_code";
-                        this.input_label = "node_code";
+                        this.input_label = "node_name";
                         break;
                     default:
                 }
             }
         },
         onChangeCustom(type, val, obj) {
+            console.log("CEK", type, val, obj)
             switch (type) {
                 case "destination_type":
                     this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE", "");
@@ -290,7 +301,7 @@ export default {
                         case "autocomplete":
                         case "autocomplete|hidden":
                             let index_ = obj?.option?.index;
-                            let selected_ = obj?.option?.value;
+                            let selected_ = obj?.data;
 
                             let latest_data_ = val;
                             latest_data_[index_].inputs[1].value = selected_;
