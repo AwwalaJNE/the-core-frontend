@@ -274,7 +274,7 @@ export default {
                     case "ORIGIN":
                         this.autoCompleteUrl = this.URL.origin_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
                         this.input_value = "origin_code";
-                        this.input_label = "origin_code";
+                        this.input_label = "node_name";
                         break;
                     case "NODE":
                         this.autoCompleteUrl = this.URL.node_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';

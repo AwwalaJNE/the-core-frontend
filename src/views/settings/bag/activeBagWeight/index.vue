@@ -158,10 +158,10 @@ export default {
                     const children = item?.destination?.reduce(
                         (acc, k) => {
                             acc['Destination Type'].push(k.destination_type);
-                            acc['Destination Value'].push(k.destination_value ?? " ");
+                            acc['Destination Name'].push(k.destination_name ?? k.destination_value ?? "");
                             return acc;
                         },
-                        { 'Destination Type': [], 'Destination Value': [] }
+                        { 'Destination Type': [], 'Destination Name': [] }
                     );
 
                     return {
