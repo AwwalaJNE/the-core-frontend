@@ -116,6 +116,7 @@
             ref="generalInput"
             @keydown="onlyNumberValidate"
             @keyup="handlerZero(value)"
+            @keypress="checkOnlyNumber"
             :min="listenMinValue"
             :data-testid="`input-${formKey}`"
             :state="
@@ -374,6 +375,13 @@ export default {
         if (!regex.test(key)) {
           theEvent.returnValue = false;
           if (theEvent.preventDefault) theEvent.preventDefault();
+        }
+      }
+    },
+    checkOnlyNumber(e) {
+      if (this.isOnlyNumber && !this.rules.includes('decimal')) {
+        if (!/[0-9]/.test(e.key)) {
+          e.preventDefault()
         }
       }
     },
