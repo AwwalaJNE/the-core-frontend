@@ -280,7 +280,7 @@ export default {
                         case "select|hidden":
                             let index = obj?.option?.index;
 
-                            let latest_data = this.$store.getters.getInputs.active_bag_weight.dynamicinputcomponent_other_destination.arrData;
+                            let latest_data = val;
                             latest_data[index].inputs[1].value = "";
                             latest_data[index].inputs[1].data = "";
                             latest_data[index].inputs[1].id = "";
@@ -292,7 +292,7 @@ export default {
                             let index_ = obj?.option?.index;
                             let selected_ = obj?.option?.value;
 
-                            let latest_data_ = this.$store.getters.getInputs.active_bag_weight.dynamicinputcomponent_other_destination.arrData;
+                            let latest_data_ = val;
                             latest_data_[index_].inputs[1].value = selected_;
                             latest_data_[index_].inputs[1].id = "";
                             latest_data_[index_].inputs[0].id = "";

@@ -5200,36 +5200,23 @@ SET_SYNC_SURAT_MUATAN_FLIGHT_IATA(state, payload) {
 
 
   SET_ACTIVE_BAG_WEIGHT_DYNAMICINPUTCOMPONENT_OTHER_DESTINATION(state, payload) {
-    let arr = state.active_bag_weight.dynamicinputcomponent_other_destination.inputs
-    let final = []
-    if (payload && payload.length > 0) {
-      let obj = {}
-      let template = arr
+    const template = state.active_bag_weight.dynamicinputcomponent_other_destination.inputs || []
 
-      payload.map(item => {
-        let newArr = []
-        template.map(tmpl => {
-          if (item.hasOwnProperty(tmpl.key.toLowerCase())) {
-            let val = item[tmpl.key.toLowerCase()]
-            let newObj = {}
-            newObj['key'] = tmpl.key
-            newObj['typeInput'] = tmpl.typeInput
-            newObj['value'] = val
+    const final = (payload || []).map(item => {
+      if (item.inputs) {
+        return { inputs: item.inputs }
+      }
 
-            newArr.push(newObj)
-          } else if (item.hasOwnProperty("inputs")) {
-            newArr = item["inputs"]
-          }
-        })
+      const inputs = template.map(tmpl => ({
+        key: tmpl.key,
+        typeInput: tmpl.typeInput,
+        value: item[tmpl.key.toLowerCase()] ?? ""
+      }))
 
-        let newData = { 'inputs': [] }
-        newData['inputs'] = newArr
-        final.push(newData)
-      })
-    }
-    state.active_bag_weight.dynamicinputcomponent_other_destination.hasOwnProperty('arrData') ?
-    state.active_bag_weight.dynamicinputcomponent_other_destination.arrData = final :
-    state.active_bag_weight.dynamicinputcomponent_other_destination.arrData = []
+      return { inputs }
+    })
+
+    state.active_bag_weight.dynamicinputcomponent_other_destination.arrData = final
   },
   SET_ACTIVE_BAG_WEIGHT_DYNAMICINPUTCOMPONENT_OTHER_DESTINATION_ValueData(state, payload) {
     state.active_bag_weight.dynamicinputcomponent_other_destination.valueData = payload

@@ -1,7 +1,7 @@
 <template>
     <div>
-        <template v-if="listInput.length > 0">
-            <vs-row justify="space-between" align="center" v-for="(item, index) in listInput" :key="index">
+        <template v-if="listenInputs.length > 0">
+            <vs-row justify="space-between" align="center" v-for="(item, index) in listenInputs" :key="index">
                
                 <template v-if="item.hasOwnProperty('inputs')">
                     <vs-col xs="10" sm="10" lg="10">
@@ -254,18 +254,27 @@ export default {
             .catch(error => console.log("error", error));
         },
         Add() {
-            if(this.Max == null) {
-                this.listInput.push(this.template)
-                this.tempform.push(this.template)
+            const newItem = JSON.parse(JSON.stringify(this.template))
+
+            if (this.Max == null) {
+                this.tempform.push(newItem)
             } else {
-                if(this.listInput.length <= this.Max) {
+                if (this.tempform.length < this.Max) {
                     this.addDisabled = false
-                    this.listInput.push(this.template)
-                    this.tempform.push(this.template)
+                    this.tempform.push(newItem)
                 } else {
-                    this.addDisabled = true // atau bisa pake watcher aja biar langsung
+                    this.addDisabled = true
                 }
             }
+
+            let prefix = this.listenTypeForm.toUpperCase()
+            let action = ""
+            for (const [key, value] of Object.entries(this.InputObject)) {
+                if (value["key"].includes("dynamicinputcomponent") && _.isEqual(value["inputs"], this.template["inputs"])) {
+                    action = value["key"].toUpperCase()
+                }
+            }
+            this.$store.dispatch(`SET_${prefix}_${action}`, this.tempform)
         },
         Remove(index) {
             this.listInput.splice(index,1)
