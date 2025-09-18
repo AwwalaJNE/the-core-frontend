@@ -227,24 +227,3 @@ export default {
     }
 }
 </script>
-<style lang="scss">
-    .el-select-async{
-        .el-select {
-            .el-input .el-input__inner{
-                margin-bottom: 0 !important;
-                min-height: 40px;
-                height: fit-content;
-                padding: 0px 13px;
-            }
-            &:focus-within {
-                border: none !important;
-            }
-            .el-select__tags{
-                width: auto !important;
-                margin-top: -2px;
-                min-height: 40px !important;
-                height: fit-content !important;
-            }
-        }
-    }
-</style>

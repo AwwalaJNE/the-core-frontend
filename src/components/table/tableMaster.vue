@@ -830,6 +830,14 @@
                       >
                       <span v-else>{{ item[column.key] }}</span>
                     </template>
+                    <template v-else-if="column.key === 'status_with_color'">
+                      <span
+                        class="statusBackground"
+                        :style="{ backgroundColor: getStatusColor(item[column.key]) }"
+                      >
+                        {{ item[column.key] }}
+                      </span>
+                    </template>
                     <template v-else-if="column.key === 'status_delivery'">
                       <span
                         v-if="item[column.key] === 'DELIVERED'"
@@ -2158,6 +2166,19 @@ export default {
       } else {
         this.visibleKeys = [];
       }
+    },
+    getStatusColor(status) {
+      if (!status) return "gray";
+      switch (status.toLowerCase()) {
+        case "safe":
+          return "rgb(21, 224, 21)";
+        case "warning":
+          return "rgb(255, 165, 0)";
+        case "over":
+          return "rgb(255, 0, 0)";
+        default:
+          return "gray";
+      }
     }
   },
   mounted() {
@@ -2349,6 +2370,14 @@ span.text-danger {
   color: rgb(255, 255, 255);
   padding: 5px 25px !important;
   border-radius: 3px;
+}
+.statusBackground {
+  color: rgb(255, 255, 255);
+  padding: 5px 5px !important;
+  border-radius: 3px;
+  display: flex;
+  width: 80px;
+  place-content: center;
 }
 .icon-warning {
   font-size: 48px;

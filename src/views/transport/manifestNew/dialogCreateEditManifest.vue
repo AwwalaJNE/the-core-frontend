@@ -433,6 +433,8 @@ export default {
     },
     methods: {
         handleSelectManifest(val) {
+            this.handleClearForm();
+            
             this.manifest_number = val.manifest_number;
             this.manifest_method_id = parseInt(val.vehicle_mode_id)
             this.vehicle_type_id = val.vehicle_type_id;

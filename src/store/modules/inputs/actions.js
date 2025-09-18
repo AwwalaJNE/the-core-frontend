@@ -4678,4 +4678,84 @@ SET_SYNC_SURAT_MUATAN_FLIGHT_IATA({ commit }, payload) {
   },
 
   // ====== END SURAT MUATAN VEHICLE ====== //
+
+
+  // ====== ACTIVE BAG WEIGHT ====== //
+  SET_ACTIVE_BAG_WEIGHT_REFERENCE({ commit }, payload) {
+    commit('SET_ACTIVE_BAG_WEIGHT_REFERENCE', payload)
+  },
+  SET_ACTIVE_BAG_WEIGHT_REFERENCE_ValueData({ commit }, payload) {
+    commit('SET_ACTIVE_BAG_WEIGHT_REFERENCE_ValueData', payload)
+  },
+  
+
+  SET_ACTIVE_BAG_WEIGHT_MAX_WEIGHT({ commit }, payload) {
+    commit('SET_ACTIVE_BAG_WEIGHT_MAX_WEIGHT', payload)
+  },
+  SET_ACTIVE_BAG_WEIGHT_MAX_WEIGHT_ValueData({ commit }, payload) {
+    commit('SET_ACTIVE_BAG_WEIGHT_MAX_WEIGHT_ValueData', payload)
+  },
+
+
+  SET_ACTIVE_BAG_WEIGHT_THRESHOLD({ commit }, payload) {
+    commit('SET_ACTIVE_BAG_WEIGHT_THRESHOLD', payload)
+  },
+  SET_ACTIVE_BAG_WEIGHT_THRESHOLD_ValueData({ commit }, payload) {
+    commit('SET_ACTIVE_BAG_WEIGHT_THRESHOLD_ValueData', payload)
+  },
+
+  
+  SET_ACTIVE_BAG_WEIGHT_DESTINATION_TYPE({ commit }, payload) {
+    commit('SET_ACTIVE_BAG_WEIGHT_DESTINATION_TYPE', payload)
+  },
+  SET_ACTIVE_BAG_WEIGHT_DESTINATION_TYPE_ValueData({ commit }, payload) {
+    commit('SET_ACTIVE_BAG_WEIGHT_DESTINATION_TYPE_ValueData', payload)
+  },
+  SET_ACTIVE_BAG_WEIGHT_DESTINATION_TYPE_ArrData({ commit }, payload) {
+    commit('SET_ACTIVE_BAG_WEIGHT_DESTINATION_TYPE_ArrData', payload)
+  },
+  
+
+  SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE({ commit }, payload) {
+    commit('SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE', payload)
+  },
+  SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE_ValueData({ commit }, payload) {
+    commit('SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE_ValueData', payload)
+  },
+  SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE_ArrData({ commit }, payload) {
+    commit('SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE_ArrData', payload)
+  },
+
+  
+  SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_TYPE({ commit }, payload) {
+    commit('SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_TYPE', payload)
+  },
+  SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_TYPE_ValueData({ commit }, payload) {
+    commit('SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_TYPE_ValueData', payload)
+  },
+  SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_TYPE_ArrData({ commit }, payload) {
+    commit('SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_TYPE_ArrData', payload)
+  },
+
+
+  SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_VALUE({ commit }, payload) {
+    commit('SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_VALUE', payload)
+  },
+  SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_VALUE_ValueData({ commit }, payload) {
+    commit('SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_VALUE_ValueData', payload)
+  },
+  SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_VALUE_ArrData({ commit }, payload) {
+    commit('SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_VALUE_ArrData', payload)
+  },
+
+  
+  SET_ACTIVE_BAG_WEIGHT_DYNAMICINPUTCOMPONENT_OTHER_DESTINATION({ commit }, payload) {
+    commit('SET_ACTIVE_BAG_WEIGHT_DYNAMICINPUTCOMPONENT_OTHER_DESTINATION', payload)
+  },
+
+  SET_ACTIVE_BAG_WEIGHT_DYNAMICINPUTCOMPONENT_OTHER_DESTINATION_ValueData({ commit }, payload) {
+    commit('SET_ACTIVE_BAG_WEIGHT_DYNAMICINPUTCOMPONENT_OTHER_DESTINATION_ValueData', payload)
+  },
+
+  // ====== END ACTIVE BAG WEIGHT ====== //
 }

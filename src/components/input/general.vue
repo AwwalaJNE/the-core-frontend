@@ -2,9 +2,19 @@
   <inputan :name="name" :rules="rules">
     <template v-slot:inputan="props">
       <template v-if="isHidden == false">
+        <div class="flex items-center text-left" style="justify-content: flex-start;">
+          <span class="c-label">{{ name }}<span v-if="rules && rules.includes('required')"> *</span></span>
+
+          <vs-tooltip v-if="tooltipMessage" right>
+            <template #tooltip>
+              {{ tooltipMessage }}
+            </template>
+            <i class="bx bx-info-circle "></i>
+          </vs-tooltip>
+        </div>
         <template v-if="isPlaceholderGabung">
           <!-- <vs-input
-                        :class="`mt-input`"
+                        
                         :type="listenTypeInput.includes('password') == true ? 'password' : 'text'"
                         :placeholder="name"
                         :border="isBorder"
@@ -43,10 +53,10 @@
         <template v-else-if="listenCurrencyMasking">
           <!-- v-currency -->
           <vs-input
-            :class="`mt-input`"
+            
             :type="'text'"
-            :label="computedLabel"
-            :label-placeholder="name"
+            
+            
             v-currency
             v-model="value"
             :disabled="isDisabled"
@@ -65,10 +75,10 @@
         </template>
         <template v-else-if="listenTypeInput.includes('date') == true">
           <vs-input
-            :class="`mt-input`"
+            
             :type="listenTypeInput.includes('date') == true ? 'date' : 'text'"
-            :label="computedLabel"
-            :label-placeholder="name"
+            
+            
             v-model="value"
             format="yyyy-mm-dd HH:i"
             :disabled="isDisabled"
@@ -86,7 +96,7 @@
         <template v-else-if="isOnlyNumber == true">
           <!-- .replace(/^0+/, '') -->
           <vs-input
-            :class="`mt-input`"
+            
             :type="
               listenTypeInput
                 ? listenTypeInput.includes('password') == true
@@ -94,7 +104,7 @@
                   : listenTypeInput
                 : 'text'
             "
-            :label="computedLabel"
+            
             placeholder="0"
             v-model="value"
             :autofocus="isFocusToInput"
@@ -115,7 +125,7 @@
         </template>
         <template v-else-if="withDebounce == true">
           <vs-input
-            :class="`mt-input`"
+            
             :type="
               listenTypeInput
                 ? listenTypeInput.includes('password') == true
@@ -123,8 +133,8 @@
                   : listenTypeInput
                 : 'text'
             "
-            :label="computedLabel"
-            :label-placeholder="name"
+            
+            
             v-model="value"
             :autofocus="isFocusToInput"
             :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
@@ -143,7 +153,7 @@
         <template v-else-if="isenter_to_update == true">
           <form @submit.prevent="enterUpdate">
             <vs-input
-              :class="`mt-input`"
+              
               :type="
                 listenTypeInput
                   ? listenTypeInput.includes('password') == true
@@ -151,8 +161,8 @@
                     : listenTypeInput
                   : 'text'
               "
-              :label="computedLabel"
-              :label-placeholder="name"
+              
+              
               v-model="value"
               :autofocus="isFocusToInput"
               :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
@@ -170,7 +180,7 @@
         </template>
         <template v-else>
           <vs-input
-            :class="`mt-input`"
+            
             :type="
               listenTypeInput
                 ? listenTypeInput.includes('password') == true
@@ -178,8 +188,8 @@
                   : listenTypeInput
                 : 'text'
             "
-            :label="computedLabel"
-            :label-placeholder="name"
+            
+            
             :placeholder="placeholder"
             :border="isBorder"
             v-model="value"
@@ -219,6 +229,7 @@ export default {
     typeInput: String,
     prefix: String,
     minValue: Number,
+    maxValue: Number,
     placeholderGabung: Boolean,
     focusToInput: Boolean,
     tabindex: [Number, String],
@@ -233,7 +244,8 @@ export default {
       type: Boolean,
       default: () => false,
     },
-    disabled: Boolean
+    disabled: Boolean,
+    tooltipMessage: String,
   },
   components: {
     inputan: Inputan,
@@ -289,11 +301,6 @@ export default {
     },
     listenPlaceholder() {
       return this.placeholder;
-    },
-    computedLabel() {
-      return this.rules && this.rules.includes('required')
-        ? `${this.name} *`
-        : this.name
     }
   },
   watch: {
@@ -397,6 +404,17 @@ export default {
               this.value = event.replace(/[^0-9.]/g, '');
             } else {
               this.value = event.replace(/[^0-9]/g, '');
+            }
+            
+            let num = parseInt(this.value, 10);
+            if (!isNaN(num)) {
+              if (this.minValue !== undefined && num < this.minValue) {
+                num = this.minValue;
+              }
+              if (this.maxValue !== undefined && num > this.maxValue) {
+                num = this.maxValue;
+              }
+              this.value = String(num);
             }
           } else {
             this.value = event.replace(/[^a-zA-Z0-9_\/-\s]/g, '');

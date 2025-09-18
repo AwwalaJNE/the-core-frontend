@@ -340,8 +340,14 @@ export default {
                 buttonStatus.print = true; // Bisa print
                 buttonStatus.depart = true; // Bisa depart
                 buttonStatus.cancel = true; // Bisa cancel
+              } else if (strStatus.includes("approved")) {
+                buttonStatus.vehicle = true; // Bisa edit vehicle
+                buttonStatus.print = true; // Bisa print
+
+                if (!item.auto_depart) {
+                  buttonStatus.depart = true;
+                }
               } else if (
-                strStatus.includes("approved") ||
                 strStatus.includes("depart") ||
                 strStatus.includes("transit") || // Menambahkan 'transit'
                 strStatus.includes("receive") ||
@@ -349,10 +355,7 @@ export default {
               ) {
                 buttonStatus.vehicle = true; // Bisa edit vehicle
                 buttonStatus.print = true; // Bisa print
-
-                if (!item.auto_depart) {
-                  buttonStatus.depart = true;
-                }
+                buttonStatus.depart = false;
                 // Depart tidak bisa dilakukan jika sudah depart/receive/complete
               } else if (strStatus.includes("cancel")) {
                 // Semua aksi dinonaktifkan jika status cancel

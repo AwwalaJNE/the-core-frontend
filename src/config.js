@@ -439,4 +439,7 @@ export default {
 
     // API Flight
     search_flight: apiFlight + 'flight',
+
+    // Active Bag Weight
+    active_bag_weight: api + 'active-bag-weight'
 }
