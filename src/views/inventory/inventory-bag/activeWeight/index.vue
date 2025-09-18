@@ -129,11 +129,11 @@ export default {
                 const res = await axios.get(`${this.URL.active_bag_weight}/report?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&search_by=${searchBy}&destination_type=${this.filterDestinationTypeBy}`, this.Helper.header());
 
                 let arr = (res?.data?.data || []).map(item => {
-                    const children = item?.destination?.reduce(
+                    const children = (item?.destination ?? []).reduce(
                         (acc, k) => {
-                            acc['Destination Type'].push(k.destination_type);
-                            acc['Destination Value'].push(k.destination_value ?? " ");
-                            acc['Current Weight (kg)'].push(k.current_weight ?? " ");
+                            acc['Destination Type'].push(k?.destination_type ?? " ");
+                            acc['Destination Value'].push(k?.destination_value ?? " ");
+                            acc['Current Weight (kg)'].push(k?.current_weight ?? " ");
                             return acc;
                         },
                         { 'Destination Type': [], 'Destination Value': [], 'Current Weight (kg)': [] }
