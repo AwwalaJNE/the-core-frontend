@@ -130,27 +130,34 @@ export default {
                 const [mainDestination, ...otherDestination] = destination;
 
                 this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_TYPE", mainDestination.destination_type);
-                this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE", mainDestination.destination_value);
+                this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE", mainDestination.destination_name);
                 this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE_ValueData", mainDestination.destination_value);
                 this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_TYPE", mainDestination.active_bag_weight_detail_id); // NOTES: HELPER TO GET ID
 
                 if (otherDestination.length) {
                     const template = this.$store.getters.getInputs.active_bag_weight.dynamicinputcomponent_other_destination.inputs;
 
-                    const arr = otherDestination.map(({ active_bag_weight_detail_id, destination_type, destination_value }) => ({
+                    const arr = otherDestination.map(({ active_bag_weight_detail_id, destination_type, destination_value, destination_name }) => ({
                         inputs: template.map(field => ({
                             ...field,
                             id: active_bag_weight_detail_id,
+                            data: field.key === "helper_dynamic_destination_type"
+                                    ? destination_type
+                                    : field.key === "helper_dynamic_destination_value"
+                                        ? destination_value || ""
+                                        : field.value,
                             value:
                                 field.key === "helper_dynamic_destination_type"
                                     ? destination_type
                                     : field.key === "helper_dynamic_destination_value"
-                                        ? destination_value || ""
+                                        ? destination_name || ""
                                         : field.value
                         }))
                     }));
 
                     this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DYNAMICINPUTCOMPONENT_OTHER_DESTINATION", arr);
+
+                    console.log("CEK" , this.$store.getters.getInputs.active_bag_weight.dynamicinputcomponent_other_destination)
                 }
             }
             this.dataItem = val;
@@ -183,7 +190,7 @@ export default {
                                 active_bag_weight_detail_id: item?.inputs?.[0]?.id || ""
                             }),
                             destination_type: item.inputs?.[0]?.value || "",
-                            destination_value: item.inputs?.[1]?.value || ""
+                            destination_value: item.inputs?.[1]?.data || ""
                         }))
                         .filter(item => item.destination_type && item.destination_value) // Remove empty values
                 );
@@ -279,7 +286,6 @@ export default {
             }
         },
         onChangeCustom(type, val, obj) {
-            console.log("CEK", type, val, obj)
             switch (type) {
                 case "destination_type":
                     this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE", "");
@@ -304,7 +310,7 @@ export default {
                             let selected_ = obj?.data;
 
                             let latest_data_ = val;
-                            latest_data_[index_].inputs[1].value = selected_;
+                            latest_data_[index_].inputs[1].data = selected_;
                             latest_data_[index_].inputs[1].id = "";
                             latest_data_[index_].inputs[0].id = "";
 
