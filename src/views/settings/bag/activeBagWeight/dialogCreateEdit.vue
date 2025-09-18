@@ -130,27 +130,34 @@ export default {
                 const [mainDestination, ...otherDestination] = destination;
 
                 this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_TYPE", mainDestination.destination_type);
-                this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE", mainDestination.destination_value);
+                this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE", mainDestination.destination_name);
                 this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE_ValueData", mainDestination.destination_value);
                 this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_TYPE", mainDestination.active_bag_weight_detail_id); // NOTES: HELPER TO GET ID
 
                 if (otherDestination.length) {
                     const template = this.$store.getters.getInputs.active_bag_weight.dynamicinputcomponent_other_destination.inputs;
 
-                    const arr = otherDestination.map(({ active_bag_weight_detail_id, destination_type, destination_value }) => ({
+                    const arr = otherDestination.map(({ active_bag_weight_detail_id, destination_type, destination_value, destination_name }) => ({
                         inputs: template.map(field => ({
                             ...field,
                             id: active_bag_weight_detail_id,
+                            data: field.key === "helper_dynamic_destination_type"
+                                    ? destination_type
+                                    : field.key === "helper_dynamic_destination_value"
+                                        ? destination_value || ""
+                                        : field.value,
                             value:
                                 field.key === "helper_dynamic_destination_type"
                                     ? destination_type
                                     : field.key === "helper_dynamic_destination_value"
-                                        ? destination_value || ""
+                                        ? destination_name || ""
                                         : field.value
                         }))
                     }));
 
                     this.$store.dispatch("SET_ACTIVE_BAG_WEIGHT_DYNAMICINPUTCOMPONENT_OTHER_DESTINATION", arr);
+
+                    console.log("CEK" , this.$store.getters.getInputs.active_bag_weight.dynamicinputcomponent_other_destination)
                 }
             }
             this.dataItem = val;
@@ -165,13 +172,15 @@ export default {
                 ...formPayload 
             } = form;
 
-            formPayload['destination'] = [{
-                ...(this.active_bag_weight_id && helper_dynamic_destination_type && {
-                    active_bag_weight_detail_id: helper_dynamic_destination_type || ""
-                }),
-                destination_type,
-                destination_value
-            }]
+            formPayload['destination'] = destination_type && destination_value
+                ? [{
+                    ...(this.active_bag_weight_id && helper_dynamic_destination_type
+                        ? { active_bag_weight_detail_id: helper_dynamic_destination_type }
+                        : {}),
+                    destination_type,
+                    destination_value
+                }]
+                : [];
 
             if (Array.isArray(form.dynamicinputcomponent_other_destination) && form.dynamicinputcomponent_other_destination.length) {
                 formPayload['destination'].push(
@@ -181,7 +190,7 @@ export default {
                                 active_bag_weight_detail_id: item?.inputs?.[0]?.id || ""
                             }),
                             destination_type: item.inputs?.[0]?.value || "",
-                            destination_value: item.inputs?.[1]?.value || ""
+                            destination_value: item.inputs?.[1]?.data || ""
                         }))
                         .filter(item => item.destination_type && item.destination_value) // Remove empty values
                 );
@@ -207,8 +216,14 @@ export default {
         },
         handleClearForm(){
             this.$refs.formActiveBagWeight.handleClearAllForm();
+            this.clearAutocomplete();
             this.form = {}
             this.active_bag_weight_id = ""
+        },
+        clearAutocomplete() {
+            this.autoCompleteUrl = "";
+            this.input_value = "";
+            this.input_label = "";
         },
         cancel() {
             this.closeDialog();
@@ -232,6 +247,8 @@ export default {
         },
         inputFocus(obj){
             if (obj.key.includes("destination_value")) {
+                this.clearAutocomplete();
+
                 let destination_type = this.listenDestinationType;
 
                 if (obj.key.includes("|")) {
@@ -250,9 +267,9 @@ export default {
                         this.input_label = "regional_code";
                         break;
                     case "BRANCH":
-                        this.autoCompleteUrl = this.URL.branch_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
+                        this.autoCompleteUrl = this.URL.branch_list_v2 +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
                         this.input_value = "branch_code";
-                        this.input_label = "branch_code";
+                        this.input_label = "node_name";
                         break;
                     case "ORIGIN":
                         this.autoCompleteUrl = this.URL.origin_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
@@ -262,7 +279,7 @@ export default {
                     case "NODE":
                         this.autoCompleteUrl = this.URL.node_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
                         this.input_value = "node_code";
-                        this.input_label = "node_code";
+                        this.input_label = "node_name";
                         break;
                     default:
                 }
@@ -290,10 +307,10 @@ export default {
                         case "autocomplete":
                         case "autocomplete|hidden":
                             let index_ = obj?.option?.index;
-                            let selected_ = obj?.option?.value;
+                            let selected_ = obj?.data;
 
                             let latest_data_ = val;
-                            latest_data_[index_].inputs[1].value = selected_;
+                            latest_data_[index_].inputs[1].data = selected_;
                             latest_data_[index_].inputs[1].id = "";
                             latest_data_[index_].inputs[0].id = "";
 
