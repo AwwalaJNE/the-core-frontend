@@ -1,6 +1,6 @@
 <template>
     <header class="header shadow">
-        <vs-row justify="space-between">
+        <vs-row justify="space-between" align="center">
             <vs-col xs="2" sm="2" lg="2">
                 <vs-row>
                     <vs-col xs="3" sm="3" lg="3">
@@ -13,12 +13,25 @@
                     </vs-col>
                 </vs-row>
             </vs-col>
-            <vs-col xs="8" sm="8" lg="8">
-                <vs-row justify="flex-end">
+            <vs-col xs="10" sm="10" lg="10">
+                <vs-row justify="flex-end" align="center" style="gap: 0.75em">
+                    <vs-avatar>
+                        <template #text>
+                            WITA
+                        </template>
+                    </vs-avatar>
+
+                    <vs-avatar>
+                        <template #text>
+                            ID
+                        </template>
+                    </vs-avatar>
+                    
                     <vs-col xs="10" sm="10" lg="4">
                         <template v-if="datanode.length > 0">
                             <selector 
                             ref="node_selector"
+                            :hiddenTitle=true
                             :valueData="datanode"
                             :selectedValue="selectedNode"
                             :isMultiple="false"
@@ -27,49 +40,45 @@
                             @updateValue="updateValue" />
                         </template>
                     </vs-col>
-                    <vs-col xs="1" sm="1" lg="1">
-                        <vs-avatar class="cus_search" @click="openDialog">
-                            <i class='bx bx-search'></i>
+
+                    <vs-avatar @click="openDialog">
+                        <i class='bx bx-search'></i>
+                    </vs-avatar>
+
+                    <search-general
+                        :active="dialogSearchGeneral"
+                        :closeDialog="closeDialogSearchGeneral"
+                        title=""
+                    />
+                    
+                    <vs-tooltip bottom shadow interactivity not-hover v-model="activeTooltip1">
+                        <vs-avatar @click="activeTooltip1=!activeTooltip1">
+                            <i class='bx bx-user'></i>
                         </vs-avatar>
-                        <!--Dialog Search General-->
-                        <search-general
-                            :active="dialogSearchGeneral"
-                            :closeDialog="closeDialogSearchGeneral"
-                            title=""
-                        />
-                    </vs-col>
-                    <vs-col xs="1" sm="1" lg="1">                            
-                        <vs-tooltip bottom shadow interactivity not-hover v-model="activeTooltip1">
-                            <vs-avatar class="cus_avatar" @click="activeTooltip1=!activeTooltip1">
+                        <template #tooltip>
+                        <div class="content-tooltip">
+                            <div class="body">
+                            <vs-avatar circle size="60">
                                 <i class='bx bx-user'></i>
-                            </vs-avatar>
-                            <template #tooltip>
-                            <div class="content-tooltip">
-                                <div class="body">
-                                <vs-avatar circle size="60">
-                                    <i class='bx bx-user'></i>
-                                </vs-avatar> 
-                                <div class="text">
-                                    {{userAuthFullName}}
-                                    <span>
-                                    {{userAuthLoginName}}
-                                    </span>
-                                </div>
-                                </div>
-                                <footer>
-                                <vs-button circle @click="goToProfile">
-                                    Edit Profile
-                                </vs-button>
-                                <vs-button circle @click="logout"  danger>
-                                    Logout
-                                </vs-button>
-                                </footer>
+                            </vs-avatar> 
+                            <div class="text">
+                                {{userAuthFullName}}
+                                <span>
+                                {{userAuthLoginName}}
+                                </span>
                             </div>
-                            </template>
-                        </vs-tooltip>
-
-
-                    </vs-col>
+                            </div>
+                            <footer>
+                            <vs-button circle @click="goToProfile">
+                                Edit Profile
+                            </vs-button>
+                            <vs-button circle @click="logout"  danger>
+                                Logout
+                            </vs-button>
+                            </footer>
+                        </div>
+                        </template>
+                    </vs-tooltip>
                 </vs-row>
             </vs-col>
         </vs-row>
@@ -249,7 +258,7 @@ export default {
         top: 0;
         z-index: 95000;
         min-height: 1.5em;
-        padding: .5em 0;
+        padding: .5em .5em .5em 0;
         background-color: $bgWhite;
         position: sticky;
         .burger_custom{
@@ -285,13 +294,6 @@ export default {
         .m-select.vs-select-content{
             margin-top: 6px;
         }
-        .cus_avatar{
-            top: 4px;
-        }
-        .cus_search{
-            top: 4px;
-            margin: 0 auto;
-        }        
 
         @include for-phone-only{
             min-height: 1em;
@@ -317,10 +319,6 @@ export default {
     justify-content: center;
 
     .vs-avatar-content {
-        &.cus_avatar{
-            width: 40px !important;
-            height: 40px !important;
-        }
         margin-top: 0;
         border: 3px solid var(--vs-theme-layout);
         box-shadow: 0px 4px 15px 0px rgba(0, 0, 0, 0.1);
