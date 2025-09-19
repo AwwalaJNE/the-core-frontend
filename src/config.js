@@ -444,5 +444,5 @@ export default {
     active_bag_weight: api + 'active-bag-weight',
 
     // user preferences
-    user_preferences: api + 'user_preferences'
+    user_preferences: api + 'user-preferences'
 }
