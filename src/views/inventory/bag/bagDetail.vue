@@ -615,7 +615,7 @@ export default {
             bag_number : this.bag_id,
             bag_actual_weight : this.weight
         }
-        this.loading = true
+        // this.loading = true
         this.putBag();
       }
     },
