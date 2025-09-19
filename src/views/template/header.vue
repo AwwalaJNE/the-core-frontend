@@ -1,7 +1,7 @@
 <template>
     <header class="header shadow">
         <vs-row justify="space-between" align="center">
-            <vs-col xs="2" sm="2" lg="2">
+            <vs-col xs="2" sm="3" lg="2">
                 <vs-row>
                     <vs-col xs="3" sm="3" lg="3">
                         <vs-button @click="clickProps" size="l" :active="true" border icon>
@@ -13,23 +13,37 @@
                     </vs-col>
                 </vs-row>
             </vs-col>
-            <vs-col xs="10" sm="10" lg="10">
+            <vs-col xs="10" sm="9" lg="10">
                 <vs-row justify="flex-end" align="center" style="gap: 0.75em">
-                    <vs-avatar>
-                        <template #text>
-                            WITA
-                        </template>
-                    </vs-avatar>
+                    <vs-col xs="1" sm="1" lg="1">
+                        <selector 
+                            formKey="timezone_selector"
+                            :hiddenTitle=true
+                            :valueData="dataTimezone"
+                            :selectedValue="selectedTimezone"
+                            :isMultiple="false"
+                            :border="true"
+                            :tabindex="-1"
+                            @updateValue="updateValue" 
+                        />
+                    </vs-col>
 
-                    <vs-avatar>
-                        <template #text>
-                            ID
-                        </template>
-                    </vs-avatar>
+                    <vs-col xs="1" sm="1" lg="1">
+                        <selector 
+                            formKey="language_selector"
+                            :hiddenTitle=true
+                            :valueData="dataLanguage"
+                            :selectedValue="selectedLanguage"
+                            :isMultiple="false"
+                            :border="true"
+                            @updateValue="updateValue" 
+                        />
+                    </vs-col>
                     
-                    <vs-col xs="10" sm="10" lg="4">
+                    <vs-col xs="10" sm="4" lg="4">
                         <template v-if="datanode.length > 0">
                             <selector 
+                            formKey="node_selector"
                             ref="node_selector"
                             :hiddenTitle=true
                             :valueData="datanode"
@@ -109,8 +123,53 @@ export default {
             activeTooltip1: false,
             dialogSearchGeneral:false,
             tempSearch: "",
-            datanode: [],
             selectedNode: '',
+            datanode: [],
+            selectedLanguage: '',
+            dataLanguage: [
+                {
+                    label: "Indonesia",
+                    value: "ID",
+                    code: "ID",
+                },
+                {
+                    label: "English",
+                    value: "EN",
+                    code: "EN",
+                }
+            ],
+            selectedLanguage: '',
+            dataLanguage: [
+                {
+                    label: "Indonesia",
+                    value: "ID",
+                    code: "ID",
+                },
+                {
+                    label: "English",
+                    value: "EN",
+                    code: "EN",
+                }
+            ],
+            dataTimezone: [],
+            selectedTimezone: '',
+            dataMappingTimezone: [
+                {
+                    label: "Asia/Jakarta",
+                    value: "Asia/Jakarta",
+                    code: "WIB",
+                },
+                {
+                    label: "Asia/Makassar",
+                    value: "Asia/Jayapura",
+                    code: "WITA",
+                },
+                {
+                    label: "Asia/Jayapura",
+                    value: "Asia/Jayapura",
+                    code: "WIT",
+                }
+            ],
             userAuthFullName:'',
             userAuthLoginName:''
         }
@@ -128,8 +187,20 @@ export default {
         openDialog(){
             this.dialogSearchGeneral = true
         },
-        updateValue(){
-
+        updateValue(key, val){
+            switch(key) {
+                case "timezone_selector":
+                    this.updateTimezone(val);
+                    break;
+                case "language_selector":
+                    this.selectedLanguage = val;
+                    this.$ls.set("language", val);
+                    break;
+                case "node_selector":
+                    this.updateNode();
+                    break;
+                default:
+            }
         },
         async logout() {
             try {
@@ -145,7 +216,7 @@ export default {
             if (this.$route.name !== 'profile') this.$router.push({ name: 'profile', params: { } });
             this.setRoutePageHistory(this.$route.meta, false);
         },
-        async updateValue(key,val) {
+        async updateNode(key,val) {
             let node = this.datanode.filter(item => item.value == val)
             let form = {
                 node_id : node[0].value
@@ -211,10 +282,57 @@ export default {
                     );
                 });
         },
+        async getTimezone() {
+            this.loading = true;
+            
+            try {
+                const res = await axios.get(`${this.URL.geolocation_timezone}?n=${this.listenNodeId}`, this.Helper.header());
+
+                if (res.data.data.length > 0) {
+                    let specialTimezones = {
+                        "Asia/Jakarta": "WIB",
+                        "Asia/Makassar": "WITA",
+                        "Asia/Jayapura": "WIT"
+                    };
+
+                    let arr = res.data.data.map(item => {
+                        let tz = item.name;
+                        return {
+                            label: tz,
+                            value: item.code,
+                            ...(specialTimezones[tz] && { code: specialTimezones[tz] })
+                        };
+                    });
+                    
+                    this.dataTimezone = arr;
+                } else {
+                    this.dataTimezone = this.dataMappingTimezone;
+                }
+            } catch (err) {
+                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loading = false;
+            }
+        },
+        async updateTimezone(timezone) {
+            this.loading = true;
+            try {
+                const res = await axios.patch(`${this.URL.user_preferences}/${this.listenActiveUser?.user_id}/timezone?n=${this.listenNodeId}`, { "timezone": timezone }, this.Helper.header());
+
+                this.selectedTimezone = timezone;
+            } catch (err) {
+                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loading = false;
+            }
+        },
         init() {
             this.userAuthLoginName = this.listenActiveUser?.user_login;
             this.userAuthFullName = this.listenActiveUser?.user_name;
             this.selectedNode = this.listenNodeId.toString();
+
+            this.selectedLanguage = this.$ls.get('language');
+            this.selectedTimezone = this.listenActiveUser?.timezone || 'Asia/Jakarta'
 
             let arr = []
             let node = this.listenNode.filter(item => item.node_id === this.listenNodeId);
@@ -229,6 +347,8 @@ export default {
             })
 
             this.datanode = arr;
+
+            this.getTimezone();
         },
         searchShortcut() {
             document.addEventListener('keydown', (e) => {
