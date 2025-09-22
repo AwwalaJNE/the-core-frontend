@@ -397,7 +397,7 @@ export default {
               ? item.manifest_do_number?.startsWith("SJA")
                 ? `${item.origin.node_name} (AIRPORT)`
                 : `${item.origin.node_code ? item.origin.node_code : "null"} - ${item.origin.node_name}`
-    : null; 
+    : null;
             item["node_id_destination_name"] = item.destination
               ? `${item.destination.node_code ? item.destination.node_code : "null"} - ${item.destination.node_name}`
               : item.facility_code_destination;
@@ -414,6 +414,10 @@ export default {
             item["total_connote"] = item.total_connote === 0 ? '0' : item.total_connote;
             item["total_received"] = item.total_received === 0 ? '0' : item.total_received;
             item["total_outstanding"] = item.total_outstanding === 0 ? '0' : item.total_outstanding;
+
+            item["etd"] = this.formatTimezone(item["etd"]);
+            item["eta"] = this.formatTimezone(item["eta"]);
+            item["departed_time"] = this.formatTimezone(item["departed_time"]);
             
             if (
                   (item.manifest_do_number?.startsWith("SJA") ||
@@ -671,6 +675,10 @@ export default {
   },
   mounted() {
     this.refresh();
+    window.addEventListener('timezone-changed', this.refresh);
+  },
+  beforeDestroy() {
+    window.removeEventListener('timezone-changed', this.refresh);
   },
 };
 </script>
