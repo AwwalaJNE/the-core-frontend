@@ -389,14 +389,14 @@ export default {
             isTransitTag: item?.is_sm_transit || "",
             origin_name: `${item.origin_branch_code || ""} - ${item.origin_branch_name || "-"}`,
             destination_name: `${item.destination_branch_code || ""} - ${item.destination_branch_name || ""}`,
-            eta: this.dateConvert(item.eta),
-            etd: this.dateConvert(item.etd),
+            eta: this.formatTimezone(item.eta),
+            etd: this.formatTimezone(item.etd),
             total_masterbag: item.total_masterbag === 0 ? "0" : item.total_masterbag,
             total_bag: item.total_bag === 0 ? "0" : item.total_bag,
             total_connote: item.total_koli === 0 ? "0" : item.total_koli,
             total_received: item.total_received === 0 ? "0" : item.total_received,
             total_outstanding: item.total_outstanding === 0 ? "0" : item.total_outstanding,
-            created_at: this.dateConvert(item.created_at),
+            created_at: this.formatTimezone(item.created_at),
             approved: item.is_approve === 1 ? true : false,
             status_with_tooltip: item.is_transit === 1
               ? `${item.status} <span class="status-tooltip" title="Terdapat Bag masih dalam proses transit."><i class="bx bxs-truck" style="font-size: 0.8rem; vertical-align: middle; border: 1px solid; border-radius: 50%; padding: 3px;"></i></span>`
@@ -598,6 +598,10 @@ export default {
   },
   mounted() {
     this.refresh();
+    window.addEventListener('timezone-changed', this.refresh);
+  },
+  beforeDestroy() {
+    window.removeEventListener('timezone-changed', this.refresh);
   },
 };
 </script>
