@@ -108,6 +108,7 @@ export default {
 
                 let arr = res.data.data;
                 arr.map(item => {
+                    item['pod_at'] = this.formatTimestamp(item?.pod_at);
                     item['elapsed_time'] = this.formatElapsedTime(item.elapsed_time_minutes)
                 });
 
@@ -121,6 +122,12 @@ export default {
         cancel() {
             this.closeDialog()
         },
+    },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    },
+    mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
     },
 }
 </script>

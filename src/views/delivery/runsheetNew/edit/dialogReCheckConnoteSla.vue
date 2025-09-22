@@ -140,7 +140,7 @@ export default {
             if(val !== undefined) {
                 if (this.type === "KOLI") {
                     this.status = val.status;
-                    this.sla_date = val.sla_date;
+                    this.sla_date = this.formatTimestamp(val?.sla_date);
                     this.remaining_time = val.remaining_time;
                 } else {
                     this.listDataItem = val;
@@ -157,7 +157,11 @@ export default {
             }
         },
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.handleSubmitShortcut(this.handleSubmit)
     }
 }

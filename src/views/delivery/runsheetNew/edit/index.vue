@@ -376,7 +376,11 @@ export default {
             return this.dataDelivery;
         }
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.reload);
+    },
     mounted() {
+        window.addEventListener('timezone-changed', this.reload);
         this.getStatus();
         this.setFocus();
         this.getDataCourier();
@@ -875,6 +879,7 @@ export default {
                 item.employee_name = data.employee_name;
                 item.employee_code = data.employee_code;
                 item.warning_koli_record_id = item?.warning_koli_record_id
+                item.created_at = this.formatTimestamp(item?.created_at);
 
                 if (item?.days_elapsed != null) {
                     item.days_elapsed = this.formatElapsedDay(item.days_elapsed);
