@@ -2,7 +2,7 @@
     <inputan :name="name" :rules="rules">
         <template v-slot:inputan="props">
             <div style="text-align:left;">
-                <small style="padding-left:10px;">{{name}}</small>
+                <span class="c-label">{{ name }}<span v-if="rules && rules.includes('required')"> *</span></span>
                 <el-autocomplete
                     class="inline-input"
                     v-model="value"
@@ -10,6 +10,7 @@
                     :placeholder="`Search ${name}`"
                     :trigger-on-focus="false"
                     :debounce="400"
+                    :data-testid="`autocomplete-${formKey}`"
                     @select="handleSelect"
                     @input="updateValue"
                     @focus="inputFocus"
@@ -75,7 +76,7 @@ export default {
     methods:{
         updateValue(event){
             if (event && typeof event === 'string') {
-                this.value = event.replace(/[^a-zA-Z0-9_\-\*\(\)~ ,]/g, '');
+                this.value = event.replace(/[^a-zA-Z0-9_\-\*\(\)~ ,\/]/g, '');
             }
 
             this.$emit("updateValue", this.listenFormKey, this.value, {})
@@ -97,6 +98,9 @@ export default {
             info['data'] = item.data
 
             this.$emit("updateValue", this.listenFormKey, item.value, info)
+        },
+        clear() {
+            this.value = '';
         }
     }
 }

@@ -112,9 +112,16 @@ const Master = {
                 progress: 'auto',
                 color: type,
                 position: 'top-right',
-                title: title,
-                text: msg,
-                width: '80%',
+                title: `
+                    <div style="padding-left: 2rem;">
+                        ${title}
+                    </div>
+                `,
+                text: `
+                    <div style="padding-left: 2rem;">
+                        ${msg}
+                    </div>
+                `,
                 icon: `
                     <div style="display: flex; flex-direction: column; align-items: center; min-width: 64px; margin-left: 30px;">
                         <i class="bx ${type === 'success' || type === 'success-with-notif' ? 'bx-select-multiple' : 'bx-error'}" style="font-size: 24px;"></i>
@@ -546,7 +553,7 @@ const Master = {
         },
 
         sanitizeAlphanumeric(fieldName) {
-            this[fieldName] = this[fieldName].replace(/[^a-zA-Z0-9_-]/g, '');
+            this[fieldName] = this[fieldName].replace(/[^a-zA-Z0-9_\/-]/g, '');
         },
         formatDateTimeId(datetime) {
             if (!datetime) return '-';
@@ -559,6 +566,54 @@ const Master = {
             const timeStr = d.toLocaleTimeString('id-ID', timeOptions).replace('.', ':');
 
             return `${dateStr} ${timeStr}`;
+        },
+        getTLC(text) {
+            // 1. Prefer code inside parentheses like (MKQ000)
+            let parenMatch = text.match(/\(\s*([A-Z]{3})(?=\d*\))/);
+            if (parenMatch) return parenMatch[1];
+
+            // 2. Otherwise, check if starts with XXX- pattern
+            let startMatch = text.match(/^([A-Z]{3})(?=-)/);
+            if (startMatch) return startMatch[1];
+
+            // 3. Otherwise, fallback to any standalone XXX
+            let anyMatch = text.match(/\b([A-Z]{3})\b/);
+            if (anyMatch) return anyMatch[1];
+
+            return null;
+        },
+        hasPermission(permission) {
+            const permissions = this.listenPermissions?.core || [];
+            return permissions.includes(permission);
+        },
+        formatTimezone(date) {
+            if (!date || typeof date !== 'string' || date.trim() === '') {
+                return '-';
+            }
+
+            const d = new Date(date);
+            if (isNaN(d.getTime())) {
+                console.warn('Invalid date:', date);
+                return '-';
+            }
+
+            const timeZone = this.$ls.get('timezone');
+
+            const options = {
+                timeZone,
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false
+            };
+
+            const parts = new Intl.DateTimeFormat("en-CA", options).formatToParts(d);
+            const get = (type) => parts.find(p => p.type === type)?.value;
+
+            return `${get("year")}-${get("month")}-${get("day")} ${get("hour")}:${get("minute")}:${get("second")}`;
         }
     },
     mounted() {

@@ -257,7 +257,7 @@ export default {
         },
         {
           label: "Created By",
-          key: "created_by_user_name",
+          key: "created_by_user",
           width: "auto",
         },
         {

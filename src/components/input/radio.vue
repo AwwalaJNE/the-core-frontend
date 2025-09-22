@@ -3,14 +3,16 @@
         <template v-slot:inputan="props">
             <vs-row :style="vertical == true ? 'flex-direction: column !important;':''">
                 <template v-if="DataArr.length > 0">
-                    <vs-col xs="6" :w="width ? width : 3" v-for="(item,key) in DataArr" :key="key">
+                    <vs-col xs="6" :w="width ? width : 3" v-for="(item,key) in DataArr" :key="key" :data-testid="`radio-col-${key}`">
                         <vs-radio 
                         style="margin-top:.5em"
                         v-model="value" 
                         :val="item.value" 
                         :disabled="listenIsDisabled"
                         :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
-                        :key="key">
+                        :key="key"
+                        :data-testid="`radio-${item.value}`"
+                        >
                             {{item.label}}
                         </vs-radio>                      
                     </vs-col>

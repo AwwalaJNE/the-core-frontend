@@ -1,11 +1,20 @@
 /* eslint-disable linebreak-style */
 const api = process.env.VUE_APP_API
 const apiFlight = process.env.VUE_APP_API_FLIGHT
+
+const app_jne_core = process.env.VUE_APP_JNE_CORE
+const app_jne_core_dashboard = process.env.VUE_APP_JNE_CORE_DASHBOARD
+const app_jne_main = process.env.VUE_APP_JNE_MAIN
+
 const urlFOrmated = new URL(api)
 
 
 // console.log('process.env.VUE_APP_API',process.env.VUE_APP_API);
 export default {
+    app_jne_core,
+    app_jne_core_dashboard,
+    app_jne_main,
+
     login: api + "login",
     user_auth_data: api + "user-auth-data",
     user: api + "user",
@@ -430,4 +439,10 @@ export default {
 
     // API Flight
     search_flight: apiFlight + 'flight',
+
+    // Active Bag Weight
+    active_bag_weight: api + 'active-bag-weight',
+
+    // user preferences
+    user_preferences: api + 'user-preferences'
 }

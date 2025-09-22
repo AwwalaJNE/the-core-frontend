@@ -1,7 +1,7 @@
 <template>
     <div class="com_switch">
         <small>{{listenLabel}}</small>
-        <vs-switch class="switch-Cus" v-model="active" @change="updateValue" :disabled="listenDisabled">
+        <vs-switch class="switch-Cus" v-model="active" @change="updateValue" :disabled="listenDisabled" :data-testid="`switch-${formKey}`">
             <template #on>
                 {{ listenName[0] }}
             </template>

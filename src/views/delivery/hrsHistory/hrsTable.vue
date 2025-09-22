@@ -40,11 +40,6 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "HRS ID",
-                    key: "handover_runsheet_id",
-                    width: "sm"
-                },
-                {
                     label: "HRS Number",
                     key: "handover_number",
                     width: "xs"
@@ -125,6 +120,7 @@ export default {
                 const arr = res.data.data.map(item => {
                     item["node_name"] = item?.node?.node_name ?? "";
                     item["courier_employee_name"] = item?.employee?.employee_name ?? "";
+                    item["created_at"] = this.formatTimezone(item?.created_at);
 
                     const children = {
                         'Runsheet #': [],
@@ -188,7 +184,11 @@ export default {
             this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate)
         }
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.refresh()
     }
 }

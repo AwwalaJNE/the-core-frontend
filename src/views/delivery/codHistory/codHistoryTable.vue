@@ -174,6 +174,7 @@ export default {
                   'Total Connote': 'xxs',
                   'Total COD (Rp)': 'sm'
               }
+              item["created_at"] = this.formatTimezone(item?.created_at);
               item['type_amount'] = ['Total COD (Rp)']
               item.runsheets?.map((el) => {
                   delivery_runsheet_number.push(el.delivery_runsheet_number)
@@ -234,7 +235,7 @@ export default {
         let routeData = this.$router.resolve({ 
             name: 'printGeneral', 
             params: { 
-                'id': val.sco.replaceAll("/","~"), 
+                'id': val.sco, 
                 'type': 'cod-history',
                 'node_id': this.listenNodeId
             }
@@ -257,7 +258,7 @@ export default {
             let routeData = this.$router.resolve({
                 name: 'printGeneral',
                 params: {
-                    'id': this.selectedRow.toString().replaceAll("/","~"),
+                    'id': this.selectedRow.toString(),
                     'type': 'cod-history',
                     'node_id':this.listenNodeId
                 }
@@ -277,7 +278,11 @@ export default {
         }
     }
   },
+  beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    },
   mounted() {
+    window.addEventListener('timezone-changed', this.refresh);
     this.refresh();
     this.handlePrintShortcut(this.actionPrintSelected)
   },

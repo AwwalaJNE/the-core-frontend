@@ -116,7 +116,7 @@
                       </template>
                     </inputan>
                   </vs-col>
-                  <vs-col xs="6" sm="4" lg="3">
+                  <vs-col xs="6" sm="4" lg="3" v-if="listenBreadcrumbCode === 'Pre Alert'">
                     <inputan :name="name" :rules="rules">
                       <template v-slot:inputan="props">
                         <vs-select
@@ -157,7 +157,7 @@
                         @updateValue="searchDate" 
                     />
                   </vs-col>
-                  <vs-col xs="12" sm="8" lg="2" style="display: flex; justify-content: end;">
+                  <vs-col xs="12" sm="8" :lg="listenBreadcrumbCode === 'Pre Alert' ? 2: 5" style="display: flex; justify-content: end;">
                     <vs-button
                         border
                         style="margin: 0;"
@@ -279,13 +279,17 @@ export default {
                 value: 'SJ'
               },
               {
-                label: 'BAG',
-                value: 'BAG'
+                label: 'DO',
+                value: 'DO'
               },
               {
-                label: 'Receving Orion',
-                value: 'RECEIVING ORION'
-              }
+                label: 'HBAG',
+                value: 'HBAG'
+              },
+              {
+                label: 'MTS',
+                value: 'MTS'
+              },
             ],
             value: JSON.parse(localStorage.getItem("InboundFilters"))?.value || '-',
             arrValue: this.selectedValue ? this.selectedValue : [ {
@@ -467,7 +471,7 @@ export default {
           this.loading = true
           await axios
               .get(this.URL.node_type +
-                  `?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
+                  `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1&s=&is_active=1`,
                   this.Helper.header())
               .then(res => {
                 if(res.data.data.length > 0) {

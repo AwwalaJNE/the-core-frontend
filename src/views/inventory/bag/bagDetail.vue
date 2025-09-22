@@ -15,6 +15,9 @@
         </div>
       </div>
       <div style="display: flex;" class="buttonPage" v-if="!loading">
+        <vs-button v-if="listenUserRoleName !== 'HELPDESK' && tipe_bag === 'OM'"  @click="openDialogTransit" :disabled="disabledAddTransit">
+          <i class="bx bx-plus"></i> Add Transit
+        </vs-button>
         <template v-if="listenUserRoleName === 'HELPDESK'">
           <vs-button
             @click="approveAction(true)"
@@ -297,6 +300,7 @@
                          v-on:keyup.enter="updateValue"
                          ref="formInputBagging" icon-after
                          :disabled="(disabledApprove) && !loading"
+                         @keypress="onlyNumber"
                          >
                  <template #icon>Kg</template>
                </vs-input>
@@ -335,6 +339,13 @@
       :bagNumber="bag_id"
       :closeDialog="closeDialog"
     />
+
+    <dialog-create-edit-transit
+      title="Add Transit Route"
+      :active="dialogTransitActive"
+      :bagNumber="bag_id"
+      :closeDialog="closeDialogTransit"
+    />
   </div>
 </template>
 <script>
@@ -346,6 +357,7 @@ import Selector from "@/components/input/select"
 import CameraScanner from "@/components/scanner/camera.vue";
 import DialogConfirm from "@/components/dialog/dialogConfirm"
 import DialogHelpdeskEditBag from "@/views/helpdesk/bag/dialogHelpdeskEditBag";
+import DialogCreateEditTransit from "@/views/inventory/bag/transit/dialogCreateEdit.vue";
 
 import asynchronousSelect from "@/components/input/asynchronousSelect"
 
@@ -359,6 +371,7 @@ export default {
     CameraScanner,
     "dialog-confirm": DialogConfirm,
     "dialog-helpdesk-edit-bag": DialogHelpdeskEditBag,
+    "dialog-create-edit-transit": DialogCreateEditTransit,
     "asynchronousSelect": asynchronousSelect,
   },
   data() {
@@ -403,6 +416,7 @@ export default {
       is_orion: false,
       toggle_approve: {},
       disabledApprove: false,
+      disabledAddTransit: false,
       activeDialogConfirmUnpproveBag: false,
       loadingConfirmUnpproveBag: false,
       dialogHelpdeskEditBag: false,
@@ -413,7 +427,9 @@ export default {
       disable_hub_delivery: false,
       validation: '',
       validation_reference: [], 
-      courierArr: []
+      courierArr: [],
+      dialogTransitActive: false,
+      tipe_bag: ""
     }
   },
   computed: {
@@ -431,9 +447,6 @@ export default {
     },
     listenDestinationArr() {
       return this.$store.getters["getInputs"]["bagging"]["destination"]["dataArray"] || []
-    },
-    listenDataBag(){
-      return this.$ls.get('getDataBag')
     }
   },
   watch: {
@@ -449,6 +462,12 @@ export default {
     }
   },
   methods: {
+    onlyNumber(e) {
+      // hanya boleh angka 0–9
+      if (!/[0-9]/.test(e.key)) {
+        e.preventDefault()
+      }
+    },
     refresh() {
       this.$refs.detailbagList.refresh()
     },
@@ -459,8 +478,7 @@ export default {
       this.is_hub_delivery_validation = val.target.checked || false;
     },
     async getResponse(data, loading) {
-      
-
+      this.tipe_bag = data.data.tipe_bag;
       this.is_orion = data.data.is_orion === '1' ? true : false;
       let bag_des = data.data ? data?.data?.destination?.node_code  : null
       this.is_pra_runsheet = data.data.is_pra_runsheet === "1" ? true : false
@@ -523,6 +541,7 @@ export default {
 
       this.employee = data.employee_name ? data.employee_name : ""
       this.disabledApprove = data.data.is_approve === 0 ? false : true
+      this.disabledAddTransit = data.data.is_approve === 0 ? false : true
       this.is_approve = data.data.is_approve === 0 ? false : true
       this.actual_weight = data.data.bag_actual_weight
 
@@ -562,12 +581,6 @@ export default {
         this.loading = false;
       }
     },
-    getIsPraRunsheet(){
-      this.is_pra_runsheet = this.$store.getters.getInputs.is_pra_runsheet
-      if (this.is_pra_runsheet == undefined) {
-        this.is_pra_runsheet = this.listenDataBag.is_pra_runsheet
-      }
-    },
     getBagIdParam(){
       this.bag_id = this.$route.params.id
       this.form={
@@ -602,7 +615,7 @@ export default {
             bag_number : this.bag_id,
             bag_actual_weight : this.weight
         }
-        this.loading = true
+        // this.loading = true
         this.putBag();
       }
     },
@@ -691,7 +704,7 @@ export default {
         let routeData = this.$router.resolve({ 
             name: 'printGeneral', 
             params: { 
-                'id': this.bag_id.replaceAll("/","~"), 
+                'id': encodeURIComponent(this.bag_id), 
                 'type': 'bag',
                 'node_id': this.listenNodeId,
             } 
@@ -722,9 +735,15 @@ export default {
       }
     },
     newBag() {
-      this.$router.push('/inventory/bagging')
+      this.$router.push('/outgoing/bag')
       this.setRoutePageHistory(this.$route.meta, false);
       
+    },
+    openDialogTransit() {
+      this.dialogTransitActive = true;
+    },
+    closeDialogTransit() {
+      this.dialogTransitActive = false;
     },
     editBag() {
       this.dialogHelpdeskEditBag = true;
@@ -784,7 +803,7 @@ export default {
       this.loadingConfirmUnpproveBag=true
       await axios
         .put(
-          `${this.URL.approval}-bag/${this.bag_id.replaceAll("/", "-")}?n=${this.listenNodeId}`,
+          `${this.URL.approval}-bag/${this.bag_id}?n=${this.listenNodeId}`,
           JSON.stringify(this.toggle_approve),
           this.Helper.header()
         )
@@ -802,7 +821,6 @@ export default {
   },
   mounted() {
     this.getBagIdParam()
-    this.getIsPraRunsheet()
     this.setInputFocus()
     this.handlePrintShortcut(this.print)
     // this.getNodeLink()
@@ -817,10 +835,6 @@ export default {
 
 .in-get-bag {
   font-size: 16px;
-}
-
-.logo {
-
 }
 
 .box{

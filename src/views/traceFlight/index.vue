@@ -3,8 +3,6 @@
         <vs-row justify="space-between">
             <vs-col xs="6" sm="4" lg="4">
                 <div class="titlePage">
-                    <breadcrumb />
-                    <h2>Trace Flight</h2>
                 </div>
             </vs-col>
         </vs-row>
@@ -101,8 +99,8 @@ export default {
                 return;
             }
 
-            const url = `/trace-flight/${encodeURIComponent(this.flightNumber)}`;
-            await this.$router.push(url); 
+            const encoded = encodeURIComponent(this.flightNumber.trim());
+            await this.$router.push(`/trace/trace-flight/${encoded}`);
             this.setRoutePageHistory(this.$route.meta, false);
             this.hasFlightNumber = true;
         },
@@ -110,7 +108,7 @@ export default {
             this.hasFlightNumber = false;
             this.flightNumber = "";
             this.activeTab("k-FLIGHT-LIST");
-            this.$router.push("/trace-flight");
+            this.$router.push("/trace/trace-flight");
             this.setRoutePageHistory(this.$route.meta, false);
             this.focusFlightInput();
         },
@@ -124,7 +122,26 @@ export default {
         }
     },
     mounted() {
+    const id = this.$route.params?.id;
+      if (id) {
+        const decoded = decodeURIComponent(id);
+        this.flightNumber = decoded;
+        this.hasFlightNumber = true;
+      } else {
         this.clearInput();
+      }
+    this.focusFlightInput();
+    },
+    watch: {
+      "$route.params.id"(val) {
+        if (val) {
+          const decoded = decodeURIComponent(val);
+          this.flightNumber = decoded;
+          this.hasFlightNumber = true;
+        } else {
+          this.clearInput();
+        }
+      }
     }
 };
 </script>

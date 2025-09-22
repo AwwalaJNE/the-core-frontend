@@ -6,6 +6,7 @@
             autocomplete="chrome-off"
             :placeholder="listenPlaceholder"
             :type="isNumeric ? 'number' : 'text'"
+            :data-testid="`input-search`"
             @change="searchValue"
             @focus="onFocus"
             @blur="onBlur"

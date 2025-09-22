@@ -16,6 +16,7 @@
                     typeForm="node_delivery_area"
                     :dataItem="listenDataItem"
                     :querySearch="querySearch"
+                    :data-testid="`form`"
                     @inputFocus="inputFocus"
                     @formData="formData"
                 />
@@ -31,6 +32,7 @@
                         flat
                         transparent
                         :active="true"
+                        :data-testid="`cancel-button`"
                         @click="cancel"
                     >
                         Cancel
@@ -42,7 +44,8 @@
                         flat
                         transparent
                         type="submit"
-                        :active="true"                    
+                        :active="true"  
+                        :data-testid="`submit-button`"                  
                         @click="handleSubmit"
                     >
                         {{btnBlue || 'Add'}}

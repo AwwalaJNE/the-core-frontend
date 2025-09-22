@@ -215,7 +215,7 @@ export default {
             this.loading = true
             await axios
                 .get(
-                    this.URL.unbagging + `/bag/${this.bag_number.replaceAll("/", "-")}?n=${this.listenNodeId}&limit=${this.pagination.limit}&page=${this.pagination.page}`,
+                    this.URL.unbagging + `/bag/${this.bag_number}?n=${this.listenNodeId}&limit=${this.pagination.limit}&page=${this.pagination.page}`,
                     this.Helper.header())
                 .then(res => {
                     if(res.data.detail.length !== 0) {

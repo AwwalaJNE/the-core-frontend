@@ -29,7 +29,7 @@
                 >
                   <vs-sidebar-item
                     :id="child.label.trim()"
-                    :class="{ active: activeItem === child.url }"
+                    :class="{ active: isActiveChild(child) }"
                   >
                     <template #icon>
                       <i :class="`bx ${child.icon}`" />
@@ -50,7 +50,7 @@
             >
               <vs-sidebar-item
                 :id="item.label.trim()"
-                :class="{ active: activeItem === item.url || activeItem.startsWith(item.url) }"
+                :class="{ active: isActive(item) }"
               >
                 <template #icon>
                   <i :class="`bx ${item.icon !== null ? item.icon : ''}`" />
@@ -98,43 +98,11 @@ export default {
           },
         },
         {
-          label: "Trace Connote",
-          url: "/trace-connote",
+          label: "Trace",
+          url: "/trace/trace-connote",
           icon: "bx-search-alt",
           permission: "",
-          children: [],
-          showAll: true,
-          meta: {
-            resource_type: resourceLookup["TRACE_CONNOTE"].resource_type,
-            resource_code: resourceLookup["TRACE_CONNOTE"].resource_code,
-            resource_name: resourceLookup["TRACE_CONNOTE"].resource_name
-          },
-        },
-        {
-          label: "Trace Bag / Masterbag",
-          url: "/trace-bag",
-          icon: "bx-search",
-          permission: "",
-          children: [],
-          showAll: true,
-          meta: {
-            resource_type: resourceLookup["TRACE_BAG"].resource_type,
-            resource_code: resourceLookup["TRACE_BAG"].resource_code,
-            resource_name: resourceLookup["TRACE_BAG"].resource_name
-          },
-        },
-        {
-          label: "Trace Flights",
-          url: "/trace-flight",
-          icon: "bx-search-alt-2",
-          permission: "",
-          children: [],
-          showAll: true,
-          meta: {
-            resource_type: resourceLookup["TRACE_FLIGHT"].resource_type,
-            resource_code: resourceLookup["TRACE_FLIGHT"].resource_code,
-            resource_name: resourceLookup["TRACE_FLIGHT"].resource_name
-          },
+          children: []
         },
         {
           label: "Outgoing",
@@ -322,17 +290,6 @@ export default {
                 resource_name: resourceLookup["TRANSPORT_INVENTORY_VEHICLE"].resource_name
               },
             },
-            {
-              label: "Manifest Vehicle",
-              url: "/transport/manifest-vehicle",
-              icon: "bx bxs-checkbox",
-              permission: "read-manifest-vehicle",
-              meta: {
-                resource_type: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_type,
-                resource_code: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_code,
-                resource_name: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_name
-              },
-            },
           ],
         },
         {
@@ -487,7 +444,7 @@ export default {
               label: "Receiving & Inventory",
               url: "/tracing-outstanding",
               icon: "bx bxs-checkbox",
-              permission: "read-irreg",
+              permission: "read-irregularity",
               meta: {
                 resource_type: resourceLookup["TRACING"].resource_type,
                 resource_code: resourceLookup["TRACING"].resource_code,
@@ -498,7 +455,7 @@ export default {
               label: "Archive",
               url: "/tracing-history",
               icon: "bx bxs-checkbox",
-              permission: "read-irreg",
+              permission: "read-irregularity",
               meta: {
                 resource_type: resourceLookup["TRACING_HISTORY"].resource_type,
                 resource_code: resourceLookup["TRACING_HISTORY"].resource_code,
@@ -545,7 +502,7 @@ export default {
               label: "Inventory Irreguralities",
               url: "/irreguralities/inventory",
               icon: "bx bxs-checkbox",
-              permission: "read-irreg",
+              permission: "read-irregularity",
               meta: {
                 resource_type: resourceLookup["IRREGURALITIES_INVENTORY"].resource_type,
                 resource_code: resourceLookup["IRREGURALITIES_INVENTORY"].resource_code,
@@ -556,7 +513,7 @@ export default {
               label: "Irreguralities - Entry Status",
               url: "/irreguralities/entry-status",
               icon: "bx bxs-checkbox",
-              permission: "read-irreg",
+              permission: "read-irregularity",
               meta: {
                 resource_type: resourceLookup["IRREGURALITIES_ENTRY_STATUS"].resource_type,
                 resource_code: resourceLookup["IRREGURALITIES_ENTRY_STATUS"].resource_code,
@@ -568,20 +525,20 @@ export default {
             //   label: "Irreguralities - Cancel",
             //   url: "/irreguralities/cancel",
             //   icon: "",
-            //   permission: "read-irreg",
+            //   permission: "read-irregularity",
             // },
             // // TODO: DELETE SOON
             // {
             //   label: "Irreguralities - Return",
             //   url: "/irreguralities/return",
             //   icon: "",
-            //   permission: "read-irreg",
+            //   permission: "read-irregularity",
             // },
             {
               label: "Irreguralities - Hold",
               url: "/irreguralities/hold",
               icon: "bx bxs-checkbox",
-              permission: "read-irreg",
+              permission: "read-irregularity",
               meta: {
                 resource_type: resourceLookup["IRREGURALITIES_HOLD"].resource_type,
                 resource_code: resourceLookup["IRREGURALITIES_HOLD"].resource_code,
@@ -592,7 +549,7 @@ export default {
               label: "Irreguralities - Failed",
               url: "/irreguralities/failed",
               icon: "bx bxs-checkbox",
-              permission: "read-irreg",
+              permission: "read-irregularity",
               meta: {
                 resource_type: resourceLookup["IRREGURALITIES_FAILED"].resource_type,
                 resource_code: resourceLookup["IRREGURALITIES_FAILED"].resource_code,
@@ -1013,12 +970,30 @@ export default {
     this.customFilter();
   },
   methods: {
-    setActive(item) {
-      if (this.$route.path !== item.url) {
-        this.activeItem = item.url;
-        this.$router.push(item.url);
-        this.setRoutePageHistory(item.meta, false);
+    isActive(item) {
+      // 1) Kalau disediakan nama route parent (paling akurat)
+      if (item.toName) {
+        return this.$route.matched.some(r => r.name === item.toName);
       }
+
+      // 2) Fallback by path (inklusif)
+      if (!item?.url) return false;
+
+      const cur = (this.$route.path || '').replace(/\/+$/, '');
+      const url = item.url.replace(/\/+$/, '');
+
+      // exact atau di dalam subtree url
+      if (cur === url || cur.startsWith(url + '/')) return true;
+
+      // Prefix segmen pertama (contoh: /trace/trace-connote -> /trace)
+      const prefix = '/' + url.split('/').filter(Boolean)[0];
+      return cur === prefix || cur.startsWith(prefix + '/');
+    },
+    isActiveChild(child) {
+      if (!child?.url) return false;
+      const cur = (this.$route.path || '').replace(/\/+$/, '');
+      const url = child.url.replace(/\/+$/, '');
+      return cur === url || cur.startsWith(url + '/');
     },
     listenNodeType() {
       this.nodeTypeCode = this.listenCurrentNode.node_type.node_type_code;

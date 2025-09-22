@@ -178,6 +178,11 @@ export default {
           tooltip_desc: "Durasi dari runsheet hingga pengiriman berhasil atau waktu saat ini",
           width: "auto",
         },
+        {
+          label: "Delivery Area",
+          key: "geolocation_subdistrict_kode_routing",
+          width: "auto",
+        },
       ],
       employee_id: "",
       delivery_runsheet_number: null,

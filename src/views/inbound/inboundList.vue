@@ -2,6 +2,7 @@
   <div>
     <table-master 
     hideColumnKey="receiving"
+    :key="listenBreadcrumbTitle"
     :dataTable="dataTable"
     :dataColumn="datacolumn"
     :tableLoading="loading"
@@ -86,7 +87,8 @@ export default {
           this.tempDate[0],
           this.tempDate[1],
           this.searchBy,
-          this.filterDateBy
+          this.filterDateBy,
+          this.type
           );
           this.$emit("updateLocalStorage")
         }
@@ -107,7 +109,8 @@ export default {
           this.tempDate[0],
           this.tempDate[1],
           this.searchBy,
-          this.filterDateBy
+          this.filterDateBy,
+          this.type
           );
           this.$emit("updateLocalStorage")
         }
@@ -128,7 +131,8 @@ export default {
           this.tempDate[0],
           this.tempDate[1],
           this.searchBy,
-          this.filterDateBy
+          this.filterDateBy,
+          this.type
           );
           this.$emit("updateLocalStorage")
         }
@@ -149,7 +153,8 @@ export default {
           this.tempDate[0],
           this.tempDate[1],
           this.searchBy,
-          this.filterDateBy
+          this.filterDateBy,
+          this.type
           );
           this.$emit("updateLocalStorage")
         }
@@ -170,7 +175,8 @@ export default {
           this.tempDate[0],
           this.tempDate[1],
           this.searchBy,
-          this.filterDateBy
+          this.filterDateBy,
+          this.type
           );
           this.$emit("updateLocalStorage")
         }
@@ -196,7 +202,8 @@ export default {
           this.tempDate[0],
           this.tempDate[1],
           this.searchBy,
-          this.filterDateBy
+          this.filterDateBy,
+          this.type
           );
           this.$emit("updateLocalStorage")
         }
@@ -216,7 +223,8 @@ export default {
           this.tempDate[0],
           this.tempDate[1],
           val,
-          this.filterDateBy
+          this.filterDateBy,
+          this.type
           );
           this.$emit("updateLocalStorage")
         }
@@ -236,7 +244,29 @@ export default {
           this.tempDate[0],
           this.tempDate[1],
           this.searchBy,
-          val || savedFilters
+          val || savedFilters,
+          this.type
+          );
+          this.$emit("updateLocalStorage")
+        }
+      }
+    },
+    type: function(val, old) {
+      if (val !== undefined) {
+        if (val !== old) {
+          this.getTableData(
+            this.pagination.limit,
+            this.pagination.page,
+            this.tempSearch,
+            this.nodeOrigin,
+            this.node_type,
+            this.statusReceived,
+            this.prealertFilter,
+            this.tempDate[0],
+            this.tempDate[1],
+            this.searchBy,
+            this.filterDateBy,
+            val
           );
           this.$emit("updateLocalStorage")
         }
@@ -278,7 +308,8 @@ export default {
     from,
     to,
     qFilter,
-    qDate
+    qDate,
+    type
     ) {
       this.loading = true;
       let query = "";
@@ -288,6 +319,7 @@ export default {
       let isPrealert = "";
       let queryFilter = "";
       let queryDate = "";
+      let inboundType = "";
       if (q !== undefined) {
         query = q;
       }
@@ -307,10 +339,13 @@ export default {
       if (qDate !== undefined) {
         queryDate = qDate;
       }
+      if (type !== undefined) {
+        inboundType = type;
+      }
       await axios
       .get(
       this.URL.inbound_incoming +
-      `?n=${this.listenNodeId}&type=${node_type}&status=${isReceived}&origin=${origin}&prealert=${isPrealert}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&search_by=${queryFilter}&filter_date_by=${queryDate}&start_date=${startDate}&end_date=${endDate}`,
+      `?n=${this.listenNodeId}&type=${node_type}&status=${isReceived}&origin=${origin}&prealert=${isPrealert}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&search_by=${queryFilter}&filter_date_by=${queryDate}&start_date=${startDate}&end_date=${endDate}&inbound_type=${inboundType}`,
       this.Helper.header()
       )
       .then((res) => {
@@ -381,63 +416,83 @@ export default {
         {
           label: `${this.listenBreadcrumbCode} Number`,
           key: "inbound_number",
-          width: "xxs",
+          width: "xxxs",
         },
+        ...(this.listenBreadcrumbTitle === "Pre-Alert"
+          ? [
+              {
+                label: `${this.listenBreadcrumbCode} Type`,
+                key: "document_type",
+                width: "xxxs",
+              },
+            ]
+          : []
+        ),
         {
           label: "Status",
           key: "status",
           width: "xxs",
         },
-        {
-          label: "Received",
-          key: "total_received",
-          width: "xxxs",
-        },
-        {
-          label: "Outstanding",
-          key: "total_outstanding",
-          width: "xxxs",
-        },
-        {
-          label: "Total Bag",
-          key: "total_item",
-          width: "xxxs",
-        },
+        ...(!["Receiving Connote", "Receiving Bag", "RCVB"].includes(this.listenBreadcrumbTitle)
+          ? [
+              {
+                label: "Bag Received",
+                key: "total_received",
+                width: "xxxs",
+              },
+              {
+                label: "Bag Outstanding",
+                key: "total_outstanding",
+                width: "xxxs",
+              },
+              {
+                label: "Total Bag",
+                key: "total_item",
+                width: "xxxs",
+              },
+              {
+                label: "IM Numbers",
+                key: "im_numbers",
+                width: "xxxs",
+              },
+              {
+                label: "Flight Number",
+                key: "flight_number",
+                width: "xxxs",
+              },
+              {
+                label: "Vehicle",
+                key: "vehicle",
+                width: "xxxs",
+              },
+              {
+                label: "Driver",
+                key: "carrier_employee_name",
+                width: "auto",
+              },
+            ]
+          : []
+        ),
+        ...(this.listenBreadcrumbTitle === "Receiving Connote"
+          ? [
+              {
+                label: "Receiving Number",
+                key: "receiving_number",
+                width: "xxs",
+              },
+            ]
+          : []
+        ),
         // {
         //   label: "Total Bag",
         //   key: "total_bag",
         //   width: "xxxs",
         // },
-        {
-          label: "Total Master Bag",
-          key: "total_master_bag",
-          width: "xxxs",
-        },
-        {
-          label: "Total Connote",
-          key: "total_koli",
-          width: "xxxs",
-        },
-        {
-          label: "IM Numbers",
-          key: "im_numbers",
-          width: "xxxs",
-        },
-        {
-          label: "Receiving Number",
-          key: "receiving_number",
-          width: "xxs",
-        },
-        {
-          label: "Flight Number",
-          key: "flight_number",
-          width: "xxxs",
-        },
-        {
-          label: "Vehicle",
-          key: "vehicle",
-          width: "xxxs",
-        },
+        // {
+        //   label: "Total Connote",
+        //   key: "total_koli",
+        //   width: "xxxs",
+        // },
         {
           label: "Branch Origin",
           key: "inbound_branch",
@@ -447,11 +502,6 @@ export default {
           label: "Node Origin",
           key: "inbound_node_name_origin",
           width: "md",
-        },
-        {
-          label: "Inbound Type",
-          key: "inbound_type",
-          width: "auto",
         },
         // {
         //   label: "Item",
@@ -484,18 +534,13 @@ export default {
           //   width: "auto"
           // },
         {
-          label: "Driver",
-          key: "carrier_employee_name",
-          width: "auto",
-        },
-        {
           label: "Created ",
           key: "created_orion",
           width: "xxxs",
         },
         {
           label: "Created By",
-          key: "created_by_user_name",
+          key: "created_by_user",
           width: "auto",
         },
         {
@@ -520,7 +565,7 @@ export default {
         },
         {
           label: "Received By",
-          key: "received_by_user_name",
+          key: "received_by_user",
           width: "auto"
         },
         {
@@ -558,7 +603,8 @@ export default {
       this.tempDate[0],
       this.tempDate[1],
       this.searchBy,
-      this.filterDateBy
+      this.filterDateBy,
+      this.type
       );
     },
     

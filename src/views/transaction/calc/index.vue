@@ -18,7 +18,7 @@
                                         <template v-slot:listcontent="props">
                                             <template v-if="listenCalcArrData.length > 0">
                                                 <template v-for="(item, key) in listenCalcArrData">
-                                                    <tr class="lin" :class="{'selected': key === props.selectedIndex}" :key="key" @click="clickdulu(item)">
+                                                    <tr class="lin" :class="{'selected': key === props.selectedIndex}" :key="key" @click="clickdulu(item)" :data-testid="`row-${key}`">
                                                         <td style="width: 50%;">
                                                             <!-- <small>{{item.geolocation_subdistrict_name}}</small> <br>
                                                             <small>{{item.geolocation_district_name}}</small> <br> -->
@@ -56,7 +56,7 @@
                         <selector 
                             :name="''"
                             :rules="''" 
-                            :formKey="''"
+                            :formKey="'list-connote'"
                             :valueData="listConnote"
                             :selectedValue="''"
                             :tabindex="-1"

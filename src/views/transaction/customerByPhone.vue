@@ -22,6 +22,7 @@
                         typeInput="text"
                         :tabindex="1"
                         ref="labelInput"
+                        :data-testid="`input-${listenType}`"
                         @updateValue="updateValue" />
                     </form>
                     <!-- <input type="text" ref="test" :autofocus="true"> -->

@@ -6,7 +6,7 @@
                 <template #inputan="props">
                     <!-- Title -->
                     <template v-if="!listenHiddenTitle">
-                        <span class="c-label">{{ name }}</span>
+                        <span class="c-label">{{ name }}<span v-if="rules && rules.includes('required')"> *</span></span>
                     </template>
 
                     <div style="display: flex; width: 100%; gap: 1rem;">
@@ -245,7 +245,7 @@ export default {
         },
         sanitizeInput(event) {
             const input = event.target;
-            const sanitized = input.value.replace(/[^a-zA-Z0-9_\-\*\(\)~ ,]/g, '');
+            const sanitized = input.value.replace(/[^a-zA-Z0-9_\-\*\(\)~ ,\/]/g, '');
             if (sanitized !== input.value) {
                 input.value = sanitized;
                 this.value = sanitized;
@@ -254,7 +254,7 @@ export default {
     },
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
     .m-select{
         &.vs-select-content{
             max-width: unset;

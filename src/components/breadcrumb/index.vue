@@ -29,7 +29,7 @@ export default {
                   to: breadcrumbArray[idx - 1]
                       ? "/" + breadcrumbArray[idx - 1].path + "/" + path
                       : "/" + path,
-                  text: route[idx] ? route[idx].meta.breadCrumb : null || path,
+                  text: route[idx] ? route[idx].meta.breadCrumb : null || decodeURIComponent(path),
                   back: back[0]?.meta?.backPath ?? null,
                   resource_type: back[0]?.meta?.resource_type ?? null,
                   resource_code: back[0]?.meta?.resource_code ?? null,

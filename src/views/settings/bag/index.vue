@@ -14,6 +14,7 @@
                             flat
                             block
                             :active="true"
+                            :data-testid="`create-button-${navActive}`"
                             @click="openDialog"
                         > 
                             <i class="bx bx-plus"></i> New
@@ -37,6 +38,7 @@
                                 <vs-row>
                                     <vs-col vs-align="center" w="6">
                                         <select-search-by 
+                                            :key="'bag-weight'"
                                             :border="true" 
                                             :isMultiple="false" 
                                             :selectedValue="searchBagWeightBy" 
@@ -47,6 +49,7 @@
                                     <vs-col vs-align="center" w="6">
                                         <search-input 
                                             ref="searchInput" 
+                                            :key="'bag-weight'"
                                             :placeholder="searchBagWeightPlaceholder" 
                                             @searchValue="searchValue" 
                                         />
@@ -57,6 +60,7 @@
                                 <vs-row>
                                     <vs-col vs-align="center" w="6">
                                         <select-search-by 
+                                            :key="'bag-limit'"
                                             :border="true" 
                                             :isMultiple="false" 
                                             :selectedValue="searchBagLimitBy" 
@@ -67,8 +71,31 @@
                                     <vs-col vs-align="center" w="6">
                                         <search-input 
                                             ref="searchInput" 
+                                            :key="'bag-limit'"
                                             :placeholder="searchBagLimitPlaceholder" 
                                             :isNumeric="searchBagLimitByDataType"
+                                            @searchValue="searchValue" 
+                                        />
+                                    </vs-col>
+                                </vs-row>
+                            </template>
+                            <template v-if="navActive === 'active-bag-weight'">
+                                <vs-row>
+                                    <vs-col vs-align="center" w="6">
+                                        <select-search-by 
+                                            :key="'active-bag-weight'"
+                                            :border="true" 
+                                            :isMultiple="false" 
+                                            :selectedValue="searchActiveBagWeightBy" 
+                                            :valueData="searchActiveBagWeightParams" 
+                                            @updateSearchBy="updateSearchBy" 
+                                        />
+                                    </vs-col>
+                                    <vs-col vs-align="center" w="6">
+                                        <search-input 
+                                            ref="searchInput" 
+                                            :key="'active-bag-weight'"
+                                            :placeholder="searchActiveBagWeightPlaceholder" 
                                             @searchValue="searchValue" 
                                         />
                                     </vs-col>
@@ -97,6 +124,16 @@
                         />
                     </transition>
                 </template>
+                <template v-else-if="navActive === 'active-bag-weight'">
+                    <transition name="slide-fade">
+                        <active-bag-weight 
+                            :ref="navActive" 
+                            :query="tempSearch" 
+                            :searchBy="searchActiveBagWeightBy"
+                            @clearSearch="clearSearch"
+                        />
+                    </transition>
+                </template>
             </div>
         </section>
         <dialog-create-edit-bag-weight
@@ -111,6 +148,12 @@
             :closeDialog="closeDialog"
             @refresh="refresh"
         />
+        <dialog-create-edit-active-bag-weight
+            title="Create Active Bag Weight"
+            :active="dialogActiveBagWeight" 
+            :closeDialog="closeDialog"
+            @refresh="refresh"
+        />
     </div>
 </template>
 <script>
@@ -119,19 +162,23 @@ import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 import SelectSearchBy from "@/components/search/selectSearchBy";
 
+import ActiveBagWeight from "@/views/settings/bag/activeBagWeight/index"
 import BagWeight from "@/views/settings/bag/bagWeight/index"
 import BagLimit from "@/views/settings/bag/bagLimit/index"
 import DialogCreateEditBagWeight from "@/views/settings/bag/bagWeight/dialogCreateEdit"
 import DialogCreateEditBagLimit from "@/views/settings/bag/bagLimit/dialogCreateEdit"
+import DialogCreateEditActiveBagWeight from "@/views/settings/bag/activeBagWeight/dialogCreateEdit"
 
 export default {
     name:"bag-index",
     components: {
+        "active-bag-weight": ActiveBagWeight,
         "bag-weight": BagWeight,
         "bag-limit": BagLimit,
         "breadcrumb": Breadcrumb,
         "dialog-create-edit-bag-weight": DialogCreateEditBagWeight,
         "dialog-create-edit-bag-limit": DialogCreateEditBagLimit,
+        "dialog-create-edit-active-bag-weight": DialogCreateEditActiveBagWeight,
         "nav-item": NavItem,
         "search-input": SearchInput,
         "select-search-by": SelectSearchBy,
@@ -148,6 +195,11 @@ export default {
                     label: "BAG LIMIT",
                     key: "bag-limit",
                     title: "Bag Limit"
+                },
+                {
+                    label: "ACTIVE BAG WEIGHT",
+                    key: "active-bag-weight",
+                    title: "Active Bag Weight"
                 },
             ],
             title:"Bag Weight",
@@ -202,6 +254,20 @@ export default {
                     value: "created_by"
                 }
             ],
+            dialogActiveBagWeight: false,
+            searchActiveBagWeightPlaceholder: "Search Reference",
+            searchActiveBagWeightBy: "reference",
+            searchActiveBagWeightByDataType: false,
+            searchActiveBagWeightParams: [
+                {
+                    label: "Reference",
+                    value: "reference"
+                },
+                {
+                    label: "Destination",
+                    value: "destination_value"
+                }
+            ],
         }
     },
     methods: {
@@ -232,6 +298,9 @@ export default {
                 case "bag-limit":
                     this.dialogBagLimit = true;
                     break;
+                case "active-bag-weight":
+                    this.dialogActiveBagWeight = true;
+                    break;
                 default:
             }
             this.refreshInject = this.navActive
@@ -243,6 +312,9 @@ export default {
                     break;
                 case "bag-limit":
                     this.dialogBagLimit = false;
+                    break;
+                case "active-bag-weight":
+                    this.dialogActiveBagWeight = false;
                     break;
                 default:
             }
@@ -258,6 +330,11 @@ export default {
                     this.searchBagLimitBy = val;
                     this.searchBagLimitPlaceholder = key;
                     this.searchBagLimitByDataType = dataType;
+                    break;
+                case "active-bag-weight":
+                    this.searchActiveBagWeightBy = val;
+                    this.searchActiveBagWeightPlaceholder = key;
+                    this.searchActiveBagWeightByDataType = dataType;
                     break;
                 default:
             }

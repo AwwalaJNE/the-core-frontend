@@ -78,7 +78,7 @@
                                         shadow
                                         :active="false"
                                         :disabled="isDisabled"
-                                        @click="openDialogCreateVehicleManifest"
+                                        @click="openDialogManageVehicleManifest"
                                         style="min-width: 120px;"
                                     >
                                         <i class='bx bx-plus'></i> More Vehicle
@@ -126,7 +126,7 @@
                         shadow
                         :active="false"
                         :disabled="isDisabled"
-                        @click="openDialogCreateVehicleManifest"
+                        @click="openDialogManageVehicleManifest"
                     >
                         <i class='bx bx-plus'></i> Vehicle
                     </vs-button>
@@ -197,6 +197,7 @@
             title="Pilih Stock"
             :active="showSelectStockModal"
             :close="() => showSelectStockModal = false"
+            :mode="manifest_method_id"
             @selectManifest="handleSelectManifest"
         />
 
@@ -206,13 +207,7 @@
             :manifest_method="manifest_method_id"
             :active="dialogManageVehicleManifest"
             :closeDialog="closeDialogManageVehicleManifest"
-        />
-
-        <dialog-create-vehicle-manifest
-            title="Manifest Vehicle"
-            :manifest_method="manifest_method_id"
-            :active="dialogCreateVehicleManifest"
-            :closeDialog="closeDialogCreateVehicleManifest"
+            :submitType="is_sm_edit ? 'api' : 'prefill'"
             @updateVehicleValue="updateVehicleValue"
         />
     </div>
@@ -233,7 +228,6 @@ import DialogTraceBag from "@/views/transport/manifestNew/dialogTraceBag";
 import dialogSelectManifestStock from "./dialogSelectManifestStock.vue";
 
 import DialogManageVehicleManifest from "@/views/transport/manifestVehicle/dialogCreateManage";
-import DialogCreateVehicleManifest from "@/views/transport/manifestNew/dialogCreateVehicleManifest";
 import VehicleCard from "@/views/transport/manifestNew/vehicleCard";
 
 export default {
@@ -247,7 +241,6 @@ export default {
         "dialog-trace-bag": DialogTraceBag,
         "dialog-select-manifest-stock": dialogSelectManifestStock,
         "dialog-manage-vehicle-manifest": DialogManageVehicleManifest,
-        "dialog-create-vehicle-manifest": DialogCreateVehicleManifest,
         "radio": RadioWithCard,
         "vehicle-card": VehicleCard
     },
@@ -371,7 +364,6 @@ export default {
             dialogTraceBag: false,
             showSelectStockModal: false,
             selectedBagNumber: "",
-            dialogCreateVehicleManifest: false,
             dialogManageVehicleManifest: false,
             is_sm_edit: false,
             vehicle_form: [],
@@ -441,6 +433,8 @@ export default {
     },
     methods: {
         handleSelectManifest(val) {
+            this.handleClearForm();
+            
             this.manifest_number = val.manifest_number;
             this.manifest_method_id = parseInt(val.vehicle_mode_id)
             this.vehicle_type_id = val.vehicle_type_id;
@@ -481,6 +475,9 @@ export default {
 
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled", true);
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_visible", false)
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_width", 0)
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_width", 6)
 
             this.manifest_number = val.manifest_number;            
             this.is_approve = val.is_approve;
@@ -592,6 +589,9 @@ export default {
             }
         },
         getDataPreview(val) {
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_visible", false)
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_width", 0)
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_width", 6)
 
             this.manifest_method_id = parseInt(val.manifest_method_id);
             val.manifest_method_id = parseInt(val.manifest_method_id);
@@ -816,6 +816,7 @@ export default {
                         status: data.status
                     };
                     await this.getSuratMuatanDetail();
+                    await this.getManifestVehicle();
                 }
 
                 this.openNotification('success', null, "Success", "Create surat jalan success");
@@ -1023,6 +1024,9 @@ export default {
 
         },
         cancel() {
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_visible", true)
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_width", 2)
+            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_width", 4)
             this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", false);
             this.isDisabledApprove = false;
             this.isDisabled = false
@@ -1033,6 +1037,7 @@ export default {
             this.dataTable = [];
             
             this.is_sm_edit = false;
+            this.manifest_method_id = 0;
         },
         updateValue() {
             this.$refs.formSuratMuatanController.handleSubmit();
@@ -1169,16 +1174,6 @@ export default {
         openTraceBagDialog() {
             this.dialogTraceBag = true;
         },
-        openDialogCreateVehicleManifest() {
-            if (this.manifest_method_id === 0) {
-                this.openNotification("warn", null, "Failed", 'Please choose manifest mode first');
-            } else {
-                this.dialogCreateVehicleManifest = true;
-            }
-        },
-        closeDialogCreateVehicleManifest() {
-            this.dialogCreateVehicleManifest = false;
-        },
         updateVehicleValue(form) {
             let form_id =  Date.now() + Math.random();
             
@@ -1187,12 +1182,12 @@ export default {
             let created_vehicle = {
                 key: form_id,
                 state: {
-                    origin_vehicle: form.origin_vehicle?.label || form.origin_vehicle?.name || "",
-                    destination_vehicle: form.destination_vehicle?.label || form.destination_vehicle?.name || "",
-                    origin_vehicle_tlc: form.origin_vehicle?.value || form.origin_vehicle?.iata || "",
-                    destination_vehicle_tlc: form.destination_vehicle?.value || form.destination_vehicle?.iata || "",
-                    vehicle_id: form.vehicle_id?.vehicle_name,
-                    pic_employee_id: form.pic_employee_id?.employee_name,
+                    origin_vehicle: form?.origin_vehicle_name || "",
+                    destination_vehicle: form?.destination_vehicle_name || "",
+                    origin_vehicle_tlc: form?.origin_vehicle?.value || form.origin_vehicle || "",
+                    destination_vehicle_tlc: form?.destination_vehicle?.value || form.destination_vehicle || "",
+                    vehicle_id: form.vehicle_name,
+                    pic_employee_id: form.pic_employee_id?.employee_name || form?.pic_employee_id || "",
                     flight_number: form.flight_number,
                     flight_schedule: form.flight_schedule,
                     etd_vehicle: form.etd_vehicle,
@@ -1204,15 +1199,15 @@ export default {
             let vehicle_form = {
                 key: form_id,
                 state: {
-                    vehicle_id: form?.vehicle_id?.vehicle_id || "",
-                    vehicle_type_id: form?.vehicle_id?.vehicle_type_id || "",
+                    vehicle_id: form?.vehicle_id || "",
+                    vehicle_type_id: form?.vehicle_type_id || "",
                     employee_driver_id: form?.pic_employee_id?.employee_id || "",
                     flight_number: form?.flight_number || "",
                     flight_schedule: form?.flight_schedule || "",
                     etd: form?.etd_vehicle || "",
                     eta: form?.eta_vehicle || "",
-                    origin_branch_code: form?.origin_vehicle?.value || form.origin_vehicle?.iata || "",
-                    destination_branch_code: form?.destination_vehicle?.value || form.destination_vehicle?.iata || "",
+                    origin_branch_code: form?.origin_vehicle || "",
+                    destination_branch_code: form?.destination_vehicle || "",
                     is_active: this.vehicle.length === 0
                 }
             };
@@ -1221,11 +1216,22 @@ export default {
             this.vehicle_form.push(vehicle_form);
         },
         openDialogManageVehicleManifest() {
-            this.dialogManageVehicleManifest = true;
+            if (this.is_sm_edit) {
+                this.dialogManageVehicleManifest = true;
+            } else {
+                if (this.manifest_method_id === 0) {
+                    this.openNotification("warn", null, "Failed", 'Please choose manifest mode first');
+                } else {
+                    this.dialogManageVehicleManifest = true;
+                }
+            }
         },
         closeDialogManageVehicleManifest() {
             this.dialogManageVehicleManifest = false;
-            this.getManifestVehicle();
+
+            if (this.is_sm_edit) {
+                this.getManifestVehicle();
+            }
         },
         chooseRow(newKey, done) {
             this.selected_manifest_vehicle = newKey;

@@ -1,6 +1,6 @@
 <template>
   <div>
-      <section class="bagging">
+      <section class="bagging" ref="baggingSection">
           <vs-row>            
             <vs-col xs="12" sm="3" lg="2">
               <selector 
@@ -312,6 +312,16 @@ export default {
         }
       }
     },
+    processLoading: function(val) {
+      if (val !== undefined) {
+        this.processLoading = val
+        if (val == true) {
+          this.loadingHandler()
+        } else {
+          this.closeLoading()
+        }
+      }
+    }
   },
   data() {
       return {
@@ -338,8 +348,8 @@ export default {
               "value":"intercity"
             },
             {
-              "label":"Domestik",
-              "value":"domestik"
+              "label":"Domestic",
+              "value":"domestic"
             },
             {
               "label":"International",
@@ -532,6 +542,8 @@ export default {
           selectLabel: '',
           selectValue: '',
           validation: '',
+          processLoading: false,
+          refloading: null,
           validationArray: [
             {
               label: "Courier",
@@ -579,6 +591,21 @@ export default {
     checkPermission(permission) {
       const permissions = this.listenPermissions?.core || [];
       return permissions.includes(permission);
+    },
+    loadingHandler() {
+      this.refloading = this.$vs.loading({
+        target: this.$refs.baggingSection.$el,
+        type: "scale",
+        text: "Loading...",
+        background: "#EAEAEA",
+        color: "#3b86ff"
+      });
+    },
+    closeLoading() {
+      if (this.refloading) {
+        this.refloading.close();
+        this.refloading = null;
+      }
     },
     async getNodeLink() {
       if (this.regional !== 'intracity' && this.regional !== '') {
@@ -756,10 +783,12 @@ export default {
       
     },
     async ProccessBagging(){
+      this.loadingHandler()
       await axios
           .post(this.URL.revamp_bag+`?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header())
           .then(res => {
             let bagNumber = res.data.data.bag_number;
+            let bagNumberForRoute = bagNumber;
             this.handleClearForm()
             this.openNotification("success", null, 'Success', 'Bagging is success')
 
@@ -768,11 +797,12 @@ export default {
 
             this.$store.dispatch("SET_IS_HUB_DELIVERY_VALIDATION", this.is_hub_delivery_validation);
             this.$store.dispatch("SET_IS_HUB_DELIVERY_VALIDATION_ValueData", this.is_hub_delivery_validation);
+            this.closeLoading();
 
-            this.$router.push('/bagging-detail/'+bagNumber)
+            this.$router.push('/bagging-detail/'+encodeURIComponent(bagNumberForRoute))
             this.setRoutePageHistory(this.$route.meta, false);
           }).catch(err => {
-              this.loading = false;
+              this.closeLoading();
               this.handleClearForm();
 
               const errorCode = err?.response?.data?.code ?? '';

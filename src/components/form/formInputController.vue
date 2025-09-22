@@ -17,6 +17,7 @@
                                             :formKey="InputObject[item].key"
                                             :valueData="InputObject[item].value"
                                             :typeInput="InputObject[item].typeInput"
+                                            :placeholder="InputObject[item].placeholder"
                                             :disabled="listenIsDisabled || InputObject[item].isDisabled"
                                             @updateValue="updateValue" 
                                             @inputFocus="onfocuslah"
@@ -66,6 +67,9 @@
                                             :typeInput="InputObject[item].typeInput"
                                             :disabled="listenIsDisabled"
                                             :onlyNumber="true"
+                                            :minValue="InputObject[item].minValue"
+                                            :maxValue="InputObject[item].maxValue"
+                                            :tooltipMessage="InputObject[item].tooltipMessage"
                                             @updateValue="updateValue" 
                                             @inputFocus="onfocuslah"/>
                                         </div>
@@ -84,6 +88,9 @@
                                     :placeholder="InputObject[item].placeholder"
                                     :disabled="listenIsDisabled"
                                     :onlyNumber="true"
+                                    :minValue="InputObject[item].minValue"
+                                    :maxValue="InputObject[item].maxValue"
+                                    :tooltipMessage="InputObject[item].tooltipMessage"
                                     @updateValue="updateValue" 
                                     @inputFocus="onfocuslah"/>
                                 </template>
@@ -251,6 +258,7 @@
                                     :itterateUrlAutoComplete="listenItterateUrlAutoComplete"
                                     :itterateFlagAutoComplete="listenItterateFlagAutoComplete"
                                     :asynchronousSelect_url="listenAsynchronousSelectUrl"
+                                    :querySearch2="querySearch"
                                     :selectLabel="selectLabel"
                                     :selectValue="selectValue"
                                     :isSingleInput="InputObject[item].isSingleInput"

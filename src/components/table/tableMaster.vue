@@ -50,17 +50,17 @@
 <template>
   <div>
     <template v-if="!listenHideIsFilterColumn">
-      <div ref="dropdownContainer" class="column-toggle-wrapper">
+      <div ref="dropdownContainer" class="column-toggle-wrapper" data-testid="column-toggle-wrapper">
         <!-- Header Row: Button + Total -->
-        <div class="column-toggle-header" style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
-          <vs-button @click="toggleDropdown" icon>
+        <div class="column-toggle-header" data-testid="column-toggle-header" style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+          <vs-button @click="toggleDropdown" icon data-testid="filter-column-btn">
             <i class="bx bx-slider"></i> Columns
           </vs-button>
-          <p v-if="!listenTotalPerPage" class="columns-label" style="margin: 0;">Total: {{ dataTable.length }}</p>
+          <p v-if="!listenTotalPerPage" class="columns-label" data-testid="columns-total" style="margin: 0;">Total: {{ dataTable.length }}</p>
         </div>
 
-        <div v-show="showColumnDropdown" class="column-dropdown-panel">
-          <vs-input v-model="columnSearch" placeholder="Search columns..." />
+        <div v-show="showColumnDropdown" class="column-dropdown-panel" data-testid="column-dropdown-panel">
+          <vs-input v-model="columnSearch" placeholder="Search columns..." data-testid="column-search" />
 
           <div class="checkbox-scroll">
             <vs-checkbox
@@ -68,13 +68,14 @@
               :key="col.key"
               v-model="visibleKeys"
               :val="col.key"
+              :data-testid="`column-checkbox-${col.key}`"
             >
               {{ col.label }}
             </vs-checkbox>
           </div>
 
           <div class="footer-actions">
-            <vs-checkbox v-model="toggleAllVisible" @change="toggleAllColumns">
+            <vs-checkbox v-model="toggleAllVisible" @change="toggleAllColumns" data-testid="toggle-all-columns">
               Show All Columns
             </vs-checkbox>
           </div>
@@ -713,7 +714,6 @@
                   <vs-td
                     :key="key"
                     :class="[column.textAlign ? column.textAlign : '', item.width ? item.width : '']"
-                    class="manual-padding"
                     :style="column['textColor'] ? { color: column['textColor'] } : {}"
                   >
                     <template
@@ -830,6 +830,14 @@
                       >
                       <span v-else>{{ item[column.key] }}</span>
                     </template>
+                    <template v-else-if="column.key === 'status_with_color'">
+                      <span
+                        class="statusBackground"
+                        :style="{ backgroundColor: getStatusColor(item[column.key]) }"
+                      >
+                        {{ item[column.key] }}
+                      </span>
+                    </template>
                     <template v-else-if="column.key === 'status_delivery'">
                       <span
                         v-if="item[column.key] === 'DELIVERED'"
@@ -854,7 +862,10 @@
                     <template v-else>
                       <span>
                         <span 
-                          :style="column.isTransitTag && item[column.isTransitTag] === 1 ? { borderBottom: '1px solid #666' }  : {}"
+                          :class="{ 
+                            'do-not-wrap': column.isTransitTag || typeof item[column.key] === 'string' && item[column.key].includes('\n')
+                          }"
+                          :style="column.isTransitTag && item[column.isTransitTag] === 1 ? { borderBottom: '1px solid #666'  }  : {}"
                         >
                           {{ item[column.key] 
                               ? column.type_amount 
@@ -913,6 +924,7 @@
                           block
                           flat
                           size="small"
+                          :data-testid="`${actionItem.key}-button-${keyActionItem}`"
                           :disabled="listenDisableAction
                               ? listenDisableAction === true
                               : item.hasOwnProperty('isDisabled')
@@ -967,6 +979,7 @@
                       flat
                       size="small"
                       :active="true"
+                      :data-testid="`vehicle-button-${key}`"
                       @click="actionManageVehicle(item)"
                     >
                       <span>Vehicle</span>
@@ -978,6 +991,7 @@
                       flat
                       size="small"
                       :active="true"
+                      :data-testid="`edit-button-${key}`"
                       @click="actionUpdate(item)"
                     >
                       <span>Edit</span>
@@ -991,6 +1005,11 @@
                       flat
                       :active="true"
                       type="submit"
+                      :data-testid="`remove-button-${key}`"
+                      :disabled="
+                        (item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true) || !isAllowedRemove
+                      "
                       @click="actionRemove(item)"
                     >
                       <span>Remove</span>
@@ -1032,6 +1051,10 @@
                       flat
                       :active="true"
                       type="submit"
+                      :disabled="
+                        (item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true) || !isAllowedRemove
+                      "
                       @click="actionRemove(item)"
                     >
                       <span>Remove</span>
@@ -1072,8 +1095,8 @@
                       flat
                       :active="true"
                       :disabled="
-                        item.hasOwnProperty('isDisabled') &&
-                          item.isDisabled == true
+                        (item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true) || !isAllowedRemove
                       "
                       type="submit"
                       @click="actionRemove(item)"
@@ -1117,8 +1140,8 @@
                       danger
                       :active="true"
                       :disabled="
-                        item.hasOwnProperty('isDisabled') &&
-                          item.isDisabled == true
+                        (item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true) || !isAllowedRemove
                       "
                       type="submit"
                       @click="actionRemove(item)"
@@ -1597,6 +1620,7 @@
         <vs-col w="2">
           <vs-button
             @click="handleExportCSV"
+            :data-testid="`export-button`"
             >
               Export
             </vs-button>
@@ -1653,6 +1677,10 @@ export default {
     hasSelectValue: String,
     hasDuplicateEditRemove: Boolean,
     hasPagination: Boolean,
+    isAllowedRemove: {
+      type: Boolean,
+      default: true
+    },
     expandable: Boolean,
     hasLinkedDanger: String,
     textDanger: String,
@@ -2138,6 +2166,19 @@ export default {
       } else {
         this.visibleKeys = [];
       }
+    },
+    getStatusColor(status) {
+      if (!status) return "gray";
+      switch (status.toLowerCase()) {
+        case "safe":
+          return "rgb(21, 224, 21)";
+        case "warning":
+          return "rgb(255, 165, 0)";
+        case "over":
+          return "rgb(255, 0, 0)";
+        default:
+          return "gray";
+      }
     }
   },
   mounted() {
@@ -2151,8 +2192,21 @@ export default {
 </script>
 <style lang="scss">
 .vs-table-content > .vs-table > table {
+  width: max-content !important;
   min-width: 100% !important;
+  table-layout: auto;
+  white-space: nowrap; 
 }
+.vs-table-content th,
+.vs-table-content td,
+.vs-table-content td span {
+  white-space: nowrap;
+}
+
+.do-not-wrap {
+  white-space: pre-line !important;
+}
+
 .vs-table {
   table {
     width: max-content;
@@ -2280,7 +2334,6 @@ export default {
 
 span.text-link {
   display: inline-block;
-  padding-top: 18px;
   color: rgb(53, 92, 255);
   cursor: pointer;
 }
@@ -2290,7 +2343,6 @@ p.text-link {
 }
 span.text-danger {
   display: inline-block;
-  padding-top: 18px;
   color: rgba(255,71,87,255);
   cursor: pointer;
 }
@@ -2303,11 +2355,9 @@ span.text-danger {
     margin: 0.5rem 0 !important;
   }
 }
-.manual-padding {
-  padding-bottom: 0px;
-}
-.vs-table__th {
-  padding: 10px 5px !important;
+.vs-table__th,
+.vs-table__td {
+  padding: 1rem !important;
 }
 .greenBackground {
   background-color: rgb(21, 224, 21);
@@ -2320,6 +2370,14 @@ span.text-danger {
   color: rgb(255, 255, 255);
   padding: 5px 25px !important;
   border-radius: 3px;
+}
+.statusBackground {
+  color: rgb(255, 255, 255);
+  padding: 5px 5px !important;
+  border-radius: 3px;
+  display: flex;
+  width: 80px;
+  place-content: center;
 }
 .icon-warning {
   font-size: 48px;

@@ -108,6 +108,11 @@ export default {
                     key: "vehicle_mode_name",
                     width: "md"
                 },
+                {
+                    label: "Created Date",
+                    key: "created_at",
+                    width: "md"
+                },
             ],
             customActionList: [
               {

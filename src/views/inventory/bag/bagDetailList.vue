@@ -7,32 +7,30 @@
 <template>
     <div>
         <div class="summary-bag">
-          <vs-row>
-            <vs-col xs="12" sm="3" lg="3" align="left" class="bag-no">
-              <span><b>Bag No. </b></span><span><b>{{ bag_number }}</b></span>
-            </vs-col>
+          <vs-row align="center">
             <template v-if="!loading">
-                <template v-if="!is_pra_runsheet">
-                    <vs-col xs="12" sm="4" lg="4" align="left" >
-                        <span><p>Destination: {{bag_destination}}</p></span>
-                        <span><p>Destination Node ID: {{bag_destination_id}}</p></span>
-                        <span><p>Destination Name: {{bag_destination_name}}</p></span>
-                    </vs-col>
-                    <vs-col xs="12" sm="2" lg="2" align="left" >
-                        <span><p>Total Connote: {{ total_connote }} Pcs</p></span>
-                        <span><p>Total Weight: {{ total_weight }} Kg</p></span>
-                        <span><p>Actual Weight: {{ actual_weight }} Kg</p></span>
-                    </vs-col>
-                </template>
-                <template v-else>
-                    <vs-col xs="12" sm="3" lg="3" align="left" >
-                        <span><p>Total Connote: {{ total_connote }} Pcs</p></span>
-                    </vs-col>
-                    <vs-col xs="12" sm="3" lg="3" align="left" >
-                        <span><p>Total Weight: {{ total_weight }} Kg</p></span>
-                    </vs-col>
-                </template>
-                <vs-col xs="12" sm="3" lg="3" align="right"><span><h1>{{ bag_detail_qty }}</h1></span><p>Bagged</p></vs-col>
+                <vs-col xs="12" sm="3" lg="6" align="left" class="bag-no">
+                    <template v-if="!is_pra_runsheet">
+                        <div class="bag-header">
+                            <span class="bag-title"><b>Bag No. </b></span><span class="bag-number"><b>{{ bag_number }}</b></span>
+                        </div>
+                        <div class="bag-info">
+                            <span><p>Destination: {{bag_destination_name}} ( {{bag_destination}} )</p></span>
+                            <span><p>Total Connote: {{ total_connote }} Pcs | Actual Weight: {{ actual_weight }} Kg | Cost Weight: {{ cost_weight }} Kg</p></span>
+                        </div>
+                    </template>
+                    <template v-else>
+                            <vs-col xs="12" sm="3" lg="3" align="left" >
+                                <span><p>Total Connote: {{ total_connote }} Pcs</p></span>
+                            </vs-col>
+                            <vs-col xs="12" sm="3" lg="3" align="left" >
+                                <span><p>Total Weight: {{ total_weight }} Kg</p></span>
+                            </vs-col>
+                    </template>
+                </vs-col>
+            </template>
+            <template v-if="!loading">
+                <vs-col xs="12" sm="3" lg="6" align="right"><span><h1>{{ bag_detail_qty }}</h1></span><p>Bagged</p></vs-col>
             </template>
           </vs-row>
         </div>
@@ -106,54 +104,64 @@ export default {
                 {
                     label: "No",
                     key: "no",
-                    width: "xs"
+                    width: "xxxxs"
                 },
                 {
                     label: "Item",
                     key: "item_number",
-                    width: "md"
+                    width: "sm"
                 },
                 {
                     label: "Quantity",
                     key: "koli_qty",
-                    width: "xs"
-                },
-                {
-                    label: "Of#",
-                    key: "koli_sequence",
                     width: "auto"
                 },
+                // {
+                //     label: "Of#",
+                //     key: "koli_sequence",
+                //     width: "auto"
+                // },
+                // {
+                //   label: "Weight",
+                //   key: "bag_weight",
+                //   width: "auto"
+                // }, karena sudah ada actual weight dan cost weight maka tidak perlu lagi
                 {
-                  label: "Weight",
-                  key: "bag_weight",
-                  width: "auto"
+                  label: "Actual Weight",
+                  key: "actual_weight_item",
+                  width: "xxs"
+                },
+                {
+                  label: "Cost Weight",
+                  key: "cost_weight_item",
+                  width: "xxs"
                 },
                 {
                     label: "Destination Code",
                     key: "destination_code",
-                    width: "auto"
+                    width: "xs"
                 },
                 {
                     label: "Service",
                     key: "connote_service_code",
-                    width: "auto"
+                    width: "xxxs"
                 },                
                 {
                     label: "Type",
                     key: "item_type",
-                    width: "auto"
+                    width: "xxxs"
                 },
                 {
                     label: "Date",
                     key: "created_at",
-                    width: "xs"
+                    width: "sm"
                 },
             ],
             additionalColumn: [
                 {
                     label: "Runsheet Number",
                     key: "runsheet_number",
-                    width: "auto"
+                    width: "sm"
                 }
             ],
             loading: false,
@@ -165,6 +173,7 @@ export default {
             total_connote :'',
             total_weight :'',
             actual_weight :'',
+            cost_weight :'',
             bag_detail_qty:'',
             bag_destination:'',
             bag_destination_id:'',
@@ -180,61 +189,51 @@ export default {
             primaryKey: '',
             activeDialogConfirmRemove: false,
             loadingConfirmRemove:false,
-            is_consolidated: false
+            is_consolidated: false,
+            data: {},
         }
     },
     methods: {
 
-        async getTableData(limit,page, bag) {
+        async getTableData(limit, page, bag) {
             this.loading = true
-            let bagId = "";
-            if(bag !== undefined) {
-              bagId = bag
-            }
-            await axios
-                .get(
-                    this.URL.bag + '/'+bagId.replace('/','-')+`?n=${this.listenNodeId}`,
-                    this.Helper.header())
-                .then(res => {
-                    let arr = res.data.detail
-                    let bag_des = res.data.dat ? res.data.data.destination.node_code  : '-'
-                    this.$ls.set('getDataBag',res.data.data);
+            let bagId = bag ?? ""
 
-                    this.is_consolidated = res?.data?.data?.is_consolidated === '1';
+            try {
+                const res = await axios.get(this.URL.bag + '/' + bagId + `?n=${this.listenNodeId}`, this.Helper.header());
+                
+                this.data = res?.data;
 
- 
-                    arr.map((item, index)  => {
-                      item["no"] = index+1
-                      item['destination_code'] = item.item_type === 'KOLI' ?  item.connote_receiver_tariff_code : item.node_tariff_code
-                      item['koli_qty'] = item.item_type == 'KOLI' ? item.koli_qty : item.bag_detail_qty
-                      item['koli_sequence'] = item.item_type == 'KOLI' ? item.koli_sequence : '-'
-                      item['bag_weight'] = item.item_type == 'KOLI' ? item?.connote_actual_weight : item.bag_weight
-                      item['connote_service_code'] = item.item_type == 'KOLI' ? item.connote_service_code : item.bag_service.join(', ')
-                      item['bag_detail_qty'] = res.data.data.bag_detail_qty
-                      item["isDisabled"] = res.data.data.is_approve === 1 ? true : false;
-                      item["runsheet_number"] = item?.runsheet ? item?.runsheet?.[item?.runsheet?.length - 1]?.delivery_runsheet_number : '';
-                    })
-                    this.is_pra_runsheet = res.data.data.is_pra_runsheet === "1" ? true : false;
-                    this.getSummaryBag(res)
-                  // arr.map(item => {
-                    //     item["user_nodes"] = item.user_nodes.toString()
-                    // })
-                    this.dataTable = arr
-                    // this.pagination.page = res.data.meta.current_page
-                    // this.pagination.limit = parseInt(res.data.meta.per_page)
-                    // this.pagination.page_size = res.data.meta.last_page
-                    // if(res.data.data.length == 0) {
-                    //     this.openNotification('warn', null, 'Failed to populate User data', )
-                    // }
-                    
-                    this.loading = false
-                    this.$emit("getResponse", res.data, this.loading)
-                }).catch(err => {
-                    let errMessage = err.response ? err.response.data.message : 'Failed to populate bag'
-                    this.loading = false
-                    this.$emit("getResponse", {}, this.loading)
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate bag', errMessage)
+                let arr = res?.data?.detail;
+                let arrData = res?.data?.data;
+
+                this.$ls.set('getDataBag', arrData);
+
+                this.is_consolidated = arrData?.is_consolidated === '1';
+                this.is_pra_runsheet = arrData?.is_pra_runsheet === "1" ? true : false;
+
+                arr.map((item, index)  => {
+                    item["no"] = index+1
+                    item['destination_code'] = item.item_type === 'KOLI' ?  item.connote_receiver_tariff_code : item.node_tariff_code
+                    item['koli_qty'] = item.item_type == 'KOLI' ? item.koli_qty : item.bag_detail_qty
+                    item['koli_sequence'] = item.item_type == 'KOLI' ? item.koli_sequence : '-'
+                    item['bag_weight'] = item.item_type == 'KOLI' ? item?.connote_actual_weight : item.bag_weight
+                    item['connote_service_code'] = item.item_type == 'KOLI' ? item.connote_service_code : item.bag_service.join(', ')
+                    item['bag_detail_qty'] = res.data.data.bag_detail_qty
+                    item["isDisabled"] = res.data.data.is_approve === 1 ? true : false;
+                    item["runsheet_number"] = item?.runsheet ? item?.runsheet?.[item?.runsheet?.length - 1]?.delivery_runsheet_number : '';
+                    item['actual_weight_item'] = item.actual_weight_item + ' Kg'
+                    item['cost_weight_item'] = item.cost_weight_item + ' Kg'
                 })
+                
+                this.getSummaryBag(res);
+                this.dataTable = arr;
+            } catch(err) {
+                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Failed to populate bag');
+            } finally {
+                this.loading = false
+                this.$emit("getResponse", this.data, this.loading)
+            }
         },
 
         getSummaryBag(val){
@@ -243,6 +242,7 @@ export default {
           this.total_connote = val.data.total_item_connote
           this.total_weight = val.data.total_weight
           this.actual_weight = val.data.data.bag_actual_weight
+          this.cost_weight = val.data.data.cost_weight
           this.bag_destination = val?.data?.data?.destination?.node_code ?? ''
           this.bag_destination_id = val?.data?.data?.destination?.node_id ?? ''
           this.bag_destination_name = val?.data?.data?.destination?.node_name ?? ''
@@ -288,9 +288,10 @@ export default {
             this.removeData()
         },
         async removeData(){
+            let bagNumberForRoute = this.parentId;
             await axios
                 .delete(
-                    this.URL.bag+`/${this.parentId}/detail/${this.id}?n=${this.listenNodeId}`,
+                    this.URL.bag+`/${bagNumberForRoute}/detail/${this.id}?n=${this.listenNodeId}`,
                     this.Helper.header())
                 .then(res => {
                     this.closeDialogConfirmRemove()
@@ -298,7 +299,7 @@ export default {
                     if(res.data.detail.length > 0){
                         this.refresh()
                     }else{
-                        this.$router.push({ name: 'InventoryBag', params: { } });
+                        this.$router.push('/outgoing/bag');
                         this.setRoutePageHistory(this.$route.meta, false);
                     }
                     this.openNotification('success', null, 'Remove success', 'Remove bag item successfully')
@@ -332,6 +333,20 @@ export default {
   }
   .summary-bag{
     margin-bottom: 40px;
+  }
+  .bag-header {
+    margin-bottom: 15px;
+  }
+  .bag-title, .bag-number {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .bag-info {
+    margin-top: 10px;
+  }
+  .bag-info p {
+    font-size: 14px;
+    margin-bottom: 3px;
   }
   .bag-detail {
     @include for-phone-only {

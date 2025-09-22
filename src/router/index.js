@@ -667,51 +667,6 @@ const routes = [
         }
       },
       {
-        path: "trace-connote/:id?",
-        name: "trace-connote",
-        component: TraceConnote,
-        children: [],
-        meta: {
-          requiresAuth: true,
-          breadCrumb: "Trace Connote",
-          resource_type: resourceLookup["TRACE_CONNOTE"].resource_type,
-          resource_code: resourceLookup["TRACE_CONNOTE"].resource_code,
-          resource_name: resourceLookup["TRACE_CONNOTE"].resource_name,
-          isMaintenanceMode: false,
-          permission: '',
-        }
-      },
-      {
-        path: "trace-bag/:bag_number?",
-        name: "trace-bag",
-        component: TraceBag,
-        children: [],
-        meta: {
-          requiresAuth: true,
-          breadCrumb: "Trace Bag / Masterbag",
-          resource_type: resourceLookup["TRACE_BAG"].resource_type,
-          resource_code: resourceLookup["TRACE_BAG"].resource_code,
-          resource_name: resourceLookup["TRACE_BAG"].resource_name,
-          isMaintenanceMode: false,
-          permission: '',
-        }
-      },
-      {
-        path: "trace-flight/:id?",
-        name: "trace-flight",
-        component: TraceFlight,
-        children: [],
-        meta: {
-          requiresAuth: true,
-          breadCrumb: "Trace Flight",
-          resource_type: resourceLookup["TRACE_FLIGHT"].resource_type,
-          resource_code: resourceLookup["TRACE_FLIGHT"].resource_code,
-          resource_name: resourceLookup["TRACE_FLIGHT"].resource_name,
-          isMaintenanceMode: false,
-          permission: '',
-        }
-      },
-      {
         path: "sales",
         name: "sales",
         component: ContentChild,
@@ -806,7 +761,7 @@ const routes = [
               resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL"].resource_code,
               resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL"].resource_name,
               isMaintenanceMode: false,
-              permission: 'read-irreg',
+              permission: 'read-irregularity',
             }
           },
           {
@@ -820,7 +775,7 @@ const routes = [
               resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL_HISTORY"].resource_code,
               resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_CANCEL_HISTORY"].resource_name,
               isMaintenanceMode: false,
-              permission: 'read-irreg',
+              permission: 'read-irregularity',
             }
           },
           {
@@ -834,7 +789,7 @@ const routes = [
               resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_FORWARD"].resource_code,
               resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_FORWARD"].resource_name,
               isMaintenanceMode: false,
-              permission: 'read-irreg',
+              permission: 'read-irregularity',
             }
           },
           {
@@ -848,7 +803,7 @@ const routes = [
               resource_code: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_RETURN"].resource_code,
               resource_name: resourceLookup["CONNOTE_ADJUSTMENT_CONNOTE_RETURN"].resource_name,
               isMaintenanceMode: false,
-              permission: 'read-irreg',
+              permission: 'read-irregularity',
             }
           },
         ],
@@ -873,7 +828,7 @@ const routes = [
               resource_code: resourceLookup["TRACING"].resource_code,
               resource_name: resourceLookup["TRACING"].resource_name,
               isMaintenanceMode: false,
-              permission: 'read-irreg',
+              permission: 'read-irregularity',
             },
           },
           {
@@ -902,7 +857,7 @@ const routes = [
               resource_code: resourceLookup["TRACING_HISTORY"].resource_code,
               resource_name: resourceLookup["TRACING_HISTORY"].resource_name,
               isMaintenanceMode: false,
-              permission: 'read-irreg',
+              permission: 'read-irregularity',
             },
           },
           {
@@ -942,7 +897,7 @@ const routes = [
               resource_code: resourceLookup["IRREGURALITIES_INVENTORY"].resource_code,
               resource_name: resourceLookup["IRREGURALITIES_INVENTORY"].resource_name,
               isMaintenanceMode: false,
-              permission: 'read-irreg',
+              permission: 'read-irregularity',
             }
           },
           {
@@ -956,7 +911,7 @@ const routes = [
               resource_code: resourceLookup["IRREGURALITIES_ENTRY_STATUS"].resource_code,
               resource_name: resourceLookup["IRREGURALITIES_ENTRY_STATUS"].resource_name,
               isMaintenanceMode: false,
-              permission: 'read-irreg',
+              permission: 'read-irregularity',
             }
           },
           // {
@@ -988,7 +943,7 @@ const routes = [
               resource_code: resourceLookup["IRREGURALITIES_HOLD"].resource_code,
               resource_name: resourceLookup["IRREGURALITIES_HOLD"].resource_name,
               isMaintenanceMode: false,
-              permission: 'read-irreg',
+              permission: 'read-irregularity',
             }
           },
           {
@@ -1002,7 +957,7 @@ const routes = [
               resource_code: resourceLookup["IRREGURALITIES_FAILED"].resource_code,
               resource_name: resourceLookup["IRREGURALITIES_FAILED"].resource_name,
               isMaintenanceMode: false,
-              permission: 'read-irreg',
+              permission: 'read-irregularity',
             }
           },
         ],
@@ -1689,7 +1644,7 @@ const routes = [
             meta: {
               icon: "bx bx-notepad",
               requiresAuth: true,
-              breadCrumb: "Receiving CONNOTE",
+              breadCrumb: "Receiving Connote",
               breadCrumbCode: "Connote",
               resource_type: resourceLookup["RECEIVING"].resource_type,
               resource_code: resourceLookup["RECEIVING"].resource_code,
@@ -1747,13 +1702,13 @@ const routes = [
             }
           },
           {
-            path: "log",
-            name: "Log",
+            path: "Irregularities",
+            name: "Irregularities",
             component: ReceivingLog,
             meta: {
               icon: "bx bx-history",
               requiresAuth: true,
-              breadCrumb: "Log",
+              breadCrumb: "Irregularities",
               resource_type: resourceLookup["RECEIVING_LOG"].resource_type,
               resource_code: resourceLookup["RECEIVING_LOG"].resource_code,
               resource_name: resourceLookup["RECEIVING_LOG"].resource_name,
@@ -1806,6 +1761,80 @@ const routes = [
         meta: {
           requiresAuth: true,
           breadCrumb: "inventory"
+        }
+      },
+      {
+        path: "trace",
+        name: "Trace",
+        component: ContentChildWithTab,
+        children: [
+          {
+            path: "trace-connote/:id?",
+            name: "trace-connote",
+            component: TraceConnote,
+            props: true,
+            meta: {
+              icon: "bx bx-notepad",
+              requiresAuth: true,
+              breadCrumb: "Trace Connote",
+              resource_type: resourceLookup["TRACE_CONNOTE"].resource_type,
+              resource_code: resourceLookup["TRACE_CONNOTE"].resource_code,
+              resource_name: resourceLookup["TRACE_CONNOTE"].resource_name,
+              isMaintenanceMode: false,
+              permission: "", // trace tdk perlu permission
+            }
+          },
+          {
+            path: "trace-bag/:bag_number?",
+            name: "trace-bag",
+            component: TraceBag,
+            props: true,
+            meta: {
+              icon: "bx bx-shopping-bag",
+              requiresAuth: true,
+              breadCrumb: "Trace Bag / Masterbag",
+              resource_type: resourceLookup["TRACE_BAG"].resource_type,
+              resource_code: resourceLookup["TRACE_BAG"].resource_code,
+              resource_name: resourceLookup["TRACE_BAG"].resource_name,
+              isMaintenanceMode: false,
+              permission: "",
+            }
+          },
+          {
+            path: "trace-flight/:id?",
+            name: "trace-flight",
+            component: TraceFlight,
+            props: true,
+            meta: {
+              icon: "bx bx-paper-plane",
+              requiresAuth: true,
+              breadCrumb: "Trace Flight",
+              resource_type: resourceLookup["TRACE_FLIGHT"].resource_type,
+              resource_code: resourceLookup["TRACE_FLIGHT"].resource_code,
+              resource_name: resourceLookup["TRACE_FLIGHT"].resource_name,
+              isMaintenanceMode: false,
+              permission: "",
+            }
+          },
+          {
+            path: "manifest-vehicle/:id?",
+            name: "transport-manifest-vehicle",
+            component: TransportManifestVehicle,
+            meta: {
+              icon: "bx bxs-truck",
+              requiresAuth: true,
+              breadCrumb: "Manifest Vehicle",
+              resource_type: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_type,
+              resource_code: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_code,
+              resource_name: resourceLookup["TRANSPORT_MANIFEST_VEHICLE"].resource_name,
+              isMaintenanceMode: false,
+              permission: 'read-manifest-vehicle',
+            }
+          },
+        ],
+        meta: {
+          requiresAuth: true,
+          breadCrumb: "trace"
         }
       },
       {

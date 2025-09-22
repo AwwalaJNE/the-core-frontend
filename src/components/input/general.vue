@@ -2,9 +2,19 @@
   <inputan :name="name" :rules="rules">
     <template v-slot:inputan="props">
       <template v-if="isHidden == false">
+        <div class="flex items-center text-left" style="justify-content: flex-start;">
+          <span class="c-label">{{ name }}<span v-if="rules && rules.includes('required')"> *</span></span>
+
+          <vs-tooltip v-if="tooltipMessage" right>
+            <template #tooltip>
+              {{ tooltipMessage }}
+            </template>
+            <i class="bx bx-info-circle "></i>
+          </vs-tooltip>
+        </div>
         <template v-if="isPlaceholderGabung">
           <!-- <vs-input
-                        :class="`mt-input`"
+                        
                         :type="listenTypeInput.includes('password') == true ? 'password' : 'text'"
                         :placeholder="name"
                         :border="isBorder"
@@ -17,6 +27,7 @@
                         @focus="focus(true)"
                         @blur="focus(false)"
                         ref="generalInput"
+                        :data-testid="`input-${formKey}`"
                         :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
                     /> -->
           <vs-input
@@ -36,15 +47,16 @@
             :state="
               props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
             "
+            :data-testid="`input-${formKey}`"
           />
         </template>
         <template v-else-if="listenCurrencyMasking">
           <!-- v-currency -->
           <vs-input
-            :class="`mt-input`"
+            
             :type="'text'"
-            :label="name"
-            :label-placeholder="name"
+            
+            
             v-currency
             v-model="value"
             :disabled="isDisabled"
@@ -55,6 +67,7 @@
             @blur="focus(false)"
             ref="generalInput"
             :min="listenMinValue"
+            :data-testid="`input-${formKey}`"
             :state="
               props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
             "
@@ -62,10 +75,10 @@
         </template>
         <template v-else-if="listenTypeInput.includes('date') == true">
           <vs-input
-            :class="`mt-input`"
+            
             :type="listenTypeInput.includes('date') == true ? 'date' : 'text'"
-            :label="name"
-            :label-placeholder="name"
+            
+            
             v-model="value"
             format="yyyy-mm-dd HH:i"
             :disabled="isDisabled"
@@ -74,6 +87,7 @@
             @focus="focus(true)"
             @blur="focus(false)"
             ref="generalInput"
+            :data-testid="`input-${formKey}`"
             :state="
               props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
             "
@@ -82,7 +96,7 @@
         <template v-else-if="isOnlyNumber == true">
           <!-- .replace(/^0+/, '') -->
           <vs-input
-            :class="`mt-input`"
+            
             :type="
               listenTypeInput
                 ? listenTypeInput.includes('password') == true
@@ -90,7 +104,7 @@
                   : listenTypeInput
                 : 'text'
             "
-            :label="name"
+            
             placeholder="0"
             v-model="value"
             :autofocus="isFocusToInput"
@@ -102,7 +116,9 @@
             ref="generalInput"
             @keydown="onlyNumberValidate"
             @keyup="handlerZero(value)"
+            @keypress="checkOnlyNumber"
             :min="listenMinValue"
+            :data-testid="`input-${formKey}`"
             :state="
               props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
             "
@@ -110,7 +126,7 @@
         </template>
         <template v-else-if="withDebounce == true">
           <vs-input
-            :class="`mt-input`"
+            
             :type="
               listenTypeInput
                 ? listenTypeInput.includes('password') == true
@@ -118,8 +134,8 @@
                   : listenTypeInput
                 : 'text'
             "
-            :label="name"
-            :label-placeholder="name"
+            
+            
             v-model="value"
             :autofocus="isFocusToInput"
             :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
@@ -129,6 +145,7 @@
             @blur="focus(false)"
             ref="generalInput"
             :min="listenMinValue"
+            :data-testid="`input-${formKey}`"
             :state="
               props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
             "
@@ -137,7 +154,7 @@
         <template v-else-if="isenter_to_update == true">
           <form @submit.prevent="enterUpdate">
             <vs-input
-              :class="`mt-input`"
+              
               :type="
                 listenTypeInput
                   ? listenTypeInput.includes('password') == true
@@ -145,8 +162,8 @@
                     : listenTypeInput
                   : 'text'
               "
-              :label="name"
-              :label-placeholder="name"
+              
+              
               v-model="value"
               :autofocus="isFocusToInput"
               :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
@@ -155,6 +172,7 @@
               @blur="focus(false)"
               ref="generalInput"
               :min="listenMinValue"
+              :data-testid="`input-${formKey}`"
               :state="
                 props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
               "
@@ -163,7 +181,7 @@
         </template>
         <template v-else>
           <vs-input
-            :class="`mt-input`"
+            
             :type="
               listenTypeInput
                 ? listenTypeInput.includes('password') == true
@@ -171,8 +189,8 @@
                   : listenTypeInput
                 : 'text'
             "
-            :label="name"
-            :label-placeholder="name"
+            
+            
             :placeholder="placeholder"
             :border="isBorder"
             v-model="value"
@@ -184,6 +202,7 @@
             @blur="focus(false)"
             ref="generalInput"
             :min="listenMinValue"
+            :data-testid="`input-${formKey}`"
             :state="
               props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
             "
@@ -211,6 +230,7 @@ export default {
     typeInput: String,
     prefix: String,
     minValue: Number,
+    maxValue: Number,
     placeholderGabung: Boolean,
     focusToInput: Boolean,
     tabindex: [Number, String],
@@ -225,7 +245,8 @@ export default {
       type: Boolean,
       default: () => false,
     },
-    disabled: Boolean
+    disabled: Boolean,
+    tooltipMessage: String,
   },
   components: {
     inputan: Inputan,
@@ -281,7 +302,7 @@ export default {
     },
     listenPlaceholder() {
       return this.placeholder;
-    },
+    }
   },
   watch: {
     valueData: function(val) {
@@ -357,6 +378,13 @@ export default {
         }
       }
     },
+    checkOnlyNumber(e) {
+      if (this.isOnlyNumber && !this.rules.includes('decimal')) {
+        if (!/[0-9]/.test(e.key)) {
+          e.preventDefault()
+        }
+      }
+    },
     focus(status) {
       let info = {};
       info["name"] = this.name;
@@ -376,10 +404,27 @@ export default {
       if (event && typeof event === 'string') {
         if (this.listenFormKey.toLowerCase().includes('email')) {
           this.value = event.replace(/[^a-zA-Z0-9@._\-+!#$%&'*\/=?^`{|}~]/g, '');
-        } else if (this.listenFormKey.toLowerCase().includes('email')) {
+        } else if (this.listenFormKey.toLowerCase().includes('password')) {
           this.value = event.replace(/[^\x20-\x7E]/g, '');
         } else {
-          this.value = event.replace(/[^a-zA-Z0-9_-]/g, '');
+          if (this.isOnlyNumber) {
+            if (this.rules.includes('decimal')) {
+              this.value = event.replace(/[^0-9.]/g, '');
+            } else {
+              this.value = event.replace(/[^0-9]/g, '');
+            }
+
+            if (this.minValue && this.maxValue) {
+              let num = +event.replace(/\D/g, '');
+              if (!isNaN(num)) {
+                num = Math.max(this.minValue ?? num, Math.min(num, this.maxValue ?? num));
+                this.value = num;
+              }
+            }
+          } else {
+            this.value = event.replace(/[^a-zA-Z0-9_\/-\s]/g, '');
+          }
+          
         }
       }
 

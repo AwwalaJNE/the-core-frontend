@@ -118,6 +118,11 @@ export default {
                     key: "vehicle_max_volume",
                     width: "auto"
                 },
+                {
+                    label: "Created Date",
+                    key: "created_at",
+                    width: "auto"
+                },
             ],
             loading: false,
             dataItem: {},

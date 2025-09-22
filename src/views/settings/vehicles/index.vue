@@ -14,6 +14,7 @@
                         flat
                         block
                         :active="true"
+                        :data-testid="`create-button-${navActive}`"
                         @click="openDialog"
                         > 
                             <i class="bx bx-plus"></i> New
@@ -30,9 +31,9 @@
                         <vs-col xs="6" sm="9" lg="9">
                             <nav-item :navItem="navItemm" @activeTab="activeTab" />
                         </vs-col>
-                        <vs-col xs="6" sm="3" lg="3">
+                        <!-- <vs-col xs="6" sm="3" lg="3">
                             <search-input ref="searchInput" @searchValue="searchValue"/>
-                        </vs-col>
+                        </vs-col> -->
                     </vs-row>
                 </div>
                 <template v-if="navActive === 'k-VEHICLE'">

@@ -30,6 +30,7 @@
                     :tabindex="-1"
                     style="float:right"
                     :disabled="listeninputDisabled"
+                    :data-testid="`bpik-button`"
                     @click="openBpikComponent()"
                   >
                     <i class="bx bx-plus" /> BPIK
@@ -51,6 +52,7 @@
                     :tabindex="-1"
                     style="float:right"
                     :disabled="listeninputDisabled"
+                    :data-testid="`pra-connote-button`"
                     @click="connoteNumberDialog('pra')"
                   >
                     <i class="bx bx-plus" /> Pra Connote
@@ -72,6 +74,7 @@
                     :tabindex="-1"
                     style="float:right"
                     :disabled="listeninputDisabled"
+                    :data-testid="`single-connote-button`"
                     @click="connoteNumberDialog('single')"
                   >
                     <i class="bx bx-plus" /> Single Connote
@@ -98,7 +101,7 @@
                 :rules="InputObject['package_description'].rule"
                 :form-key="InputObject['package_description'].key"
                 :value-data="InputObject['package_description'].value"
-                :type-input="InputObject['package_description'].typeInput +`|${listeninputDisabled == true ? 'disabled':''}`"
+                :type-input="InputObject['package_description'].typeInput +`${listeninputDisabled == true ? '|disabled':''}`"
                 @updateValue="updateValue"
               />
 
@@ -139,7 +142,7 @@
                 :rules="InputObject['package_cod'].rule"
                 :form-key="InputObject['package_cod'].key"
                 :value-data="InputObject['package_cod'].value"
-                :type-input="InputObject['package_cod'].typeInput +`|${listeninputDisabled == true ? 'disabled':''}`"
+                :type-input="InputObject['package_cod'].typeInput +`${listeninputDisabled == true ? '|disabled':''}`"
                 @updateValue="updateValue"
               />
               <input-general
@@ -147,7 +150,7 @@
                 :rules="InputObject['package_insured_goods_value'].rule"
                 :form-key="InputObject['package_insured_goods_value'].key"
                 :value-data="InputObject['package_insured_goods_value'].value"
-                :type-input="InputObject['package_insured_goods_value'].typeInput +`|${listeninputDisabled == true ? 'disabled':''}`"
+                :type-input="InputObject['package_insured_goods_value'].typeInput +`${listeninputDisabled == true ? '|disabled':''}`"
                 :currency-masking="true"
                 @updateValue="updateValue"
               />
@@ -157,7 +160,7 @@
                 :rules="InputObject['package_diskon'].rule"
                 :form-key="InputObject['package_diskon'].key"
                 :value-data="InputObject['package_diskon'].value"
-                :type-input="InputObject['package_diskon'].typeInput +`|${listeninputDisabled == true ? 'disabled':''}`"
+                :type-input="InputObject['package_diskon'].typeInput +`${listeninputDisabled == true ? '|disabled':''}`"
                 :currency-masking="true"
                 @updateValue="updateValue"
               />
@@ -167,7 +170,7 @@
                 :rules="InputObject['package_instruksi'].rule"
                 :form-key="InputObject['package_instruksi'].key"
                 :value-data="InputObject['package_instruksi'].value"
-                :type-input="InputObject['package_instruksi'].typeInput +`|${listeninputDisabled == true ? 'disabled':''}`"
+                :type-input="InputObject['package_instruksi'].typeInput +`${listeninputDisabled == true ? '|disabled':''}`"
                 @updateValue="updateValue"
               />
             </vs-col>
@@ -189,6 +192,7 @@
                     :value-data="InputObject['package_jumlah'].value"
                     :type-input="'number' +`${listeninputDisabled == true ? '|disabled':''}`"
                     :min-value="1"
+                    :only-number="true"
                     @updateValue="updateValue"
                   />
                 </vs-col>
@@ -203,6 +207,7 @@
                     style="margin-top:1.5em"
                     class="withFocus"
                     :disabled="disableBtnMultipleKoli"
+                    :data-testid="`atur-berat-button`"
                     @click="openSettingMultipleKoli"
                   >
                     <i
@@ -224,7 +229,8 @@
                     :rules="InputObject['package_dimensi_weight'].rule"
                     :form-key="InputObject['package_dimensi_weight'].key"
                     :value-data="InputObject['package_dimensi_weight'].value"
-                    :type-input="koliinput +`|${listeninputDisabled == true ? 'disabled':''}`"
+                    :type-input="koliinput +`${listeninputDisabled == true ? '|disabled':''}`"
+                    :only-number="true"
                     @updateValue="updateValue"
                   />
                 </vs-col>
@@ -238,7 +244,8 @@
                     :rules="InputObject['package_dimensi_length'].rule"
                     :form-key="InputObject['package_dimensi_length'].key"
                     :value-data="InputObject['package_dimensi_length'].value"
-                    :type-input="koliinput +`|${listeninputDisabled == true ? 'disabled':''}`"
+                    :type-input="koliinput +`${listeninputDisabled == true ? '|disabled':''}`"
+                    :only-number="true"
                     @updateValue="updateValue"
                   />
                 </vs-col>
@@ -252,7 +259,8 @@
                     :rules="InputObject['package_dimensi_width'].rule"
                     :form-key="InputObject['package_dimensi_width'].key"
                     :value-data="InputObject['package_dimensi_width'].value"
-                    :type-input="koliinput +`|${listeninputDisabled == true ? 'disabled':''}`"
+                    :type-input="koliinput +`${listeninputDisabled == true ? '|disabled':''}`"
+                    :only-number="true"
                     @updateValue="updateValue"
                   />
                 </vs-col>
@@ -266,8 +274,8 @@
                     :rules="InputObject['package_dimensi_height'].rule"
                     :form-key="InputObject['package_dimensi_height'].key"
                     :value-data="InputObject['package_dimensi_height'].value"
-                    :type-input="koliinput +`|${listeninputDisabled == true ? 'disabled':''}`"
-                    
+                    :type-input="koliinput +`${listeninputDisabled == true ? '|disabled':''}`"
+                    :only-number="true"
                     @updateValue="updateValue"
                   />
                 </vs-col>
@@ -308,6 +316,7 @@
                     style="margin-top:0"
                     class="withFocus"
                     :disabled="btnPrintASRdanSJ == false"
+                    :data-testid="`print-button`"
                     @click="printASRdanSJ"
                   >
                     <i
@@ -330,6 +339,7 @@
                     :active="false"
                     class="withFocus"
                     :disabled="!disableBtnMultipleKoli || listeninputDisabled == true"
+                    :data-testid="`surcharge-button`"
                     @click="openSurchargeDialog"
                   >
                     <i
@@ -345,11 +355,13 @@
                         :data-value="item"
                         class="vs-select__chips__chip"
                         style="width: fit-content;"
+                        :data-testid="`surcharge-chip-${item}`"
                       >
                         {{ `${surchargeshow[item].surcharge_name} | ${surchargeshow[item]['jumlah'] || ''}x` }}
                         <template v-if="!surchargeshow[item].hasOwnProperty('jumlah') && !surchargeshow[item].surcharge_name.toLowerCase().includes('overweight')">
                           <span
                             class="vs-select__chips__chip__close"
+                            :data-testid="`surcharge-remove-${item}`"
                             @click="removeSurcharge(item, 0, surchargeshow[item].surcharge_name)"
                           >
                             <i class="vs-icon-close vs-icon-hover-less" />
@@ -386,6 +398,7 @@
         :close-dialog="closeBpikComponent"
         :active="bpikComponent"
         :arr-data="[]"
+        :data-testid="`bpik`"
       />
     </template>
 
@@ -394,12 +407,14 @@
       :close-dialog="closeDialogSurcharge"
       :koli-obj="koliObj"
       :index="0"
+      :data-testid="`dialog-surcharge`"
       @updateValue="updateValue"
     />
     <dialog-multipleKoli
       :active="dialogSettingMultipleKoli"
       :close-dialog="closeSettingMultipleKoli"
       :surcharge-by-i-d="surchargeByID"
+      :data-testid="`dialog-multiple-koli`"
       @prosesmultipleKoli="prosesmultipleKoli"
     />
 
@@ -408,6 +423,7 @@
       :close-dialog="closeConnoteNumberDialog"
       :title="connote_number_type"
       :type="connote_number_type"
+      :data-testid="`dialog-connote-number`"
       @updateValue="updateValue"
     />
   </div>

@@ -5,7 +5,7 @@
                 <template v-slot:inputan="props">
                     <!-- <vs-select
                         class="m-select"
-                        autocomplete="off"
+                        select="off"
                         filter
                         :multiple="listenIsMultiple"
                         :placeholder="placeholder"
@@ -28,7 +28,7 @@
                         
                     </vs-select> -->
                     <template v-if="listenHiddenTitle == false">
-                      <span class="c-label">{{name}}</span>
+                        <span class="c-label">{{ name }}<span v-if="rules && rules.includes('required')"> *</span></span>
                     </template>
                     
                     
@@ -45,6 +45,7 @@
                       :loading="loadingActive"
                       @change="updateValue"
                       @visible-change="setupSanitizeFilterInput"
+                      :data-testid="`select-${formKey}`"
                       :state="props.err !== undefined && props.err !== '' ?'danger':'gray'">
                           <el-option
                           v-for="(item,key) in DataArr"
@@ -72,6 +73,7 @@
                             :is-Multiple-Tag="listenIsMultipleTags"
                             @change="updateValue"
                             @visible-change="setupSanitizeFilterInput"
+                            :data-testid="`select-${formKey}`"
                             :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
                         >
                             <el-option
@@ -97,12 +99,13 @@
                       @visible-change="setupSanitizeFilterInput"
                       :clearable="listenHasClearButton"
                       :loading="loadingActive"
+                      :data-testid="`select-${formKey}`"
                       :state="props.err !== undefined && props.err !== '' ?'danger':'gray'">
                             <el-option
                                 v-for="(item, key) in DataArr"
                                 :key="key"
                                 :value="item.value"
-                                :label="!item.hasOwnProperty('formattedLabel') && item.label"
+                                :label="!item.hasOwnProperty('formattedLabel') && (item.code || item.label)"
                             >
                                 <template v-if="item.hasOwnProperty('formattedLabel')">
                                 <span v-for="(line, index) in item.formattedLabel" :key="index">
@@ -260,7 +263,7 @@ export default {
                     if (input._hasSanitizeListener) return;
 
                     input.addEventListener('input', e => {
-                        const clean = e.target.value.replace(/[^a-zA-Z0-9_\-\*\(\)~ ,]/g, '');
+                        const clean = e.target.value.replace(/[^a-zA-Z0-9_\-\*\(\)~ ,\/]/g, '');
                         if (e.target.value !== clean) {
                         e.target.value = clean;
                         e.target.dispatchEvent(new Event('input'));
@@ -277,7 +280,7 @@ export default {
     },
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
     .m-select{
         &.vs-select-content{
             max-width: unset;

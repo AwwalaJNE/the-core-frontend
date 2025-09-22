@@ -3,7 +3,7 @@
         <template v-slot:inputan="props">
             <div :class="`custom_datePicker ${props.err !== undefined && props.err !== '' ?'danger':''}`">
                 <template v-if="listenName">
-                    <span class="c-label">{{ name }}<span v-if="rules && rules.includes('required')">*</span></span>
+                    <span class="c-label">{{ name }}<span v-if="rules && rules.includes('required')"> *</span></span>
                 </template>
                 <template>
                     <el-date-picker
@@ -19,6 +19,7 @@
                         :picker-options="isETDnETA ? pickerOptions : null"
                         :default-time="isETDnETA ? null : ['00:00:00', '23:59:59']"
                         :disabled="listenIsDisabled"
+                        :data-testid="`input-date-time`"
                         @change="updateValue"
                         @focus="attachInputSanitizer"
                     >
