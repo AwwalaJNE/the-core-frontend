@@ -81,6 +81,7 @@ export default {
             const resDetail = await axios.get(this.URL.user_auth_data, this.Helper.header());
 
             if (resDetail.status === 200) {
+              this.$ls.set("language", "ID");
               this.$ls.set("user", resDetail.data.data.user);
               this.$ls.set("node_id", resDetail.data.data.node);
               this.$ls.set("permissions", resDetail.data.data.permission)
