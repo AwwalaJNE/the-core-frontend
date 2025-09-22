@@ -324,11 +324,9 @@ export default {
         },
     },
     mounted() {
-        window.addEventListener('timezone-changed', this.refresh);
         this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
     },
     beforeDestroy () {
-        window.removeEventListener('timezone-changed', this.refresh);
         clearInterval(this.loadInterval) // prevent memory leaks
     }
 }
