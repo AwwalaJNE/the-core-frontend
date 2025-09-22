@@ -16,16 +16,22 @@
             <vs-col xs="10" sm="9" lg="10">
                 <vs-row justify="flex-end" align="center" style="gap: 0.75em">
                     <vs-col xs="1" sm="1" lg="1">
-                        <selector 
-                            formKey="timezone_selector"
-                            :hiddenTitle=true
-                            :valueData="dataTimezone"
-                            :selectedValue="selectedTimezone"
-                            :isMultiple="false"
-                            :border="true"
-                            :tabindex="-1"
-                            @updateValue="updateValue" 
-                        />
+                        <vs-tooltip bottom>
+                            <template #tooltip>
+                                Kamu tidak punya izin untuk update timezone
+                            </template>
+                            <selector 
+                                formKey="timezone_selector"
+                                :hiddenTitle="true"
+                                :valueData="dataTimezone"
+                                :selectedValue="selectedTimezone"
+                                :isMultiple="false"
+                                :border="true"
+                                :tabindex="-1"
+                                :disabled="!hasPermission('update-timezone')"
+                                @updateValue="updateValue" 
+                            />
+                        </vs-tooltip>
                     </vs-col>
 
                     <!-- TODO: UNCOMMENT LATER -->
@@ -193,6 +199,7 @@ export default {
                 case "language_selector":
                     this.selectedLanguage = val;
                     this.$ls.set("language", val);
+                    window.location.reload(true);
                     break;
                 case "node_selector":
                     this.updateNode();
@@ -319,6 +326,7 @@ export default {
 
                 this.selectedTimezone = timezone;
                 this.$ls.set("timezone", timezone);
+                window.location.reload(true);
             } catch (err) {
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
             } finally {
