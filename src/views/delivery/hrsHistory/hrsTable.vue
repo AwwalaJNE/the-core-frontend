@@ -40,11 +40,6 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "HRS ID",
-                    key: "handover_runsheet_id",
-                    width: "sm"
-                },
-                {
                     label: "HRS Number",
                     key: "handover_number",
                     width: "xs"
@@ -125,6 +120,7 @@ export default {
                 const arr = res.data.data.map(item => {
                     item["node_name"] = item?.node?.node_name ?? "";
                     item["courier_employee_name"] = item?.employee?.employee_name ?? "";
+                    item["created_at"] = this.adjustTimeBasedOnTimezone(item?.created_at);
 
                     const children = {
                         'Runsheet #': [],
