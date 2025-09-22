@@ -23,7 +23,6 @@
         :onRowClickCallback="updateSelected"
         :customAction="true"
         :customActionList="customActionList"
-        :key="selectedTimezone"
         @handleEdit="actionDetail"
         @actionLimit="actionLimit"
         @actionUpdate="actionUpdate"
@@ -41,7 +40,6 @@
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
-import timezone from "../../../../mixins/timezone";
 import TableMaster from "@/components/table/tableMaster.vue"
 import SelectSearchBy from "@/components/search/selectSearchBy"
 import SearchInput from "@/components/search/searchInput"
@@ -50,7 +48,7 @@ import moment from "moment"
 import DialogTraceBag from "@/views/inventory/connote/bag/dialogTraceBag.vue"
 export default {
     name:"Role-list",
-    mixins: [master, timezone],
+    mixins: [master],
     props: {
         query: String,
         bagDestination: [],
@@ -190,12 +188,6 @@ export default {
             }
           }
         },
-        selectedTimezone: {
-            handler() {
-                this.refresh();
-            },
-            immediate: false
-        }
     },
     data() {
         return {
@@ -459,8 +451,8 @@ export default {
                     }
 
                     res.data.data.forEach(el => {
-                        el.created_at = this.formatTimestamp(el.created_at)
-                        el.received_at = this.formatTimestamp(el.received_at)
+                        el.created_at = this.formatTimezone(el.created_at)
+                        el.received_at = this.formatTimezone(el.received_at)
                         el.bag_actual_weight = el.is_pra_runsheet  === '1' ? el.cost_weight : el.actual_weight
                         el.is_confirmed = el.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed'
                         el.surat_muatan = []
@@ -603,9 +595,13 @@ export default {
         }
     },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.setDatacolumn();
         this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.startDate, this.endDate, this.tipeBagFilter, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter)
         this.handlePrintShortcut(this.actionPrintSelected)
     },
+    beforeDestroy () {
+        window.removeEventListener('timezone-changed', this.refresh);
+    }
 }
 </script>

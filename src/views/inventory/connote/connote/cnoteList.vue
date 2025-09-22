@@ -20,7 +20,6 @@
             :expandable="true"
             :hasLinkedChild="this.listenUserRoleName === 'HELPDESK' ? [] : ['Koli Number']"
             :hasLinked="this.listenUserRoleName === 'HELPDESK' ? ['connote_number'] : []"
-            :key="selectedTimezone"
             @actionLimit="actionLimit"
             @actionPagination="actionPagination"
             @handleEdit="showData"
@@ -38,7 +37,6 @@
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
-import timezone from "../../../../mixins/timezone";
 import moment from "moment"
 
 import TableMaster from "@/components/table/tableMaster.vue"
@@ -47,7 +45,7 @@ import DialogHelpdeskEditConnote from "@/views/helpdesk/connote/dialogHelpdeskEd
 
 export default {
     name:"list-connote",
-    mixins: [master, timezone],
+    mixins: [master],
     props: {
         query: String,
         queryBag: String,
@@ -130,12 +128,6 @@ export default {
                 }
             }
         },
-        selectedTimezone: {
-            handler() {
-                this.refresh();
-            },
-            immediate: false
-        }
     },
     data() {
         return {
@@ -250,7 +242,7 @@ export default {
                 .then(res => {
                     let arr = res.data.data
                     arr.map(item => {
-                        item.created_at = this.formatTimestamp(item.created_at);
+                        item.created_at = this.formatTimezone(item.created_at);
                         item["created_by_user"] = item?.koli?.[0]?.created_by_user || '-',
                         item["is_void_status"] = item.is_void == 1 ? 'YES' : '-'
                         item["is_cod"] = item.is_cod == 1 ? 'YES' : '-'
@@ -286,8 +278,8 @@ export default {
                         children['Koli Number'] = koli_number
                         children['Bag'] = bag
                         children['Wood Package'] = packing_kayu
-                        children['Receiving Date'] = this.formatTimestamp(received_at);
-                        children['Scanned Date'] = this.formatTimestamp(latest_opened_bag);
+                        children['Receiving Date'] = this.formatTimezone(received_at);
+                        children['Scanned Date'] = this.formatTimezone(latest_opened_bag);
                         children['Status Irregularity'] = irregularity
                         children['Status'] = is_confirmed
                         children['Delivery Status Code'] = delivery_status_code
@@ -300,6 +292,7 @@ export default {
                     
                     this.loading = false
                 }).catch(err => {
+                    console.log(err)
                     this.loading = false
                     this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate connote list', err.response.data.message)
                 })
@@ -331,9 +324,11 @@ export default {
         },
     },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
     },
     beforeDestroy () {
+        window.removeEventListener('timezone-changed', this.refresh);
         clearInterval(this.loadInterval) // prevent memory leaks
     }
 }

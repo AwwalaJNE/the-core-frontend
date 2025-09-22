@@ -33,12 +33,11 @@
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
-import timezone from "../../../../mixins/timezone";
 import TableMaster from "@/components/table/tableMaster.vue"
 import moment from "moment"
 export default {
     name:"list-user",
-    mixins: [master, timezone],
+    mixins: [master],
     props: {
         query: String,
         queryBag: String,
@@ -116,12 +115,6 @@ export default {
                 }
             }
         },
-        selectedTimezone: {
-            handler() {
-                this.refresh();
-            },
-            immediate: false
-        }
     },
     data() {
         return {
@@ -285,9 +278,9 @@ export default {
                 .then(res => {
                     let arr = res.data.data
                     arr.map(item => {
-                        item.created_at = this.formatTimestamp(item.created_at);
-                        item.received_at = this.formatTimestamp(item.received_at);
-                        item.latest_opened_bag = this.formatTimestamp(item.latest_opened_bag);
+                        item.created_at = this.formatTimezone(item.created_at);
+                        item.received_at = this.formatTimezone(item.received_at);
+                        item.latest_opened_bag = this.formatTimezone(item.latest_opened_bag);
                         item["is_cod"] = item.is_cod == 1 ? 'YES' : '-'
                         item["is_confirmed"] = item.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed'
                         item["is_void_status"] = item.is_void == 1 ? 'YES' : '-'
@@ -356,9 +349,11 @@ export default {
         },
     },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
     },
     beforeDestroy () {
+        window.removeEventListener('timezone-changed', this.refresh);
         clearInterval(this.loadInterval) // prevent memory leaks
     }
 }
