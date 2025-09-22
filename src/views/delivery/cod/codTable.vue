@@ -177,7 +177,7 @@ export default {
                   'Payment Type': 'sm',
                   'Total COD (Rp)': 'sm'
               }
-              item["created_at"] = this.adjustTimeBasedOnTimezone(item?.created_at);
+              item["created_at"] = this.formatTimestamp(item?.created_at);
               item['type_amount'] = ['Total COD (Rp)']
               item.runsheets?.map((el) => {
                   delivery_runsheet_number.push(el.delivery_runsheet_number)

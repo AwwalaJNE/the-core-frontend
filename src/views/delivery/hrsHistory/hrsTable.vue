@@ -120,7 +120,7 @@ export default {
                 const arr = res.data.data.map(item => {
                     item["node_name"] = item?.node?.node_name ?? "";
                     item["courier_employee_name"] = item?.employee?.employee_name ?? "";
-                    item["created_at"] = this.adjustTimeBasedOnTimezone(item?.created_at);
+                    item["created_at"] = this.formatTimestamp(item?.created_at);
 
                     const children = {
                         'Runsheet #': [],
