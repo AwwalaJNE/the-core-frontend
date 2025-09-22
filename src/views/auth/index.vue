@@ -82,6 +82,7 @@ export default {
 
             if (resDetail.status === 200) {
               this.$ls.set("language", "ID");
+              this.$ls.set("timezone", resDetail.data.data.user?.timezone || 'Asia/Jakarta');
               this.$ls.set("user", resDetail.data.data.user);
               this.$ls.set("node_id", resDetail.data.data.node);
               this.$ls.set("permissions", resDetail.data.data.permission)
