@@ -326,7 +326,8 @@ export default {
 
                 this.selectedTimezone = timezone;
                 this.$ls.set("timezone", timezone);
-                window.location.reload(true);
+                // window.location.reload(true);
+                this.$store.dispatch('timezone/updateTimezone', timezone);
             } catch (err) {
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
             } finally {

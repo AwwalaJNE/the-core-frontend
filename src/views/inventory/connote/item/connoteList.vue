@@ -20,6 +20,7 @@
         :hasLinkedDanger="'status_irregularity'"
         :hasPagination="true"
         :hasId="true"
+        :key="selectedTimezone"
         @actionUpdate="actionUpdate"
         @actionRemove="actionRemove"
         @actionLimit="actionLimit"
@@ -32,11 +33,12 @@
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
+import timezone from "../../../../mixins/timezone";
 import TableMaster from "@/components/table/tableMaster.vue"
 import moment from "moment"
 export default {
     name:"list-user",
-    mixins: [master],
+    mixins: [master, timezone],
     props: {
         query: String,
         queryBag: String,
@@ -114,6 +116,12 @@ export default {
                 }
             }
         },
+        selectedTimezone: {
+            handler() {
+                this.refresh();
+            },
+            immediate: false
+        }
     },
     data() {
         return {
@@ -277,6 +285,9 @@ export default {
                 .then(res => {
                     let arr = res.data.data
                     arr.map(item => {
+                        item.created_at = this.formatTimestamp(item.created_at);
+                        item.received_at = this.formatTimestamp(item.received_at);
+                        item.latest_opened_bag = this.formatTimestamp(item.latest_opened_bag);
                         item["is_cod"] = item.is_cod == 1 ? 'YES' : '-'
                         item["is_confirmed"] = item.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed'
                         item["is_void_status"] = item.is_void == 1 ? 'YES' : '-'
