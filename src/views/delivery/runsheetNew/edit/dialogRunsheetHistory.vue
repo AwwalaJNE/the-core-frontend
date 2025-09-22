@@ -123,11 +123,5 @@ export default {
             this.closeDialog()
         },
     },
-    beforeDestroy() {
-        window.removeEventListener('timezone-changed', this.refresh);
-    },
-    mounted() {
-        window.addEventListener('timezone-changed', this.refresh);
-    },
 }
 </script>
