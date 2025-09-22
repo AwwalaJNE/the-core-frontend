@@ -193,6 +193,7 @@ export default {
                 case "language_selector":
                     this.selectedLanguage = val;
                     this.$ls.set("language", val);
+                    window.location.reload(true);
                     break;
                 case "node_selector":
                     this.updateNode();
@@ -319,6 +320,7 @@ export default {
 
                 this.selectedTimezone = timezone;
                 this.$ls.set("timezone", timezone);
+                window.location.reload(true);
             } catch (err) {
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
             } finally {
