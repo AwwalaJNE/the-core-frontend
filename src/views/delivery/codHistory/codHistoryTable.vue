@@ -278,7 +278,11 @@ export default {
         }
     }
   },
+  beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    },
   mounted() {
+    window.addEventListener('timezone-changed', this.refresh);
     this.refresh();
     this.handlePrintShortcut(this.actionPrintSelected)
   },

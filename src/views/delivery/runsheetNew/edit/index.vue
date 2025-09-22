@@ -376,7 +376,11 @@ export default {
             return this.dataDelivery;
         }
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.reload);
+    },
     mounted() {
+        window.addEventListener('timezone-changed', this.reload);
         this.getStatus();
         this.setFocus();
         this.getDataCourier();

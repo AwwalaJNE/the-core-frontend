@@ -184,7 +184,11 @@ export default {
             this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate)
         }
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.refresh()
     }
 }
