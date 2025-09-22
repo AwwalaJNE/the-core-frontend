@@ -224,6 +224,7 @@ export default {
                     item["runsheet_number"] = item?.runsheet ? item?.runsheet?.[item?.runsheet?.length - 1]?.delivery_runsheet_number : '';
                     item['actual_weight_item'] = item.actual_weight_item + ' Kg'
                     item['cost_weight_item'] = item.cost_weight_item + ' Kg'
+                    item["created_at"] = this.formatTimezone(item["created_at"]);
                 })
                 
                 this.getSummaryBag(res);
@@ -318,6 +319,10 @@ export default {
     mounted() {
         this.getBagIdParam()
         this.getTableData(this.pagination.limit,this.pagination.page,this.bag_id)
+        window.addEventListener('timezone-changed', this.refresh);
+    },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
     },
 }
 </script>
