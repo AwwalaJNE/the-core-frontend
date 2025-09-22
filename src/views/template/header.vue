@@ -28,7 +28,8 @@
                         />
                     </vs-col>
 
-                    <vs-col xs="1" sm="1" lg="1">
+                    <!-- TODO: UNCOMMENT LATER -->
+                    <!-- <vs-col xs="1" sm="1" lg="1">
                         <selector 
                             formKey="language_selector"
                             :hiddenTitle=true
@@ -38,7 +39,7 @@
                             :border="true"
                             @updateValue="updateValue" 
                         />
-                    </vs-col>
+                    </vs-col> -->
                     
                     <vs-col xs="10" sm="4" lg="4">
                         <template v-if="datanode.length > 0">
@@ -151,23 +152,20 @@ export default {
                     code: "EN",
                 }
             ],
-            dataTimezone: [],
+            // dataTimezone: [],
             selectedTimezone: '',
-            dataMappingTimezone: [
+            dataTimezone: [
                 {
-                    label: "Asia/Jakarta",
+                    label: "WIB",
                     value: "Asia/Jakarta",
-                    code: "WIB",
                 },
                 {
-                    label: "Asia/Makassar",
-                    value: "Asia/Jayapura",
-                    code: "WITA",
+                    label: "WITA",
+                    value: "Asia/Makassar",
                 },
                 {
-                    label: "Asia/Jayapura",
+                    label: "WIT",
                     value: "Asia/Jayapura",
-                    code: "WIT",
                 }
             ],
             userAuthFullName:'',
@@ -320,6 +318,7 @@ export default {
                 const res = await axios.patch(`${this.URL.user_preferences}/${this.listenActiveUser?.user_id}/timezone?n=${this.listenNodeId}`, { "timezone": timezone }, this.Helper.header());
 
                 this.selectedTimezone = timezone;
+                this.$ls.set("timezone", timezone);
             } catch (err) {
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
             } finally {
@@ -332,7 +331,7 @@ export default {
             this.selectedNode = this.listenNodeId.toString();
 
             this.selectedLanguage = this.$ls.get('language');
-            this.selectedTimezone = this.listenActiveUser?.timezone || 'Asia/Jakarta'
+            this.selectedTimezone = this.$ls.get('timezone');
 
             let arr = []
             let node = this.listenNode.filter(item => item.node_id === this.listenNodeId);
@@ -348,7 +347,8 @@ export default {
 
             this.datanode = arr;
 
-            this.getTimezone();
+            // TODO: UNCOMMENT IF WANNA USE MASTERDATA TIMEZONE
+            // this.getTimezone();
         },
         searchShortcut() {
             document.addEventListener('keydown', (e) => {
