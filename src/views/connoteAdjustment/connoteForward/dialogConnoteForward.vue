@@ -302,6 +302,9 @@ export default {
 
                 if(res.data.data.length > 0) {
                     let arr = res.data.data;
+                    arr.map(item => {
+                        item["transaction_date"] = this.formatTimezone(item?.transaction_date);
+                    })
                     this.dataTable = arr
                     this.pagination = {
                         page: res.data.meta.current_page,
@@ -478,8 +481,12 @@ export default {
         }
       },
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    },
     mounted() {
-        this.handleSubmitShortcut(this.handleSubmit)
+        window.addEventListener('timezone-changed', this.refresh);
+        this.refresh();
     }
 }
 </script>

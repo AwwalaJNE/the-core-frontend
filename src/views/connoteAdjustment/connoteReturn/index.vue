@@ -231,7 +231,9 @@ export default {
                 .then(res => {
                     // this.dataTable = res.data.data
                     let arr = res.data.data
-                    
+                    arr.map(item => {
+                        item["created_at"] = this.formatTimezone(item?.created_at);
+                    })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
@@ -370,9 +372,13 @@ export default {
                 });
         }
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    },
     mounted() {
-        this.refresh()   
-        this.handlePrintShortcut(this.actionPrintSelected)
+        window.addEventListener('timezone-changed', this.refresh);
+        this.refresh();
+        this.handlePrintShortcut(this.actionPrintSelected);
     }
 }
 </script>

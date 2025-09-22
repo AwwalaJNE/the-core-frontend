@@ -206,6 +206,7 @@ export default {
                     let arr = res.data.data
                     arr.map(item => {
                         item["created_user_name"] = item?.user?.user_name || "";
+                        item["created_at"] = this.formatTimezone(item?.created_at);
                     })
                     this.dataTable = arr
                     this.pagination = {
@@ -304,7 +305,11 @@ export default {
             this.filterDateBy = val;
         },
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.refresh();
         this.handlePrintShortcut(this.actionPrintSelected);
     }
