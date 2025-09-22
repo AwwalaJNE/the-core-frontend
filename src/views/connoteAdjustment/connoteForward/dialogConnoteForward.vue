@@ -482,7 +482,7 @@ export default {
       },
     },
     mounted() {
-        this.refresh();
+        this.handleSubmitShortcut(this.handleSubmit)
     }
 }
 </script>
