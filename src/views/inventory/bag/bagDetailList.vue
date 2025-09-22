@@ -189,63 +189,51 @@ export default {
             primaryKey: '',
             activeDialogConfirmRemove: false,
             loadingConfirmRemove:false,
-            is_consolidated: false
+            is_consolidated: false,
+            data: {},
         }
     },
     methods: {
 
-        async getTableData(limit,page, bag) {
+        async getTableData(limit, page, bag) {
             this.loading = true
-            let bagId = "";
-            if(bag !== undefined) {
-              bagId = bag
-            }
-            await axios
-                .get(
-                    this.URL.bag + '/'+bagId+`?n=${this.listenNodeId}`,
-                    this.Helper.header())
-                .then(res => {
-                    let arr = res.data.detail
-                    let bag_des = res.data.dat ? res.data.data.destination.node_code  : '-'
-                    this.$ls.set('getDataBag',res.data.data);
+            let bagId = bag ?? ""
 
-                    this.is_consolidated = res?.data?.data?.is_consolidated === '1';
+            try {
+                const res = await axios.get(this.URL.bag + '/' + bagId + `?n=${this.listenNodeId}`, this.Helper.header());
+                
+                this.data = res?.data;
 
- 
-                    arr.map((item, index)  => {
-                      item["no"] = index+1
-                      item['destination_code'] = item.item_type === 'KOLI' ?  item.connote_receiver_tariff_code : item.node_tariff_code
-                      item['koli_qty'] = item.item_type == 'KOLI' ? item.koli_qty : item.bag_detail_qty
-                      item['koli_sequence'] = item.item_type == 'KOLI' ? item.koli_sequence : '-'
-                      item['bag_weight'] = item.item_type == 'KOLI' ? item?.connote_actual_weight : item.bag_weight
-                      item['connote_service_code'] = item.item_type == 'KOLI' ? item.connote_service_code : item.bag_service.join(', ')
-                      item['bag_detail_qty'] = res.data.data.bag_detail_qty
-                      item["isDisabled"] = res.data.data.is_approve === 1 ? true : false;
-                      item["runsheet_number"] = item?.runsheet ? item?.runsheet?.[item?.runsheet?.length - 1]?.delivery_runsheet_number : '';
-                      item['actual_weight_item'] = item.actual_weight_item + ' Kg'
-                      item['cost_weight_item'] = item.cost_weight_item + ' Kg'
-                    })
-                    this.is_pra_runsheet = res.data.data.is_pra_runsheet === "1" ? true : false;
-                    this.getSummaryBag(res)
-                  // arr.map(item => {
-                    //     item["user_nodes"] = item.user_nodes.toString()
-                    // })
-                    this.dataTable = arr
-                    // this.pagination.page = res.data.meta.current_page
-                    // this.pagination.limit = parseInt(res.data.meta.per_page)
-                    // this.pagination.page_size = res.data.meta.last_page
-                    // if(res.data.data.length == 0) {
-                    //     this.openNotification('warn', null, 'Failed to populate User data', )
-                    // }
-                    
-                    this.loading = false
-                    this.$emit("getResponse", res.data, this.loading)
-                }).catch(err => {
-                    let errMessage = err.response ? err.response.data.message : 'Failed to populate bag'
-                    this.loading = false
-                    this.$emit("getResponse", {}, this.loading)
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate bag', errMessage)
+                let arr = res?.data?.detail;
+                let arrData = res?.data?.data;
+
+                this.$ls.set('getDataBag', arrData);
+
+                this.is_consolidated = arrData?.is_consolidated === '1';
+                this.is_pra_runsheet = arrData?.is_pra_runsheet === "1" ? true : false;
+
+                arr.map((item, index)  => {
+                    item["no"] = index+1
+                    item['destination_code'] = item.item_type === 'KOLI' ?  item.connote_receiver_tariff_code : item.node_tariff_code
+                    item['koli_qty'] = item.item_type == 'KOLI' ? item.koli_qty : item.bag_detail_qty
+                    item['koli_sequence'] = item.item_type == 'KOLI' ? item.koli_sequence : '-'
+                    item['bag_weight'] = item.item_type == 'KOLI' ? item?.connote_actual_weight : item.bag_weight
+                    item['connote_service_code'] = item.item_type == 'KOLI' ? item.connote_service_code : item.bag_service.join(', ')
+                    item['bag_detail_qty'] = res.data.data.bag_detail_qty
+                    item["isDisabled"] = res.data.data.is_approve === 1 ? true : false;
+                    item["runsheet_number"] = item?.runsheet ? item?.runsheet?.[item?.runsheet?.length - 1]?.delivery_runsheet_number : '';
+                    item['actual_weight_item'] = item.actual_weight_item + ' Kg'
+                    item['cost_weight_item'] = item.cost_weight_item + ' Kg'
                 })
+                
+                this.getSummaryBag(res);
+                this.dataTable = arr;
+            } catch(err) {
+                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Failed to populate bag');
+            } finally {
+                this.loading = false
+                this.$emit("getResponse", this.data, this.loading)
+            }
         },
 
         getSummaryBag(val){

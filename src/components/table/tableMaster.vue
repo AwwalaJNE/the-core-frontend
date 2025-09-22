@@ -830,6 +830,14 @@
                       >
                       <span v-else>{{ item[column.key] }}</span>
                     </template>
+                    <template v-else-if="column.key === 'status_with_color'">
+                      <span
+                        class="statusBackground"
+                        :style="{ backgroundColor: getStatusColor(item[column.key]) }"
+                      >
+                        {{ item[column.key] }}
+                      </span>
+                    </template>
                     <template v-else-if="column.key === 'status_delivery'">
                       <span
                         v-if="item[column.key] === 'DELIVERED'"
@@ -854,7 +862,9 @@
                     <template v-else>
                       <span>
                         <span 
-                          :class="{ 'do-not-wrap': column.isTransitTag }"
+                          :class="{ 
+                            'do-not-wrap': column.isTransitTag || typeof item[column.key] === 'string' && item[column.key].includes('\n')
+                          }"
                           :style="column.isTransitTag && item[column.isTransitTag] === 1 ? { borderBottom: '1px solid #666'  }  : {}"
                         >
                           {{ item[column.key] 
@@ -996,6 +1006,10 @@
                       :active="true"
                       type="submit"
                       :data-testid="`remove-button-${key}`"
+                      :disabled="
+                        (item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true) || !isAllowedRemove
+                      "
                       @click="actionRemove(item)"
                     >
                       <span>Remove</span>
@@ -1037,6 +1051,10 @@
                       flat
                       :active="true"
                       type="submit"
+                      :disabled="
+                        (item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true) || !isAllowedRemove
+                      "
                       @click="actionRemove(item)"
                     >
                       <span>Remove</span>
@@ -1077,8 +1095,8 @@
                       flat
                       :active="true"
                       :disabled="
-                        item.hasOwnProperty('isDisabled') &&
-                          item.isDisabled == true
+                        (item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true) || !isAllowedRemove
                       "
                       type="submit"
                       @click="actionRemove(item)"
@@ -1122,8 +1140,8 @@
                       danger
                       :active="true"
                       :disabled="
-                        item.hasOwnProperty('isDisabled') &&
-                          item.isDisabled == true
+                        (item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true) || !isAllowedRemove
                       "
                       type="submit"
                       @click="actionRemove(item)"
@@ -1659,6 +1677,10 @@ export default {
     hasSelectValue: String,
     hasDuplicateEditRemove: Boolean,
     hasPagination: Boolean,
+    isAllowedRemove: {
+      type: Boolean,
+      default: true
+    },
     expandable: Boolean,
     hasLinkedDanger: String,
     textDanger: String,
@@ -2144,6 +2166,19 @@ export default {
       } else {
         this.visibleKeys = [];
       }
+    },
+    getStatusColor(status) {
+      if (!status) return "gray";
+      switch (status.toLowerCase()) {
+        case "safe":
+          return "rgb(21, 224, 21)";
+        case "warning":
+          return "rgb(255, 165, 0)";
+        case "over":
+          return "rgb(255, 0, 0)";
+        default:
+          return "gray";
+      }
     }
   },
   mounted() {
@@ -2335,6 +2370,14 @@ span.text-danger {
   color: rgb(255, 255, 255);
   padding: 5px 25px !important;
   border-radius: 3px;
+}
+.statusBackground {
+  color: rgb(255, 255, 255);
+  padding: 5px 5px !important;
+  border-radius: 3px;
+  display: flex;
+  width: 80px;
+  place-content: center;
 }
 .icon-warning {
   font-size: 48px;

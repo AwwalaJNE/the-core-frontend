@@ -2659,6 +2659,146 @@ export default {
       value: null
     }
   },
+  
+  active_bag_weight: {
+    reference: {
+      label: "Reference",
+      key: "reference",
+      rule: "required",
+      typeInput: "text",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      isDisabled: false
+    },
+    max_weight: {
+      label: "Max Weight (kg)",
+      key: "max_weight",
+      rule: "required",
+      typeInput: "number",
+      typeData: "Number",
+      valueData: null,
+      value: null,
+    },
+    threshold: {
+      label: "Threshold (%)",
+      key: "threshold",
+      rule: "required",
+      typeInput: "number",
+      typeData: "Number",
+      valueData: null,
+      value: null,
+      minValue: 1,
+      maxValue: 99,
+      tooltipMessage: "Batas persentase maksimum sebelum pengguna mendapatkan status peringatan"
+    },
+    destination_type: {
+      label: "Destination Type",
+      key: "destination_type",
+      rule: "required",
+      typeInput: "select",
+      typeData: "String",
+      arrData: [
+        {
+          label: 'Region',
+          value: 'REGION'
+        },
+        {
+          label: 'Branch',
+          value: 'BRANCH'
+        },
+        {
+          label: 'Origin',
+          value: 'ORIGIN'
+        },
+        {
+          label: 'Node',
+          value: 'NODE'
+        }
+      ],
+      valueData: null,
+      value: '',
+      width: 4
+    },
+    destination_value: {
+      label: "Destination Value",
+      key: "destination_value",
+      rule: "required",
+      typeInput: "autocomplete",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: '',
+      width: 8
+    },
+    dynamicinputcomponent_other_destination: {
+      label: "Add Other Destination",
+      key: "dynamicinputcomponent_other_destination",
+      rule:"",
+      typeInput: "dynamicinputcomponent",
+      typeData: "Array",
+      inputs: [
+        {
+          key: "helper_dynamic_destination_type",
+          rule:"",
+          typeInput: "select",
+          value: '',
+          width: 4
+        },
+        {
+          key: "helper_dynamic_destination_value",
+          rule:"",
+          typeInput: "autocomplete",
+          value: "",
+          width: 8,
+        },
+      ],
+      arrData: [],
+      valueData: null,
+      value: ''
+    },
+    helper_dynamic_destination_type: {
+      label: "Destination Type",
+      key: "helper_dynamic_destination_type",
+      rule: "",
+      typeInput: "select|hidden",
+      typeData: "String",
+      arrData: [
+        {
+          label: 'Region',
+          value: 'REGION'
+        },
+        {
+          label: 'Branch',
+          value: 'BRANCH'
+        },
+        {
+          label: 'Origin',
+          value: 'ORIGIN'
+        },
+        {
+          label: 'Node',
+          value: 'NODE'
+        }
+      ],
+      valueData: null,
+      visible: false,
+      value: '',
+      width: 4
+    },
+    helper_dynamic_destination_value: {
+      label: "Destination Value",
+      key: "helper_dynamic_destination_value",
+      rule: "",
+      typeInput: "autocomplete|hidden",
+      typeData: "String",
+      arrData: [],
+      valueData: null,
+      value: "",
+      visible: false,
+      width: 8,
+    },
+  },
 
   surat_muatan_stock: {
     manifest_number: {
@@ -4344,7 +4484,8 @@ export default {
       arrData: [],
       valueData: null,
       value: '',
-      width: "12"
+      width: "12",
+      visible: true
     },
     manifest_prefix: {
       label: "Prefix",

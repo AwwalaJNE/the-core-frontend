@@ -764,6 +764,7 @@ export default {
             this.closeDialog();
         },
         moveTab() {
+            this.selected_manifest_vehicle = "";
             this.hasFlightNumber = false;
             this.is_found = false;
             this.flightNumber = "";
@@ -845,8 +846,8 @@ export default {
                     shipment_schedule_id: item?.shipment_schedule_id,
                     origin_vehicle: item?.origin_name || "",
                     destination_vehicle: item?.destination_name || "",
-                    origin_vehicle_tlc: this.getTLC(item?.origin_name) || "",
-                    destination_vehicle_tlc: this.getTLC(item?.destination_name) || "",
+                    origin_vehicle_tlc: this.getTLC(item?.origin_name) || item?.origin_identifier || "",
+                    destination_vehicle_tlc: this.getTLC(item?.destination_name) || item?.destination_identifier || "",
                     vehicle_id: item?.vehicle_name || "",
                     pic_employee_id: "",
                     flight_number: item?.shipment_number || "",
@@ -864,8 +865,8 @@ export default {
                 key: item?.shipment_schedule_id,
                 state: {
                     shipment_schedule_id: item?.shipment_schedule_id,
-                    origin_branch_code: this.getTLC(item?.origin_name) || "",
-                    destination_branch_code: this.getTLC(item?.destination_name) || "",
+                    origin_branch_code: this.getTLC(item?.origin_name) || item?.origin_identifier || "",
+                    destination_branch_code: this.getTLC(item?.destination_name) || item?.destination_identifier || "",
                     vehicle_id: item?.vehicle_id || "",
                     flight_number: item?.shipment_number || "",
                     etd: item?.etd || "",
@@ -890,8 +891,8 @@ export default {
                     shipment_schedule_id: item?.shipment_schedule_id,
                     origin_vehicle: item?.origin_name || "",
                     destination_vehicle: item?.destination_name || "",
-                    origin_vehicle_tlc: this.getTLC(item?.origin_name) || "",
-                    destination_vehicle_tlc: this.getTLC(item?.destination_name) || "",
+                    origin_vehicle_tlc: this.getTLC(item?.origin_name) || item?.origin_identifier || "",
+                    destination_vehicle_tlc: this.getTLC(item?.destination_name) || item?.destination_identifier || "",
                     vehicle_id: item?.vehicle_name || "",
                     pic_employee_id: "",
                     flight_number: item?.shipment_number || "",
@@ -909,8 +910,8 @@ export default {
                 key: item?.shipment_schedule_id,
                 state: {
                     shipment_schedule_id: item?.shipment_schedule_id,
-                    origin_branch_code: this.getTLC(item?.origin_name) || "",
-                    destination_branch_code: this.getTLC(item?.destination_name) || "",
+                    origin_branch_code: this.getTLC(item?.origin_name) || item?.origin_identifier || "",
+                    destination_branch_code: this.getTLC(item?.destination_name)  || item?.destination_identifier || "",
                     vehicle_id: item?.vehicle_id || "",
                     flight_number: item?.shipment_number || "",
                     etd: item?.etd || "",

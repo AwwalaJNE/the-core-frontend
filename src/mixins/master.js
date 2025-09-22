@@ -568,11 +568,24 @@ const Master = {
             return `${dateStr} ${timeStr}`;
         },
         getTLC(text) {
-            let match = text.match(/\(\s*([A-Z]{3})|^([A-Z]{3})(?=-)|([A-Z]{3})/);
+            // 1. Prefer code inside parentheses like (MKQ000)
+            let parenMatch = text.match(/\(\s*([A-Z]{3})(?=\d*\))/);
+            if (parenMatch) return parenMatch[1];
 
-            if (!match) return null;
-            return (match[1] || match[2] || match[3]);
-        }
+            // 2. Otherwise, check if starts with XXX- pattern
+            let startMatch = text.match(/^([A-Z]{3})(?=-)/);
+            if (startMatch) return startMatch[1];
+
+            // 3. Otherwise, fallback to any standalone XXX
+            let anyMatch = text.match(/\b([A-Z]{3})\b/);
+            if (anyMatch) return anyMatch[1];
+
+            return null;
+        },
+        hasPermission(permission) {
+            const permissions = this.listenPermissions?.core || [];
+            return permissions.includes(permission);
+        },
     },
     mounted() {
         this.checkIfMobile();

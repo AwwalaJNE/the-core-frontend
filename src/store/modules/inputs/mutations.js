@@ -2081,6 +2081,9 @@ export default {
   SET_SURAT_MUATAN_MANIFEST_NUMBER_ValueData(state, payload) {
     state.surat_muatan.manifest_number.valueData = payload
   },
+  SET_SURAT_MUATAN_MANIFEST_NUMBER_width(state, payload) {
+    state.surat_muatan.manifest_number.width = payload
+  },
 
   SET_SURAT_MUATAN_MANIFEST_PREFIX(state, payload) {
     state.surat_muatan.manifest_prefix.value = payload
@@ -2093,6 +2096,12 @@ export default {
   },
   SET_SURAT_MUATAN_MANIFEST_PREFIX_isDisabled(state, payload) {
     state.surat_muatan.manifest_prefix.isDisabled = payload
+  },
+  SET_SURAT_MUATAN_MANIFEST_PREFIX_visible(state, payload) {
+    state.surat_muatan.manifest_prefix.visible = payload
+  },
+  SET_SURAT_MUATAN_MANIFEST_PREFIX_width(state, payload) {
+    state.surat_muatan.manifest_prefix.width = payload
   },
 
   SET_SURAT_MUATAN_FLIGHT_NUMBER(state, payload) {
@@ -5120,4 +5129,107 @@ SET_SYNC_SURAT_MUATAN_FLIGHT_IATA(state, payload) {
 
 
   // ====== END SURAT MUATAN VEHICLE ====== //
+
+
+  // ====== ACTIVE BAG WEIGHT ====== //
+  SET_ACTIVE_BAG_WEIGHT_REFERENCE(state, payload) {
+    state.active_bag_weight.reference.value = payload
+  },
+  SET_ACTIVE_BAG_WEIGHT_REFERENCE_ValueData(state, payload) {
+    state.active_bag_weight.reference.valueData = payload
+  },
+
+
+  SET_ACTIVE_BAG_WEIGHT_MAX_WEIGHT(state, payload) {
+    state.active_bag_weight.max_weight.value = payload
+  },
+  SET_ACTIVE_BAG_WEIGHT_MAX_WEIGHT_ValueData(state, payload) {
+    state.active_bag_weight.max_weight.valueData = payload
+  },
+  
+
+  SET_ACTIVE_BAG_WEIGHT_THRESHOLD(state, payload) {
+    state.active_bag_weight.threshold.value = payload
+  },
+  SET_ACTIVE_BAG_WEIGHT_THRESHOLD_ValueData(state, payload) {
+    state.active_bag_weight.threshold.valueData = payload
+  },
+  
+
+  SET_ACTIVE_BAG_WEIGHT_DESTINATION_TYPE(state, payload) {
+    state.active_bag_weight.destination_type.value = payload
+  },
+  SET_ACTIVE_BAG_WEIGHT_DESTINATION_TYPE_ValueData(state, payload) {
+    state.active_bag_weight.destination_type.valueData = payload
+  },
+  SET_ACTIVE_BAG_WEIGHT_DESTINATION_TYPE_ArrData(state, payload) {
+    state.active_bag_weight.destination_type.hasOwnProperty('arrData') ?
+    state.active_bag_weight.destination_type.arrData = payload :
+    state.active_bag_weight.destination_type.arrData = []
+  },
+
+
+  SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE(state, payload) {
+    state.active_bag_weight.destination_value.value = payload
+  },
+  SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE_ValueData(state, payload) {
+    state.active_bag_weight.destination_value.valueData = payload
+  },
+  SET_ACTIVE_BAG_WEIGHT_DESTINATION_VALUE_ArrData(state, payload) {
+    state.active_bag_weight.destination_value.hasOwnProperty('arrData') ?
+    state.active_bag_weight.destination_value.arrData = payload :
+    state.active_bag_weight.destination_value.arrData = []
+  },
+
+
+  SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_TYPE(state, payload) {
+    state.active_bag_weight.helper_dynamic_destination_type.value = payload
+  },
+  SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_TYPE_ValueData(state, payload) {
+    state.active_bag_weight.helper_dynamic_destination_type.valueData = payload
+  },
+  SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_TYPE_ArrData(state, payload) {
+    state.active_bag_weight.helper_dynamic_destination_type.hasOwnProperty('arrData') ?
+    state.active_bag_weight.helper_dynamic_destination_type.arrData = payload :
+    state.active_bag_weight.helper_dynamic_destination_type.arrData = []
+  },
+
+
+  SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_VALUE(state, payload) {
+    state.active_bag_weight.helper_dynamic_destination_value.value = payload
+  },
+  SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_VALUE_ValueData(state, payload) {
+    state.active_bag_weight.helper_dynamic_destination_value.valueData = payload
+  },
+  SET_ACTIVE_BAG_WEIGHT_HELPER_DYNAMIC_DESTINATION_VALUE_ArrData(state, payload) {
+    state.active_bag_weight.helper_dynamic_destination_value.hasOwnProperty('arrData') ?
+    state.active_bag_weight.helper_dynamic_destination_value.arrData = payload :
+    state.active_bag_weight.helper_dynamic_destination_value.arrData = []
+  },
+
+
+  SET_ACTIVE_BAG_WEIGHT_DYNAMICINPUTCOMPONENT_OTHER_DESTINATION(state, payload) {
+    const template = state.active_bag_weight.dynamicinputcomponent_other_destination.inputs || []
+
+    const final = (payload || []).map(item => {
+      if (item.inputs) {
+        return { inputs: item.inputs }
+      }
+
+      const inputs = template.map(tmpl => ({
+        key: tmpl.key,
+        typeInput: tmpl.typeInput,
+        value: item[tmpl.key.toLowerCase()] ?? ""
+      }))
+
+      return { inputs }
+    })
+
+    state.active_bag_weight.dynamicinputcomponent_other_destination.arrData = final
+  },
+  SET_ACTIVE_BAG_WEIGHT_DYNAMICINPUTCOMPONENT_OTHER_DESTINATION_ValueData(state, payload) {
+    state.active_bag_weight.dynamicinputcomponent_other_destination.valueData = payload
+  },
+
+  // ====== END ACTIVE BAG WEIGHT ====== //
 }

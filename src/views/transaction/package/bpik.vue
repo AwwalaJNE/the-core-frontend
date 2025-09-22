@@ -68,6 +68,7 @@
                                             <vs-button
                                                 shadow
                                                 :active="false"
+                                                :data-testid="`add-button`"
                                                 @click="addNew"
                                             >
                                                 <i class='bx bx-plus' style="margin-right:5px"></i> Add
@@ -77,6 +78,7 @@
                                             <vs-button
                                                 shadow
                                                 :active="false"
+                                                :data-testid="`delete-button`"
                                                 @click="remove(key)"
                                             >
                                                 <i class='bx bx-minus' style="margin-right:5px"></i> Del

@@ -81,11 +81,13 @@ export default {
             const resDetail = await axios.get(this.URL.user_auth_data, this.Helper.header());
 
             if (resDetail.status === 200) {
+              this.$ls.set("language", "ID");
               this.$ls.set("user", resDetail.data.data.user);
               this.$ls.set("node_id", resDetail.data.data.node);
               this.$ls.set("permissions", resDetail.data.data.permission)
-              this.$ls.set("config", resDetail.data.data.config);
+              // this.$ls.set("config", resDetail.data.data.config);
               this.$ls.set("is_first_login", resDetail.data.data.user?.is_first_login || false);
+              this.$ls.set("config", res.data.data.config);
 
               this.$router.push({ name: "mainPage" });
               this.setRoutePageHistory(this.$route.meta, false);

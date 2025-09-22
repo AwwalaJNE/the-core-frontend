@@ -105,7 +105,7 @@
                                 v-for="(item, key) in DataArr"
                                 :key="key"
                                 :value="item.value"
-                                :label="!item.hasOwnProperty('formattedLabel') && item.label"
+                                :label="!item.hasOwnProperty('formattedLabel') && (item.code || item.label)"
                             >
                                 <template v-if="item.hasOwnProperty('formattedLabel')">
                                 <span v-for="(line, index) in item.formattedLabel" :key="index">
@@ -280,7 +280,7 @@ export default {
     },
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
     .m-select{
         &.vs-select-content{
             max-width: unset;
