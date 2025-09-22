@@ -355,11 +355,11 @@ export default {
           let im = [];
           item["flight_number"] = item?.manifest?.flight_number;
           item['inbound_branch'] = item?.inbound_branch_name_origin ? item?.inbound_branch_code_origin + ' - ' + item?.inbound_branch_name_origin : item?.inbound_branch_code_origin;
-          item['created_orion'] = item['created_orion'] == null ? this.dateConvert(item['created_at']) : this.dateConvert(item['created_orion']);
-          item["inbound_eta"] = this.dateConvert(item["inbound_eta"]);
-          item["inbound_etd"] = this.dateConvert(item["inbound_etd"]);
-          item["departed_at"] = this.dateConvert(item["departed_at"]);
-          item["received_at"] = this.dateConvert(item["received_at"]);
+          item['created_orion'] = item['created_orion'] == null ? this.formatTimezone(item['created_at']) : this.formatTimezone(item['created_orion']);
+          item["inbound_eta"] = this.formatTimezone(item["inbound_eta"]);
+          item["inbound_etd"] = this.formatTimezone(item["inbound_etd"]);
+          item["departed_at"] = this.formatTimezone(item["departed_at"]);
+          item["received_at"] = this.formatTimezone(item["received_at"]);
           item["vehicle"] = item["vehicle_name"];
           item["total_received"] = item["total_received"] === 0 ? "0": item["total_received"];
           item["total_outstanding"] = item["total_outstanding"] === 0 ? "0": item["total_outstanding"];
@@ -621,6 +621,11 @@ export default {
   },
   mounted() {
     this.refresh();
+    window.addEventListener('timezone-changed', this.refresh);
+  },
+
+  beforeDestroy() {
+      window.removeEventListener('timezone-changed', this.refresh);
   },
 };
 </script>
