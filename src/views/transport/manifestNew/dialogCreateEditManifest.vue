@@ -946,9 +946,9 @@ export default {
                         vehicle_id: item?.vehicle_name || "",
                         pic_employee_id: item?.pic_employee_id || "",
                         flight_number: item?.flight_number || "",
-                        flight_schedule: item?.etd || "",
-                        etd_vehicle: item?.etd || "",
-                        eta_vehicle: item?.eta || "",
+                        flight_schedule: this.formatTimezone(item?.etd) || "",
+                        etd_vehicle: this.formatTimezone(item?.etd) || "",
+                        eta_vehicle: this.formatTimezone(item?.eta) || "",
                         is_active: item?.status === 'ACTIVE'
                     }
                 }));
