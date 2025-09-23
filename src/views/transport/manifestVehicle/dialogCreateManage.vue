@@ -486,6 +486,9 @@ export default {
                 form.destination_branch_code = form.destination_branch_code?.value || form.destination_branch_code;
                 form.vehicle_id = this.vehicle_id || form?.vehicle_id?.vehicle_id || form?.vehicle_id;
                 form.employee_driver_id = form?.employee_driver_id?.employee_id || "";
+                form.flight_schedule = this.formatToWIB(form?.flight_schedule) || "",
+                form.eta = this.formatToWIB(form?.eta) || "",
+                form.etd = this.formatToWIB(form?.etd) || "",
                 
                 this.form = form;
                 this.createManifestVehicle();
@@ -502,9 +505,9 @@ export default {
                         vehicle_type_id: this.vehicle_data?.vehicle_type_id,
                         pic_employee_id: form.employee_driver_id || "",
                         flight_number: form.flight_number || "",
-                        flight_schedule: form.flight_schedule || "",
-                        etd_vehicle: form.etd,
-                        eta_vehicle: form.eta
+                        flight_schedule: this.formatToWIB(form.flight_schedule),
+                        etd_vehicle: this.formatToWIB(form.etd),
+                        eta_vehicle: this.formatToWIB(form.eta)
                     };
                 } else if (this.navActive === 'k-NEW-MANUAL') {
                     data = {
@@ -517,9 +520,9 @@ export default {
                         vehicle_type_id: form.vehicle_id?.vehicle_type_id,
                         pic_employee_id: form.employee_driver_id || "",
                         flight_number: form.flight_number || "",
-                        flight_schedule: form.flight_schedule || "",
-                        etd_vehicle: form.etd,
-                        eta_vehicle: form.eta
+                        flight_schedule: this.formatToWIB(form.flight_schedule),
+                        etd_vehicle: this.formatToWIB(form.etd),
+                        eta_vehicle: this.formatToWIB(form.eta)
                     };
                 }
                 if (data.etd_vehicle > data.eta_vehicle) {
@@ -585,9 +588,9 @@ export default {
                         vehicle_id: item?.vehicle_name || "",
                         pic_employee_id: item?.pic_employee_id || "",
                         flight_number: item?.flight_number || "",
-                        flight_schedule: item?.etd || "",
-                        etd_vehicle: item?.etd || "",
-                        eta_vehicle: item?.eta || "",
+                        flight_schedule: this.formatTimezone(item?.etd || ""),
+                        etd_vehicle: this.formatTimezone(item?.etd || ""),
+                        eta_vehicle: this.formatTimezone(item?.eta || ""),
                         status_flight: item?.status_flight,
                         is_active: item?.status === 'ACTIVE'
                     }
@@ -673,12 +676,12 @@ export default {
                 this.is_found = true;
 
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER", data?.flight);
-                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE", data?.detailJson?.timingInformation?.departure?.runway?.scheduled?.iso);
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE", this.formatTimezone(data?.detailJson?.timingInformation?.departure?.runway?.scheduled?.iso));
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_VEHICLE_ID", data?.detailJson?.flightSummary?.airline?.shortName);
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE", data?.detailJson?.routeInformation?.departure?.airport?.name);
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE", data?.detailJson?.routeInformation?.arrival?.airport?.name);
-                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ETD", data?.detailJson?.timingInformation?.departure?.runway?.estimated?.iso);
-                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ETA", data?.detailJson?.timingInformation?.arrival?.runway?.estimated?.iso);
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ETD", this.formatTimezone(data?.detailJson?.timingInformation?.departure?.runway?.estimated?.iso));
+                this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ETA", this.formatTimezone(data?.detailJson?.timingInformation?.arrival?.runway?.estimated?.iso));
 
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_VEHICLE_ID_ValueData", data?.detailJson?.flightSummary?.airline?.iata);
                 this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_ValueData", data?.detailJson?.routeInformation?.departure?.airport?.iata);
@@ -852,11 +855,11 @@ export default {
                     pic_employee_id: "",
                     flight_number: item?.shipment_number || "",
                     flight_schedule: item?.etd || "",
-                    flight_schedule_timezone: item?.etd_timezone || "",
+                    flight_schedule_timezone: "WIB",
                     etd_vehicle: item?.etd || "",
-                    etd_vehicle_timezone: item?.etd_timezone || "",
+                    etd_vehicle_timezone: "WIB",
                     eta_vehicle: item?.eta || "",
-                    eta_vehicle_timezone: item?.eta_timezone || "",
+                    eta_vehicle_timezone: "WIB",
                     is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
                 }
             }));
@@ -869,10 +872,10 @@ export default {
                     destination_branch_code: this.getTLC(item?.destination_name) || item?.destination_identifier || "",
                     vehicle_id: item?.vehicle_id || "",
                     flight_number: item?.shipment_number || "",
-                    etd: item?.etd || "",
-                    etd_timezone: item?.etd_timezone || "",
-                    eta: item?.eta || "",
-                    eta_timezone: item?.eta_timezone || "",
+                    etd: this.formatToWIB(item?.etd) || "",
+                    etd_timezone:  "WIB",
+                    eta: this.formatToWIB(item?.eta) || "",
+                    eta_timezone: "WIB",
                     is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
                 }
             }));
@@ -897,11 +900,11 @@ export default {
                     pic_employee_id: "",
                     flight_number: item?.shipment_number || "",
                     flight_schedule: item?.etd || "",
-                    flight_schedule_timezone: item?.etd_timezone || "",
+                    flight_schedule_timezone: "WIB",
                     etd_vehicle: item?.etd || "",
-                    etd_vehicle_timezone: item?.etd_timezone || "",
+                    etd_vehicle_timezone: "WIB",
                     eta_vehicle: item?.eta || "",
-                    eta_vehicle_timezone: item?.eta_timezone || "",
+                    eta_vehicle_timezone: "WIB",
                     is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
                 }
             }));
@@ -914,10 +917,10 @@ export default {
                     destination_branch_code: this.getTLC(item?.destination_name)  || item?.destination_identifier || "",
                     vehicle_id: item?.vehicle_id || "",
                     flight_number: item?.shipment_number || "",
-                    etd: item?.etd || "",
-                    etd_timezone: item?.etd_timezone || "",
-                    eta: item?.eta || "",
-                    eta_timezone: item?.eta_timezone || "",
+                    etd: this.formatToWIB(item?.etd) || "",
+                    etd_timezone: "WIB",
+                    eta: this.formatToWIB(item?.eta) || "",
+                    eta_timezone: "WIB",
                     is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
                 }
             }));

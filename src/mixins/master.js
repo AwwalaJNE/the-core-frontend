@@ -615,9 +615,6 @@ const Master = {
 
             return `${get("year")}-${get("month")}-${get("day")} ${get("hour")}:${get("minute")}:${get("second")}`;
         },
-        checkIsWIB(data) {
-            return data === 'Asia/Jakarta'
-        },
         formatToWIB(date) {
             const fromTimezone = this.$ls.get("timezone");
             if (!date) return "-";
