@@ -158,6 +158,7 @@
                       :actionPagination="actionPagination"
                       :receivingLogs="receivingLogs"
                       :inboundNumber="inboundNumber"
+                      @refresh="refresh"
                     />
                   </transition>
                 </div>
@@ -379,9 +380,7 @@ export default {
             if (this.inbound_number) {
                 this.loading = true;
                 // check if inbound_number contain => for receiving bag (due to new bag number format)
-                if (this.inbound_number.includes('/')) {
-                  this.inbound_number = this.inbound_number.replaceAll('/', '~');
-                }
+
                 try {
                     const res = await axios.get(
                         `${this.URL.inbound}/${this.inbound_number}/inbound-status?n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}`, 

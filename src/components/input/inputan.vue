@@ -7,7 +7,7 @@
 <template>
     <ValidationProvider class="validation" :name="name" :rules="rules" v-slot="{ errors }">
         <slot name='inputan' v-bind:err="errors[0]"></slot>
-        <p class="err-message">{{ errors[0] }}</p>
+        <p v-if="errors[0]" class="err-message">{{ errors[0] }}</p>
     </ValidationProvider>
 </template>
 <script>

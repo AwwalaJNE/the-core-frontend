@@ -27,6 +27,7 @@
                                     label-placeholder="Masukkan Code Booking  / Connote Number Untuk Perbaharui Data"
                                     :autofocus="true"
                                     :disabled="hasCodeBooking"
+                                    :data-testid="`input-booking-code`"
                                     v-uppercase
                                     ref="inputCodeBooking">
                                 </vs-input>
@@ -34,8 +35,8 @@
                         </vs-col>
                         <vs-col xs="2" sm="2" lg="2">
                             <template v-if="hasCodeBooking">
-                                <div style="position:absolute;left:-10px; top:15px;">
-                                    <span class="vs-select__chips__chip__close" @click="removeBookingCode">
+                                <div style="position:absolute;left:-10px; top:15px;" data-testid="remove-booking-wrapper">
+                                    <span class="vs-select__chips__chip__close" @click="removeBookingCode" data-testid="remove-booking-btn">
                                         <i class="vs-icon-close vs-icon-hover-less"></i>
                                     </span>
                                 </div>
@@ -51,6 +52,7 @@
                         @blur="handleBlurCustomerCode"
                         @input="handleInputCustomerCode"
                         :disabled="isDisabled"
+                        :data-testid="`input-customer-code`"
                         v-uppercase
                         ></vs-input>
                 </vs-col>
@@ -65,17 +67,17 @@
                                         <vs-row justify="space-between">
                                             <vs-col xs="12" sm="6" lg="6">
                                                 <div ref="test" tabindex="1"></div>
-                                                <origin ref="originComponent" :inputDisabled="inputDisabled"/>
+                                                <origin ref="originComponent" :inputDisabled="inputDisabled" :data-testid="`origin`"/>
                                             </vs-col>
                                             <vs-col xs="12" sm="6" lg="6">
                                                 <div ref="test2" tabindex="2"></div>
-                                                <destination ref="destinationComponent" :inputDisabled="inputDisabled"/>
+                                                <destination ref="destinationComponent" :inputDisabled="inputDisabled" :data-testid="`destination`"/>
                                             </vs-col>
                                         </vs-row>
                                         <vs-row justify="space-between" class="mb-2" style="margin-top:10px">
                                             <vs-col xs="12" sm="12" lg="12">
                                                 <div ref="test3" tabindex="11"></div>
-                                                <package ref="packageComponent" :inputDisabled="inputDisabled"/>
+                                                <package ref="packageComponent" :inputDisabled="inputDisabled" :data-testid="`package`"/>
                                             </vs-col>
                                         </vs-row>
                                     </div>
@@ -94,6 +96,7 @@
                                 :active="true"
                                 :disabled="disabledAddmore"
                                 type="submit"
+                                :data-testid="`add-more-button`"
                                 @click="addMoreConnote()"
                                 >
                                 <i class='bx bx-plus' style="margin-right: 5px" ></i> ADD MORE
@@ -108,6 +111,7 @@
                                 flat
                                 :active="true"
                                 type="submit"
+                                :data-testid="`approve-button`"
                                 @click="createTransaction()"
                                 v-on:keydown.tab="disable_tab_button($event)"
                                 >
@@ -125,6 +129,7 @@
         <payment
             :active="dialogPayment" 
             :closeDialog="closePaymentDialog"
+            :data-testid="`payment`"
             />
         
     </div>

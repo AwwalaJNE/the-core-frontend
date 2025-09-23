@@ -108,7 +108,7 @@ a{
 		font-size: 0.8rem;
 	}
 	.vs-input-content {
-		margin: 10px 0px;
+		// margin: 10px 0px;
 		width: calc(100%);
 		.vs-input {
 			width: 100%;
@@ -217,9 +217,6 @@ ul{
         .auto{
             width: auto;
         }
-        .vs-table__td{
-            padding: 10px 5px;
-        }
     }
 }
 
@@ -244,7 +241,6 @@ ul{
         color: rgba(var(--vs-text), 1);
         border-color: transparent !important;
         border-radius: 10px;
-        margin-bottom: 1em;
         padding: 7px 13px;
         height: 35px;
         line-height: 35px;
@@ -260,7 +256,6 @@ ul{
         color: rgba(var(--vs-text), 1);
         border-color: transparent !important;
         border-radius: 10px;
-        margin-bottom: 1em;
         padding: 7px 13px;
         // height: 35px !important;
         line-height: 35px;

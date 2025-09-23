@@ -140,7 +140,7 @@ export default {
             if(val !== undefined) {
                 if (this.type === "KOLI") {
                     this.status = val.status;
-                    this.sla_date = val.sla_date;
+                    this.sla_date = this.formatTimezone(val?.sla_date);
                     this.remaining_time = val.remaining_time;
                 } else {
                     this.listDataItem = val;

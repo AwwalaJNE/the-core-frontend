@@ -47,7 +47,7 @@
                             :loading="loading"
                             :selectedValue="removeKoliCode"
                             :isMultiple="false"
-                            :disabled="false"
+                            :disabled="!hasPermission('delete-irregularity')"
                             :isAllowCreate="true"
                             @updateValue="updateValue"  
                         />
@@ -57,6 +57,7 @@
                     <vs-button
                         danger
                         :active="true"
+                        :disabled="!hasPermission('delete-irregularity')"
                         @click="actionRemoveBulk"
                     >
                         Remove
@@ -114,6 +115,7 @@
                         :limit="pagination.limit"
                         :hasAction="true"
                         :hasPagination="true"
+                        :isAllowedRemove="hasPermission('delete-irregularity')"
                         @actionLimit="actionLimit"
                         @actionPagination="actionPagination"
                         @actionUpdate="editIrreg"
@@ -198,18 +200,18 @@ export default {
                     width: "sm"
                 },
                 {
-                    label: "Orion Number",
-                    key: "irg_sequence",
-                    width: "xs"
-                },
-                {
-                    label: "Bag Number",
-                    key: "bag_number",
-                    width: "xs"
-                },
-                {
                     label: "Connote",
                     key: "koli_number",
+                    width: "xs"
+                },
+                {
+                    label: "Reference Type",
+                    key: "reference_type",
+                    width: "xs"
+                },
+                {
+                    label: "Reference Number",
+                    key: "reference_number",
                     width: "xs"
                 },
                 {
@@ -231,6 +233,11 @@ export default {
                     label: "User",
                     key: "user_name",
                     width: "auto"
+                },
+                {
+                    label: "Orion Number",
+                    key: "irg_sequence",
+                    width: "xs"
                 },
             ],
             dataItem: {},

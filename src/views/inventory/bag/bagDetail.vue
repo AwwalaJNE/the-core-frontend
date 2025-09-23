@@ -15,7 +15,7 @@
         </div>
       </div>
       <div style="display: flex;" class="buttonPage" v-if="!loading">
-        <vs-button v-if="listenUserRoleName !== 'HELPDESK'"  @click="openDialogTransit" :disabled="disabledAddTransit">
+        <vs-button v-if="listenUserRoleName !== 'HELPDESK' && tipe_bag === 'OM'"  @click="openDialogTransit" :disabled="disabledAddTransit">
           <i class="bx bx-plus"></i> Add Transit
         </vs-button>
         <template v-if="listenUserRoleName === 'HELPDESK'">
@@ -429,6 +429,7 @@ export default {
       validation_reference: [], 
       courierArr: [],
       dialogTransitActive: false,
+      tipe_bag: ""
     }
   },
   computed: {
@@ -446,9 +447,6 @@ export default {
     },
     listenDestinationArr() {
       return this.$store.getters["getInputs"]["bagging"]["destination"]["dataArray"] || []
-    },
-    listenDataBag(){
-      return this.$ls.get('getDataBag')
     }
   },
   watch: {
@@ -480,8 +478,7 @@ export default {
       this.is_hub_delivery_validation = val.target.checked || false;
     },
     async getResponse(data, loading) {
-      
-
+      this.tipe_bag = data.data.tipe_bag;
       this.is_orion = data.data.is_orion === '1' ? true : false;
       let bag_des = data.data ? data?.data?.destination?.node_code  : null
       this.is_pra_runsheet = data.data.is_pra_runsheet === "1" ? true : false
@@ -584,12 +581,6 @@ export default {
         this.loading = false;
       }
     },
-    getIsPraRunsheet(){
-      this.is_pra_runsheet = this.$store.getters.getInputs.is_pra_runsheet
-      if (this.is_pra_runsheet == undefined) {
-        this.is_pra_runsheet = this.listenDataBag.is_pra_runsheet
-      }
-    },
     getBagIdParam(){
       this.bag_id = this.$route.params.id
       this.form={
@@ -624,7 +615,7 @@ export default {
             bag_number : this.bag_id,
             bag_actual_weight : this.weight
         }
-        this.loading = true
+        // this.loading = true
         this.putBag();
       }
     },
@@ -830,7 +821,6 @@ export default {
   },
   mounted() {
     this.getBagIdParam()
-    this.getIsPraRunsheet()
     this.setInputFocus()
     this.handlePrintShortcut(this.print)
     // this.getNodeLink()

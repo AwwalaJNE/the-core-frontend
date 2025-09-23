@@ -714,7 +714,6 @@
                   <vs-td
                     :key="key"
                     :class="[column.textAlign ? column.textAlign : '', item.width ? item.width : '']"
-                    class="manual-padding"
                     :style="column['textColor'] ? { color: column['textColor'] } : {}"
                   >
                     <template
@@ -831,6 +830,14 @@
                       >
                       <span v-else>{{ item[column.key] }}</span>
                     </template>
+                    <template v-else-if="column.key === 'status_with_color'">
+                      <span
+                        class="statusBackground"
+                        :style="{ backgroundColor: getStatusColor(item[column.key]) }"
+                      >
+                        {{ item[column.key] }}
+                      </span>
+                    </template>
                     <template v-else-if="column.key === 'status_delivery'">
                       <span
                         v-if="item[column.key] === 'DELIVERED'"
@@ -855,7 +862,10 @@
                     <template v-else>
                       <span>
                         <span 
-                          :style="column.isTransitTag && item[column.isTransitTag] === 1 ? { borderBottom: '1px solid #666' }  : {}"
+                          :class="{ 
+                            'do-not-wrap': column.isTransitTag || typeof item[column.key] === 'string' && item[column.key].includes('\n')
+                          }"
+                          :style="column.isTransitTag && item[column.isTransitTag] === 1 ? { borderBottom: '1px solid #666'  }  : {}"
                         >
                           {{ item[column.key] 
                               ? column.type_amount 
@@ -914,6 +924,7 @@
                           block
                           flat
                           size="small"
+                          :data-testid="`${actionItem.key}-button-${keyActionItem}`"
                           :disabled="listenDisableAction
                               ? listenDisableAction === true
                               : item.hasOwnProperty('isDisabled')
@@ -995,6 +1006,10 @@
                       :active="true"
                       type="submit"
                       :data-testid="`remove-button-${key}`"
+                      :disabled="
+                        (item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true) || !isAllowedRemove
+                      "
                       @click="actionRemove(item)"
                     >
                       <span>Remove</span>
@@ -1036,6 +1051,10 @@
                       flat
                       :active="true"
                       type="submit"
+                      :disabled="
+                        (item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true) || !isAllowedRemove
+                      "
                       @click="actionRemove(item)"
                     >
                       <span>Remove</span>
@@ -1076,8 +1095,8 @@
                       flat
                       :active="true"
                       :disabled="
-                        item.hasOwnProperty('isDisabled') &&
-                          item.isDisabled == true
+                        (item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true) || !isAllowedRemove
                       "
                       type="submit"
                       @click="actionRemove(item)"
@@ -1121,8 +1140,8 @@
                       danger
                       :active="true"
                       :disabled="
-                        item.hasOwnProperty('isDisabled') &&
-                          item.isDisabled == true
+                        (item.hasOwnProperty('isDisabled') &&
+                          item.isDisabled == true) || !isAllowedRemove
                       "
                       type="submit"
                       @click="actionRemove(item)"
@@ -1499,7 +1518,7 @@
                                 <template v-if="item.children_type && item.children_type.hasOwnProperty(c_item)">
                                   <template v-if="item.children_type[c_item] === 'icon-warning' && itm">
                                     <vs-tooltip v-if="item.children_icon_tooltip.hasOwnProperty(c_item)" bottom>
-                                      <i class="bx bxs-error-circle icon-warning"></i>
+                                      <i class="bx bxs-error-circle icon-warning" style="font-size:30px"></i>
                                       <template #tooltip>
                                         {{ item.children_icon_tooltip && item.children_icon_tooltip.hasOwnProperty(c_item) ? item.children_icon_tooltip[c_item] : '' }}
                                       </template>
@@ -1601,6 +1620,7 @@
         <vs-col w="2">
           <vs-button
             @click="handleExportCSV"
+            :data-testid="`export-button`"
             >
               Export
             </vs-button>
@@ -1657,6 +1677,10 @@ export default {
     hasSelectValue: String,
     hasDuplicateEditRemove: Boolean,
     hasPagination: Boolean,
+    isAllowedRemove: {
+      type: Boolean,
+      default: true
+    },
     expandable: Boolean,
     hasLinkedDanger: String,
     textDanger: String,
@@ -2142,6 +2166,19 @@ export default {
       } else {
         this.visibleKeys = [];
       }
+    },
+    getStatusColor(status) {
+      if (!status) return "gray";
+      switch (status.toLowerCase()) {
+        case "safe":
+          return "rgb(21, 224, 21)";
+        case "warning":
+          return "rgb(255, 165, 0)";
+        case "over":
+          return "rgb(255, 0, 0)";
+        default:
+          return "gray";
+      }
     }
   },
   mounted() {
@@ -2155,8 +2192,21 @@ export default {
 </script>
 <style lang="scss">
 .vs-table-content > .vs-table > table {
+  width: max-content !important;
   min-width: 100% !important;
+  table-layout: auto;
+  white-space: nowrap; 
 }
+.vs-table-content th,
+.vs-table-content td,
+.vs-table-content td span {
+  white-space: nowrap;
+}
+
+.do-not-wrap {
+  white-space: pre-line !important;
+}
+
 .vs-table {
   table {
     width: max-content;
@@ -2284,7 +2334,6 @@ export default {
 
 span.text-link {
   display: inline-block;
-  padding-top: 18px;
   color: rgb(53, 92, 255);
   cursor: pointer;
 }
@@ -2294,7 +2343,6 @@ p.text-link {
 }
 span.text-danger {
   display: inline-block;
-  padding-top: 18px;
   color: rgba(255,71,87,255);
   cursor: pointer;
 }
@@ -2307,11 +2355,9 @@ span.text-danger {
     margin: 0.5rem 0 !important;
   }
 }
-.manual-padding {
-  padding-bottom: 0px;
-}
-.vs-table__th {
-  padding: 10px 5px !important;
+.vs-table__th,
+.vs-table__td {
+  padding: 1rem !important;
 }
 .greenBackground {
   background-color: rgb(21, 224, 21);
@@ -2324,6 +2370,14 @@ span.text-danger {
   color: rgb(255, 255, 255);
   padding: 5px 25px !important;
   border-radius: 3px;
+}
+.statusBackground {
+  color: rgb(255, 255, 255);
+  padding: 5px 5px !important;
+  border-radius: 3px;
+  display: flex;
+  width: 80px;
+  place-content: center;
 }
 .icon-warning {
   font-size: 48px;

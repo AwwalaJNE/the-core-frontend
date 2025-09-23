@@ -275,7 +275,7 @@ export default {
                 },
                 {
                     label: "Created By",
-                    key: "created_by",
+                    key: "created_by_user",
                     width: "xs"
                 },
                 {
@@ -451,6 +451,8 @@ export default {
                     }
 
                     res.data.data.forEach(el => {
+                        el.created_at = this.formatTimezone(el.created_at)
+                        el.received_at = this.formatTimezone(el.received_at)
                         el.bag_actual_weight = el.is_pra_runsheet  === '1' ? el.cost_weight : el.actual_weight
                         el.is_confirmed = el.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed'
                         el.surat_muatan = []
@@ -593,9 +595,13 @@ export default {
         }
     },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.setDatacolumn();
         this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.startDate, this.endDate, this.tipeBagFilter, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter)
         this.handlePrintShortcut(this.actionPrintSelected)
     },
+    beforeDestroy () {
+        window.removeEventListener('timezone-changed', this.refresh);
+    }
 }
 </script>

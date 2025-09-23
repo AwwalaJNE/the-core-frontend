@@ -263,6 +263,7 @@ export default {
                         item["created_user_name"] = item?.user?.user_name || "";
                         item["approved_user_name"] = item?.approved_by?.user_name || "";
                         item["isDisabled"] = item?.approved_by ? true : false;
+                        item["created_at"] = this.formatTimezone(item?.created_at);
                     })
                     this.dataTable = arr
                     this.pagination = {
@@ -350,8 +351,12 @@ export default {
             this.filterDateBy = val;
         },
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    },
     mounted() {
-        this.refresh();  
+        window.addEventListener('timezone-changed', this.refresh);
+        this.refresh();
     }
 }
 </script>

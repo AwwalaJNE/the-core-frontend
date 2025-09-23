@@ -113,6 +113,24 @@ export default {
         "bar-chart": Bar,
         "doughnut-chart": Doughnut
     },
+    computed: {
+        buttons() {
+            return [
+                { 
+                    label: "Dashboard Core", 
+                    url: this.URL.app_jne_core_dashboard 
+                },
+                { 
+                    label: "Helpdesk Core", 
+                    url: this.URL.app_jne_core
+                },
+                { 
+                    label: "JNE Main Page", 
+                    url: this.URL.app_jne_main
+                }
+            ];
+        }
+    },
     watch: {
         dataInsightInventory(newData) {
             if (newData) {
@@ -141,20 +159,6 @@ export default {
             node_name: "",
             node_code: "",
             user_login: "",
-            buttons: [
-                { 
-                    label: "Dashboard Core",
-                    url: "https://dashboard-core.jne.co.id/dashboard/home#/login"
-                },
-                { 
-                    label: "Helpdesk Core",
-                    url: "https://core.jne.co.id/"
-                },
-                { 
-                    label: "JNE Main Page",
-                    url: "https://www.jne.co.id/"
-                }
-            ],
             timeOfDay: "",
             currentTime: "",
             is_empty_insight_invetory: false,

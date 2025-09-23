@@ -13,9 +13,10 @@
                                     :data-value="customer" 
                                     class="vs-select__chips__chip baloon"
                                     style="width: fit-content;"
+                                    :data-testid="`customer-phone-number`"
                                     >
                                         {{`${customer}`}}
-                                        <span class="vs-select__chips__chip__close" @click="removeCustomer()">
+                                        <span class="vs-select__chips__chip__close" @click="removeCustomer()" :data-testid="`remove-customer-phone-number-button`">
                                             <i class="vs-icon-close vs-icon-hover-less"></i>
                                         </span>
                                 </span>
@@ -32,6 +33,7 @@
                                     class="withFocus"
                                     :disabled="listeninputDisabled"
                                     style="margin:10px auto 0;"
+                                    :data-testid="`search-customer-phone-number-button`"
                                 >
                                     <i class='bx bx-user'></i>
                                 </vs-button>
@@ -71,6 +73,7 @@
             :closeDialog="closeGetCustomer"
             title="detination"
             type="detination"
+            :data-testid="`customer-phone-number`"
             @updateValue="updateValue"
         />
     </div>

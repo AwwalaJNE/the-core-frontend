@@ -53,6 +53,7 @@ export default {
   props: {
     active: Boolean,
     close: Function,
+    mode: Number,
     onSelect: Function
   },
   data() {
@@ -83,6 +84,9 @@ export default {
     },
     listenLoading() {
       return this.loading;
+    },
+    listenManifestMethod() {
+      return this.mode
     }
   },
   methods: {
@@ -92,8 +96,13 @@ export default {
       if(q !== undefined) {
           query = q
       }
+
+      if (this.mode === null || this.mode === undefined || this.mode === '' || this.mode == 0) {
+        this.mode = 'ALL'
+      }
+
       try {
-        const res = await axios.get(`${this.URL.sm_stock}?n=${this.listenNodeId}&sort_order=desc&limit=${this.pagination.limit}&page=${this.pagination.page}&s=${this.tempSearch}&search_by=manifest_number&node_origin=${this.listenCurrentNode.branch_code}`, this.Helper.header())
+        const res = await axios.get(`${this.URL.sm_stock}?n=${this.listenNodeId}&vehicle_mode=${this.listenManifestMethod}&sort_order=desc&limit=${this.pagination.limit}&page=${this.pagination.page}&s=${this.tempSearch}&search_by=manifest_number&node_origin=${this.listenCurrentNode.branch_code}&is_active=1`, this.Helper.header())
 
         const arr = res.data.data.map(item => ({
           ...item,

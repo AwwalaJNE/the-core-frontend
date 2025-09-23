@@ -1,7 +1,7 @@
 <template>
     <header class="header shadow">
-        <vs-row justify="space-between">
-            <vs-col xs="2" sm="2" lg="2">
+        <vs-row justify="space-between" align="center">
+            <vs-col xs="2" sm="3" lg="2">
                 <vs-row>
                     <vs-col xs="3" sm="3" lg="3">
                         <vs-button @click="clickProps" size="l" :active="true" border icon>
@@ -13,12 +13,61 @@
                     </vs-col>
                 </vs-row>
             </vs-col>
-            <vs-col xs="8" sm="8" lg="8">
-                <vs-row justify="flex-end">
-                    <vs-col xs="10" sm="10" lg="4">
+            <vs-col xs="10" sm="9" lg="10">
+                <vs-row justify="flex-end" align="center" style="gap: 0.75em">
+                    <vs-col xs="1" sm="1" lg="1">
+                        <template v-if="!hasPermission('update-timezone')">
+                            <vs-tooltip bottom>
+                                <template #tooltip>
+                                    Kamu tidak punya izin untuk update timezone
+                                </template>
+                                <selector 
+                                    formKey="timezone_selector"
+                                    :hiddenTitle="true"
+                                    :valueData="dataTimezone"
+                                    :selectedValue="selectedTimezone"
+                                    :isMultiple="false"
+                                    :border="true"
+                                    :tabindex="-1"
+                                    :disabled="!hasPermission('update-timezone')"
+                                    @updateValue="updateValue" 
+                                />
+                            </vs-tooltip>
+                        </template> 
+                        <template v-else>
+                            <selector 
+                                formKey="timezone_selector"
+                                :hiddenTitle="true"
+                                :valueData="dataTimezone"
+                                :selectedValue="selectedTimezone"
+                                :isMultiple="false"
+                                :border="true"
+                                :tabindex="-1"
+                                :disabled="false"
+                                @updateValue="updateValue" 
+                            />
+                        </template>
+                    </vs-col>
+
+                    <!-- TODO: UNCOMMENT LATER -->
+                    <!-- <vs-col xs="1" sm="1" lg="1">
+                        <selector 
+                            formKey="language_selector"
+                            :hiddenTitle=true
+                            :valueData="dataLanguage"
+                            :selectedValue="selectedLanguage"
+                            :isMultiple="false"
+                            :border="true"
+                            @updateValue="updateValue" 
+                        />
+                    </vs-col> -->
+                    
+                    <vs-col xs="10" sm="4" lg="4">
                         <template v-if="datanode.length > 0">
                             <selector 
+                            formKey="node_selector"
                             ref="node_selector"
+                            :hiddenTitle=true
                             :valueData="datanode"
                             :selectedValue="selectedNode"
                             :isMultiple="false"
@@ -27,49 +76,45 @@
                             @updateValue="updateValue" />
                         </template>
                     </vs-col>
-                    <vs-col xs="1" sm="1" lg="1">
-                        <vs-avatar class="cus_search" @click="openDialog">
-                            <i class='bx bx-search'></i>
+
+                    <vs-avatar @click="openDialog">
+                        <i class='bx bx-search'></i>
+                    </vs-avatar>
+
+                    <search-general
+                        :active="dialogSearchGeneral"
+                        :closeDialog="closeDialogSearchGeneral"
+                        title=""
+                    />
+                    
+                    <vs-tooltip bottom shadow interactivity not-hover v-model="activeTooltip1">
+                        <vs-avatar @click="activeTooltip1=!activeTooltip1">
+                            <i class='bx bx-user'></i>
                         </vs-avatar>
-                        <!--Dialog Search General-->
-                        <search-general
-                            :active="dialogSearchGeneral"
-                            :closeDialog="closeDialogSearchGeneral"
-                            title=""
-                        />
-                    </vs-col>
-                    <vs-col xs="1" sm="1" lg="1">                            
-                        <vs-tooltip bottom shadow interactivity not-hover v-model="activeTooltip1">
-                            <vs-avatar class="cus_avatar" @click="activeTooltip1=!activeTooltip1">
+                        <template #tooltip>
+                        <div class="content-tooltip">
+                            <div class="body">
+                            <vs-avatar circle size="60">
                                 <i class='bx bx-user'></i>
-                            </vs-avatar>
-                            <template #tooltip>
-                            <div class="content-tooltip">
-                                <div class="body">
-                                <vs-avatar circle size="60">
-                                    <i class='bx bx-user'></i>
-                                </vs-avatar> 
-                                <div class="text">
-                                    {{userAuthFullName}}
-                                    <span>
-                                    {{userAuthLoginName}}
-                                    </span>
-                                </div>
-                                </div>
-                                <footer>
-                                <vs-button circle @click="goToProfile">
-                                    Edit Profile
-                                </vs-button>
-                                <vs-button circle @click="logout"  danger>
-                                    Logout
-                                </vs-button>
-                                </footer>
+                            </vs-avatar> 
+                            <div class="text">
+                                {{userAuthFullName}}
+                                <span>
+                                {{userAuthLoginName}}
+                                </span>
                             </div>
-                            </template>
-                        </vs-tooltip>
-
-
-                    </vs-col>
+                            </div>
+                            <footer>
+                            <vs-button circle @click="goToProfile">
+                                Edit Profile
+                            </vs-button>
+                            <vs-button circle @click="logout"  danger>
+                                Logout
+                            </vs-button>
+                            </footer>
+                        </div>
+                        </template>
+                    </vs-tooltip>
                 </vs-row>
             </vs-col>
         </vs-row>
@@ -100,8 +145,50 @@ export default {
             activeTooltip1: false,
             dialogSearchGeneral:false,
             tempSearch: "",
-            datanode: [],
             selectedNode: '',
+            datanode: [],
+            selectedLanguage: '',
+            dataLanguage: [
+                {
+                    label: "Indonesia",
+                    value: "ID",
+                    code: "ID",
+                },
+                {
+                    label: "English",
+                    value: "EN",
+                    code: "EN",
+                }
+            ],
+            selectedLanguage: '',
+            dataLanguage: [
+                {
+                    label: "Indonesia",
+                    value: "ID",
+                    code: "ID",
+                },
+                {
+                    label: "English",
+                    value: "EN",
+                    code: "EN",
+                }
+            ],
+            // dataTimezone: [],
+            selectedTimezone: '',
+            dataTimezone: [
+                {
+                    label: "WIB",
+                    value: "Asia/Jakarta",
+                },
+                {
+                    label: "WITA",
+                    value: "Asia/Makassar",
+                },
+                {
+                    label: "WIT",
+                    value: "Asia/Jayapura",
+                }
+            ],
             userAuthFullName:'',
             userAuthLoginName:''
         }
@@ -119,8 +206,21 @@ export default {
         openDialog(){
             this.dialogSearchGeneral = true
         },
-        updateValue(){
-
+        updateValue(key, val){
+            switch(key) {
+                case "timezone_selector":
+                    this.updateTimezone(val);
+                    break;
+                case "language_selector":
+                    this.selectedLanguage = val;
+                    this.$ls.set("language", val);
+                    window.location.reload(true);
+                    break;
+                case "node_selector":
+                    this.updateNode();
+                    break;
+                default:
+            }
         },
         async logout() {
             try {
@@ -136,7 +236,7 @@ export default {
             if (this.$route.name !== 'profile') this.$router.push({ name: 'profile', params: { } });
             this.setRoutePageHistory(this.$route.meta, false);
         },
-        async updateValue(key,val) {
+        async updateNode(key,val) {
             let node = this.datanode.filter(item => item.value == val)
             let form = {
                 node_id : node[0].value
@@ -202,10 +302,59 @@ export default {
                     );
                 });
         },
+        async getTimezone() {
+            this.loading = true;
+            
+            try {
+                const res = await axios.get(`${this.URL.geolocation_timezone}?n=${this.listenNodeId}`, this.Helper.header());
+
+                if (res.data.data.length > 0) {
+                    let specialTimezones = {
+                        "Asia/Jakarta": "WIB",
+                        "Asia/Makassar": "WITA",
+                        "Asia/Jayapura": "WIT"
+                    };
+
+                    let arr = res.data.data.map(item => {
+                        let tz = item.name;
+                        return {
+                            label: tz,
+                            value: item.code,
+                            ...(specialTimezones[tz] && { code: specialTimezones[tz] })
+                        };
+                    });
+                    
+                    this.dataTimezone = arr;
+                } else {
+                    this.dataTimezone = this.dataMappingTimezone;
+                }
+            } catch (err) {
+                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loading = false;
+            }
+        },
+        async updateTimezone(timezone) {
+            this.loading = true;
+            try {
+                const res = await axios.patch(`${this.URL.user_preferences}/${this.listenActiveUser?.user_id}/timezone?n=${this.listenNodeId}`, { "timezone": timezone }, this.Helper.header());
+
+                this.selectedTimezone = timezone;
+                this.$ls.set("timezone", timezone);
+                window.dispatchEvent(new CustomEvent('timezone-changed', { detail: timezone }));
+            } catch (err) {
+                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
+            } finally {
+                this.loading = false;
+            }
+        },
         init() {
             this.userAuthLoginName = this.listenActiveUser?.user_login;
             this.userAuthFullName = this.listenActiveUser?.user_name;
             this.selectedNode = this.listenNodeId.toString();
+
+            this.selectedLanguage = this.$ls.get('language');
+            this.selectedTimezone = this.$ls.get('timezone');
 
             let arr = []
             let node = this.listenNode.filter(item => item.node_id === this.listenNodeId);
@@ -220,6 +369,9 @@ export default {
             })
 
             this.datanode = arr;
+
+            // TODO: UNCOMMENT IF WANNA USE MASTERDATA TIMEZONE
+            // this.getTimezone();
         },
         searchShortcut() {
             document.addEventListener('keydown', (e) => {
@@ -249,7 +401,7 @@ export default {
         top: 0;
         z-index: 95000;
         min-height: 1.5em;
-        padding: .5em 0;
+        padding: .5em .5em .5em 0;
         background-color: $bgWhite;
         position: sticky;
         .burger_custom{
@@ -285,13 +437,6 @@ export default {
         .m-select.vs-select-content{
             margin-top: 6px;
         }
-        .cus_avatar{
-            top: 4px;
-        }
-        .cus_search{
-            top: 4px;
-            margin: 0 auto;
-        }        
 
         @include for-phone-only{
             min-height: 1em;
@@ -317,10 +462,6 @@ export default {
     justify-content: center;
 
     .vs-avatar-content {
-        &.cus_avatar{
-            width: 40px !important;
-            height: 40px !important;
-        }
         margin-top: 0;
         border: 3px solid var(--vs-theme-layout);
         box-shadow: 0px 4px 15px 0px rgba(0, 0, 0, 0.1);

@@ -91,11 +91,12 @@ export default {
     },
     methods: {
         onSearch() {
-            const query = this.searchQuery.toLowerCase();
-            this.filteredItems = this.items.filter(item =>
-                item.label.toLowerCase().includes(query) ||
-                item.description.toLowerCase().includes(query)
-            );
+            const query = this.searchQuery?.toLowerCase() ?? "";
+            this.filteredItems = this.items.filter(item => {
+                const label = item.label?.toLowerCase() ?? "";
+                const desc = item.description?.toLowerCase() ?? "";
+                return label.includes(query) || desc.includes(query);
+            });
         },
         selectItem(item) {
             this.filteredItems = [];
@@ -103,6 +104,7 @@ export default {
             this.$router.push(`${item.url}`);
         },
         highlightMatch(text) {
+            if (!text) return "";
             const query = this.searchQuery;
             if (!query) return text;
             const regex = new RegExp(`(${query})`, "gi");

@@ -99,32 +99,32 @@ export default {
         {
           label: "Status",
           key: "status_with_tooltip",
-          width: "xxs",
+          width: "xxxs",
         },
         {
           label: "Received Bag",
           key: "total_received",
-          width: "xxxs",
+          width: "xxxxs",
         },
         {
           label: "Outstanding Bag",
           key: "total_outstanding",
-          width: "xxxs",
+          width: "xxxxs",
         },
         {
           label: "Type SM",
           key: "manifest_type_name",
-          width: "xxxxs",
+          width: "xxxs",
         },
         {
           label: "Flight Number",
           key: "flight_number",
-          width: "xxxxs",
+          width: "xxxs",
         },
         {
           label: "Vehicle",
           key: "formatted_vehicle",
-          width: "xxxs",
+          width: "sm",
         },
         {
           label: "Moda Transportasi",
@@ -135,17 +135,17 @@ export default {
         {
           label: "Origin",
           key: "origin_name",
-          width: "xxs",
+          width: "xs",
         },
         {
           label: "Destination",
           key: "destination_name",
-          width: "xxs",
+          width: "xs",
         },
         {
           label: "Actual Weight",
           key: "actual_weight",
-          width: "auto",
+          width: "xxxxs",
         },
         // {
         //   label: "Fix Cost Weight",
@@ -181,34 +181,34 @@ export default {
           label: "Approved",
           key: "approved",
           type: "status",
-          width: "auto",
+          width: "xxxxs",
         },
         {
           label: "Received At",
           key: "latest_node_receiver",
-          width: "xxxs",
+          width: "sm",
         },
         {
           label: "Total Irregularity",
           key: "total_irregularity",
-          width: "xxxs",
+          width: "xxxxs",
           textAlign: "center",
           textColor: "red",
         },
         {
           label: "Total Master Bag",
           key: "total_masterbag",
-          width: "xxxs",
+          width: "xxxxs",
         },
         {
           label: "Total Bag",
           key: "total_bag",
-          width: "xxxs",
+          width: "xxxxs",
         },
         {
           label: "Total Connote",
           key: "total_connote",
-          width: "xxxs",
+          width: "xxxxs",
         },
         {
           label: "Created Date",
@@ -217,7 +217,7 @@ export default {
         },
         {
           label: "Created By",
-          key: "created_by_user_name",
+          key: "created_by_user",
           width: "xxxxs",
         },
       ],
@@ -340,8 +340,14 @@ export default {
                 buttonStatus.print = true; // Bisa print
                 buttonStatus.depart = true; // Bisa depart
                 buttonStatus.cancel = true; // Bisa cancel
+              } else if (strStatus.includes("approved")) {
+                buttonStatus.vehicle = true; // Bisa edit vehicle
+                buttonStatus.print = true; // Bisa print
+
+                if (!item.auto_depart) {
+                  buttonStatus.depart = true;
+                }
               } else if (
-                strStatus.includes("approved") ||
                 strStatus.includes("depart") ||
                 strStatus.includes("transit") || // Menambahkan 'transit'
                 strStatus.includes("receive") ||
@@ -349,10 +355,7 @@ export default {
               ) {
                 buttonStatus.vehicle = true; // Bisa edit vehicle
                 buttonStatus.print = true; // Bisa print
-
-                if (!item.auto_depart) {
-                  buttonStatus.depart = true;
-                }
+                buttonStatus.depart = false;
                 // Depart tidak bisa dilakukan jika sudah depart/receive/complete
               } else if (strStatus.includes("cancel")) {
                 // Semua aksi dinonaktifkan jika status cancel
@@ -386,14 +389,14 @@ export default {
             isTransitTag: item?.is_sm_transit || "",
             origin_name: `${item.origin_branch_code || ""} - ${item.origin_branch_name || "-"}`,
             destination_name: `${item.destination_branch_code || ""} - ${item.destination_branch_name || ""}`,
-            eta: this.dateConvert(item.eta),
-            etd: this.dateConvert(item.etd),
+            eta: this.formatTimezone(item.eta),
+            etd: this.formatTimezone(item.etd),
             total_masterbag: item.total_masterbag === 0 ? "0" : item.total_masterbag,
             total_bag: item.total_bag === 0 ? "0" : item.total_bag,
             total_connote: item.total_koli === 0 ? "0" : item.total_koli,
             total_received: item.total_received === 0 ? "0" : item.total_received,
             total_outstanding: item.total_outstanding === 0 ? "0" : item.total_outstanding,
-            created_at: this.dateConvert(item.created_at),
+            created_at: this.formatTimezone(item.created_at),
             approved: item.is_approve === 1 ? true : false,
             status_with_tooltip: item.is_transit === 1
               ? `${item.status} <span class="status-tooltip" title="Terdapat Bag masih dalam proses transit."><i class="bx bxs-truck" style="font-size: 0.8rem; vertical-align: middle; border: 1px solid; border-radius: 50%; padding: 3px;"></i></span>`
@@ -595,6 +598,10 @@ export default {
   },
   mounted() {
     this.refresh();
+    window.addEventListener('timezone-changed', this.refresh);
+  },
+  beforeDestroy() {
+    window.removeEventListener('timezone-changed', this.refresh);
   },
 };
 </script>
