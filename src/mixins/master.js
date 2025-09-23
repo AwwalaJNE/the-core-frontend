@@ -615,20 +615,32 @@ const Master = {
 
             return `${get("year")}-${get("month")}-${get("day")} ${get("hour")}:${get("minute")}:${get("second")}`;
         },
+        checkIsWIB(data) {
+            return data === 'Asia/Jakarta'
+        },
         formatToWIB(date) {
             const fromTimezone = this.$ls.get("timezone");
             if (!date) return "-";
 
-            const [datePart, timePart] = date.split(" ");
-            const [year, month, day] = datePart.split("-").map(Number);
-            const [hour, minute, second] = timePart.split(":").map(Number);
+            let utcDate;
 
-            const baseDate = new Date(year, month - 1, day, hour, minute, second);
-            
-            const utcTimestamp = baseDate.getTime() - (new Date(baseDate.toLocaleString("en-US", { timeZone: fromTimezone })).getTime() - baseDate.getTime());
+            if (date.includes("T") && date.endsWith("Z")) {
+                // format ISO → langsung parse sebagai UTC
+                utcDate = new Date(date);
+            } else {
+                // format manual "YYYY-MM-DD HH:mm:ss"
+                const [datePart, timePart] = date.split(" ");
+                const [year, month, day] = datePart.split("-").map(Number);
+                const [hour, minute, second] = timePart.split(":").map(Number);
 
-            const utcDate = new Date(utcTimestamp);
+                const baseDate = new Date(year, month - 1, day, hour, minute, second);
 
+                // hitung UTC timestamp sesuai timezone asal
+                const utcTimestamp = baseDate.getTime() - (new Date(baseDate.toLocaleString("en-US", { timeZone: fromTimezone })).getTime() - baseDate.getTime());
+                utcDate = new Date(utcTimestamp);
+            }
+
+            // format ke Jakarta
             const parts = new Intl.DateTimeFormat("en-GB", {
                 timeZone: "Asia/Jakarta",
                 year: "numeric",
@@ -645,7 +657,6 @@ const Master = {
                 if (p.type !== "literal") obj[p.type] = p.value;
             }
 
-            // hasil: YYYY-MM-DD HH:mm:ss
             return `${obj.year}-${obj.month}-${obj.day} ${obj.hour}:${obj.minute}:${obj.second}`;
         }
     },
