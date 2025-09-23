@@ -1518,7 +1518,7 @@
                                 <template v-if="item.children_type && item.children_type.hasOwnProperty(c_item)">
                                   <template v-if="item.children_type[c_item] === 'icon-warning' && itm">
                                     <vs-tooltip v-if="item.children_icon_tooltip.hasOwnProperty(c_item)" bottom>
-                                      <i class="bx bxs-error-circle icon-warning"></i>
+                                      <i class="bx bxs-error-circle icon-warning" style="font-size:30px"></i>
                                       <template #tooltip>
                                         {{ item.children_icon_tooltip && item.children_icon_tooltip.hasOwnProperty(c_item) ? item.children_icon_tooltip[c_item] : '' }}
                                       </template>

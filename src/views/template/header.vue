@@ -16,10 +16,25 @@
             <vs-col xs="10" sm="9" lg="10">
                 <vs-row justify="flex-end" align="center" style="gap: 0.75em">
                     <vs-col xs="1" sm="1" lg="1">
-                        <vs-tooltip bottom>
-                            <template #tooltip>
-                                Kamu tidak punya izin untuk update timezone
-                            </template>
+                        <template v-if="!hasPermission('update-timezone')">
+                            <vs-tooltip bottom>
+                                <template #tooltip>
+                                    Kamu tidak punya izin untuk update timezone
+                                </template>
+                                <selector 
+                                    formKey="timezone_selector"
+                                    :hiddenTitle="true"
+                                    :valueData="dataTimezone"
+                                    :selectedValue="selectedTimezone"
+                                    :isMultiple="false"
+                                    :border="true"
+                                    :tabindex="-1"
+                                    :disabled="!hasPermission('update-timezone')"
+                                    @updateValue="updateValue" 
+                                />
+                            </vs-tooltip>
+                        </template> 
+                        <template v-else>
                             <selector 
                                 formKey="timezone_selector"
                                 :hiddenTitle="true"
@@ -28,10 +43,10 @@
                                 :isMultiple="false"
                                 :border="true"
                                 :tabindex="-1"
-                                :disabled="!hasPermission('update-timezone')"
+                                :disabled="false"
                                 @updateValue="updateValue" 
                             />
-                        </vs-tooltip>
+                        </template>
                     </vs-col>
 
                     <!-- TODO: UNCOMMENT LATER -->
