@@ -616,6 +616,7 @@ const Master = {
             return `${get("year")}-${get("month")}-${get("day")} ${get("hour")}:${get("minute")}:${get("second")}`;
         },
         formatToWIB(date) {
+            console.log("CEK", date)
             const fromTimezone = this.$ls.get("timezone");
             if (!date) return "-";
 

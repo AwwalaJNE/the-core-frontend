@@ -854,11 +854,11 @@ export default {
                     vehicle_id: item?.vehicle_name || "",
                     pic_employee_id: "",
                     flight_number: item?.shipment_number || "",
-                    flight_schedule: this.formatTimezone(item?.etd) || "",
+                    flight_schedule: item?.etd || "",
                     flight_schedule_timezone: "WIB",
-                    etd_vehicle: this.formatTimezone(item?.etd) || "",
+                    etd_vehicle: item?.etd || "",
                     etd_vehicle_timezone: "WIB",
-                    eta_vehicle: this.formatTimezone(item?.eta) || "",
+                    eta_vehicle: item?.eta || "",
                     eta_vehicle_timezone: "WIB",
                     is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
                 }
@@ -899,11 +899,11 @@ export default {
                     vehicle_id: item?.vehicle_name || "",
                     pic_employee_id: "",
                     flight_number: item?.shipment_number || "",
-                    flight_schedule: this.formatTimezone(item?.etd) || "",
+                    flight_schedule: item?.etd || "",
                     flight_schedule_timezone: "WIB",
-                    etd_vehicle: this.formatTimezone(item?.etd) || "",
+                    etd_vehicle: item?.etd || "",
                     etd_vehicle_timezone: "WIB",
-                    eta_vehicle: this.formatTimezone(item?.eta) || "",
+                    eta_vehicle: item?.eta || "",
                     eta_vehicle_timezone: "WIB",
                     is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
                 }
@@ -916,7 +916,7 @@ export default {
                     origin_branch_code: this.getTLC(item?.origin_name) || item?.origin_identifier || "",
                     destination_branch_code: this.getTLC(item?.destination_name)  || item?.destination_identifier || "",
                     vehicle_id: item?.vehicle_id || "",
-                    flight_number: this.formatToWIB(item?.shipment_number) || "",
+                    flight_number: item?.shipment_number || "",
                     etd: this.formatToWIB(item?.etd) || "",
                     etd_timezone: "WIB",
                     eta: this.formatToWIB(item?.eta) || "",
