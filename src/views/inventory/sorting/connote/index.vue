@@ -105,7 +105,7 @@
                                     </vs-col>
                                     <vs-col xs="4" sm="4" lg="4" class="details-row-left">
                                         <label>SLA DATE</label>
-                                        <h4>{{ this.formatDateTime(sort_info.information.sla_date) }}</h4>
+                                        <h4>{{ this.formatTimezoneSLADate(sort_info.information.sla_date) }}</h4>
                                     </vs-col>
                                 </vs-row>
                             </div>
@@ -494,7 +494,7 @@ export default {
                     let arr = res.data.data;
 
                     arr.map(item => {
-                        item["timestamp"] = this.formatTimestamp(item.timestamp);
+                        item["timestamp"] = this.formatTimezone(item.timestamp);
                     })
                     this.dataTable = arr
                     this.pagination = {
@@ -534,7 +534,11 @@ export default {
     mounted() {
         this.refresh();
         this.$refs.formInputSorting.$el.querySelector("input").focus();
+        window.addEventListener('timezone-changed', this.refresh);
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    }
 }
 </script>
 

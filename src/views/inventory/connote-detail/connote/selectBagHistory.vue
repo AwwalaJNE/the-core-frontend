@@ -94,6 +94,8 @@ export default {
                     arr.map((item, index) => {
                         item["counter"] = index+1
                         item["remark"] = item.deleted_at ? `Removed from the bag at ${item.deleted_at}` : ""
+                        item.created_at = this.formatTimezone(item.created_at)
+                        item.opened_at = this.formatTimezone(item.opened_at)
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.hasOwnProperty('meta') ? res.data.meta.current_page : 1
@@ -126,6 +128,10 @@ export default {
     mounted() {
         this.getParamRoute()
         this.refresh()
+        window.addEventListener('timezone-changed', this.refresh);
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    }
 }
 </script>
