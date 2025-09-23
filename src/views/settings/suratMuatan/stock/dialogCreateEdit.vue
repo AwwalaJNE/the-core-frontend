@@ -302,7 +302,9 @@ export default {
             }
 
             formWithoutId.etd = this.formatToWIB(form.etd)
+            formWithoutId.etd_timezone = "WIB"
             formWithoutId.eta = this.formatToWIB(form.eta)
+            formWithoutId.eta_timezone = "WIB"
 
             if (!this.is_edit) {
                 formWithoutId.vehicle = this.vehicle_form?.map(item => item.state)?.map(item => ({
