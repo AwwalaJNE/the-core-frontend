@@ -108,6 +108,7 @@ export default {
 
                 let arr = res.data.data;
                 arr.map(item => {
+                    item['pod_at'] = this.formatTimezone(item?.pod_at);
                     item['elapsed_time'] = this.formatElapsedTime(item.elapsed_time_minutes)
                 });
 
