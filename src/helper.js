@@ -34,4 +34,53 @@ export default {
       },
     }
   },
+  convertTimezone(dateTime, fromTimezone, toTimezone) {
+    if (!dateTime) return dateTime;
+
+    try {
+      let date;
+      if (typeof dateTime === 'string') {
+        if (dateTime.includes('T')) {
+          date = new Date(dateTime);
+        } else if (dateTime.includes(' ')) {
+          date = new Date(dateTime);
+        } else {
+          date = new Date(dateTime + ' 00:00:00');
+        }
+      } else {
+        date = new Date(dateTime);
+      }
+
+      if (isNaN(date.getTime())) {
+        console.error('Invalid date input:', dateTime);
+        return dateTime;
+      }
+
+      const tempDate = new Date(date.toLocaleString('sv-SE'));
+
+      const fromOffset = this.getTimezoneOffset(tempDate, fromTimezone);
+      const toOffset = this.getTimezoneOffset(tempDate, toTimezone);
+
+      const offsetDiff = fromOffset - toOffset;
+      const adjustedDate = new Date(tempDate.getTime() + (offsetDiff * 60 * 1000));
+
+      const year = adjustedDate.getFullYear();
+      const month = String(adjustedDate.getMonth() + 1).padStart(2, '0');
+      const day = String(adjustedDate.getDate()).padStart(2, '0');
+      const hour = String(adjustedDate.getHours()).padStart(2, '0');
+      const minute = String(adjustedDate.getMinutes()).padStart(2, '0');
+      const second = String(adjustedDate.getSeconds()).padStart(2, '0');
+
+      return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+
+    } catch (error) {
+      console.error('Error converting timezone:', error);
+      return dateTime;
+    }
+  },
+  getTimezoneOffset(date, timezone) {
+    const utcDate = new Date(date.toLocaleString('en-US', { timeZone: 'UTC' }));
+    const tzDate = new Date(date.toLocaleString('en-US', { timeZone: timezone }));
+    return (utcDate.getTime() - tzDate.getTime()) / (1000 * 60);
+  },
 }
