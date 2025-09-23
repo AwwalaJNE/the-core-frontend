@@ -618,11 +618,9 @@ const Master = {
     },
     mounted() {
         this.checkIfMobile();
-        window.addEventListener('timezone-changed', this.refresh);
         window.addEventListener('resize', this.checkIfMobile);
     },
     beforeDestroy() {
-        window.removeEventListener('timezone-changed', this.refresh);
         window.removeEventListener('resize', this.checkIfMobile);
     },
     created() {

@@ -155,6 +155,9 @@ export default {
                         // if(item.hasOwnProperty('is_paid')) {
                         //     if(item['is_paid'] == '1') {
                                 total = Number(total) + Number(item.transaction_amount);
+                                item.created_at = this.formatTimezone(item.created_at);
+                                item.updated_at = this.formatTimezone(item.updated_at);
+                                item.transaction_date = this.formatTimezone(item.transaction_date);
                                 item['total_connote'] = item.connote.length
                                 item['connote_shipper_name'] = item.connote.length > 0 ? item.connote[0].connote_shipper_name : null
                                 item['user_name'] = item.user ? item.user.user_name : '-'
@@ -257,8 +260,12 @@ export default {
         }
     },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.refresh()
         this.handlePrintShortcut(this.actionPrintSelected)
-    }
+    },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    },
 }
 </script>

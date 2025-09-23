@@ -595,9 +595,13 @@ export default {
         }
     },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.setDatacolumn();
         this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.startDate, this.endDate, this.tipeBagFilter, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter)
         this.handlePrintShortcut(this.actionPrintSelected)
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    }
 }
 </script>
