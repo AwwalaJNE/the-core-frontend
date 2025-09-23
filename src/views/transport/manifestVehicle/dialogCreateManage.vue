@@ -281,12 +281,12 @@ export default {
                 },
                 {
                     label: "ETD",
-                    key: "etd_formatted",
+                    key: "etd",
                     width: "sm"
                 },
                 {
                     label: "ETA",
-                    key: "eta_formatted",
+                    key: "eta",
                     width: "sm"
                 },
                 {
@@ -505,9 +505,9 @@ export default {
                         vehicle_type_id: this.vehicle_data?.vehicle_type_id,
                         pic_employee_id: form.employee_driver_id || "",
                         flight_number: form.flight_number || "",
-                        flight_schedule: this.formatToWIB(form.flight_schedule),
-                        etd_vehicle: this.formatToWIB(form.etd),
-                        eta_vehicle: this.formatToWIB(form.eta)
+                        flight_schedule: form.flight_schedule,
+                        etd_vehicle: form.etd,
+                        eta_vehicle: form.eta
                     };
                 } else if (this.navActive === 'k-NEW-MANUAL') {
                     data = {
@@ -520,9 +520,9 @@ export default {
                         vehicle_type_id: form.vehicle_id?.vehicle_type_id,
                         pic_employee_id: form.employee_driver_id || "",
                         flight_number: form.flight_number || "",
-                        flight_schedule: this.formatToWIB(form.flight_schedule),
-                        etd_vehicle: this.formatToWIB(form.etd),
-                        eta_vehicle: this.formatToWIB(form.eta)
+                        flight_schedule: form.flight_schedule,
+                        etd_vehicle: form.etd,
+                        eta_vehicle: form.eta
                     };
                 }
                 if (data.etd_vehicle > data.eta_vehicle) {
@@ -588,9 +588,9 @@ export default {
                         vehicle_id: item?.vehicle_name || "",
                         pic_employee_id: item?.pic_employee_id || "",
                         flight_number: item?.flight_number || "",
-                        flight_schedule: this.formatTimezone(item?.etd || ""),
-                        etd_vehicle: this.formatTimezone(item?.etd || ""),
-                        eta_vehicle: this.formatTimezone(item?.eta || ""),
+                        flight_schedule: this.formatTimezone(item?.etd) || "",
+                        etd_vehicle: this.formatTimezone(item?.etd) || "",
+                        eta_vehicle: this.formatTimezone(item?.eta) || "",
                         status_flight: item?.status_flight,
                         is_active: item?.status === 'ACTIVE'
                     }
@@ -798,8 +798,8 @@ export default {
                         item,
                         item["origin"] = item?.origin_name + "\n" + item?.origin_point;
                         item["destination"] = item?.destination_name + "\n" + item?.destination_point;
-                        item["etd_formatted"] = item?.etd + " " + item?.etd_timezone;
-                        item["eta_formatted"] = item?.eta + " " + item?.eta_timezone;
+                        item["etd"] = this.formatTimezone(item?.etd);
+                        item["eta"] = this.formatTimezone(item?.eta);
                     })
                     
                     this.dataTable = arr
@@ -854,11 +854,11 @@ export default {
                     vehicle_id: item?.vehicle_name || "",
                     pic_employee_id: "",
                     flight_number: item?.shipment_number || "",
-                    flight_schedule: item?.etd || "",
+                    flight_schedule: this.formatTimezone(item?.etd) || "",
                     flight_schedule_timezone: "WIB",
-                    etd_vehicle: item?.etd || "",
+                    etd_vehicle: this.formatTimezone(item?.etd) || "",
                     etd_vehicle_timezone: "WIB",
-                    eta_vehicle: item?.eta || "",
+                    eta_vehicle: this.formatTimezone(item?.eta) || "",
                     eta_vehicle_timezone: "WIB",
                     is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
                 }
@@ -899,11 +899,11 @@ export default {
                     vehicle_id: item?.vehicle_name || "",
                     pic_employee_id: "",
                     flight_number: item?.shipment_number || "",
-                    flight_schedule: item?.etd || "",
+                    flight_schedule: this.formatTimezone(item?.etd) || "",
                     flight_schedule_timezone: "WIB",
-                    etd_vehicle: item?.etd || "",
+                    etd_vehicle: this.formatTimezone(item?.etd) || "",
                     etd_vehicle_timezone: "WIB",
-                    eta_vehicle: item?.eta || "",
+                    eta_vehicle: this.formatTimezone(item?.eta) || "",
                     eta_vehicle_timezone: "WIB",
                     is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
                 }
@@ -916,7 +916,7 @@ export default {
                     origin_branch_code: this.getTLC(item?.origin_name) || item?.origin_identifier || "",
                     destination_branch_code: this.getTLC(item?.destination_name)  || item?.destination_identifier || "",
                     vehicle_id: item?.vehicle_id || "",
-                    flight_number: item?.shipment_number || "",
+                    flight_number: this.formatToWIB(item?.shipment_number) || "",
                     etd: this.formatToWIB(item?.etd) || "",
                     etd_timezone: "WIB",
                     eta: this.formatToWIB(item?.eta) || "",

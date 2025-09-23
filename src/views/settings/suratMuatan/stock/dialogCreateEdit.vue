@@ -262,9 +262,9 @@ export default {
                     vehicle_id: item?.vehicle_name || "",
                     pic_employee_id: item?.pic_employee_id || "",
                     flight_number: item?.flight_number || "",
-                    flight_schedule: item?.etd || "",
-                    etd_vehicle: item?.etd || "",
-                    eta_vehicle: item?.eta || "",
+                    flight_schedule: this.formatTimezone(item?.etd) || "",
+                    etd_vehicle: this.formatTimezone(item?.etd) || "",
+                    eta_vehicle: this.formatTimezone(item?.eta) || "",
                     status_flight: item?.status_flight,
                     is_active: item?.status === 'ACTIVE'
                 }));
@@ -301,15 +301,18 @@ export default {
                 formWithoutId.node_id_origin = form?.node_id_origin;
             }
 
+            formWithoutId.etd = this.formatToWIB(form.etd)
+            formWithoutId.eta = this.formatToWIB(form.eta)
+
             if (!this.is_edit) {
                 formWithoutId.vehicle = this.vehicle_form?.map(item => item.state)?.map(item => ({
                     vehicle_id: item.vehicle_id,
                     tlc_origin: item.origin_branch_code,
                     tlc_destination: item.destination_branch_code,
                     flight_number: item.flight_number,
-                    etd: item.etd,
+                    etd: this.formatToWIB(item.etd),
                     etd_timezone: "WIB",
-                    eta: item.eta,
+                    eta: this.formatToWIB(item.eta),
                     eta_timezone: "WIB",
                     is_active: item.is_active ? 1 : 0
                 }));
@@ -357,11 +360,11 @@ export default {
             try {
                 const res = this.id ? await axios.put(`${this.URL.sm_stock}/${this.id}?n=${this.listenNodeId}`, this.form, this.Helper.header()) : await axios.post(`${this.URL.sm_stock}?n=${this.listenNodeId}`, this.form, this.Helper.header());
                 this.openNotification('success', null, "Success", res?.data?.message || this.id ? "Success Update Data" : "Success Create Data");
+                this.cancel();
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
             } finally {
                 this.loading = false;
-                this.cancel();
             }
         },
         handleSubmit(){
