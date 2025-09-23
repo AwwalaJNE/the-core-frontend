@@ -4,7 +4,7 @@
             <vs-col xs="6" sm="4" lg="4">
                 <div class="titlePage">
                     <breadcrumb />
-                    <h2>{{  is_history ? "Archive" : "Receiving & Inventory" }}</h2>
+                    <h2>{{  is_history ? "Archiveeee" : "Receiving & Inventoryeee" }}</h2>
                 </div>                
             </vs-col>
         </vs-row>
@@ -366,6 +366,7 @@ export default {
                     } else {
                         item.koli_with_priority = item.koli_number;
                     }
+                    item.created_at = this.formatTimezone(item.created_at);
 
                     return item;
                 })
@@ -568,7 +569,11 @@ export default {
         }
     },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.refresh();
+    },
+    beforeDestroy () {
+        window.removeEventListener('timezone-changed', this.refresh);
     }
 }
 </script>
