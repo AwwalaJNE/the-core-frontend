@@ -915,9 +915,9 @@ export default {
                     vehicle_id: active_vehicle?.vehicle_name || "",
                     pic_employee_id: active_vehicle?.pic_employee_id || "",
                     flight_number: active_vehicle?.flight_number || "",
-                    flight_schedule: active_vehicle?.etd || "",
-                    etd_vehicle: active_vehicle?.etd || "",
-                    eta_vehicle: active_vehicle?.eta || "",
+                    flight_schedule: this.formatTimezone(active_vehicle?.etd) || "",
+                    etd_vehicle: this.formatTimezone(active_vehicle?.etd) || "",
+                    eta_vehicle: this.formatTimezone(active_vehicle?.eta) || "",
                     status_flight: active_vehicle?.status_flight,
                     is_active: active_vehicle?.status === 'ACTIVE'
                 }];
