@@ -872,9 +872,9 @@ export default {
                     destination_branch_code: this.getTLC(item?.destination_name) || item?.destination_identifier || "",
                     vehicle_id: item?.vehicle_id || "",
                     flight_number: item?.shipment_number || "",
-                    etd: this.formatToWIB(item?.etd) || "",
+                    etd: item?.etd || "",
                     etd_timezone:  "WIB",
-                    eta: this.formatToWIB(item?.eta) || "",
+                    eta: item?.eta || "",
                     eta_timezone: "WIB",
                     is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
                 }
@@ -917,9 +917,9 @@ export default {
                     destination_branch_code: this.getTLC(item?.destination_name)  || item?.destination_identifier || "",
                     vehicle_id: item?.vehicle_id || "",
                     flight_number: item?.shipment_number || "",
-                    etd: this.formatToWIB(item?.etd) || "",
+                    etd: item?.etd || "",
                     etd_timezone: "WIB",
-                    eta: this.formatToWIB(item?.eta) || "",
+                    eta: item?.eta || "",
                     eta_timezone: "WIB",
                     is_active: item?.shipment_schedule_id === this.selected_manifest_vehicle || false
                 }
