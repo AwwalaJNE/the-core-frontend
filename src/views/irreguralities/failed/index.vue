@@ -205,6 +205,9 @@ export default {
                 .then(res => {
                     if(res.data.data.length > 0) {
                         let arr = res.data.data
+                        arr.map(item => {
+                            item["created_at"] = this.formatTimezone(item?.created_at);
+                        });
                         this.dataTable = arr
                         this.pagination.page = res.data.meta.current_page
                         this.pagination.limit = parseInt(res.data.meta.per_page)
@@ -253,7 +256,11 @@ export default {
             this.filterDateBy = val;
         },
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.refresh()   
     }
 }
