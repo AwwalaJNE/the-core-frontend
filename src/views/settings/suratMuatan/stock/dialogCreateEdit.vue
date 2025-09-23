@@ -30,8 +30,8 @@
 
                     <template v-if="!is_edit">
                         <template v-if="vehicle.length === 0">
-                            <vs-row justify="space-between" align="center">
-                                <vs-col w="10">
+                            <vs-row justify="space-between" align="center"  style="margin-top: 20px;">
+                                <vs-col w="10" >
                                     <selector 
                                         formKey="vehicle_mode"
                                         name="" 
@@ -52,7 +52,7 @@
                                     </vs-button>
                                 </vs-col>
                             </vs-row>
-                            <img src="@/assets/svg/defaultVehicle.svg" alt="Core JNE Default Vehicle" style="width: 100%; margin-bottom: 20px;"/>
+                            <img src="@/assets/svg/defaultVehicle.svg" alt="Core JNE Default Vehicle" style="width: 100%; margin-top: 20px;"/>
                         </template>
                         <template v-else>
                             <vs-row justify="space-between" align="center">
@@ -308,9 +308,9 @@ export default {
                     tlc_destination: item.destination_branch_code,
                     flight_number: item.flight_number,
                     etd: item.etd,
-                    etd_timezone: item.etd_timezone,
+                    etd_timezone: "WIB",
                     eta: item.eta,
-                    eta_timezone: item.eta_timezone,
+                    eta_timezone: "WIB",
                     is_active: item.is_active ? 1 : 0
                 }));
             }
@@ -465,9 +465,9 @@ export default {
                         vehicle_id: form?.vehicle_id || "",
                         flight_number: form?.flight_number || "",
                         etd: form?.etd_vehicle || "",
-                        etd_timezone: form?.etd_timezone || "WIB",
+                        etd_timezone: "WIB",
                         eta: form?.eta_vehicle || "",
-                        eta_timezone: form?.eta_timezone || "WIB",
+                        eta_timezone: "WIB",
                         is_active: this.vehicle.length === 0
                     }
                 };
