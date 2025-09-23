@@ -614,6 +614,39 @@ const Master = {
             const get = (type) => parts.find(p => p.type === type)?.value;
 
             return `${get("year")}-${get("month")}-${get("day")} ${get("hour")}:${get("minute")}:${get("second")}`;
+        },
+        formatToWIB(date) {
+            const fromTimezone = this.$ls.get("timezone");
+            if (!date) return "-";
+
+            const [datePart, timePart] = date.split(" ");
+            const [year, month, day] = datePart.split("-").map(Number);
+            const [hour, minute, second] = timePart.split(":").map(Number);
+
+            const baseDate = new Date(year, month - 1, day, hour, minute, second);
+            
+            const utcTimestamp = baseDate.getTime() - (new Date(baseDate.toLocaleString("en-US", { timeZone: fromTimezone })).getTime() - baseDate.getTime());
+
+            const utcDate = new Date(utcTimestamp);
+
+            const parts = new Intl.DateTimeFormat("en-GB", {
+                timeZone: "Asia/Jakarta",
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false,
+            }).formatToParts(utcDate);
+
+            const obj = {};
+            for (const p of parts) {
+                if (p.type !== "literal") obj[p.type] = p.value;
+            }
+
+            // hasil: YYYY-MM-DD HH:mm:ss
+            return `${obj.year}-${obj.month}-${obj.day} ${obj.hour}:${obj.minute}:${obj.second}`;
         }
     },
     mounted() {
