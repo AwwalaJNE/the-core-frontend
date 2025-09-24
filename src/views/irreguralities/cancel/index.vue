@@ -267,6 +267,8 @@ export default {
                         arr.map(item => {
                             item["isDisabled"] = item.approved_by != null && item.approved_by != '' ? true : false;
                             item["approve"] = item.approved_by != null && item.approved_by != '' ? item.user_approve.user_name : '-';
+                            item["created_at"] = this.formatTimezone(item?.created_at);
+                            item["approved_at"] = this.formatTimezone(item?.approved_at);
                         })
                         this.dataTable = arr
                         this.pagination.page = res.data.meta.current_page
@@ -390,7 +392,11 @@ export default {
             this.filterDateBy = val;
         },
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.refresh()   
     }
 }
