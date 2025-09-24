@@ -716,6 +716,7 @@ export default {
             }
         },
         formData(form) {
+            let userTimezone = this.$ls.get("timezone");
             form.node_id_origin = form.node_id_origin?.node_id || form.node_id_origin || this.listenCurrentNode.node_id;
             form.node_id_destination = form.node_id_destination?.node_id || form.node_id_destination;
 
@@ -741,10 +742,10 @@ export default {
             
             this.form = form;
             if (this.form.eta > this.form.etd) {
+                this.form.etd = this.Helper.convertTimezone(this.form.etd, userTimezone, 'Asia/Jakarta');
+                this.form.eta = this.Helper.convertTimezone(this.form.eta, userTimezone, 'Asia/Jakarta');
                 if (this.manifest_number !== undefined && this.manifest_number !== "" && this.is_sm_edit) {
                     this.form.manifest_number = this.manifest_number;
-                    this.form.etd = moment(this.form.etd).format("YYYY-MM-DD HH:mm:ss");
-                    this.form.eta = moment(this.form.eta).format("YYYY-MM-DD HH:mm:ss");
                     this.addSuratMuatanDetail();
                 } else {
                     this.form.pickup_node_id_requestor = this.listenNodeId;
