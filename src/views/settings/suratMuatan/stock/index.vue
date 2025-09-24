@@ -363,8 +363,9 @@ export default {
                         item,
                         item["is_active"] = item.is_active === "1" ? true : false;
                         item["schedule_id_value"] = item.schedule_id ? true : false;
-                        item["etd"] = item?.etd + " " + item?.etd_timezone;
-                        item["eta"] = item?.eta + " " + item?.eta_timezone;
+                        item["etd"] = this.formatTimezone(item?.etd);
+                        item["eta"] = this.formatTimezone(item?.eta);
+                        item["created_at"] = this.formatTimezone(item?.created_at);
                     })
                     
                     this.dataTable = arr
@@ -460,7 +461,11 @@ export default {
             }
         },
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.refresh();
         this.getVehicleMode();
     },
