@@ -122,6 +122,7 @@ export default {
     },
     data() {
         return {
+            loading: false,
             title: "Assign",
             tempSearch: "",
             tempDate: moment().format("YYYY-MM-DD"),

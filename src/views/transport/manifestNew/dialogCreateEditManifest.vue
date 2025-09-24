@@ -548,9 +548,9 @@ export default {
                 vehicle_id: active_vehicle?.vehicle_name || "",
                 pic_employee_id: active_vehicle?.pic_employee_id || "",
                 flight_number: active_vehicle?.flight_number || "",
-                flight_schedule: active_vehicle?.etd || "",
-                etd_vehicle: active_vehicle?.etd || "",
-                eta_vehicle: active_vehicle?.eta || "",
+                flight_schedule: this.formatTimezone(active_vehicle?.etd) || "",
+                etd_vehicle: this.formatTimezone(active_vehicle?.etd) || "",
+                eta_vehicle: this.formatTimezone(active_vehicle?.eta) || "",
                 status_flight: active_vehicle?.status_flight,
                 is_active: active_vehicle?.status === 'ACTIVE'
             }];
@@ -716,6 +716,7 @@ export default {
             }
         },
         formData(form) {
+            let userTimezone = this.$ls.get("timezone");
             form.node_id_origin = form.node_id_origin?.node_id || form.node_id_origin || this.listenCurrentNode.node_id;
             form.node_id_destination = form.node_id_destination?.node_id || form.node_id_destination;
 
@@ -741,10 +742,10 @@ export default {
             
             this.form = form;
             if (this.form.eta > this.form.etd) {
+                this.form.etd = this.Helper.convertTimezone(this.form.etd, userTimezone, 'Asia/Jakarta');
+                this.form.eta = this.Helper.convertTimezone(this.form.eta, userTimezone, 'Asia/Jakarta');
                 if (this.manifest_number !== undefined && this.manifest_number !== "" && this.is_sm_edit) {
                     this.form.manifest_number = this.manifest_number;
-                    this.form.etd = moment(this.form.etd).format("YYYY-MM-DD HH:mm:ss");
-                    this.form.eta = moment(this.form.eta).format("YYYY-MM-DD HH:mm:ss");
                     this.addSuratMuatanDetail();
                 } else {
                     this.form.pickup_node_id_requestor = this.listenNodeId;
@@ -915,9 +916,9 @@ export default {
                     vehicle_id: active_vehicle?.vehicle_name || "",
                     pic_employee_id: active_vehicle?.pic_employee_id || "",
                     flight_number: active_vehicle?.flight_number || "",
-                    flight_schedule: active_vehicle?.etd || "",
-                    etd_vehicle: active_vehicle?.etd || "",
-                    eta_vehicle: active_vehicle?.eta || "",
+                    flight_schedule: this.formatTimezone(active_vehicle?.etd) || "",
+                    etd_vehicle: this.formatTimezone(active_vehicle?.etd) || "",
+                    eta_vehicle: this.formatTimezone(active_vehicle?.eta) || "",
                     status_flight: active_vehicle?.status_flight,
                     is_active: active_vehicle?.status === 'ACTIVE'
                 }];
@@ -946,9 +947,9 @@ export default {
                         vehicle_id: item?.vehicle_name || "",
                         pic_employee_id: item?.pic_employee_id || "",
                         flight_number: item?.flight_number || "",
-                        flight_schedule: item?.etd || "",
-                        etd_vehicle: item?.etd || "",
-                        eta_vehicle: item?.eta || "",
+                        flight_schedule: this.formatTimezone(item?.etd) || "",
+                        etd_vehicle: this.formatTimezone(item?.etd) || "",
+                        eta_vehicle: this.formatTimezone(item?.eta) || "",
                         is_active: item?.status === 'ACTIVE'
                     }
                 }));
@@ -1203,9 +1204,9 @@ export default {
                     vehicle_type_id: form?.vehicle_type_id || "",
                     employee_driver_id: form?.pic_employee_id?.employee_id || "",
                     flight_number: form?.flight_number || "",
-                    flight_schedule: form?.flight_schedule || "",
-                    etd: form?.etd_vehicle || "",
-                    eta: form?.eta_vehicle || "",
+                    flight_schedule: this.formatToWIB(form?.flight_schedule) || "",
+                    etd: this.formatToWIB(form?.etd_vehicle) || "",
+                    eta: this.formatToWIB(form?.eta_vehicle) || "",
                     origin_branch_code: form?.origin_vehicle || "",
                     destination_branch_code: form?.destination_vehicle || "",
                     is_active: this.vehicle.length === 0
@@ -1246,6 +1247,9 @@ export default {
                 ...item,
                 state: {
                     ...item.state,
+                    flight_schedule: this.formatToWIB(item?.flight_schedule) || "",
+                    etd: this.formatToWIB(item?.etd_vehicle) || "",
+                    eta: this.formatToWIB(item?.eta_vehicle) || "",
                     is_active: item.key === newKey
                 }
             }));

@@ -94,6 +94,7 @@ export default {
                 let arr = res.data.data;
                 arr.map(item => {
                     item['elapsed_time'] = this.formatElapsedTime(item.elapsed_time_minutes)
+                    item.pod_at = this.formatTimezone(item.pod_at)
                 });
 
                 this.dataTable = arr;
@@ -109,6 +110,10 @@ export default {
     },
     mounted() {
         this.refresh();
+        window.addEventListener('timezone-changed', this.refresh);
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    }
 }
 </script>

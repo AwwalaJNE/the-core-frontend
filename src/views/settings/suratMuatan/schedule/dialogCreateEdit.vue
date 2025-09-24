@@ -142,8 +142,18 @@ export default {
             }
         },
         formData(form) {
+            const processedForm = { ...form };
+            
+            processedForm.etd_timezone = 'WIB';
+            processedForm.eta_timezone = 'WIB';
+            
+            const userTimezone = this.$ls.get('timezone');
+            
+            processedForm.etd = this.Helper.convertTimezone(processedForm.etd, userTimezone, 'Asia/Jakarta');
+            processedForm.eta = this.Helper.convertTimezone(processedForm.eta, userTimezone, 'Asia/Jakarta');
+            
             this.form = {
-                ...form,
+                ...processedForm,
                 is_external_source: 'N',
             };
 
