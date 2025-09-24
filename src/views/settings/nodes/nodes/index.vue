@@ -123,6 +123,26 @@ export default {
                     label: "Customer Code",
                     key: "node_customer_code",
                     width: "auto"
+                },
+                {
+                    label: "Created Date",
+                    key: "created_at",
+                    width: "auto"
+                },
+                {
+                    label: "Created By",
+                    key: "user_creator",
+                    width: "auto"
+                },
+                {
+                    label: "Updated Date",
+                    key: "updated_at",
+                    width: "auto"
+                },
+                {
+                    label: "Updated By",
+                    key: "user_editor",
+                    width: "auto"
                 }
             ],
             loading: false,
