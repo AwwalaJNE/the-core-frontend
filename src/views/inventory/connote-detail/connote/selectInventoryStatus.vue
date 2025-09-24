@@ -127,6 +127,7 @@ export default {
                         item["counter"] = index+1
                         item["node_name"] = item["node_name"]
                         item["user_name"] = item["employee_name"] ?? item["user_name"]
+                        item.activity_date = this.formatTimezone(item.activity_date)
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.hasOwnProperty('meta') ? res.data.meta.current_page : 1
@@ -172,6 +173,10 @@ export default {
     mounted() {
         this.getParamRoute()
         this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+        addEventListener('timezone-changed', this.refresh);
     },
+    beforeDestroy() {
+        removeEventListener('timezone-changed', this.refresh);
+    }
 }
 </script>
