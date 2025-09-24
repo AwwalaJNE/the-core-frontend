@@ -617,7 +617,7 @@ const Master = {
         },
         formatToWIB(date) {
             const fromTimezone = this.$ls.get("timezone");
-            if (!date) return "-";
+            if (!date) return "";
 
             let utcDate;
 
