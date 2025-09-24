@@ -130,6 +130,7 @@
             :active="dialogPayment" 
             :closeDialog="closePaymentDialog"
             :data-testid="`payment`"
+            :koli_number="koli_number"
             />
         
     </div>
@@ -483,7 +484,6 @@ export default {
                             // this.$refs.originComponent.setFocus()
                         } else {
                             
-                            this.getDataKoli()
                             if(has_bpik == true) {
                               let self = this
                               setTimeout(function(){ 
@@ -745,38 +745,6 @@ export default {
                 this.$store.dispatch(`SET_PREVIOUS_CONNOTE_INDEX_ACTIVE`, this.listenConnoteActive)
             }
         },
-
-        async getDataKoli() {
-    			let self = this
-    			await axios
-                    .get(this.URL.print + 
-                    `/${this.koli_number}/koli?n=${this.listenNodeId}`, 
-                    this.Helper.header())
-                    .then(res => {
-    					// console.log('getDataKoli', res.data.html)
-                        this.legacySystemHTML = res.data.html
-
-                        this.$nextTick(() => {
-                            var myWindow = window.open("", "MsgWindow", "width=600,height=400");
-                            myWindow.document.write(`${this.legacySystemHTML}`);
-                            myWindow.document.close();
-                            // myWindow.focus();
-                            // window action print setelah 3s
-                            // setTimeout(function(){ myWindow.print(); }, 3000);
-                        });
-                        
-    					
-    					// document.appendChild(div)
-    					
-                        // this.res = res.data.data
-                    }).catch(err => {
-                        // this.loading = false
-                        // this.checkAuth(err.response)
-    					// this.openNotification('danger', err.response ? err.response.data.code : '', 'Print koli failed', err.response ? err.response.data.message : 'something went wrong')
-                        // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate country list', err)
-                    })
-    		},
-
         keyHandler(e) {
             /**
              * 112 - f1
