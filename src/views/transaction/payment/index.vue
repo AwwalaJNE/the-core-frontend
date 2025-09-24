@@ -2,7 +2,8 @@
     <dialog-master 
     :actived="listenActive" 
     width="lg"
-    :closeDialog="cancel">
+    :closeDialog="cancel"
+    :hide-close-icon="true">
         <template v-slot:header>
             
         </template>
