@@ -148,10 +148,9 @@ export default {
             processedForm.eta_timezone = 'WIB';
             
             const userTimezone = this.$ls.get('timezone');
-            if (userTimezone && userTimezone !== 'Asia/Jakarta') {
-                processedForm.etd = this.Helper.convertTimezone(processedForm.etd, userTimezone, 'Asia/Jakarta');
-                processedForm.eta = this.Helper.convertTimezone(processedForm.eta, userTimezone, 'Asia/Jakarta');
-            }
+            
+            processedForm.etd = this.Helper.convertTimezone(processedForm.etd, userTimezone, 'Asia/Jakarta');
+            processedForm.eta = this.Helper.convertTimezone(processedForm.eta, userTimezone, 'Asia/Jakarta');
             
             this.form = {
                 ...processedForm,

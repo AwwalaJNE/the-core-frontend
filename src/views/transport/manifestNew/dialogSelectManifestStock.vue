@@ -108,8 +108,8 @@ export default {
           ...item,
           is_active: item.is_active === '1',
           schedule_id_value: !!item.schedule_id,
-          etd_formatted: `${item?.etd} ${item?.etd_timezone}`,
-          eta_formatted: `${item?.eta} ${item?.eta_timezone}`,
+          etd_formatted: this.formatTimezone(item?.etd),
+          eta_formatted: this.formatTimezone(item?.eta),
         }))
 
         this.dataTable = arr

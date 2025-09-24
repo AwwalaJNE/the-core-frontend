@@ -130,9 +130,13 @@ export default {
 
                 if (res.data.data.length > 0) {
                     this.activity_detail_info = res.data.data
+                    this.activity_detail_info.map(item => {
+                        item.created_at = this.formatTimezone(item.created_at)
+                    })
                 }
                 
             } catch (err) {
+                console.log(err)
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
             }
         },
@@ -140,7 +144,11 @@ export default {
     mounted() {
         this.getMasterData();
         this.getDetailData();
+        window.addEventListener('timezone-changed', this.getDetailData);
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.getDetailData);
+    }
 }
 </script>
 <style scoped>

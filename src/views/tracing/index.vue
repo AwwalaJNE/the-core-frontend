@@ -366,6 +366,7 @@ export default {
                     } else {
                         item.koli_with_priority = item.koli_number;
                     }
+                    item.created_at = this.formatTimezone(item.created_at);
 
                     return item;
                 })
@@ -568,7 +569,11 @@ export default {
         }
     },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.refresh();
+    },
+    beforeDestroy () {
+        window.removeEventListener('timezone-changed', this.refresh);
     }
 }
 </script>

@@ -200,6 +200,8 @@ export default {
                 .then(res => {
                     let arr = res.data.data
                     arr.map(item => {
+                        item["received_at"] = this.formatTimezone(item["received_at"]);
+                        item["connote_sla_date"] = this.formatTimezone(item["connote_sla_date"]);
                         item["is_confirmed"] = item.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed'
                         item["is_void_status"] = item.is_void == 1 ? 'YES' : '-'
                         item["packing_kayu_type"] = item.packing_kayu_type != null ? 'PK-'+item.packing_kayu_type : '-'
@@ -247,6 +249,10 @@ export default {
     },
     mounted() {
         this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch)
+        window.addEventListener('timezone-changed', this.refresh);
+    },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
     },
 }
 </script>

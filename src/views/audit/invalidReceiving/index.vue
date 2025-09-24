@@ -253,6 +253,8 @@ export default {
 
                     if (arr.length > 0) {
                         arr.map(item => {
+                            item.created_at = this.formatTimezone(item.created_at);
+                            item.updated_at = this.formatTimezone(item.updated_at);
                             item["is_data_existed"] = item.is_data_existed === 1 ? 'TRUE' : 'FALSE';
                         })
 
@@ -319,8 +321,12 @@ export default {
         }
     },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.refresh();
-    }
+    },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    },
 };
 </script>
 

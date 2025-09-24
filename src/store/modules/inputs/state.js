@@ -2810,7 +2810,7 @@ export default {
       valueData: null,
       
       value: '',
-      width: '4'
+      width: '12'
     },
     node_id_origin: {
       label: "Origin",
@@ -2821,7 +2821,7 @@ export default {
       arrData: [],
       valueData: null,
       value: '',
-      width: '4'
+      width: '6'
     },
     node_id_destination: {
       label: "Destination",
@@ -2832,7 +2832,7 @@ export default {
       arrData: [],
       valueData: null,
       value: '',
-      width: '4'
+      width: '6'
     },
     etd: {
       label: "ETD",
@@ -2842,32 +2842,7 @@ export default {
       typeData: "String",
       valueData: null,
       value: '',
-      width: '4',
-      isDisabled: false,
-    },
-    etd_timezone: {
-      label: "ETD Timezone",
-      key: "etd_timezone",
-      rule: "required",
-      typeInput: "select",
-      typeData: "String",
-      valueData: null,
-      arrData: [
-        {
-          "label": "WIB",
-          "value": "WIB"
-        },
-        {
-          "label": "WITA",
-          "value": "WITA"
-        },
-        {
-          "label": "WIT",
-          "value": "WIT"
-        },
-      ],
-      value: '',
-      width: '2',
+      width: '6',
       isDisabled: false,
     },
     eta: {
@@ -2878,44 +2853,9 @@ export default {
       typeData: "String",
       valueData: null,
       value: '',
-      width: '4',
+      width: '6',
       isDisabled: false,
     },
-    eta_timezone: {
-      label: "ETA Timezone",
-      key: "eta_timezone",
-      rule: "required",
-      typeInput: "select",
-      typeData: "String",
-      valueData: null,
-      arrData: [
-        {
-          "label": "WIB",
-          "value": "WIB"
-        },
-        {
-          "label": "WITA",
-          "value": "WITA"
-        },
-        {
-          "label": "WIT",
-          "value": "WIT"
-        },
-      ],
-      value: '',
-      width: '2',
-      isDisabled: false,
-    },
-    // is_active: {
-    //   label: "Active|Unactive",
-    //   key: "is_active",
-    //   rule: "",
-    //   typeInput: "Boolean",
-    //   typeData: "Boolean",
-    //   valueData: true,
-    //   value: true,
-    //   isDisabled: false,
-    // },
   },
 
   surat_muatan_schedule: {
