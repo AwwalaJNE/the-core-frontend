@@ -451,13 +451,13 @@ export default {
                     break;
 
                 case "etd":
-                    this.etd = val;
-                    this.handleEta(this.etd, this.estimated_time_in_hour);
-                    updateMasterForm("etd", val);
+                    this.etd = this.formatToWIB(val);
+                    updateMasterForm("etd", this.formatToWIB(val));
                     break;
 
                 case "eta":
-                    updateMasterForm("eta", val);
+                    this.$store.dispatch("SET_SURAT_JALAN_ETA", moment(val.length === 10 ? val + " 00:00:00" : val).add(this.estimated_time_in_hour, "hours").format("YYYY-MM-DD HH:mm:ss"));
+                    updateMasterForm("eta", this.formatToWIB(val));
                     break;
 
                 case "manifest_lov":
