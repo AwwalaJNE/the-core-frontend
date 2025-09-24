@@ -108,6 +108,7 @@ export default {
 
                 this.dataTable = res.data.data.map((item, index) => ({
                     ...item,
+                    created_at: this.formatTimezone(item.created_at),
                     counter: index + 1,
                     user_name: item.employee_name ?? item.user_name,
                     sm_value: item.activity_name?.startsWith('SM_') ? true : false
@@ -149,6 +150,10 @@ export default {
     },
     mounted() {
         this.getTableData(this.pagination.limit, this.pagination.page);
+        window.addEventListener('timezone-changed', this.refresh);
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    }
 }
 </script>

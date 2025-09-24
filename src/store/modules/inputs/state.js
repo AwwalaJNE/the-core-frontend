@@ -2974,7 +2974,17 @@ export default {
       typeData: "String",
       valueData: null,
       value: '',
-      width: '4'
+      width: 6
+    },
+    eta: {
+      label: "ETA",
+      key: "eta",
+      rule: "required",
+      typeInput: "datetime",
+      typeData: "String",
+      valueData: null,
+      value: '',
+      width: 6,
     },
     etd_timezone: {
       label: "ETD Timezone",
@@ -2985,6 +2995,7 @@ export default {
       valueData: null,
       value: '',
       width: '2',
+      visible: false,
       arrData: [
          {
           "label": "WIB",
@@ -3000,16 +3011,6 @@ export default {
         }
       ],
     },
-    eta: {
-      label: "ETA",
-      key: "eta",
-      rule: "required",
-      typeInput: "datetime",
-      typeData: "String",
-      valueData: null,
-      value: '',
-      width: '4',
-    },
      eta_timezone: {
       label: "ETA Timezone",
       key: "eta_timezone",
@@ -3019,6 +3020,7 @@ export default {
       valueData: null,
       value: '',
       width: '2',
+      visible: false,
       arrData: [
          {
           "label": "WIB",

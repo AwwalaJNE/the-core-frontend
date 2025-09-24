@@ -249,8 +249,8 @@ export default {
                         destination: data?.destination_branch_code + " - " + data?.destination_branch_name,
                         flight_number: data?.flight_number,
                         vehicle: data?.vehicle?.vehicle_name,
-                        etd: data?.etd,
-                        eta: data?.eta,
+                        etd: this.formatTimezone(data?.etd),
+                        eta: this.formatTimezone(data?.eta),
                     };
 
                     this.dataManifestInfo = {
@@ -316,7 +316,11 @@ export default {
     },
     mounted() {
         this.clearInput();
-    }
+        window.addEventListener('timezone-changed', this.getManifest);
+    },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.getManifest);
+    },
 };
 </script>
 

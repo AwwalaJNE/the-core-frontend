@@ -262,10 +262,9 @@ export default {
                 
                 if (res.data.data.length > 0) {
                     const item = res.data.data[0]
-
                     if (item) {
                         this.bag_additional_info = {
-                            created_at: item.created_at,
+                            created_at: this.formatTimezone(item.created_at),
                             is_masterbag: item.is_consolidated === '1' ? true : false,
                             is_approve: item.is_approve === 1 ? true : false,
                             surat_muatan: item.sm?.[0]?.manifest_number || '-',
@@ -294,7 +293,7 @@ export default {
                 const res = await axios.get(`${this.URL.bag}/${this.bag_number}?n=${this.listenNodeId}`, this.Helper.header());               
 
                 let data = res.data.data;
-                
+
                 if (data) {            
                     this.current_node_id = data.current_node_id;        
                     const currentLocationNode = await this.getNodeById(parseInt(this.current_node_id));
@@ -331,7 +330,7 @@ export default {
                     }
                     this.dataTable = res.data.detail.map((item, index) => {
                         const isKoli = !this.is_consolidated;
-                        
+                        item.created_at = this.formatTimezone(item.created_at)
                         return {
                             ...item,
                             no: index + 1,
@@ -372,7 +371,13 @@ export default {
     },
     mounted() {
         this.getBagDetail();
-    }
+        window.addEventListener('timezone-changed', this.getBagDetail);
+        window.addEventListener('timezone-changed', this.getBag);
+    },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.getBagDetail);
+        window.removeEventListener('timezone-changed', this.getBag);
+    },
 }
 </script>
 

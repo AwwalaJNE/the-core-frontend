@@ -54,13 +54,24 @@ Vue.use(FormItem)
 Vue.use(VueCurrencyInput, {
   globalOptions: { 
     currency: {prefix: 'Rp ', suffix: ''},
-    allowNegative: false,
+    locale: 'id-ID',
+    precision: 0,               // 0 decimal places
+    valueAsInteger: false,      // save number as is (not multiplied by 100)
+    autoDecimalDigits: false,   // don't automatically add decimal digits
+    hideCurrencySymbolOnFocus: true,
+    hideGroupingSeparatorOnFocus: false,  // Show grouping separator on focus
+    allowNegative: false,       // Don't allow negative numbers
     distractionFree: {
       hideNegligibleDecimalDigits: true,
       hideGroupingSymbol: false,
       hideCurrencySymbol: false
     },
-    autoDecimalMode: false
+    // Custom formatting for Indonesian Rupiah
+    currencyDisplay: 'symbol',
+    currencySign: 'standard',
+    useGrouping: true,          // Enable thousand separators
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
   }
 })
 

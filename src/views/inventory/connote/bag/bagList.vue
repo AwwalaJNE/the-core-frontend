@@ -600,7 +600,7 @@ export default {
         this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.startDate, this.endDate, this.tipeBagFilter, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter)
         this.handlePrintShortcut(this.actionPrintSelected)
     },
-    beforeDestroy () {
+    beforeDestroy() {
         window.removeEventListener('timezone-changed', this.refresh);
     }
 }

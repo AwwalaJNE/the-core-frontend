@@ -212,6 +212,8 @@ export default {
                 .then(res => {
                     let arr = res.data.data
                     arr.map(item => {
+                        item["pickup_request_time"] = this.formatTimezone(item["pickup_request_time"]);
+                        item["pickup_date"] = this.formatTimezone(item["pickup_date"]);
                       // item["pickup_courier_employee_name"] = (item.user_courier) ? item.employee_courier.employee_name: null
                         item.total_unpicked = parseInt(item.total_bag) + parseInt(item.total_koli);
                         item.total_picked = item.total_picked+" / "+item.total_unpicked;
@@ -309,6 +311,10 @@ export default {
     mounted() {
         this.refresh()
         this.handlePrintShortcut(this.actionPrintSelected)
+        window.addEventListener('timezone-changed', this.refresh);
+    },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
     }
 }
 </script>
