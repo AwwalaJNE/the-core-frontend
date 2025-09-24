@@ -229,22 +229,15 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`, 
                 this.Helper.header())
                 .then(res => {
+                    this.dataTable = res.data.data
+                    this.dataTable.map(item => {
+                        item['created_at'] =  this.formatTimezone(item['created_at'])
+                        item['updated_at'] =  this.formatTimezone(item['updated_at'])
+                    })
 
-                        this.dataTable = res.data.data
-                        this.dataTable.map(item => {
-                            item['created_at'] =  this.formatTimezone(item['created_at'])
-                            item['updated_at'] =  this.formatTimezone(item['updated_at'])
-                        })
-
-                        this.pagination.page = res.data.meta.current_page
-                        this.pagination.limit = parseInt(res.data.meta.per_page)
-                        this.pagination.page_size = res.data.meta.last_page
-                    if(res.data.data.length > 0) {
-                        
-                    } else {
-                        // this.openNotification('warn', null, 'district data is empty!', ' Please create a new district data')
-                    }
-                    
+                    this.pagination.page = res.data.meta.current_page
+                    this.pagination.limit = parseInt(res.data.meta.per_page)
+                    this.pagination.page_size = res.data.meta.last_page
                     this.loading = false
                 }).catch(err => {
                     this.loading = false
