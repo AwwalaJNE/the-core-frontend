@@ -108,8 +108,23 @@ export default {
                 {
                     label: "Created At",
                     key: "created_at",
-                    width: "sm"
-                }
+                    width: "lg"
+                },
+                {
+                    label: "Created By",
+                    key: "user_creator",
+                    width: "lg"
+                },
+                {
+                    label: "Updated At",
+                    key: "updated_at",
+                    width: "lg"
+                },
+                {
+                    label: "Updated By",
+                    key: "user_editor",
+                    width: "lg"
+                },
             ],
             pagination: {
                 limit: 20,
@@ -164,6 +179,10 @@ export default {
                 .get(this.URL.bag_weight_setting + `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&start_date=${startDate}&end_date=${endDate}&s=${query}&search_by=${searchBy}`, this.Helper.header())
                 .then(res => {
                     this.dataTable = res.data.data
+                    this.dataTable.map(item => {
+                        item.created_at = this.formatTimezone(item.created_at)
+                        item.updated_at = this.formatTimezone(item.updated_at)
+                    })
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page                    
@@ -234,7 +253,11 @@ export default {
         },
     },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.refresh()
+    },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
     },
 }
 </script>

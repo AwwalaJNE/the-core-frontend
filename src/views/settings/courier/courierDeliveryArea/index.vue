@@ -135,7 +135,22 @@ export default {
                 {
                     label: "Created At",
                     key: "created_at",
-                    width: "xs"
+                    width: "lg"
+                },
+                {
+                    label: "Created By",
+                    key: "user_creator",
+                    width: "lg"
+                },
+                {
+                    label: "Updated At",
+                    key: "updated_at",
+                    width: "lg"
+                },
+                {
+                    label: "Updated By",
+                    key: "user_editor",
+                    width: "lg"
                 },
             ],
             loading: false,
@@ -246,7 +261,8 @@ export default {
                         item["area_value_data"] = item.area_value
                             .map((itm, index) => `${index === 0 ? '' : '\n'}- ${itm}`)
                             .join('');
-                        item["created_at"] = this.formatTimestamp(item.created_at)
+                        item['created_at'] = this.formatTimezone(item?.created_at);
+                        item['updated_at'] = this.formatTimezone(item?.updated_at);
                     })
                     this.dataTable = arr;
                     this.pagination = {
@@ -313,8 +329,12 @@ export default {
         }
     },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.refresh()
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    }
 }
 </script>
 <style scoped>
