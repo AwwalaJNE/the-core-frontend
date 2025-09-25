@@ -21,6 +21,7 @@
     </div>
 </template>
 <script>
+import moment from "moment";
 import axios from "axios";
 import master from "@/mixins/master";
 
@@ -30,7 +31,7 @@ export default {
     name:"delivery-runsheet",
     mixins: [master],
     props: {
-        dateFilter: String,
+        dateFilter: Array,
         filterDateBy: String,
         filterPriorityBy: String,
         node:String,
@@ -152,15 +153,15 @@ export default {
                 query = q
             }
             if(from !== undefined && to !== undefined) {
-                startDate = from
-                endDate = to
+                startDate = this.formatToWIB(from)
+                endDate = this.formatToWIB(to)
             }
             if(tempPriority !== undefined) {
                 priority = tempPriority
             }
             await axios
                 .get(this.URL.courier_delivery +
-                `?n=${this.listenNodeId}&s=${query}&date_filter=${this.dateFilter}&search_by=${this.searchBy}&page=${page}&limit=${limit}&priority=${priority}`,
+                `?n=${this.listenNodeId}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&page=${page}&limit=${limit}&priority=${priority}`,
                 this.Helper.header())
                 .then(res => {
                     let arr = res.data.data
@@ -243,10 +244,14 @@ export default {
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate, this.node_filter, this.tempPriority)
         },
         actionDetail(row, item){
+            console.log("CEK", row, item)
+            const rowMap = new Map(row?.delivery?.map(i => [i?.delivery_runsheet_number, i]));
+            const createdAt = rowMap.get(item)?.created_at;
+
             let params = {
                 employee_id: row.employee_id,
                 delivery_runsheet_number: item,
-                date_filter: this.dateFilter
+                date_filter: moment(decodeURIComponent(createdAt)).format("YYYY-MM-DD")
             }
             let routeName = 'delivery-runsheet-edit'
             this.$router.push({ name: routeName, params: params })
