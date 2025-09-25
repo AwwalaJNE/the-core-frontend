@@ -120,6 +120,26 @@ export default {
                     key: "status",
                     width: "sm"
                 },
+                {
+                    label: "Created Date",
+                    key: "created_at",
+                    width: "md"
+                },
+                {
+                    label: "Created By",
+                    key: "user_creator",
+                    width: "auto"
+                },
+                {
+                    label: "Updated Date",
+                    key: "updated_at",
+                    width: "auto"
+                },
+                {
+                    label: "Updated By",
+                    key: "user_editor",
+                    width: "auto"
+                }
             ],
             loading: false,
             dataItem: {},
@@ -174,7 +194,9 @@ export default {
                 .then(res => {
                     let arr = res.data.data
                     arr.map(item =>{
-                      item['status'] = item.is_active === true ? 'Active' : 'Inactive'
+                        item['status'] = item.is_active === true ? 'Active' : 'Inactive'
+                        item['created_at'] =  this.formatTimezone(item['created_at'])
+                        item['updated_at'] =  this.formatTimezone(item['updated_at'])
                     })
                     this.dataTable = res.data.data
 
@@ -271,8 +293,14 @@ export default {
             this.filterDateBy = val;
         },
     },
+    
     mounted() {
         this.refresh()
+        window.addEventListener('timezone-changed', this.refresh);
+    },
+
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
     },
 }
 </script>

@@ -203,7 +203,22 @@ export default {
                 {
                     label: "Created At",
                     key: "created_at",
-                    width: "sm"
+                    width: "lg"
+                },
+                {
+                    label: "Created By",
+                    key: "user_creator",
+                    width: "lg"
+                },
+                {
+                    label: "Updated At",
+                    key: "updated_at",
+                    width: "lg"
+                },
+                {
+                    label: "Updated By",
+                    key: "user_editor",
+                    width: "lg"
                 },
                 {
                     label: "Via Schedule",
@@ -366,6 +381,7 @@ export default {
                         item["etd"] = this.formatTimezone(item?.etd);
                         item["eta"] = this.formatTimezone(item?.eta);
                         item["created_at"] = this.formatTimezone(item?.created_at);
+                        item["updated_at"] = this.formatTimezone(item?.updated_at);
                     })
                     
                     this.dataTable = arr

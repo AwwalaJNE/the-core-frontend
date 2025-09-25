@@ -105,6 +105,26 @@ export default {
                     key: "geolocation_city_name",
                     width: "auto"
                 },
+                {
+                    label: "Created Date",
+                    key: "created_at",
+                    width: "auto"
+                },
+                {
+                    label: "Created By",
+                    key: "user_creator",
+                    width: "auto"
+                },
+                {
+                    label: "Updated Date",
+                    key: "updated_at",
+                    width: "auto"
+                },
+                {
+                    label: "Updated By",
+                    key: "user_editor",
+                    width: "auto"
+                }
                 
             ],
             loading: false,
@@ -174,8 +194,11 @@ export default {
                 `?n=${this.listenNodeId}&sort_order=desc&&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`, 
                 this.Helper.header())
                 .then(res => {
-
-                    this.dataTable = res.data.data
+                        this.dataTable = res.data.data
+                        this.dataTable.map(item => {
+                            item['created_at'] =  this.formatTimezone(item['created_at'])
+                            item['updated_at'] =  this.formatTimezone(item['updated_at'])
+                        })
 
                         this.pagination.page = res.data.meta.current_page
                         this.pagination.limit = parseInt(res.data.meta.per_page)
@@ -273,8 +296,14 @@ export default {
             this.loadingConfirmRemove=false
         },
     },
+    
     mounted() {
         this.refresh()
+        window.addEventListener('timezone-changed', this.refresh);
+    },
+
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
     },
 }
 </script>
