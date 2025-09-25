@@ -81,7 +81,7 @@
                                     <date-time
                                         :name="''"
                                         :rules="''"
-                                        :formKey="'TRIGGER_DATE'"
+                                        :formKey="'DATE_TIME_WITHOUT_SECONDS'"
                                         :valueData="dateRange"
                                         typeInput="datetimerange"
                                         @updateValue="updateValue" />
@@ -329,7 +329,6 @@ export default {
             }
         },
         async getTableData(limit,page,q, from, to) {
-            console.log("CEK", from, to)
             this.loading = true
             let query = "";
             let startDate = "";
@@ -453,7 +452,7 @@ export default {
                 case "REMOVE_KOLI_CODE":
                     this.removeKoliCode = this.$refs.removeKoliCode.value;
                     break;
-                case "TRIGGER_DATE":
+                case "DATE_TIME_WITHOUT_SECONDS":
                     this.dateRange = val
                     this.refresh()
                     break;

@@ -625,14 +625,17 @@ const Master = {
                 // format ISO → langsung parse sebagai UTC
                 utcDate = new Date(date);
             } else {
-                // format manual "YYYY-MM-DD" atau "YYYY-MM-DD HH:mm:ss"
+                // format manual "YYYY-MM-DD", "YYYY-MM-DD HH:mm", atau "YYYY-MM-DD HH:mm:ss"
                 const [datePart, timePart] = date.split(" ");
                 const [year, month, day] = datePart.split("-").map(Number);
 
-                // kalau ga ada time, default jam 00:00:00
-                const [hour, minute, second] = timePart
-                    ? timePart.split(":").map(Number)
-                    : [0, 0, 0];
+                let hour = 0, minute = 0, second = 0;
+                if (timePart) {
+                    const timeParts = timePart.split(":").map(Number);
+                    hour   = timeParts[0] ?? 0;
+                    minute = timeParts[1] ?? 0;
+                    second = timeParts[2] ?? 0; 
+                }
 
                 const baseDate = new Date(year, month - 1, day, hour, minute, second);
 

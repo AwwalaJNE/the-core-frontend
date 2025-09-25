@@ -53,7 +53,7 @@
                                     <date-time
                                         :name="''"
                                         :rules="''"
-                                        :formKey="'TRIGGER_DATE'"
+                                        :formKey="'DATE_TIME_WITHOUT_SECONDS'"
                                         :valueData="tempDate"
                                         typeInput="datetimerange"
                                         @updateValue="searchDate" 
@@ -73,7 +73,7 @@
                                     <date-time
                                         :name="''"
                                         :rules="''"
-                                        :formKey="'TRIGGER_DATE'"
+                                        :formKey="'DATE_TIME_WITHOUT_SECONDS'"
                                         :valueData="tempDate"
                                         typeInput="datetimerange"
                                         @updateValue="searchDate" 

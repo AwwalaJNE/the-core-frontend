@@ -38,7 +38,7 @@
                                     <date-time
                                         :name="''"
                                         :rules="''"
-                                        :formKey="'TRIGGER_DATE'"
+                                        :formKey="'DATE_TIME_WITHOUT_SECONDS'"
                                         :valueData="dateRange"
                                         typeInput="datetimerange"
                                         @updateValue="updateValue" />
@@ -258,7 +258,7 @@ export default {
         },
         updateValue(key, val) {
             switch(key) {
-                case "TRIGGER_DATE":
+                case "DATE_TIME_WITHOUT_SECONDS":
                     this.dateRange = val
                     this.refresh()
                     break;

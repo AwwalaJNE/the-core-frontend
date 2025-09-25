@@ -308,7 +308,7 @@ export default {
         },
         updateValue(key, val) {
             switch(key) {
-                case "TRIGGER_DATE":
+                case "DATE_TIME_WITHOUT_SECONDS":
                     this.dateRange = val
                     this.refresh()
 
