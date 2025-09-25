@@ -126,6 +126,11 @@ export default {
                 const limit = this.pagination.limit;
                 const page = this.pagination.page;
                 const response = await axios.get(`${this.URL.bag}/${this.bag_number}/history?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}`, this.Helper.header());
+
+                let arr = response.data.data;
+                arr.map(item => {
+                    item["created_at"] = this.formatTimezone(item?.created_at);
+                });
                 this.dataTable = response.data.data;
             } catch (error) {
                 this.openNotification(

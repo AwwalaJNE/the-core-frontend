@@ -16,13 +16,14 @@
   <div :class="`vs-input-content vs-input-content--has-label custom_datePicker`">
     <el-date-picker
       v-model="value"
-      type="daterange"
+      :type="type"
       align="right"
       unlink-panels
       range-separator="-"
       start-placeholder="Start date"
       end-placeholder="End date"
-      value-format="yyyy-MM-dd"
+      :value-format="isInventoryBag ? 'yyyy-MM-dd HH:mm' : 'yyyy-MM-dd'"
+      :format="isInventoryBag ? 'yyyy-MM-dd HH:mm' : null"
       @change="searchDate"
       :picker-options="pickerOptions"
       class="date-range-picker"
@@ -39,7 +40,18 @@ export default {
       type: String,
       default: () => "default",
     },
-    valueData: Array
+    valueData: Array,
+    formKey: String,
+    typeInput: String,
+  },
+  computed: {
+    isInventoryBag() {
+      if (this?.formKey?.toLowerCase() === 'date_time_without_seconds') {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
   data() {
     return {
@@ -75,6 +87,7 @@ export default {
         ],
       },
       value: this.valueData || [],
+      type: this.typeInput || 'daterange',
     };
   },
   methods: {

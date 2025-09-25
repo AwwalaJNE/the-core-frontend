@@ -330,8 +330,8 @@ export default {
         isPrealert = prealertFilter;
       }
       if (from !== undefined && to !== undefined) {
-        startDate = from;
-        endDate = to;
+        startDate = this.formatToWIB(from)
+        endDate = this.formatToWIB(to)
       }
       if (qFilter !== undefined) {
         queryFilter = qFilter;

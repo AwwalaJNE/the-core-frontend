@@ -15,10 +15,10 @@
                     <vs-row justify="end">
                         <vs-col xs="12" sm="12" lg="7">
                             <date-time 
-                                typeInput="daterange"
+                                typeInput="datetimerange"
                                 :name="''" 
                                 :rules="''" 
-                                :formKey="'TRIGGER_DATE'"
+                                :formKey="'DATE_TIME_WITHOUT_SECONDS'"
                                 :valueData="dateRange" 
                                 @updateValue="updateValue" 
                             />
@@ -111,7 +111,7 @@ export default {
             this.searchPlaceholder = key;
         },
         updateValue(key, val) {
-            this.dateRange = val || undefined
+            this.dateRange = val
         },
         clearSearch() {
             this.$refs.searchInput.clear();
