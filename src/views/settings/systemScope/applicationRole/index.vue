@@ -142,7 +142,22 @@ export default {
                 {
                     label: "Created At",
                     key: "created_at",
-                    width: "md"
+                    width: "lg"
+                },
+                {
+                    label: "Created By",
+                    key: "user_creator",
+                    width: "lg"
+                },
+                {
+                    label: "Updated At",
+                    key: "updated_at",
+                    width: "lg"
+                },
+                {
+                    label: "Updated By",
+                    key: "user_editor",
+                    width: "lg"
                 },
             ],
             loading: false,
@@ -229,7 +244,8 @@ export default {
                 if(res.data.data.length > 0) {
                     let arr = res.data.data;
                     arr.map(item => {
-                        item["created_at"] = this.formatTimestamp(item.created_at)
+                        item["created_at"] = this.formatTimezone(item?.created_at);
+                        item["updated_at"] = this.formatTimezone(item?.updated_at);
                     })
                     this.dataTable = arr;
                     this.pagination = {
@@ -313,7 +329,11 @@ export default {
         }
     },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.refresh()
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    }
 }
 </script>
