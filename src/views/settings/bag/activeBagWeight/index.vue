@@ -94,7 +94,27 @@ export default {
                     label: "Threshold (%)",
                     key: "threshold",
                     width: "auto"
-                }
+                },
+                {
+                    label: "Created At",
+                    key: "created_at",
+                    width: "lg"
+                },
+                {
+                    label: "Created By",
+                    key: "user_creator",
+                    width: "lg"
+                },
+                {
+                    label: "Updated At",
+                    key: "updated_at",
+                    width: "lg"
+                },
+                {
+                    label: "Updated By",
+                    key: "user_editor",
+                    width: "lg"
+                },
             ],
             pagination: {
                 limit: 20,
@@ -155,6 +175,8 @@ export default {
                 const res = await axios.get(`${this.URL.active_bag_weight}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&search_by=${searchBy}&destination_type=${this.filterDestinationTypeBy}`, this.Helper.header());
 
                 let arr = (res?.data?.data || []).map(item => {
+                    item.created_at = this.formatTimezone(item.created_at);
+                    item.updated_at = this.formatTimezone(item.updated_at);
                     const children = item?.destination?.reduce(
                         (acc, k) => {
                             acc['Destination Type'].push(k.destination_type);
@@ -235,7 +257,11 @@ export default {
         },
     },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.refresh()
+    },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
     },
 }
 </script>

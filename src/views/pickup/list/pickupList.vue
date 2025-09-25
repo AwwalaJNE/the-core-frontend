@@ -306,6 +306,8 @@ export default {
                     let userRole = this.listenUserRole["user_role_code"] ? this.listenUserRole["user_role_code"].toLowerCase() : ""
                     
                     arr.map(item => {
+                        item["pickup_request_time"] = this.formatTimezone(item["pickup_request_time"]);
+                        item["pickup_picked_time"] = this.formatTimezone(item["pickup_picked_time"]);
                         item.total_unpicked_bag = parseInt(item.total_bag);
                         item.total_unpicked_koli = parseInt(item.total_koli);
                         item.total_picked_bag = item.total_picked_bag+" / "+item.total_unpicked_bag;
@@ -581,6 +583,10 @@ export default {
     },
     mounted() {
         this.refresh()
+        window.addEventListener('timezone-changed', this.refresh);
+    },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
     }
 }
 </script>

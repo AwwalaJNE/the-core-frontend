@@ -94,13 +94,15 @@ export default {
             }
         },
         dateFilter: function(val, old) {
-            if (val) {
+            if (val !== undefined) {
                 this.dateRange = val;
-                this.startDate = this.dateRange[0] ? moment(this.dateRange[0]).format("YYYY-MM-DD") : "";
-                this.endDate = this.dateRange[1] ? moment(this.dateRange[1]).format("YYYY-MM-DD") : "";
+                this.startDate = this.dateRange[0];
+                this.endDate = this.dateRange[1];
 
-                if (old && (this.startDate !== old[0] || this.endDate !== old[1])) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate);
+                if (old !== null && old !== undefined) {
+                    if (this.startDate !== old[0] || this.endDate !== old[1]) {
+                        this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate);
+                    }
                 }
             } else {
                 this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, "", "");
@@ -111,8 +113,8 @@ export default {
         async getTableData(limit, page, q, from, to) {
             this.loading = true;
             const query = q ?? '';            
-            let startDate = from ?? "";
-            let endDate = to ?? "";
+            let startDate = this.formatToWIB(from) ?? "";
+            let endDate = this.formatToWIB(to) ?? "";
 
             try {
                 const res = await axios.get(`${this.URL.handover_runsheet}/history?n=${this.listenNodeId}&page=${page}&limit=${limit}&s=${query}&search_by=${this.searchBy}&start_date=${startDate}&end_date=${endDate}`, this.Helper.header());

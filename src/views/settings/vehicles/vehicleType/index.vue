@@ -113,6 +113,21 @@ export default {
                     key: "created_at",
                     width: "md"
                 },
+                {
+                    label: "Created By",
+                    key: "user_creator",
+                    width: "auto"
+                },
+                {
+                    label: "Updated Date",
+                    key: "updated_at",
+                    width: "auto"
+                },
+                {
+                    label: "Updated By",
+                    key: "user_editor",
+                    width: "auto"
+                }
             ],
             customActionList: [
               {
@@ -195,7 +210,9 @@ export default {
                 .then(res => {
                     const arr = res.data.data
                     arr.map(item=>{
-                      item['vehicle_mode_name'] = item.vehicle_mode ? item.vehicle_mode.vehicle_mode_name  : '-'
+                        item['vehicle_mode_name'] = item.vehicle_mode ? item.vehicle_mode.vehicle_mode_name  : '-'
+                        item['created_at'] =  this.formatTimezone(item['created_at'])
+                        item['updated_at'] =  this.formatTimezone(item['updated_at'])
                     })
                     this.dataTable = arr
                   
@@ -302,8 +319,14 @@ export default {
             this.filterDateBy = val;
         },
     },
+    
     mounted() {
         this.refresh()
-    }
+        window.addEventListener('timezone-changed', this.refresh);
+    },
+
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    },
 }
 </script>

@@ -137,14 +137,24 @@ export default {
                     width: "sm"
                 },
                 {
-                    label: "Created By",
-                    key: "created_by",
-                    width: "sm"
-                },
-                {
                     label: "Created At",
                     key: "created_at",
-                    width: "sm"
+                    width: "lg"
+                },
+                {
+                    label: "Created By",
+                    key: "user_creator",
+                    width: "lg"
+                },
+                {
+                    label: "Updated At",
+                    key: "updated_at",
+                    width: "lg"
+                },
+                {
+                    label: "Updated By",
+                    key: "user_editor",
+                    width: "lg"
                 },
                 {
                     label: "Active",
@@ -315,7 +325,11 @@ export default {
         }
     },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.refresh()
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    }
 }
 </script>

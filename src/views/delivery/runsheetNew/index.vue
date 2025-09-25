@@ -27,13 +27,21 @@
             <div class="box view">
                 <div class="nav-box">
                     <vs-row justify>
-                        <vs-col xs="6" sm="2" lg="3" class="mb-15">
-                            <vs-input 
+                        <vs-col xs="6" sm="2" lg="4" class="mb-15">
+                            <!-- <vs-input 
                                 v-model="tempDate" 
                                 type="date" 
+                            /> -->
+                            <date-time 
+                                :name="''" 
+                                :rules="''" 
+                                :formKey="'DATE_TIME_WITHOUT_SECONDS'" 
+                                :valueData="tempDate"
+                                typeInput="datetimerange" 
+                                @updateValue="updateValue" 
                             />
                         </vs-col>
-                        <vs-col xs="6" sm="2" lg="3">
+                        <vs-col xs="6" sm="2" lg="2">
                             <div class="select-delivery">
                                 <selector 
                                     formKey="filter_priority"
@@ -98,6 +106,7 @@ import moment from "moment";
 import master from "@/mixins/master";
 
 import Breadcrumb from "@/components/breadcrumb/index";
+import DateTime from "@/components/input/dateTime"
 import dateRange from "@/components/daterange/index";
 import NavItem from "@/components/navbar/navTab";
 import SearchInput from "@/components/search/searchInput";
@@ -119,12 +128,14 @@ export default {
         DeliveryRunsheetTable: DeliveryRunsheetTable,
         "dialog-create-runsheet": DialogCreateRunsheet,
         "selector": Selector,
+        "date-time": DateTime,
     },
     data() {
         return {
+            loading: false,
             title: "Assign",
             tempSearch: "",
-            tempDate: moment().format("YYYY-MM-DD"),
+            tempDate: [],
             DataNode: [],
             node_request: "",
             node_origin: "",
@@ -248,6 +259,13 @@ export default {
                 this.refresh();
                 this.$refs.searchInput.clear();
             });
+        },
+        updateValue(key, val) {
+            switch(key) {
+                case "DATE_TIME_WITHOUT_SECONDS":
+                    this.tempDate = val
+                    break;
+            }
         }
     },
     mounted() {

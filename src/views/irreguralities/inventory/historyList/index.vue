@@ -70,8 +70,8 @@ export default {
         dateFilter: function(val, old) {
             if (val !== undefined) {
                 this.dateRange = val;
-                this.startDate = this.dateRange[0] !== null ? moment(this.dateRange[0]).format("YYYY-MM-DD") : "";
-                this.endDate = this.dateRange[1] !== null ? moment(this.dateRange[1]).format("YYYY-MM-DD") : "";
+                this.startDate = this.dateRange[0];
+                this.endDate = this.dateRange[1];
 
                 if (old !== null && old !== undefined) {
                     if (this.startDate !== old[0] || this.endDate !== old[1]) {
@@ -167,10 +167,17 @@ export default {
             // TODO: CHANGE irregularity_type
             await axios
                 .get(this.URL.irregularities +
-                    `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${from}&end_date=${to}&search_by=${searchByBag}&filter_date_by=${filterDateBy}`,
+                    `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${this.formatToWIB(from)}&end_date=${this.formatToWIB(to)}&search_by=${searchByBag}&filter_date_by=${filterDateBy}`,
                     this.Helper.header())
                 .then(res => {
-                    this.dataTable = res.data.data
+                    let arr = res.data.data
+
+                    arr.map(item => {
+                        item["approved_at"] = this.formatTimezone(item?.approved_at);
+                        item["created_at"] = this.formatTimezone(item?.created_at);
+                    });
+
+                    this.dataTable = arr;
 
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
@@ -212,7 +219,11 @@ export default {
             this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, from, to, this.searchByBag, this.filterDateBy)
         },
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate, this.searchByBag, this.filterDateBy)
     },
 }
