@@ -124,6 +124,26 @@ export default {
                     type_amount: true,
                     textAlign: "right"
                 },
+                {
+                    label: "Created Date",
+                    key: "created_at",
+                    width: "auto"
+                },
+                {
+                    label: "Created By",
+                    key: "user_creator",
+                    width: "auto"
+                },
+                {
+                    label: "Updated Date",
+                    key: "updated_at",
+                    width: "auto"
+                },
+                {
+                    label: "Updated By",
+                    key: "user_editor",
+                    width: "auto"
+                }
             ],
             customActionList: [
               {
@@ -229,7 +249,9 @@ export default {
                     if(res.data.data.length > 0) {
                         this.dataTable = res.data.data
                         this.dataTable.map(item=>{
-                          item['node_commision_node'] = item.node != null ? item.node.node_name : ""
+                            item['node_commision_node'] = item.node != null ? item.node.node_name : ""
+                            item['created_at'] =  this.formatTimezone(item['created_at'])
+                            item['updated_at'] =  this.formatTimezone(item['updated_at'])
                         })
                         this.pagination.page = res.data.meta.current_page
                         this.pagination.limit = parseInt(res.data.meta.per_page)
@@ -324,8 +346,14 @@ export default {
             this.filterDateBy = val;
         },
     },
+    
     mounted() {
-        this.getTableData(this.pagination.limit,this.pagination.page)
+        this.refresh()
+        window.addEventListener('timezone-changed', this.refresh);
+    },
+
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
     },
 }
 </script>
