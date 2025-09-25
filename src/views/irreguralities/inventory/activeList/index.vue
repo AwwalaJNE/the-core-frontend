@@ -62,8 +62,8 @@ export default {
         dateFilter: function(val, old) {
             if (val !== undefined) {
                 this.dateRange = val;
-                this.startDate = this.dateRange[0] !== null ? moment(this.dateRange[0]).format("YYYY-MM-DD") : "";
-                this.endDate = this.dateRange[1] !== null ? moment(this.dateRange[1]).format("YYYY-MM-DD") : "";
+                this.startDate = this.dateRange[0];
+                this.endDate = this.dateRange[1];
 
                 if (old !== null && old !== undefined) {
                     if (this.startDate !== old[0] || this.endDate !== old[1]) {
@@ -149,7 +149,7 @@ export default {
             // TODO: CHANGE irregularity_type
             await axios
                 .get(this.URL.irregularities +
-                    `?n=${this.listenNodeId}&show_archive=false&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${from}&end_date=${to}&search_by=${searchBy}&filter_date_by=${filterDateBy}`,
+                    `?n=${this.listenNodeId}&show_archive=false&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${this.formatToWIB(from)}&end_date=${this.formatToWIB(to)}&search_by=${searchBy}&filter_date_by=${filterDateBy}`,
                     this.Helper.header())
                 .then(res => {
                     let arr = res.data.data

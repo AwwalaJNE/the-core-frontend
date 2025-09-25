@@ -55,7 +55,7 @@
                                         :rules="''"
                                         :formKey="'TRIGGER_DATE'"
                                         :valueData="tempDate"
-                                        typeInput="daterange"
+                                        typeInput="datetimerange"
                                         @updateValue="searchDate" 
                                     />
                                 </vs-col>
@@ -75,7 +75,7 @@
                                         :rules="''"
                                         :formKey="'TRIGGER_DATE'"
                                         :valueData="tempDate"
-                                        typeInput="daterange"
+                                        typeInput="datetimerange"
                                         @updateValue="searchDate" 
                                     />
                                 </vs-col>
