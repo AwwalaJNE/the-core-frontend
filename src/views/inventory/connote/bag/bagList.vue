@@ -398,6 +398,9 @@ export default {
             if(from !== undefined && to !== undefined) {
               startDate = from
               endDate = to
+
+              startDate = this.formatToWIB(startDate)
+              endDate = this.formatToWIB(endDate)
             }
             if(bagDestination !== undefined && bagDestination !== '-') {
               bagDes = bagDestination
