@@ -48,7 +48,7 @@
                                         :rules="''"
                                         :formKey="'TRIGGER_DATE'"
                                         :valueData="dateRange"
-                                        typeInput="daterange"
+                                        typeInput="datetimerange"
                                         @updateValue="updateValue" />
                                 </vs-col>
                             </vs-row>
@@ -230,16 +230,17 @@ export default {
     methods: {
         refresh(){
 
-            let d = new Date()
-            let from = ''
-            let to = ''
+            let from = '';
+            let to = '';
 
             if(this.dateRange.length > 0) {
-                from = moment(this.dateRange[0]).format("YYYY-MM-DD")
-                to = moment(this.dateRange[1]).format("YYYY-MM-DD")
+                from = this.dateRange[0];
+                to = this.dateRange[1];
             } else {
-                from = moment(d).format("YYYY-MM-DD")
-                to = moment(d).format("YYYY-MM-DD")
+                let d = new Date()
+
+                from = moment(d).startOf('day').format("YYYY-MM-DD HH:mm:ss");
+                to   = moment(d).endOf('day').format("YYYY-MM-DD HH:mm:ss");
             }
 
             
@@ -254,8 +255,8 @@ export default {
                 query = q
             }
             if(from !== undefined && to !== undefined) {
-              startDate = from
-              endDate = to
+              startDate = this.formatToWIB(from)
+              endDate = this.formatToWIB(to)
             }
             await axios
                 .get(this.URL.irregularities +
