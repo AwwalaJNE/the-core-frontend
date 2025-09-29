@@ -614,7 +614,7 @@ export default {
                         origin_vehicle_tlc: item?.origin_tlc || "",
                         destination_vehicle_tlc: item?.destination_tlc || "",
                         vehicle_id: item?.vehicle_name || "",
-                        pic_employee_id: item?.pic_employee_id || "",
+                        pic_employee_id: item?.employee_name || "",
                         flight_number: item?.flight_number || "",
                         flight_schedule: this.formatTimezone(item?.flight_schedule) || "",
                         etd_vehicle: this.formatTimezone(item?.etd) || "",
