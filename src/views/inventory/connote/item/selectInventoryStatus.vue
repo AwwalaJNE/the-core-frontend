@@ -10,6 +10,7 @@
           v-model="value"
           :border="border"
           @change="updateStatusinventory"
+          :data-testid="`select-inventory-status-by`"
           :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
       >
         <template v-if="DataArr.length > 0">

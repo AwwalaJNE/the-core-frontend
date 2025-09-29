@@ -201,8 +201,8 @@ export default {
             }
             
             if(from !== undefined && to !== undefined) {
-              startDate = from
-              endDate = to
+               startDate = this.formatToWIB(from)
+               endDate = this.formatToWIB(to)
             }
 
             await axios
@@ -309,9 +309,9 @@ export default {
         }
     },
     mounted() {
-        this.refresh()
-        this.handlePrintShortcut(this.actionPrintSelected)
-        window.addEventListener('timezone-changed', this.refresh);
+      window.addEventListener('timezone-changed', this.refresh);
+      this.handlePrintShortcut(this.actionPrintSelected)
+      this.refresh()
     },
     beforeDestroy() {
         window.removeEventListener('timezone-changed', this.refresh);

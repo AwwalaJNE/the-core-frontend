@@ -25,7 +25,14 @@
               <div class="nav-box">
                 <vs-row justify="space-between">
                   <vs-col xs="6" sm="4" lg="4">
-                    <daterange-filter @searchDate="searchDate"/>
+                    <date-time 
+                        :name="''" 
+                        :rules="''" 
+                        :formKey="'DATE_TIME_WITHOUT_SECONDS'" 
+                        :valueData="tempDate"
+                        typeInput="datetimerange" 
+                        @updateValue="updateValue" 
+                    />
                   </vs-col>
                   <vs-col offset="3" xs="6" sm="3" lg="3" class="mb-15">
                     <search-input ref="searchInput" @searchValue="searchValue" placeholder="Search Cash Register"/>
@@ -61,6 +68,7 @@ import NavItem from "@/components/navbar/navTab"
 import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 import dateRange from "@/components/daterange/index"
+import DateTime from "@/components/input/dateTime"
 
 import cashRegisterList from "@/views/cashRegister/cashRegisterList"
 import DialogConfirm from "@/components/dialog/dialogConfirm"
@@ -75,7 +83,8 @@ export default {
         "search-input": SearchInput,
         "daterange-filter": dateRange,
         "cashRegisterList": cashRegisterList,
-        "dialog-confirm": DialogConfirm
+        "dialog-confirm": DialogConfirm,
+        "date-time": DateTime
     },
     data() {
         return {
@@ -116,6 +125,13 @@ export default {
             this.activeLoadingCashRegister=true
             this.addData()
           }
+        },
+        updateValue(key, val) {
+            switch(key) {
+                case "DATE_TIME_WITHOUT_SECONDS":
+                    this.tempDate = val
+                    break;
+            }
         },
         async addData() {
           await axios
