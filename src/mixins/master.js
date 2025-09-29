@@ -556,7 +556,7 @@ const Master = {
             this[fieldName] = this[fieldName].replace(/[^a-zA-Z0-9_\/-]/g, '');
         },
         formatDateTimeId(datetime) {
-            if (!datetime) return '-';
+            if (!datetime) return '';
             const d = new Date(datetime);
 
             const dateOptions = { day: '2-digit', month: 'short', year: 'numeric' }

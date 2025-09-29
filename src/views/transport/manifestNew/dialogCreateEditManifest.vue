@@ -916,7 +916,7 @@ export default {
                     vehicle_id: active_vehicle?.vehicle_name || "",
                     pic_employee_id: active_vehicle?.pic_employee_id || "",
                     flight_number: active_vehicle?.flight_number || "",
-                    flight_schedule: this.formatTimezone(active_vehicle?.etd) || "",
+                    flight_schedule: this.formatTimezone(active_vehicle?.flight_schedule) || "",
                     etd_vehicle: this.formatTimezone(active_vehicle?.etd) || "",
                     eta_vehicle: this.formatTimezone(active_vehicle?.eta) || "",
                     status_flight: active_vehicle?.status_flight,
@@ -947,7 +947,7 @@ export default {
                         vehicle_id: item?.vehicle_name || "",
                         pic_employee_id: item?.pic_employee_id || "",
                         flight_number: item?.flight_number || "",
-                        flight_schedule: this.formatTimezone(item?.etd) || "",
+                        flight_schedule: this.formatTimezone(item?.flight_schedule) || "",
                         etd_vehicle: this.formatTimezone(item?.etd) || "",
                         eta_vehicle: this.formatTimezone(item?.eta) || "",
                         is_active: item?.status === 'ACTIVE'
@@ -963,7 +963,7 @@ export default {
                         origin_branch_code: item?.origin_tlc || "",
                         destination_branch_code: item?.destination_tlc || "",
                         flight_number: item?.flight_number || "",
-                        flight_schedule: item?.etd || "",
+                        flight_schedule: this.manifest_method_id === 1 ? item?.etd : "" || "",
                         etd: item?.etd || "",
                         eta: item?.eta || "",
                         is_active: item?.status === 'ACTIVE'
