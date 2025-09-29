@@ -26,7 +26,7 @@
 			<vs-col w="4" align="center">
 				<template>
 					<vs-row>
-						<vs-row v-if="!listenData.pic_employee_id">
+						<vs-row v-if="listenData.flight_number">
 							<vs-col align="center">
 								<img
 									:src="require('@/assets/svg/plane.svg')"
