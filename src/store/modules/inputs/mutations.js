@@ -4848,6 +4848,9 @@ export default {
   SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME_ValueData(state, payload) {
     state.surat_muatan_schedule.origin_name.valueData = payload
   },
+  SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME_visible(state, payload) {
+    state.surat_muatan_schedule.origin_name.visible = payload
+  },
   SET_SURAT_MUATAN_SCHEDULE_ORIGIN_IDENTIFIER(state, payload) {
     state.surat_muatan_schedule.origin_identifier.value = payload
   },
@@ -4861,12 +4864,18 @@ export default {
   SET_SURAT_MUATAN_SCHEDULE_ORIGIN_IDENTIFIER_ValueData(state, payload) {
     state.surat_muatan_schedule.origin_identifier.valueData = payload
   },
+  SET_SURAT_MUATAN_SCHEDULE_ORIGIN_IDENTIFIER_visible(state, payload) {
+    state.surat_muatan_schedule.origin_identifier.visible = payload
+  },
 
   SET_SURAT_MUATAN_SCHEDULE_ORIGIN_POINT(state, payload) {
     state.surat_muatan_schedule.origin_point.value = payload
   },
   SET_SURAT_MUATAN_SCHEDULE_ORIGIN_POINT_ValueData(state, payload) {
     state.surat_muatan_schedule.origin_point.valueData = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_ORIGIN_POINT_visible(state, payload) {
+    state.surat_muatan_schedule.origin_point.visible = payload
   },
 
   SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME(state, payload) {
@@ -4875,11 +4884,20 @@ export default {
   SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME_ValueData(state, payload) {
     state.surat_muatan_schedule.destination_name.valueData = payload
   },
+  SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME_visible(state, payload) {
+    state.surat_muatan_schedule.destination_name.visible = payload
+  },
   SET_SURAT_MUATAN_SCHEDULE_DESTINATION_IDENTIFIER(state, payload) {
     state.surat_muatan_schedule.destination_identifier.value = payload
   },
+  SET_SURAT_MUATAN_SCHEDULE_DESTINATION_IDENTIFIER_visible(state, payload) {
+    state.surat_muatan_schedule.destination_identifier.visible = payload
+  },
   SET_SURAT_MUATAN_SCHEDULE_DESTINATION_POINT(state, payload) {
     state.surat_muatan_schedule.destination_point.value = payload
+  },
+  SET_SURAT_MUATAN_SCHEDULE_DESTINATION_POINT_visible(state, payload) {
+    state.surat_muatan_schedule.destination_point.visible = payload
   },
 
   SET_SURAT_MUATAN_SCHEDULE_DESTINATION_IDENTIFIER(state, payload) {

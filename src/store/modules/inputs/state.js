@@ -2912,7 +2912,8 @@ export default {
       typeData: "String",
       valueData: null,
       value: '',
-      width: 6
+      width: 6,
+      visible: false
     },
     //  origin_identifier: {
     //   label: "Origin Identifier",
@@ -2933,7 +2934,8 @@ export default {
       valueData: null,
       value: '',
       placeholder: "Ex: Terminal 1",
-      width: 6
+      width: 6,
+      visible: false
     },
     destination_name: {
       label: "Destination Name",
@@ -2943,7 +2945,8 @@ export default {
       typeData: "String",
       valueData: null,
       value: '',
-      width: 6
+      width: 6,
+      visible: false
     },
     // destination_identifier: {
     //   label: "Destination Identifier",
@@ -2964,7 +2967,8 @@ export default {
       valueData: null,
       value: '',
       placeholder: "Ex: Terminal 1",
-      width: 6
+      width: 6,
+      visible: false
     },
     etd: {
       label: "ETD",

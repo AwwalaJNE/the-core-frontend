@@ -731,7 +731,7 @@ export default {
                         this.autoComplateUrl = `${this.URL.employee}/driver?n=${this.listenNodeId}`;
                         break;
                     case "vehicle_id":
-                        this.autoComplateUrl = `${this.URL.vehicle}?n=${this.listenNodeId}&search_by=vehicle_name&sort_order=desc&limit=15&page=1`;
+                        this.autoComplateUrl = `${this.URL.vehicle_list_v2}/${this.listenManifestMethod}?n=${this.listenNodeId}&search_by=vehicle_name&sort_order=desc&limit=15&page=1`;
                         break;
                     default:
                         break;
