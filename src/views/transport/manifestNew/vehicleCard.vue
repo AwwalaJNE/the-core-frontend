@@ -8,7 +8,7 @@
 		<vs-row justify="space-between" align="center">
 			<vs-col w="6" align="left">
 				<h1 class="text-header">{{ listenData.vehicle_id }}</h1>
-				<span v-if="!listenData.pic_employee_id" class="text">{{ formatDateTimeId(listenData.flight_schedule) }} {{ listenData.flight_schedule_timezone || "" }}</span>
+				<span v-if="!listenData.pic_employee_id" class="text">{{ formatDateTimeId(listenData.flight_schedule) }}</span>
 			</vs-col>
 			<vs-col w="6" align="right">
 				<span v-if="listenData.status_flight" class="badge">{{ listenData.status_flight }}</span>
@@ -20,13 +20,13 @@
 		<vs-row justify="space-between" align="center">
 			<vs-col w="4" align="left">
 				<h1 class="text-subheader">{{ listenData.origin_vehicle }}</h1>
-				<span class="text">{{ formatDateTimeId(listenData.etd_vehicle) }} {{ listenData.etd_vehicle_timezone || "" }}</span>
+				<span class="text">{{ formatDateTimeId(listenData.etd_vehicle) }}</span>
 			</vs-col>
 
 			<vs-col w="4" align="center">
 				<template>
 					<vs-row>
-						<vs-row v-if="listenData.flight_number">
+						<vs-row v-if="listenData.flight_schedule">
 							<vs-col align="center">
 								<img
 									:src="require('@/assets/svg/plane.svg')"
@@ -36,7 +36,7 @@
 							</vs-col>
 						</vs-row>
 
-						<vs-row v-if="!listenData.pic_employee_id">
+						<vs-row v-if="listenData.origin_vehicle_tlc || listenData.destination_vehicle_tlc">
 							<vs-col w="4">
 								<h1 class="text-subheader">{{ listenData.origin_vehicle_tlc }}</h1>
 							</vs-col>
@@ -59,7 +59,7 @@
 
 			<vs-col w="4" align="right">
 				<h1 class="text-subheader">{{ listenData.destination_vehicle }}</h1>
-				<span class="text">{{ formatDateTimeId(listenData.eta_vehicle) }} {{ listenData.eta_vehicle_timezone || "" }}</span>
+				<span class="text">{{ formatDateTimeId(listenData.eta_vehicle) }}</span>
 			</vs-col>
 		</vs-row>
 	</div>

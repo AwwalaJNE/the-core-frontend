@@ -316,7 +316,7 @@ export default {
                     etd_timezone: "WIB",
                     eta: this.formatToWIB(item.eta),
                     eta_timezone: "WIB",
-                    pic_employee_id: item.pic_employee_id,
+                    pic_employee_id: item?.pic_employee_id || "",
                     is_active: item.is_active ? 1 : 0
                 }));
             }
