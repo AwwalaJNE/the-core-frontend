@@ -346,20 +346,40 @@ export default {
     methods: {
         setNavItem() {
             if (this.submitType === 'api') {
-                this.navItem = [
-                    {
-                        label: "MANAGE",
-                        key: "k-MANAGE"
-                    },
-                    {
-                        label: "NEW (AUTO)",
-                        key: "k-NEW-AUTO"
-                    },
-                    {
-                        label: "NEW (MANUAL)",
-                        key: "k-NEW-MANUAL"
-                    },
-                ];
+                // TODO: SET AUTO LATER AFTER API FOR ROAD / TRAIN / SEA ALREADY EXISTS
+                switch(this.listenManifestMethod){
+                    case 1:
+                        this.navItem = [
+                            {
+                                label: "MANAGE",
+                                key: "k-MANAGE"
+                            },
+                            {
+                                label: "NEW (AUTO)",
+                                key: "k-NEW-AUTO"
+                            },
+                            {
+                                label: "NEW (MANUAL)",
+                                key: "k-NEW-MANUAL"
+                            },
+                        ];
+                        break;
+                    case 2:
+                    case 3:
+                    case 4:
+                        this.navItem = [
+                            {
+                                label: "MANAGE",
+                                key: "k-MANAGE"
+                            },
+                            {
+                                label: "NEW (MANUAL)",
+                                key: "k-NEW-MANUAL"
+                            },
+                        ];
+                        break;
+                }
+
                 this.navActive = "k-MANAGE";
 
                 this.getManifestVehicle();
