@@ -103,6 +103,10 @@ export default {
       if (q !== undefined) {
         query = q;
       }
+      if (from !== undefined && to !== undefined) {
+        startDate = this.formatToWIB(from)
+        endDate = this.formatToWIB(to)
+      }
       await axios
         .get(
           this.URL.cash_register +
