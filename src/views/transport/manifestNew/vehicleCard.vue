@@ -36,7 +36,7 @@
 							</vs-col>
 						</vs-row>
 
-						<vs-row>
+						<vs-row v-if="!listenData.pic_employee_id">
 							<vs-col w="4">
 								<h1 class="text-subheader">{{ listenData.origin_vehicle_tlc }}</h1>
 							</vs-col>

@@ -4612,6 +4612,9 @@ SET_SYNC_SURAT_MUATAN_FLIGHT_IATA({ commit }, payload) {
   SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_ArrData', payload)
   },
+  SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_visible({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_visible', payload)
+  },
 
 
   SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE({ commit }, payload) {
@@ -4622,6 +4625,9 @@ SET_SYNC_SURAT_MUATAN_FLIGHT_IATA({ commit }, payload) {
   },
   SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_ArrData({ commit }, payload) {
     commit('SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_ArrData', payload)
+  },
+  SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_visible({ commit }, payload) {
+    commit('SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_visible', payload)
   },
 
 

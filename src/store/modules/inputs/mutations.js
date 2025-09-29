@@ -5046,6 +5046,9 @@ SET_SYNC_SURAT_MUATAN_FLIGHT_IATA(state, payload) {
       state.surat_muatan_vehicle.origin_branch_code.arrData = payload :
       state.surat_muatan_vehicle.origin_branch_code.arrData = []
   },
+  SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_visible(state, payload) {
+    state.surat_muatan_vehicle.origin_branch_code.visible = payload
+  },
 
 
   SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE(state, payload) {
@@ -5058,6 +5061,9 @@ SET_SYNC_SURAT_MUATAN_FLIGHT_IATA(state, payload) {
     state.surat_muatan_vehicle.destination_branch_code.hasOwnProperty('arrData') ?
       state.surat_muatan_vehicle.destination_branch_code.arrData = payload :
       state.surat_muatan_vehicle.destination_branch_code.arrData = []
+  },
+  SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_visible(state, payload) {
+    state.surat_muatan_vehicle.destination_branch_code.visible = payload
   },
 
 
