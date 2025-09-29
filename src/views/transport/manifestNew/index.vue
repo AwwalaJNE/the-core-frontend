@@ -99,10 +99,13 @@
                                     />
                                 </vs-col>
                                 <vs-col w="8">
-                                    <daterange-filter 
-                                        size="small" 
+                                    <date-time 
+                                        :name="''" 
+                                        :rules="''" 
+                                        :formKey="'DATE_TIME_WITHOUT_SECONDS'" 
                                         :valueData="tempDate"
-                                        @searchDate="searchDate" 
+                                        typeInput="datetimerange" 
+                                        @updateValue="searchDate" 
                                     />
                                 </vs-col>
                             </vs-row>
@@ -139,6 +142,7 @@
 import master from "@/mixins/master";
 import Breadcrumb from "@/components/breadcrumb/index";
 import dateRange from "@/components/daterange/index";
+import DateTime from "@/components/input/dateTime"
 import SearchInput from "@/components/search/searchInput";
 import SelectSearchBy from "@/components/search/selectSearchBy";
 
@@ -153,6 +157,7 @@ export default {
         "daterange-filter": dateRange,
         "search-input": SearchInput,
         "select-search-by" : SelectSearchBy,
+        "date-time": DateTime,
 
         SuratMuatan: SuratMuatan,
         SuratMuatanDialog: SuratMuatanDialog,
@@ -287,7 +292,7 @@ export default {
             this.tempSearch = val;
             this.updateLocalStorage();
         },
-        searchDate(val) {
+        searchDate(formKey, val) {
             this.tempDate = val;
             this.updateLocalStorage();
         },

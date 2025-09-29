@@ -225,6 +225,11 @@ export default {
             let query = "";
             let isOnBag = "";
             let isInventory = "";
+            let startDate = from || "";
+            let endDate = to || "";
+
+            startDate = this.formatToWIB(startDate);
+            endDate = this.formatToWIB(endDate);
             if(q !== undefined) {
                 query = q
             }
@@ -237,7 +242,7 @@ export default {
             await axios
                 .get(
                     this.URL.connote +
-                    `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&is_confirmed=${isInventory}&is_on_bag=${isOnBag}&page=${page}&s=${query}&start_date=${from}&end_date=${to}&search_by=${searchBy}&filter_date_by=${filterDateBy}`,
+                    `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&is_confirmed=${isInventory}&is_on_bag=${isOnBag}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${searchBy}&filter_date_by=${filterDateBy}`,
                     this.Helper.header())
                 .then(res => {
                     let arr = res.data.data

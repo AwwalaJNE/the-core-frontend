@@ -76,9 +76,13 @@
                                     />
                                 </vs-col>
                                 <vs-col w="8">
-                                    <daterange-filter 
-                                        size="small" 
-                                        @searchDate="searchDate" 
+                                    <date-time 
+                                        :name="''" 
+                                        :rules="''" 
+                                        :formKey="'DATE_TIME_WITHOUT_SECONDS'" 
+                                        :valueData="tempDate"
+                                        typeInput="datetimerange" 
+                                        @updateValue="searchDate" 
                                     />
                                 </vs-col>
                             </vs-row>
@@ -132,6 +136,7 @@ import DateRange from "@/components/daterange/index";
 import NavItem from "@/components/navbar/navTab";
 import SearchInput from "@/components/search/searchInput";
 import SelectSearchBy from "@/components/search/selectSearchBy";
+import DateTime from "@/components/input/dateTime";
 
 import SuratJalan from "@/views/transport/suratJalanNew/suratJalan";
 import DialogCreateSuratJalan from "@/views/transport/suratJalanNew/dialogCreateSuratJalan";
@@ -146,6 +151,7 @@ export default {
         "nav-item": NavItem,
         "search-input": SearchInput,
         "select-search-by": SelectSearchBy,
+        "date-time": DateTime,
 
         "SuratJalan": SuratJalan,
         "dialogCreateSuratJalan": DialogCreateSuratJalan,
@@ -280,7 +286,7 @@ export default {
         searchValue(val) {
             this.tempSearch = val;
         },
-        searchDate(val) {
+        searchDate(formKey, val) {
             this.tempDate = val;
         },
         clearSearch() {

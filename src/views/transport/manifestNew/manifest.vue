@@ -317,9 +317,12 @@ export default {
       const endDate = to || "";
       const queryDate = qDate || "";
 
+      let formattedStartDate = this.formatToWIB(startDate);
+      let formattedEndDate = this.formatToWIB(endDate);
+
       try {
         const res = await axios.get(
-          `${this.URL.surat_muatan}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${queryDate}&status=${this.status}&is_sm_transit=${this.isTransit}`,
+          `${this.URL.surat_muatan}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${formattedStartDate}&end_date=${formattedEndDate}&search_by=${this.searchBy}&filter_date_by=${queryDate}&status=${this.status}&is_sm_transit=${this.isTransit}`,
           this.Helper.header()
         );
 
