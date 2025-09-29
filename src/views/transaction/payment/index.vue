@@ -2,7 +2,8 @@
     <dialog-master 
     :actived="listenActive" 
     width="lg"
-    :closeDialog="cancel">
+    :closeDialog="cancel"
+    :hide-close-icon="true">
         <template v-slot:header>
             
         </template>
@@ -137,6 +138,7 @@ export default {
     props: {
         closeDialog: Function,
         active: Boolean,
+        koli_number: String,
     },
     computed: {
         listenActive(){
@@ -307,10 +309,31 @@ export default {
                     this.$router.push({ name: 'transactionComplete', params: { id: this.transaction_id } });
                     this.setRoutePageHistory(this.$route.meta, false);
                     this.openNotification(null, 'Success', 'Payment success')
+                    this.getDataKoli()
                 }).catch(err => {
                     this.openNotification('danger', err.response ? err.response.data.code : '', 'Payment failed', err)
                 })
             }
+        },
+        async getDataKoli() {
+            await axios
+                .get(this.URL.print + 
+                `/${this.koli_number}/koli?n=${this.listenNodeId}`, 
+                this.Helper.header())
+                .then(res => {
+                    this.legacySystemHTML = res.data.html
+
+                    this.$nextTick(() => {
+                        var myWindow = window.open("", "MsgWindow", "width=600,height=400");
+                        myWindow.document.write(`${this.legacySystemHTML}`);
+                        myWindow.document.close();
+                        // myWindow.focus();
+                        // window action print setelah 3s
+                        // setTimeout(function(){ myWindow.print(); }, 3000);
+                    });
+                }).catch(err => {
+                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Print koli failed', err.response ? err.response.data.message : 'something went wrong')
+                })
         },
         cancel() {
             this.closeDialog()

@@ -375,6 +375,9 @@ export default {
         sjType = sj_type;
       }
 
+      startDate = this.formatToWIB(startDate);
+      endDate = this.formatToWIB(endDate);
+
       await axios
         .get(
           this.URL.manifest_delivery_order +

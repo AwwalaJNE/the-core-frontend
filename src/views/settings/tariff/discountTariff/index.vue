@@ -113,6 +113,26 @@ export default {
                     key: "discount_tariff_persentase",
                     width: "auto"
                 },
+                {
+                    label: "Created Date",
+                    key: "created_at",
+                    width: "auto"
+                },
+                {
+                    label: "Created By",
+                    key: "user_creator",
+                    width: "auto"
+                },
+                {
+                    label: "Updated Date",
+                    key: "updated_at",
+                    width: "auto"
+                },
+                {
+                    label: "Updated By",
+                    key: "user_editor",
+                    width: "auto"
+                }
             ],
             loading: false,
             dataItem: {},
@@ -220,7 +240,8 @@ export default {
 
 
                         item['children'] = children
-
+                        item['created_at'] =  this.formatTimezone(item['created_at'])
+                        item['updated_at'] =  this.formatTimezone(item['updated_at'])
                     })
 
 
@@ -328,6 +349,11 @@ export default {
     },
     mounted() {
         this.refresh()
-    }
+        window.addEventListener('timezone-changed', this.refresh);
+    },
+
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    },
 }
 </script>

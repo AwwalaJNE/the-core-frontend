@@ -53,7 +53,7 @@
         <div class="nav-box">
           <vs-row justify="end">
             <vs-col xs="12" sm="12" lg="7" style="margin-bottom: 0.5rem;">
-              <daterange-filter @searchDate="searchDate" size="small" />
+              <daterange-filter :formKey="'DATE_TIME_WITHOUT_SECONDS'" typeInput="datetimerange" @searchDate="searchDate" size="small" />
             </vs-col>
             <vs-col xs="6" sm="8" lg="3">
               <select-search-by

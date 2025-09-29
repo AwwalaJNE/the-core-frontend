@@ -3,9 +3,9 @@
     v-model="modalActive"
     prevent-close
     :loading="loadingActive"
-    :not-close="not_close"
-    @close="closeDialog"
-    :class="width"
+    @close="handleClose"
+    :class="[width, hideCloseIcon ? 'hide-close-x' : '']"
+    :not-close="preventAllClose"
   >
     <template>
       <h4 class="not-margin" style="font-size:18px">
@@ -34,6 +34,8 @@ export default {
     fullScreen: Boolean,
     loading: Boolean,
     not_close_option: Boolean,
+    // === PARAM BARU: default false ===
+    hideCloseIcon: { type: Boolean, default: false },
   },
   data() {
     return {
@@ -42,51 +44,42 @@ export default {
       not_close: false,
     };
   },
+  computed: {
+    // Jika hideCloseIcon true -> cegah semua cara menutup (ESC/overlay)
+    preventAllClose() {
+      return this.hideCloseIcon || this.not_close;
+    },
+  },
   watch: {
-    actived: function(val) {
+    actived(val) {
       if (val !== undefined) {
-        this.modalActive = val || false;
+        this.modalActive = !!val;
         this.$nextTick(() => {
-          if (val == true) {
-            this.addKeyHandler();
-          } else {
-            this.removeKeyHandler();
-          }
+          // ESC aktif hanya jika ikon tidak disembunyikan
+          if (this.modalActive && !this.hideCloseIcon) this.addKeyHandler();
+          else this.removeKeyHandler();
         });
       }
     },
-    loading: function(val) {
-      if (val !== undefined) {
-        this.loadingActive = val || false;
-      }
-    },
-    not_close_option: function(val) {
-      if (val !== undefined) {
-        this.not_close = val || false;
-      }
+    loading(val) { if (val !== undefined) this.loadingActive = !!val; },
+    not_close_option(val) { if (val !== undefined) this.not_close = !!val; },
+    hideCloseIcon() {
+      if (this.modalActive && !this.hideCloseIcon) this.addKeyHandler();
+      else this.removeKeyHandler();
     },
   },
   methods: {
-    handleClose() {
-      this.closeDialog();
+   handleClose() {
+      // Saat hide = true, abaikan event close dari vs-dialog
+      if (this.hideCloseIcon) return;
+      this.closeDialog && this.closeDialog();
     },
     keyHandler(e) {
-      /**
-       * 27 - Esc
-       */
       const key = e.which || e.keyCode;
-      if (key === 27) {
-        this.handleClose();
-      }
+      if (key === 27) this.handleClose();
     },
-    addKeyHandler() {
-      window.addEventListener("keydown", this.keyHandler);
- 
-    },
-    removeKeyHandler() {
-      window.removeEventListener("keydown", this.keyHandler);
- 
-    },
+    addKeyHandler() { window.addEventListener("keydown", this.keyHandler); },
+    removeKeyHandler() { window.removeEventListener("keydown", this.keyHandler); },
   },
 };
 </script>
@@ -161,6 +154,18 @@ export default {
   }
   .vs-button {
     margin: 0px;
+  }
+}
+/* Tidak discope atau gunakan :deep/::v-deep jika style Anda scoped */
+.hide-close-x {
+  /* Cover berbagai versi class tombol close Vuesax */
+  :deep(.vs-dialog__close),
+  :deep(.vs-dialog-close),
+  :deep(.vs-dialog__button-close),
+  :deep(button[aria-label="close"]),
+  :deep([aria-label="close"]) {
+    display: none !important;
+    pointer-events: none !important;
   }
 }
 </style>

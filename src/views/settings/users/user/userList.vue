@@ -152,6 +152,26 @@ export default {
                     key: "user_nodes_list",
                     width: "auto"
                 },
+                {
+                    label: "Created Date",
+                    key: "created_at",
+                    width: "md"
+                },
+                {
+                    label: "Created By",
+                    key: "user_creator",
+                    width: "auto"
+                },
+                {
+                    label: "Updated Date",
+                    key: "updated_at",
+                    width: "auto"
+                },
+                {
+                    label: "Updated By",
+                    key: "user_editor",
+                    width: "auto"
+                }
             ],
             loading: false,
             dataItem: {},
@@ -218,6 +238,8 @@ export default {
                             item["primary_user_application_role"] = item?.app_role?.[0]?.role?.[0]?.app_role_name || "";
                         }
 
+                        item['created_at'] =  this.formatTimezone(item['created_at'])
+                        item['updated_at'] =  this.formatTimezone(item['updated_at'])
                         item["user_nodes_list"] = item.user_nodes.map((nodes,index) => {
                             let newline = "\n";
                             if(index == 0){
@@ -319,8 +341,14 @@ export default {
             }
         }
     },
+    
     mounted() {
         this.refresh()
+        window.addEventListener('timezone-changed', this.refresh);
+    },
+
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
     },
 }
 </script>

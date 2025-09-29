@@ -10,6 +10,7 @@
           v-model="value"
           :border="border"
           @change="updateFilterDateBy"
+          :data-testid="`select-filter-date-by`"
           :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
       >
         <template v-if="DataArr.length > 0">
