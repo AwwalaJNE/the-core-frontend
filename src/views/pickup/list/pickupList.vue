@@ -285,8 +285,9 @@ export default {
                 query = q
             }
             if(from !== undefined && to !== undefined) {
-              startDate = from
-              endDate = to
+               startDate = this.formatToWIB(from)
+               endDate = this.formatToWIB(to)
+               console.log(startDate, endDate)
             }
           
             if(status !== undefined && status !== null) {

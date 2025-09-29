@@ -146,8 +146,8 @@ export default {
                 query = q
             }
             if(from !== undefined && to !== undefined) {
-              startDate = from
-              endDate = to
+              startDate = this.formatToWIB(from)
+              endDate = this.formatToWIB(to)
             }
             await axios
                 .get(this.URL.pickup_schedule +
