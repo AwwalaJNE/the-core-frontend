@@ -316,6 +316,7 @@ export default {
                     etd_timezone: "WIB",
                     eta: this.formatToWIB(item.eta),
                     eta_timezone: "WIB",
+                    pic_employee_id: item.pic_employee_id,
                     is_active: item.is_active ? 1 : 0
                 }));
             }
@@ -373,7 +374,7 @@ export default {
             this.$refs.formDataController.handleSubmit();
         },
         handleClearForm(){
-            this.$refs.formDataController.handleClearForm();
+            this.$refs?.formDataController?.handleClearForm();
             this.form = {};
             this.id = "";
             this.$emit("handleClearInput");
@@ -473,6 +474,7 @@ export default {
                         etd_timezone: "WIB",
                         eta: form?.eta_vehicle || "",
                         eta_timezone: "WIB",
+                        pic_employee_id: form?.pic_employee_id?.employee_id || "",
                         is_active: this.vehicle.length === 0
                     }
                 };
@@ -513,6 +515,7 @@ export default {
                         eta: form?.eta_vehicle || "",
                         origin_branch_code: form?.origin_vehicle || "",
                         destination_branch_code: form?.destination_vehicle || "",
+                        pic_employee_id: form?.pic_employee_id?.employee_id || "",
                         is_active: this.vehicle.length === 0
                     }
                 };

@@ -773,14 +773,14 @@ export default {
         },
         handleClearForm() {
             if ((this.navActive === 'k-NEW-AUTO' || this.navActive === 'k-NEW-MANUAL') && this.$refs.formSuratMuatanVehicleController) {
-                this.$refs.formSuratMuatanVehicleController.handleClearForm();
+                this.$refs?.formSuratMuatanVehicleController?.handleClearForm();
             }
         },
         clearInput() {
             this.moveTab();
             
             this.$nextTick(() => {
-                this.$refs.formFlightNumber?.$el?.querySelector("input")?.focus();
+                this.$refs?.formFlightNumber?.$el?.querySelector("input")?.focus();
             });
         },
         cancel() {
@@ -826,8 +826,8 @@ export default {
                     let arr = res.data.data;
                     arr.map(item => {
                         item,
-                        item["origin"] = item?.origin_name + "\n" + item?.origin_point;
-                        item["destination"] = item?.destination_name + "\n" + item?.destination_point;
+                        item["origin"] = (item?.origin_name || "") + "\n" + (item?.origin_point || "");
+                        item["destination"] = (item?.destination_name || "") + "\n" + (item?.destination_point || "");
                         item["etd"] = this.formatTimezone(item?.etd);
                         item["eta"] = this.formatTimezone(item?.eta);
                     })

@@ -568,6 +568,8 @@ const Master = {
             return `${dateStr} ${timeStr}`;
         },
         getTLC(text) {
+            if (!text) return null;
+            
             // 1. Prefer code inside parentheses like (MKQ000)
             let parenMatch = text.match(/\(\s*([A-Z]{3})(?=\d*\))/);
             if (parenMatch) return parenMatch[1];
