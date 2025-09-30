@@ -556,7 +556,7 @@ const Master = {
             this[fieldName] = this[fieldName].replace(/[^a-zA-Z0-9_\/-]/g, '');
         },
         formatDateTimeId(datetime) {
-            if (!datetime) return '-';
+            if (!datetime) return '';
             const d = new Date(datetime);
 
             const dateOptions = { day: '2-digit', month: 'short', year: 'numeric' }
@@ -568,6 +568,8 @@ const Master = {
             return `${dateStr} ${timeStr}`;
         },
         getTLC(text) {
+            if (!text) return null;
+
             // 1. Prefer code inside parentheses like (MKQ000)
             let parenMatch = text.match(/\(\s*([A-Z]{3})(?=\d*\))/);
             if (parenMatch) return parenMatch[1];
@@ -588,7 +590,7 @@ const Master = {
         },
         formatTimezone(date) {
             if (!date || typeof date !== 'string' || date.trim() === '') {
-                return '-';
+                return '';
             }
 
             const d = new Date(date);

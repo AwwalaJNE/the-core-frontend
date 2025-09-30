@@ -346,20 +346,40 @@ export default {
     methods: {
         setNavItem() {
             if (this.submitType === 'api') {
-                this.navItem = [
-                    {
-                        label: "MANAGE",
-                        key: "k-MANAGE"
-                    },
-                    {
-                        label: "NEW (AUTO)",
-                        key: "k-NEW-AUTO"
-                    },
-                    {
-                        label: "NEW (MANUAL)",
-                        key: "k-NEW-MANUAL"
-                    },
-                ];
+                // TODO: SET AUTO LATER AFTER API FOR ROAD / TRAIN / SEA ALREADY EXISTS
+                switch(this.listenManifestMethod){
+                    case 1:
+                        this.navItem = [
+                            {
+                                label: "MANAGE",
+                                key: "k-MANAGE"
+                            },
+                            {
+                                label: "NEW (AUTO)",
+                                key: "k-NEW-AUTO"
+                            },
+                            {
+                                label: "NEW (MANUAL)",
+                                key: "k-NEW-MANUAL"
+                            },
+                        ];
+                        break;
+                    case 2:
+                    case 3:
+                    case 4:
+                        this.navItem = [
+                            {
+                                label: "MANAGE",
+                                key: "k-MANAGE"
+                            },
+                            {
+                                label: "NEW (MANUAL)",
+                                key: "k-NEW-MANUAL"
+                            },
+                        ];
+                        break;
+                }
+
                 this.navActive = "k-MANAGE";
 
                 this.getManifestVehicle();
@@ -433,21 +453,29 @@ export default {
                     this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER_visible", true);
                     this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE_visible", true);
                     this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID_visible", false);
+                    this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_visible", true);
+                    this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_visible", true);
                     break;
                 case 2:
                     this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER_visible", false);
                     this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE_visible", false);
                     this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID_visible", true);
+                    this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_visible", false);
+                    this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_visible", false);
                     break;
                 case 3:
                     this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER_visible", false);
                     this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE_visible", false);
                     this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID_visible", false);
+                    this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_visible", true);
+                    this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_visible", true);
                     break;
                 case 4:
                     this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER_visible", false);
                     this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE_visible", false);
                     this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID_visible", false);
+                    this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_visible", true);
+                    this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_visible", true);
                     break;
             }
         },
@@ -586,9 +614,9 @@ export default {
                         origin_vehicle_tlc: item?.origin_tlc || "",
                         destination_vehicle_tlc: item?.destination_tlc || "",
                         vehicle_id: item?.vehicle_name || "",
-                        pic_employee_id: item?.pic_employee_id || "",
+                        pic_employee_id: item?.employee_name || "",
                         flight_number: item?.flight_number || "",
-                        flight_schedule: this.formatTimezone(item?.etd) || "",
+                        flight_schedule: this.formatTimezone(item?.flight_schedule) || "",
                         etd_vehicle: this.formatTimezone(item?.etd) || "",
                         eta_vehicle: this.formatTimezone(item?.eta) || "",
                         status_flight: item?.status_flight,
@@ -723,7 +751,7 @@ export default {
                         this.autoComplateUrl = `${this.URL.employee}/driver?n=${this.listenNodeId}`;
                         break;
                     case "vehicle_id":
-                        this.autoComplateUrl = `${this.URL.vehicle}?n=${this.listenNodeId}&search_by=vehicle_name&sort_order=desc&limit=15&page=1`;
+                        this.autoComplateUrl = `${this.URL.vehicle_list_v2}/${this.listenManifestMethod}?n=${this.listenNodeId}&search_by=vehicle_name&sort_order=desc&limit=15&page=1`;
                         break;
                     default:
                         break;
@@ -745,14 +773,14 @@ export default {
         },
         handleClearForm() {
             if ((this.navActive === 'k-NEW-AUTO' || this.navActive === 'k-NEW-MANUAL') && this.$refs.formSuratMuatanVehicleController) {
-                this.$refs.formSuratMuatanVehicleController.handleClearForm();
+                this.$refs?.formSuratMuatanVehicleController?.handleClearForm();
             }
         },
         clearInput() {
             this.moveTab();
             
             this.$nextTick(() => {
-                this.$refs.formFlightNumber?.$el?.querySelector("input")?.focus();
+                this.$refs?.formFlightNumber?.$el?.querySelector("input")?.focus();
             });
         },
         cancel() {
@@ -761,6 +789,8 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_NUMBER_visible", false);
             this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_FLIGHT_SCHEDULE_visible", false);
             this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_EMPLOYEE_DRIVER_ID_visible", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_ORIGIN_BRANCH_CODE_visible", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_VEHICLE_DESTINATION_BRANCH_CODE_visible", false);
 
             this.navActive = 'k-MANAGE';
             
@@ -796,8 +826,8 @@ export default {
                     let arr = res.data.data;
                     arr.map(item => {
                         item,
-                        item["origin"] = item?.origin_name + "\n" + item?.origin_point;
-                        item["destination"] = item?.destination_name + "\n" + item?.destination_point;
+                        item["origin"] = (item?.origin_name || "") + "\n" + (item?.origin_point || "");
+                        item["destination"] = (item?.destination_name || "") + "\n" + (item?.destination_point || "");
                         item["etd"] = this.formatTimezone(item?.etd);
                         item["eta"] = this.formatTimezone(item?.eta);
                     })
@@ -854,7 +884,7 @@ export default {
                     vehicle_id: item?.vehicle_name || "",
                     pic_employee_id: "",
                     flight_number: item?.shipment_number || "",
-                    flight_schedule: item?.etd || "",
+                    flight_schedule: this.manifest_method === 1 ? item?.etd : "" || "",
                     flight_schedule_timezone: "WIB",
                     etd_vehicle: item?.etd || "",
                     etd_vehicle_timezone: "WIB",
@@ -899,7 +929,7 @@ export default {
                     vehicle_id: item?.vehicle_name || "",
                     pic_employee_id: "",
                     flight_number: item?.shipment_number || "",
-                    flight_schedule: item?.etd || "",
+                    flight_schedule: this.manifest_method === 1 ? item?.etd : "" || "",
                     flight_schedule_timezone: "WIB",
                     etd_vehicle: item?.etd || "",
                     etd_vehicle_timezone: "WIB",
