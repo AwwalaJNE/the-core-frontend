@@ -312,9 +312,9 @@ export default {
                     tlc_origin: item.origin_branch_code,
                     tlc_destination: item.destination_branch_code,
                     flight_number: item.flight_number,
-                    etd: this.formatToWIB(item.etd),
+                    etd: this.formatToWIBIso(item.etd),
                     etd_timezone: "WIB",
-                    eta: this.formatToWIB(item.eta),
+                    eta: this.formatToWIBIso(item.eta),
                     eta_timezone: "WIB",
                     pic_employee_id: item?.pic_employee_id || "",
                     is_active: item.is_active ? 1 : 0
