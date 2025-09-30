@@ -665,6 +665,55 @@ const Master = {
 
             return `${obj.year}-${obj.month}-${obj.day} ${obj.hour}:${obj.minute}:${obj.second}`;
         },
+        formatToWIBIso(date) {
+            const fromTimezone = this.$ls.get("timezone");
+            if (!date) return "";
+
+            let utcDate;
+
+            if (date.includes("T") && date.endsWith("Z")) {
+                // format ISO → langsung parse sebagai UTC
+                utcDate = new Date(date);
+            } else {
+                // format manual "YYYY-MM-DD", "YYYY-MM-DD HH:mm", atau "YYYY-MM-DD HH:mm:ss"
+                const [datePart, timePart] = date.split(" ");
+                const [year, month, day] = datePart.split("-").map(Number);
+
+                let hour = 0, minute = 0, second = 0;
+                if (timePart) {
+                    const timeParts = timePart.split(":").map(Number);
+                    hour   = timeParts[0] ?? 0;
+                    minute = timeParts[1] ?? 0;
+                    second = timeParts[2] ?? 0; 
+                }
+
+                const baseDate = new Date(year, month - 1, day, hour, minute, second);
+
+                // hitung UTC timestamp sesuai timezone asal
+                const utcTimestamp = baseDate.getTime() - (new Date(baseDate.toLocaleString("en-US", { timeZone: fromTimezone })).getTime() - baseDate.getTime());
+                utcDate = new Date(utcTimestamp);
+            }
+
+            // Format ke Asia/Jakarta, lalu buat ISO string tanpa offset
+            const parts = new Intl.DateTimeFormat("en-GB", {
+                timeZone: "Asia/Jakarta",
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false,
+            }).formatToParts(utcDate);
+
+            const obj = {};
+            for (const p of parts) {
+                if (p.type !== "literal") obj[p.type] = p.value;
+            }
+
+            // Bentuk ISO 8601: YYYY-MM-DDTHH:mm:ssZ
+            return `${obj.year}-${obj.month}-${obj.day}T${obj.hour}:${obj.minute}:${obj.second}Z`;
+        },
         formatTimezoneSLADate(date) {
             if (!date || typeof date !== 'string' || date.trim() === '') {
                 return '-';
