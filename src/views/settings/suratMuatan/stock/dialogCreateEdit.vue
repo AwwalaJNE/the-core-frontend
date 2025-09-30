@@ -260,9 +260,9 @@ export default {
                     origin_vehicle_tlc: item?.origin_tlc || "",
                     destination_vehicle_tlc: item?.destination_tlc || "",
                     vehicle_id: item?.vehicle_name || "",
-                    pic_employee_id: item?.pic_employee_id || "",
+                    pic_employee_id: item?.employee_name || "",
                     flight_number: item?.flight_number || "",
-                    flight_schedule: this.formatTimezone(item?.etd) || "",
+                    flight_schedule: this.formatTimezone(item?.flight_schedule) || "",
                     etd_vehicle: this.formatTimezone(item?.etd) || "",
                     eta_vehicle: this.formatTimezone(item?.eta) || "",
                     status_flight: item?.status_flight,
@@ -312,10 +312,11 @@ export default {
                     tlc_origin: item.origin_branch_code,
                     tlc_destination: item.destination_branch_code,
                     flight_number: item.flight_number,
-                    etd: this.formatToWIB(item.etd),
+                    etd: this.formatToWIBIso(item.etd),
                     etd_timezone: "WIB",
-                    eta: this.formatToWIB(item.eta),
+                    eta: this.formatToWIBIso(item.eta),
                     eta_timezone: "WIB",
+                    pic_employee_id: item?.pic_employee_id || "",
                     is_active: item.is_active ? 1 : 0
                 }));
             }
@@ -373,7 +374,7 @@ export default {
             this.$refs.formDataController.handleSubmit();
         },
         handleClearForm(){
-            this.$refs.formDataController.handleClearForm();
+            this.$refs?.formDataController?.handleClearForm();
             this.form = {};
             this.id = "";
             this.$emit("handleClearInput");
@@ -473,6 +474,7 @@ export default {
                         etd_timezone: "WIB",
                         eta: form?.eta_vehicle || "",
                         eta_timezone: "WIB",
+                        pic_employee_id: form?.pic_employee_id?.employee_id || "",
                         is_active: this.vehicle.length === 0
                     }
                 };
@@ -513,6 +515,7 @@ export default {
                         eta: form?.eta_vehicle || "",
                         origin_branch_code: form?.origin_vehicle || "",
                         destination_branch_code: form?.destination_vehicle || "",
+                        pic_employee_id: form?.pic_employee_id?.employee_id || "",
                         is_active: this.vehicle.length === 0
                     }
                 };
