@@ -16,6 +16,7 @@
                                 square
                                 block
                                 :active="true"
+                                :data-testid="`close-sm-button`"
                                 @click="closePreAlert"
                             > 
                                 Close SM
@@ -46,6 +47,7 @@
                             v-uppercase
                             ref="formInputInbound"
                             :disabled="processing"
+                            :data-testid="`input-item_no`"
                             @keyup.enter.native="updateValue('item_no')"
                             @click-icon="$refs.cameraScanner.open('formInputInbound')"
                             @input="sanitizeAlphanumeric('item_no')"
@@ -74,6 +76,7 @@
                           v-uppercase
                           ref="formInputParentInbound"
                           :disabled="hasInboundNumber"
+                          :data-testid="`input-parent_no`"
                           @keyup.enter.native="updateValue('parent_no')"
                           @click-icon="$refs.cameraScanner.open('formInputParentInbound')"
                           @input="sanitizeAlphanumeric('parent_no')"
@@ -84,7 +87,7 @@
                         </vs-input>
                         <template v-if="hasInboundNumber">
                           <div style="position:absolute; right:20px; top:15px;">
-                            <span class="vs-select__chips__chip__close" @click="removeInboundNumber">
+                            <span class="vs-select__chips__chip__close" :data-testid="`close-button-parent_no`" @click="removeInboundNumber">
                               <i class="vs-icon-close vs-icon-hover-less"></i>
                             </span>
                           </div>
@@ -101,6 +104,7 @@
                           v-uppercase
                           ref="formInputChildInbound"
                           :disabled="processing"
+                          :data-testid="`input-child_no`"
                           @keyup.enter.native="updateValue('child_no')"
                           @click-icon="$refs.cameraScanner.open('formInputChildInbound')"
                           @input="sanitizeAlphanumeric('child_no')"
@@ -134,7 +138,7 @@
                 <div class="header-remark-bar mb-3">
                   <h4 class="title">Inbound Detail</h4>
                   <template v-if="dataTableProp.length > 0">
-                    <vs-button class="insert-remark-btn" @click="openDialog">
+                    <vs-button class="insert-remark-btn" :data-testid="`remark-button`" @click="openDialog">
                       <i class="bx bx-pencil mr-1"></i> Insert Remark
                     </vs-button>
                     <dialog-insert-remark
@@ -163,13 +167,13 @@
                   </transition>
                 </div>
               </div>
-              <vs-button class="mt-1" style="float: right" square active @click="back">
+              <vs-button class="mt-1" style="float: right" square active :data-testid="`back-button`" @click="back">
                 <i class="bx bxs-chevron-left"> </i> BACK
               </vs-button>
             </vs-col>
           </vs-row>
         </section>
-        <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
+        <camera-scanner ref="cameraScanner" :data-testid="`camera-button`" @data="onCameraScannerGetData" />
     </div>
 </template>
 <script>
