@@ -14,6 +14,14 @@
                     </div>
                     
                     <div class="button-group" v-if="!listenIsReadOnly">
+                        <template v-if="!is_sm_edit">
+                            <vs-button 
+                                :disabled="isDisabledPrint"
+                                @click="openDialogCreateSmStock"
+                            >
+                                + Stock
+                            </vs-button>
+                        </template>
                         <template v-if="is_approve === 1">
                             <vs-button 
                                 :disabled="isDisabledPrint"
@@ -201,6 +209,14 @@
             @selectManifest="handleSelectManifest"
         />
 
+        <dialog-create-edit-stock
+            title="Create Surat Muatan Stock"
+            source="sm_create"
+            :active="dialogActiveStock"
+            :closeDialog="closeDialogCreateSmStock"
+            @handleCreateManifestStock="handleCreateManifestStock"
+        />
+
         <dialog-manage-vehicle-manifest
             title="Manifest Vehicle"
             :manifest_number="manifest_number"
@@ -229,6 +245,7 @@ import dialogSelectManifestStock from "./dialogSelectManifestStock.vue";
 
 import DialogManageVehicleManifest from "@/views/transport/manifestVehicle/dialogCreateManage";
 import VehicleCard from "@/views/transport/manifestNew/vehicleCard";
+import DialogCreateEditStock from "@/views/settings/suratMuatan/stock/dialogCreateEdit";
 
 export default {
     name: "transport-surat-muatan-dialog-new",
@@ -241,6 +258,7 @@ export default {
         "dialog-trace-bag": DialogTraceBag,
         "dialog-select-manifest-stock": dialogSelectManifestStock,
         "dialog-manage-vehicle-manifest": DialogManageVehicleManifest,
+        "dialog-create-edit-stock": DialogCreateEditStock,
         "radio": RadioWithCard,
         "vehicle-card": VehicleCard
     },
@@ -365,6 +383,7 @@ export default {
             showSelectStockModal: false,
             selectedBagNumber: "",
             dialogManageVehicleManifest: false,
+            dialogActiveStock: false,
             is_sm_edit: false,
             vehicle_form: [],
             vehicle: [],
@@ -458,6 +477,12 @@ export default {
             this.$store.dispatch("SET_SURAT_MUATAN_ETD_isDisabled", true);
             this.$store.dispatch("SET_SURAT_MUATAN_ETA_isDisabled", true);
 
+            this.getManifestVehicleSMStock();
+        },
+        handleCreateManifestStock(val) {
+            this.handleClearForm();
+            this.manifest_number = val;
+            this.getAndApplySmStock();
             this.getManifestVehicleSMStock();
         },
         openSelectStockModal() {
@@ -975,6 +1000,42 @@ export default {
                 this.loading = false;
             }
         },
+        async getAndApplySmStock() {
+            console.log('this.manifest_number', this.manifest_number)
+            this.loading = true;
+            try {
+                const res = await axios.get(`${this.URL.sm_stock}/get-by-manifest/${this.manifest_number}?n=${this.listenNodeId}`, this.Helper.header());
+                let arr = res.data.data;
+
+                // apply sm stock data to form
+                this.manifest_method_id = parseInt(arr.vehicle_mode_id)
+                this.vehicle_type_id = arr.vehicle_type_id;
+                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX", arr.vehicle_prefix_name + "-");
+                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER", arr.manifest_number);
+                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID", parseInt(arr.vehicle_mode_id));
+                this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN", arr.node_name_origin + " (" + arr.node_code_origin + ")");
+                this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION", arr.node_name_destination + " (" + arr.node_code_destination + ")");
+                this.$store.dispatch("SET_SURAT_MUATAN_ETD", arr.etd);
+                this.$store.dispatch("SET_SURAT_MUATAN_ETA", arr.eta);
+
+                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_ValueData", arr.vehicle_prefix_name + "-");
+                this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_ValueData", arr.node_id_origin);
+                this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ValueData", arr.node_id_destination);
+
+                // Notes: Disabled field for SM Stock
+                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
+                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled", true);
+                this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_isDisabled", true);
+                this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_isDisabled", true);
+                this.$store.dispatch("SET_SURAT_MUATAN_ETD_isDisabled", true);
+                this.$store.dispatch("SET_SURAT_MUATAN_ETA_isDisabled", true);
+
+                this.loading = false;
+            } catch (err) {
+                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wronasdsag');
+                this.loading = false;
+            }
+        },
         async approve() {
             this.loadingDetail = true;
             try {
@@ -1202,7 +1263,7 @@ export default {
                 state: {
                     vehicle_id: form?.vehicle_id || "",
                     vehicle_type_id: form?.vehicle_type_id || "",
-                    employee_driver_id: form?.pic_employee_id?.employee_id || "",
+                    pic_employee_id: form?.pic_employee_id?.employee_id || "",
                     flight_number: form?.flight_number || "",
                     flight_schedule: this.formatToWIB(form?.flight_schedule) || "",
                     etd: this.formatToWIB(form?.etd_vehicle) || "",
@@ -1215,6 +1276,12 @@ export default {
 
             this.vehicle.push(created_vehicle);
             this.vehicle_form.push(vehicle_form);
+        },
+        openDialogCreateSmStock() {
+            this.dialogActiveStock = true
+        },
+        closeDialogCreateSmStock() {
+            this.dialogActiveStock = false
         },
         openDialogManageVehicleManifest() {
             if (this.is_sm_edit) {
