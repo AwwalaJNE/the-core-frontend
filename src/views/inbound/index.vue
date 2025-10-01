@@ -6,6 +6,7 @@
                 square 
                 block 
                 :active="true" 
+                :data-testid="`receiving-button`"
                 @click="openDialog"
             >
                 RECEIVING
@@ -28,6 +29,7 @@
                               
                               v-model="node_request"
                               :border="true"
+                              :data-testid="`select-button-node`"
                               @change="updateNode"
                           >
                             <template v-if="DataNode.length > 1">
@@ -53,6 +55,7 @@
                               placeholder="Origin"
                               v-model="node_origin"
                               :border="false"
+                              :data-testid="`search-origin`"
                               @change="updateNode"
                           >
                             <template v-if="nodeOrigin.length > 0">
@@ -100,6 +103,7 @@
                             v-model="value"
                             :border="border"
                             @change="updateStatusInbound"
+                            :data-testid="`select-status`"
                             :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
                         >
                           <template v-if="DataArr.length > 0">
@@ -128,6 +132,7 @@
                             :border="border"
                             multiple
                             @change="updatePrealert"
+                            :data-testid="`multiple-select-pre-alert`"
                             :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
                         >
                           <template v-if="DataFilterPrealert.length > 0">
@@ -163,6 +168,7 @@
                         style="margin: 0;"
                         @click="resetFilters"
                         :class="'span-button'"
+                        :data-testid="`button-reset-filter`"
                         > Reset Filters
                     </vs-button>
                   </vs-col>
