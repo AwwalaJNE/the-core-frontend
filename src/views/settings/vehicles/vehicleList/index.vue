@@ -149,7 +149,7 @@ export default {
                 page: 1
             },
             dateRange: [],
-            searchBy: "vehicle name",
+            searchBy: "vehicle_name",
             filterDateBy: "create",
             searchPlaceholder: "Search Vehicle Name",
             searchParams: [
@@ -159,7 +159,7 @@ export default {
                 },
                 {
                     label: "Vehicle Name",
-                    value: "vehicle name"
+                    value: "vehicle_name"
                 },
                 {
                     label: "Vehicle police no",
