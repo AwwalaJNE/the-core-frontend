@@ -152,10 +152,6 @@ export default {
         },
         updateValue(key, val, info) {
             this.statusSearch = this.statusArr.find(item => item.value === val)?.value || '';
-            this.refresh(val);
-        },
-        refresh(status) {
-            this.$refs.receivingLogList.getTableDataReceivingLog(status);
         },
         updateSearchBy(key, value, info) {
             this.searchOriginPlaceholder = key;
@@ -168,16 +164,9 @@ export default {
             this.tempDate = val;
             this.startDate = this.tempDate !== null ? this.tempDate[0] : '';
             this.endDate = this.tempDate !== null ? this.tempDate[1] : '';
-
-            this.$refs.receivingLogList.getTableDataReceivingLog(
-                this.statusSearch, 
-                this.startDate, 
-                this.endDate
-            );
         },
         handleSearch() {
             this.$nextTick(() => {
-                this.refresh(this.statusSearch);
                 this.$refs.searchInput.clear();
             });
         },
