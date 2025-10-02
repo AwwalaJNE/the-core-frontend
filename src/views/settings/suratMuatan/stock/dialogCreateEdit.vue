@@ -337,7 +337,6 @@ export default {
                 return
             }
             this.handleSubmitData();
-            this.$emit("handleCreateManifestStock", this.form.manifest_number);
         },
         updateValue(key, val, info){
             switch(key) {
@@ -370,6 +369,9 @@ export default {
             try {
                 const res = this.id ? await axios.put(`${this.URL.sm_stock}/${this.id}?n=${this.listenNodeId}`, this.form, this.Helper.header()) : await axios.post(`${this.URL.sm_stock}?n=${this.listenNodeId}`, this.form, this.Helper.header());
                 this.openNotification('success', null, "Success", res?.data?.message || this.id ? "Success Update Data" : "Success Create Data");
+                if (this.source === 'sm_create') {
+                    this.$emit("handleCreateManifestStock", this.form.manifest_number);
+                }
                 this.cancel();
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
