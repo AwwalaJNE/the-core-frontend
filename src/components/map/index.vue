@@ -20,9 +20,9 @@
     </vs-row>
 </template>
 <script>
-require('leaflet')
-// import "leaflet/dist/leaflet.css"
-// import {L, navigator} from "leaflet"
+import L from 'leaflet'
+import 'leaflet/dist/leaflet.css'
+
 import axios from "axios"
 import master from "@/mixins/master"
 export default {

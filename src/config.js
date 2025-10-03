@@ -1,15 +1,13 @@
 /* eslint-disable linebreak-style */
-const api = process.env.VUE_APP_API
-const apiFlight = process.env.VUE_APP_API_FLIGHT
+const api = import.meta.env.VITE_APP_API
+const apiFlight = import.meta.env.VITE_APP_API_FLIGHT
 
-const app_jne_core = process.env.VUE_APP_JNE_CORE
-const app_jne_core_dashboard = process.env.VUE_APP_JNE_CORE_DASHBOARD
-const app_jne_main = process.env.VUE_APP_JNE_MAIN
+const app_jne_core = import.meta.env.VITE_APP_JNE_CORE
+const app_jne_core_dashboard = import.meta.env.VITE_APP_JNE_CORE_DASHBOARD
+const app_jne_main = import.meta.env.VITE_API_JNE_MAIN
 
 const urlFOrmated = new URL(api)
 
-
-// console.log('process.env.VUE_APP_API',process.env.VUE_APP_API);
 export default {
     app_jne_core,
     app_jne_core_dashboard,
