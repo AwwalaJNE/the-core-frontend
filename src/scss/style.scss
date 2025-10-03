@@ -1,4 +1,4 @@
 // src/scss/style.scss
-@import "variables";
-@import "mixins";
-@import "main";
+@forward "variables";
+@forward "mixins";
+@forward "main";
