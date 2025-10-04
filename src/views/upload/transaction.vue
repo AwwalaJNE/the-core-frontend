@@ -108,7 +108,7 @@
 <script>
 import axios from "axios";
 import master from "@/mixins/master"
-import XLSX from "xlsx"
+import * as XLSX from "xlsx";
 import Breadcrumb from "@/components/breadcrumb/index"
 import TableMaster from "@/components/table/tableMaster.vue"
 import Selector from "@/components/input/select"
