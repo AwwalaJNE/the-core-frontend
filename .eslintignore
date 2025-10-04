@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+coverage/
+
+# Public assets
+public/
+
+# Config files (optional, kalau mau ESLint jangan ganggu)
+*.config.js
+*.config.cjs
+*.config.mjs
+
+# Minified / auto-generated files
+*.min.js
+*.bundle.js
