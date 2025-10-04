@@ -1,0 +1,14 @@
+# Ignore dependencies
+node_modules
+package-lock.json
+
+# Ignore build output
+dist
+coverage
+
+# Ignore config / auto-generated
+*.min.js
+*.log
+
+# Ignore docs build or assets
+public
