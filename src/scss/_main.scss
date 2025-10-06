@@ -1,3 +1,6 @@
+@use "variables" as *;
+@use "mixins" as *;
+
 :root {
     --sidebar-opened-width: 260px;
     --sidebar-close-width: 50px;

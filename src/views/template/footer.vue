@@ -13,7 +13,7 @@ export default {
     name:"app-footer",
     data() {
         return {
-            version: process.env.VUE_APP_VERSION,
+            version: import.meta.env.VITE_APP_VERSION,
             currentYear: new Date().getFullYear(),
         }
     },
