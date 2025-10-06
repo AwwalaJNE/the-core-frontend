@@ -11,6 +11,7 @@
           :border="border"
           @change="updateBagStatusInventory"
           :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
+          :data-testid="`select-status_bag`"
       >
         <template v-if="DataArr.length > 0">
           <vs-option
