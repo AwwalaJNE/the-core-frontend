@@ -1,70 +1,71 @@
 {
-  "type": "module",
-  "name": "thecore",
-  "version": "2.0.2",
-  "author": "Odon",
-  "contributors": [
-    "Odon",
-    "Bagus"
-  ],
-  "engines": {
-    "node": ">=22.0.0"
-  },
-  "main": "server.js",
-  "description": "Core",
-  "private": true,
-  "scripts": {
-    "prebuild": "node scripts/generate-version.js",
-    "dev": "vite",
-    "build": "vite build",
-    "serve": "vite preview",
-    "test": "vitest",
-    "lint": "eslint --ext .js,.vue src",
-    "lint:fix": "eslint --ext .js,.vue src --fix",
-    "format": "prettier --write \"src/**/*.{js,vue,css,scss,md}\""
-  },
-  "dependencies": {
-    "@vue/compiler-sfc": "^2.7.16",
-    "@yaireo/tagify": "^4.35.4",
-    "@zxing/library": "^0.21.3",
-    "axios": "^1.4.0",
-    "boxicons": "^2.0.5",
-    "chart.js": "^2.9.4",
-    "core-js": "^3.1.2",
-    "element-ui": "^2.14.0",
-    "http-proxy-middleware": "^3.0.5",
-    "leaflet": "^1.7.1",
-    "lodash": "^4.17.21",
-    "vee-validate": "^3.4.15",
-    "vue": "^2.7.16",
-    "vue-chartjs": "^3.5.1",
-    "vue-clipboard2": "^0.3.1",
-    "vue-currency-input": "^1.22.6",
-    "vue-loading-skeleton": "^1.1.9",
-    "vue-ls": "^4.2.0",
-    "vue-router": "^3.6.5",
-    "vuedraggable": "^2.24.3",
-    "vuesax": "^4.0.1-alpha.25",
-    "vuex": "^3.0.1",
-    "xlsx": "^0.18.5"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-vue2": "^2.3.4",
-    "@vue/test-utils": "^2.4.6",
-    "cross-env": "^10.1.0",
-    "eslint": "^9.37.0",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^4.2.5",
-    "eslint-plugin-vue": "^10.5.0",
-    "jest": "^30.2.0",
-    "jest-environment-jsdom": "^30.2.0",
-    "jsdom": "^27.0.0",
-    "prettier": "^2.8.8",
-    "sass": "^1.77.0",
-    "vite": "^7.1.9"
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions"
-  ]
+    "type": "module",
+    "name": "thecore",
+    "version": "2.0.2",
+    "author": "Odon",
+    "contributors": [
+        "Odon",
+        "Bagus"
+    ],
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "main": "server.js",
+    "description": "Core",
+    "private": true,
+    "scripts": {
+        "prebuild": "node scripts/generate-version.js",
+        "dev": "vite",
+        "build": "vite build",
+        "serve": "vite preview",
+        "test": "vitest",
+        "lint": "eslint --ext .js,.vue src",
+        "lint:fix": "eslint --ext .js,.vue src --fix",
+        "format": "prettier --write \"src/**/*.{js,vue,css,scss,md}\""
+    },
+    "dependencies": {
+        "@vue/compiler-sfc": "^2.6.14",
+        "@yaireo/tagify": "^4.35.4",
+        "@zxing/library": "^0.21.3",
+        "axios": "^1.4.0",
+        "boxicons": "^2.0.5",
+        "chart.js": "^2.9.4",
+        "core-js": "^3.1.2",
+        "element-ui": "^2.14.0",
+        "http-proxy-middleware": "^3.0.5",
+        "leaflet": "^1.7.1",
+        "lodash": "^4.17.21",
+        "vee-validate": "^3.4.15",
+        "vue": "^2.6.14",
+        "vue-template-compiler": "^2.6.14",
+        "vue-chartjs": "^3.5.1",
+        "vue-clipboard2": "^0.3.1",
+        "vue-currency-input": "^1.22.6",
+        "vue-loading-skeleton": "^1.1.9",
+        "vue-ls": "^4.2.0",
+        "vue-router": "^3.6.5",
+        "vuedraggable": "^2.24.3",
+        "vuesax": "^4.0.1-alpha.25",
+        "vuex": "^3.0.1",
+        "xlsx": "^0.18.5"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue2": "^2.3.4",
+        "eslint": "^9.37.0",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-prettier": "^4.2.5",
+        "eslint-plugin-vue": "^10.5.0",
+        "jest": "^30.2.0",
+        "jest-environment-jsdom": "^30.2.0",
+        "jsdom": "^27.0.0",
+        "prettier": "^2.8.8",
+        "vite": "^7.1.9",
+        "sass": "^1.32.0",
+        "@vue/test-utils": "^1.3.0",
+        "cross-env": "^7.0.3"
+    },
+    "browserslist": [
+        "> 1%",
+        "last 2 versions"
+    ]
 }
