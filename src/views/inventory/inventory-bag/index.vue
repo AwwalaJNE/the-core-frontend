@@ -139,6 +139,7 @@
                                 </vs-col>
                                 <vs-col vs-align="center" xs="12" sm="6" :lg="navActive !== 'k-BAG' ? 4 : 3">
                                     <select-search-by 
+                                        :formKey="'date'"
                                         :border="true" 
                                         :isMultiple="false" 
                                         :selectedValue="filterDateBy"

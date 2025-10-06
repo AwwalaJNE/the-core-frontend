@@ -482,7 +482,7 @@ export default {
                         vehicle_id: form?.vehicle_id || "",
                         vehicle_type_id: form?.vehicle_type_id || "",
                         vehicle_mode_id: form?.vehicle_mode_id || "",
-                        pic_employee_id: form.pic_employee_id?.employee_name || form?.pic_employee_id || "",
+                        pic_employee_id: form?.pic_employee_id || "",
                         flight_number: form?.flight_number || "",
                         etd: form?.etd_vehicle || "",
                         etd_timezone: "WIB",

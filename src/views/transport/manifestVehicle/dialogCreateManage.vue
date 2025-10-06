@@ -548,7 +548,7 @@ export default {
                         vehicle_id: form.vehicle_id?.vehicle_id,
                         vehicle_mode_id: form.vehicle_id?.vehicle_type?.vehicle_mode_id,
                         vehicle_type_id: form.vehicle_id?.vehicle_type_id,
-                        pic_employee_id: form.employee_driver_id?.employee_id || "",
+                        pic_employee_id: form.employee_driver_id || "",
                         flight_number: form.flight_number || "",
                         flight_schedule: form.flight_schedule,
                         etd_vehicle: form.etd,
