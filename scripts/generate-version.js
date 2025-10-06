@@ -1,22 +1,23 @@
-const fs = require("fs");
-const { execSync } = require("child_process");
+// scripts/generate-version.js
+import fs from 'fs'
+import { execSync } from 'child_process'
 
 // Ambil hash commit git pendek (fallback ke timestamp kalau gagal)
-let commitHash = "no-git";
+let commitHash = 'no-git'
 try {
-  commitHash = execSync("git rev-parse --short HEAD").toString().trim();
+    commitHash = execSync('git rev-parse --short HEAD').toString().trim()
 } catch (e) {
-  console.warn("⚠️ Git hash not found, fallback ke timestamp");
+    console.warn('⚠️ Git hash not found, fallback ke timestamp')
 }
 
-const timestamp = new Date().toISOString().replace(/[-:.TZ]/g, "").slice(0, 14);
+const timestamp = new Date()
+    .toISOString()
+    .replace(/[-:.TZ]/g, '')
+    .slice(0, 14)
 
 // Versi final: timestamp + commitHash
-const version = `${timestamp}-${commitHash}`;
+const version = `${timestamp}-${commitHash}`
 
-fs.writeFileSync(
-  "public/version.json",
-  JSON.stringify({ version }, null, 2)
-);
+fs.writeFileSync('public/version.json', JSON.stringify({ version }, null, 2))
 
-console.log("✅ Generated version.json:", version);
+console.log('✅ Generated version.json:', version)
