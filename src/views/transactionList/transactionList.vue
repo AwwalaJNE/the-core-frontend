@@ -50,13 +50,23 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "Total Connotes",
-                    key: "total_connote",
+                    label: "Connote Number",
+                    key: "connote_number",
                     width: "auto"
                 },
                 {
                     label: "Shipper Name",
                     key: "connote_shipper_name",
+                    width: "auto"
+                },
+                {
+                    label: "Origin",
+                    key: "connote_origin",
+                    width: "auto"
+                },
+                {
+                    label: "Destination",
+                    key: "connote_destination",
                     width: "auto"
                 },
                 {
@@ -158,9 +168,11 @@ export default {
                                 item.created_at = this.formatTimezone(item.created_at);
                                 item.updated_at = this.formatTimezone(item.updated_at);
                                 item.transaction_date = this.formatTimezone(item.transaction_date);
-                                item['total_connote'] = item.connote.length
-                                item['connote_shipper_name'] = item.connote.length > 0 ? item.connote[0].connote_shipper_name : null
-                                item['user_name'] = item.user ? item.user.user_name : '-'
+                                item['connote_number'] = item.connote.connote_number;
+                                item['connote_shipper_name'] = item.connote.connote_shipper_name || null;
+                                item['user_name'] = item.user ? item.user.user_name : '-',
+                                item['connote_origin'] = item.connote.connote_shipper_tlc
+                                item['connote_destination'] = item.connote.connote_receiver_tlc
                         //     }
                         // }
                       
