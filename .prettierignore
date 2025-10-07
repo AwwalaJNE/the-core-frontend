@@ -1,0 +1,19 @@
+# Dependencies
+node_modules
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build output
+dist
+coverage
+
+# Logs
+*.log
+
+# Minified / auto-generated files
+*.min.js
+*.bundle.js
+
+# Public assets
+public

@@ -14,22 +14,24 @@
             <vs-row justify="space-between">
                 <vs-col xs="12" sm="12" lg="12">
                     <input-general
-                        name="InboundNumber"
+                        name="Inbound Number"
                         formKey="inbound_number"
                         typeInput="text"
                         :disabled="true"
                         :rules="''"
                         :valueData="inbound_number"
+                        :data-testid="`input-inbound_number`"
                     />
                 </vs-col>
                 <vs-col xs="12" sm="12" lg="12">
                     <input-general
-                        name="ItemNumber"
+                        name="Item Number"
                         formKey="item_number"
                         typeInput="text"
                         :disabled="true"
                         :rules="''"
                         :valueData="item_number"
+                        :data-testid="`input-item_number`"
                     />
                 </vs-col>
                 <vs-col xs="12" sm="12" lg="12">
@@ -45,7 +47,7 @@
                             @updateValue="updateValue" />
                     </template>
                 </vs-col> 
-                <vs-col xs="12" sm="12" lg="12">
+                <vs-col xs="12" sm="12" lg="12" data-test-id="upload-section">
                     <el-upload
                         ref="upload"
                         action="#"
@@ -53,20 +55,24 @@
                         :auto-upload="false"
                         :file-list="fileList"
                         :on-change="handleFileChange"
+                        data-test-id="upload-input"
                     >
-                        <i slot="default" class="el-icon-plus"></i>
+                        <i slot="default" class="el-icon-plus" data-test-id="upload-plus-icon"></i>
+                        
                         <template slot="file" slot-scope="{file}">
                             <template v-if="isImage(file)">
                                 <img
                                     class="el-upload-list__item-thumbnail"
                                     :src="file.url" 
-                                    alt="preview" 
+                                    alt="preview"
+                                    data-test-id="upload-image-preview"
                                 >
                                 <span class="el-upload-list__item-actions">
                                     <span
                                         v-if="!disabled"
                                         class="el-upload-list__item-preview"
                                         @click="handlePictureCardPreview(file)"
+                                        data-test-id="preview-button"
                                     >
                                         <i class="el-icon-zoom-in"></i>
                                     </span>
@@ -74,13 +80,15 @@
                                         v-if="!disabled"
                                         class="el-upload-list__item-delete"
                                         @click="handleRemove(file)"
+                                        data-test-id="delete-button"
                                     >
                                         <i class="el-icon-delete"></i>
                                     </span>
                                 </span>
                             </template>
+
                             <template v-else-if="isPDF(file)">
-                                <div class="file-display">
+                                <div class="file-display" data-test-id="pdf-display">
                                     <i class="el-icon-document large-icon"></i>
                                     <span class="small-text">{{ file.name || file.uid }}</span>
                                 </div>
@@ -89,6 +97,7 @@
                                         v-if="!disabled"
                                         class="el-upload-list__item-preview"
                                         @click="handleFilePreview(file)"
+                                        data-test-id="pdf-preview-button"
                                     >
                                         <i class="el-icon-zoom-in"></i>
                                     </span>
@@ -96,13 +105,15 @@
                                         v-if="!disabled"
                                         class="el-upload-list__item-delete"
                                         @click="handleRemove(file)"
+                                        data-test-id="pdf-delete-button"
                                     >
                                         <i class="el-icon-delete"></i>
                                     </span>
                                 </span>
                             </template>
+
                             <template v-else>
-                                <div class="file-display">
+                                <div class="file-display" data-test-id="other-file-display">
                                     <i class="el-icon-document large-icon"></i>
                                     <span class="small-text">{{ file.name || file.uid }}</span>
                                 </div>
@@ -110,6 +121,7 @@
                                     <span
                                         v-if="!disabled"
                                         class="el-upload-list__item-preview"
+                                        data-test-id="download-button"
                                     >
                                         <a :href="file.url">
                                             <i class="el-icon-download"></i>
@@ -119,6 +131,7 @@
                                         v-if="!disabled"
                                         class="el-upload-list__item-delete"
                                         @click="handleRemove(file)"
+                                        data-test-id="other-delete-button"
                                     >
                                         <i class="el-icon-delete"></i>
                                     </span>
@@ -126,13 +139,16 @@
                             </template>
                         </template>
                     </el-upload>
-                    <el-dialog :visible.sync="dialogImageVisible" title="Image Preview">
-                        <img width="100%" :src="dialogImageUrl" alt="PreviewImage">
+
+                    <el-dialog :visible.sync="dialogImageVisible" title="Image Preview" data-test-id="image-dialog">
+                        <img width="100%" :src="dialogImageUrl" alt="PreviewImage" data-test-id="image-dialog-preview">
                     </el-dialog>
-                    <el-dialog :visible.sync="dialogFileVisible" width="80%" title="File Preview">
-                        <embed :src="dialogFileUrl" type="application/pdf" width="100%" height="500px" />
+
+                    <el-dialog :visible.sync="dialogFileVisible" width="80%" title="File Preview" data-test-id="file-dialog">
+                        <embed :src="dialogFileUrl" type="application/pdf" width="100%" height="500px" data-test-id="pdf-dialog-preview"/>
                     </el-dialog>
                 </vs-col>
+
                 <vs-col xs="12" sm="12" lg="12">
                     <input-general
                         name="Remark"
@@ -155,6 +171,7 @@
                         danger
                         flat
                         :active="true"
+                        :data-testid="`cancel-button`"
                         @click="cancel"
                     >
                         Cancel
@@ -167,6 +184,7 @@
                         flat
                         :active="true"
                         type="submit"
+                        :data-testid="`submit-button`"
                         @click="handleSubmit"
                     >
                        Submit

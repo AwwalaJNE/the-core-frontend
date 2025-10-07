@@ -16,6 +16,7 @@
         placeholder="Code Origin"
         :remote-method="fetchData"
         :loading="loading"
+        :data-testid="`select-code_origin`"
       >
         <el-option
           v-for="item in options"

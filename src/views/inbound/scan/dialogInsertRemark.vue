@@ -15,8 +15,9 @@
                 v-model="remarkText"
                 placeholder="Masukkan remark"
                 class="remark-input"
+                :data-testid="`input-remarkText`"
             />
-            <vs-button color="primary" @click="submitRemark" class="submit-button">
+            <vs-button color="primary" @click="submitRemark" :data-testid="`submit-remarkText-button`" class="submit-button">
                 Submit
             </vs-button>
       </div>
@@ -33,7 +34,7 @@
             </template>
 
             <template v-slot:tbody>
-                <vs-tr v-for="(item, index) in remarkList" :key="index">
+                <vs-tr v-for="(item, index) in remarkList" :data-test-id="`remark-row-${index}`" :key="index">
                     <vs-td style="text-align: center;">{{ index + 1 }}</vs-td>
                     <vs-td>{{ item.remark }}</vs-td>
                     <vs-td>{{ item.user }}</vs-td>

@@ -3,17 +3,19 @@
         <button
             v-if="canScrollLeft"
             class="scroll-btn left"
+            data-testid="scroll-left-btn"
             @click="scrollTabs(-150)"
         >
             <i class='bx bx-chevrons-left' ></i>
         </button>
 
-        <div class="tab-container" ref="tabContainer" @scroll="updateScrollButtons">
+        <div class="tab-container" ref="tabContainer" data-testid="tab-container" @scroll="updateScrollButtons">
            <router-link
             v-for="(item, key) in listenTab"
             :key="key"
             :to="item.url"
             :class="['tab', { active: isActiveUrl(item.url) }]"
+            :data-testid="`tab-${key}`"
             @click.native="handleSelect(item.url)"
             >
             <i :class="`${item.icon}`" /> {{ item.label }}
@@ -23,6 +25,7 @@
         <button
             v-if="canScrollRight"
             class="scroll-btn right"
+            data-testid="scroll-right-btn"
             @click="scrollTabs(150)"
         >
             <i class='bx bx-chevrons-right'></i>

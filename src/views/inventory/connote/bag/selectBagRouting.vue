@@ -11,6 +11,7 @@
           :border="border"
           @change="updateBagRouting"
           :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
+          :data-testid="`select-routing`"
       >
         <template v-if="DataArr.length > 0">
           <vs-option

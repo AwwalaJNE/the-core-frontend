@@ -128,7 +128,7 @@
                             :data-testid="`submit-button`"
                             @click="handleSubmit"
                         >
-                            {{btnBlue || 'Add'}}
+                            {{btnBlue || source === 'setting' ? 'Save' : 'Save and Use'}}
                         </vs-button>
                     </vs-col>
                 </vs-row>                
@@ -181,7 +181,8 @@ export default {
         btnBlue: String,
         closeDialog: Function,
         dataItem: Object,
-        title: String
+        title: String,
+        source: String
     },
     data() {
         return {
@@ -219,6 +220,9 @@ export default {
         },
         listenSelectedManifestVehicle() {
             return this.selected_manifest_vehicle || ''
+        },
+        listenSource() {
+            return this.source || ''
         }
     },
     watch: {
@@ -309,6 +313,9 @@ export default {
             if (!this.is_edit) {
                 formWithoutId.vehicle = this.vehicle_form?.map(item => item.state)?.map(item => ({
                     vehicle_id: item.vehicle_id,
+                    vehicle_type_id: item.vehicle_type_id,
+                    vehicle_mode_id: item.vehicle_mode_id,
+                    pic_employee_id: item.pic_employee_id,
                     tlc_origin: item.origin_branch_code,
                     tlc_destination: item.destination_branch_code,
                     flight_number: item.flight_number,
@@ -329,7 +336,6 @@ export default {
                 this.openNotification("warning", "Wrong Input in ETA/ETD field", "ETA must more than ETD");
                 return
             }
-
             this.handleSubmitData();
         },
         updateValue(key, val, info){
@@ -363,6 +369,9 @@ export default {
             try {
                 const res = this.id ? await axios.put(`${this.URL.sm_stock}/${this.id}?n=${this.listenNodeId}`, this.form, this.Helper.header()) : await axios.post(`${this.URL.sm_stock}?n=${this.listenNodeId}`, this.form, this.Helper.header());
                 this.openNotification('success', null, "Success", res?.data?.message || this.id ? "Success Update Data" : "Success Create Data");
+                if (this.source === 'sm_create') {
+                    this.$emit("handleCreateManifestStock", this.form.manifest_number);
+                }
                 this.cancel();
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
@@ -453,6 +462,8 @@ export default {
                         origin_vehicle_tlc: form?.origin_vehicle?.value || form.origin_vehicle || "",
                         destination_vehicle_tlc: form?.destination_vehicle?.value || form.destination_vehicle || "",
                         vehicle_id: form.vehicle_name,
+                        vehicle_type_id: form.vehicle_type_id,
+                        vehicle_mode_id: form.vehicle_mode_id,
                         pic_employee_id: form.pic_employee_id?.employee_name || form?.pic_employee_id || "",
                         flight_number: form.flight_number,
                         flight_schedule: form.flight_schedule,
@@ -469,6 +480,9 @@ export default {
                         origin_branch_code: form?.origin_vehicle?.value || form.origin_vehicle || "",
                         destination_branch_code: form?.destination_vehicle?.value || form.destination_vehicle || "",
                         vehicle_id: form?.vehicle_id || "",
+                        vehicle_type_id: form?.vehicle_type_id || "",
+                        vehicle_mode_id: form?.vehicle_mode_id || "",
+                        pic_employee_id: form?.pic_employee_id || "",
                         flight_number: form?.flight_number || "",
                         etd: form?.etd_vehicle || "",
                         etd_timezone: "WIB",
@@ -494,6 +508,7 @@ export default {
                         origin_vehicle_tlc: form?.origin_vehicle?.value || form.origin_vehicle || "",
                         destination_vehicle_tlc: form?.destination_vehicle?.value || form.destination_vehicle || "",
                         vehicle_id: form.vehicle_name,
+                        vehicle_type_id: form.vehicle_type_id,
                         pic_employee_id: form.pic_employee_id?.employee_name || form?.pic_employee_id || "",
                         flight_number: form.flight_number,
                         flight_schedule: form.flight_schedule,
