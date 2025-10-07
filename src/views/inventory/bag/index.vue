@@ -245,7 +245,13 @@
                     <p>Bag Number: BAGXXXX</p>
                     <p>Generate & Print</p>
                     <template>
-                        <img class="logo" :src="bagPlaceholder" alt="jne" />
+                        <img
+                            class="logo"
+                            :src="bagPlaceholder"
+                            alt="jne"
+                            width="300"
+                            align="center"
+                        />
                     </template>
                     <h3>Scan barcode untuk melakukan bagging</h3>
                 </vs-col>
