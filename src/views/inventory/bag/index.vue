@@ -18,6 +18,7 @@
                             :class="['bag-box', { active: bag_type === item.value }]"
                             @click="selectTipeBag(item)"
                         >
+                            <i v-if="bag_type === item.value" class="bx bx-check check-icon"></i>
                             <i :class="item.icon" class="bag-icon"></i>
                             <div class="bag-label">{{ item.label }}</div>
                         </div>
@@ -29,8 +30,11 @@
                     <div class="text-left">
                         <h3>2. Scan First Item Here</h3>
                         <p>
-                            You can only insert connote for
-                            {{ bag_type || '&lt;BAG CATEGORY&gt;' }} type
+                            You can only insert
+                            {{ selected_bag_type?.enableItem?.toLowerCase() || '&lt;BAG ITEM&gt;' }}
+                            for
+                            {{ selected_bag_type?.label?.toLowerCase() || '&lt;BAG CATEGORY&gt;' }}
+                            type
                         </p>
                     </div>
 
@@ -45,37 +49,13 @@
 
                     <div>
                         <vs-row>
-                            <vs-col
-                                v-if="
-                                    [
-                                        'normal',
-                                        'hvo',
-                                        'om',
-                                        'hacb',
-                                        'masterbag',
-                                        'pra runsheet',
-                                        'return',
-                                        'pickup',
-                                    ].includes(bag_type)
-                                "
-                                xs="12"
-                                sm="12"
-                                lg="6"
-                            >
+                            <vs-col xs="12" sm="12" lg="6">
                                 <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
                                     Auto Open Bag
                                 </vs-checkbox>
                             </vs-col>
 
-                            <vs-col
-                                v-if="
-                                    ['normal', 'return', 'pickup'].includes(bag_type) &&
-                                    !disable_hub_delivery
-                                "
-                                xs="12"
-                                sm="12"
-                                lg="6"
-                            >
+                            <vs-col v-if="['normal'].includes(bag_type)" xs="12" sm="12" lg="6">
                                 <vs-checkbox
                                     v-model="is_hub_delivery_validation"
                                     @change="handleValidateHubDelivery"
@@ -91,8 +71,11 @@
                                     <input-general
                                         ref="scanItem"
                                         formKey="scanItem"
-                                        name="Connote"
-                                        placeholder="Insert Connote Number"
+                                        :name="selected_bag_type?.enableItem || 'Item Number'"
+                                        :placeholder="
+                                            selected_bag_type?.enableItemPlaceholder ||
+                                            'Insert Item Number'
+                                        "
                                         typeInput="text"
                                         :valueData="item_number"
                                         :hasBarcode="true"
@@ -146,44 +129,54 @@ export default {
             isDisabled: true,
             bagPlaceholder,
             form: {},
-            bag_type: '',
+            selected_bag_type: '',
+            bag_type: 'normal',
             bagTypeArray: [
                 {
                     label: 'REGULAR',
                     value: 'normal',
                     icon: 'bx bx-archive',
+                    enableItem: 'Connote',
+                    enableItemPlaceholder: 'Insert Connote Number',
                 },
                 {
                     label: 'MASTERBAG',
                     value: 'masterbag',
                     icon: 'bx bx-archive',
+                    enableItem: 'Bag',
+                    enableItemPlaceholder: 'Insert Bag Number',
                 },
                 {
                     label: 'PRA RUNSHEET',
                     value: 'pra runsheet',
                     icon: 'bx bx-archive',
+                    enableItem: 'Connote',
+                    enableItemPlaceholder: 'Insert Connote Number',
                 },
                 {
                     label: 'HVO',
                     value: 'hvo',
                     icon: 'bx bx-archive',
+                    enableItem: 'Connote',
+                    enableItemPlaceholder: 'Insert Connote Number',
                 },
                 {
                     label: 'HACB',
                     value: 'hacb',
                     icon: 'bx bx-archive',
+                    enableItem: 'Connote',
+                    enableItemPlaceholder: 'Insert Connote Number',
                 },
                 {
                     label: 'OM',
                     value: 'om',
                     icon: 'bx bx-archive',
+                    enableItem: 'Connote',
+                    enableItemPlaceholder: 'Insert Connote Number',
                 },
             ],
-            placeholder: 'Masukkan Connote',
             is_auto_open_bag: true,
-            disable_auto_open_bag: false,
             is_hub_delivery_validation: false,
-            disable_hub_delivery: false,
             refloading: null,
 
             item_number: '',
@@ -197,6 +190,7 @@ export default {
             }
         },
         selectTipeBag(item) {
+            this.selected_bag_type = item
             this.bag_type = item.value
             this.isDisabled = false
             this.setInputFocus()
@@ -354,6 +348,7 @@ export default {
     gap: 16px;
 
     .bag-box {
+        position: relative;
         flex: 1 1 120px;
         height: 120px;
         border-radius: 16px;
@@ -377,6 +372,16 @@ export default {
         div {
             font-size: 14px;
             font-weight: 500;
+        }
+
+        .check-icon {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: blue;
+            color: white !important;
+            border-radius: 50%;
+            font-size: 25px;
         }
 
         &.active {
