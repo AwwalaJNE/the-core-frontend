@@ -765,7 +765,7 @@ export default {
                 const res = await axios.get(this.autoComplateUrl + `&s=${queryString}`, this.Helper.header());
                 const result = res.data.data || [];
                 const suggestions = result.map(item => {
-                    const value = item.label || item.vehicle_name || item.employee_name || item.node_name || '';
+                    const value = item.label || item.vehicle_full_name || item.employee_name || item.node_name || '';
                     return { value, data: item };
                 });
                 cb(suggestions);
