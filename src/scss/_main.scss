@@ -127,7 +127,7 @@ a {
 }
 
 .box-v2.with-glow-border {
-    border: 2px solid #4da3ff;
+    border: 2px solid $coreBlue;
     border-radius: 16px;
     animation: blueGlow 3s ease-in-out infinite;
 }

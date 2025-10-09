@@ -130,7 +130,7 @@ export default {
             bagPlaceholder,
             form: {},
             selected_bag_type: '',
-            bag_type: 'normal',
+            bag_type: '',
             bagTypeArray: [
                 {
                     label: 'REGULAR',
@@ -193,6 +193,7 @@ export default {
             this.selected_bag_type = item
             this.bag_type = item.value
             this.isDisabled = false
+            this.is_auto_open_bag = true
             this.setInputFocus()
         },
         startLoading() {
@@ -378,19 +379,19 @@ export default {
             position: absolute;
             top: -10px;
             right: -10px;
-            background: blue;
+            background: $coreBlue;
             color: white !important;
             border-radius: 50%;
             font-size: 25px;
         }
 
         &.active {
-            box-shadow: 0 1px 4px blue;
+            box-shadow: 0 1px 4px $coreBlue;
             // border: 1px solid blue;
-            color: blue;
+            color: $coreBlue;
 
             i {
-                color: blue;
+                color: $coreBlue;
             }
         }
     }
