@@ -243,18 +243,6 @@ export default {
                     this.Helper.header()
                 )
 
-                this.form = {
-                    item_number: this.item_number,
-                    type: this.bag_type,
-                    auto_open_bag: this.is_auto_open_bag,
-                    is_hub_delivery_validation: this.is_hub_delivery_validation,
-                    destination: 'all_routing',
-                    service: ['ALL_SERVICE'],
-                    validation: '',
-                    validation_reference: '',
-                    destination_node_id: '',
-                }
-
                 if (res?.data?.node_id) {
                     this.createBag(res?.data?.node_id)
                 } else {
@@ -269,6 +257,9 @@ export default {
                     'Failed',
                     err?.response?.data?.message || 'Something went wrong'
                 )
+
+                // TODO: RECHECK LATER
+                this.openDialog()
             } finally {
                 this.stopLoading()
             }
@@ -279,7 +270,14 @@ export default {
                 const res = await axios.post(
                     `${this.URL.revamp_bag}?n=${this.listenNodeId}`,
                     {
-                        ...this.form,
+                        item_number: this.item_number,
+                        type: this.bag_type,
+                        auto_open_bag: this.is_auto_open_bag,
+                        is_hub_delivery_validation: this.is_hub_delivery_validation,
+                        destination: 'all_routing',
+                        service: ['ALL_SERVICE'],
+                        validation: '',
+                        validation_reference: '',
                         destination_node_id: destination_node_id,
                     },
                     this.Helper.header()
