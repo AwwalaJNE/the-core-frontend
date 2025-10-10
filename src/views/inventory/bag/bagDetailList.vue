@@ -22,10 +22,10 @@
                         </div>
                     </template>
                     <template v-else>
-                        <vs-col xs="12" sm="3" lg="3" align="left">
+                        <vs-col xs="12" sm="9" lg="9" align="left">
                             <p>Total Connote: {{ total_connote }} Pcs</p>
                         </vs-col>
-                        <vs-col xs="12" sm="3" lg="3" align="left">
+                        <vs-col xs="12" sm="9" lg="9" align="left">
                             <p>Total Weight: {{ total_weight }} Kg</p>
                         </vs-col>
                     </template>

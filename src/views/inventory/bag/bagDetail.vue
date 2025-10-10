@@ -76,70 +76,47 @@
         </vs-row>
 
         <template v-if="!disabledApprove && !loading && !is_masterbag">
-            <div class="center in-get-bag">
-                <vs-row class="mb-2 mt-2" align="center">
-                    <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
-                        Auto Open Bag
-                    </vs-checkbox>
-                    <vs-checkbox
-                        v-if="!disable_hub_delivery"
-                        style="margin-left: 20px"
-                        v-model="is_hub_delivery_validation"
-                        @change="handleValidateHubDelivery"
-                    >
-                        Validate Hub Delivery
-                    </vs-checkbox>
+            <vs-row class="mb-2 mt-2" align="center">
+                <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
+                    Auto Open Bag
+                </vs-checkbox>
+                <vs-checkbox
+                    v-if="!disable_hub_delivery"
+                    style="margin-left: 20px"
+                    v-model="is_hub_delivery_validation"
+                    @change="handleValidateHubDelivery"
+                >
+                    Validate Hub Delivery
+                </vs-checkbox>
 
-                    <vs-checkbox
-                        v-if="disable_hub_delivery"
-                        style="margin-left: 20px"
-                        v-model="is_hub_delivery_validation"
-                        @change="handleValidateHubDelivery"
-                        disabled
-                    >
-                        Validate Hub Delivery
-                    </vs-checkbox>
-
-                    <template v-if="is_pra_runsheet">
-                        <vs-col xs="12" sm="2" lg="2">
-                            <template>
-                                <div class="center in-get-bag">
-                                    <vs-col lg="12">
-                                        <selector
-                                            ref="validation"
-                                            name=""
-                                            rules=""
-                                            placeholder="Select Validation"
-                                            formKey="validation"
-                                            :loading="loading"
-                                            :selectedValue="validation"
-                                            :disabled="true"
-                                            :customBind="'data-kt-routing'"
-                                        />
-                                    </vs-col>
-                                </div>
-                            </template>
-                        </vs-col>
-                        <vs-col xs="12" sm="6" lg="6">
-                            <template>
-                                <div class="center in-get-bag">
-                                    <vs-col lg="12">
-                                        <asynchronousSelect
-                                            ref="validation_reference"
-                                            name=""
-                                            rules=""
-                                            formKey="validation_reference"
-                                            typeInput="multipleselector"
-                                            :selectedValue="validation_reference"
-                                            :disabled="true"
-                                        />
-                                    </vs-col>
-                                </div>
-                            </template>
-                        </vs-col>
-                    </template>
-                </vs-row>
-            </div>
+                <!-- NOTES: HIDE SINCE CURRENTLY VALIDATION NOT USED -->
+                <template v-if="is_pra_runsheet && false">
+                    <vs-col xs="12" sm="3" lg="3">
+                        <selector
+                            ref="validation"
+                            name=""
+                            rules=""
+                            placeholder="Select Validation"
+                            formKey="validation"
+                            :loading="loading"
+                            :selectedValue="validation"
+                            :disabled="true"
+                            :customBind="'data-kt-routing'"
+                        />
+                    </vs-col>
+                    <vs-col xs="12" sm="6" lg="6">
+                        <asynchronousSelect
+                            ref="validation_reference"
+                            name=""
+                            rules=""
+                            formKey="validation_reference"
+                            typeInput="multipleselector"
+                            :selectedValue="validation_reference"
+                            :disabled="true"
+                        />
+                    </vs-col>
+                </template>
+            </vs-row>
         </template>
 
         <section class="bagging">
