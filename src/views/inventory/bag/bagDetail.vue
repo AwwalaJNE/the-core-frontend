@@ -209,6 +209,7 @@
                         name="Service"
                         rules="required"
                         formKey="service"
+                        :isMultiple="true"
                         :valueData="serviceArray"
                         :selectedValue="service"
                         :disabled="disabledApprove && !loading"
@@ -343,7 +344,7 @@ export default {
                     value: 'international',
                 },
             ],
-            service: '',
+            service: [],
             serviceArray: [
                 {
                     label: 'All Service',
@@ -553,13 +554,18 @@ export default {
                 this.destinationValue = data_destination?.node_id
             }
 
-            let data_validation = data.validation ? data.validation : []
+            let data_validation = data.validation || []
             if (data_validation.length > 0) {
                 this.routing = data_validation?.[0]?.destination || '-'
-                this.service = data_validation?.[0]?.service || '-'
             } else {
                 this.routing = 'all_routing'
-                this.service = 'all_service'
+            }
+
+            let data_validation_service = data.validation_service || []
+            if (data_validation_service.length > 0) {
+                this.service = data_validation_service
+            } else {
+                this.service = ['all_service']
             }
 
             this.employee = data.employee_name ? data.employee_name : ''
