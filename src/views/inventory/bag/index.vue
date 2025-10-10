@@ -235,12 +235,13 @@ export default {
 
                 this.openNotification('success', null, 'Success', res?.data?.message || 'Success')
             } catch (err) {
-                this.openNotification(
-                    'danger',
-                    err?.response?.data?.code || '',
-                    'Failed',
-                    err?.response?.data?.message || 'Something went wrong'
-                )
+                // TODO: HIDE & RECHECK LATER
+                // this.openNotification(
+                //     'danger',
+                //     err?.response?.data?.code || '',
+                //     'Failed',
+                //     err?.response?.data?.message || 'Something went wrong'
+                // )
 
                 // TODO: RECHECK LATER
                 this.openDialog()
