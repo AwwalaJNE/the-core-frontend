@@ -196,21 +196,6 @@ export default {
             this.is_auto_open_bag = true
             this.setInputFocus()
         },
-        startLoading() {
-            this.refloading = this.$vs.loading({
-                target: this.$refs.baggingSection.$el,
-                type: 'scale',
-                text: 'Loading...',
-                background: '#EAEAEA',
-                color: '#3b86ff',
-            })
-        },
-        stopLoading() {
-            if (this.refloading) {
-                this.refloading.close()
-                this.refloading = null
-            }
-        },
         handleAutoOpenBag(val) {
             this.is_auto_open_bag = val.target.checked
         },
@@ -227,10 +212,14 @@ export default {
                 auto_open_bag: this.is_auto_open_bag,
             }
 
-            await this.processSorting()
+            if (this.bag_type === 'pra runsheet') {
+                this.createBag()
+            } else {
+                await this.processSorting()
+            }
         },
         async processSorting() {
-            this.startLoading()
+            this.startLoading(this.$refs.baggingSection)
             try {
                 const res = await axios.post(
                     `${this.URL.sorting_zip_code_validation}?n=${this.listenNodeId}`,
@@ -259,8 +248,8 @@ export default {
                 this.stopLoading()
             }
         },
-        async createBag(destination_node_id) {
-            this.startLoading()
+        async createBag(destination_node_id = '') {
+            this.startLoading(this.$refs.baggingSection)
             try {
                 const res = await axios.post(
                     `${this.URL.revamp_bag}?n=${this.listenNodeId}`,
@@ -269,8 +258,8 @@ export default {
                         type: this.bag_type,
                         auto_open_bag: this.is_auto_open_bag,
                         is_hub_delivery_validation: this.is_hub_delivery_validation,
-                        destination: 'all_routing',
-                        service: ['ALL_SERVICE'],
+                        destination: this.bag_type === 'pra runsheet' ? '' : 'all_routing',
+                        service: this.bag_type === 'pra runsheet' ? '' : ['ALL_SERVICE'],
                         validation: '',
                         validation_reference: '',
                         destination_node_id: destination_node_id,
@@ -281,7 +270,6 @@ export default {
                 let bagNumber = res.data.data.bag_number
                 let bagNumberForRoute = bagNumber
                 this.handleClearForm()
-                this.openNotification('success', null, 'Success', 'Bagging is success')
 
                 this.$store.dispatch('SET_BAG_IS_AUTO_OPEN_BAG', this.is_auto_open_bag)
                 this.$store.dispatch('SET_BAG_IS_AUTO_OPEN_BAG_ValueData', this.is_auto_open_bag)
@@ -297,7 +285,8 @@ export default {
 
                 this.$router.push('/bagging-detail/' + encodeURIComponent(bagNumberForRoute))
                 this.setRoutePageHistory(this.$route.meta, false)
-                this.openNotification('success', null, 'Success', 'Add item success')
+
+                this.openNotification('success', null, 'Success', 'Bagging is success')
             } catch (err) {
                 const errorCode = err?.response?.data?.code ?? ''
                 const errorMessage = err?.response?.data?.message ?? 'Something went wrong'

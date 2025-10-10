@@ -105,10 +105,17 @@ export default {
     methods: {
         cancel() {
             this.closeDialog()
+            this.handleClearForm()
         },
-        handleSubmit() {
+        async handleSubmit() {
+            if (this.destinationValue === '') {
+                this.openNotification('warn', null, 'Warning', 'Destinasi belum di pilih')
+                return
+            }
+
+            // TODO: MOVE LOADING STATE HERE
+            await this.$emit('createBag', this.destinationValue)
             this.cancel()
-            this.$emit('createBag', this.destinationValue)
         },
         updateValue(key, val, info) {
             this.destinationValue = info?.data?.node_id
@@ -132,6 +139,10 @@ export default {
             } catch (error) {
                 console.error('error', error)
             }
+        },
+        handleClearForm() {
+            this.destinationLabel = ''
+            this.destinationValue = ''
         },
     },
 }
