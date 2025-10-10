@@ -146,7 +146,7 @@
             <vs-row justify="space-between">
                 <vs-col xs="12" sm="4" lg="4">
                     <template v-if="!disabledApprove && !loading">
-                        <div v-if="radio_option === 'koli'" class="center in-get-bag">
+                        <div v-if="!is_masterbag" class="center in-get-bag">
                             <vs-input
                                 border
                                 type="text"
@@ -166,7 +166,7 @@
                                 </template>
                             </vs-input>
                         </div>
-                        <div v-if="radio_option === 'bag'" class="center in-get-bag">
+                        <div v-else class="center in-get-bag">
                             <vs-input
                                 border
                                 type="text"
@@ -311,7 +311,6 @@ export default {
     },
     data() {
         return {
-            radio_option: 'koli',
             title: 'Bagging Detail',
             item_number: '',
             bag_id: '',
@@ -502,7 +501,7 @@ export default {
         }
     },
     watch: {
-        radio_option(old, val) {
+        is_masterbag(old, val) {
             if (old !== val) {
                 this.setInputFocus()
             }
@@ -536,9 +535,6 @@ export default {
                 data.data.is_actual_weight_mandatory === '0' ? false : true
 
             this.is_masterbag = data.data.is_consolidated === '1' ? true : false
-            if (data.data.is_consolidated === '1') {
-                this.radio_option = 'bag'
-            }
 
             if (this.is_pra_runsheet || this.is_masterbag) {
                 this.disable_hub_delivery = true
@@ -781,12 +777,9 @@ export default {
         setInputFocus() {
             this.$nextTick(() => {
                 let inputElement = null
-                // if (this.radio_option === "connote") {
-                //   inputElement = this.$refs.formInputBaggingConnote?.$el.querySelector('input');
-                // }
-                if (this.radio_option === 'koli') {
+                if (this.is_masterbag) {
                     inputElement = this.$refs.formInputBaggingKoli?.$el.querySelector('input')
-                } else if (this.radio_option === 'bag') {
+                } else {
                     inputElement = this.$refs.formInputBaggingBag?.$el.querySelector('input')
                 }
                 if (inputElement) {
