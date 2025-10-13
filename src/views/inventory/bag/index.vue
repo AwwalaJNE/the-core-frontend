@@ -227,8 +227,8 @@ export default {
                     this.Helper.header()
                 )
 
-                if (res?.data?.node_id) {
-                    this.createBag(res?.data?.node_id)
+                if (res?.data?.information?.destination_node_id) {
+                    this.createBag(res?.data?.information?.destination_node_id)
                 } else {
                     this.openDialog()
                 }
