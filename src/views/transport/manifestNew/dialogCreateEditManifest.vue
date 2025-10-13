@@ -12,29 +12,32 @@
                     <div class="title-helper">
                         {{ listenTitle }}
                     </div>
-                    
+
                     <div class="button-group" v-if="!listenIsReadOnly">
                         <template v-if="!is_sm_edit">
-                            <vs-button 
+                            <vs-button
                                 :disabled="isDisabledPrint"
+                                :data-testid="`add-stock-button`"
                                 @click="openDialogCreateSmStock"
                             >
                                 + Stock
                             </vs-button>
                         </template>
                         <template v-if="is_approve === 1">
-                            <vs-button 
+                            <vs-button
                                 :disabled="isDisabledPrint"
+                                :data-testid="`print-button`"
                                 @click="print"
                             >
                                 Print
                             </vs-button>
                         </template>
                         <template v-if="listenUserRoleName === 'HELPDESK'">
-                            <vs-button  
+                            <vs-button
                                 :danger="is_approve === 1"
                                 :disabled="isDisabledApprove"
-                                @click="approve" 
+                                :data-testid="`approve-button`"
+                                @click="approve"
                             >
                                 {{ is_approve === 1 ? 'Unapprove' : 'Approve' }}
                             </vs-button>
@@ -42,7 +45,8 @@
                         <template v-else>
                             <vs-button
                                 :disabled="is_approve === 1 || isDisabledApprove"
-                                @click="approve" 
+                                :data-testid="`approve-button`"
+                                @click="approve"
                             >
                                 {{ is_approve === 1 ? 'Approved' : 'Approve' }}
                             </vs-button>
@@ -52,10 +56,7 @@
             </template>
 
             <template v-slot:content>
-                <camera-scanner 
-                    ref="cameraScanner" 
-                    @data="onCameraScannerGetData" 
-                />
+                <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
 
                 <div>
                     <!-- Form Section -->
@@ -75,21 +76,22 @@
                     />
 
                     <div v-if="vehicle.length > 0">
-                        <vs-row justify="space-between" style="margin: 0!important;">
-                            <vs-col w="6" >
+                        <vs-row justify="space-between" style="margin: 0 !important">
+                            <vs-col w="6">
                                 <h3 v-if="!is_sm_edit" class="title">List Vehicle</h3>
                                 <h3 v-else class="title">Current Vehicle</h3>
                             </vs-col>
-                            <vs-col w="6" >
+                            <vs-col w="6">
                                 <vs-row justify="flex-end" v-if="!is_sm_edit">
                                     <vs-button
                                         shadow
                                         :active="false"
                                         :disabled="isDisabled"
+                                        :data-testid="`more-vehicle-button`"
                                         @click="openDialogManageVehicleManifest"
-                                        style="min-width: 120px;"
+                                        style="min-width: 120px"
                                     >
-                                        <i class='bx bx-plus'></i> More Vehicle
+                                        <i class="bx bx-plus"></i> More Vehicle
                                     </vs-button>
                                 </vs-row>
                                 <vs-row justify="flex-end" v-else>
@@ -97,9 +99,10 @@
                                         shadow
                                         :active="false"
                                         :disabled="isDisabled"
+                                        :data-testid="`manage-vehicle-button`"
                                         @click="openDialogManageVehicleManifest"
                                     >
-                                        <i class='bx bx-cog'></i> Manage
+                                        <i class="bx bx-cog"></i> Manage
                                     </vs-button>
                                 </vs-row>
                             </vs-col>
@@ -115,14 +118,12 @@
                             />
                         </template>
                         <template v-else>
-                            <vs-row
-                                v-for="(item, index) in vehicle"
-                                :key="index"
-                            >
+                            <vs-row v-for="(item, index) in vehicle" :key="index">
                                 <vs-col w="12">
-                                    <vehicle-card 
-                                        :data="item" 
+                                    <vehicle-card
+                                        :data="item"
                                         :isActive="item.is_active"
+                                        :data-testid="`current-vehicle-card`"
                                     />
                                 </vs-col>
                             </vs-row>
@@ -134,13 +135,24 @@
                         shadow
                         :active="false"
                         :disabled="isDisabled"
+                        :data-testid="`add-vehicle-button`"
                         @click="openDialogManageVehicleManifest"
                     >
-                        <i class='bx bx-plus'></i> Vehicle
+                        <i class="bx bx-plus"></i> Vehicle
                     </vs-button>
 
-                    <div v-if="!isDisabled && !is_sm_edit" style="justify-content: flex-end; display: flex;">
-                        <div class="container-clear-item" @click="handleClearForm(); resetForm()">
+                    <div
+                        v-if="!isDisabled && !is_sm_edit"
+                        style="justify-content: flex-end; display: flex"
+                    >
+                        <div
+                            class="container-clear-item"
+                            :data-testid="`reset-button`"
+                            @click="
+                                handleClearForm()
+                                resetForm()
+                            "
+                        >
                             Reset Inputs
                         </div>
                     </div>
@@ -160,6 +172,7 @@
                                     v-uppercase
                                     :autofocus="true"
                                     :disabled="isDisabled"
+                                    :data-testid="`input-item_number`"
                                     @click-icon="handleIconClick"
                                     @input="sanitizeAlphanumeric('item_number')"
                                 >
@@ -172,7 +185,7 @@
 
                         <!-- Table Section -->
                         <div v-if="!loadingDetail && !loading">
-                            <table-master 
+                            <table-master
                                 hideColumnKey="dialog-surat-muatan"
                                 :dataTable="dataTable"
                                 :dataColumn="datacolumn"
@@ -197,14 +210,14 @@
         <dialog-trace-bag
             title="Trace Bag Activity"
             :active="dialogTraceBag"
-            :closeDialog="() => dialogTraceBag = false"
+            :closeDialog="() => (dialogTraceBag = false)"
             :bag_number="selectedBagNumber"
         />
 
         <dialog-select-manifest-stock
             title="Pilih Stock"
             :active="showSelectStockModal"
-            :close="() => showSelectStockModal = false"
+            :close="() => (showSelectStockModal = false)"
             :mode="manifest_method_id"
             @selectManifest="handleSelectManifest"
         />
@@ -230,37 +243,37 @@
 </template>
 
 <script>
-import axios from "axios";
-import moment from "moment";
-import master from "@/mixins/master";
+import axios from 'axios'
+import moment from 'moment'
+import master from '@/mixins/master'
 
-import CameraScanner from "@/components/scanner/camera";
-import DialogMaster from "@/components/dialog/dialogMaster";
-import FormInputController from "@/components/form/formInputController";
-import RadioWithCard from "@/components/input/radioWithCard";
-import TableMaster from "@/components/table/tableMaster.vue";
+import CameraScanner from '@/components/scanner/camera'
+import DialogMaster from '@/components/dialog/dialogMaster'
+import FormInputController from '@/components/form/formInputController'
+import RadioWithCard from '@/components/input/radioWithCard'
+import TableMaster from '@/components/table/tableMaster.vue'
 
-import DialogTraceBag from "@/views/transport/manifestNew/dialogTraceBag";
-import dialogSelectManifestStock from "./dialogSelectManifestStock.vue";
+import DialogTraceBag from '@/views/transport/manifestNew/dialogTraceBag'
+import dialogSelectManifestStock from './dialogSelectManifestStock.vue'
 
-import DialogManageVehicleManifest from "@/views/transport/manifestVehicle/dialogCreateManage";
-import VehicleCard from "@/views/transport/manifestNew/vehicleCard";
-import DialogCreateEditStock from "@/views/settings/suratMuatan/stock/dialogCreateEdit";
+import DialogManageVehicleManifest from '@/views/transport/manifestVehicle/dialogCreateManage'
+import VehicleCard from '@/views/transport/manifestNew/vehicleCard'
+import DialogCreateEditStock from '@/views/settings/suratMuatan/stock/dialogCreateEdit'
 
 export default {
-    name: "transport-surat-muatan-dialog-new",
+    name: 'transport-surat-muatan-dialog-new',
     mixins: [master],
     components: {
         CameraScanner,
-        "dialog-master": DialogMaster,
-        "form-input-controller": FormInputController,
-        "table-master": TableMaster,
-        "dialog-trace-bag": DialogTraceBag,
-        "dialog-select-manifest-stock": dialogSelectManifestStock,
-        "dialog-manage-vehicle-manifest": DialogManageVehicleManifest,
-        "dialog-create-edit-stock": DialogCreateEditStock,
-        "radio": RadioWithCard,
-        "vehicle-card": VehicleCard
+        'dialog-master': DialogMaster,
+        'form-input-controller': FormInputController,
+        'table-master': TableMaster,
+        'dialog-trace-bag': DialogTraceBag,
+        'dialog-select-manifest-stock': dialogSelectManifestStock,
+        'dialog-manage-vehicle-manifest': DialogManageVehicleManifest,
+        'dialog-create-edit-stock': DialogCreateEditStock,
+        radio: RadioWithCard,
+        'vehicle-card': VehicleCard,
     },
     props: {
         active: Boolean,
@@ -271,76 +284,76 @@ export default {
         refresh: Function,
         isReadOnly: Boolean,
         title: String,
-        sm_number: String, 
+        sm_number: String,
     },
     data() {
         return {
             editData: {},
             form: {},
-            manifest_number: "",
+            manifest_number: '',
             manifest_method_id: 0,
-            item_number: "",
+            item_number: '',
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Item No",
-                    key: "item_number",
-                    width: "sm",
+                    label: 'Item No',
+                    key: 'item_number',
+                    width: 'sm',
                 },
                 {
-                    label: "Trip Status",
-                    key: "status_trip",
-                    width: "sm",
+                    label: 'Trip Status',
+                    key: 'status_trip',
+                    width: 'sm',
                 },
                 {
-                    label: "Received By",
-                    key: "received_by",
-                    width: "xxs",
+                    label: 'Received By',
+                    key: 'received_by',
+                    width: 'xxs',
                 },
                 {
-                    label: "Type",
-                    key: "item_type",
-                    width: "xs",
+                    label: 'Type',
+                    key: 'item_type',
+                    width: 'xs',
                 },
                 {
-                    label: "Cost Weight (Kg)",
-                    key: "cost_weight",
-                    width: "xs",
-                    textAlign: "center",
+                    label: 'Cost Weight (Kg)',
+                    key: 'cost_weight',
+                    width: 'xs',
+                    textAlign: 'center',
                 },
                 {
-                    label: "Actual Weight (Kg)",
-                    key: "actual_weight",
-                    width: "xs",
-                    textAlign: "center",
+                    label: 'Actual Weight (Kg)',
+                    key: 'actual_weight',
+                    width: 'xs',
+                    textAlign: 'center',
                 },
                 {
-                    label: "Destination",
-                    key: "destination_name",
-                    width: "xs",
+                    label: 'Destination',
+                    key: 'destination_name',
+                    width: 'xs',
                 },
                 {
-                    label: "Total Bag",
-                    key: "total_inner",
-                    width: "xs",
-                    textAlign: "center",
+                    label: 'Total Bag',
+                    key: 'total_inner',
+                    width: 'xs',
+                    textAlign: 'center',
                 },
                 {
-                    label: "Total Connote",
-                    key: "total_connote_of_bag",
-                    width: "xs",
-                    textAlign: "center",
-                },  
-                {
-                    label: "Status Irregularity",
-                    key: "status_irregularity",
-                    width: "xs",
+                    label: 'Total Connote',
+                    key: 'total_connote_of_bag',
+                    width: 'xs',
+                    textAlign: 'center',
                 },
                 {
-                    label: "Received",
-                    key: "received_status",
-                    type: "status",
-                    width: "xs",
+                    label: 'Status Irregularity',
+                    key: 'status_irregularity',
+                    width: 'xs',
+                },
+                {
+                    label: 'Received',
+                    key: 'received_status',
+                    type: 'status',
+                    width: 'xs',
                 },
             ],
             customActionList: [
@@ -353,7 +366,7 @@ export default {
                     label: 'Trace Bag',
                     key: 'trace_bag',
                     attribute: 'primary',
-                }
+                },
             ],
             loading: false,
             loadingDetail: false,
@@ -363,188 +376,225 @@ export default {
                 page_size: 1,
                 page: 1,
             },
-            vehicle_mode_id: "",
-            vehicle_type_id: "",
-            node_id_origin: "",
-            autoComplateUrl: "",
-            itterateUrlAutoComplete: "",
-            itterateFlagAutoComplete: "node_name",
+            vehicle_mode_id: '',
+            vehicle_type_id: '',
+            node_id_origin: '',
+            autoComplateUrl: '',
+            itterateUrlAutoComplete: '',
+            itterateFlagAutoComplete: 'node_name',
             etd: null,
             estimated_time_in_hour: null,
             isDisabled: false,
             isDisabledPrint: false,
             isDisabledApprove: false,
             is_approve: 0,
-            item_remove: "",
+            item_remove: '',
             master_form: {},
             dataByApi: {},
             loadingSuratMuatan: false,
             dialogTraceBag: false,
             showSelectStockModal: false,
-            selectedBagNumber: "",
+            selectedBagNumber: '',
             dialogManageVehicleManifest: false,
             dialogActiveStock: false,
             is_sm_edit: false,
             vehicle_form: [],
             vehicle: [],
-            selected_manifest_vehicle: "",
-        };
+            selected_manifest_vehicle: '',
+        }
     },
     computed: {
         listenActive() {
-            return this.active;
+            return this.active
         },
         listenTitle() {
-            return this.title;
+            return this.title
         },
         listenDataItem() {
-            return this.dataItem || {};
+            return this.dataItem || {}
         },
         listenGetByApi() {
-            return this.dataByApi || {};
+            return this.dataByApi || {}
         },
         listenItterateUrlAutoComplete() {
-            return this.itterateUrlAutoComplete;
+            return this.itterateUrlAutoComplete
         },
         listenItterateFlagAutoComplete() {
-            return this.itterateFlagAutoComplete;
+            return this.itterateFlagAutoComplete
         },
         listenLoading() {
-            return this.loading || this.loadingSuratMuatan || this.loadingDetail || this.loadingConfirmApprove;
+            return (
+                this.loading ||
+                this.loadingSuratMuatan ||
+                this.loadingDetail ||
+                this.loadingConfirmApprove
+            )
         },
         listenIsReadOnly() {
-            return this.isReadOnly;
+            return this.isReadOnly
         },
         listenSMNumber() {
-            return this.sm_number;
+            return this.sm_number
         },
         listenSelectedManifestVehicle() {
             return this.selected_manifest_vehicle || ''
-        }
+        },
     },
     watch: {
-        dataItem: function(val) {
+        dataItem: function (val) {
             if (val !== undefined) {
-                this.getEditData(val);
+                this.getEditData(val)
 
-                this.isDisabled = (val.status !== 'UNAPPROVED' && val.status !== 'UNRECEIVED') || val.is_approve === 1;
-                this.isDisabledPrint = val.status === 'CANCELED';
-                this.isDisabledApprove = (val.status !== 'UNAPPROVED' && val.status !== 'UNRECEIVED') ;
+                this.isDisabled =
+                    (val.status !== 'UNAPPROVED' && val.status !== 'UNRECEIVED') ||
+                    val.is_approve === 1
+                this.isDisabledPrint = val.status === 'CANCELED'
+                this.isDisabledApprove = val.status !== 'UNAPPROVED' && val.status !== 'UNRECEIVED'
             }
         },
-        dataByApi: function(val) {
+        dataByApi: function (val) {
             if (val !== undefined) {
                 if (this.listenIsReadOnly) {
                     this.isDisabled = true
                 }
             }
         },
-        active: async function(val) {
+        active: async function (val) {
             if (val == true) {
                 if (this.listenIsReadOnly) {
-                    await this.getEditDataByApi();
+                    await this.getEditDataByApi()
                 }
-                
-                this.getDataVehicleMode();
+
+                this.getDataVehicleMode()
                 this.originNode()
             }
-        }
+        },
     },
     methods: {
         handleSelectManifest(val) {
-            this.handleClearForm();
-            
-            this.manifest_number = val.manifest_number;
-            this.manifest_method_id = parseInt(val.vehicle_mode_id)
-            this.vehicle_type_id = val.vehicle_type_id;
-            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX", val.vehicle_prefix_name + "-");
-            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER", val.manifest_number);
-            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID", parseInt(val.vehicle_mode_id));
-            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN", val?.node_name_origin + " (" + val?.node_code_origin + ")");
-            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION", val?.node_name_destination + " (" + val?.node_code_destination + ")");
-            this.$store.dispatch("SET_SURAT_MUATAN_ETD", val.etd);
-            this.$store.dispatch("SET_SURAT_MUATAN_ETA", val.eta);
+            this.handleClearForm()
 
-            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_ValueData", val.vehicle_prefix_name + "-");
-            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_ValueData", val.node_id_origin);
-            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ValueData", val.node_id_destination);
+            this.manifest_number = val.manifest_number
+            this.manifest_method_id = parseInt(val.vehicle_mode_id)
+            this.vehicle_type_id = val.vehicle_type_id
+            this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_PREFIX', val.vehicle_prefix_name + '-')
+            this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_NUMBER', val.manifest_number)
+            this.$store.dispatch(
+                'SET_SURAT_MUATAN_MANIFEST_METHOD_ID',
+                parseInt(val.vehicle_mode_id)
+            )
+            this.$store.dispatch(
+                'SET_SURAT_MUATAN_NODE_ID_ORIGIN',
+                val?.node_name_origin + ' (' + val?.node_code_origin + ')'
+            )
+            this.$store.dispatch(
+                'SET_SURAT_MUATAN_NODE_ID_DESTINATION',
+                val?.node_name_destination + ' (' + val?.node_code_destination + ')'
+            )
+            this.$store.dispatch('SET_SURAT_MUATAN_ETD', val.etd)
+            this.$store.dispatch('SET_SURAT_MUATAN_ETA', val.eta)
+
+            this.$store.dispatch(
+                'SET_SURAT_MUATAN_MANIFEST_PREFIX_ValueData',
+                val.vehicle_prefix_name + '-'
+            )
+            this.$store.dispatch('SET_SURAT_MUATAN_NODE_ID_ORIGIN_ValueData', val.node_id_origin)
+            this.$store.dispatch(
+                'SET_SURAT_MUATAN_NODE_ID_DESTINATION_ValueData',
+                val.node_id_destination
+            )
 
             // Notes: Disabled field for SM Stock
-            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
-            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled", true);
-            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_isDisabled", true);
-            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_isDisabled", true);
-            this.$store.dispatch("SET_SURAT_MUATAN_ETD_isDisabled", true);
-            this.$store.dispatch("SET_SURAT_MUATAN_ETA_isDisabled", true);
+            this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled', true)
+            this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled', true)
+            this.$store.dispatch('SET_SURAT_MUATAN_NODE_ID_ORIGIN_isDisabled', true)
+            this.$store.dispatch('SET_SURAT_MUATAN_NODE_ID_DESTINATION_isDisabled', true)
+            this.$store.dispatch('SET_SURAT_MUATAN_ETD_isDisabled', true)
+            this.$store.dispatch('SET_SURAT_MUATAN_ETA_isDisabled', true)
 
-            this.getManifestVehicleSMStock();
+            this.getManifestVehicleSMStock()
         },
         handleCreateManifestStock(val) {
-            this.handleClearForm();
-            this.manifest_number = val;
-            this.getAndApplySmStock();
-            this.getManifestVehicleSMStock();
+            this.handleClearForm()
+            this.manifest_number = val
+            this.getAndApplySmStock()
+            this.getManifestVehicleSMStock()
         },
         openSelectStockModal() {
             if (!this.isDisabled) {
-                this.showSelectStockModal = true;
+                this.showSelectStockModal = true
             }
         },
         closeSelectStockModal() {
-            this.showSelectStockModal = false;
+            this.showSelectStockModal = false
         },
         getEditData(val) {
-            this.is_sm_edit = true;
+            this.is_sm_edit = true
 
-            this.manifest_method_id = parseInt(val.manifest_method_id);
+            this.manifest_method_id = parseInt(val.manifest_method_id)
 
-            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled", true);
-            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
-            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_visible", false)
-            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_width", 0)
-            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_width", 6)
+            this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled', true)
+            this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled', true)
+            this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_PREFIX_visible', false)
+            this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_PREFIX_width', 0)
+            this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_NUMBER_width', 6)
 
-            this.manifest_number = val.manifest_number;            
-            this.is_approve = val.is_approve;
+            this.manifest_number = val.manifest_number
+            this.is_approve = val.is_approve
 
-            this.vehicle_type_id = val.vehicle_type_id;
+            this.vehicle_type_id = val.vehicle_type_id
 
             if (val?.detail) {
-                let arr = [];
+                let arr = []
 
-                val.detail.forEach(data => {
-                    data.received_status = data.received_at ? 1 : 0;
-                    
+                val.detail.forEach((data) => {
+                    data.received_status = data.received_at ? 1 : 0
+
                     if (data.item_number) {
-                        data.bag_number = data.item_number;
-                        data.type = data.item_type;
-                        data.bag_weight = data.total_weight;
-                        data.cost_weight = data.bag?.cost_weight || '0';
-                        data.actual_weight = data.bag?.actual_weight || '0';
-                        data.total_inner = data.bag?.total_bag || '0';
-                        data.total_connote_of_bag = data.total_connote || '0';
-                        data.destination_name = (data.bag?.destination?.node_code || '') + ' - ' + (data.bag?.destination?.node_name || '');
-                        data.status_trip = (data?.bag?.status_trip || '') + ' ' + (data?.bag?.current_node.node_name || '') + " (" + (data?.bag?.current_node?.node_code) + ")";
-                        data.received_by = data?.bag?.received_by_user || '';
+                        data.bag_number = data.item_number
+                        data.type = data.item_type
+                        data.bag_weight = data.total_weight
+                        data.cost_weight = data.bag?.cost_weight || '0'
+                        data.actual_weight = data.bag?.actual_weight || '0'
+                        data.total_inner = data.bag?.total_bag || '0'
+                        data.total_connote_of_bag = data.total_connote || '0'
+                        data.destination_name =
+                            (data.bag?.destination?.node_code || '') +
+                            ' - ' +
+                            (data.bag?.destination?.node_name || '')
+                        data.status_trip =
+                            (data?.bag?.status_trip || '') +
+                            ' ' +
+                            (data?.bag?.current_node.node_name || '') +
+                            ' (' +
+                            data?.bag?.current_node?.node_code +
+                            ')'
+                        data.received_by = data?.bag?.received_by_user || ''
                         if (data.is_masterbag === '1') {
                             data.item_type = 'MASTERBAG'
                         } else {
                             data.item_type = 'BAG'
                         }
-                        
-                        if ((val.status !== "UNAPPROVED" && val.status !== "UNRECEIVED") || val.is_approve === 1) {
-                            data.button_status = { remove: false };
+
+                        if (
+                            (val.status !== 'UNAPPROVED' && val.status !== 'UNRECEIVED') ||
+                            val.is_approve === 1
+                        ) {
+                            data.button_status = { remove: false }
                         }
 
-                        if (data.status_irregularity !== null && data.status_irregularity !== undefined) {
-                            data.status_irregularity += " (" + data.status_description + ") ";
+                        if (
+                            data.status_irregularity !== null &&
+                            data.status_irregularity !== undefined
+                        ) {
+                            data.status_irregularity += ' (' + data.status_description + ') '
                         }
 
-                        arr.push(data);
+                        arr.push(data)
                     }
-                });
+                })
 
-                this.dataTable = arr;
+                this.dataTable = arr
             }
 
             this.master_form = {
@@ -561,269 +611,330 @@ export default {
                 pic_employee_id: val.pic_employee_id,
                 etd: val.etd,
                 eta: val.eta,
-                auto_depart: val.auto_depart
-            };
+                auto_depart: val.auto_depart,
+            }
 
-            const active_vehicle = val?.vehicle_log?.find(item => item.status === 'ACTIVE');
-            this.vehicle =  [{
-                origin_vehicle: active_vehicle?.name_origin_tlc || "",
-                destination_vehicle: active_vehicle?.name_destination_tlc || "",
-                origin_vehicle_tlc: active_vehicle?.origin_tlc || "",
-                destination_vehicle_tlc: active_vehicle?.destination_tlc || "",
-                vehicle_id: active_vehicle?.vehicle_name || "",
-                pic_employee_id: active_vehicle?.employee_name || "",
-                flight_number: active_vehicle?.flight_number || "",
-                flight_schedule: this.formatTimezone(active_vehicle?.flight_schedule) || "",
-                etd_vehicle: this.formatTimezone(active_vehicle?.etd) || "",
-                eta_vehicle: this.formatTimezone(active_vehicle?.eta) || "",
-                status_flight: active_vehicle?.status_flight,
-                is_active: active_vehicle?.status === 'ACTIVE'
-            }];
+            const active_vehicle = val?.vehicle_log?.find((item) => item.status === 'ACTIVE')
+            this.vehicle = [
+                {
+                    origin_vehicle: active_vehicle?.name_origin_tlc || '',
+                    destination_vehicle: active_vehicle?.name_destination_tlc || '',
+                    origin_vehicle_tlc: active_vehicle?.origin_tlc || '',
+                    destination_vehicle_tlc: active_vehicle?.destination_tlc || '',
+                    vehicle_id: active_vehicle?.vehicle_name || '',
+                    pic_employee_id: active_vehicle?.employee_name || '',
+                    flight_number: active_vehicle?.flight_number || '',
+                    flight_schedule: this.formatTimezone(active_vehicle?.flight_schedule) || '',
+                    etd_vehicle: this.formatTimezone(active_vehicle?.etd) || '',
+                    eta_vehicle: this.formatTimezone(active_vehicle?.eta) || '',
+                    status_flight: active_vehicle?.status_flight,
+                    is_active: active_vehicle?.status === 'ACTIVE',
+                },
+            ]
 
-
-            val.manifest_prefix = val?.manifest_method?.prefix_name;
+            val.manifest_prefix = val?.manifest_method?.prefix_name
 
             // TODO: COMMENT IF WANNA USE NODE
             // val.node_id_origin = val?.origin?.node_name + " (" + val?.origin?.node_code + ")";
             // val.node_id_destination = val?.destination?.node_name + " (" + val?.destination?.node_code + ")";
 
             // TODO: COMMENT IF DON'T WANNA USE BRANCH
-            val.node_id_origin = val?.origin_branch_name + " (" + val?.origin_branch_code + ")";
-            val.node_id_destination = val?.destination_branch_name + " (" + val?.destination_branch_code + ")";
+            val.node_id_origin = val?.origin_branch_name + ' (' + val?.origin_branch_code + ')'
+            val.node_id_destination =
+                val?.destination_branch_name + ' (' + val?.destination_branch_code + ')'
 
-            val.vehicle_id = val?.vehicle?.vehicle_name;
-            val.pic_employee_id = val?.employee_pic?.employee_name;
-            
-            this.editData = val;
+            val.vehicle_id = val?.vehicle?.vehicle_name
+            val.pic_employee_id = val?.employee_pic?.employee_name
+
+            this.editData = val
         },
         async getEditDataByApi() {
-            this.loadingSuratMuatan = true;
+            this.loadingSuratMuatan = true
             try {
-                const res = await axios.get(`${this.URL.surat_muatan}/${this.listenSMNumber}?n=${this.listenNodeId}`, this.Helper.header());
+                const res = await axios.get(
+                    `${this.URL.surat_muatan}/${this.listenSMNumber}?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
 
                 let data = res.data.data
                 if (data) {
-                    this.getDataPreview(data);
+                    this.getDataPreview(data)
                 }
-
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
             } finally {
-                this.is_sm_edit = true;
-                this.loadingSuratMuatan = false;
+                this.is_sm_edit = true
+                this.loadingSuratMuatan = false
             }
         },
         getDataPreview(val) {
-            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_visible", false)
-            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_width", 0)
-            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_width", 6)
+            this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_PREFIX_visible', false)
+            this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_PREFIX_width', 0)
+            this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_NUMBER_width', 6)
 
-            this.manifest_method_id = parseInt(val.manifest_method_id);
-            val.manifest_method_id = parseInt(val.manifest_method_id);
-            val.manifest_prefix = val?.manifest_method?.prefix_name;
-            
+            this.manifest_method_id = parseInt(val.manifest_method_id)
+            val.manifest_method_id = parseInt(val.manifest_method_id)
+            val.manifest_prefix = val?.manifest_method?.prefix_name
+
             // TODO: UNCOMMENT IF WANNA USE NODE
             // val.node_id_origin = val?.origin?.node_name + " (" + val?.origin?.node_code + ")";
             // val.node_id_destination = val?.destination?.node_name + " (" + val?.destination?.node_code + ")";
-            
+
             // TODO: COMMENT IF DON'T WANNA USE BRANCH
-            val.node_id_origin = val?.origin_branch_name + " (" + val?.origin_branch_code + ")";
-            val.node_id_destination = val?.destination_branch_name + " (" + val?.destination_branch_code + ")";
+            val.node_id_origin = val?.origin_branch_name + ' (' + val?.origin_branch_code + ')'
+            val.node_id_destination =
+                val?.destination_branch_name + ' (' + val?.destination_branch_code + ')'
 
-            val.vehicle_id = val?.vehicle?.vehicle_name;
-            val.pic_employee_id = val?.employee_pic?.employee_name;
-            val.flight_number = val?.flight_number;
-            val.flight_schedule = val?.flight_schedule;
+            val.vehicle_id = val?.vehicle?.vehicle_name
+            val.pic_employee_id = val?.employee_pic?.employee_name
+            val.flight_number = val?.flight_number
+            val.flight_schedule = val?.flight_schedule
 
-            const active_vehicle = val?.vehicle_log?.find(item => item.status === 'ACTIVE');
-            this.vehicle =  [{
-                origin_vehicle: active_vehicle?.name_origin_tlc || "",
-                destination_vehicle: active_vehicle?.name_destination_tlc || "",
-                origin_vehicle_tlc: active_vehicle?.origin_tlc || "",
-                destination_vehicle_tlc: active_vehicle?.destination_tlc || "",
-                vehicle_id: active_vehicle?.vehicle_name || "",
-                pic_employee_id: active_vehicle?.employee_name || "",
-                flight_number: active_vehicle?.flight_number || "",
-                flight_schedule: active_vehicle?.etd || "",
-                etd_vehicle: active_vehicle?.etd || "",
-                eta_vehicle: active_vehicle?.eta || "",
-                status_flight: active_vehicle?.status_flight,
-                is_active: active_vehicle?.status === 'ACTIVE'
-            }];
+            const active_vehicle = val?.vehicle_log?.find((item) => item.status === 'ACTIVE')
+            this.vehicle = [
+                {
+                    origin_vehicle: active_vehicle?.name_origin_tlc || '',
+                    destination_vehicle: active_vehicle?.name_destination_tlc || '',
+                    origin_vehicle_tlc: active_vehicle?.origin_tlc || '',
+                    destination_vehicle_tlc: active_vehicle?.destination_tlc || '',
+                    vehicle_id: active_vehicle?.vehicle_name || '',
+                    pic_employee_id: active_vehicle?.employee_name || '',
+                    flight_number: active_vehicle?.flight_number || '',
+                    flight_schedule: active_vehicle?.etd || '',
+                    etd_vehicle: active_vehicle?.etd || '',
+                    eta_vehicle: active_vehicle?.eta || '',
+                    status_flight: active_vehicle?.status_flight,
+                    is_active: active_vehicle?.status === 'ACTIVE',
+                },
+            ]
 
-            this.dataByApi = val;
-            
+            this.dataByApi = val
+
             if (val?.detail) {
-                let arr = [];
+                let arr = []
 
-                val.detail.forEach(data => {
-                    data.received_status = data.received_at ? 1 : 0;
-                    
+                val.detail.forEach((data) => {
+                    data.received_status = data.received_at ? 1 : 0
+
                     if (data.item_number) {
-                        data.bag_number = data.item_number;
-                        data.type = data.item_type;
-                        data.bag_weight = data.total_weight;
-                        data.cost_weight = data.bag?.cost_weight || '0';
-                        data.actual_weight = data.bag?.actual_weight || '0';
-                        data.total_inner = data.bag?.total_bag || '0';
-                        data.total_connote_of_bag = data.bag?.total_koli || '0';
-                        data.destination_name = (data.bag?.destination?.node_code || '') + ' - ' + (data.bag?.destination?.node_name || '');
-                        data.status_trip = (data?.bag?.status_trip || '') + ' ' + (data?.bag?.current_node.node_name || '') + " (" + (data?.bag?.current_node?.node_code) + ")";
-                        data.received_by = data?.bag?.received_by_user || '';
+                        data.bag_number = data.item_number
+                        data.type = data.item_type
+                        data.bag_weight = data.total_weight
+                        data.cost_weight = data.bag?.cost_weight || '0'
+                        data.actual_weight = data.bag?.actual_weight || '0'
+                        data.total_inner = data.bag?.total_bag || '0'
+                        data.total_connote_of_bag = data.bag?.total_koli || '0'
+                        data.destination_name =
+                            (data.bag?.destination?.node_code || '') +
+                            ' - ' +
+                            (data.bag?.destination?.node_name || '')
+                        data.status_trip =
+                            (data?.bag?.status_trip || '') +
+                            ' ' +
+                            (data?.bag?.current_node.node_name || '') +
+                            ' (' +
+                            data?.bag?.current_node?.node_code +
+                            ')'
+                        data.received_by = data?.bag?.received_by_user || ''
                         if (data.is_masterbag === '1') {
                             data.item_type = 'MASTERBAG'
                         } else {
                             data.item_type = 'BAG'
                         }
-                        
-                        if ((val.status !== "UNAPPROVED" && val.status !== "UNRECEIVED") || val.is_approve === 1) {
-                            data.button_status = { remove: false };
+
+                        if (
+                            (val.status !== 'UNAPPROVED' && val.status !== 'UNRECEIVED') ||
+                            val.is_approve === 1
+                        ) {
+                            data.button_status = { remove: false }
                         }
 
-                        if (data.status_irregularity !== null && data.status_irregularity !== undefined) {
-                            data.status_irregularity += " (" + data.status_description + ") ";
+                        if (
+                            data.status_irregularity !== null &&
+                            data.status_irregularity !== undefined
+                        ) {
+                            data.status_irregularity += ' (' + data.status_description + ') '
                         }
 
-                        arr.push(data);
+                        arr.push(data)
                     }
-                });
+                })
 
-                this.dataTable = arr;
+                this.dataTable = arr
             }
         },
         actionUpdate(val, key) {
             switch (key) {
-                case "remove":
-                    this.item_remove = val.item_number;
-                    this.removeSuratMuatanDetail();
-                    break;
-                case "trace_bag":
-                    this.selectedBagNumber = val.item_number;
-                    this.dialogTraceBag = true;
-                    break;
+                case 'remove':
+                    this.item_remove = val.item_number
+                    this.removeSuratMuatanDetail()
+                    break
+                case 'trace_bag':
+                    this.selectedBagNumber = val.item_number
+                    this.dialogTraceBag = true
+                    break
                 default:
             }
         },
         inputFocus(info) {
             if (info?.key) {
-                let url = "";
+                let url = ''
                 switch (info.key) {
-                    case "node_id_origin":
+                    case 'node_id_origin':
                         // TODO: UNCOMMENT IF WANNA USE NODE
                         // this.autoComplateUrl = `${this.URL.node}/${this.listenNodeId}/origin-link?n=${this.listenNodeId}&vehicle_mode_id=${this.vehicle_mode_id}`;
 
                         // TODO: COMMENT IF DON'T WANNA USE BRANCH
-                        this.autoComplateUrl = `${this.URL.branch_list_v2}?n=${this.listenNodeId}`;
-                        break;
-                    case "node_id_destination":
+                        this.autoComplateUrl = `${this.URL.branch_list_v2}?n=${this.listenNodeId}`
+                        break
+                    case 'node_id_destination':
                         // TODO: UNCOMMENT IF WANNA USE NODE
                         // this.autoComplateUrl = `${this.URL.node}/${nodeId}/destination-link?n=${this.listenNodeId}&vehicle_mode_id=${this.vehicle_mode_id}&sort_order=desc&limit=15&page=1`;
 
                         // TODO: COMMENT IF DON'T WANNA USE BRANCH
-                        this.autoComplateUrl = `${this.URL.branch_list_v2}?n=${this.listenNodeId}`;
-                        break;
+                        this.autoComplateUrl = `${this.URL.branch_list_v2}?n=${this.listenNodeId}`
+                        break
                     default:
-                        break;
+                        break
                 }
             }
         },
         async querySearch(queryString, cb) {
             try {
-                const res = await axios.get(this.autoComplateUrl + `&s=${queryString}`, this.Helper.header());
-                const result = res.data.data || [];
-                const suggestions = result.map(item => {
-                    const value = item.node_name || item.branch_name || item.vehicle_name || item.employee_name || '';
-                    return { value, data: item };
-                });
-                cb(suggestions);
+                const res = await axios.get(
+                    this.autoComplateUrl + `&s=${queryString}`,
+                    this.Helper.header()
+                )
+                const result = res.data.data || []
+                const suggestions = result.map((item) => {
+                    const value =
+                        item.node_name ||
+                        item.branch_name ||
+                        item.vehicle_name ||
+                        item.employee_name ||
+                        ''
+                    return { value, data: item }
+                })
+                cb(suggestions)
             } catch (error) {
-                console.error("error", error);
+                console.error('error', error)
             }
         },
         formData(form) {
-            let userTimezone = this.$ls.get("timezone");
-            form.node_id_origin = form.node_id_origin?.node_id || form.node_id_origin || this.listenCurrentNode.node_id;
-            form.node_id_destination = form.node_id_destination?.node_id || form.node_id_destination;
+            let userTimezone = this.$ls.get('timezone')
+            form.node_id_origin =
+                form.node_id_origin?.node_id ||
+                form.node_id_origin ||
+                this.listenCurrentNode.node_id
+            form.node_id_destination = form.node_id_destination?.node_id || form.node_id_destination
 
             if (!this.is_sm_edit) {
-                form.vehicles = this.vehicle_form.map(item => item.state);
+                form.vehicles = this.vehicle_form.map((item) => item.state)
 
-                let active_vehicle = this.vehicle_form.find(item => item.state.is_active)?.state;
-                form.vehicle_id = active_vehicle?.vehicle_id;
-                form.vehicle_type_id = active_vehicle?.vehicle_type_id;
-                form.vehicle_mode_id = active_vehicle?.vehicle_mode_id;
+                let active_vehicle = this.vehicle_form.find((item) => item.state.is_active)?.state
+                form.vehicle_id = active_vehicle?.vehicle_id
+                form.vehicle_type_id = active_vehicle?.vehicle_type_id
+                form.vehicle_mode_id = active_vehicle?.vehicle_mode_id
             } else {
-                form.vehicles = this.vehicle_form;
+                form.vehicles = this.vehicle_form
 
-                let active_vehicle = this.vehicle_form.find(item => item.is_active);
-                form.vehicle_id = active_vehicle?.vehicle_id;
-                form.vehicle_type_id = active_vehicle?.vehicle_type_id;
-                form.vehicle_mode_id = active_vehicle?.vehicle_mode_id;
+                let active_vehicle = this.vehicle_form.find((item) => item.is_active)
+                form.vehicle_id = active_vehicle?.vehicle_id
+                form.vehicle_type_id = active_vehicle?.vehicle_type_id
+                form.vehicle_mode_id = active_vehicle?.vehicle_mode_id
             }
 
             if (form.manifest_prefix && form.manifest_number) {
-                form.manifest_number = `${form.manifest_prefix}${form.manifest_number}`;
+                form.manifest_number = `${form.manifest_prefix}${form.manifest_number}`
             }
-            
-            this.form = form;
+
+            this.form = form
             if (this.form.eta > this.form.etd) {
-                this.form.etd = this.Helper.convertTimezone(this.form.etd, userTimezone, 'Asia/Jakarta');
-                this.form.eta = this.Helper.convertTimezone(this.form.eta, userTimezone, 'Asia/Jakarta');
-                if (this.manifest_number !== undefined && this.manifest_number !== "" && this.is_sm_edit) {
-                    this.form.manifest_number = this.manifest_number;
-                    this.addSuratMuatanDetail();
+                this.form.etd = this.Helper.convertTimezone(
+                    this.form.etd,
+                    userTimezone,
+                    'Asia/Jakarta'
+                )
+                this.form.eta = this.Helper.convertTimezone(
+                    this.form.eta,
+                    userTimezone,
+                    'Asia/Jakarta'
+                )
+                if (
+                    this.manifest_number !== undefined &&
+                    this.manifest_number !== '' &&
+                    this.is_sm_edit
+                ) {
+                    this.form.manifest_number = this.manifest_number
+                    this.addSuratMuatanDetail()
                 } else {
-                    this.form.pickup_node_id_requestor = this.listenNodeId;
+                    this.form.pickup_node_id_requestor = this.listenNodeId
                     this.form.manifest_item = {
-                        bag_number: this.item_number
-                    };
-                    this.createSuratMuatan();
+                        bag_number: this.item_number,
+                    }
+                    this.createSuratMuatan()
                 }
             } else {
-                this.openNotification("warning", "Wrong Input in ETA/ETD field", "ETA must more than ETD");
+                this.openNotification(
+                    'warning',
+                    'Wrong Input in ETA/ETD field',
+                    'ETA must more than ETD'
+                )
             }
         },
         handleClearForm() {
-            this.$refs.formSuratMuatanController.handleClearForm();
-            this.selected_manifest_vehicle = "";
-            this.vehicle_type_id = "";
-            this.node_id_origin = "";
-            this.editData = {};
-            this.form = {};
-            this.item_number = "";
-            this.manifest_number = "";
-            this.dataTable = [];
+            this.$refs.formSuratMuatanController.handleClearForm()
+            this.selected_manifest_vehicle = ''
+            this.vehicle_type_id = ''
+            this.node_id_origin = ''
+            this.editData = {}
+            this.form = {}
+            this.item_number = ''
+            this.manifest_number = ''
+            this.dataTable = []
 
-            this.vehicle_form = [];
-            this.vehicle = [];
+            this.vehicle_form = []
+            this.vehicle = []
         },
         async getDataVehicleMode() {
-            this.loading = true;
+            this.loading = true
             try {
-                const { data } = await axios.get(`${this.URL.vehicle_mode_list_v2}?n=${this.listenNodeId}`, this.Helper.header() );
+                const { data } = await axios.get(
+                    `${this.URL.vehicle_mode_list_v2}?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
 
-                const options = data.data.map(item => ({
+                const options = data.data.map((item) => ({
                     value: item.vehicle_mode_id,
                     label: item.vehicle_mode_name,
-                    data: item
-                }));
+                    data: item,
+                }))
 
-                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID_ArrData", options);
+                this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_METHOD_ID_ArrData', options)
             } catch (err) {
-                console.error('Failed to load vehicle modes:', err);
+                console.error('Failed to load vehicle modes:', err)
             } finally {
-                this.loading = false;
+                this.loading = false
             }
         },
         async createSuratMuatan() {
-            this.loading = true;
+            this.loading = true
             try {
-                const res = await axios.post(`${this.URL.revamp_surat_muatan}?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());
-                const data = res.data.data;
+                const res = await axios.post(
+                    `${this.URL.revamp_surat_muatan}?n=${this.listenNodeId}`,
+                    JSON.stringify(this.form),
+                    this.Helper.header()
+                )
+                const data = res.data.data
                 if (data) {
-                    this.manifest_number = data.manifest_number;
-                    this.is_sm_edit = true;
-                    this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
+                    this.manifest_number = data.manifest_number
+                    this.is_sm_edit = true
+                    this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled', true)
                     this.master_form = {
                         manifest_number: data.manifest_number,
                         max_weight: data.max_weight,
@@ -838,444 +949,568 @@ export default {
                         pic_employee_id: data.pic_employee_id,
                         etd: data.etd,
                         eta: data.eta,
-                        auto_depart: data.auto_depart,     
-                        status: data.status
-                    };
-                    await this.getSuratMuatanDetail();
-                    await this.getManifestVehicle();
+                        auto_depart: data.auto_depart,
+                        status: data.status,
+                    }
+                    await this.getSuratMuatanDetail()
+                    await this.getManifestVehicle()
                 }
 
-                this.openNotification('success', null, "Success", "Create surat jalan success");
-
+                this.openNotification('success', null, 'Success', 'Create surat jalan success')
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
             } finally {
-                this.item_number = "";
-                this.loading = false;
+                this.item_number = ''
+                this.loading = false
             }
         },
         async addSuratMuatanDetail() {
-            this.loading = true;
+            this.loading = true
             try {
-                const res = await axios.post(`${this.URL.revamp_surat_muatan}/${this.manifest_number}/detail?n=${this.listenNodeId}`, {item_number: this.item_number}, this.Helper.header());
+                const res = await axios.post(
+                    `${this.URL.revamp_surat_muatan}/${this.manifest_number}/detail?n=${this.listenNodeId}`,
+                    { item_number: this.item_number },
+                    this.Helper.header()
+                )
 
                 if (res.data.data) {
-                    this.manifest_number = res.data.data.manifest_number;
-                    await this.getSuratMuatanDetail();
+                    this.manifest_number = res.data.data.manifest_number
+                    await this.getSuratMuatanDetail()
                 }
-                
-                this.openNotification("success", null, "Success", "Add detail surat muatan success");
+
+                this.openNotification('success', null, 'Success', 'Add detail surat muatan success')
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
             } finally {
-                this.item_number = "";
-                this.loading = false;
+                this.item_number = ''
+                this.loading = false
             }
         },
         async getSuratMuatanDetail() {
-            this.loadingDetail = true;
+            this.loadingDetail = true
             try {
-                const res = await axios.get(`${this.URL.revamp_surat_muatan}/${this.manifest_number}/detail?n=${this.listenNodeId}`, this.Helper.header());
+                const res = await axios.get(
+                    `${this.URL.revamp_surat_muatan}/${this.manifest_number}/detail?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
 
                 if (res.data.data) {
-                    let arr = res.data.data;
+                    let arr = res.data.data
 
-                    arr = arr.map(item => ({
+                    arr = arr.map((item) => ({
                         ...item,
                         received_status: item.received_at ? 1 : 0,
-                        destination_name: (item.bag?.destination?.node_code || '') + ' - ' + (item.bag?.destination?.node_name || ''),
-                        status_trip: (item?.bag?.status_trip || '') + ' ' + (item?.bag?.current_node.node_name || '') + " (" + (item?.bag?.current_node?.node_code) + ")",
+                        destination_name:
+                            (item.bag?.destination?.node_code || '') +
+                            ' - ' +
+                            (item.bag?.destination?.node_name || ''),
+                        status_trip:
+                            (item?.bag?.status_trip || '') +
+                            ' ' +
+                            (item?.bag?.current_node.node_name || '') +
+                            ' (' +
+                            item?.bag?.current_node?.node_code +
+                            ')',
                         received_by: item?.bag?.received_by_user || '',
                         actual_weight: item?.bag?.bag_actual_weight || '0',
                         cost_weight: item?.bag?.cost_weight || '0',
                         total_connote_of_bag: item?.bag?.total_koli || '0',
                         total_inner: item?.bag?.total_bag || '0',
                         // status_irregularity: (item?.irregularity?.status_code || '') + ' (' + item?.irregularity?.status_description + ')'
-                        item_type: item?.bag?.is_consolidated === '1' ? 'MASTERBAG': 'BAG'
-                    }));
+                        item_type: item?.bag?.is_consolidated === '1' ? 'MASTERBAG' : 'BAG',
+                    }))
 
-                    this.dataTable = arr;
+                    this.dataTable = arr
                 }
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
             } finally {
-                this.loadingDetail = false;
+                this.loadingDetail = false
             }
         },
         async updateSuratMuatan() {
-            this.loading = true;
+            this.loading = true
             try {
-                const res = await axios.put(`${this.URL.revamp_surat_muatan}/${this.manifest_number}?n=${this.listenNodeId}`, JSON.stringify(this.master_form), this.Helper.header());
-                this.openNotification('success', null, "Success", "Update surat muatan success");
+                const res = await axios.put(
+                    `${this.URL.revamp_surat_muatan}/${this.manifest_number}?n=${this.listenNodeId}`,
+                    JSON.stringify(this.master_form),
+                    this.Helper.header()
+                )
+                this.openNotification('success', null, 'Success', 'Update surat muatan success')
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
             } finally {
-                this.loading = false;
+                this.loading = false
             }
         },
         async removeSuratMuatanDetail() {
-            this.loading = true;
+            this.loading = true
             try {
-                const res = await axios.delete(`${this.URL.revamp_surat_muatan}/${this.manifest_number}/detail/${this.item_remove}?n=${this.listenNodeId}`, this.Helper.header());
-                this.openNotification('success', null, "Success", "Remove surat muatan success");
-                await this.getSuratMuatanDetail();
+                const res = await axios.delete(
+                    `${this.URL.revamp_surat_muatan}/${this.manifest_number}/detail/${this.item_remove}?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
+                this.openNotification('success', null, 'Success', 'Remove surat muatan success')
+                await this.getSuratMuatanDetail()
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
             } finally {
-                this.loading = false;
+                this.loading = false
             }
         },
         async getManifestVehicle() {
-            this.loading = true;
+            this.loading = true
             try {
-                const res = await axios.get(`${this.URL.manifest_vehicle}/${this.manifest_number}?n=${this.listenNodeId}`, this.Helper.header());
+                const res = await axios.get(
+                    `${this.URL.manifest_vehicle}/${this.manifest_number}?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
 
-                let arr = res.data.data;
+                let arr = res.data.data
 
-                const active_vehicle = arr?.find(item => item.status === 'ACTIVE');
-                this.vehicle =  [{
-                    origin_vehicle: active_vehicle?.name_origin_tlc || "",
-                    destination_vehicle: active_vehicle?.name_destination_tlc || "",
-                    origin_vehicle_tlc: active_vehicle?.origin_tlc || "",
-                    destination_vehicle_tlc: active_vehicle?.destination_tlc || "",
-                    vehicle_id: active_vehicle?.vehicle_name || "",
-                    pic_employee_id: active_vehicle?.employee_name || "",
-                    flight_number: active_vehicle?.flight_number || "",
-                    flight_schedule: this.formatTimezone(active_vehicle?.flight_schedule) || "",
-                    etd_vehicle: this.formatTimezone(active_vehicle?.etd) || "",
-                    eta_vehicle: this.formatTimezone(active_vehicle?.eta) || "",
-                    status_flight: active_vehicle?.status_flight,
-                    is_active: active_vehicle?.status === 'ACTIVE'
-                }];
+                const active_vehicle = arr?.find((item) => item.status === 'ACTIVE')
+                this.vehicle = [
+                    {
+                        origin_vehicle: active_vehicle?.name_origin_tlc || '',
+                        destination_vehicle: active_vehicle?.name_destination_tlc || '',
+                        origin_vehicle_tlc: active_vehicle?.origin_tlc || '',
+                        destination_vehicle_tlc: active_vehicle?.destination_tlc || '',
+                        vehicle_id: active_vehicle?.vehicle_name || '',
+                        pic_employee_id: active_vehicle?.employee_name || '',
+                        flight_number: active_vehicle?.flight_number || '',
+                        flight_schedule: this.formatTimezone(active_vehicle?.flight_schedule) || '',
+                        etd_vehicle: this.formatTimezone(active_vehicle?.etd) || '',
+                        eta_vehicle: this.formatTimezone(active_vehicle?.eta) || '',
+                        status_flight: active_vehicle?.status_flight,
+                        is_active: active_vehicle?.status === 'ACTIVE',
+                    },
+                ]
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Failed',
+                    err?.response?.data?.message || 'Something went wrong'
+                )
             } finally {
-                this.loading = false;
+                this.loading = false
             }
         },
         async getManifestVehicleSMStock() {
-            this.loading = true;
+            this.loading = true
             try {
-                const res = await axios.get(`${this.URL.manifest_vehicle}/${this.manifest_number}?n=${this.listenNodeId}`, this.Helper.header());
+                const res = await axios.get(
+                    `${this.URL.manifest_vehicle}/${this.manifest_number}?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
 
-                let arr = res.data.data;
+                let arr = res.data.data
 
-                if (this.selected_manifest_vehicle === '') this.selected_manifest_vehicle = arr.find(item => item.status === 'ACTIVE')?.manifest_vehicle_log_id;
+                if (this.selected_manifest_vehicle === '')
+                    this.selected_manifest_vehicle = arr.find(
+                        (item) => item.status === 'ACTIVE'
+                    )?.manifest_vehicle_log_id
 
-                this.vehicle = arr.map(item => ({
+                this.vehicle = arr.map((item) => ({
                     key: item.manifest_vehicle_log_id,
                     state: {
-                        origin_vehicle: item?.name_origin_tlc || "",
-                        destination_vehicle: item?.name_destination_tlc || "",
-                        origin_vehicle_tlc: item?.origin_tlc || "",
-                        destination_vehicle_tlc: item?.destination_tlc || "",
-                        vehicle_id: item?.vehicle_name || "",
-                        pic_employee_id: item?.employee_name || "",
-                        flight_number: item?.flight_number || "",
-                        flight_schedule: this.formatTimezone(item?.flight_schedule) || "",
-                        etd_vehicle: this.formatTimezone(item?.etd) || "",
-                        eta_vehicle: this.formatTimezone(item?.eta) || "",
-                        is_active: item?.status === 'ACTIVE'
-                    }
-                }));
+                        origin_vehicle: item?.name_origin_tlc || '',
+                        destination_vehicle: item?.name_destination_tlc || '',
+                        origin_vehicle_tlc: item?.origin_tlc || '',
+                        destination_vehicle_tlc: item?.destination_tlc || '',
+                        vehicle_id: item?.vehicle_name || '',
+                        pic_employee_id: item?.employee_name || '',
+                        flight_number: item?.flight_number || '',
+                        flight_schedule: this.formatTimezone(item?.flight_schedule) || '',
+                        etd_vehicle: this.formatTimezone(item?.etd) || '',
+                        eta_vehicle: this.formatTimezone(item?.eta) || '',
+                        is_active: item?.status === 'ACTIVE',
+                    },
+                }))
 
                 this.vehicle_form = arr.map((item, idx) => ({
                     key: item.manifest_vehicle_log_id,
                     state: {
-                        vehicle_id: item?.vehicle_id || "",
-                        vehicle_type_id: item?.vehicle_type_id || "",
-                        employee_driver_id: item?.pic_employee_id || "",
-                        origin_branch_code: item?.origin_tlc || "",
-                        destination_branch_code: item?.destination_tlc || "",
-                        flight_number: item?.flight_number || "",
-                        flight_schedule: this.manifest_method_id === 1 ? item?.etd : "" || "",
-                        etd: item?.etd || "",
-                        eta: item?.eta || "",
-                        is_active: item?.status === 'ACTIVE'
-                    }
-                }));
+                        vehicle_id: item?.vehicle_id || '',
+                        vehicle_type_id: item?.vehicle_type_id || '',
+                        employee_driver_id: item?.pic_employee_id || '',
+                        origin_branch_code: item?.origin_tlc || '',
+                        destination_branch_code: item?.destination_tlc || '',
+                        flight_number: item?.flight_number || '',
+                        flight_schedule: this.manifest_method_id === 1 ? item?.etd : '' || '',
+                        etd: item?.etd || '',
+                        eta: item?.eta || '',
+                        is_active: item?.status === 'ACTIVE',
+                    },
+                }))
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Failed',
+                    err?.response?.data?.message || 'Something went wrong'
+                )
             } finally {
-                this.loading = false;
+                this.loading = false
             }
         },
         async getAndApplySmStock() {
             console.log('this.manifest_number', this.manifest_number)
-            this.loading = true;
+            this.loading = true
             try {
-                const res = await axios.get(`${this.URL.sm_stock}/get-by-manifest/${this.manifest_number}?n=${this.listenNodeId}`, this.Helper.header());
-                let arr = res.data.data;
+                const res = await axios.get(
+                    `${this.URL.sm_stock}/get-by-manifest/${this.manifest_number}?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
+                let arr = res.data.data
 
                 // apply sm stock data to form
                 this.manifest_method_id = parseInt(arr.vehicle_mode_id)
-                this.vehicle_type_id = arr.vehicle_type_id;
-                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX", arr.vehicle_prefix_name + "-");
-                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER", arr.manifest_number);
-                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID", parseInt(arr.vehicle_mode_id));
-                this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN", arr.node_name_origin + " (" + arr.node_code_origin + ")");
-                this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION", arr.node_name_destination + " (" + arr.node_code_destination + ")");
-                this.$store.dispatch("SET_SURAT_MUATAN_ETD", arr.etd);
-                this.$store.dispatch("SET_SURAT_MUATAN_ETA", arr.eta);
+                this.vehicle_type_id = arr.vehicle_type_id
+                this.$store.dispatch(
+                    'SET_SURAT_MUATAN_MANIFEST_PREFIX',
+                    arr.vehicle_prefix_name + '-'
+                )
+                this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_NUMBER', arr.manifest_number)
+                this.$store.dispatch(
+                    'SET_SURAT_MUATAN_MANIFEST_METHOD_ID',
+                    parseInt(arr.vehicle_mode_id)
+                )
+                this.$store.dispatch(
+                    'SET_SURAT_MUATAN_NODE_ID_ORIGIN',
+                    arr.node_name_origin + ' (' + arr.node_code_origin + ')'
+                )
+                this.$store.dispatch(
+                    'SET_SURAT_MUATAN_NODE_ID_DESTINATION',
+                    arr.node_name_destination + ' (' + arr.node_code_destination + ')'
+                )
+                this.$store.dispatch('SET_SURAT_MUATAN_ETD', arr.etd)
+                this.$store.dispatch('SET_SURAT_MUATAN_ETA', arr.eta)
 
-                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_ValueData", arr.vehicle_prefix_name + "-");
-                this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_ValueData", arr.node_id_origin);
-                this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ValueData", arr.node_id_destination);
+                this.$store.dispatch(
+                    'SET_SURAT_MUATAN_MANIFEST_PREFIX_ValueData',
+                    arr.vehicle_prefix_name + '-'
+                )
+                this.$store.dispatch(
+                    'SET_SURAT_MUATAN_NODE_ID_ORIGIN_ValueData',
+                    arr.node_id_origin
+                )
+                this.$store.dispatch(
+                    'SET_SURAT_MUATAN_NODE_ID_DESTINATION_ValueData',
+                    arr.node_id_destination
+                )
 
                 // Notes: Disabled field for SM Stock
-                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", true);
-                this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled", true);
-                this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_isDisabled", true);
-                this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_isDisabled", true);
-                this.$store.dispatch("SET_SURAT_MUATAN_ETD_isDisabled", true);
-                this.$store.dispatch("SET_SURAT_MUATAN_ETA_isDisabled", true);
+                this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled', true)
+                this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled', true)
+                this.$store.dispatch('SET_SURAT_MUATAN_NODE_ID_ORIGIN_isDisabled', true)
+                this.$store.dispatch('SET_SURAT_MUATAN_NODE_ID_DESTINATION_isDisabled', true)
+                this.$store.dispatch('SET_SURAT_MUATAN_ETD_isDisabled', true)
+                this.$store.dispatch('SET_SURAT_MUATAN_ETA_isDisabled', true)
 
-                this.loading = false;
+                this.loading = false
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wronasdsag');
-                this.loading = false;
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Failed',
+                    err?.response?.data?.message || 'Something went wronasdsag'
+                )
+                this.loading = false
             }
         },
         async approve() {
-            this.loadingDetail = true;
+            this.loadingDetail = true
             try {
-                const res = await axios.patch(`${this.URL.revamp_surat_muatan}/${this.manifest_number}/approval?n=${this.listenNodeId}`, { is_approve: this.is_approve ^ 1 }, this.Helper.header());
-                
-                this.is_approve ^= 1;
-                this.openNotification("success", null, "Success", res?.data?.message);
+                const res = await axios.patch(
+                    `${this.URL.revamp_surat_muatan}/${this.manifest_number}/approval?n=${this.listenNodeId}`,
+                    { is_approve: this.is_approve ^ 1 },
+                    this.Helper.header()
+                )
+
+                this.is_approve ^= 1
+                this.openNotification('success', null, 'Success', res?.data?.message)
                 if (this.is_approve === 1) {
-                    this.print();
-                    this.isDisabled = true;
-                    this.isDisabledApprove = true;
-                    
-                    this.dataTable.forEach(data => {
-                        data.button_status = { remove: false };
-                    });
+                    this.print()
+                    this.isDisabled = true
+                    this.isDisabledApprove = true
+
+                    this.dataTable.forEach((data) => {
+                        data.button_status = { remove: false }
+                    })
                 } else {
-                    this.isDisabled = false;
-                    this.isDisabledApprove = false;
-                    
-                    this.dataTable.forEach(data => {
-                        data.button_status = { remove: true };
-                    });
+                    this.isDisabled = false
+                    this.isDisabledApprove = false
+
+                    this.dataTable.forEach((data) => {
+                        data.button_status = { remove: true }
+                    })
                 }
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? "Something went wrong"); 
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
             } finally {
-                this.loadingDetail = false;
+                this.loadingDetail = false
             }
         },
-        print(){
-            let routeData = this.$router.resolve({ 
-                name: 'printGeneral', 
-                params: { 
-                    'id': this.manifest_number, 
-                    'type': 'manifest',
-                    'node_id': this.listenNodeId
-                } 
-            });
+        print() {
+            let routeData = this.$router.resolve({
+                name: 'printGeneral',
+                params: {
+                    id: this.manifest_number,
+                    type: 'manifest',
+                    node_id: this.listenNodeId,
+                },
+            })
 
-            const printWindow = window.open(routeData.href, '_blank', 'noopener');
-      
+            const printWindow = window.open(routeData.href, '_blank', 'noopener')
+
             if (printWindow) {
-                printWindow.onload = function() {
-                    printWindow.print();
-                    printWindow.onafterprint = () => printWindow.close();
-                };
+                printWindow.onload = function () {
+                    printWindow.print()
+                    printWindow.onafterprint = () => printWindow.close()
+                }
             }
-
         },
         cancel() {
-            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_visible", true)
-            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_width", 2)
-            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_width", 4)
-            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", false);
-            this.isDisabledApprove = false;
+            this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_PREFIX_visible', true)
+            this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_PREFIX_width', 2)
+            this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_NUMBER_width', 4)
+            this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled', false)
+            this.isDisabledApprove = false
             this.isDisabled = false
             this.is_approve = 0
-            this.resetForm();
-            this.handleClearForm();
-            this.closeDialog();
-            this.dataTable = [];
-            
-            this.is_sm_edit = false;
-            this.manifest_method_id = 0;
+            this.resetForm()
+            this.handleClearForm()
+            this.closeDialog()
+            this.dataTable = []
+
+            this.is_sm_edit = false
+            this.manifest_method_id = 0
         },
         updateValue() {
-            this.$refs.formSuratMuatanController.handleSubmit();
+            this.$refs.formSuratMuatanController.handleSubmit()
         },
         onChangeCustom(type, val, info = {}) {
             const updateMasterForm = (key, value) => {
                 if (this.manifest_number && this.is_sm_edit && this.master_form?.[key] !== value) {
-                    this.master_form = { ...this.master_form, [key]: value };
-                    this.updateSuratMuatan();
+                    this.master_form = { ...this.master_form, [key]: value }
+                    this.updateSuratMuatan()
                 }
-            };
+            }
 
-            if (this.manifest_method_id !== 0 && type == "manifest_method_id") {
-                this.manifest_method_id !== val && this.resetForm();
+            if (this.manifest_method_id !== 0 && type == 'manifest_method_id') {
+                this.manifest_method_id !== val && this.resetForm()
             }
 
             switch (type) {
-                case "manifest_number":
-                    updateMasterForm("manifest_number", val);
-                    break;
-                case "max_weight":
-                    updateMasterForm("max_weight", val);
-                    break;
-                case "manifest_method_id":
-                    this.manifest_method_id = Number(val);
+                case 'manifest_number':
+                    updateMasterForm('manifest_number', val)
+                    break
+                case 'max_weight':
+                    updateMasterForm('max_weight', val)
+                    break
+                case 'manifest_method_id':
+                    this.manifest_method_id = Number(val)
 
                     if (info?.data) {
-                        this.vehicle_mode_id = info.data.vehicle_mode_id || "";
-                        
+                        this.vehicle_mode_id = info.data.vehicle_mode_id || ''
+
                         if (info.data.vehicle_prefix) {
-                            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX", info.data.vehicle_prefix);
-                            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_PREFIX_value", info.data.vehicle_prefix);
+                            this.$store.dispatch(
+                                'SET_SURAT_MUATAN_MANIFEST_PREFIX',
+                                info.data.vehicle_prefix
+                            )
+                            this.$store.dispatch(
+                                'SET_SURAT_MUATAN_MANIFEST_PREFIX_value',
+                                info.data.vehicle_prefix
+                            )
                         }
-                        
-                        this.autoComplateUrl = `${this.URL.node}/${this.listenNodeId}/origin-link?n=${this.listenNodeId}&vehicle_mode_id=${this.vehicle_mode_id}&sort_order=desc&limit=15&page=1`;
+
+                        this.autoComplateUrl = `${this.URL.node}/${this.listenNodeId}/origin-link?n=${this.listenNodeId}&vehicle_mode_id=${this.vehicle_mode_id}&sort_order=desc&limit=15&page=1`
                     }
 
-                    this.vehicle = [];
-                    this.vehicle_form = [];
-                    updateMasterForm("manifest_method_id", val);
-                    updateMasterForm("vehicle_mode_id", val);
-                    break;
-                    break;
-                case "node_id_origin":
+                    this.vehicle = []
+                    this.vehicle_form = []
+                    updateMasterForm('manifest_method_id', val)
+                    updateMasterForm('vehicle_mode_id', val)
+                    break
+                    break
+                case 'node_id_origin':
                     if (info?.data) {
-                        this.node_id_origin = info.data.node_id;
-                        this.itterateUrlAutoComplete = `${this.URL.node}/${this.node_id_origin}/destination-link?n=${this.listenNodeId}&vehicle_mode_id=${this.vehicle_mode_id}&sort_order=desc&limit=15&page=1`;
+                        this.node_id_origin = info.data.node_id
+                        this.itterateUrlAutoComplete = `${this.URL.node}/${this.node_id_origin}/destination-link?n=${this.listenNodeId}&vehicle_mode_id=${this.vehicle_mode_id}&sort_order=desc&limit=15&page=1`
                     }
-                    updateMasterForm("node_id_origin", val);
-                    break;
-                case "node_id_destination":
+                    updateMasterForm('node_id_origin', val)
+                    break
+                case 'node_id_destination':
                     if (info?.data) {
-                        this.estimated_time_in_hour = info.data.estimated_time_in_hour;
-                        this.handleEta(this.etd, this.estimated_time_in_hour);
-                        updateMasterForm("node_id_destination", info?.data?.node_id);
+                        this.estimated_time_in_hour = info.data.estimated_time_in_hour
+                        this.handleEta(this.etd, this.estimated_time_in_hour)
+                        updateMasterForm('node_id_destination', info?.data?.node_id)
                     }
-                    break;
-                case "etd":
-                    this.etd = val;
-                    this.handleEta(this.etd, this.estimated_time_in_hour);
+                    break
+                case 'etd':
+                    this.etd = val
+                    this.handleEta(this.etd, this.estimated_time_in_hour)
 
                     if (val) {
-                        updateMasterForm("etd", val);
+                        updateMasterForm('etd', val)
                     }
-                    break;
-                case "eta":
+                    break
+                case 'eta':
                     if (val) {
-                        updateMasterForm("eta", val);
+                        updateMasterForm('eta', val)
                     }
-                    break;
-                case "auto_depart":
+                    break
+                case 'auto_depart':
                     if (this.dataTable.length === 0 && val && this.manifest_number) {
-                        this.openNotification("warning", "Data Item is Empty", "Please Scan at least one more item");
+                        this.openNotification(
+                            'warning',
+                            'Data Item is Empty',
+                            'Please Scan at least one more item'
+                        )
                     } else {
-                        updateMasterForm("auto_depart", val);
+                        updateMasterForm('auto_depart', val)
                     }
-                    
-                    break;
+
+                    break
                 default:
             }
         },
-        originNode(){
+        originNode() {
             if (this.listenNode.length > 0) {
-                this.node_id_origin = this.listenCurrentNode.node_id;
+                this.node_id_origin = this.listenCurrentNode.node_id
                 // TODO: UNCOMMENT IF WANNA USE NODE
                 // this.$store.dispatch('SET_SURAT_MUATAN_NODE_ID_ORIGIN', this.listenCurrentNode.node_name + " (" + this.listenCurrentNode.node_code + ")");
 
                 // TODO: COMMENT DON'T IF WANNA USE NODE
-                this.$store.dispatch('SET_SURAT_MUATAN_NODE_ID_ORIGIN', this.listenCurrentNode.branch_name);
+                this.$store.dispatch(
+                    'SET_SURAT_MUATAN_NODE_ID_ORIGIN',
+                    this.listenCurrentNode.branch_name
+                )
             }
         },
         resetForm() {
-            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION", "");
-            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_ValueData", {});
-            this.$store.dispatch("SET_SURAT_MUATAN_ETD", "");
-            this.$store.dispatch("SET_SURAT_MUATAN_ETA", "");
+            this.$store.dispatch('SET_SURAT_MUATAN_NODE_ID_DESTINATION', '')
+            this.$store.dispatch('SET_SURAT_MUATAN_NODE_ID_DESTINATION_ValueData', {})
+            this.$store.dispatch('SET_SURAT_MUATAN_ETD', '')
+            this.$store.dispatch('SET_SURAT_MUATAN_ETA', '')
 
-            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_ORIGIN_isDisabled", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_NODE_ID_DESTINATION_isDisabled", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_ETD_isDisabled", false);
-            this.$store.dispatch("SET_SURAT_MUATAN_ETA_isDisabled", false);
+            this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled', false)
+            this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled', false)
+            this.$store.dispatch('SET_SURAT_MUATAN_NODE_ID_ORIGIN_isDisabled', false)
+            this.$store.dispatch('SET_SURAT_MUATAN_NODE_ID_DESTINATION_isDisabled', false)
+            this.$store.dispatch('SET_SURAT_MUATAN_ETD_isDisabled', false)
+            this.$store.dispatch('SET_SURAT_MUATAN_ETA_isDisabled', false)
         },
         handleEta(dateTime, amount) {
             if (dateTime && amount) {
-                let dateEta = moment(dateTime).add(amount, "hours").format("YYYY-MM-DD HH:mm:ss");
-                this.$store.dispatch("SET_SURAT_MUATAN_ETA", dateEta);
+                let dateEta = moment(dateTime).add(amount, 'hours').format('YYYY-MM-DD HH:mm:ss')
+                this.$store.dispatch('SET_SURAT_MUATAN_ETA', dateEta)
             }
         },
         handleIconClick() {
             if (!this.isDisabled) {
-                this.$refs.cameraScanner.open('formInputItemManifest');
+                this.$refs.cameraScanner.open('formInputItemManifest')
             }
         },
         onCameraScannerGetData(data) {
-            if (!this.isDisabled && data?.event === "result" && data.namespace === "formInputItemManifest") {
-                this.item_number = data.data.text;
-                this.updateValue();
+            if (
+                !this.isDisabled &&
+                data?.event === 'result' &&
+                data.namespace === 'formInputItemManifest'
+            ) {
+                this.item_number = data.data.text
+                this.updateValue()
             }
         },
-        actionLimit(val){
-            this.pagination.limit = val;
-            this.pagination.page = 1;
-            this.refreshDetail();
+        actionLimit(val) {
+            this.pagination.limit = val
+            this.pagination.page = 1
+            this.refreshDetail()
         },
         actionPagination(val) {
-            this.pagination.page = val;
-            this.refreshDetail();
+            this.pagination.page = val
+            this.refreshDetail()
         },
         refreshDetail() {
-            this.getSuratMuatanDetail();
+            this.getSuratMuatanDetail()
         },
         openTraceBagDialog() {
-            this.dialogTraceBag = true;
+            this.dialogTraceBag = true
         },
         updateVehicleValue(form) {
-            let form_id =  Date.now() + Math.random();
-            
-            if (this.selected_manifest_vehicle === '') this.selected_manifest_vehicle = form_id;
+            let form_id = Date.now() + Math.random()
+
+            if (this.selected_manifest_vehicle === '') this.selected_manifest_vehicle = form_id
 
             let created_vehicle = {
                 key: form_id,
                 state: {
-                    origin_vehicle: form?.origin_vehicle_name || "",
-                    destination_vehicle: form?.destination_vehicle_name || "",
-                    origin_vehicle_tlc: form?.origin_vehicle?.value || form.origin_vehicle || "",
-                    destination_vehicle_tlc: form?.destination_vehicle?.value || form.destination_vehicle || "",
+                    origin_vehicle: form?.origin_vehicle_name || '',
+                    destination_vehicle: form?.destination_vehicle_name || '',
+                    origin_vehicle_tlc: form?.origin_vehicle?.value || form.origin_vehicle || '',
+                    destination_vehicle_tlc:
+                        form?.destination_vehicle?.value || form.destination_vehicle || '',
                     vehicle_id: form.vehicle_name,
-                    pic_employee_id: form.pic_employee_id?.employee_name || form?.pic_employee_id || "",
+                    pic_employee_id:
+                        form.pic_employee_id?.employee_name || form?.pic_employee_id || '',
                     flight_number: form.flight_number,
                     flight_schedule: form.flight_schedule,
                     etd_vehicle: form.etd_vehicle,
                     eta_vehicle: form.eta_vehicle,
-                    is_active: this.vehicle.length === 0
-                }
-            };
+                    is_active: this.vehicle.length === 0,
+                },
+            }
 
             let vehicle_form = {
                 key: form_id,
                 state: {
-                    vehicle_id: form?.vehicle_id || "",
-                    vehicle_type_id: form?.vehicle_type_id || "",
-                    pic_employee_id: form?.pic_employee_id?.employee_id || "",
-                    flight_number: form?.flight_number || "",
-                    flight_schedule: this.formatToWIB(form?.flight_schedule) || "",
-                    etd: this.formatToWIB(form?.etd_vehicle) || "",
-                    eta: this.formatToWIB(form?.eta_vehicle) || "",
-                    origin_branch_code: form?.origin_vehicle || "",
-                    destination_branch_code: form?.destination_vehicle || "",
-                    is_active: this.vehicle.length === 0
-                }
-            };
+                    vehicle_id: form?.vehicle_id || '',
+                    vehicle_type_id: form?.vehicle_type_id || '',
+                    pic_employee_id: form?.pic_employee_id?.employee_id || '',
+                    flight_number: form?.flight_number || '',
+                    flight_schedule: this.formatToWIB(form?.flight_schedule) || '',
+                    etd: this.formatToWIB(form?.etd_vehicle) || '',
+                    eta: this.formatToWIB(form?.eta_vehicle) || '',
+                    origin_branch_code: form?.origin_vehicle || '',
+                    destination_branch_code: form?.destination_vehicle || '',
+                    is_active: this.vehicle.length === 0,
+                },
+            }
 
-            this.vehicle.push(created_vehicle);
-            this.vehicle_form.push(vehicle_form);
+            this.vehicle.push(created_vehicle)
+            this.vehicle_form.push(vehicle_form)
         },
         openDialogCreateSmStock() {
             this.dialogActiveStock = true
@@ -1285,71 +1520,76 @@ export default {
         },
         openDialogManageVehicleManifest() {
             if (this.is_sm_edit) {
-                this.dialogManageVehicleManifest = true;
+                this.dialogManageVehicleManifest = true
             } else {
                 if (this.manifest_method_id === 0) {
-                    this.openNotification("warn", null, "Failed", 'Please choose manifest mode first');
+                    this.openNotification(
+                        'warn',
+                        null,
+                        'Failed',
+                        'Please choose manifest mode first'
+                    )
                 } else {
-                    this.dialogManageVehicleManifest = true;
+                    this.dialogManageVehicleManifest = true
                 }
             }
         },
         closeDialogManageVehicleManifest() {
-            this.dialogManageVehicleManifest = false;
+            this.dialogManageVehicleManifest = false
 
             if (this.is_sm_edit) {
-                this.getManifestVehicle();
+                this.getManifestVehicle()
             }
         },
         chooseRow(newKey, done) {
-            this.selected_manifest_vehicle = newKey;
-            this.vehicle = this.vehicle.map(item => ({
+            this.selected_manifest_vehicle = newKey
+            this.vehicle = this.vehicle.map((item) => ({
                 ...item,
                 state: {
                     ...item.state,
-                    is_active: item.key === newKey
-                }
-            }));
-            this.vehicle_form = this.vehicle_form.map(item => ({
+                    is_active: item.key === newKey,
+                },
+            }))
+            this.vehicle_form = this.vehicle_form.map((item) => ({
                 ...item,
                 state: {
                     ...item.state,
-                    flight_schedule: this.formatToWIB(item?.flight_schedule) || "",
-                    etd: this.formatToWIB(item?.etd_vehicle) || "",
-                    eta: this.formatToWIB(item?.eta_vehicle) || "",
-                    is_active: item.key === newKey
-                }
-            }));
+                    flight_schedule: this.formatToWIB(item?.flight_schedule) || '',
+                    etd: this.formatToWIB(item?.etd_vehicle) || '',
+                    eta: this.formatToWIB(item?.eta_vehicle) || '',
+                    is_active: item.key === newKey,
+                },
+            }))
         },
         removeRow(row_id) {
-            this.vehicle = this.vehicle.filter(item => item.key !== row_id);
-            this.vehicle_form = this.vehicle_form.filter(item => item.key !== row_id);
+            this.vehicle = this.vehicle.filter((item) => item.key !== row_id)
+            this.vehicle_form = this.vehicle_form.filter((item) => item.key !== row_id)
         },
     },
     mounted() {
         this.handlePrintShortcut(this.print)
-    }
-};
+    },
+}
 </script>
 <style scoped>
 .button-helper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 10px 0;
 }
 
 .title-helper {
-  flex-grow: 1;
-  text-align: center;
-  font-size: 1.2rem;
-  font-weight: bold;
+    flex-grow: 1;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 
 .button-group {
-  display: flex;
-  gap: 10px;
+    display: flex;
+    gap: 10px;
 }
 
 button {
@@ -1357,7 +1597,7 @@ button {
 }
 
 .manifest-dialog .vs-dialog-content {
-    width: 95vw !important;  /* Lebar 95% dari viewport */
+    width: 95vw !important; /* Lebar 95% dari viewport */
     max-width: 95vw !important;
 }
 
@@ -1422,16 +1662,16 @@ button {
 }
 
 .label {
-  font-size: 0.75rem;
-  color: #7f8c8d;
-  margin-bottom: 0.2rem;
-  text-align: left;
+    font-size: 0.75rem;
+    color: #7f8c8d;
+    margin-bottom: 0.2rem;
+    text-align: left;
 }
 
 .value {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #2d3436;
-  text-align: left;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #2d3436;
+    text-align: left;
 }
 </style>
