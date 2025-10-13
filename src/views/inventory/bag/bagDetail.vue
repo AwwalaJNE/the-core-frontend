@@ -176,7 +176,7 @@
                         formKey="routing"
                         :valueData="routingArray"
                         :selectedValue="routing"
-                        :disabled="disabledApprove && !loading"
+                        :disabled="true"
                         @updateValue="updateValue"
                     />
                 </vs-col>
@@ -189,7 +189,7 @@
                         :isMultiple="true"
                         :valueData="serviceArray"
                         :selectedValue="service"
-                        :disabled="disabledApprove && !loading"
+                        :disabled="true"
                         @updateValue="updateValue"
                     />
                 </vs-col>
