@@ -247,6 +247,7 @@
                                             flat
                                             :active="true"
                                             type="submit"
+                                            :data-testid="`select-button`"
                                             @click="actionSelect(item)"
                                         >
                                             <span>Select</span>
