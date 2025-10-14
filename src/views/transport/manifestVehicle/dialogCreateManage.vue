@@ -936,7 +936,7 @@ export default {
                 const suggestions = result.map((item) => {
                     const value =
                         item.label ||
-                        item.vehicle_name ||
+                        item.vehicle_full_name ||
                         item.employee_name ||
                         item.node_name ||
                         ''
