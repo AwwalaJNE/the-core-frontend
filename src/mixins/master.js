@@ -26,6 +26,7 @@ const Master = {
             Loading: null,
             alert: null,
             isMobile: false,
+            refLoading: null,
         }
     },
     computed: {
@@ -65,6 +66,22 @@ const Master = {
         },
     },
     methods: {
+        startLoading(target = null, text = 'Loading...') {
+            const el = target ? target.$el || target : this.$el
+            this.refloading = this.$vs.loading({
+                target: el,
+                type: 'scale',
+                text,
+                background: '#EAEAEA',
+                color: '#3b86ff',
+            })
+        },
+        stopLoading() {
+            if (this.refloading) {
+                this.refloading.close()
+                this.refloading = null
+            }
+        },
         moneyformat(number) {
             let val =
                 number != 0

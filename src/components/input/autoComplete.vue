@@ -1,8 +1,10 @@
 <template>
     <inputan :name="name" :rules="rules">
         <template v-slot:inputan="props">
-            <div style="text-align:left;">
-                <span class="c-label">{{ name }}<span v-if="rules && rules.includes('required')"> *</span></span>
+            <div style="text-align: left">
+                <span class="c-label"
+                    >{{ name }}<span v-if="rules && rules.includes('required')"> *</span></span
+                >
                 <el-autocomplete
                     class="inline-input"
                     v-model="value"
@@ -21,12 +23,11 @@
     </inputan>
 </template>
 <script>
-
-import axios from "axios";
-import master from "@/mixins/master"
-import Inputan from "@/components/input/inputan"
+import axios from 'axios'
+import master from '@/mixins/master'
+import Inputan from '@/components/input/inputan'
 export default {
-    name:"auto-complete",
+    name: 'auto-complete',
     mixins: [master],
     props: {
         name: String,
@@ -39,10 +40,10 @@ export default {
         getters: String,
         typeForm: String,
         querySearch: Function,
-        disabled: Boolean
+        disabled: Boolean,
     },
     components: {
-        "inputan": Inputan
+        inputan: Inputan,
     },
     data() {
         return {
@@ -50,7 +51,7 @@ export default {
         }
     },
     computed: {
-        listenFormKey(){
+        listenFormKey() {
             return this.formKey
         },
         listenTypeInput() {
@@ -63,8 +64,8 @@ export default {
             return this.typeForm
         },
         isDisabled() {
-            return this.typeInput.includes('disabled') || this.disabled
-        }
+            return this.typeInput?.includes('disabled') || this.disabled
+        },
     },
     watch: {
         selectedValue: function (val) {
@@ -73,23 +74,22 @@ export default {
             }
         },
     },
-    methods:{
-        updateValue(event){
+    methods: {
+        updateValue(event) {
             if (event && typeof event === 'string') {
-                this.value = event.replace(/[^a-zA-Z0-9_\-\*\(\)~ ,\/]/g, '');
+                this.value = event.replace(/[^a-zA-Z0-9_\-\*\(\)~ ,\/]/g, '')
             }
 
-            this.$emit("updateValue", this.listenFormKey, this.value, {})
+            this.$emit('updateValue', this.listenFormKey, this.value, {})
         },
-        inputFocus(){
+        inputFocus() {
             let info = {}
-            info["key"] = this.listenFormKey
-            info["typeInput"] = this.listenTypeInput
-            info["data"] = this.value
-            this.$emit("inputFocus", info)
+            info['key'] = this.listenFormKey
+            info['typeInput'] = this.listenTypeInput
+            info['data'] = this.value
+            this.$emit('inputFocus', info)
         },
         handleSelect(item) {
-
             let info = {}
             info['name'] = this.name
             info['key'] = this.listenFormKey
@@ -97,11 +97,11 @@ export default {
             info['status'] = status
             info['data'] = item.data
 
-            this.$emit("updateValue", this.listenFormKey, item.value, info)
+            this.$emit('updateValue', this.listenFormKey, item.value, info)
         },
         clear() {
-            this.value = '';
-        }
-    }
+            this.value = ''
+        },
+    },
 }
 </script>

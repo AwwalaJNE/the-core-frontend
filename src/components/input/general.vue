@@ -1,19 +1,21 @@
 <template>
-  <inputan :name="name" :rules="rules">
-    <template v-slot:inputan="props">
-      <template v-if="isHidden == false">
-        <div class="flex items-center text-left" style="justify-content: flex-start;">
-          <span class="c-label">{{ name }}<span v-if="rules && rules.includes('required')"> *</span></span>
+    <inputan :name="name" :rules="rules">
+        <template v-slot:inputan="props">
+            <template v-if="isHidden == false">
+                <div class="flex items-center text-left" style="justify-content: flex-start">
+                    <span class="c-label"
+                        >{{ name }}<span v-if="rules && rules.includes('required')"> *</span></span
+                    >
 
-          <vs-tooltip v-if="tooltipMessage" right>
-            <template #tooltip>
-              {{ tooltipMessage }}
-            </template>
-            <i class="bx bx-info-circle "></i>
-          </vs-tooltip>
-        </div>
-        <template v-if="isPlaceholderGabung">
-          <!-- <vs-input
+                    <vs-tooltip v-if="tooltipMessage" right>
+                        <template #tooltip>
+                            {{ tooltipMessage }}
+                        </template>
+                        <i class="bx bx-info-circle"></i>
+                    </vs-tooltip>
+                </div>
+                <template v-if="isPlaceholderGabung">
+                    <!-- <vs-input
                         
                         :type="listenTypeInput.includes('password') == true ? 'password' : 'text'"
                         :placeholder="name"
@@ -30,436 +32,459 @@
                         :data-testid="`input-${formKey}`"
                         :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
                     /> -->
-          <vs-input
-            border
-            :type="
-              listenTypeInput.includes('password') == true ? 'password' : 'text'
-            "
-            v-model="value"
-            :min="listenMinValue"
-            :disabled="isDisabled"
-            :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
-            @input="updateValue"
-            @focus="focus(true)"
-            @blur="focus(false)"
-            ref="generalInput"
-            :placeholder="name"
-            :state="
-              props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
-            "
-            :data-testid="`input-${formKey}`"
-          />
-        </template>
-        <template v-else-if="listenCurrencyMasking">
-          <!-- v-currency -->
-          <vs-input
-            
-            :type="'text'"
-            
-            
-            v-currency
-            v-model="value"
-            :disabled="isDisabled"
-            :autofocus="isFocusToInput"
-            :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
-            @input="updateValue"
-            @focus="focus(true)"
-            @blur="focus(false)"
-            ref="generalInput"
-            :min="listenMinValue"
-            :data-testid="`input-${formKey}`"
-            :state="
-              props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
-            "
-          />
-        </template>
-        <template v-else-if="listenTypeInput.includes('date') == true">
-          <vs-input
-            
-            :type="listenTypeInput.includes('date') == true ? 'date' : 'text'"
-            
-            
-            v-model="value"
-            format="yyyy-mm-dd HH:i"
-            :disabled="isDisabled"
-            :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
-            @input="updateValue"
-            @focus="focus(true)"
-            @blur="focus(false)"
-            ref="generalInput"
-            :data-testid="`input-${formKey}`"
-            :state="
-              props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
-            "
-          />
-        </template>
-        <template v-else-if="isOnlyNumber == true">
-          <!-- .replace(/^0+/, '') -->
-          <vs-input
-            
-            :type="
-              listenTypeInput
-                ? listenTypeInput.includes('password') == true
-                  ? 'password'
-                  : listenTypeInput
-                : 'text'
-            "
-            
-            placeholder="0"
-            v-model="value"
-            :autofocus="isFocusToInput"
-            :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
-            :disabled="isDisabled"
-            @input="updateValue"
-            @focus="focus(true)"
-            @blur="focus(false)"
-            ref="generalInput"
-            @keydown="onlyNumberValidate"
-            @keyup="handlerZero(value)"
-            @keypress="checkOnlyNumber"
-            :min="listenMinValue"
-            :data-testid="`input-${formKey}`"
-            :state="
-              props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
-            "
-          />
-        </template>
-        <template v-else-if="withDebounce == true">
-          <vs-input
-            
-            :type="
-              listenTypeInput
-                ? listenTypeInput.includes('password') == true
-                  ? 'password'
-                  : listenTypeInput
-                : 'text'
-            "
-            
-            
-            v-model="value"
-            :autofocus="isFocusToInput"
-            :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
-            :disabled="isDisabled"
-            @input="updateValueDebounced"
-            @focus="focus(true)"
-            @blur="focus(false)"
-            ref="generalInput"
-            :min="listenMinValue"
-            :data-testid="`input-${formKey}`"
-            :state="
-              props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
-            "
-          />
-        </template>
-        <template v-else-if="isenter_to_update == true">
-          <form @submit.prevent="enterUpdate">
-            <vs-input
-              
-              :type="
-                listenTypeInput
-                  ? listenTypeInput.includes('password') == true
-                    ? 'password'
-                    : listenTypeInput
-                  : 'text'
-              "
-              
-              
-              v-model="value"
-              :autofocus="isFocusToInput"
-              :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
-              :disabled="isDisabled"
-              @focus="focus(true)"
-              @blur="focus(false)"
-              ref="generalInput"
-              :min="listenMinValue"
-              :data-testid="`input-${formKey}`"
-              :state="
-                props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
-              "
-            />
-          </form>
-        </template>
-        <template v-else>
-          <vs-input
-            
-            :type="
-              listenTypeInput
-                ? listenTypeInput.includes('password') == true
-                  ? 'password'
-                  : listenTypeInput
-                : 'text'
-            "
-            
-            
-            :placeholder="placeholder"
-            :border="isBorder"
-            v-model="value"
-            :autofocus="isFocusToInput"
-            :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
-            :disabled="isDisabled"
-            @input="updateValue"
-            @focus="focus(true)"
-            @blur="focus(false)"
-            ref="generalInput"
-            :min="listenMinValue"
-            :data-testid="`input-${formKey}`"
-            :state="
-              props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
-            "
-            :icon-after="iconAfter"
-            @click-icon="$emit('click-icon')"
-          >
-            <template #icon>
-              <slot name="icon" />
+                    <vs-input
+                        border
+                        :type="listenTypeInput.includes('password') == true ? 'password' : 'text'"
+                        v-model="value"
+                        :min="listenMinValue"
+                        :disabled="isDisabled"
+                        :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
+                        @input="updateValue"
+                        @focus="focus(true)"
+                        @blur="focus(false)"
+                        ref="generalInput"
+                        :placeholder="name"
+                        :state="props.err !== undefined && props.err !== '' ? 'danger' : 'gray'"
+                        :data-testid="`input-${formKey}`"
+                    />
+                </template>
+                <template v-else-if="listenCurrencyMasking">
+                    <!-- v-currency -->
+                    <vs-input
+                        :type="'text'"
+                        v-currency
+                        v-model="value"
+                        :disabled="isDisabled"
+                        :autofocus="isFocusToInput"
+                        :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
+                        @input="updateValue"
+                        @focus="focus(true)"
+                        @blur="focus(false)"
+                        ref="generalInput"
+                        :min="listenMinValue"
+                        :data-testid="`input-${formKey}`"
+                        :state="props.err !== undefined && props.err !== '' ? 'danger' : 'gray'"
+                    />
+                </template>
+                <template v-else-if="listenTypeInput.includes('date') == true">
+                    <vs-input
+                        :type="listenTypeInput.includes('date') == true ? 'date' : 'text'"
+                        v-model="value"
+                        format="yyyy-mm-dd HH:i"
+                        :disabled="isDisabled"
+                        :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
+                        @input="updateValue"
+                        @focus="focus(true)"
+                        @blur="focus(false)"
+                        ref="generalInput"
+                        :data-testid="`input-${formKey}`"
+                        :state="props.err !== undefined && props.err !== '' ? 'danger' : 'gray'"
+                    />
+                </template>
+                <template v-else-if="isOnlyNumber == true">
+                    <!-- .replace(/^0+/, '') -->
+                    <vs-input
+                        :type="
+                            listenTypeInput
+                                ? listenTypeInput.includes('password') == true
+                                    ? 'password'
+                                    : listenTypeInput
+                                : 'text'
+                        "
+                        placeholder="0"
+                        v-model="value"
+                        :autofocus="isFocusToInput"
+                        :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
+                        :disabled="isDisabled"
+                        @input="updateValue"
+                        @focus="focus(true)"
+                        @blur="focus(false)"
+                        ref="generalInput"
+                        @keydown="onlyNumberValidate"
+                        @keyup="handlerZero(value)"
+                        @keypress="checkOnlyNumber"
+                        :min="listenMinValue"
+                        :data-testid="`input-${formKey}`"
+                        :state="props.err !== undefined && props.err !== '' ? 'danger' : 'gray'"
+                    />
+                </template>
+                <template v-else-if="withDebounce == true">
+                    <vs-input
+                        :type="
+                            listenTypeInput
+                                ? listenTypeInput.includes('password') == true
+                                    ? 'password'
+                                    : listenTypeInput
+                                : 'text'
+                        "
+                        v-model="value"
+                        :autofocus="isFocusToInput"
+                        :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
+                        :disabled="isDisabled"
+                        @input="updateValueDebounced"
+                        @focus="focus(true)"
+                        @blur="focus(false)"
+                        ref="generalInput"
+                        :min="listenMinValue"
+                        :data-testid="`input-${formKey}`"
+                        :state="props.err !== undefined && props.err !== '' ? 'danger' : 'gray'"
+                    />
+                </template>
+                <template v-else-if="isenter_to_update == true">
+                    <form @submit.prevent="enterUpdate">
+                        <vs-input
+                            :type="
+                                listenTypeInput
+                                    ? listenTypeInput.includes('password') == true
+                                        ? 'password'
+                                        : listenTypeInput
+                                    : 'text'
+                            "
+                            v-model="value"
+                            :autofocus="isFocusToInput"
+                            :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
+                            :disabled="isDisabled"
+                            @focus="focus(true)"
+                            @blur="focus(false)"
+                            ref="generalInput"
+                            :min="listenMinValue"
+                            :data-testid="`input-${formKey}`"
+                            :state="props.err !== undefined && props.err !== '' ? 'danger' : 'gray'"
+                        />
+                    </form>
+                </template>
+                <template v-else-if="hasBarcode">
+                    <div style="display: flex; width: 100%; gap: 1rem">
+                        <div style="flex: 1">
+                            <vs-input
+                                :type="
+                                    listenTypeInput
+                                        ? listenTypeInput.includes('password') == true
+                                            ? 'password'
+                                            : listenTypeInput
+                                        : 'text'
+                                "
+                                :placeholder="placeholder"
+                                :border="isBorder"
+                                v-model="value"
+                                :autofocus="isFocusToInput"
+                                :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
+                                :disabled="isDisabled"
+                                @input="updateValue"
+                                @focus="focus(true)"
+                                @blur="focus(false)"
+                                ref="generalInput"
+                                :min="listenMinValue"
+                                :data-testid="`input-${formKey}`"
+                                :state="
+                                    props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
+                                "
+                            >
+                            </vs-input>
+                        </div>
+                        <div
+                            style="
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-between;
+                            "
+                        >
+                            <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
+                            <i class="bx bx-barcode-reader" @click="$emit('click-icon')"></i>
+                        </div>
+                    </div>
+                </template>
+                <template v-else>
+                    <vs-input
+                        :type="
+                            listenTypeInput
+                                ? listenTypeInput.includes('password') == true
+                                    ? 'password'
+                                    : listenTypeInput
+                                : 'text'
+                        "
+                        :placeholder="placeholder"
+                        :border="isBorder"
+                        v-model="value"
+                        :autofocus="isFocusToInput"
+                        :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
+                        :disabled="isDisabled"
+                        @input="updateValue"
+                        @focus="focus(true)"
+                        @blur="focus(false)"
+                        ref="generalInput"
+                        :min="listenMinValue"
+                        :data-testid="`input-${formKey}`"
+                        :state="props.err !== undefined && props.err !== '' ? 'danger' : 'gray'"
+                        :icon-after="iconAfter"
+                        @click-icon="$emit('click-icon')"
+                    >
+                        <template #icon>
+                            <slot name="icon" />
+                        </template>
+                    </vs-input>
+                </template>
             </template>
-          </vs-input>
         </template>
-      </template>
-    </template>
-  </inputan>
+    </inputan>
 </template>
 <script>
-import Inputan from "@/components/input/inputan";
+import CameraScanner from '@/components/scanner/camera'
+import Inputan from '@/components/input/inputan'
 export default {
-  name: "input-general",
-  props: {
-    name: String,
-    rules: String,
-    valueData: [String, Number],
-    formKey: String,
-    typeInput: String,
-    prefix: String,
-    minValue: Number,
-    maxValue: Number,
-    placeholderGabung: Boolean,
-    focusToInput: Boolean,
-    tabindex: [Number, String],
-    currencyMasking: Boolean,
-    onlyNumber: Boolean,
-    dataObj: [Object, Array],
-    isdebounce: Boolean,
-    enter_to_update: Boolean,
-    border: Boolean,
-    placeholder: String,
-    iconAfter: {
-      type: Boolean,
-      default: () => false,
+    name: 'input-general',
+    props: {
+        name: String,
+        rules: String,
+        valueData: [String, Number],
+        formKey: String,
+        typeInput: String,
+        prefix: String,
+        minValue: Number,
+        maxValue: Number,
+        placeholderGabung: Boolean,
+        focusToInput: Boolean,
+        tabindex: [Number, String],
+        currencyMasking: Boolean,
+        onlyNumber: Boolean,
+        dataObj: [Object, Array],
+        isdebounce: Boolean,
+        enter_to_update: Boolean,
+        border: Boolean,
+        placeholder: String,
+        hasBarcode: Boolean,
+        iconAfter: {
+            type: Boolean,
+            default: () => false,
+        },
+        disabled: Boolean,
+        tooltipMessage: String,
     },
-    disabled: Boolean,
-    tooltipMessage: String,
-  },
-  components: {
-    inputan: Inputan,
-  },
-  data() {
-    return {
-      value: this.valueData,
-      debouncedInput: this.valueData,
-    };
-  },
-  computed: {
-    listenFormKey() {
-      return this.formKey;
+    components: {
+        inputan: Inputan,
+        'camera-scanner': CameraScanner,
     },
-    listenMinValue() {
-      return this.minValue;
-    },
-    listenTypeInput() {
-      return this.typeInput;
-    },
-    isOnlyNumber() {
-      return this.onlyNumber;
-    },
-    isDisabled() {
-      return this.typeInput.includes("disabled") || this.disabled;
-    },
-    isHidden() {
-      return this.typeInput.includes("hidden");
-    },
-    isPlaceholderGabung() {
-      return this.placeholderGabung || false;
-    },
-    isFocusToInput() {
-      return this.focusToInput || false;
-    },
-    listenTabIndex() {
-      return this.tabindex;
-    },
-    listenCurrencyMasking() {
-      return this.currencyMasking;
-    },
-    listenDataObj() {
-      return this.dataObj || {};
-    },
-    withDebounce() {
-      return this.isdebounce;
-    },
-    isenter_to_update() {
-      return this.enter_to_update;
-    },
-    isBorder() {
-      return this.border || false;
-    },
-    listenPlaceholder() {
-      return this.placeholder;
-    }
-  },
-  watch: {
-    valueData: function(val) {
-      if (val !== undefined) {
-        if (this.listenTypeInput.includes("password") || this.listenTypeInput.includes("number")) {
-          this.value = val;
+    data() {
+        return {
+            value: this.valueData,
+            debouncedInput: this.valueData,
         }
-        else {
-          this.value = val.toUpperCase();
-        }
-        this.updateValue();
-      }
     },
-  },
-  methods: {
-    debounce(delay = 5000, cb) {
-      var timeoutID = null;
-      return function() {
-        clearTimeout(timeoutID);
-        // var args = arguments
-        // var that = this
-        timeoutID = setTimeout(function() {
-          // fn.apply(that, args)
-          cb(delay);
-        }, delay);
-      };
+    computed: {
+        listenFormKey() {
+            return this.formKey
+        },
+        listenMinValue() {
+            return this.minValue
+        },
+        listenTypeInput() {
+            return this.typeInput
+        },
+        isOnlyNumber() {
+            return this.onlyNumber
+        },
+        isDisabled() {
+            return this.typeInput.includes('disabled') || this.disabled
+        },
+        isHidden() {
+            return this.typeInput.includes('hidden')
+        },
+        isPlaceholderGabung() {
+            return this.placeholderGabung || false
+        },
+        isFocusToInput() {
+            return this.focusToInput || false
+        },
+        listenTabIndex() {
+            return this.tabindex
+        },
+        listenCurrencyMasking() {
+            return this.currencyMasking
+        },
+        listenDataObj() {
+            return this.dataObj || {}
+        },
+        withDebounce() {
+            return this.isdebounce
+        },
+        isenter_to_update() {
+            return this.enter_to_update
+        },
+        isBorder() {
+            return this.border || false
+        },
+        listenPlaceholder() {
+            return this.placeholder
+        },
     },
-    handlerZero(val) {
- 
-      if (val) {
-        if (val.match(/^0+\d/)) {
-          this.value = parseFloat(val);
-        }
-      }
+    watch: {
+        valueData: function (val) {
+            if (val !== undefined) {
+                if (
+                    this.listenTypeInput.includes('password') ||
+                    this.listenTypeInput.includes('number')
+                ) {
+                    this.value = val
+                } else {
+                    this.value = val.toUpperCase()
+                }
+                this.updateValue()
+            }
+        },
     },
-    onlyNumberValidate(evt) {
-      let theEvent = evt || window.event;
+    methods: {
+        debounce(delay = 5000, cb) {
+            var timeoutID = null
+            return function () {
+                clearTimeout(timeoutID)
+                // var args = arguments
+                // var that = this
+                timeoutID = setTimeout(function () {
+                    // fn.apply(that, args)
+                    cb(delay)
+                }, delay)
+            }
+        },
+        handlerZero(val) {
+            if (val) {
+                if (val.match(/^0+\d/)) {
+                    this.value = parseFloat(val)
+                }
+            }
+        },
+        onlyNumberValidate(evt) {
+            let theEvent = evt || window.event
 
+            // backspace	8
+            // tab	9
+            // enter	13
+            // shift	16
+            // delete	46
+            // titik	190
+            // left 37
+            // right 39
+            if (
+                evt.keyCode != '9' &&
+                evt.keyCode != '8' &&
+                evt.keyCode != '190' &&
+                evt.keyCode != '16' &&
+                evt.keyCode != '37' &&
+                evt.keyCode != '39'
+            ) {
+                let key = null
+                // Handle paste
+                // if (theEvent.type === 'paste') {
+                //     key = event.clipboardData.getData('text/plain');
+                // } else {
+                // // Handle key press
+                //     key = theEvent.keyCode || theEvent.which;
+                //     key = String.fromCharCode(key);
+                // }
 
-      // backspace	8
-      // tab	9
-      // enter	13
-      // shift	16
-      // delete	46
-      // titik	190
-      // left 37
-      // right 39
-      if (
-        evt.keyCode != "9" &&
-        evt.keyCode != "8" &&
-        evt.keyCode != "190" &&
-        evt.keyCode != "16" &&
-        evt.keyCode != "37" &&
-        evt.keyCode != "39"
-      ) {
-        let key = null;
-        // Handle paste
-        // if (theEvent.type === 'paste') {
-        //     key = event.clipboardData.getData('text/plain');
-        // } else {
-        // // Handle key press
-        //     key = theEvent.keyCode || theEvent.which;
-        //     key = String.fromCharCode(key);
-        // }
+                // Handle key press
+                key = theEvent.keyCode || theEvent.which
+                key = String.fromCharCode(key)
+                let regex = /[0-9]|\./
+                if (!regex.test(key)) {
+                    theEvent.returnValue = false
+                    if (theEvent.preventDefault) theEvent.preventDefault()
+                }
+            }
+        },
+        checkOnlyNumber(e) {
+            if (this.isOnlyNumber && !this.rules.includes('decimal')) {
+                if (!/[0-9]/.test(e.key)) {
+                    e.preventDefault()
+                }
+            }
+        },
+        focus(status) {
+            let info = {}
+            info['name'] = this.name
+            info['key'] = this.listenFormKey
+            info['typeInput'] = this.listenTypeInput
+            info['status'] = status
+            info['placeholder'] = this.placeholder
+            let self = this
+            setTimeout(function () {
+                self.$emit('inputFocus', info)
+            }, 200)
+        },
+        updateValue(event) {
+            // let prevdata = this.valueData != undefined && this.valueData != null ? this.valueData.toString() : ""
+            // let currentValue = this.value.toString()
 
-        // Handle key press
-        key = theEvent.keyCode || theEvent.which;
-        key = String.fromCharCode(key);
-        let regex = /[0-9]|\./;
-        if (!regex.test(key)) {
-          theEvent.returnValue = false;
-          if (theEvent.preventDefault) theEvent.preventDefault();
-        }
-      }
-    },
-    checkOnlyNumber(e) {
-      if (this.isOnlyNumber && !this.rules.includes('decimal')) {
-        if (!/[0-9]/.test(e.key)) {
-          e.preventDefault()
-        }
-      }
-    },
-    focus(status) {
-      let info = {};
-      info["name"] = this.name;
-      info["key"] = this.listenFormKey;
-      info["typeInput"] = this.listenTypeInput;
-      info["status"] = status;
-      info["placeholder"] = this.placeholder;
-      let self = this;
-      setTimeout(function() {
-        self.$emit("inputFocus", info);
-      }, 200);
-    },
-    updateValue(event) {
-      // let prevdata = this.valueData != undefined && this.valueData != null ? this.valueData.toString() : ""
-      // let currentValue = this.value.toString()
+            if (event && typeof event === 'string') {
+                if (this.listenFormKey.toLowerCase().includes('email')) {
+                    this.value = event.replace(/[^a-zA-Z0-9@._\-+!#$%&'*\/=?^`{|}~]/g, '')
+                } else if (this.listenFormKey.toLowerCase().includes('password')) {
+                    this.value = event.replace(/[^\x20-\x7E]/g, '')
+                } else {
+                    if (this.isOnlyNumber) {
+                        if (this.rules.includes('decimal')) {
+                            this.value = event.replace(/[^0-9.]/g, '')
+                        } else {
+                            this.value = event.replace(/[^0-9]/g, '')
+                        }
 
-      if (event && typeof event === 'string') {
-        if (this.listenFormKey.toLowerCase().includes('email')) {
-          this.value = event.replace(/[^a-zA-Z0-9@._\-+!#$%&'*\/=?^`{|}~]/g, '');
-        } else if (this.listenFormKey.toLowerCase().includes('password')) {
-          this.value = event.replace(/[^\x20-\x7E]/g, '');
-        } else {
-          if (this.isOnlyNumber) {
-            if (this.rules.includes('decimal')) {
-              this.value = event.replace(/[^0-9.]/g, '');
-            } else {
-              this.value = event.replace(/[^0-9]/g, '');
+                        if (this.minValue && this.maxValue) {
+                            let num = +event.replace(/\D/g, '')
+                            if (!isNaN(num)) {
+                                num = Math.max(
+                                    this.minValue ?? num,
+                                    Math.min(num, this.maxValue ?? num)
+                                )
+                                this.value = num
+                            }
+                        }
+                    } else {
+                        this.value = event.replace(/[^a-zA-Z0-9_\/-\s]/g, '')
+                    }
+                }
             }
 
-            if (this.minValue && this.maxValue) {
-              let num = +event.replace(/\D/g, '');
-              if (!isNaN(num)) {
-                num = Math.max(this.minValue ?? num, Math.min(num, this.maxValue ?? num));
-                this.value = num;
-              }
+            let info = {}
+            info['name'] = this.name
+            info['key'] = this.listenFormKey
+            info['typeInput'] = this.listenTypeInput
+            info['status'] = status
+
+            // if(prevdata.toLowerCase() !== currentValue.toLowerCase()) {
+            //   this.$emit("updateValue", this.listenFormKey, this.value, info, this.listenDataObj)
+            // }
+            this.$emit('updateValue', this.listenFormKey, this.value, info, this.listenDataObj)
+        },
+        enterUpdate() {
+            this.updateValue()
+        },
+        updateValueDebounced(val) {
+            let timeoutID = null
+            let self = this
+
+            clearTimeout(timeoutID)
+            // var args = arguments
+            // var that = this
+            timeoutID = setTimeout(function () {
+                // fn.apply(that, args)
+                self.updateValue()
+            }, 1500)
+        },
+        onCameraScannerGetData(data) {
+            if (
+                !this.listenIsDisabled &&
+                data?.event === 'result' &&
+                data.namespace === this.listenFormKey
+            ) {
+                let dataValue =
+                    this.listenIsMultiple == false && this.isMultipleTag === false
+                        ? this.value
+                        : this.arrValue
+                let obj = this.DataArr.filter((item) => item.value == data.data.text)[0]
+
+                // NOTES: Possible change, based on the qr data (current code expectation is: qr scanned value = id)
+                this.$emit('updateValue', this.listenFormKey, data.data.text, obj, this.dataObj)
             }
-          } else {
-            this.value = event.replace(/[^a-zA-Z0-9_\/-\s]/g, '');
-          }
-          
-        }
-      }
-
-      let info = {};
-      info["name"] = this.name;
-      info["key"] = this.listenFormKey;
-      info["typeInput"] = this.listenTypeInput;
-      info["status"] = status;
-
-      // if(prevdata.toLowerCase() !== currentValue.toLowerCase()) {
-      //   this.$emit("updateValue", this.listenFormKey, this.value, info, this.listenDataObj)
-      // }
-      this.$emit(
-        "updateValue",
-        this.listenFormKey,
-        this.value,
-        info,
-        this.listenDataObj
-      );
+        },
     },
-    enterUpdate() {
-      this.updateValue();
-    },
-    updateValueDebounced(val) {
-      let timeoutID = null;
-      let self = this;
-
-      clearTimeout(timeoutID);
-      // var args = arguments
-      // var that = this
-      timeoutID = setTimeout(function() {
-        // fn.apply(that, args)
-        self.updateValue();
-      }, 1500);
-    },
-  },
-};
+}
 </script>

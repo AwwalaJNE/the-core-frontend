@@ -1,275 +1,116 @@
 <template>
     <div>
-        <section class="bagging" ref="baggingSection">
-            <vs-row>
-                <vs-col xs="12" sm="3" lg="2">
-                    <selector
-                        ref="bag_type"
-                        name="Bag Type"
-                        rules=""
-                        placeholder="Select bag type"
-                        formKey="bag_type"
-                        :loading="loading"
-                        :valueData="bagTypeArray"
-                        :selectedValue="bag_type"
-                        :isMultiple="false"
-                        :customBind="'data-kt-bag-type'"
-                        @updateValue="updateFilter"
-                    />
-                </vs-col>
-                <!-- <template v-if="bag_type === ('normal' || 'masterbag' || 'return' || 'pickup')"> -->
-                <template
-                    v-if="
-                        ['normal', 'hvo', 'om', 'hacb', 'masterbag', 'return', 'pickup'].includes(
-                            bag_type
-                        )
-                    "
-                >
-                    <vs-col xs="12" sm="3" lg="2">
-                        <template>
-                            <div class="center in-get-bag">
-                                <vs-col lg="12">
-                                    <selector
-                                        ref="destination"
-                                        name="Routing"
-                                        rules=""
-                                        placeholder="Select routing"
-                                        formKey="regional"
-                                        :valueData="filteredRegionalArray"
-                                        :selectedValue="regional"
-                                        :disabled="listenDisabled"
-                                        :customBind="'data-kt-routing'"
-                                        @updateValue="updateFilter"
-                                    />
-                                </vs-col>
-                            </div>
-                        </template>
-                    </vs-col>
-                    <vs-col xs="12" sm="3" lg="6">
-                        <template v-if="this.regional !== 'all_routing'">
-                            <div class="center in-get-bag">
-                                <vs-col lg="12">
-                                    <selector
-                                        ref="destination"
-                                        name="Destination"
-                                        rules=""
-                                        placeholder="Select destination"
-                                        formKey="destination"
-                                        :loading="loading"
-                                        :valueData="destinationArray"
-                                        :selectedValue="destination"
-                                        :disabled="listenDisabled"
-                                        :customBind="'data-kt-destination'"
-                                        @updateValue="updateFilter"
-                                    />
-                                </vs-col>
-                            </div>
-                        </template>
-                        <template v-else>
-                            <div class="in-get-bag">
-                                <vs-col lg="12">
-                                    <div
-                                        class="title my-5 text-lg font-semibold text-gray-700"
-                                        style="
-                                            text-transform: lowercase;
-                                            font-size: 14px;
-                                            text-align: left;
-                                            padding-top: 10px;
-                                        "
-                                    >
-                                        Destination All
-                                    </div>
-                                    <el-autocomplete
-                                        name="Destination"
-                                        v-model="searchTerm"
-                                        :fetch-suggestions="querySearchAsync"
-                                        placeholder="Search Destination"
-                                        :disabled="listenDisabled"
-                                        @select="handleSelect"
-                                    >
-                                        <template v-slot="{ item }">
-                                            <div v-bind:data-kt-destination="item.value">
-                                                {{ item.value }}
-                                            </div>
-                                        </template>
-                                    </el-autocomplete>
-                                </vs-col>
-                            </div>
-                        </template>
-                    </vs-col>
-                    <vs-col xs="12" sm="3" lg="2">
-                        <template>
-                            <div class="center in-get-bag">
-                                <vs-col lg="12">
-                                    <selector
-                                        ref="service"
-                                        name="Service"
-                                        rules=""
-                                        placeholder="Select service"
-                                        formKey="service"
-                                        :loading="loading"
-                                        :valueData="filteredServiceArray"
-                                        :selectedValue="service"
-                                        :isMultiple="true"
-                                        :disabled="listenDisabled"
-                                        :customBind="'data-kt-service'"
-                                        @updateValue="updateFilter"
-                                    />
-                                </vs-col>
-                            </div>
-                        </template>
-                    </vs-col>
-                </template>
-                <template v-if="bag_type === 'pra runsheet'">
-                    <vs-col xs="12" sm="3" lg="2">
-                        <template>
-                            <div class="center in-get-bag">
-                                <vs-col lg="12">
-                                    <selector
-                                        ref="validation"
-                                        name="Validation"
-                                        rules=""
-                                        placeholder="Select Validation"
-                                        formKey="validation"
-                                        :loading="loading"
-                                        :valueData="validationArray"
-                                        :selectedValue="validation"
-                                        :customBind="'data-kt-routing'"
-                                        @updateValue="updateFilter"
-                                    />
-                                </vs-col>
-                            </div>
-                        </template>
-                    </vs-col>
-                    <template v-if="validation">
-                        <vs-col xs="12" sm="6" lg="8">
-                            <template>
-                                <div class="center in-get-bag">
-                                    <vs-col lg="12">
-                                        <asynchronousSelect
-                                            ref="validation_reference"
-                                            name="Validation Reference"
-                                            rules=""
-                                            formKey="validation_reference"
-                                            typeInput="multipleselector"
-                                            :loading="loading"
-                                            :valueData="validationReferenceArray"
-                                            :selectedValue="validation_reference"
-                                            :url="autoCompleteUrl"
-                                            :selectLabel="selectLabel"
-                                            :selectValue="selectValue"
-                                            @updateValue="updateFilter"
-                                        />
-                                    </vs-col>
-                                </div>
-                            </template>
-                        </vs-col>
-                    </template>
-                </template>
-            </vs-row>
-
-            <vs-row style="margin-bottom: 1.5em">
-                <!-- Auto Open Bag -->
-                <template
-                    v-if="
-                        [
-                            'normal',
-                            'hvo',
-                            'om',
-                            'hacb',
-                            'masterbag',
-                            'pra runsheet',
-                            'return',
-                            'pickup',
-                        ].includes(bag_type)
-                    "
-                >
-                    <vs-col xs="6" sm="3" lg="2">
-                        <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
-                            Auto Open Bag
-                        </vs-checkbox>
-                    </vs-col>
-                </template>
-
-                <!-- Validate Hub Delivery -->
-                <template v-if="['normal', 'return', 'pickup'].includes(bag_type)">
-                    <vs-col xs="6" sm="3" lg="2">
-                        <!-- Enabled -->
-                        <vs-checkbox
-                            v-if="!disable_hub_delivery"
-                            v-model="is_hub_delivery_validation"
-                            @change="handleValidateHubDelivery"
-                        >
-                            Validate Hub Delivery
-                        </vs-checkbox>
-                        <!-- Disabled -->
-                        <vs-checkbox
-                            v-if="disable_hub_delivery"
-                            v-model="is_hub_delivery_validation"
-                            @change="handleValidateHubDelivery"
-                            disabled
-                        >
-                            Validate Hub Delivery
-                        </vs-checkbox>
-                    </vs-col>
-                </template>
-            </vs-row>
-
-            <vs-row style="margin-top: 1em">
-                <vs-col xs="12" sm="6" lg="2">
-                    <div class="center in-get-bag">
-                        <vs-input
-                            border
-                            type="text"
-                            v-model="item_code"
-                            :label-placeholder="placeholder"
-                            v-on:keyup.enter="updateValue"
-                            :autofocus="true"
-                            ref="formInputBagging"
-                            icon-after
-                            v-uppercase
-                            @click-icon="$refs.cameraScanner.open('formInputBagging')"
-                            v-bind:data-kt="'scan_input'"
-                            @input="sanitizeAlphanumeric('item_code')"
-                        >
-                            <template #icon>
-                                <i class="bx bx-barcode-reader"></i>
-                            </template>
-                        </vs-input>
+        <vs-row justify="space-between" align="stretch" style="padding: 1em 0" ref="baggingSection">
+            <vs-col w="6">
+                <div :class="['box-v2', { 'with-glow-border': isDisabled }]">
+                    <div class="text-left">
+                        <h3>1. Choose Bag Type</h3>
+                        <p>
+                            Please select your bag category type, bear in mind that each type has
+                            its own purpose
+                        </p>
                     </div>
-                </vs-col>
-            </vs-row>
 
-            <vs-row justify="space-between" class="mt-2">
-                <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="12">
-                    <p>Bag Number: BAGXXXX</p>
-                    <p>Generate & Print</p>
-                    <template>
+                    <div class="bag-container">
+                        <div
+                            v-for="(item, index) in bagTypeArray"
+                            :key="index"
+                            :class="['bag-box', { active: bag_type === item.value }]"
+                            @click="selectTipeBag(item)"
+                        >
+                            <i v-if="bag_type === item.value" class="bx bx-check check-icon"></i>
+                            <i :class="item.icon" class="bag-icon"></i>
+                            <div class="bag-label">{{ item.label }}</div>
+                        </div>
+                    </div>
+                </div>
+            </vs-col>
+            <vs-col w="6" :class="{ 'disabled-section': isDisabled }">
+                <div class="box-v2" :class="{ 'with-glow-border': !isDisabled }">
+                    <div class="text-left">
+                        <h3>2. Scan First Item Here</h3>
+                        <p>
+                            You can only insert
+                            {{ selected_bag_type?.enableItem?.toLowerCase() || '&lt;BAG ITEM&gt;' }}
+                            for
+                            {{ selected_bag_type?.label?.toLowerCase() || '&lt;BAG CATEGORY&gt;' }}
+                            type
+                        </p>
+                    </div>
+
+                    <div style="padding: 0.5em">
                         <img
-                            class="logo"
                             :src="bagPlaceholder"
-                            alt="jne"
-                            width="300"
+                            alt="bag-placeholder"
+                            width="183"
                             align="center"
                         />
-                    </template>
-                    <h3>Scan barcode untuk melakukan bagging</h3>
-                </vs-col>
-            </vs-row>
-        </section>
-        <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
+                    </div>
+
+                    <div>
+                        <vs-row>
+                            <vs-col xs="12" sm="12" lg="6">
+                                <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
+                                    Auto Open Bag
+                                </vs-checkbox>
+                            </vs-col>
+
+                            <vs-col v-if="['normal'].includes(bag_type)" xs="12" sm="12" lg="6">
+                                <vs-checkbox
+                                    v-model="is_hub_delivery_validation"
+                                    @change="handleValidateHubDelivery"
+                                >
+                                    Validate Hub Delivery
+                                </vs-checkbox>
+                            </vs-col>
+                        </vs-row>
+
+                        <vs-row>
+                            <vs-col w="12">
+                                <form @submit.prevent="processItem">
+                                    <input-general
+                                        ref="scanItem"
+                                        formKey="scanItem"
+                                        :name="selected_bag_type?.enableItem || 'Item Number'"
+                                        :placeholder="
+                                            selected_bag_type?.enableItemPlaceholder ||
+                                            'Insert Item Number'
+                                        "
+                                        typeInput="text"
+                                        :valueData="item_number"
+                                        :hasBarcode="true"
+                                        @click-icon="handleIconClick"
+                                        @updateValue="updateValue"
+                                    />
+                                </form>
+                            </vs-col>
+                        </vs-row>
+                    </div>
+                </div>
+            </vs-col>
+        </vs-row>
+
+        <dialog-manual-destination
+            :active="dialogActiveManualDestination"
+            :closeDialog="closeDialog"
+            @createBag="createBag"
+        />
     </div>
 </template>
 <script>
 import axios from 'axios'
 import master from '@/mixins/master'
+
 import Breadcrumb from '@/components/breadcrumb/index'
 import Selector from '@/components/input/select'
 import AutoComplete from '@/components/input/autoComplete'
 import CameraScanner from '@/components/scanner/camera.vue'
 import asynchronousSelect from '@/components/input/asynchronousSelect'
+import InputGeneral from '@/components/input/general'
 
 import bagPlaceholder from '@/assets/img/bagging-placeholder.png'
+
+import DialogManualDestination from '@/views/inventory/bag/dialogManualDestination'
 
 export default {
     name: 'InventoryBagging',
@@ -278,494 +119,82 @@ export default {
         breadcrumb: Breadcrumb,
         selector: Selector,
         'auto-complete': AutoComplete,
+        'input-general': InputGeneral,
         asynchronousSelect: asynchronousSelect,
         CameraScanner,
-    },
-    watch: {
-        regional(newRegional, oldRegional) {
-            if (newRegional !== oldRegional) {
-                this.getNodeLink()
-                this.getNodeIntracity()
-            }
-        },
-        radio_option(old, val) {
-            if (old !== val) {
-                this.setInputFocus()
-            }
-        },
-        bag_type: function (val) {
-            if (val !== undefined) {
-                switch (val) {
-                    case 'normal':
-                    case 'hvo':
-                    case 'om':
-                    case 'hacb':
-                        this.getService()
-                        this.title = 'Create Bag'
-                        this.placeholder = 'Masukkan Connote'
-                        this.is_disabled = false
-                        this.disable_auto_open_bag = false
-                        this.disable_hub_delivery = false
-                        this.validation = ''
-                        this.validation_reference = ''
-
-                        this.service = ['ALL_SERVICE']
-                        this.$nextTick(() => {
-                            if (this.$refs.service) {
-                                this.$refs.service.$emit('updateValue', ['ALL_SERVICE'])
-                            }
-                        })
-
-                        break
-                    case 'masterbag':
-                        this.getService()
-                        this.title = 'Create Masterbag'
-                        this.placeholder = 'Masukkan Bag'
-                        this.is_disabled = false
-                        this.is_auto_open_bag = false
-                        this.disable_auto_open_bag = true
-                        this.is_hub_delivery_validation = false
-                        this.disable_hub_delivery = true
-                        this.validation = ''
-                        this.validation_reference = ''
-                        break
-                    case 'pra runsheet':
-                        this.title = 'Create Bag Prarunsheet'
-                        this.placeholder = 'Masukkan Connote'
-                        this.is_disabled = true
-                        this.disable_auto_open_bag = false
-                        this.is_hub_delivery_validation = false
-                        // this.disable_hub_delivery = true
-                        this.handlePraRunsheet()
-                        break
-                    case 'return':
-                        this.getService()
-                        this.title = 'Create Bag Return'
-                        this.placeholder = 'Masukkan Connote Return'
-                        this.is_disabled = false
-                        this.disable_auto_open_bag = false
-                        this.disable_hub_delivery = false
-                        this.validation = ''
-                        this.validation_reference = ''
-                        break
-                    case 'pickup':
-                        this.getService()
-                        this.title = 'Create Bag Pickup'
-                        this.placeholder = 'Masukkan Connote Pickup'
-                        this.is_disabled = false
-                        this.disable_auto_open_bag = false
-                        this.disable_hub_delivery = false
-                        this.validation = ''
-                        this.validation_reference = ''
-                        break
-                    default:
-                }
-            }
-        },
-        processLoading: function (val) {
-            if (val !== undefined) {
-                this.processLoading = val
-                if (val == true) {
-                    this.loadingHandler()
-                } else {
-                    this.closeLoading()
-                }
-            }
-        },
+        'dialog-manual-destination': DialogManualDestination,
     },
     data() {
         return {
+            isDisabled: true,
             bagPlaceholder,
-            title: 'Create Bag',
-            item_code: '',
-            item_code_orion: '',
             form: {},
-            loading: false,
-            loadingData: false,
-            is_disabled: false,
-            radio_option: 'connote',
-            regional: '',
-            regionalArray: [
-                {
-                    label: 'All Routing',
-                    value: 'all_routing',
-                },
-                {
-                    label: 'Intracity',
-                    value: 'intracity',
-                },
-                {
-                    label: 'Intercity',
-                    value: 'intercity',
-                },
-                {
-                    label: 'Domestic',
-                    value: 'domestic',
-                },
-                {
-                    label: 'International',
-                    value: 'international',
-                },
-            ],
-            service: '',
-            serviceArray: [
-                {
-                    label: 'REG',
-                    value: 'REG23',
-                },
-                {
-                    label: 'YES',
-                    value: 'YES23',
-                },
-                {
-                    label: 'OKE',
-                    value: 'OKE23',
-                },
-                {
-                    label: 'JTR',
-                    value: 'jTR',
-                },
-                {
-                    label: 'SPS',
-                    value: 'SPS23',
-                },
-                {
-                    label: 'JTR23',
-                    value: 'JTR23',
-                },
-                {
-                    label: 'JTR250',
-                    value: 'JTR250',
-                },
-                {
-                    label: 'JTR<150',
-                    value: 'JTR<150',
-                },
-                {
-                    label: 'JTR>250',
-                    value: 'JTR>250',
-                },
-                {
-                    label: '@BOX3KG',
-                    value: '@BOX3KG',
-                },
-                {
-                    label: '@BOX5KG',
-                    value: '@BOX5KG',
-                },
-                {
-                    label: 'CML',
-                    value: 'CML',
-                },
-                {
-                    label: 'CML_CTC',
-                    value: 'CML_CTC',
-                },
-                {
-                    label: 'CTC',
-                    value: 'CTC15',
-                },
-                {
-                    label: 'CTCJTR',
-                    value: 'CTCJTR23',
-                },
-                {
-                    label: 'CTCSPS',
-                    value: 'CTCSPS23',
-                },
-                {
-                    label: 'CTCTRC11',
-                    value: 'CTCTRC11',
-                },
-                {
-                    label: 'CTCTRC15',
-                    value: 'CTCTRC15',
-                },
-                {
-                    label: 'CTCYES',
-                    value: 'CTCYES23',
-                },
-                {
-                    label: 'DIP',
-                    value: 'DIP',
-                },
-                {
-                    label: 'INTL10',
-                    value: 'INTL10',
-                },
-                {
-                    label: 'INTL15',
-                    value: 'INTL15',
-                },
-                {
-                    label: 'INTL20',
-                    value: 'INTL20',
-                },
-                {
-                    label: 'P2P',
-                    value: 'P2P',
-                },
-                {
-                    label: 'PARCEL',
-                    value: 'PARCEL',
-                },
-                {
-                    label: 'QR-INST',
-                    value: 'QR-INST',
-                },
-                {
-                    label: 'QR-SMDKP',
-                    value: 'QR-SMDKP',
-                },
-                {
-                    label: 'QR-SMDY',
-                    value: 'QR-SMDY',
-                },
-                {
-                    label: 'TRC11',
-                    value: 'TRC11',
-                },
-                {
-                    label: 'TRC13',
-                    value: 'TRC13',
-                },
-            ],
-            serviceArrayNew: [
-                {
-                    label: 'All Service',
-                    value: 'ALL_SERVICE',
-                },
-            ],
-            destinationArray: [
-                {
-                    label: '',
-                    value: '',
-                },
-            ],
-            destination: '',
-            // weight: null,
-            searchTerm: '',
-            timeout: null,
-            links: [],
-            routing_type: '',
+            selected_bag_type: '',
             bag_type: '',
             bagTypeArray: [
                 {
-                    label: 'Regular Bag',
+                    label: 'REGULAR',
                     value: 'normal',
+                    icon: 'bx bx-archive',
+                    enableItem: 'Connote',
+                    enableItemPlaceholder: 'Insert Connote Number',
                 },
                 {
-                    label: 'Masterbag',
+                    label: 'MASTERBAG',
                     value: 'masterbag',
+                    icon: 'bx bx-archive',
+                    enableItem: 'Bag',
+                    enableItemPlaceholder: 'Insert Bag Number',
                 },
                 {
-                    label: 'Pra Runsheet',
+                    label: 'PRA RUNSHEET',
                     value: 'pra runsheet',
+                    icon: 'bx bx-archive',
+                    enableItem: 'Connote',
+                    enableItemPlaceholder: 'Insert Connote Number',
                 },
                 {
                     label: 'HVO',
                     value: 'hvo',
-                },
-                {
-                    label: 'OM',
-                    value: 'om',
+                    icon: 'bx bx-archive',
+                    enableItem: 'Connote',
+                    enableItemPlaceholder: 'Insert Connote Number',
                 },
                 {
                     label: 'HACB',
                     value: 'hacb',
+                    icon: 'bx bx-archive',
+                    enableItem: 'Connote',
+                    enableItemPlaceholder: 'Insert Connote Number',
                 },
-                // {
-                //   "label": "Bag Return",
-                //   "value": "return"
-                // },
-                // {
-                //   "label": "Bag Pickup",
-                //   "value": "pickup"
-                // },
+                {
+                    label: 'OM',
+                    value: 'om',
+                    icon: 'bx bx-archive',
+                    enableItem: 'Connote',
+                    enableItemPlaceholder: 'Insert Connote Number',
+                },
             ],
-            placeholder: 'Masukkan Connote',
             is_auto_open_bag: true,
-            disable_auto_open_bag: false,
             is_hub_delivery_validation: false,
-            disable_hub_delivery: false,
-            autoCompleteUrl: '',
-            selectLabel: '',
-            selectValue: '',
-            validation: '',
-            processLoading: false,
             refloading: null,
-            validationArray: [
-                {
-                    label: 'Courier',
-                    value: 'COURIER',
-                },
-                {
-                    label: 'Delivery Zone',
-                    value: 'DELIVERY_ZONE',
-                },
-                {
-                    label: 'District',
-                    value: 'DISTRICT',
-                },
-            ],
-            validation_reference: '',
-            validationReferenceArray: [
-                {
-                    label: '',
-                    value: '',
-                },
-            ],
+
+            item_number: '',
+            dialogActiveManualDestination: false,
         }
     },
-    computed: {
-        filteredRegionalArray() {
-            // value 'All Routing' ditampilkan  berdasarkan permission role
-            const permissions = this.listenPermissions?.core || []
-            const isPermissions = permissions.includes('read-all-routing')
-            return isPermissions
-                ? this.regionalArray
-                : this.regionalArray.filter((item) => item.value !== 'all_routing')
-        },
-        filteredServiceArray() {
-            // value 'All Service' ditampilkan  berdasarkan permission role
-            const permissions = this.listenPermissions?.core || []
-            const isPermissions = permissions.includes('read-all-service')
-            return isPermissions
-                ? this.serviceArrayNew
-                : this.serviceArrayNew.filter((item) => item.value !== 'ALL_SERVICE')
-        },
-        listenTitle() {
-            return this.title
-        },
-        listenDisabled() {
-            return this.is_disabled
-        },
-    },
     methods: {
-        checkPermission(permission) {
-            const permissions = this.listenPermissions?.core || []
-            return permissions.includes(permission)
-        },
-        loadingHandler() {
-            this.refloading = this.$vs.loading({
-                target: this.$refs.baggingSection.$el,
-                type: 'scale',
-                text: 'Loading...',
-                background: '#EAEAEA',
-                color: '#3b86ff',
-            })
-        },
-        closeLoading() {
-            if (this.refloading) {
-                this.refloading.close()
-                this.refloading = null
+        handleIconClick() {
+            if (!this.isDisabled) {
+                this.$refs.cameraScanner.open('item_number')
             }
         },
-        async getNodeLink() {
-            if (this.regional !== 'intracity' && this.regional !== '') {
-                this.loading = true
-
-                if (this.regional == 'all_routing') {
-                    this.routing_type = ''
-                } else {
-                    this.routing_type = this.regional.toUpperCase()
-                }
-
-                await axios
-                    .get(
-                        this.URL.node +
-                            `/${this.listenNodeId}/destination-link?n=${this.listenNodeId}&routing_type=${this.routing_type}&sort_order=desc&&limit=1000&page=1&s=`,
-                        this.Helper.header()
-                    )
-                    .then((res) => {
-                        let arr = []
-                        res.data.data.map((item) => {
-                            let obj = {}
-                            obj['label'] = `${item.node_name} (${item.node_code})`
-                            obj['value'] = Number(item.node_id)
-
-                            arr.push(obj)
-                        })
-                        if (this.regional !== 'intracity' && this.regional !== '') {
-                            this.destinationArray = arr
-                        }
-
-                        this.loading = false
-                    })
-                    .catch((err) => {
-                        this.loading = false
-                        this.openNotification(
-                            'danger',
-                            err.response ? err.response.data.code : '',
-                            'Failed to populate node list',
-                            err
-                        )
-                    })
-            }
-        },
-        async getNodeIntracity() {
-            if (this.regional === 'intracity') {
-                this.loading = true
-                await axios
-                    .get(
-                        this.URL.node +
-                            `/${this.listenNodeId}/destination-intracity?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&s=`,
-                        this.Helper.header()
-                    )
-                    .then((res) => {
-                        let arr = []
-                        res.data.data.map((item) => {
-                            let obj = {}
-                            obj['label'] = `${item.node_name} (${item.node_code})`
-                            obj['value'] = Number(item.node_id)
-
-                            arr.push(obj)
-                        })
-                        if (this.regional === 'intracity') {
-                            this.destinationArray = arr
-                        }
-
-                        this.loading = false
-                    })
-                    .catch((err) => {
-                        this.loading = false
-                        this.openNotification(
-                            'danger',
-                            err.response ? err.response.data.code : '',
-                            'Failed to populate node Intracity list',
-                            err
-                        )
-                    })
-            }
-        },
-        async getService() {
-            this.loading = true
-            await axios
-                .get(
-                    this.URL.service + `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
-                    this.Helper.header()
-                )
-                .then((res) => {
-                    let arr = []
-                    res.data.data.map((item) => {
-                        let obj = {}
-                        obj['label'] = item.service_code
-                        obj['value'] = item.service_code
-
-                        this.serviceArrayNew.push(obj)
-                    })
-
-                    this.loading = false
-                })
-                .catch((err) => {
-                    this.loading = false
-                    this.openNotification(
-                        'danger',
-                        err.response ? err.response.data.code : '',
-                        'Failed to populate service list',
-                        err
-                    )
-                })
+        selectTipeBag(item) {
+            this.selected_bag_type = item
+            this.bag_type = item.value
+            this.isDisabled = false
+            this.is_auto_open_bag = true
+            this.setInputFocus()
         },
         handleAutoOpenBag(val) {
             this.is_auto_open_bag = val.target.checked
@@ -773,186 +202,125 @@ export default {
         handleValidateHubDelivery(val) {
             this.is_hub_delivery_validation = val.target.checked
         },
-        handlePraRunsheet() {
-            this.regional = ''
-            this.service = ''
-            this.destination = ''
+        updateValue(key, val) {
+            if (key === 'scanItem') this.item_number = val
         },
-        updateRadio() {
+        async processItem() {
             this.form = {
-                item_number: this.item_code,
-                destination: this.regional,
-                service: this.service,
-            }
-            // if(this.weight !== null) {
-            //   this.form["bag_weight"] = parseInt(this.weight)
-            // }
-            if (this.destination !== '') {
-                this.form['destination_node_id'] = this.destination
-            }
-            this.ProccessBagging()
-        },
-        updateValue() {
-            this.form = {
-                item_number: this.item_code,
-                destination: this.regional,
-                service: this.service,
-                type: this.bag_type,
+                item_number: this.item_number,
+                destination_scope: 'HUB_DELIVERY',
                 auto_open_bag: this.is_auto_open_bag,
-                is_hub_delivery_validation: this.is_hub_delivery_validation,
-                validation: this.validation,
-                validation_reference: (this.validation_reference || []).join(','),
             }
-            // if(this.weight !== null) {
-            //   this.form["bag_weight"] = parseInt(this.weight)
-            // }
-            if (this.destination !== '') {
-                this.form['destination_node_id'] = this.destination
+
+            if (this.bag_type === 'pra runsheet') {
+                this.createBag()
+            } else {
+                await this.processSorting()
             }
-            this.ProccessBagging()
+        },
+        async processSorting() {
+            this.startLoading(this.$refs.baggingSection)
+            try {
+                const res = await axios.post(
+                    `${this.URL.sorting_zip_code_validation}?n=${this.listenNodeId}`,
+                    this.form,
+                    this.Helper.header()
+                )
+
+                if (res?.data?.information?.destination_node_id) {
+                    this.createBag(res?.data?.information?.destination_node_id)
+                } else {
+                    this.openDialog()
+                }
+
+                this.openNotification('success', null, 'Success', res?.data?.message || 'Success')
+            } catch (err) {
+                // TODO: HIDE & RECHECK LATER
+                // this.openNotification(
+                //     'danger',
+                //     err?.response?.data?.code || '',
+                //     'Failed',
+                //     err?.response?.data?.message || 'Something went wrong'
+                // )
+
+                // TODO: RECHECK LATER
+                this.openDialog()
+            } finally {
+                this.stopLoading()
+            }
+        },
+        async createBag(destination_node_id = '') {
+            this.startLoading(this.$refs.baggingSection)
+            try {
+                const res = await axios.post(
+                    `${this.URL.revamp_bag}?n=${this.listenNodeId}`,
+                    {
+                        item_number: this.item_number,
+                        type: this.bag_type,
+                        auto_open_bag: this.is_auto_open_bag,
+                        is_hub_delivery_validation: this.is_hub_delivery_validation,
+                        destination: this.bag_type === 'pra runsheet' ? '' : 'all_routing',
+                        service: this.bag_type === 'pra runsheet' ? '' : ['ALL_SERVICE'],
+                        validation: '',
+                        validation_reference: '',
+                        destination_node_id: destination_node_id,
+                    },
+                    this.Helper.header()
+                )
+
+                let bagNumber = res.data.data.bag_number
+                let bagNumberForRoute = bagNumber
+                this.handleClearForm()
+
+                this.$store.dispatch('SET_BAG_IS_AUTO_OPEN_BAG', this.is_auto_open_bag)
+                this.$store.dispatch('SET_BAG_IS_AUTO_OPEN_BAG_ValueData', this.is_auto_open_bag)
+
+                this.$store.dispatch(
+                    'SET_IS_HUB_DELIVERY_VALIDATION',
+                    this.is_hub_delivery_validation
+                )
+                this.$store.dispatch(
+                    'SET_IS_HUB_DELIVERY_VALIDATION_ValueData',
+                    this.is_hub_delivery_validation
+                )
+
+                this.$router.push('/bagging-detail/' + encodeURIComponent(bagNumberForRoute))
+                this.setRoutePageHistory(this.$route.meta, false)
+
+                this.openNotification('success', null, 'Success', 'Bagging is success')
+            } catch (err) {
+                const errorCode = err?.response?.data?.code ?? ''
+                const errorMessage = err?.response?.data?.message ?? 'Something went wrong'
+
+                if (errorCode === 'CORE-1135') {
+                    this.openNotificationCenter('danger', errorCode, 'Failed', errorMessage)
+                } else {
+                    this.openNotification('danger', errorCode, 'Failed', errorMessage)
+                }
+            } finally {
+                this.stopLoading()
+                this.handleClearForm()
+            }
         },
         handleClearForm() {
             this.form = {}
-            this.item_code = ''
-            this.item_code_orion = ''
+            this.item_number = ''
         },
-        updateFilter(key, value) {
-            switch (true) {
-                case key.toLowerCase().includes('regional'):
-                    this.regional = value
-                    // this.$store.dispatch("SET_BAGGING_destination_selected", this.regional )
-                    break
-                case key.toLowerCase().includes('service'):
-                    this.service = value
-                    // this.$store.dispatch("SET_BAGGING_service_selected", this.service )
-                    break
-                case key.toLowerCase().includes('destination'):
-                    this.destination = value
-                    break
-                case key.toLowerCase().includes('bag_type'):
-                    this.bag_type = value
-                    break
-                case key.toLowerCase() === 'validation':
-                    this.validation = value
-                    this.validation_reference = ''
 
-                    if (value.toLowerCase() === 'courier') {
-                        this.autoCompleteUrl = `${this.URL.courier_delivery}/list?n=${this.listenNodeId}`
-                        this.selectLabel = 'employee_name'
-                        this.selectValue = 'employee_id'
-                    } else if (value.toLowerCase() === 'delivery_zone') {
-                        this.autoCompleteUrl = `${this.URL.tlc_zone}?n=${this.listenNodeId}`
-                        this.selectLabel = 'tlc_zone'
-                        this.selectValue = 'tlc_zone'
-                    } else if (value.toLowerCase() === 'district') {
-                        this.autoCompleteUrl = `${this.URL.district_list}?n=${this.listenNodeId}`
-                        this.selectLabel = 'geolocation_district_name'
-                        this.selectValue = 'geolocation_district_name'
-                    }
-                    break
-                case key.toLowerCase() === 'validation_reference':
-                    this.validation_reference = value
-                    break
-                default:
-            }
-        },
-        async ProccessBagging() {
-            this.loadingHandler()
-            await axios
-                .post(
-                    this.URL.revamp_bag + `?n=${this.listenNodeId}`,
-                    JSON.stringify(this.form),
-                    this.Helper.header()
-                )
-                .then((res) => {
-                    let bagNumber = res.data.data.bag_number
-                    let bagNumberForRoute = bagNumber
-                    this.handleClearForm()
-                    this.openNotification('success', null, 'Success', 'Bagging is success')
-
-                    this.$store.dispatch('SET_BAG_IS_AUTO_OPEN_BAG', this.is_auto_open_bag)
-                    this.$store.dispatch(
-                        'SET_BAG_IS_AUTO_OPEN_BAG_ValueData',
-                        this.is_auto_open_bag
-                    )
-
-                    this.$store.dispatch(
-                        'SET_IS_HUB_DELIVERY_VALIDATION',
-                        this.is_hub_delivery_validation
-                    )
-                    this.$store.dispatch(
-                        'SET_IS_HUB_DELIVERY_VALIDATION_ValueData',
-                        this.is_hub_delivery_validation
-                    )
-                    this.closeLoading()
-
-                    this.$router.push('/bagging-detail/' + encodeURIComponent(bagNumberForRoute))
-                    this.setRoutePageHistory(this.$route.meta, false)
-                })
-                .catch((err) => {
-                    this.closeLoading()
-                    this.handleClearForm()
-
-                    const errorCode = err?.response?.data?.code ?? ''
-                    const errorMessage = err?.response?.data?.message ?? 'Something went wrong'
-
-                    if (errorCode === 'CORE-1135') {
-                        this.openNotificationCenter('danger', errorCode, 'FAILED', errorMessage)
-                    } else {
-                        this.openNotification('danger', errorCode, 'FAILED', errorMessage)
-                    }
-                })
-        },
-        querySearchAsync(queryString, cb) {
-            const url =
-                this.URL.node +
-                `?n=${this.listenNodeId}&sort_order=desc&&limit=10&page=1&s=${queryString}`
-
-            clearTimeout(this.timeout)
-
-            this.timeout = setTimeout(() => {
-                axios
-                    .get(url, this.Helper.header())
-                    .then((response) => {
-                        const results = response.data.data
-                        this.suggestions = results.map((item) => ({
-                            value: `${item.node_name} (${item.node_code})`,
-                            node_id: item.node_id,
-                        }))
-                        cb(this.suggestions)
-                    })
-                    .catch((error) => {
-                        console.error('Error fetching suggestions:', error)
-                    })
-            }, 300) // Adjust the delay as needed
-        },
-        createFilter(queryString) {
-            return (item) => {
-                return item.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-            }
-        },
-        handleSelect(item) {
-            this.destination = item.node_id
-        },
-        onCameraScannerGetData(data) {
-            if (
-                // eslint-disable-next-line operator-linebreak
-                data &&
-                // eslint-disable-next-line operator-linebreak
-                data.event === 'result' &&
-                data.namespace === 'formInputBagging'
-            ) {
-                this.item_code = data.data.text
-                this.updateValue()
-            }
-        },
         setInputFocus() {
             this.$nextTick(() => {
-                let inputElement = this.$refs.formInputBagging?.$el.querySelector('input')
+                let inputElement = this.$refs.scanItem?.$el.querySelector('input')
                 if (inputElement) {
                     inputElement.focus()
                 }
             })
+        },
+
+        openDialog() {
+            this.dialogActiveManualDestination = true
+        },
+        closeDialog() {
+            this.dialogActiveManualDestination = false
         },
     },
     created() {
@@ -962,25 +330,60 @@ export default {
         this.$store.dispatch('SET_IS_HUB_DELIVERY_VALIDATION', false)
         this.$store.dispatch('SET_IS_HUB_DELIVERY_VALIDATION_ValueData', false)
     },
-    mounted() {
-        this.getNodeLink()
-        this.getNodeIntracity()
-        this.setInputFocus()
-    },
 }
 </script>
 <style lang="scss">
-.bagging {
-    min-height: 50vh;
-    margin-top: 2em;
-}
+.bag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
 
-.in-get-bag {
-    font-size: 16px;
-}
-.logo {
-}
-.mt-2 {
-    margin-top: 20px;
+    .bag-box {
+        position: relative;
+        flex: 1 1 120px;
+        height: 120px;
+        border-radius: 16px;
+        text-align: center;
+        padding: 16px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.2s ease;
+        cursor: pointer;
+
+        i {
+            font-size: 40px;
+            color: #333;
+        }
+
+        span,
+        div {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .check-icon {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: $coreBlue;
+            color: white !important;
+            border-radius: 50%;
+            font-size: 25px;
+        }
+
+        &.active {
+            box-shadow: 0 1px 4px $coreBlue;
+            // border: 1px solid blue;
+            color: $coreBlue;
+
+            i {
+                color: $coreBlue;
+            }
+        }
+    }
 }
 </style>
