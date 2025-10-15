@@ -189,10 +189,10 @@ export default {
             if (this.errors.password.length || this.errors.passwordConfirm.length) return
 
             // Requirement check
-            // if (!this.allRequirementsMet) {
-            //     this.errors.password.push('Password does not meet the minimum requirements.')
-            //     return
-            // }
+            if (!this.allRequirementsMet) {
+                this.errors.password.push('Password does not meet the minimum requirements.')
+                return
+            }
 
             if (this.form.password !== this.form.passwordConfirm) {
                 this.errors.passwordConfirm.push('Passwords do not match.')
