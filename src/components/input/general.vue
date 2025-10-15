@@ -131,29 +131,6 @@
                     />
                 </template>
                 <template v-else-if="isenter_to_update == true">
-                    <form @submit.prevent="enterUpdate">
-                        <vs-input
-                            :type="
-                                listenTypeInput
-                                    ? listenTypeInput.includes('password') == true
-                                        ? 'password'
-                                        : listenTypeInput
-                                    : 'text'
-                            "
-                            v-model="value"
-                            :autofocus="isFocusToInput"
-                            :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
-                            :disabled="isDisabled"
-                            @focus="focus(true)"
-                            @blur="focus(false)"
-                            ref="generalInput"
-                            :min="listenMinValue"
-                            :data-testid="`input-${formKey}`"
-                            :state="props.err !== undefined && props.err !== '' ? 'danger' : 'gray'"
-                        />
-                    </form>
-                </template>
-                <template v-else-if="hasBarcode">
                     <div style="display: flex; width: 100%; gap: 1rem">
                         <div style="flex: 1">
                             <vs-input
@@ -164,25 +141,24 @@
                                             : listenTypeInput
                                         : 'text'
                                 "
-                                :placeholder="placeholder"
-                                :border="isBorder"
                                 v-model="value"
                                 :autofocus="isFocusToInput"
                                 :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
                                 :disabled="isDisabled"
-                                @input="updateValue"
                                 @focus="focus(true)"
                                 @blur="focus(false)"
+                                @input="updateValue"
+                                @keydown.enter="enterUpdate"
                                 ref="generalInput"
                                 :min="listenMinValue"
                                 :data-testid="`input-${formKey}`"
                                 :state="
                                     props.err !== undefined && props.err !== '' ? 'danger' : 'gray'
                                 "
-                            >
-                            </vs-input>
+                            />
                         </div>
                         <div
+                            v-if="hasBarcode"
                             style="
                                 display: flex;
                                 align-items: center;
@@ -455,7 +431,7 @@ export default {
             this.$emit('updateValue', this.listenFormKey, this.value, info, this.listenDataObj)
         },
         enterUpdate() {
-            this.updateValue()
+            this.$emit('enterUpdate')
         },
         updateValueDebounced(val) {
             let timeoutID = null

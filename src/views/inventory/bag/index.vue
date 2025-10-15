@@ -67,22 +67,22 @@
 
                         <vs-row>
                             <vs-col w="12">
-                                <form @submit.prevent="processItem">
-                                    <input-general
-                                        ref="scanItem"
-                                        formKey="scanItem"
-                                        :name="selected_bag_type?.enableItem || 'Item Number'"
-                                        :placeholder="
-                                            selected_bag_type?.enableItemPlaceholder ||
-                                            'Insert Item Number'
-                                        "
-                                        typeInput="text"
-                                        :valueData="item_number"
-                                        :hasBarcode="true"
-                                        @click-icon="handleIconClick"
-                                        @updateValue="updateValue"
-                                    />
-                                </form>
+                                <input-general
+                                    ref="scanItem"
+                                    formKey="scanItem"
+                                    :name="selected_bag_type?.enableItem || 'Item Number'"
+                                    :placeholder="
+                                        selected_bag_type?.enableItemPlaceholder ||
+                                        'Insert Item Number'
+                                    "
+                                    typeInput="text"
+                                    :valueData="item_number"
+                                    :hasBarcode="true"
+                                    :enter_to_update="true"
+                                    @click-icon="handleIconClick"
+                                    @updateValue="updateValue"
+                                    @enterUpdate="processItem"
+                                />
                             </vs-col>
                         </vs-row>
                     </div>
