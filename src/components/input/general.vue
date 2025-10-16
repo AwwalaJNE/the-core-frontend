@@ -172,6 +172,54 @@
                         </div>
                     </div>
                 </template>
+                <template v-else-if="listenIsPasswordValidation">
+                    <div>
+                        <vs-input
+                            :type="isVisible ? 'text' : 'password'"
+                            :placeholder="placeholder"
+                            :border="isBorder"
+                            v-model="value"
+                            :autofocus="isFocusToInput"
+                            :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
+                            :disabled="isDisabled"
+                            @input="updateValue"
+                            @focus="focus(true)"
+                            @blur="focus(false)"
+                            ref="generalInput"
+                            :min="listenMinValue"
+                            :data-testid="`input-${formKey}`"
+                            :state="props.err !== undefined && props.err !== '' ? 'danger' : 'gray'"
+                            icon-after
+                            @click-icon="toggleVisibility"
+                        >
+                            <template #icon>
+                                <i :class="isVisible ? 'bx bx-show-alt' : 'bx bx-hide'" />
+                            </template>
+                        </vs-input>
+
+                        <div v-if="value" class="progress-container">
+                            <div
+                                class="progress-bar"
+                                :style="{
+                                    width: progressValue + '%',
+                                    backgroundColor: progressColor,
+                                }"
+                            ></div>
+                        </div>
+
+                        <ul v-if="value && !allRequirementsMet" class="requirements">
+                            <li
+                                v-for="(req, i) in passwordRequirements"
+                                :key="i"
+                                :class="{ valid: req.valid }"
+                            >
+                                <i :class="req.valid ? 'bx bx-check-circle' : 'bx bx-x-circle'"></i>
+                                {{ req.text }}
+                            </li>
+                        </ul>
+                    </div>
+                </template>
+
                 <template v-else>
                     <vs-input
                         :type="
@@ -246,6 +294,7 @@ export default {
         return {
             value: this.valueData,
             debouncedInput: this.valueData,
+            isVisible: false,
         }
     },
     computed: {
@@ -294,6 +343,35 @@ export default {
         listenPlaceholder() {
             return this.placeholder
         },
+        listenIsPasswordValidation() {
+            return this.typeInput?.includes('password-validation') || false
+        },
+
+        passwordRequirements() {
+            const pwd = this.value || ''
+            return [
+                { text: 'At least 8 characters', valid: pwd.length >= 8 },
+                { text: 'At least one uppercase letter (A-Z)', valid: /[A-Z]/.test(pwd) },
+                { text: 'At least one lowercase letter (a-z)', valid: /[a-z]/.test(pwd) },
+                { text: 'At least one number (0-9)', valid: /\d/.test(pwd) },
+                {
+                    text: 'At least one special character (!@#$%^&*)',
+                    valid: /[^A-Za-z0-9]/.test(pwd),
+                },
+            ]
+        },
+        allRequirementsMet() {
+            return this.passwordRequirements.every((r) => r.valid)
+        },
+        progressValue() {
+            const validCount = this.passwordRequirements.filter((r) => r.valid).length
+            return validCount === 5 ? 100 : validCount * 20
+        },
+        progressColor() {
+            if (this.progressValue < 40) return '#ff4d4f'
+            if (this.progressValue < 80) return '#faad14'
+            return '#52c41a'
+        },
     },
     watch: {
         valueData: function (val) {
@@ -311,6 +389,10 @@ export default {
         },
     },
     methods: {
+        toggleVisibility() {
+            this.isVisible = !this.isVisible
+            this.$emit('click-icon')
+        },
         debounce(delay = 5000, cb) {
             var timeoutID = null
             return function () {
@@ -430,7 +512,14 @@ export default {
             // if(prevdata.toLowerCase() !== currentValue.toLowerCase()) {
             //   this.$emit("updateValue", this.listenFormKey, this.value, info, this.listenDataObj)
             // }
-            this.$emit('updateValue', this.listenFormKey, this.value, info, this.listenDataObj)
+            this.$emit(
+                'updateValue',
+                this.listenFormKey,
+                this.value,
+                info,
+                this.listenDataObj,
+                this.listenIsPasswordValidation ? this.allRequirementsMet : null
+            )
         },
         enterUpdate() {
             this.$emit('enterUpdate')
@@ -466,3 +555,37 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+.progress-container {
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.progress-bar {
+    height: 100%;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.requirements {
+    list-style: none;
+    padding: 0.3rem 0 0;
+    margin: 0;
+    font-size: 0.85rem;
+}
+
+.requirements li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #777;
+    transition: color 0.3s;
+}
+
+.requirements li.valid {
+    color: #52c41a;
+}
+</style>
