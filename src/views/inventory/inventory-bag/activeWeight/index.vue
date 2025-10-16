@@ -53,7 +53,7 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Reference",
+                    label: "Reference Area",
                     key: "reference",
                     width: "auto"
                 },
@@ -140,6 +140,8 @@ export default {
                         { 'Destination Type': [], 'Destination Name': [], 'Destination Value': [], 'Current Weight (kg)': [] }
                     );
 
+                    item.threshold = item?.threshold + '%';
+                    item.status = item?.status.toUpperCase();
                     return {
                         ...item,
                         status_with_color: item?.status,
