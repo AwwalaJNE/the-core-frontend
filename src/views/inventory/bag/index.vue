@@ -29,11 +29,11 @@
                 <div class="box-v2" :class="{ 'with-glow-border': !isDisabled }">
                     <div class="text-left">
                         <h3>2. Scan First Item Here</h3>
-                        <p>
+                        <p v-if="selected_bag_type?.enableItem && selected_bag_type?.label">
                             You can only insert
-                            {{ selected_bag_type?.enableItem?.toLowerCase() || '&lt;BAG ITEM&gt;' }}
+                            {{ selected_bag_type?.enableItem?.toLowerCase() }}
                             for
-                            {{ selected_bag_type?.label?.toLowerCase() || '&lt;BAG CATEGORY&gt;' }}
+                            {{ selected_bag_type?.label?.toLowerCase() }}
                             type
                         </p>
                     </div>
