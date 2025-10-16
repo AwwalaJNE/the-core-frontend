@@ -4,355 +4,490 @@
             <template v-if="Keys.length > 0 && Object.keys(InputObject).length > 0">
                 <vs-row>
                     <template v-for="(item, keys) in Keys">
-                        <vs-col justify="space-between" :key="keys" :w="InputObject[item].width || 12" :offset="InputObject[item].offset || null" style="margin-top:10px">
-                            
-                            <template v-if="InputObject[item].typeInput.toLowerCase().includes('text')">
+                        <vs-col
+                            justify="space-between"
+                            :key="keys"
+                            :w="InputObject[item].width || 12"
+                            :offset="InputObject[item].offset || null"
+                            style="margin-top: 10px"
+                        >
+                            <template
+                                v-if="InputObject[item].typeInput.toLowerCase().includes('text')"
+                            >
                                 <template v-if="InputObject[item].hasOwnProperty('visible')">
                                     <template v-if="InputObject[item]['visible'] == true">
                                         <div>
-                                            <input-general 
-                                            :icon-after="InputObject[item].showIcon === true"
-                                            :name="InputObject[item].label"
-                                            :rules="InputObject[item].rule"
-                                            :formKey="InputObject[item].key"
-                                            :valueData="InputObject[item].value"
-                                            :typeInput="InputObject[item].typeInput"
-                                            :placeholder="InputObject[item].placeholder"
-                                            :disabled="listenIsDisabled || InputObject[item].isDisabled"
-                                            @updateValue="updateValue" 
-                                            @inputFocus="onfocuslah"
-                                            @click-icon="handleIconClick">
-                                                <template v-if="InputObject[item].showIcon === true" #icon>
+                                            <input-general
+                                                :icon-after="InputObject[item].showIcon === true"
+                                                :name="InputObject[item].label"
+                                                :rules="InputObject[item].rule"
+                                                :formKey="InputObject[item].key"
+                                                :valueData="InputObject[item].value"
+                                                :typeInput="InputObject[item].typeInput"
+                                                :placeholder="InputObject[item].placeholder"
+                                                :disabled="
+                                                    listenIsDisabled || InputObject[item].isDisabled
+                                                "
+                                                @updateValue="updateValue"
+                                                @inputFocus="onfocuslah"
+                                                @click-icon="handleIconClick"
+                                            >
+                                                <template
+                                                    v-if="InputObject[item].showIcon === true"
+                                                    #icon
+                                                >
                                                     <i class="bx bx-search"></i>
                                                 </template>
                                             </input-general>
                                         </div>
                                     </template>
-                                    <template v-else>
-                                        
-                                    </template>
+                                    <template v-else> </template>
                                 </template>
                                 <template v-else>
                                     <input-general
-                                    :icon-after="InputObject[item].showIcon === true"
-                                    :name="InputObject[item].label"
-                                    :rules="InputObject[item].rule"
-                                    :formKey="InputObject[item].key"
-                                    :valueData="InputObject[item].value"
-                                    :typeInput="InputObject[item].typeInput"
-                                    :placeholder="InputObject[item].placeholder"
-                                    :disabled="listenIsDisabled || InputObject[item].isDisabled"
-                                    @updateValue="updateValue" 
-                                    @inputFocus="onfocuslah"
-                                    @click-icon="handleIconClick">
-                                        <template v-if="InputObject[item].showIcon === true" #icon>
-                                            <i class="bx bx-search"></i>
-                                        </template>
-                                    </input-general>
-                                </template>
-                                <template v-if="InputObject[item].hasOwnProperty('visible') && InputObject[item]['visible'] == true">
-                                    
-                                </template>
-                            </template>
-
-                            <template v-if="InputObject[item].typeInput.toLowerCase().includes('number')">
-                                <template v-if="InputObject[item].hasOwnProperty('visible')">
-                                    <template v-if="InputObject[item]['visible'] == true">
-                                        <div>
-                                            <input-general 
-                                            :name="InputObject[item].label"
-                                            :rules="InputObject[item].rule"
-                                            :formKey="InputObject[item].key"
-                                            :valueData="InputObject[item].value"
-                                            :typeInput="InputObject[item].typeInput"
-                                            :disabled="listenIsDisabled"
-                                            :onlyNumber="true"
-                                            :minValue="InputObject[item].minValue"
-                                            :maxValue="InputObject[item].maxValue"
-                                            :tooltipMessage="InputObject[item].tooltipMessage"
-                                            @updateValue="updateValue" 
-                                            @inputFocus="onfocuslah"/>
-                                        </div>
-                                    </template>
-                                    <template v-else>
-                                        
-                                    </template>
-                                </template>
-                                <template v-else>
-                                    <input-general 
-                                    :name="InputObject[item].label"
-                                    :rules="InputObject[item].rule"
-                                    :formKey="InputObject[item].key"
-                                    :valueData="InputObject[item].value"
-                                    :typeInput="InputObject[item].typeInput"
-                                    :placeholder="InputObject[item].placeholder"
-                                    :disabled="listenIsDisabled"
-                                    :onlyNumber="true"
-                                    :minValue="InputObject[item].minValue"
-                                    :maxValue="InputObject[item].maxValue"
-                                    :tooltipMessage="InputObject[item].tooltipMessage"
-                                    @updateValue="updateValue" 
-                                    @inputFocus="onfocuslah"/>
-                                </template>
-                                <template v-if="InputObject[item].hasOwnProperty('visible') && InputObject[item]['visible'] == true">
-                                    
-                                </template>
-                            </template>
-                            
-                            <template v-else-if="InputObject[item].typeInput.toLowerCase() == 'date'">
-                            <input-general
-                                :name="InputObject[item].label"
-                                :rules="InputObject[item].rule"
-                                :formKey="InputObject[item].key"
-                                :valueData="InputObject[item].value"
-                                :typeInput="InputObject[item].typeInput"
-                                @updateValue="updateValue" />
-                            </template>
-                            <template v-else-if="InputObject[item].typeInput.toLowerCase() == 'datetime'">
-                                <template v-if="InputObject[item].hasOwnProperty('visible')">
-                                    <template v-if="InputObject[item]['visible'] == true">
-                                        <div>
-                                            <date-time
-                                            :name="InputObject[item].label"
-                                            :rules="InputObject[item].rule"
-                                            :formKey="InputObject[item].key"
-                                            :valueData="InputObject[item].value"
-                                            :typeInput="InputObject[item].typeInput"
-                                            :disabled="listenIsDisabled || InputObject[item].isDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
-                                            @updateValue="updateValue" />
-                                        </div>
-                                    </template>
-                                    <template v-else>
-                                        
-                                    </template>
-                                </template>
-                                <template v-else>
-                                    <div>
-                                        <date-time
+                                        :icon-after="InputObject[item].showIcon === true"
                                         :name="InputObject[item].label"
                                         :rules="InputObject[item].rule"
                                         :formKey="InputObject[item].key"
                                         :valueData="InputObject[item].value"
                                         :typeInput="InputObject[item].typeInput"
-                                        :disabled="listenIsDisabled || InputObject[item].isDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
-                                        @updateValue="updateValue" />
-                                    </div>
+                                        :placeholder="InputObject[item].placeholder"
+                                        :disabled="listenIsDisabled || InputObject[item].isDisabled"
+                                        @updateValue="updateValue"
+                                        @inputFocus="onfocuslah"
+                                        @click-icon="handleIconClick"
+                                    >
+                                        <template v-if="InputObject[item].showIcon === true" #icon>
+                                            <i class="bx bx-search"></i>
+                                        </template>
+                                    </input-general>
+                                </template>
+                                <template
+                                    v-if="
+                                        InputObject[item].hasOwnProperty('visible') &&
+                                        InputObject[item]['visible'] == true
+                                    "
+                                >
                                 </template>
                             </template>
-                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('multipleselector') && !InputObject[item].typeInput.toLowerCase().includes('hidden')">
-                                <asynchronousSelect 
-                                        :ref="InputObject[item].key"
-                                        :name="InputObject[item].label" 
-                                        :rules="InputObject[item].rule" 
-                                        :formKey="InputObject[item].key"
-                                        :valueData="InputObject[item].arrData"
-                                        :selectedValue="InputObject[item].value"
-                                        :typeInput="InputObject[item].typeInput"
-                                        :url="asynchronousSelect_url"
-                                        :limitExist="limitExist"
-                                        :selectLabel="selectLabel"
-                                        :selectValue="selectValue"
-                                        :isSingleInput="InputObject[item].isSingleInput"
-                                        :isNestedData="isNestedData"
-                                        :nestedKey="nestedKey"
-                                        @updateValue="updateValue"
-                                        @inputFocus="onfocuslah"/>
-                            </template>
-                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('selectmultipletag') && !InputObject[item].typeInput.toLowerCase().includes('hidden')">
-                                    <div>
-                                        <selector 
-                                        :ref="InputObject[item].key"
-                                        :name="InputObject[item].label" 
-                                        :rules="InputObject[item].rule" 
-                                        :formKey="InputObject[item].key"
-                                        :valueData="InputObject[item].arrData"
-                                        :selectedValue="InputObject[item].value"
-                                        :isMultipleTag="true"
-                                        @updateValue="updateValue" />
-                                    </div>
-                            </template>
-                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('selectallowcreate') && !InputObject[item].typeInput.toLowerCase().includes('hidden')">
-                                    <div>
-                                        <selector 
-                                            :ref="InputObject[item].key"
-                                            :name="InputObject[item].label" 
-                                            :rules="InputObject[item].rule" 
-                                            :formKey="InputObject[item].key"
-                                            :valueData="InputObject[item].arrData"
-                                            :selectedValue="InputObject[item].value"
-                                            :isMultiple="false"
-                                            :disabled="listenIsDisabled"
-                                            :isAllowCreate="permissionCreateSelect"
-                                            @updateValue="updateValue" />
-                                    </div>
-                            </template>
-                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('select-barcode')">
-                                <div>
-                                    <selector-barcode 
-                                        :ref="InputObject[item].key"
-                                        :name="InputObject[item].label" 
-                                        :rules="InputObject[item].rule" 
-                                        :formKey="InputObject[item].key"
-                                        :valueData="InputObject[item].arrData"
-                                        :selectedValue="InputObject[item].value"
-                                        :isMultiple="false"
-                                        :disabled="listenIsDisabled || InputObject[item].isDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
-                                        :customBind="InputObject[item].customBind"
-                                        @updateValue="updateValue" 
-                                    />
-                                </div>
-                            </template>
-                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('select')">
+
+                            <template
+                                v-if="InputObject[item].typeInput.toLowerCase().includes('number')"
+                            >
                                 <template v-if="InputObject[item].hasOwnProperty('visible')">
                                     <template v-if="InputObject[item]['visible'] == true">
                                         <div>
-                                            <selector 
-                                            :ref="InputObject[item].key"
-                                            :name="InputObject[item].label" 
-                                            :rules="InputObject[item].rule" 
-                                            :formKey="InputObject[item].key"
-                                            :valueData="InputObject[item].arrData"
-                                            :selectedValue="InputObject[item].value"
-                                            :isMultiple="false"
-                                            :isAllowCreate="false"
-                                            :disabled="listenIsDisabled || InputObject[item].isDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
-                                            :customBind="InputObject[item].customBind"
-                                            @updateValue="updateValue" />
+                                            <input-general
+                                                :name="InputObject[item].label"
+                                                :rules="InputObject[item].rule"
+                                                :formKey="InputObject[item].key"
+                                                :valueData="InputObject[item].value"
+                                                :typeInput="InputObject[item].typeInput"
+                                                :disabled="listenIsDisabled"
+                                                :onlyNumber="true"
+                                                :minValue="InputObject[item].minValue"
+                                                :maxValue="InputObject[item].maxValue"
+                                                :tooltipMessage="InputObject[item].tooltipMessage"
+                                                @updateValue="updateValue"
+                                                @inputFocus="onfocuslah"
+                                            />
                                         </div>
                                     </template>
-                                    <template v-else>
-                                        
+                                    <template v-else> </template>
+                                </template>
+                                <template v-else>
+                                    <input-general
+                                        :name="InputObject[item].label"
+                                        :rules="InputObject[item].rule"
+                                        :formKey="InputObject[item].key"
+                                        :valueData="InputObject[item].value"
+                                        :typeInput="InputObject[item].typeInput"
+                                        :placeholder="InputObject[item].placeholder"
+                                        :disabled="listenIsDisabled"
+                                        :onlyNumber="true"
+                                        :minValue="InputObject[item].minValue"
+                                        :maxValue="InputObject[item].maxValue"
+                                        :tooltipMessage="InputObject[item].tooltipMessage"
+                                        @updateValue="updateValue"
+                                        @inputFocus="onfocuslah"
+                                    />
+                                </template>
+                                <template
+                                    v-if="
+                                        InputObject[item].hasOwnProperty('visible') &&
+                                        InputObject[item]['visible'] == true
+                                    "
+                                >
+                                </template>
+                            </template>
+
+                            <template
+                                v-else-if="InputObject[item].typeInput.toLowerCase() == 'date'"
+                            >
+                                <input-general
+                                    :name="InputObject[item].label"
+                                    :rules="InputObject[item].rule"
+                                    :formKey="InputObject[item].key"
+                                    :valueData="InputObject[item].value"
+                                    :typeInput="InputObject[item].typeInput"
+                                    @updateValue="updateValue"
+                                />
+                            </template>
+                            <template
+                                v-else-if="InputObject[item].typeInput.toLowerCase() == 'datetime'"
+                            >
+                                <template v-if="InputObject[item].hasOwnProperty('visible')">
+                                    <template v-if="InputObject[item]['visible'] == true">
+                                        <div>
+                                            <date-time
+                                                :name="InputObject[item].label"
+                                                :rules="InputObject[item].rule"
+                                                :formKey="InputObject[item].key"
+                                                :valueData="InputObject[item].value"
+                                                :typeInput="InputObject[item].typeInput"
+                                                :disabled="
+                                                    listenIsDisabled ||
+                                                    InputObject[item].isDisabled ||
+                                                    (typeof partialDisabled === 'function' &&
+                                                        partialDisabled(InputObject[item].key)) ||
+                                                    false
+                                                "
+                                                @updateValue="updateValue"
+                                            />
+                                        </div>
                                     </template>
+                                    <template v-else> </template>
                                 </template>
                                 <template v-else>
                                     <div>
-                                        <selector 
-                                        :ref="InputObject[item].key"
-                                        :name="InputObject[item].label" 
-                                        :rules="InputObject[item].rule" 
-                                        :formKey="InputObject[item].key"
-                                        :valueData="InputObject[item].arrData"
-                                        :selectedValue="InputObject[item].value"
-                                        :isMultiple="false"
-                                        :disabled="listenIsDisabled || InputObject[item].isDisabled || (typeof partialDisabled === 'function' && partialDisabled(InputObject[item].key)) || false"
-                                        :customBind="InputObject[item].customBind"
-                                        @updateValue="updateValue" />
+                                        <date-time
+                                            :name="InputObject[item].label"
+                                            :rules="InputObject[item].rule"
+                                            :formKey="InputObject[item].key"
+                                            :valueData="InputObject[item].value"
+                                            :typeInput="InputObject[item].typeInput"
+                                            :disabled="
+                                                listenIsDisabled ||
+                                                InputObject[item].isDisabled ||
+                                                (typeof partialDisabled === 'function' &&
+                                                    partialDisabled(InputObject[item].key)) ||
+                                                false
+                                            "
+                                            @updateValue="updateValue"
+                                        />
                                     </div>
                                 </template>
                             </template>
-                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('mappicker')">
-                                <map-picker 
-                                    :lat="listenLatitude"
-                                    :lon="listenLongitude"
-                                    @pickLocation="pickLocation"
-                                />
-                            </template>
-                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('dynamicinputcomponent')">
-                                <template v-if="iterateInputWait == false">
-                                    <iterate-selector 
-                                    ref="dynamicinputComponent" 
-                                    :addBtn="InputObject[item].label" 
-                                    :getters="listenGettersPrefix" 
-                                    :fromKey="InputObject[item].key" 
-                                    :typeForm="listenTypeForm"
-                                    :itterateUrlAutoComplete="listenItterateUrlAutoComplete"
-                                    :itterateFlagAutoComplete="listenItterateFlagAutoComplete"
-                                    :asynchronousSelect_url="listenAsynchronousSelectUrl"
-                                    :querySearch2="querySearch"
+                            <template
+                                v-else-if="
+                                    InputObject[item].typeInput
+                                        .toLowerCase()
+                                        .includes('multipleselector') &&
+                                    !InputObject[item].typeInput.toLowerCase().includes('hidden')
+                                "
+                            >
+                                <asynchronousSelect
+                                    :ref="InputObject[item].key"
+                                    :name="InputObject[item].label"
+                                    :rules="InputObject[item].rule"
+                                    :formKey="InputObject[item].key"
+                                    :valueData="InputObject[item].arrData"
+                                    :selectedValue="InputObject[item].value"
+                                    :typeInput="InputObject[item].typeInput"
+                                    :url="asynchronousSelect_url"
+                                    :limitExist="limitExist"
                                     :selectLabel="selectLabel"
                                     :selectValue="selectValue"
                                     :isSingleInput="InputObject[item].isSingleInput"
                                     :isNestedData="isNestedData"
                                     :nestedKey="nestedKey"
-                                    :disabled="listenIsDisabled"
                                     @updateValue="updateValue"
-                                    @inputFocus="onfocuslah"/>
+                                    @inputFocus="onfocuslah"
+                                />
+                            </template>
+                            <template
+                                v-else-if="
+                                    InputObject[item].typeInput
+                                        .toLowerCase()
+                                        .includes('selectmultipletag') &&
+                                    !InputObject[item].typeInput.toLowerCase().includes('hidden')
+                                "
+                            >
+                                <div>
+                                    <selector
+                                        :ref="InputObject[item].key"
+                                        :name="InputObject[item].label"
+                                        :rules="InputObject[item].rule"
+                                        :formKey="InputObject[item].key"
+                                        :valueData="InputObject[item].arrData"
+                                        :selectedValue="InputObject[item].value"
+                                        :isMultipleTag="true"
+                                        @updateValue="updateValue"
+                                    />
+                                </div>
+                            </template>
+                            <template
+                                v-else-if="
+                                    InputObject[item].typeInput
+                                        .toLowerCase()
+                                        .includes('selectallowcreate') &&
+                                    !InputObject[item].typeInput.toLowerCase().includes('hidden')
+                                "
+                            >
+                                <div>
+                                    <selector
+                                        :ref="InputObject[item].key"
+                                        :name="InputObject[item].label"
+                                        :rules="InputObject[item].rule"
+                                        :formKey="InputObject[item].key"
+                                        :valueData="InputObject[item].arrData"
+                                        :selectedValue="InputObject[item].value"
+                                        :isMultiple="false"
+                                        :disabled="listenIsDisabled"
+                                        :isAllowCreate="permissionCreateSelect"
+                                        @updateValue="updateValue"
+                                    />
+                                </div>
+                            </template>
+                            <template
+                                v-else-if="
+                                    InputObject[item].typeInput
+                                        .toLowerCase()
+                                        .includes('select-barcode')
+                                "
+                            >
+                                <div>
+                                    <selector-barcode
+                                        :ref="InputObject[item].key"
+                                        :name="InputObject[item].label"
+                                        :rules="InputObject[item].rule"
+                                        :formKey="InputObject[item].key"
+                                        :valueData="InputObject[item].arrData"
+                                        :selectedValue="InputObject[item].value"
+                                        :isMultiple="false"
+                                        :disabled="
+                                            listenIsDisabled ||
+                                            InputObject[item].isDisabled ||
+                                            (typeof partialDisabled === 'function' &&
+                                                partialDisabled(InputObject[item].key)) ||
+                                            false
+                                        "
+                                        :customBind="InputObject[item].customBind"
+                                        @updateValue="updateValue"
+                                    />
+                                </div>
+                            </template>
+                            <template
+                                v-else-if="
+                                    InputObject[item].typeInput.toLowerCase().includes('select')
+                                "
+                            >
+                                <template v-if="InputObject[item].hasOwnProperty('visible')">
+                                    <template v-if="InputObject[item]['visible'] == true">
+                                        <div>
+                                            <selector
+                                                :ref="InputObject[item].key"
+                                                :name="InputObject[item].label"
+                                                :rules="InputObject[item].rule"
+                                                :formKey="InputObject[item].key"
+                                                :valueData="InputObject[item].arrData"
+                                                :selectedValue="InputObject[item].value"
+                                                :isMultiple="false"
+                                                :isAllowCreate="false"
+                                                :disabled="
+                                                    listenIsDisabled ||
+                                                    InputObject[item].isDisabled ||
+                                                    (typeof partialDisabled === 'function' &&
+                                                        partialDisabled(InputObject[item].key)) ||
+                                                    false
+                                                "
+                                                :customBind="InputObject[item].customBind"
+                                                @updateValue="updateValue"
+                                            />
+                                        </div>
+                                    </template>
+                                    <template v-else> </template>
                                 </template>
                                 <template v-else>
-                                    loading...
+                                    <div>
+                                        <selector
+                                            :ref="InputObject[item].key"
+                                            :name="InputObject[item].label"
+                                            :rules="InputObject[item].rule"
+                                            :formKey="InputObject[item].key"
+                                            :valueData="InputObject[item].arrData"
+                                            :selectedValue="InputObject[item].value"
+                                            :isMultiple="false"
+                                            :disabled="
+                                                listenIsDisabled ||
+                                                InputObject[item].isDisabled ||
+                                                (typeof partialDisabled === 'function' &&
+                                                    partialDisabled(InputObject[item].key)) ||
+                                                false
+                                            "
+                                            :customBind="InputObject[item].customBind"
+                                            @updateValue="updateValue"
+                                        />
+                                    </div>
                                 </template>
                             </template>
-                            
-                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('boolean')">
+                            <template
+                                v-else-if="
+                                    InputObject[item].typeInput.toLowerCase().includes('mappicker')
+                                "
+                            >
+                                <map-picker
+                                    :lat="listenLatitude"
+                                    :lon="listenLongitude"
+                                    @pickLocation="pickLocation"
+                                />
+                            </template>
+                            <template
+                                v-else-if="
+                                    InputObject[item].typeInput
+                                        .toLowerCase()
+                                        .includes('dynamicinputcomponent')
+                                "
+                            >
+                                <template v-if="iterateInputWait == false">
+                                    <iterate-selector
+                                        ref="dynamicinputComponent"
+                                        :addBtn="InputObject[item].label"
+                                        :getters="listenGettersPrefix"
+                                        :fromKey="InputObject[item].key"
+                                        :typeForm="listenTypeForm"
+                                        :itterateUrlAutoComplete="listenItterateUrlAutoComplete"
+                                        :itterateFlagAutoComplete="listenItterateFlagAutoComplete"
+                                        :asynchronousSelect_url="listenAsynchronousSelectUrl"
+                                        :querySearch2="querySearch"
+                                        :selectLabel="selectLabel"
+                                        :selectValue="selectValue"
+                                        :isSingleInput="InputObject[item].isSingleInput"
+                                        :isNestedData="isNestedData"
+                                        :nestedKey="nestedKey"
+                                        :disabled="listenIsDisabled"
+                                        @updateValue="updateValue"
+                                        @inputFocus="onfocuslah"
+                                    />
+                                </template>
+                                <template v-else> loading... </template>
+                            </template>
+
+                            <template
+                                v-else-if="
+                                    InputObject[item].typeInput.toLowerCase().includes('boolean')
+                                "
+                            >
                                 <switchNih
-                                :name="InputObject[item].label" 
-                                :titleLabel="InputObject[item].titleLabel"
-                                :rules="InputObject[item].rule" 
-                                :formKey="InputObject[item].key"
-                                :valueData="InputObject[item].value"
-                                @updateValue="updateValue"
-                                :disabled="listenIsDisabled" />
+                                    :name="InputObject[item].label"
+                                    :titleLabel="InputObject[item].titleLabel"
+                                    :rules="InputObject[item].rule"
+                                    :formKey="InputObject[item].key"
+                                    :valueData="InputObject[item].value"
+                                    @updateValue="updateValue"
+                                    :disabled="listenIsDisabled"
+                                />
                             </template>
-                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('radio')">
-                                
+                            <template
+                                v-else-if="
+                                    InputObject[item].typeInput.toLowerCase().includes('radio')
+                                "
+                            >
                                 <template v-if="InputObject[item].arrData.length > 0">
-                                    <radio 
-                                    :ref="item"
-                                    :name="''" 
-                                    :width="InputObject[item].width"
-                                    :rules="InputObject[item].rule" 
-                                    :formKey="item"
-                                    :valueData="InputObject[item].arrData"
-                                    :selectedValue="InputObject[item].value"
-                                    @updateValue="updateValue" />
+                                    <radio
+                                        :ref="item"
+                                        :name="''"
+                                        :width="InputObject[item].width"
+                                        :rules="InputObject[item].rule"
+                                        :formKey="item"
+                                        :valueData="InputObject[item].arrData"
+                                        :selectedValue="InputObject[item].value"
+                                        @updateValue="updateValue"
+                                    />
                                 </template>
                             </template>
-                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('autocomplete1')">
+                            <template
+                                v-else-if="
+                                    InputObject[item].typeInput
+                                        .toLowerCase()
+                                        .includes('autocomplete1')
+                                "
+                            >
                                 <template v-if="querySearch1 !== undefined">
                                     <auto-complete
-                                    :name="InputObject[item].label"
-                                    :rules="InputObject[item].rule"
-                                    :formKey="InputObject[item].key"
-                                    :valueData="InputObject[item].value"
-                                    :url="InputObject[item].url"
-                                    :flag="InputObject[item].flag"
-                                    :querySearch="querySearch1"
-                                    :selectedValue="InputObject[item].value"
-                                    :typeForm="listenTypeForm"
-                                    :typeInput="InputObject[item].typeInput"
-                                    :disabled="listenIsDisabled"
-                                    @updateValue="updateValue"
-                                    @inputFocus="onfocuslah"/>
+                                        :name="InputObject[item].label"
+                                        :rules="InputObject[item].rule"
+                                        :formKey="InputObject[item].key"
+                                        :valueData="InputObject[item].value"
+                                        :url="InputObject[item].url"
+                                        :flag="InputObject[item].flag"
+                                        :querySearch="querySearch1"
+                                        :selectedValue="InputObject[item].value"
+                                        :typeForm="listenTypeForm"
+                                        :typeInput="InputObject[item].typeInput"
+                                        :disabled="listenIsDisabled"
+                                        @updateValue="updateValue"
+                                        @inputFocus="onfocuslah"
+                                    />
                                 </template>
                             </template>
-                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('autocomplete2')">
+                            <template
+                                v-else-if="
+                                    InputObject[item].typeInput
+                                        .toLowerCase()
+                                        .includes('autocomplete2')
+                                "
+                            >
                                 <template v-if="querySearch2 !== undefined">
                                     <auto-complete
-                                    :name="InputObject[item].label"
-                                    :rules="InputObject[item].rule"
-                                    :formKey="InputObject[item].key"
-                                    :valueData="InputObject[item].value"
-                                    :url="InputObject[item].url"
-                                    :flag="InputObject[item].flag"
-                                    :querySearch="querySearch2"
-                                    :selectedValue="InputObject[item].value"
-                                    :typeForm="listenTypeForm"
-                                    :typeInput="InputObject[item].typeInput"
-                                    :disabled="listenIsDisabled"
-                                    @updateValue="updateValue"
-                                    @inputFocus="onfocuslah"/>
+                                        :name="InputObject[item].label"
+                                        :rules="InputObject[item].rule"
+                                        :formKey="InputObject[item].key"
+                                        :valueData="InputObject[item].value"
+                                        :url="InputObject[item].url"
+                                        :flag="InputObject[item].flag"
+                                        :querySearch="querySearch2"
+                                        :selectedValue="InputObject[item].value"
+                                        :typeForm="listenTypeForm"
+                                        :typeInput="InputObject[item].typeInput"
+                                        :disabled="listenIsDisabled"
+                                        @updateValue="updateValue"
+                                        @inputFocus="onfocuslah"
+                                    />
                                 </template>
                             </template>
-                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('autocomplete3')">
+                            <template
+                                v-else-if="
+                                    InputObject[item].typeInput
+                                        .toLowerCase()
+                                        .includes('autocomplete3')
+                                "
+                            >
                                 <template v-if="querySearch3 !== undefined">
                                     <auto-complete
-                                    :name="InputObject[item].label"
-                                    :rules="InputObject[item].rule"
-                                    :formKey="InputObject[item].key"
-                                    :valueData="InputObject[item].value"
-                                    :url="InputObject[item].url"
-                                    :flag="InputObject[item].flag"
-                                    :querySearch="querySearch3"
-                                    :selectedValue="InputObject[item].value"
-                                    :typeForm="listenTypeForm"
-                                    :typeInput="InputObject[item].typeInput"
-                                    :disabled="listenIsDisabled"
-                                    @updateValue="updateValue"
-                                    @inputFocus="onfocuslah"/>
+                                        :name="InputObject[item].label"
+                                        :rules="InputObject[item].rule"
+                                        :formKey="InputObject[item].key"
+                                        :valueData="InputObject[item].value"
+                                        :url="InputObject[item].url"
+                                        :flag="InputObject[item].flag"
+                                        :querySearch="querySearch3"
+                                        :selectedValue="InputObject[item].value"
+                                        :typeForm="listenTypeForm"
+                                        :typeInput="InputObject[item].typeInput"
+                                        :disabled="listenIsDisabled"
+                                        @updateValue="updateValue"
+                                        @inputFocus="onfocuslah"
+                                    />
                                 </template>
                             </template>
-                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('autocomplete')">
-                                
+                            <template
+                                v-else-if="
+                                    InputObject[item].typeInput
+                                        .toLowerCase()
+                                        .includes('autocomplete')
+                                "
+                            >
                                 <template v-if="InputObject[item].hasOwnProperty('visible')">
                                     <template v-if="InputObject[item]['visible'] == true">
                                         <template v-if="querySearch !== undefined">
@@ -367,8 +502,10 @@
                                                 :selectedValue="InputObject[item].value"
                                                 :typeForm="listenTypeForm"
                                                 :typeInput="InputObject[item].typeInput"
-                                                :disabled="listenIsDisabled || InputObject[item].isDisabled"
-                                                @updateValue="updateValue" 
+                                                :disabled="
+                                                    listenIsDisabled || InputObject[item].isDisabled
+                                                "
+                                                @updateValue="updateValue"
                                                 @inputFocus="onfocuslah"
                                             />
                                         </template>
@@ -387,14 +524,20 @@
                                             :selectedValue="InputObject[item].value"
                                             :typeForm="listenTypeForm"
                                             :typeInput="InputObject[item].typeInput"
-                                            :disabled="listenIsDisabled || InputObject[item].isDisabled"
-                                            @updateValue="updateValue" 
+                                            :disabled="
+                                                listenIsDisabled || InputObject[item].isDisabled
+                                            "
+                                            @updateValue="updateValue"
                                             @inputFocus="onfocuslah"
                                         />
-                                </template>
+                                    </template>
                                 </template>
                             </template>
-                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('radtex')">
+                            <template
+                                v-else-if="
+                                    InputObject[item].typeInput.toLowerCase().includes('radtex')
+                                "
+                            >
                                 <radio-input-general
                                     :name="InputObject[item].label"
                                     :rules="InputObject[item].rule"
@@ -404,15 +547,21 @@
                                     :arrValueData="InputObject[item].arrValue"
                                     :typeInput="InputObject[item].typeInput"
                                     :disabled="listenIsDisabled"
-                                    @updateValue="updateValue" 
+                                    @updateValue="updateValue"
                                     @inputFocus="onfocuslah"
                                 />
                             </template>
-                            <template v-else-if="InputObject[item].typeInput.toLowerCase().includes('search-preview')">
+                            <template
+                                v-else-if="
+                                    InputObject[item].typeInput
+                                        .toLowerCase()
+                                        .includes('search-preview')
+                                "
+                            >
                                 <search-preview
                                     :ref="InputObject[item].key"
-                                    :name="InputObject[item].label" 
-                                    :rules="InputObject[item].rule" 
+                                    :name="InputObject[item].label"
+                                    :rules="InputObject[item].rule"
                                     :formKey="InputObject[item].key"
                                     :typeInput="InputObject[item].typeInput"
                                     :url="asynchronousSelect_url"
@@ -425,7 +574,11 @@
                                 />
                             </template>
                         </vs-col>
-                        <vs-col v-if="InputObject[item].reduce" :key="'reducer'+keys" :w="InputObject[item].reduce || null" />
+                        <vs-col
+                            v-if="InputObject[item].reduce"
+                            :key="'reducer' + keys"
+                            :w="InputObject[item].reduce || null"
+                        />
                     </template>
                 </vs-row>
             </template>
@@ -433,36 +586,36 @@
     </form-master>
 </template>
 <script>
-import FormMaster from "@/components/form/formMaster"
-import InputGeneral from "@/components/input/general"
-import Selector from "@/components/input/select"
-import SelectorBarcode from "@/components/input/selectBarcode"
-import Switch from "@/components/input/switch"
-import MapPicker from "@/components/map"
-import DateTime from "@/components/input/dateTime"
-import Radio from "@/components/input/radio"
-import AutoComplete from "@/components/input/autoComplete"
-import iterateSelector from "@/components/input/iterateInput2"
-import asynchronousSelect from "@/components/input/asynchronousSelect"
-import RadioInputGeneral from "@/components/input/radioInputGeneral.vue"
-import SearchPreview from "@/components/searchPreview/searchPreview.vue"
+import FormMaster from '@/components/form/formMaster'
+import InputGeneral from '@/components/input/general'
+import Selector from '@/components/input/select'
+import SelectorBarcode from '@/components/input/selectBarcode'
+import Switch from '@/components/input/switch'
+import MapPicker from '@/components/map'
+import DateTime from '@/components/input/dateTime'
+import Radio from '@/components/input/radio'
+import AutoComplete from '@/components/input/autoComplete'
+import iterateSelector from '@/components/input/iterateInput2'
+import asynchronousSelect from '@/components/input/asynchronousSelect'
+import RadioInputGeneral from '@/components/input/radioInputGeneral.vue'
+import SearchPreview from '@/components/searchPreview/searchPreview.vue'
 
 export default {
-    name:"input-controller",
+    name: 'input-controller',
     components: {
-        "form-master": FormMaster,
-        "input-general": InputGeneral,
-        "selector": Selector,
-        "selector-barcode": SelectorBarcode,
-        "switchNih": Switch,
-        "map-picker": MapPicker,
-        "iterate-selector": iterateSelector,
-        "date-time": DateTime,
-        "radio": Radio,
-        "auto-complete": AutoComplete,
-        "asynchronousSelect": asynchronousSelect,
-        "radio-input-general": RadioInputGeneral,
-        "search-preview": SearchPreview
+        'form-master': FormMaster,
+        'input-general': InputGeneral,
+        selector: Selector,
+        'selector-barcode': SelectorBarcode,
+        switchNih: Switch,
+        'map-picker': MapPicker,
+        'iterate-selector': iterateSelector,
+        'date-time': DateTime,
+        radio: Radio,
+        'auto-complete': AutoComplete,
+        asynchronousSelect: asynchronousSelect,
+        'radio-input-general': RadioInputGeneral,
+        'search-preview': SearchPreview,
     },
     props: {
         arrData: Array,
@@ -485,14 +638,14 @@ export default {
         selectValue: String,
         isNestedData: Boolean,
         nestedKey: String,
-        tableKey: String
+        tableKey: String,
     },
     data() {
         return {
             Keys: [],
             InputObject: {},
             form: {},
-            latlon:[0,0],
+            latlon: [0, 0],
             latitude: 0,
             longitude: 0,
             hasMapPicker: false,
@@ -528,19 +681,19 @@ export default {
         },
         listenIsDisabled() {
             return this.isDisabled || false
-        }
+        },
     },
     methods: {
         initialize() {
             let obj = this.$store.getters[this.listenGettersPrefix][this.listenTypeForm] || {}
 
-                if (Object.keys(obj).length > 0) {
-                    this.Keys = Object.keys(obj)
-                    this.InputObject = obj
-                } else {
-                    this.Keys = []
-                    this.InputObject = {}
-                }
+            if (Object.keys(obj).length > 0) {
+                this.Keys = Object.keys(obj)
+                this.InputObject = obj
+            } else {
+                this.Keys = []
+                this.InputObject = {}
+            }
         },
         handleIconClick() {
             this.$emit('handleIconClick')
@@ -550,27 +703,34 @@ export default {
             let obj = this.listenDataItem
             let prefix = this.listenTypeForm.toUpperCase()
 
-            if(obj != null && Object.keys(this.InputObject).length > 0) {
-                this.Keys.map(item => {
+            if (obj != null && Object.keys(this.InputObject).length > 0) {
+                this.Keys.map((item) => {
                     let action = item.toUpperCase()
-                    if(item.includes('dynamicinputcomponent')){
+                    if (item.includes('dynamicinputcomponent')) {
                         let itemAlt = item.split('dynamicinputcomponent_')[1]
- 
-                        if(this.listenDataItem.hasOwnProperty(itemAlt)){
-                            this.$store.dispatch(`SET_${prefix}_${action}`, this.listenDataItem[itemAlt])
 
-                            
+                        if (this.listenDataItem.hasOwnProperty(itemAlt)) {
+                            this.$store.dispatch(
+                                `SET_${prefix}_${action}`,
+                                this.listenDataItem[itemAlt]
+                            )
                         }
                     }
-                    if(this.listenDataItem.hasOwnProperty(item)) {
-
- 
+                    if (this.listenDataItem.hasOwnProperty(item)) {
                         this.$store.dispatch(`SET_${prefix}_${action}`, this.listenDataItem[item])
 
-                        if(this.InputObject[item].hasOwnProperty('mapPicker')) {
-                            if(this.InputObject[item]['typeInput'].toLowerCase().includes('latitude')){
+                        if (this.InputObject[item].hasOwnProperty('mapPicker')) {
+                            if (
+                                this.InputObject[item]['typeInput']
+                                    .toLowerCase()
+                                    .includes('latitude')
+                            ) {
                                 this.latitude = parseFloat(this.listenDataItem[item])
-                            } else if(this.InputObject[item]['typeInput'].toLowerCase().includes('longitude')){
+                            } else if (
+                                this.InputObject[item]['typeInput']
+                                    .toLowerCase()
+                                    .includes('longitude')
+                            ) {
                                 this.longitude = parseFloat(this.listenDataItem[item])
                             }
                         }
@@ -579,116 +739,138 @@ export default {
             }
             this.iterateInputWait = false
             // setTimeout(function(){ self.iterateInputWait = false }, 800);
-            
         },
-        pickLocation(item){
+        pickLocation(item) {
             let prefix = this.listenTypeForm.toUpperCase()
-            this.Keys.map(key => {
+            this.Keys.map((key) => {
                 let action = key.toUpperCase()
-                if(this.InputObject[key].hasOwnProperty('mapPicker')) {
-                    if(this.InputObject[key]['typeInput'].toLowerCase().includes('latitude')){
+                if (this.InputObject[key].hasOwnProperty('mapPicker')) {
+                    if (this.InputObject[key]['typeInput'].toLowerCase().includes('latitude')) {
                         this.$store.dispatch(`SET_${prefix}_${action}`, String(item['latitude']))
                         // this.latitude = item['latitude']
-                    } else if(this.InputObject[key]['typeInput'].toLowerCase().includes('longitude')){
+                    } else if (
+                        this.InputObject[key]['typeInput'].toLowerCase().includes('longitude')
+                    ) {
                         this.$store.dispatch(`SET_${prefix}_${action}`, String(item['longitude']))
                         // this.longitude = item['longitude']
                     }
                 }
-
             })
         },
-        updateValue(type, val, obj = {}) {
+        updateValue(type, val, obj = {}, obj2 = {}, helper = null) {
             let action = type.toUpperCase()
             let prefix = this.listenTypeForm.toUpperCase()
 
             try {
                 // if(!type.toLowerCase().includes('dynamicinputcomponent')) {
-                    
-                // }
-                let err = this.InputObject[`${type}`] !== undefined ? this.$store.dispatch(`SET_${prefix}_${action}`, val !== undefined && val !== '' ? val : '') : true
-                if(err == true) {
 
+                // }
+                let err =
+                    this.InputObject[`${type}`] !== undefined
+                        ? this.$store.dispatch(
+                              `SET_${prefix}_${action}`,
+                              val !== undefined && val !== '' ? val : ''
+                          )
+                        : true
+                if (err == true) {
                 }
-            } catch (error) {
-                
-            }
-            
- 
-            if(obj.hasOwnProperty('typeInput')) {
-                if(obj['typeInput'] == 'autocomplete') {
+            } catch (error) {}
+
+            if (obj.hasOwnProperty('typeInput')) {
+                if (obj['typeInput'] == 'autocomplete') {
                     try {
-                        this.$store.dispatch(`SET_${prefix}_${action + '_ValueData'}`, obj['data'] !== undefined ? obj['data'] : {})
-                    } catch (error) {
-                        
-                    }
+                        this.$store.dispatch(
+                            `SET_${prefix}_${action + '_ValueData'}`,
+                            obj['data'] !== undefined ? obj['data'] : {}
+                        )
+                    } catch (error) {}
                 }
             }
-            if(obj.hasOwnProperty('typeInput')) {
-                if(obj['typeInput'] == 'radtex') {
+            if (obj.hasOwnProperty('typeInput')) {
+                if (obj['typeInput'] == 'radtex') {
                     if (obj['statusRad']) {
                         if (['menit', 'jam', 'hari'].includes(val)) {
-                            this.$store.dispatch(`SET_${prefix}_${action}_ArrValueData`, obj.statusRad)
+                            this.$store.dispatch(
+                                `SET_${prefix}_${action}_ArrValueData`,
+                                obj.statusRad
+                            )
                             this.$store.dispatch(`SET_${prefix}_${action}`, '')
                         } else {
-                            this.$store.dispatch(`SET_${prefix}_${action}_ArrValueData`, obj.statusRad)
-                        }                        
+                            this.$store.dispatch(
+                                `SET_${prefix}_${action}_ArrValueData`,
+                                obj.statusRad
+                            )
+                        }
                     }
                 }
             }
 
-            this.$emit("onChangeCustom", type, val, obj)
+            this.$emit('onChangeCustom', type, val, obj, obj2, helper)
         },
         onfocuslah(info) {
-            if(info.typeInput !== '' && info.typeInput !== undefined && info.typeInput.includes('location_selector')) {
-              this.$emit("onFocus_location_selector", info)
+            if (
+                info.typeInput !== '' &&
+                info.typeInput !== undefined &&
+                info.typeInput.includes('location_selector')
+            ) {
+                this.$emit('onFocus_location_selector', info)
             }
-            this.$emit("inputFocus", info)
+            this.$emit('inputFocus', info)
         },
-        handleSubmit(){
+        handleSubmit() {
             this.$refs.formMaster.formSubmit() // trigger function submit form dari luar component formMaster
         },
-        onSubmit(refs){
-                refs.form.validate().then(success => {
-                    if (!success) {
-
-                        return;
+        onSubmit(refs) {
+            refs.form.validate().then((success) => {
+                if (!success) {
+                    return
+                }
+                this.InputObject =
+                    this.$store.getters[this.listenGettersPrefix][this.listenTypeForm]
+                let tempKey = this.Keys.filter((item) => !item.includes('mapPicker'))
+                tempKey.map((item) => {
+                    // yg diambil key input
+                    if (this.InputObject[item]['typeInput'].toLowerCase() == 'boolean') {
+                        // fix component switch.vue onchange updateValue ga ketrigger dan return ''
+                        this.form[this.InputObject[item].key] =
+                            this.InputObject[item].value !== '' &&
+                            this.InputObject[item].value !== undefined
+                                ? this.InputObject[item].value
+                                : this.InputObject[item].valueData //this.InputObject[item].value == '' ? true : this.InputObject[item].value
+                    } else if (
+                        this.InputObject[item]['typeInput'].toLowerCase() == 'dynamicinputcomponent'
+                    ) {
+                        this.form[this.InputObject[item].key] = this.InputObject[item].arrData
+                    } else if (
+                        this.InputObject[item]['typeInput'].toLowerCase() == 'autocomplete'
+                    ) {
+                        this.form[this.InputObject[item].key] = this.InputObject[item].valueData
+                    } else if (this.InputObject[item]['typeInput'].toLowerCase() == 'radtex') {
+                        this.form[this.InputObject[item].key + '_radio'] =
+                            this.InputObject[item].arrValueData
+                        this.form[this.InputObject[item].key] = this.InputObject[item].value
+                    } else {
+                        this.form[this.InputObject[item].key] = this.InputObject[item].value
                     }
-                    this.InputObject = this.$store.getters[this.listenGettersPrefix][this.listenTypeForm]
-                    let tempKey = this.Keys.filter(item => !item.includes('mapPicker'))
-                    tempKey.map(item => {
-                        // yg diambil key input
-                        if(this.InputObject[item]['typeInput'].toLowerCase() == 'boolean') { 
-                            // fix component switch.vue onchange updateValue ga ketrigger dan return ''
-                            this.form[this.InputObject[item].key] = this.InputObject[item].value !== '' && this.InputObject[item].value !== undefined ? this.InputObject[item].value : this.InputObject[item].valueData //this.InputObject[item].value == '' ? true : this.InputObject[item].value
-                        } else if (this.InputObject[item]['typeInput'].toLowerCase() == 'dynamicinputcomponent') {
-                            this.form[this.InputObject[item].key] = this.InputObject[item].arrData
-                        } else if (this.InputObject[item]['typeInput'].toLowerCase() == 'autocomplete') {
-                            this.form[this.InputObject[item].key] = this.InputObject[item].valueData
-                        } else if (this.InputObject[item]['typeInput'].toLowerCase() == 'radtex') {
-                            this.form[this.InputObject[item].key + '_radio'] = this.InputObject[item].arrValueData
-                            this.form[this.InputObject[item].key] = this.InputObject[item].value
-                        }
-                        else {
-                            this.form[this.InputObject[item].key] = this.InputObject[item].value
-                        }
-                        
-                    })
-                    this.$emit("formData", this.form)
+                })
+                this.$emit('formData', this.form)
 
-                    // Wait until the models are updated in the UI
-                    this.$nextTick(() => {
-                        refs.form.reset();
-                    });
-                });
+                // Wait until the models are updated in the UI
+                this.$nextTick(() => {
+                    refs.form.reset()
+                })
+            })
         },
-        handleClearForm(){
+        handleClearForm() {
             let prefix = this.listenTypeForm.toUpperCase()
-            let tempKey = this.Keys.filter(item => !item.includes('mapPicker') && !item.includes('dynamicinputcomponent'))
-            tempKey.map(item => {
+            let tempKey = this.Keys.filter(
+                (item) => !item.includes('mapPicker') && !item.includes('dynamicinputcomponent')
+            )
+            tempKey.map((item) => {
                 let action = item.toUpperCase()
                 try {
-                    if(this.InputObject[item].hasOwnProperty('typeData')) {
-                        if(this.InputObject[item]["typeData"].toLowerCase() == 'boolean') {
+                    if (this.InputObject[item].hasOwnProperty('typeData')) {
+                        if (this.InputObject[item]['typeData'].toLowerCase() == 'boolean') {
                             this.$store.dispatch(`SET_${prefix}_${action}`, true)
                             this.$store.dispatch(`SET_${prefix}_${action}_ValueData`, true)
                         } else {
@@ -699,25 +881,27 @@ export default {
                         this.$store.dispatch(`SET_${prefix}_${action}`, '')
                         this.$store.dispatch(`SET_${prefix}_${action}_ValueData`, '')
                     }
-                    
-                    if(this.InputObject[item].hasOwnProperty('arrData') && !InputObject[item].typeInput.toLowerCase().includes('radtex')) {
-                        this.$store.dispatch(`SET_${prefix}_${action}_ArrData`, [{"label": null, "value": null}])
+
+                    if (
+                        this.InputObject[item].hasOwnProperty('arrData') &&
+                        !InputObject[item].typeInput.toLowerCase().includes('radtex')
+                    ) {
+                        this.$store.dispatch(`SET_${prefix}_${action}_ArrData`, [
+                            { label: null, value: null },
+                        ])
                     }
-                } catch (error) {
-                    
-                }
-                
+                } catch (error) {}
             })
             this.form = {}
         },
         handleClearAllForm() {
             let prefix = this.listenTypeForm.toUpperCase()
             let tempKey = this.Keys
-            tempKey.map(item => {
+            tempKey.map((item) => {
                 let action = item.toUpperCase()
                 try {
-                    if(this.InputObject[item].hasOwnProperty('typeData')) {
-                        if(this.InputObject[item]["typeData"].toLowerCase() == 'boolean') {
+                    if (this.InputObject[item].hasOwnProperty('typeData')) {
+                        if (this.InputObject[item]['typeData'].toLowerCase() == 'boolean') {
                             this.$store.dispatch(`SET_${prefix}_${action}`, true)
                             this.$store.dispatch(`SET_${prefix}_${action}_ValueData`, true)
                         } else {
@@ -728,25 +912,29 @@ export default {
                         this.$store.dispatch(`SET_${prefix}_${action}`, '')
                         this.$store.dispatch(`SET_${prefix}_${action}_ValueData`, '')
                     }
-                    
-                    if(this.InputObject[item].hasOwnProperty('arrData') && !InputObject[item].typeInput.toLowerCase().includes('radtex')) {
-                        this.$store.dispatch(`SET_${prefix}_${action}_ArrData`, [{"label": null, "value": null}])
+
+                    if (
+                        this.InputObject[item].hasOwnProperty('arrData') &&
+                        !InputObject[item].typeInput.toLowerCase().includes('radtex')
+                    ) {
+                        this.$store.dispatch(`SET_${prefix}_${action}_ArrData`, [
+                            { label: null, value: null },
+                        ])
                     }
-                } catch (error) {
-                    
-                }
-                
+                } catch (error) {}
             })
             this.form = {}
         },
-        handleEmptyForm(){
+        handleEmptyForm() {
             let prefix = this.listenTypeForm.toUpperCase()
-            let tempKey = this.Keys.filter(item => !item.includes('mapPicker') && !item.includes('dynamicinputcomponent'))
-            tempKey.map(item => {
+            let tempKey = this.Keys.filter(
+                (item) => !item.includes('mapPicker') && !item.includes('dynamicinputcomponent')
+            )
+            tempKey.map((item) => {
                 let action = item.toUpperCase()
                 try {
-                    if(this.InputObject[item].hasOwnProperty('typeData')) {
-                        if(this.InputObject[item]["typeData"].toLowerCase() == 'boolean') {
+                    if (this.InputObject[item].hasOwnProperty('typeData')) {
+                        if (this.InputObject[item]['typeData'].toLowerCase() == 'boolean') {
                             this.$store.dispatch(`SET_${prefix}_${action}`, true)
                             this.$store.dispatch(`SET_${prefix}_${action}_ValueData`, true)
                         } else {
@@ -757,10 +945,7 @@ export default {
                         this.$store.dispatch(`SET_${prefix}_${action}`, '')
                         this.$store.dispatch(`SET_${prefix}_${action}_ValueData`, '')
                     }
-                } catch (error) {
-                    
-                }
-                
+                } catch (error) {}
             })
             this.form = {}
         },
@@ -769,8 +954,7 @@ export default {
         this.initialize()
         this.$nextTick(() => {
             this.initializeDataItem()
-        });
-        
+        })
     },
 }
 </script>
