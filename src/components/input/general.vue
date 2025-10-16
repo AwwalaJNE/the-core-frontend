@@ -141,6 +141,8 @@
                                             : listenTypeInput
                                         : 'text'
                                 "
+                                :placeholder="placeholder"
+                                :border="isBorder"
                                 v-model="value"
                                 :autofocus="isFocusToInput"
                                 :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
