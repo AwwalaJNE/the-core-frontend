@@ -377,11 +377,56 @@ export default {
 
         &.active {
             box-shadow: 0 1px 4px $coreBlue;
-            // border: 1px solid blue;
             color: $coreBlue;
 
             i {
                 color: $coreBlue;
+            }
+        }
+
+        @include for-phone-only {
+            flex: 1 1 100%;
+            height: 100px;
+
+            i {
+                font-size: 28px;
+            }
+
+            span,
+            div {
+                font-size: 12px;
+            }
+        }
+
+        @include for-tablet-portrait-up {
+            flex: 1 1 45%;
+            height: 110px;
+
+            i {
+                font-size: 32px;
+            }
+        }
+
+        @include for-desktop-up {
+            flex: 1 1 180px;
+            height: 130px;
+
+            i {
+                font-size: 44px;
+            }
+
+            span,
+            div {
+                font-size: 15px;
+            }
+        }
+
+        @include for-big-desktop-up {
+            flex: 1 1 200px;
+            height: 150px;
+
+            i {
+                font-size: 50px;
             }
         }
     }
