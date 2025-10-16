@@ -407,19 +407,19 @@ export default {
             }
         }
 
-        @include for-desktop-up {
-            flex: 1 1 180px;
-            height: 130px;
+        // @include for-desktop-up {
+        //     flex: 1 1 180px;
+        //     height: 130px;
 
-            i {
-                font-size: 44px;
-            }
+        //     i {
+        //         font-size: 44px;
+        //     }
 
-            span,
-            div {
-                font-size: 15px;
-            }
-        }
+        //     span,
+        //     div {
+        //         font-size: 15px;
+        //     }
+        // }
 
         @include for-big-desktop-up {
             flex: 1 1 200px;
