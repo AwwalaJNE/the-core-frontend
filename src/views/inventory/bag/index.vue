@@ -334,13 +334,11 @@ export default {
 </script>
 <style lang="scss">
 .bag-container {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     gap: 16px;
+    grid-template-columns: repeat(3, 1fr);
 
     .bag-box {
-        position: relative;
-        flex: 1 1 120px;
         height: 120px;
         border-radius: 16px;
         text-align: center;
@@ -353,6 +351,7 @@ export default {
         gap: 8px;
         transition: all 0.2s ease;
         cursor: pointer;
+        position: relative;
 
         i {
             font-size: 40px;
@@ -383,50 +382,59 @@ export default {
                 color: $coreBlue;
             }
         }
+    }
 
-        @include for-phone-only {
-            flex: 1 1 100%;
+    @include for-phone-only {
+        grid-template-columns: 1fr;
+        .bag-box {
             height: 100px;
-
             i {
                 font-size: 28px;
             }
-
             span,
             div {
                 font-size: 12px;
             }
         }
+    }
 
-        @include for-tablet-portrait-up {
-            flex: 1 1 45%;
+    @include for-tablet-portrait-down {
+        grid-template-columns: repeat(2, 1fr);
+        .bag-box {
             height: 110px;
-
             i {
                 font-size: 32px;
             }
+            span,
+            div {
+                font-size: 13px;
+            }
         }
+    }
 
-        // @include for-desktop-up {
-        //     flex: 1 1 180px;
-        //     height: 130px;
+    @include for-desktop-up {
+        grid-template-columns: repeat(3, 1fr);
+        .bag-box {
+            height: 130px;
+            i {
+                font-size: 44px;
+            }
+            span,
+            div {
+                font-size: 15px;
+            }
+        }
+    }
 
-        //     i {
-        //         font-size: 44px;
-        //     }
-
-        //     span,
-        //     div {
-        //         font-size: 15px;
-        //     }
-        // }
-
-        @include for-big-desktop-up {
-            flex: 1 1 200px;
+    @include for-big-desktop-up {
+        .bag-box {
             height: 150px;
-
             i {
                 font-size: 50px;
+            }
+            span,
+            div {
+                font-size: 16px;
             }
         }
     }
