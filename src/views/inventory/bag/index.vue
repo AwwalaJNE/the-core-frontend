@@ -16,6 +16,7 @@
                             v-for="(item, index) in bagTypeArray"
                             :key="index"
                             :class="['bag-box', { active: bag_type === item.value }]"
+                            :data-testid="`bag-${item.label}`"
                             @click="selectTipeBag(item)"
                         >
                             <i v-if="bag_type === item.value" class="bx bx-check check-icon"></i>
@@ -50,7 +51,11 @@
                     <div>
                         <vs-row>
                             <vs-col xs="12" sm="12" lg="6">
-                                <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
+                                <vs-checkbox
+                                    v-model="is_auto_open_bag"
+                                    @change="handleAutoOpenBag"
+                                    :data-testid="`checkbox-is_auto_open_bag`"
+                                >
                                     Auto Open Bag
                                 </vs-checkbox>
                             </vs-col>
@@ -59,6 +64,7 @@
                                 <vs-checkbox
                                     v-model="is_hub_delivery_validation"
                                     @change="handleValidateHubDelivery"
+                                    :data-testid="`checkbox-validate_hub_delivery`"
                                 >
                                     Validate Hub Delivery
                                 </vs-checkbox>
