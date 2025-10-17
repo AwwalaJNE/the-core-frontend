@@ -1593,7 +1593,7 @@ const routes = [
                             resource_code: resourceLookup['TRANSPORT_SURAT_JALAN'].resource_code,
                             resource_name: resourceLookup['TRANSPORT_SURAT_JALAN'].resource_name,
                             isMaintenanceMode: false,
-                            permission: 'read-sj-manifest-delivery-order',
+                            permission: 'read-sj-manifest-transit-subagent',
                         },
                     },
                 ],
