@@ -1545,7 +1545,7 @@ const routes = [
                             resource_code: resourceLookup['TRANSPORT_SURAT_JALAN'].resource_code,
                             resource_name: resourceLookup['TRANSPORT_SURAT_JALAN'].resource_name,
                             isMaintenanceMode: false,
-                            permission: 'read-manifest-delivery-order',
+                            permission: ['read-manifest-delivery-order', 'read-sj-surat-jalan'],
                         },
                     },
                     {
@@ -1561,7 +1561,7 @@ const routes = [
                             resource_code: resourceLookup['TRANSPORT_SURAT_JALAN'].resource_code,
                             resource_name: resourceLookup['TRANSPORT_SURAT_JALAN'].resource_name,
                             isMaintenanceMode: false,
-                            permission: 'read-manifest-delivery-order',
+                            permission: ['read-manifest-delivery-order', 'read-sj-handover-bag'],
                         },
                     },
                     {
@@ -1577,7 +1577,10 @@ const routes = [
                             resource_code: resourceLookup['TRANSPORT_SURAT_JALAN'].resource_code,
                             resource_name: resourceLookup['TRANSPORT_SURAT_JALAN'].resource_name,
                             isMaintenanceMode: false,
-                            permission: 'read-manifest-delivery-order',
+                            permission: [
+                                'read-manifest-delivery-order',
+                                'read-sj-manifest-delivery-order',
+                            ],
                         },
                     },
                     {
@@ -1593,7 +1596,10 @@ const routes = [
                             resource_code: resourceLookup['TRANSPORT_SURAT_JALAN'].resource_code,
                             resource_name: resourceLookup['TRANSPORT_SURAT_JALAN'].resource_name,
                             isMaintenanceMode: false,
-                            permission: 'read-manifest-delivery-order',
+                            permission: [
+                                'read-manifest-delivery-order',
+                                'read-sj-manifest-delivery-order',
+                            ],
                         },
                     },
                 ],
@@ -1620,7 +1626,7 @@ const routes = [
                             resource_code: resourceLookup['RECEIVING'].resource_code,
                             resource_name: resourceLookup['RECEIVING'].resource_name,
                             isMaintenanceMode: false,
-                            permission: 'read-receiving-pre-alert',
+                            permission: ['read-receiving', 'read-receiving-pre-alert'],
                         },
                     },
                     {
@@ -1636,7 +1642,7 @@ const routes = [
                             resource_code: resourceLookup['RECEIVING'].resource_code,
                             resource_name: resourceLookup['RECEIVING'].resource_name,
                             isMaintenanceMode: false,
-                            permission: 'read-receiving-surat-muatan',
+                            permission: ['read-receiving', 'read-receiving-surat-muatan'],
                         },
                     },
                     {
@@ -1652,7 +1658,7 @@ const routes = [
                             resource_code: resourceLookup['RECEIVING'].resource_code,
                             resource_name: resourceLookup['RECEIVING'].resource_name,
                             isMaintenanceMode: false,
-                            permission: 'read-receiving-surat-jalan',
+                            permission: ['read-receiving', 'read-receiving-surat-jalan'],
                         },
                     },
                     {
@@ -1668,7 +1674,7 @@ const routes = [
                             resource_code: resourceLookup['RECEIVING'].resource_code,
                             resource_name: resourceLookup['RECEIVING'].resource_name,
                             isMaintenanceMode: false,
-                            permission: 'read-receiving-bag',
+                            permission: ['read-receiving', 'read-receiving-bag'],
                         },
                     },
                     {
@@ -1684,7 +1690,7 @@ const routes = [
                             resource_code: resourceLookup['RECEIVING'].resource_code,
                             resource_name: resourceLookup['RECEIVING'].resource_name,
                             isMaintenanceMode: false,
-                            permission: 'read-receiving-connote',
+                            permission: ['read-receiving', 'read-receiving-connote'],
                         },
                     },
                     {
@@ -1700,7 +1706,7 @@ const routes = [
                             resource_code: resourceLookup['RECEIVING'].resource_code,
                             resource_name: resourceLookup['RECEIVING'].resource_name,
                             isMaintenanceMode: false,
-                            permission: 'read-receiving-rdo',
+                            permission: ['read-receiving', 'read-receiving-rdo'],
                         },
                     },
                     {
@@ -1716,7 +1722,7 @@ const routes = [
                             resource_code: resourceLookup['RECEIVING'].resource_code,
                             resource_name: resourceLookup['RECEIVING'].resource_name,
                             isMaintenanceMode: false,
-                            permission: 'read-receiving-mti',
+                            permission: ['read-receiving', 'read-receiving-mti'],
                         },
                     },
                     {
@@ -1732,7 +1738,7 @@ const routes = [
                             resource_code: resourceLookup['RECEIVING'].resource_code,
                             resource_name: resourceLookup['RECEIVING'].resource_name,
                             isMaintenanceMode: false,
-                            permission: 'read-receiving-rcvb',
+                            permission: ['read-receiving', 'read-receiving-rcvb'],
                         },
                     },
                     {
@@ -1747,7 +1753,7 @@ const routes = [
                             resource_code: resourceLookup['RECEIVING_LOG'].resource_code,
                             resource_name: resourceLookup['RECEIVING_LOG'].resource_name,
                             isMaintenanceMode: false,
-                            permission: 'read-receiving-irregularities',
+                            permission: ['read-receiving', 'read-receiving-irregularities'],
                         },
                     },
                 ],
