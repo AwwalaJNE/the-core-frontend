@@ -340,17 +340,16 @@ export default {
 </script>
 <style lang="scss">
 .bag-container {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     gap: 16px;
-    justify-content: flex-start;
+
+    grid-template-columns: repeat(3, 1fr);
 
     .bag-box {
-        flex: 0 0 calc((100% - 32px) / 3);
-        height: 120px;
         border-radius: 16px;
         text-align: center;
         padding: 16px;
+        height: 120px;
         box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
         display: flex;
         flex-direction: column;
@@ -392,52 +391,12 @@ export default {
         }
     }
 
-    @include for-phone-only {
-        .bag-box {
-            flex: 1 1 100%;
-            height: 100px;
-
-            i {
-                font-size: 28px;
-            }
-
-            span,
-            div {
-                font-size: 12px;
-            }
-        }
+    @media (max-width: 1024px) {
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    @include for-tablet-portrait-down {
-        .bag-box {
-            flex: 1 1 calc((100% - 16px) / 2);
-            height: 110px;
-
-            i {
-                font-size: 32px;
-            }
-
-            span,
-            div {
-                font-size: 13px;
-            }
-        }
-    }
-
-    @include for-big-desktop-up {
-        .bag-box {
-            flex: 0 0 calc((100% - 32px) / 3);
-            height: 150px;
-
-            i {
-                font-size: 50px;
-            }
-
-            span,
-            div {
-                font-size: 16px;
-            }
-        }
+    @media (max-width: 600px) {
+        grid-template-columns: 1fr;
     }
 }
 </style>
