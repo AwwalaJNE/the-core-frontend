@@ -1545,7 +1545,7 @@ const routes = [
                             resource_code: resourceLookup['TRANSPORT_SURAT_JALAN'].resource_code,
                             resource_name: resourceLookup['TRANSPORT_SURAT_JALAN'].resource_name,
                             isMaintenanceMode: false,
-                            permission: 'read-manifest-delivery-order',
+                            permission: 'read-sj-surat-jalan',
                         },
                     },
                     {
@@ -1561,7 +1561,7 @@ const routes = [
                             resource_code: resourceLookup['TRANSPORT_SURAT_JALAN'].resource_code,
                             resource_name: resourceLookup['TRANSPORT_SURAT_JALAN'].resource_name,
                             isMaintenanceMode: false,
-                            permission: 'read-manifest-delivery-order',
+                            permission: 'read-sj-handover-bag',
                         },
                     },
                     {
@@ -1577,7 +1577,7 @@ const routes = [
                             resource_code: resourceLookup['TRANSPORT_SURAT_JALAN'].resource_code,
                             resource_name: resourceLookup['TRANSPORT_SURAT_JALAN'].resource_name,
                             isMaintenanceMode: false,
-                            permission: 'read-manifest-delivery-order',
+                            permission: 'read-sj-manifest-delivery-order',
                         },
                     },
                     {
@@ -1593,7 +1593,7 @@ const routes = [
                             resource_code: resourceLookup['TRANSPORT_SURAT_JALAN'].resource_code,
                             resource_name: resourceLookup['TRANSPORT_SURAT_JALAN'].resource_name,
                             isMaintenanceMode: false,
-                            permission: 'read-manifest-delivery-order',
+                            permission: 'read-sj-manifest-delivery-order',
                         },
                     },
                 ],
