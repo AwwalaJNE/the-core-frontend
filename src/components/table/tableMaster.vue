@@ -1302,6 +1302,7 @@
                                                 !isAllowedRemove
                                             "
                                             type="submit"
+                                            :data-testid="`remove-button-${key}`"
                                             @click="actionRemove(item)"
                                         >
                                             <span>Remove</span>

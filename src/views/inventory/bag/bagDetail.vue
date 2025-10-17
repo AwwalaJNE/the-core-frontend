@@ -19,6 +19,7 @@
                     v-if="listenUserRoleName !== 'HELPDESK' && tipe_bag === 'OM'"
                     @click="openDialogTransit"
                     :disabled="disabledAddTransit"
+                    :data-testid="`button-add-transit`"
                 >
                     <i class="bx bx-plus"></i> Add Transit
                 </vs-button>
@@ -27,6 +28,7 @@
                         @click="approveAction(true)"
                         :disabled="!isAllowed"
                         style="width: 6rem"
+                        :data-testid="`button-approve`"
                         v-if="!disabledApprove"
                     >
                         <span> Approve </span>
@@ -37,6 +39,7 @@
                         :disabled="!isAllowed"
                         style="width: 6rem"
                         v-if="disabledApprove"
+                        :data-testid="`button-unapprove`"
                     >
                         <span> Unapprove </span>
                     </vs-button>
@@ -46,6 +49,7 @@
                         @click="approveAction(true)"
                         :disabled="disabledApprove"
                         style="width: 6rem"
+                        :data-testid="disabledApprove ? `button-unapproved` : 'button-approve'"
                     >
                         <span>
                             {{ disabledApprove ? 'Approved' : 'Approve' }}
@@ -55,6 +59,7 @@
                 <vs-button
                     v-if="listenUserRoleName !== 'HELPDESK'"
                     style="width: 6rem"
+                    :data-testid="`button-new`"
                     @click="newBag"
                 >
                     <i class="bx bx-plus"></i> New
@@ -63,11 +68,13 @@
                     v-if="listenUserRoleName !== 'HELPDESK' && is_approve"
                     style="width: 6rem"
                     @click="print"
+                    :data-testid="`button-print`"
                     >Print</vs-button
                 >
                 <vs-button
                     v-if="listenUserRoleName === 'HELPDESK'"
                     style="width: 6rem"
+                    :data-testid="`button-edit`"
                     @click="editBag"
                 >
                     Edit
@@ -77,7 +84,11 @@
 
         <template v-if="!disabledApprove && !loading && !is_masterbag">
             <vs-row class="mb-2 mt-2" align="center">
-                <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
+                <vs-checkbox
+                    v-model="is_auto_open_bag"
+                    @change="handleAutoOpenBag"
+                    :data-testid="`checkbox-is_auto_open_bag`"
+                >
                     Auto Open Bag
                 </vs-checkbox>
                 <vs-checkbox
@@ -85,6 +96,7 @@
                     style="margin-left: 20px"
                     v-model="is_hub_delivery_validation"
                     @change="handleValidateHubDelivery"
+                    :data-testid="`checkbox-validate_hub_delivery`"
                 >
                     Validate Hub Delivery
                 </vs-checkbox>
@@ -136,6 +148,7 @@
                                 ref="formInputBaggingKoli"
                                 @click-icon="$refs.cameraScanner.open('formInputBaggingKoli')"
                                 v-bind:data-kt="'scan_input'"
+                                :data-testid="`input-item_number`"
                                 @input="sanitizeAlphanumeric('item_number')"
                             >
                                 <template #icon>
@@ -153,6 +166,7 @@
                                 icon-after
                                 :autofocus="true"
                                 v-uppercase
+                                :data-testid="`input-item_number`"
                                 ref="formInputBaggingBag"
                                 @click-icon="$refs.cameraScanner.open('formInputBaggingBag')"
                                 v-bind:data-kt="'scan_input'"
@@ -219,6 +233,7 @@
                         @keypress="onlyNumber"
                         @keyup.enter="updateBag"
                         icon-after
+                        :data-testid="`input-weight`"
                     >
                         <template #icon> Kg </template>
                     </vs-input>
