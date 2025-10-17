@@ -16,6 +16,7 @@
                             v-for="(item, index) in bagTypeArray"
                             :key="index"
                             :class="['bag-box', { active: bag_type === item.value }]"
+                            :data-testid="`bag-${item.label}`"
                             @click="selectTipeBag(item)"
                         >
                             <i v-if="bag_type === item.value" class="bx bx-check check-icon"></i>
@@ -50,7 +51,11 @@
                     <div>
                         <vs-row>
                             <vs-col xs="12" sm="12" lg="6">
-                                <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
+                                <vs-checkbox
+                                    v-model="is_auto_open_bag"
+                                    @change="handleAutoOpenBag"
+                                    :data-testid="`checkbox-is_auto_open_bag`"
+                                >
                                     Auto Open Bag
                                 </vs-checkbox>
                             </vs-col>
@@ -59,6 +64,7 @@
                                 <vs-checkbox
                                     v-model="is_hub_delivery_validation"
                                     @change="handleValidateHubDelivery"
+                                    :data-testid="`checkbox-validate_hub_delivery`"
                                 >
                                     Validate Hub Delivery
                                 </vs-checkbox>
@@ -334,17 +340,16 @@ export default {
 </script>
 <style lang="scss">
 .bag-container {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     gap: 16px;
 
+    grid-template-columns: repeat(3, 1fr);
+
     .bag-box {
-        position: relative;
-        flex: 1 1 120px;
-        height: 120px;
         border-radius: 16px;
         text-align: center;
         padding: 16px;
+        height: 120px;
         box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
         display: flex;
         flex-direction: column;
@@ -353,6 +358,7 @@ export default {
         gap: 8px;
         transition: all 0.2s ease;
         cursor: pointer;
+        position: relative;
 
         i {
             font-size: 40px;
@@ -383,52 +389,14 @@ export default {
                 color: $coreBlue;
             }
         }
+    }
 
-        @include for-phone-only {
-            flex: 1 1 100%;
-            height: 100px;
+    @media (max-width: 1024px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
-            i {
-                font-size: 28px;
-            }
-
-            span,
-            div {
-                font-size: 12px;
-            }
-        }
-
-        @include for-tablet-portrait-up {
-            flex: 1 1 45%;
-            height: 110px;
-
-            i {
-                font-size: 32px;
-            }
-        }
-
-        // @include for-desktop-up {
-        //     flex: 1 1 180px;
-        //     height: 130px;
-
-        //     i {
-        //         font-size: 44px;
-        //     }
-
-        //     span,
-        //     div {
-        //         font-size: 15px;
-        //     }
-        // }
-
-        @include for-big-desktop-up {
-            flex: 1 1 200px;
-            height: 150px;
-
-            i {
-                font-size: 50px;
-            }
-        }
+    @media (max-width: 600px) {
+        grid-template-columns: 1fr;
     }
 }
 </style>
