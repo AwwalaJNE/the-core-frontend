@@ -216,7 +216,7 @@ export default {
                         .post(
                             `${this.URL.profile}/upload-img?n=${this.listenNodeId}`,
                             formData,
-                            this.Helper.header()
+                            this.Helper.headerFormData()
                         )
                         .then((res) => {
                             this.dataItem = res.data.data
