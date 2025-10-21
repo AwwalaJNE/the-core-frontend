@@ -192,16 +192,6 @@ export default {
             }
         },
         handleSubmit() {
-            if (!this.isPasswordEnable) {
-                this.openNotification(
-                    'danger',
-                    null,
-                    'Failed',
-                    'Password does not meet the minimum requirements.'
-                )
-                return
-            }
-
             this.$refs.formProfileController.handleSubmit()
         },
         async handleFileUpload(event) {
@@ -239,15 +229,27 @@ export default {
             }
         },
         async updateProfile(form) {
+            const data = form
+            if (data.password == '' || data.password == undefined || data.password == null) {
+                delete data.password
+            }
+
+            if (!this.isPasswordEnable) {
+                this.openNotification(
+                    'danger',
+                    null,
+                    'Failed',
+                    'Password does not meet the minimum requirements.'
+                )
+                return
+            }
+
             const updateLoading = this.$vs.loading({
                 type: 'scale',
                 text: 'Loading...',
                 background: '#EAEAEA',
             })
-            const data = form
-            if (data.password == '' || data.password == undefined || data.password == null) {
-                delete data.password
-            }
+
             await axios
                 .put(`${this.URL.profile}?n=${this.listenNodeId}`, data, this.Helper.header())
                 .then((res) => {
