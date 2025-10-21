@@ -232,16 +232,16 @@ export default {
             const data = form
             if (data.password == '' || data.password == undefined || data.password == null) {
                 delete data.password
-            }
-
-            if (!this.isPasswordEnable) {
-                this.openNotification(
-                    'danger',
-                    null,
-                    'Failed',
-                    'Password does not meet the minimum requirements.'
-                )
-                return
+            } else {
+                if (!this.isPasswordEnable) {
+                    this.openNotification(
+                        'danger',
+                        null,
+                        'Failed',
+                        'Password does not meet the minimum requirements.'
+                    )
+                    return
+                }
             }
 
             const updateLoading = this.$vs.loading({
