@@ -58,7 +58,6 @@
                             :submit-by-enter="true"
                             :data-item="dataItem"
                             @formData="updateProfile"
-                            @updateValue="updateValue"
                             @onChangeCustom="onChangeCustom"
                         />
                     </vs-col>
@@ -238,9 +237,6 @@ export default {
                     this.fetchingData = false
                 }
             }
-        },
-        updateValue(key, val, info) {
-            console.log('CEK', key, val, info)
         },
         async updateProfile(form) {
             const updateLoading = this.$vs.loading({
