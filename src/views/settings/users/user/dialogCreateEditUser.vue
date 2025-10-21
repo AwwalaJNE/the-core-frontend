@@ -240,6 +240,16 @@ export default {
                 this.form = obj
                 this.updateData()
             } else {
+                if (!this.isPasswordEnable) {
+                    this.openNotification(
+                        'danger',
+                        null,
+                        'Failed',
+                        'Password does not meet the minimum requirements.'
+                    )
+                    return
+                }
+
                 this.form = formPayload
                 this.addData()
             }
