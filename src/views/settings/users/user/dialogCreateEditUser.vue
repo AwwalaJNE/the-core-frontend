@@ -420,7 +420,7 @@ export default {
                 .then((res) => {
                     this.handleClearForm()
                     this.closeDialog()
-                    this.openNotification(null, 'Success', 'Update user is success')
+                    this.openNotification('success', null, 'Success', 'Update user is success')
                     this.loading = false
                 })
                 .catch((err) => {
@@ -447,7 +447,7 @@ export default {
                     this.handleClearForm()
                     this.closeDialog()
                     this.loading = false
-                    this.openNotification(null, 'Success', 'Create user is success')
+                    this.openNotification('success', null, 'Success', 'Create user is success')
                 })
                 .catch((err) => {
                     this.loading = false
