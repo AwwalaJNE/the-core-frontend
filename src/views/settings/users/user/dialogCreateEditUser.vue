@@ -222,20 +222,20 @@ export default {
                 )
             }
 
-            if (!this.isPasswordEnable) {
-                this.openNotification(
-                    'danger',
-                    null,
-                    'Failed',
-                    'Password does not meet the minimum requirements.'
-                )
-                return
-            }
-
             if (this.user_id !== undefined && this.user_id !== '') {
                 let obj = formPayload
                 if (obj['password'] == '') {
                     delete obj.password
+                } else {
+                    if (!this.isPasswordEnable) {
+                        this.openNotification(
+                            'danger',
+                            null,
+                            'Failed',
+                            'Password does not meet the minimum requirements.'
+                        )
+                        return
+                    }
                 }
                 this.form = obj
                 this.updateData()
