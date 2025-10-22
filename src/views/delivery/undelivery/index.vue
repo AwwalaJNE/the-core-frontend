@@ -260,6 +260,7 @@ export default {
     mounted() {
         this.refresh()
         this.getEmployeeData()
+        this.setActiveInput('formInputInbound')
     }
 }
 </script>
