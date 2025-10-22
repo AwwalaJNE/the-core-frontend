@@ -62,7 +62,7 @@
                                                 icon-after
                                                 v-uppercase
                                                 ref="formInputInbound"
-                                                :disabled="processing"
+                                                :disabled="processing || dialogActive"
                                                 :data-testid="`input-item_no`"
                                                 @keyup.enter.native="updateValue('item_no')"
                                                 @click-icon="
@@ -138,7 +138,7 @@
                                             icon-after
                                             v-uppercase
                                             ref="formInputChildInbound"
-                                            :disabled="processing"
+                                            :disabled="processing || dialogActive"
                                             :data-testid="`input-child_no`"
                                             @keyup.enter.native="updateValue('child_no')"
                                             @click-icon="
@@ -213,6 +213,7 @@
                                     :actionPagination="actionPagination"
                                     :receivingLogs="receivingLogs"
                                     :inboundNumber="inboundNumber"
+                                    @autoFocusInput="autoFocusInput"
                                     @refresh="refresh"
                                 />
                             </transition>
@@ -316,6 +317,8 @@ export default {
             is_user_check: false,
             processLoading: false,
             refloading: null,
+
+            dialogActive: false,
         }
     },
     methods: {
@@ -388,7 +391,7 @@ export default {
                         inbound_number: this.inbound_number,
                     }
                     this.processInbond()
-                    this.setActiveInput('formInputInbound')
+                    this.setActiveInput('formInputInbound', null, () => this.dialogActive)
 
                     break
 
@@ -414,7 +417,7 @@ export default {
                         : { item_no: this.child_no }
 
                     this.processInbond()
-                    this.setActiveInput('formInputChildInbound')
+                    this.setActiveInput('formInputChildInbound', null, () => this.dialogActive)
 
                     break
             }
@@ -523,7 +526,7 @@ export default {
                     this.page_size = res.data.meta.last_page
 
                     if (!this.is_prealert) {
-                        this.setActiveInput('formInputChildInbound')
+                        this.setActiveInput('formInputChildInbound', null, () => this.dialogActive)
                     }
 
                     this.getTableDataReceivingLog()
@@ -581,10 +584,10 @@ export default {
         handlerClearForm() {
             if (this.is_prealert) {
                 this.item_no = ''
-                this.setActiveInput('formInputInbound')
+                this.setActiveInput('formInputInbound', null, () => this.dialogActive)
             } else {
                 this.child_no = ''
-                this.setActiveInput('formInputChildInbound')
+                this.setActiveInput('formInputChildInbound', null, () => this.dialogActive)
             }
         },
         handleClearTableInfo() {
@@ -604,7 +607,7 @@ export default {
 
             this.clearInboundFromStorage()
 
-            this.setActiveInput('formInputParentInbound')
+            this.setActiveInput('formInputParentInbound', null, () => this.dialogActive)
         },
         onCameraScannerGetData(data) {
             if (data?.event === 'result' && data?.data?.text) {
@@ -636,9 +639,12 @@ export default {
         },
         openDialog() {
             this.showDialog = true
+            this.autoFocusInput(true)
         },
         closeDialog() {
             this.showDialog = false
+
+            this.autoFocusInput(false)
         },
 
         async closePreAlert() {
@@ -661,6 +667,19 @@ export default {
             } finally {
                 this.loading = false
                 this.refresh()
+            }
+        },
+        autoFocusInput(dialogValue) {
+            this.dialogActive = dialogValue
+
+            if (!this.dialogActive) {
+                if (!this.hasInboundNumber && !this.is_prealert) {
+                    this.setActiveInput('formInputParentInbound', null)
+                } else if (this.hasInboundNumber && !this.is_prealert) {
+                    this.setActiveInput('formInputChildInbound', null)
+                } else if (this.is_prealert) {
+                    this.setActiveInput('formInputInbound', null)
+                }
             }
         },
     },

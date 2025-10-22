@@ -65,6 +65,7 @@
                         justify-content: space-between;
                         gap: 16px;
                     "
+                    v-if="dataTable.length > 0"
                 >
                     <vs-button @click="toggleDropdown" icon data-testid="filter-column-btn">
                         <i class="bx bx-slider"></i> Columns
@@ -84,7 +85,9 @@
                     class="column-dropdown-panel"
                     data-testid="column-dropdown-panel"
                 >
+                    <!-- TODO: SHOW LATER -->
                     <vs-input
+                        v-show="false"
                         v-model="columnSearch"
                         placeholder="Search columns..."
                         data-testid="column-search"

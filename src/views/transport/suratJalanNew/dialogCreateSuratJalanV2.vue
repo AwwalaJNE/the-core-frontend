@@ -99,7 +99,7 @@
                                             ref="scanBag"
                                             :valueData="item_number"
                                             :typeInput="`text`"
-                                            :disabled="isDisabled"
+                                            :disabled="isDisabled || dialogTraceBag"
                                             @click-icon="handleIconClick"
                                             @updateValue="updateValue"
                                         >
@@ -134,7 +134,12 @@
         <dialog-trace-bag
             title="Trace Bag Activity"
             :active="dialogTraceBag"
-            :closeDialog="() => (dialogTraceBag = false)"
+            :closeDialog="
+                () => {
+                    this.dialogTraceBag = false
+                    this.setActiveInput('scanBag', 'formSuratJalan', () => this.dialogTraceBag)
+                }
+            "
             :bag_number="selectedBagNumber"
         />
     </div>
@@ -323,7 +328,7 @@ export default {
         },
         active: function (val) {
             if (val == true) {
-                this.setActiveInput('scanBag', 'formSuratJalan')
+                this.setActiveInput('scanBag', 'formSuratJalan', () => this.dialogTraceBag)
                 this.getDestination2()
                 this.getNoModeAngkutan()
                 // this.getLov();
@@ -711,7 +716,7 @@ export default {
                 )
             } finally {
                 this.loading = false
-                this.setActiveInput('scanBag', 'formSuratJalan')
+                this.setActiveInput('scanBag', 'formSuratJalan', () => this.dialogTraceBag)
             }
         },
         async removeSuratJalanDetail() {
@@ -925,8 +930,8 @@ export default {
             const target = e.target
 
             if (scanBagInput.contains(target)) return
-
             if (target.closest('.el-date-editor, .el-select-dropdown')) return
+            if (this.dialogTraceBag) return
 
             scanBagInput.focus()
             this.activeInput = 'scanBag'

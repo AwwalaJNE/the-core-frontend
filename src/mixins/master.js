@@ -84,31 +84,32 @@ const Master = {
             }
         },
 
-        setActiveInput(refName, formRefName = null) {
+        setActiveInput(refName, formRefName = null, shouldSkipFocus = () => false) {
             this.activeInput = refName
-            this.$nextTick(() => {
-                this.focusInput(refName, formRefName)
-            })
+            if (!shouldSkipFocus()) {
+                this.$nextTick(() => this.focusInput(refName, formRefName, shouldSkipFocus))
+            }
         },
 
-        focusInput(refName, formRefName = null) {
+        focusInput(refName, formRefName = null, shouldSkipFocus = () => false) {
+            if (shouldSkipFocus()) return
             const inputEl = this.getInputByRef(refName)
             if (!inputEl) return
 
             inputEl.focus()
 
-            // Hapus listener lama jika ada
             if (inputEl._blurHandler) {
                 inputEl.removeEventListener('blur', inputEl._blurHandler)
                 inputEl._blurHandler = null
             }
 
-            // Simpan reference handler agar bisa di-remove
-            inputEl._blurHandler = (e) => this.preventUnfocus(e, formRefName)
+            inputEl._blurHandler = (e) => this.preventUnfocus(e, formRefName, shouldSkipFocus)
             inputEl.addEventListener('blur', inputEl._blurHandler)
         },
 
-        preventUnfocus(e, formRefName = null) {
+        preventUnfocus(e, formRefName = null, shouldSkipFocus = () => false) {
+            if (shouldSkipFocus()) return
+
             const nextEl = e.relatedTarget
 
             // Ambil semua input refs yang tracked
@@ -127,11 +128,11 @@ const Master = {
             for (const [refName, el] of Object.entries(refMap)) {
                 if (nextEl === el) {
                     this.activeInput = refName
-                    return // langsung keluar, ga perlu refocus lagi
+                    return
                 }
             }
 
-            // Refocus ke active input terakhir jika fokus hilang dari tracked input
+            // Refocus ke input aktif
             this.$nextTick(() => {
                 const activeEl = this.getInputByRef(this.activeInput)
                 if (activeEl && document.activeElement !== activeEl) {
