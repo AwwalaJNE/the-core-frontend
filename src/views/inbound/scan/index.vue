@@ -378,6 +378,10 @@ export default {
         updateValue(type) {
             switch (type) {
                 case 'item_no':
+                    if (!this.item_no || this.item_no.trim() === '') {
+                        return
+                    }
+
                     this.item_no = this.item_no.replaceAll(/\s+/g, '')
                     this.form = {
                         item_no: this.item_no,
@@ -389,6 +393,10 @@ export default {
                     break
 
                 case 'parent_no':
+                    if (!this.parent_no || this.parent_no.trim() === '') {
+                        return
+                    }
+
                     this.inbound_number = this.parent_no
                     this.hasInboundNumber = true
                     this.saveInboundToStorage()
@@ -396,6 +404,10 @@ export default {
                     break
 
                 case 'child_no':
+                    if (!this.child_no || this.child_no.trim() === '') {
+                        return
+                    }
+
                     this.child_no = this.child_no.replaceAll(/\s+/g, '')
                     this.form = this.parent_no
                         ? { item_no: this.child_no, inbound_number: this.parent_no }
