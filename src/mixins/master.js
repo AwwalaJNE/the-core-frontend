@@ -92,46 +92,51 @@ const Master = {
         },
 
         focusInput(refName, formRefName = null) {
-            this.$nextTick(() => {
-                const inputEl = this.getInputByRef(refName)
-                if (inputEl) {
-                    inputEl.focus()
-                    inputEl.removeEventListener('blur', this.preventUnfocus)
-                    inputEl.addEventListener('blur', (e) => this.preventUnfocus(e, formRefName))
-                }
-            })
+            const inputEl = this.getInputByRef(refName)
+            if (!inputEl) return
+
+            inputEl.focus()
+
+            // Hapus listener lama jika ada
+            if (inputEl._blurHandler) {
+                inputEl.removeEventListener('blur', inputEl._blurHandler)
+                inputEl._blurHandler = null
+            }
+
+            // Simpan reference handler agar bisa di-remove
+            inputEl._blurHandler = (e) => this.preventUnfocus(e, formRefName)
+            inputEl.addEventListener('blur', inputEl._blurHandler)
         },
 
         preventUnfocus(e, formRefName = null) {
-            this.$nextTick(() => {
-                const nextEl = e.relatedTarget
+            const nextEl = e.relatedTarget
 
-                // ambil semua refs yang diawali formInput
-                const trackedRefs = Object.keys(this.$refs).filter((ref) =>
-                    ref.startsWith('formInput')
-                )
+            // Ambil semua input refs yang tracked
+            const refMap = Object.fromEntries(
+                Object.entries(this.$refs)
+                    .filter(([key]) => key.startsWith('formInput'))
+                    .map(([key, ref]) => [key, this.getInputByRef(key)])
+                    .filter(([_, el]) => el)
+            )
 
-                // mapping refName -> input element
-                const refMap = trackedRefs.reduce((map, refName) => {
-                    const el = this.getInputByRef(refName)
-                    if (el) map[refName] = el
-                    return map
-                }, {})
+            // Kalau pindah fokus ke dalam form tertentu, abaikan
+            const formEl = formRefName ? this.$refs[formRefName]?.$el : null
+            if (formEl && nextEl && formEl.contains(nextEl)) return
 
-                // cek apakah klik/fokus ke dalam form tertentu
-                const formEl = formRefName ? this.$refs[formRefName]?.$el : null
-                if (formEl && nextEl && formEl.contains(nextEl)) return
-
-                // cek input lain
-                for (const [refName, el] of Object.entries(refMap)) {
-                    if (nextEl === el) {
-                        this.activeInput = refName
-                        break
-                    }
+            // Kalau pindah ke input lain, update activeInput
+            for (const [refName, el] of Object.entries(refMap)) {
+                if (nextEl === el) {
+                    this.activeInput = refName
+                    return // langsung keluar, ga perlu refocus lagi
                 }
+            }
 
-                // refocus ke active input terakhir
-                this.focusInput(this.activeInput)
+            // Refocus ke active input terakhir jika fokus hilang dari tracked input
+            this.$nextTick(() => {
+                const activeEl = this.getInputByRef(this.activeInput)
+                if (activeEl && document.activeElement !== activeEl) {
+                    activeEl.focus()
+                }
             })
         },
 
