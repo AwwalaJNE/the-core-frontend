@@ -323,7 +323,7 @@ export default {
         },
         active: function (val) {
             if (val == true) {
-                this.setActiveInput('scanBag')
+                this.setActiveInput('scanBag', 'formSuratJalan')
                 this.getDestination2()
                 this.getNoModeAngkutan()
                 // this.getLov();
@@ -711,6 +711,7 @@ export default {
                 )
             } finally {
                 this.loading = false
+                this.setActiveInput('scanBag', 'formSuratJalan')
             }
         },
         async removeSuratJalanDetail() {
@@ -914,7 +915,6 @@ export default {
         },
     },
     mounted() {
-        this.setActiveInput('scanBag')
         this.handlePrintShortcut(this.print)
     },
 }

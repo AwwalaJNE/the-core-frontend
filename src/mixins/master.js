@@ -84,23 +84,25 @@ const Master = {
             }
         },
 
-        setActiveInput(refName) {
+        setActiveInput(refName, formRefName = null) {
             this.activeInput = refName
             this.$nextTick(() => {
-                this.focusInput(refName)
+                this.focusInput(refName, formRefName)
             })
         },
-        focusInput(refName) {
+
+        focusInput(refName, formRefName = null) {
             this.$nextTick(() => {
                 const inputEl = this.getInputByRef(refName)
                 if (inputEl) {
                     inputEl.focus()
                     inputEl.removeEventListener('blur', this.preventUnfocus)
-                    inputEl.addEventListener('blur', this.preventUnfocus)
+                    inputEl.addEventListener('blur', (e) => this.preventUnfocus(e, formRefName))
                 }
             })
         },
-        preventUnfocus(e) {
+
+        preventUnfocus(e, formRefName = null) {
             this.$nextTick(() => {
                 const nextEl = e.relatedTarget
 
@@ -116,7 +118,11 @@ const Master = {
                     return map
                 }, {})
 
-                // deteksi ref mana yang akan menerima fokus
+                // cek apakah klik/fokus ke dalam form tertentu
+                const formEl = formRefName ? this.$refs[formRefName]?.$el : null
+                if (formEl && nextEl && formEl.contains(nextEl)) return
+
+                // cek input lain
                 for (const [refName, el] of Object.entries(refMap)) {
                     if (nextEl === el) {
                         this.activeInput = refName
@@ -124,11 +130,11 @@ const Master = {
                     }
                 }
 
-                // kalau bukan salah satu input tracked, atau nextEl null (klik di luar)
                 // refocus ke active input terakhir
                 this.focusInput(this.activeInput)
             })
         },
+
         getInputByRef(refName) {
             const el = this.$refs[refName]?.$el || this.$refs[refName]
             return el?.querySelector ? el.querySelector('input') : el
