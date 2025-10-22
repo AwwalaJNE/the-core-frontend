@@ -85,6 +85,15 @@
             </div>
         </vs-col>
 
+        <vs-col xs="12" sm="12" lg="12">
+            <div class="box" style="text-align: left">
+                <h3>Last login activity</h3>
+                <div class="last-login-info">
+                    <p>{{ dataItem.formatted_user_agent || '-' }}</p>
+                </div>
+            </div>
+        </vs-col>
+
         <!-- <vs-col xs="12" sm="12" lg="5">
       <div class="box" style="text-align: left">
         <h3>10 LAST ACTIVITY</h3>
@@ -384,5 +393,16 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.last-login-info {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+}
+
+.last-login-info p {
+    margin: 8px 0;
 }
 </style>
