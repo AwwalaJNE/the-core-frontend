@@ -28,7 +28,7 @@
                                     icon-after
                                     v-uppercase
                                     ref="formInputConnoteOrion"
-                                    @keyup.enter="updateValueOrion"
+                                    @keyup.enter="processConnoteNumber"
                                     @click-icon="$refs.cameraScanner.open('formInputConnoteOrion')"
                                 >
                                     <template #icon v-if="!hasConnoteNumber">
@@ -329,21 +329,6 @@ export default {
             this.$router.push('/trace') // kembali ke container trace (tanpa redirect)
             this.setRoutePageHistory(this.$route.meta, false)
         },
-
-        async processConnoteNumber() {
-            if (!this.connoteNumber) return
-
-            this.connote_number = this.connoteNumber
-            this.koli_number = this.connoteNumber
-            // const url = `/trace-connote/${encodeURIComponent(this.koli_number)}`;
-            // await this.$router.push(url);
-            // this.setRoutePageHistory(this.$route.meta, false);
-            const encoded = encodeURIComponent(this.koli_number)
-            await this.$router.push(`/trace/trace-connote/${encoded}`)
-            this.setRoutePageHistory(this.$route.meta, false)
-            this.hasConnoteNumber = true
-            this.getConnote()
-        },
         updateStatusinventory(val) {
             this.statusinventory = val
         },
@@ -565,7 +550,7 @@ export default {
                 switch (data.namespace) {
                     case 'formInputConnoteOrion':
                         this.connoteNumber = result.text
-                        this.updateValueOrion()
+                        this.processConnoteNumber()
                         break
                     default:
                         break
@@ -573,7 +558,11 @@ export default {
             }
         },
 
-        updateValueOrion() {
+        processConnoteNumber() {
+            if (!this.connoteNumber || this.connoteNumber.trim() === '') {
+                return
+            }
+
             this.connote_number = this.connoteNumber
             this.koli_number = `${this.connoteNumber}`
             const encoded = encodeURIComponent(this.koli_number)
@@ -593,7 +582,7 @@ export default {
             this.koli_number = val
             this.connote_number = val
             this.connoteNumber = val
-            this.updateValueOrion()
+            this.processConnoteNumber()
         },
 
         findConnoteByNumber(data, targetConnoteNumber) {
@@ -609,6 +598,8 @@ export default {
             this.koli_number = decoded
             this.hasConnoteNumber = true
             this.getConnote()
+        } else {
+            this.removeConnoteNumber()
         }
         this.setActiveInput('formInputConnoteOrion')
     },
@@ -622,6 +613,7 @@ export default {
                 this.hasConnoteNumber = true
                 this.getConnote()
             } else {
+                this.removeConnoteNumber()
                 this.setActiveInput('formInputConnoteOrion')
             }
         },
