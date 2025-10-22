@@ -326,8 +326,6 @@ export default {
             this.activeTab('k-INFO')
             this.$router.push('/trace') // kembali ke container trace (tanpa redirect)
             this.setRoutePageHistory(this.$route.meta, false)
-
-            console.log('CEK', this.koli_number, !this.connote_found, !this.loading)
         },
         updateStatusinventory(val) {
             this.statusinventory = val
