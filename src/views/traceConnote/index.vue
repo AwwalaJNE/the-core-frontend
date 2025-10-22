@@ -23,7 +23,6 @@
                                     type="text"
                                     v-model="connoteNumber"
                                     label-placeholder="Masukkan Nomor Connote"
-                                    :autofocus="true"
                                     :disabled="hasConnoteNumber"
                                     icon-after
                                     v-uppercase
@@ -310,7 +309,6 @@ export default {
         }
     },
     methods: {
-        updateInfo(key, val) {},
         removeConnoteNumber() {
             this.hasConnoteNumber = false
             this.connoteNumber = ''
@@ -328,6 +326,8 @@ export default {
             this.activeTab('k-INFO')
             this.$router.push('/trace') // kembali ke container trace (tanpa redirect)
             this.setRoutePageHistory(this.$route.meta, false)
+
+            console.log('CEK', this.koli_number, !this.connote_found, !this.loading)
         },
         updateStatusinventory(val) {
             this.statusinventory = val
