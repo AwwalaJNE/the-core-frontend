@@ -23,12 +23,11 @@
                                     type="text"
                                     v-model="connoteNumber"
                                     label-placeholder="Masukkan Nomor Connote"
-                                    :autofocus="true"
                                     :disabled="hasConnoteNumber"
                                     icon-after
                                     v-uppercase
                                     ref="formInputConnoteOrion"
-                                    @keyup.enter="updateValueOrion"
+                                    @keyup.enter="processConnoteNumber"
                                     @click-icon="$refs.cameraScanner.open('formInputConnoteOrion')"
                                 >
                                     <template #icon v-if="!hasConnoteNumber">
@@ -310,7 +309,6 @@ export default {
         }
     },
     methods: {
-        updateInfo(key, val) {},
         removeConnoteNumber() {
             this.hasConnoteNumber = false
             this.connoteNumber = ''
@@ -328,19 +326,6 @@ export default {
             this.activeTab('k-INFO')
             this.$router.push('/trace') // kembali ke container trace (tanpa redirect)
             this.setRoutePageHistory(this.$route.meta, false)
-        },
-
-        async processConnoteNumber() {
-            this.connote_number = this.connoteNumber
-            this.koli_number = this.connoteNumber
-            // const url = `/trace-connote/${encodeURIComponent(this.koli_number)}`;
-            // await this.$router.push(url);
-            // this.setRoutePageHistory(this.$route.meta, false);
-            const encoded = encodeURIComponent(this.koli_number)
-            await this.$router.push(`/trace/trace-connote/${encoded}`)
-            this.setRoutePageHistory(this.$route.meta, false)
-            this.hasConnoteNumber = true
-            this.getConnote()
         },
         updateStatusinventory(val) {
             this.statusinventory = val
@@ -563,7 +548,7 @@ export default {
                 switch (data.namespace) {
                     case 'formInputConnoteOrion':
                         this.connoteNumber = result.text
-                        this.updateValueOrion()
+                        this.processConnoteNumber()
                         break
                     default:
                         break
@@ -571,7 +556,11 @@ export default {
             }
         },
 
-        updateValueOrion() {
+        processConnoteNumber() {
+            if (!this.connoteNumber || this.connoteNumber.trim() === '') {
+                return
+            }
+
             this.connote_number = this.connoteNumber
             this.koli_number = `${this.connoteNumber}`
             const encoded = encodeURIComponent(this.koli_number)
@@ -591,25 +580,11 @@ export default {
             this.koli_number = val
             this.connote_number = val
             this.connoteNumber = val
-            this.updateValueOrion()
+            this.processConnoteNumber()
         },
 
         findConnoteByNumber(data, targetConnoteNumber) {
             return data.find((item) => item.connote_number === targetConnoteNumber)
-        },
-        focusInput() {
-            this.$nextTick(() => {
-                const inputEl = this.$refs.formInputConnoteOrion?.$el.querySelector('input')
-                if (inputEl) {
-                    inputEl.focus()
-                    inputEl.addEventListener('blur', this.preventUnfocus)
-                }
-            })
-        },
-        preventUnfocus(e) {
-            if (!this.hasConnoteNumber) {
-                e.target.focus()
-            }
         },
     },
     mounted() {
@@ -621,11 +596,10 @@ export default {
             this.koli_number = decoded
             this.hasConnoteNumber = true
             this.getConnote()
+        } else {
+            this.removeConnoteNumber()
         }
-        this.focusInput()
-        // this.removeConnoteNumber();
-        // this.getConnote();
-        // this.$refs.formInputConnoteOrion.$el.querySelector("input").focus();
+        this.setActiveInput('formInputConnoteOrion')
     },
     watch: {
         '$route.params.id'(val) {
@@ -637,7 +611,8 @@ export default {
                 this.hasConnoteNumber = true
                 this.getConnote()
             } else {
-                this.focusInput()
+                this.removeConnoteNumber()
+                this.setActiveInput('formInputConnoteOrion')
             }
         },
     },

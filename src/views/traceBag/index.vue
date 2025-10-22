@@ -8,23 +8,25 @@
                 </div>
             </vs-col>
         </vs-row>
-        
+
         <section>
             <vs-row justify="space-around">
                 <vs-col>
                     <div class="box view">
-                        <form @submit.prevent="processBagNumber" style="display: flex; margin-top: 2em;">
+                        <form
+                            @submit.prevent="processBagNumber"
+                            style="display: flex; margin-top: 2em"
+                        >
                             <vs-col xs="4" sm="4" lg="4">
-                                <vs-input 
+                                <vs-input
                                     ref="formInputBag"
                                     id="traceBag"
-                                    border 
+                                    border
                                     label-placeholder="Masukkan Nomor Bag / Masterbag"
                                     icon-after
                                     type="text"
                                     v-model="bagNumber"
                                     v-uppercase
-                                    :autofocus="true"
                                     :disabled="hasBagNumber"
                                     @click-icon="$refs.cameraScanner.open('formInputBag')"
                                 >
@@ -33,8 +35,11 @@
                                     </template>
                                 </vs-input>
                                 <template v-if="hasBagNumber">
-                                    <div style="position:absolute;right:20px; top:15px;">
-                                        <span class="vs-select__chips__chip__close" @click="removeBagNumber">
+                                    <div style="position: absolute; right: 20px; top: 15px">
+                                        <span
+                                            class="vs-select__chips__chip__close"
+                                            @click="removeBagNumber"
+                                        >
                                             <i class="vs-icon-close vs-icon-hover-less"></i>
                                         </span>
                                     </div>
@@ -45,45 +50,47 @@
                             </vs-col>
                         </form>
                     </div>
-                </vs-col> 
+                </vs-col>
             </vs-row>
         </section>
 
         <section>
             <vs-row justify="space-around">
-                <vs-col vs-type="flex" vs-justify="center" vs-align="center" style="margin-bottom: 2em;">
-                    <div class="box view" v-if="bag_number && bag_found && !loading">
+                <vs-col
+                    vs-type="flex"
+                    vs-justify="center"
+                    vs-align="center"
+                    style="margin-bottom: 2em"
+                >
+                    <div class="box view" v-if="bag_number !== '' && bag_found && !loading">
                         <vs-row justify="space-between">
                             <vs-col xs="6" sm="9" lg="9">
-                                <nav-item 
-                                    :navItem="navItem" 
-                                    @activeTab="activeTab" 
-                                />
+                                <nav-item :navItem="navItem" @activeTab="activeTab" />
                             </vs-col>
                         </vs-row>
                         <template v-if="navActive === 'k-INFO'">
                             <vs-row>
                                 <vs-col vs-align="center" xs="3" sm="3" lg="12">
-                                    <bag-info
-                                        :bagNumber="bag_number"
-                                    />
+                                    <bag-info :bagNumber="bag_number" />
                                 </vs-col>
                             </vs-row>
                         </template>
                         <template v-if="navActive === 'k-ACTIVITY'">
                             <vs-row>
                                 <vs-col vs-align="center" xs="3" sm="3" lg="12">
-                                    <bag-activity
-                                        :bagNumber="bag_number"
-                                    />
+                                    <bag-activity :bagNumber="bag_number" />
                                 </vs-col>
                             </vs-row>
                         </template>
                     </div>
-                    <div class="box view" v-else-if="(bag_number && !bag_found && !loading) || (bag_number !== '' && !bag_found && !loading)">
-                        <div style="margin-top: 2.5em;">
-                            Bag tidak ditemukan
-                        </div>
+                    <div
+                        class="box view"
+                        v-else-if="
+                            (bag_number && !bag_found && !loading) ||
+                            (bag_number !== '' && !bag_found && !loading)
+                        "
+                    >
+                        <div style="margin-top: 2.5em">Bag tidak ditemukan</div>
                     </div>
                 </vs-col>
             </vs-row>
@@ -94,150 +101,144 @@
 </template>
 
 <script>
-import axios from "axios";
-import master from "@/mixins/master";
+import axios from 'axios'
+import master from '@/mixins/master'
 
-import Breadcrumb from "@/components/breadcrumb/index";
-import CameraScanner from "@/components/scanner/camera";
-import NavItem from "@/components/navbar/navTab";
+import Breadcrumb from '@/components/breadcrumb/index'
+import CameraScanner from '@/components/scanner/camera'
+import NavItem from '@/components/navbar/navTab'
 
-import BagActivity from "@/views/traceBag/bagActivity";
-import BagInfo from "@/views/traceBag/bagInfo";
+import BagActivity from '@/views/traceBag/bagActivity'
+import BagInfo from '@/views/traceBag/bagInfo'
 
 export default {
-    name: "trace-bag",
+    name: 'trace-bag',
     mixins: [master],
     components: {
-        "nav-item": NavItem,
-        "breadcrumb": Breadcrumb,
-        "bag-activity": BagActivity,
-        "bag-info": BagInfo,
-        CameraScanner
+        'nav-item': NavItem,
+        breadcrumb: Breadcrumb,
+        'bag-activity': BagActivity,
+        'bag-info': BagInfo,
+        CameraScanner,
     },
     data() {
         return {
-            bagNumber: "",
+            bagNumber: '',
             hasBagNumber: false,
             navItem: [
-                { 
-                    label: "INFO", 
-                    key: "k-INFO", 
-                    title: "Bag Info" 
+                {
+                    label: 'INFO',
+                    key: 'k-INFO',
+                    title: 'Bag Info',
                 },
-                { 
-                    label: "ACTIVITY", 
-                    key: "k-ACTIVITY", 
-                    title: "Bag Activity" 
-                }
+                {
+                    label: 'ACTIVITY',
+                    key: 'k-ACTIVITY',
+                    title: 'Bag Activity',
+                },
             ],
-            navActive: "k-INFO",
+            navActive: 'k-INFO',
             loading: false,
-            bag_number: "",
+            bag_number: '',
             bag_found: false,
             dataItem: {},
-        };
+        }
     },
     methods: {
         resetState() {
-            this.hasBagNumber = false;
-            this.bagNumber = "";
-            this.bag_found = false;
-            this.loading = false;
-            // bersihkan state lain di sini...
+            this.hasBagNumber = false
+            this.bag_number = ''
+            this.bagNumber = ''
+            this.bag_found = false
+            this.loading = false
         },
         removeBagNumber() {
-            this.resetState();
-            this.$router.push("/trace/trace-bag");
-            this.setRoutePageHistory(this.$route.meta, false);
+            this.resetState()
+            this.$router.push('/trace/trace-bag')
+            this.setRoutePageHistory(this.$route.meta, false)
         },
         async processBagNumber() {
-            const raw = (this.bagNumber || "").trim();
-            if (!raw) return;
+            if (!this.bagNumber || this.bagNumber.trim() === '') {
+                return
+            }
 
-            this.bag_number = raw; // simpan asli
-            const encoded = encodeURIComponent(this.bag_number);
+            this.bag_number = this.bagNumber
+            const encoded = encodeURIComponent(this.bag_number)
 
-            await this.$router.push(`/trace/trace-bag/${encoded}`);
-            this.setRoutePageHistory(this.$route.meta, false);
+            await this.$router.push(`/trace/trace-bag/${encoded}`)
+            this.setRoutePageHistory(this.$route.meta, false)
 
-            this.hasBagNumber = true;
-            this.getBag();
-        },
-        updateValueBagFromScanner(value) {
-            const raw = (value || "").trim();
-            if (!raw) return;
-
-            this.bagNumber = raw;
-            this.bag_number = raw; // langsung pakai raw
-
-            const encoded = encodeURIComponent(this.bag_number);
-            this.$router.push(`/trace/trace-bag/${encoded}`);
-            this.setRoutePageHistory(this.$route.meta, false);
-
-            this.hasBagNumber = true;
-            this.getBag();
+            this.hasBagNumber = true
+            this.getBag()
         },
         activeTab(val) {
-            this.navActive = val;
-            const item = this.navItem.find(item => item.key === val);
+            this.navActive = val
+            const item = this.navItem.find((item) => item.key === val)
             if (item) {
-                this.title = item.title;
+                this.title = item.title
             }
         },
         async getBag() {
             if (!this.bagNumber) {
-            this.bag_found = false;
-            return;
+                this.bag_found = false
+                return
             }
-            this.loading = true;
+            this.loading = true
             try {
-                const bagNumberFromRoute = this.$route.params.bag_number;
+                const bagNumberFromRoute = this.$route.params.bag_number
                 if (bagNumberFromRoute) {
-                    const res = await axios.get(`${this.URL.bag}/${bagNumberFromRoute}?n=${this.listenNodeId}`, this.Helper.header());
-                    this.bag_found = res.data.data && Object.keys(res.data.data).length > 0;
+                    const res = await axios.get(
+                        `${this.URL.bag}/${bagNumberFromRoute}?n=${this.listenNodeId}`,
+                        this.Helper.header()
+                    )
+                    this.bag_found = res.data.data && Object.keys(res.data.data).length > 0
                 }
             } catch (err) {
-                this.bag_found = false;
-                this.openNotification('danger', err.response?.data.code ?? '', 'Failed', err?.response?.data?.message ?? 'Something went wrong');
+                this.bag_found = false
+                this.openNotification(
+                    'danger',
+                    err.response?.data.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
             } finally {
-                this.loading = false;
+                this.loading = false
             }
         },
         onCameraScannerGetData({ event, data, namespace }) {
-            if (event === "result" && namespace === "formInputBag") {
-                this.bag_number = data.text;
-                this.processBagNumber();
+            if (event === 'result' && namespace === 'formInputBag') {
+                this.bag_number = data.text
+                this.processBagNumber()
             }
         },
     },
     mounted() {
-         const param = this.$route.params?.bag_number;
+        const param = this.$route.params?.bag_number
         if (param) {
-            const decoded = decodeURIComponent(param);
-            this.bag_number = decoded;
-            this.bagNumber  = decoded; 
-            this.hasBagNumber = true;
-            this.getBag();
+            const decoded = decodeURIComponent(param)
+            this.bag_number = decoded
+            this.bagNumber = decoded
+            this.hasBagNumber = true
+            this.getBag()
         } else {
-            this.resetState();
+            this.removeBagNumber()
         }
 
-        this.$nextTick(() => {
-            try { this.$refs.formInputBag?.$el?.querySelector("input")?.focus(); } catch (_) {}
-        });
+        this.setActiveInput('formInputBag')
     },
     watch: {
         '$route.params.bag_number'(val) {
             if (val) {
-                const decoded = decodeURIComponent(val);
-                this.bag_number = decoded;
-                this.bagNumber  = decoded;
-                this.hasBagNumber = true;
-                this.getBag();
+                const decoded = decodeURIComponent(val)
+                this.bag_number = decoded
+                this.bagNumber = decoded
+                this.hasBagNumber = true
+                this.getBag()
             } else {
-                this.resetState();
+                this.removeBagNumber()
+                this.setActiveInput('formInputBag')
             }
-        }
-    }
-};
+        },
+    },
+}
 </script>

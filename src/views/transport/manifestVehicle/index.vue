@@ -9,36 +9,26 @@
             </vs-col>
             <vs-col xs="6" sm="6" lg="6" v-if="hasManifestNumber">
                 <vs-row justify="flex-end">
-                    <vs-button
-                        flat
-                        :active="true"
-                        @click="openDialog"
-                    >
-                        Vehicle
-                    </vs-button>
-                    <vs-button
-                        flat
-                        type="submit"
-                        :active="true"
-                        @click="print"
-                    >
-                        Print
-                    </vs-button>
+                    <vs-button flat :active="true" @click="openDialog"> Vehicle </vs-button>
+                    <vs-button flat type="submit" :active="true" @click="print"> Print </vs-button>
                 </vs-row>
             </vs-col>
         </vs-row>
 
         <vs-row :style="{ alignItems: 'stretch' }">
             <vs-col w="6">
-                <div class="box view" :style="{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: '93%'
-                }">
+                <div
+                    class="box view"
+                    :style="{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        height: '93%',
+                    }"
+                >
                     <h3 class="title">SCAN MANIFEST</h3>
                     <div class="input">
-                        <vs-input 
-                            border 
+                        <vs-input
+                            border
                             type="text"
                             v-model="manifestNumber"
                             label-placeholder="Masukkan SM"
@@ -49,13 +39,13 @@
                             @keyup.enter.native="processInput()"
                             @input="sanitizeAlphanumeric('manifestNumber')"
                             @click-icon="handleIconClick"
-                            style="width: 100%;"
+                            style="width: 100%"
                         >
                             <template #icon v-if="!hasManifestNumber">
                                 <i class="bx bx-barcode-reader"></i>
                             </template>
                             <template #icon v-else>
-                                <i class='bx bxs-x-circle'></i>
+                                <i class="bx bxs-x-circle"></i>
                             </template>
                         </vs-input>
                     </div>
@@ -99,30 +89,29 @@
         <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
     </div>
 </template>
-  
+
 <script>
+import axios from 'axios'
+import master from '@/mixins/master'
 
-import axios from "axios";
-import master from "@/mixins/master";
+import Breadcrumb from '@/components/breadcrumb/index'
+import CameraScanner from '@/components/scanner/camera'
+import CardInfo from '@/components/card/cardInfo'
 
-import Breadcrumb from "@/components/breadcrumb/index";
-import CameraScanner from "@/components/scanner/camera";
-import CardInfo from '@/components/card/cardInfo';
-
-import DialogManageVehicleManifest from "@/views/transport/manifestVehicle/dialogCreateManage";
+import DialogManageVehicleManifest from '@/views/transport/manifestVehicle/dialogCreateManage'
 
 export default {
-    name: "transport-manifest-vehicle",
+    name: 'transport-manifest-vehicle',
     mixins: [master],
     components: {
-        "breadcrumb": Breadcrumb,
-        "card-info": CardInfo,
-        "camera-scanner": CameraScanner,
-        "dialog-manage-vehicle-manifest": DialogManageVehicleManifest,
+        breadcrumb: Breadcrumb,
+        'card-info': CardInfo,
+        'camera-scanner': CameraScanner,
+        'dialog-manage-vehicle-manifest': DialogManageVehicleManifest,
     },
     data() {
         return {
-            manifestNumber: "",
+            manifestNumber: '',
             manifestMethod: 0,
 
             hasManifestNumber: false,
@@ -133,195 +122,205 @@ export default {
             dataManifestInfo: {},
 
             routeInfo: [
-                { 
+                {
                     label: 'Origin',
                     key: 'origin',
-                    width: 4
+                    width: 4,
                 },
-                { 
-                    label: 'Destination', 
+                {
+                    label: 'Destination',
                     key: 'destination',
-                    width: 4
+                    width: 4,
                 },
-                { 
-                    label: 'Flight Number', 
+                {
+                    label: 'Flight Number',
                     key: 'flight_number',
-                    width: 4
+                    width: 4,
                 },
-                { 
-                    label: 'Vehicle', 
+                {
+                    label: 'Vehicle',
                     key: 'vehicle',
-                    width: 4
+                    width: 4,
                 },
-                { 
+                {
                     label: 'ETD',
                     key: 'etd',
-                    width: 4
+                    width: 4,
                 },
-                { 
+                {
                     label: 'ETA',
                     key: 'eta',
-                    width: 4
-                }
+                    width: 4,
+                },
             ],
             manifestInfo: [
-                { 
+                {
                     label: 'Manifest Number',
                     key: 'manifest_number',
-                    width: 4
+                    width: 4,
                 },
-                { 
-                    label: 'Status', 
+                {
+                    label: 'Status',
                     key: 'status',
-                    width: 4
+                    width: 4,
                 },
-                { 
-                    label: 'Type SM', 
+                {
+                    label: 'Type SM',
                     key: 'sm_type',
-                    width: 4
+                    width: 4,
                 },
             ],
             itemInfo: [
-                { 
+                {
                     label: 'Total Masterbag',
                     key: 'total_masterbag',
-                    width: 4
+                    width: 4,
                 },
-                { 
-                    label: 'Total Bag', 
+                {
+                    label: 'Total Bag',
                     key: 'total_bag',
-                    width: 4
+                    width: 4,
                 },
-                { 
-                    label: 'Total Connote', 
+                {
+                    label: 'Total Connote',
                     key: 'total_connote',
-                    width: 4
+                    width: 4,
                 },
-            ]
-        };
+            ],
+        }
     },
     methods: {
         openDialog() {
-            this.dialogActive = true;
+            this.dialogActive = true
         },
         closeDialog() {
-            this.dialogActive = false;
+            this.dialogActive = false
         },
         handleIconClick() {
             if (this.hasManifestNumber) {
-                this.clearInput();
+                this.clearInput()
             } else {
-                this.$refs.cameraScanner.open('formManifestNumber');
+                this.$refs.cameraScanner.open('formManifestNumber')
             }
         },
         async processInput() {
-            if (!this.manifestNumber?.trim()) return;
+            if (!this.manifestNumber?.trim()) return
 
-            const encoded = encodeURIComponent(this.manifestNumber);
-            const currentPath = this.$route.path;
-            const newPath = `/trace/manifest-vehicle/${encoded}`;
+            const encoded = encodeURIComponent(this.manifestNumber)
+            const currentPath = this.$route.path
+            const newPath = `/trace/manifest-vehicle/${encoded}`
 
             if (currentPath !== newPath) {
-                this.$router.push(newPath);
-                this.setRoutePageHistory(this.$route.meta, false);
+                this.$router.push(newPath)
+                this.setRoutePageHistory(this.$route.meta, false)
             }
 
-            await this.getManifest();
+            await this.getManifest()
         },
         async getManifest() {
-            this.loading = true;
+            this.loading = true
             try {
-                const res = await axios.get(`${this.URL.surat_muatan}?n=${this.listenNodeId}&search_by=manifest_number&s=${this.manifestNumber}`, this.Helper.header());
+                const res = await axios.get(
+                    `${this.URL.surat_muatan}?n=${this.listenNodeId}&search_by=manifest_number&s=${this.manifestNumber}`,
+                    this.Helper.header()
+                )
 
                 if (res.data.data.length === 0) {
-                    this.openNotification("warn", null, "Failed", 'Data Not Found');
-                    this.clearInput();
+                    this.openNotification('warn', null, 'Failed', 'Data Not Found')
+                    this.clearInput()
                     return
                 } else {
-                    let data = res.data.data[0];
+                    let data = res.data.data[0]
 
-                    this.hasManifestNumber = true;
+                    this.hasManifestNumber = true
 
-                    this.manifestMethod = parseInt(data?.manifest_method_id);
+                    this.manifestMethod = parseInt(data?.manifest_method_id)
 
                     this.dataRouteInfo = {
-                        origin: data?.origin_branch_code + " - " + data?.origin_branch_name,
-                        destination: data?.destination_branch_code + " - " + data?.destination_branch_name,
+                        origin: data?.origin_branch_code + ' - ' + data?.origin_branch_name,
+                        destination:
+                            data?.destination_branch_code + ' - ' + data?.destination_branch_name,
                         flight_number: data?.flight_number,
                         vehicle: data?.vehicle?.vehicle_name,
                         etd: this.formatTimezone(data?.etd),
                         eta: this.formatTimezone(data?.eta),
-                    };
+                    }
 
                     this.dataManifestInfo = {
                         manifest_number: data?.manifest_number,
                         status: data?.status,
-                        sm_type: data?.manifest_method?.vehicle_mode_name
-                    };
+                        sm_type: data?.manifest_method?.vehicle_mode_name,
+                    }
 
                     this.dataItemInfo = {
-                        total_masterbag: data?.total_masterbag || "0",
-                        total_bag: data?.total_bag || "0",
-                        total_connote: data?.total_item || "0"
-                    };
+                        total_masterbag: data?.total_masterbag || '0',
+                        total_bag: data?.total_bag || '0',
+                        total_connote: data?.total_item || '0',
+                    }
                 }
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Failed',
+                    err?.response?.data?.message || 'Something went wrong'
+                )
             } finally {
-                this.loading = false;
+                this.loading = false
             }
         },
         print() {
             let routeData = this.$router.resolve({
-                name: "printGeneral", 
+                name: 'printGeneral',
                 params: {
                     id: this.manifestNumber,
-                    type: "manifest", 
+                    type: 'manifest',
                     node_id: this.listenNodeId,
                 },
-            });
+            })
 
-            const printWindow = window.open(routeData.href, "_blank", "noopener");
+            const printWindow = window.open(routeData.href, '_blank', 'noopener')
 
             if (printWindow) {
-                    printWindow.onload = function () {
-                    printWindow.print();
-                    printWindow.onafterprint = () => printWindow.close();
-                };
+                printWindow.onload = function () {
+                    printWindow.print()
+                    printWindow.onafterprint = () => printWindow.close()
+                }
             }
         },
         clearInput() {
-            this.hasManifestNumber = false;
-            this.manifestNumber = "";
+            this.hasManifestNumber = false
+            this.manifestNumber = ''
 
-            if (this.$route.path !== "/trace/manifest-vehicle") {
-                this.$router.push("/trace/manifest-vehicle");
-                this.setRoutePageHistory(this.$route.meta, false);
+            if (this.$route.path !== '/trace/manifest-vehicle') {
+                this.$router.push('/trace/manifest-vehicle')
+                this.setRoutePageHistory(this.$route.meta, false)
             }
 
-            this.$nextTick(() => {
-                this.$refs.formManifestNumber?.$el?.querySelector("input")?.focus();
-            });
+            this.setActiveInput('formManifestNumber')
         },
         onCameraScannerGetData(data) {
-            if (data?.event === "result" && data?.data?.text) {
-                const { namespace, data: { text } } = data;
+            if (data?.event === 'result' && data?.data?.text) {
+                const {
+                    namespace,
+                    data: { text },
+                } = data
 
-                if (namespace === "formManifestNumber") {
-                    this.manifestNumber = text;
-                    this.processInput('manifestNumber');
+                if (namespace === 'formManifestNumber') {
+                    this.manifestNumber = text
+                    this.processInput('manifestNumber')
                 }
             }
         },
     },
     mounted() {
-        this.clearInput();
-        window.addEventListener('timezone-changed', this.getManifest);
+        this.clearInput()
+        window.addEventListener('timezone-changed', this.getManifest)
     },
     beforeDestroy() {
-        window.removeEventListener('timezone-changed', this.getManifest);
+        window.removeEventListener('timezone-changed', this.getManifest)
     },
-};
+}
 </script>
 
 <style scoped>
