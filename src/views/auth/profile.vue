@@ -58,7 +58,6 @@
                             :submit-by-enter="true"
                             :data-item="dataItem"
                             @formData="updateProfile"
-                            @updateValue="updateValue"
                             @onChangeCustom="onChangeCustom"
                         />
                     </vs-col>
@@ -193,16 +192,6 @@ export default {
             }
         },
         handleSubmit() {
-            if (!this.isPasswordEnable) {
-                this.openNotification(
-                    'danger',
-                    null,
-                    'Failed',
-                    'Password does not meet the minimum requirements.'
-                )
-                return
-            }
-
             this.$refs.formProfileController.handleSubmit()
         },
         async handleFileUpload(event) {
@@ -239,19 +228,28 @@ export default {
                 }
             }
         },
-        updateValue(key, val, info) {
-            console.log('CEK', key, val, info)
-        },
         async updateProfile(form) {
+            const data = form
+            if (data.password == '' || data.password == undefined || data.password == null) {
+                delete data.password
+            } else {
+                if (!this.isPasswordEnable) {
+                    this.openNotification(
+                        'danger',
+                        null,
+                        'Failed',
+                        'Password does not meet the minimum requirements.'
+                    )
+                    return
+                }
+            }
+
             const updateLoading = this.$vs.loading({
                 type: 'scale',
                 text: 'Loading...',
                 background: '#EAEAEA',
             })
-            const data = form
-            if (data.password == '' || data.password == undefined || data.password == null) {
-                delete data.password
-            }
+
             await axios
                 .put(`${this.URL.profile}?n=${this.listenNodeId}`, data, this.Helper.header())
                 .then((res) => {

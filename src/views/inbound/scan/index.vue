@@ -69,7 +69,6 @@
                                                     $refs.cameraScanner.open('formInputInbound')
                                                 "
                                                 @input="sanitizeAlphanumeric('item_no')"
-                                                @focus="activeInput = 'formInputInbound'"
                                             >
                                                 <template #icon>
                                                     <i class="bx bx-barcode-reader"></i>
@@ -112,7 +111,6 @@
                                                 $refs.cameraScanner.open('formInputParentInbound')
                                             "
                                             @input="sanitizeAlphanumeric('parent_no')"
-                                            @focus="activeInput = 'formInputParentInbound'"
                                         >
                                             <template #icon v-if="!hasInboundNumber">
                                                 <i class="bx bx-barcode-reader"></i>
@@ -147,7 +145,6 @@
                                                 $refs.cameraScanner.open('formInputChildInbound')
                                             "
                                             @input="sanitizeAlphanumeric('child_no')"
-                                            @focus="activeInput = 'formInputChildInbound'"
                                         >
                                             <template #icon>
                                                 <i class="bx bx-barcode-reader"></i>
@@ -319,7 +316,6 @@ export default {
             is_user_check: false,
             processLoading: false,
             refloading: null,
-            activeInput: '',
         }
     },
     methods: {
@@ -654,46 +650,6 @@ export default {
                 this.loading = false
                 this.refresh()
             }
-        },
-        setActiveInput(refName) {
-            this.activeInput = refName
-            this.$nextTick(() => {
-                this.focusInput(refName)
-            })
-        },
-        focusInput(refName) {
-            this.$nextTick(() => {
-                const inputEl = this.$refs[refName]?.$el.querySelector('input')
-                if (inputEl) {
-                    inputEl.focus()
-                    inputEl.removeEventListener('blur', this.preventUnfocus)
-                    inputEl.addEventListener('blur', this.preventUnfocus)
-                }
-            })
-        },
-        preventUnfocus(e) {
-            this.$nextTick(() => {
-                const inputParentInbound =
-                    this.$refs.formInputParentInbound?.$el.querySelector('input')
-                const inputChildInbound =
-                    this.$refs.formInputChildInbound?.$el.querySelector('input')
-                const inputInbound = this.$refs.formInputInbound?.$el.querySelector('input')
-
-                // e.relatedTarget is the element that will receive focus
-                const nextEl = e.relatedTarget
-
-                // Allow moving focus between the exists inputs
-                if (
-                    nextEl === inputParentInbound ||
-                    nextEl === inputChildInbound ||
-                    nextEl === inputInbound
-                ) {
-                    return
-                }
-
-                // If focus moves outside both inputs, refocus the last active input
-                this.focusInput(this.activeInput)
-            })
         },
     },
     async mounted() {

@@ -27,6 +27,7 @@ const Master = {
             alert: null,
             isMobile: false,
             refLoading: null,
+            activeInput: null,
         }
     },
     computed: {
@@ -82,6 +83,57 @@ const Master = {
                 this.refloading = null
             }
         },
+
+        setActiveInput(refName) {
+            this.activeInput = refName
+            this.$nextTick(() => {
+                this.focusInput(refName)
+            })
+        },
+        focusInput(refName) {
+            this.$nextTick(() => {
+                const inputEl = this.getInputByRef(refName)
+                if (inputEl) {
+                    inputEl.focus()
+                    inputEl.removeEventListener('blur', this.preventUnfocus)
+                    inputEl.addEventListener('blur', this.preventUnfocus)
+                }
+            })
+        },
+        preventUnfocus(e) {
+            this.$nextTick(() => {
+                const nextEl = e.relatedTarget
+
+                // ambil semua refs yang diawali formInput
+                const trackedRefs = Object.keys(this.$refs).filter((ref) =>
+                    ref.startsWith('formInput')
+                )
+
+                // mapping refName -> input element
+                const refMap = trackedRefs.reduce((map, refName) => {
+                    const el = this.getInputByRef(refName)
+                    if (el) map[refName] = el
+                    return map
+                }, {})
+
+                // deteksi ref mana yang akan menerima fokus
+                for (const [refName, el] of Object.entries(refMap)) {
+                    if (nextEl === el) {
+                        this.activeInput = refName
+                        break
+                    }
+                }
+
+                // kalau bukan salah satu input tracked, atau nextEl null (klik di luar)
+                // refocus ke active input terakhir
+                this.focusInput(this.activeInput)
+            })
+        },
+        getInputByRef(refName) {
+            const el = this.$refs[refName]?.$el || this.$refs[refName]
+            return el?.querySelector ? el.querySelector('input') : el
+        },
+
         moneyformat(number) {
             let val =
                 number != 0
