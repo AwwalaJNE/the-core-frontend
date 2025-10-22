@@ -331,6 +331,8 @@ export default {
         },
 
         async processConnoteNumber() {
+            if (!this.connoteNumber) return
+
             this.connote_number = this.connoteNumber
             this.koli_number = this.connoteNumber
             // const url = `/trace-connote/${encodeURIComponent(this.koli_number)}`;
@@ -597,20 +599,6 @@ export default {
         findConnoteByNumber(data, targetConnoteNumber) {
             return data.find((item) => item.connote_number === targetConnoteNumber)
         },
-        focusInput() {
-            this.$nextTick(() => {
-                const inputEl = this.$refs.formInputConnoteOrion?.$el.querySelector('input')
-                if (inputEl) {
-                    inputEl.focus()
-                    inputEl.addEventListener('blur', this.preventUnfocus)
-                }
-            })
-        },
-        preventUnfocus(e) {
-            if (!this.hasConnoteNumber) {
-                e.target.focus()
-            }
-        },
     },
     mounted() {
         const id = this.$route.params?.id
@@ -622,10 +610,7 @@ export default {
             this.hasConnoteNumber = true
             this.getConnote()
         }
-        this.focusInput()
-        // this.removeConnoteNumber();
-        // this.getConnote();
-        // this.$refs.formInputConnoteOrion.$el.querySelector("input").focus();
+        this.setActiveInput('formInputConnoteOrion')
     },
     watch: {
         '$route.params.id'(val) {
@@ -637,7 +622,7 @@ export default {
                 this.hasConnoteNumber = true
                 this.getConnote()
             } else {
-                this.focusInput()
+                this.setActiveInput('formInputConnoteOrion')
             }
         },
     },
