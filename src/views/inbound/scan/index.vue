@@ -683,12 +683,12 @@ export default {
                 const nextEl = e.relatedTarget
 
                 // Allow moving focus between the exists inputs
-                if (
-                    nextEl === inputParentInbound ||
-                    nextEl === inputChildInbound ||
-                    nextEl === inputInbound
-                ) {
-                    return
+                if (nextEl === inputChildInbound) {
+                    this.activeInput = 'formInputChildInbound'
+                } else if (nextEl === inputParentInbound) {
+                    this.activeInput = 'formInputParentInbound'
+                } else if (nextEl === inputInbound) {
+                    this.activeInput = 'formInputInbound'
                 }
 
                 // If focus moves outside both inputs, refocus the last active input
