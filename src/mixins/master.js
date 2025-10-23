@@ -132,18 +132,15 @@ const Master = {
                 }
             }
 
-            const isNonInputInteractive = nextEl?.closest?.(
-                'input, textarea, select, button, a, [role="button"], .vs-dropdown, .el-select, .v-select, [tabindex]'
-            )
-
-            if (!isNonInputInteractive) {
-                this.$nextTick(() => {
+            this.$nextTick(() => {
+                // Wait one paint frame to let browser finish processing the blur event
+                requestAnimationFrame(() => {
                     const activeEl = this.getInputByRef(this.activeInput)
                     if (activeEl && document.activeElement !== activeEl) {
                         activeEl.focus()
                     }
                 })
-            }
+            })
         },
 
         getInputByRef(refName) {
