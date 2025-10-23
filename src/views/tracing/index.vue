@@ -360,7 +360,6 @@ export default {
     },
     methods: {
         setActive(refName) {
-            console.log(refName,refName === 'koliCode')
             if (refName === 'koliCode') {
                 this.setActiveInput('koliCode', null, () => this.dialogValidateTracingActive)
             } else if (refName === 'removeKoliCode') {
@@ -479,11 +478,11 @@ export default {
             this.validateType = actionType;
             if (actionType === 'create' && this.koliCode?.length) {
                 this.validateCreateItem({ items: this.koliCode });
-                this.setActiveInput('koliCode', null, () => this.dialogValidateTracingActive)
+                this.setActiveInput('koliCode', null, () => true)
             } else if (actionType === 'remove' && this.removeKoliCode?.length) {
                 // TODO: Adjust after Remove Validation API ready
                 this.validateRemoveItem(this.removeKoliCode.map(el => ({item_number: el, status: "SUCCESS"})));
-                this.setActiveInput('removeKoliCode', null, () => this.dialogValidateTracingActive)
+                this.setActiveInput('removeKoliCode', null, () => true)
             }
         },
         closeDialog() {
