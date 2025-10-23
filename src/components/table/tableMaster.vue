@@ -65,6 +65,7 @@
                         justify-content: space-between;
                         gap: 16px;
                     "
+                    v-if="dataTable.length > 0"
                 >
                     <vs-button @click="toggleDropdown" icon data-testid="filter-column-btn">
                         <i class="bx bx-slider"></i> Columns
@@ -84,6 +85,7 @@
                     class="column-dropdown-panel"
                     data-testid="column-dropdown-panel"
                 >
+                    <!-- TODO: SHOW LATER -->
                     <vs-input
                         v-model="columnSearch"
                         placeholder="Search columns..."
@@ -1963,7 +1965,7 @@
             </template>
         </vs-table>
 
-        <vs-row class="mt-2" justify="space-between" align="center">
+        <vs-row class="mt-2" justify="space-between" align="center" v-if="dataTable.length > 0">
             <template v-if="hasPagination == true">
                 <vs-col w="2">
                     <vs-button @click="handleExportCSV" :data-testid="`export-button`">

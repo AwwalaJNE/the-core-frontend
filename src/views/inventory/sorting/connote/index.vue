@@ -29,7 +29,6 @@
                                     v-model="item_number"
                                     v-on:keyup.enter="handleEnter"
                                     v-uppercase
-                                    :autofocus="true"
                                     :label-placeholder="'Masukkan Connote'"
                                     @click-icon="$refs.cameraScanner.open('formInputSorting')"
                                 >
@@ -668,7 +667,7 @@ export default {
     },
     mounted() {
         this.refresh()
-        this.$refs.formInputSorting.$el.querySelector('input').focus()
+        this.setActiveInput('formInputSorting')
         window.addEventListener('timezone-changed', this.refresh)
     },
     beforeDestroy() {

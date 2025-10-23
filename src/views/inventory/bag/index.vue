@@ -85,6 +85,7 @@
                                     :valueData="item_number"
                                     :hasBarcode="true"
                                     :enter_to_update="true"
+                                    :disabled="dialogActiveManualDestination"
                                     @click-icon="handleIconClick"
                                     @updateValue="updateValue"
                                     @enterUpdate="processItem"
@@ -200,7 +201,7 @@ export default {
             this.bag_type = item.value
             this.isDisabled = false
             this.is_auto_open_bag = true
-            this.setInputFocus()
+            this.setActiveInput('scanItem')
         },
         handleAutoOpenBag(val) {
             this.is_auto_open_bag = val.target.checked
@@ -313,20 +314,16 @@ export default {
             this.item_number = ''
         },
 
-        setInputFocus() {
-            this.$nextTick(() => {
-                let inputElement = this.$refs.scanItem?.$el.querySelector('input')
-                if (inputElement) {
-                    inputElement.focus()
-                }
-            })
-        },
-
         openDialog() {
             this.dialogActiveManualDestination = true
+            this.autoFocusInput(this.dialogActiveManualDestination)
         },
         closeDialog() {
             this.dialogActiveManualDestination = false
+            this.autoFocusInput(this.dialogActiveManualDestination)
+        },
+        autoFocusInput(value) {
+            this.setActiveInput('scanItem', null, () => value)
         },
     },
     created() {
