@@ -61,8 +61,8 @@ export default {
         password: {
             label: 'Password',
             key: 'password',
-            rule: 'min:7',
-            typeInput: 'text|password',
+            rule: 'min:8',
+            typeInput: 'text|password-validation',
             typeData: 'String',
             valueData: null,
             value: '',

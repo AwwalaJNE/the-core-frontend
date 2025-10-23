@@ -92,8 +92,7 @@ export default {
     },
     methods: {
         refresh() {
-            let el = this.refreshInject
-            this.$refs[el].refresh()
+            this.$refs[this.navActive].refresh()
         },
         searchValue(val) {
             this.tempSearch = val

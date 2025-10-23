@@ -175,7 +175,7 @@
                 <template v-else-if="listenIsPasswordValidation">
                     <div>
                         <vs-input
-                            :type="isVisible ? 'text' : 'password'"
+                            :type="!isVisible ? 'text' : 'password'"
                             :placeholder="placeholder"
                             :border="isBorder"
                             v-model="value"
@@ -193,7 +193,7 @@
                             @click-icon="toggleVisibility"
                         >
                             <template #icon>
-                                <i :class="isVisible ? 'bx bx-show-alt' : 'bx bx-hide'" />
+                                <i :class="!isVisible ? 'bx bx-show-alt' : 'bx bx-hide'" />
                             </template>
                         </vs-input>
 
