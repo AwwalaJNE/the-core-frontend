@@ -385,6 +385,7 @@ export default {
     },
     mounted() {
         window.addEventListener('timezone-changed', this.refresh);
+        this.setActiveInput('formInputUnbagging', null)
         this.refresh()   
     }
 }
