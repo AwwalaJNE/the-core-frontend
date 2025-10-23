@@ -87,7 +87,6 @@
                 >
                     <!-- TODO: SHOW LATER -->
                     <vs-input
-                        v-show="false"
                         v-model="columnSearch"
                         placeholder="Search columns..."
                         data-testid="column-search"
@@ -1966,7 +1965,7 @@
             </template>
         </vs-table>
 
-        <vs-row class="mt-2" justify="space-between" align="center">
+        <vs-row class="mt-2" justify="space-between" align="center" v-if="dataTable.length > 0">
             <template v-if="hasPagination == true">
                 <vs-col w="2">
                     <vs-button @click="handleExportCSV" :data-testid="`export-button`">
