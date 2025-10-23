@@ -1,14 +1,11 @@
 <template>
-    <dialog-master 
+    <dialog-master
         :actived="listenActive"
-        :loading="listenLoading" 
+        :loading="listenLoading"
         :closeDialog="cancel"
         width="md"
     >
-
-        <template v-slot:header>
-            Entry Status
-        </template>
+        <template v-slot:header> Entry Status </template>
 
         <template v-slot:content>
             <vs-row justify="space-between">
@@ -36,17 +33,18 @@
                 </vs-col>
                 <vs-col xs="12" sm="12" lg="12">
                     <template v-if="loadingStatus == false && status_arr.length > 0">
-                        <selector 
-                            name="Status Code" 
-                            :rules="''" 
+                        <selector
+                            name="Status Code"
+                            :rules="''"
                             formKey="status"
                             :valueData="status_arr"
                             :selectedValue="status"
                             :isMultiple="false"
                             :disabled="disableStatus"
-                            @updateValue="updateValue" />
+                            @updateValue="updateValue"
+                        />
                     </template>
-                </vs-col> 
+                </vs-col>
                 <vs-col xs="12" sm="12" lg="12" data-test-id="upload-section">
                     <el-upload
                         ref="upload"
@@ -58,15 +56,15 @@
                         data-test-id="upload-input"
                     >
                         <i slot="default" class="el-icon-plus" data-test-id="upload-plus-icon"></i>
-                        
-                        <template slot="file" slot-scope="{file}">
+
+                        <template slot="file" slot-scope="{ file }">
                             <template v-if="isImage(file)">
                                 <img
                                     class="el-upload-list__item-thumbnail"
-                                    :src="file.url" 
+                                    :src="file.url"
                                     alt="preview"
                                     data-test-id="upload-image-preview"
-                                >
+                                />
                                 <span class="el-upload-list__item-actions">
                                     <span
                                         v-if="!disabled"
@@ -140,12 +138,32 @@
                         </template>
                     </el-upload>
 
-                    <el-dialog :visible.sync="dialogImageVisible" title="Image Preview" data-test-id="image-dialog">
-                        <img width="100%" :src="dialogImageUrl" alt="PreviewImage" data-test-id="image-dialog-preview">
+                    <el-dialog
+                        :visible.sync="dialogImageVisible"
+                        title="Image Preview"
+                        data-test-id="image-dialog"
+                    >
+                        <img
+                            width="100%"
+                            :src="dialogImageUrl"
+                            alt="PreviewImage"
+                            data-test-id="image-dialog-preview"
+                        />
                     </el-dialog>
 
-                    <el-dialog :visible.sync="dialogFileVisible" width="80%" title="File Preview" data-test-id="file-dialog">
-                        <embed :src="dialogFileUrl" type="application/pdf" width="100%" height="500px" data-test-id="pdf-dialog-preview"/>
+                    <el-dialog
+                        :visible.sync="dialogFileVisible"
+                        width="80%"
+                        title="File Preview"
+                        data-test-id="file-dialog"
+                    >
+                        <embed
+                            :src="dialogFileUrl"
+                            type="application/pdf"
+                            width="100%"
+                            height="500px"
+                            data-test-id="pdf-dialog-preview"
+                        />
                     </el-dialog>
                 </vs-col>
 
@@ -155,8 +173,9 @@
                         :rules="''"
                         formKey="remark"
                         :valueData="remark"
+                        ref="remark"
                         typeInput="text"
-                        @updateValue="updateValue" 
+                        @updateValue="updateValue"
                     />
                 </vs-col>
             </vs-row>
@@ -187,48 +206,45 @@
                         :data-testid="`submit-button`"
                         @click="handleSubmit"
                     >
-                       Submit
+                        Submit
                     </vs-button>
                 </vs-col>
             </vs-row>
-                
-                
         </template>
-
     </dialog-master>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master"
-import InputGeneral from "@/components/input/general"
-import InputTextArea from "@/components/input/textArea";
-import Selector from "@/components/input/select"
-import DialogMaster from "@/components/dialog/dialogMaster"
-import { Dialog } from 'element-ui';
+import axios from 'axios'
+import master from '@/mixins/master'
+import InputGeneral from '@/components/input/general'
+import InputTextArea from '@/components/input/textArea'
+import Selector from '@/components/input/select'
+import DialogMaster from '@/components/dialog/dialogMaster'
+import { Dialog } from 'element-ui'
 export default {
-    name:"Inboun-Dialog-Edit-Receiving-Log",
-    mixins:[master],
+    name: 'Inboun-Dialog-Edit-Receiving-Log',
+    mixins: [master],
     components: {
-        "input-general": InputGeneral,
-        "selector": Selector,
-        "dialog-master": DialogMaster,
+        'input-general': InputGeneral,
+        selector: Selector,
+        'dialog-master': DialogMaster,
         'el-dialog': Dialog,
-        "input-text-area": InputTextArea,
+        'input-text-area': InputTextArea,
     },
     props: {
-        closeDialog: Function, 
+        closeDialog: Function,
         active: Boolean,
         title: String,
-        receivingLogId: String
+        receivingLogId: String,
     },
     computed: {
-        listenActive(){
+        listenActive() {
             return this.active
         },
         listenReceivingLogId() {
             return this.receivingLogId || {}
         },
-        listenLoading(){
+        listenLoading() {
             return this.loadingStatus || this.loading
         },
     },
@@ -237,8 +253,10 @@ export default {
             if (val == true) {
                 this.getDetail(this.listenReceivingLogId)
                 this.getDataStatus()
+
+                this.setActiveInput('remark')
             }
-        }
+        },
     },
     data() {
         return {
@@ -247,9 +265,9 @@ export default {
             loading: false,
 
             receiving_log_id: '',
-            inbound_number: '',  
-            item_number: '',  
-            status: '', 
+            inbound_number: '',
+            item_number: '',
+            status: '',
             remark: '',
 
             loadingStatus: false,
@@ -261,176 +279,207 @@ export default {
             disableStatus: false,
 
             fileList: [],
-            maxFiles: 5
+            maxFiles: 5,
         }
     },
     methods: {
         async getDetail(receiving_log_id) {
-            this.loadingDetail = true;
+            this.loadingDetail = true
             try {
-                const res = await axios.get(`${this.URL.receiving_log}/${receiving_log_id}?n=${this.listenNodeId}`, this.Helper.header());
-                const data = res.data.data;
+                const res = await axios.get(
+                    `${this.URL.receiving_log}/${receiving_log_id}?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
+                const data = res.data.data
 
                 if (data) {
-                    this.receiving_log_id = data.receiving_log_id || '';
-                    this.inbound_number = data.inbound_number || '';
-                    this.item_number = data.item_number || '';
-                    this.status = data.status || '';
-                    this.remark = data.remark || '';
-                    this.fileList = (data.attachment || []).map(item => ({
+                    this.receiving_log_id = data.receiving_log_id || ''
+                    this.inbound_number = data.inbound_number || ''
+                    this.item_number = data.item_number || ''
+                    this.status = data.status || ''
+                    this.remark = data.remark || ''
+                    this.fileList = (data.attachment || []).map((item) => ({
                         name: '',
                         attachment_id: item.attachment_id,
                         url: item.url,
-                    }));
+                    }))
 
-                    this.disableStatus = !!this.status;
+                    this.disableStatus = !!this.status
                 }
-
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Failed',
+                    err?.response?.data?.message || 'Something went wrong'
+                )
             } finally {
-                this.loadingDetail = false;
+                this.loadingDetail = false
             }
         },
         async getDataStatus() {
-            this.loadingStatus = true;
+            this.loadingStatus = true
             try {
-                const res = await axios.get(`${this.URL.status}?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, this.Helper.header());
-                const data = res.data.data;
+                const res = await axios.get(
+                    `${this.URL.status}?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`,
+                    this.Helper.header()
+                )
+                const data = res.data.data
 
                 this.status_arr = data
-                    .filter(item => item.status_type?.toLowerCase() === 'irregularity')
-                    .map(item => ({
+                    .filter((item) => item.status_type?.toLowerCase() === 'irregularity')
+                    .map((item) => ({
                         label: item.status_description,
                         value: item.status_code,
                         item,
-                    }));
+                    }))
 
                 if (this.status_arr.length === 0) {
-                    this.status_arr = [{ label: null, value: null }];
+                    this.status_arr = [{ label: null, value: null }]
                 }
             } catch (err) {
                 // Handle error (e.g., notify user)
             } finally {
-                this.loadingStatus = false;
+                this.loadingStatus = false
             }
         },
-        updateValue(key, val, info){
-            switch(key) {
-                case "status":
-                    let obj = this.status_arr.filter(item => item.value == val)[0]
+        updateValue(key, val, info) {
+            switch (key) {
+                case 'status':
+                    let obj = this.status_arr.filter((item) => item.value == val)[0]
 
                     if (Object.keys(obj).length > 0) {
                         if (obj.hasOwnProperty('item')) {
                             this.status = obj.item.status_code || ''
                         }
                     }
-                    break;
-                case "remark":
-                    this.remark= val
-                    break;
+                    break
+                case 'remark':
+                    this.remark = val
+                    break
                 default:
             }
         },
         async handleSubmit() {
-            const uploadComponent = this.$refs.upload;
-            if (!uploadComponent) return;
+            const uploadComponent = this.$refs.upload
+            if (!uploadComponent) return
 
-            const uploadedFiles = uploadComponent.uploadFiles;
-            const formData = new FormData();            
+            const uploadedFiles = uploadComponent.uploadFiles
+            const formData = new FormData()
 
-            formData.append('status', this.status);
-            formData.append('remark', this.remark);
+            formData.append('status', this.status)
+            formData.append('remark', this.remark)
 
             if (uploadedFiles.length > 0) {
                 uploadedFiles.forEach((file, index) => {
                     if (file.raw instanceof Blob) {
-                        formData.append(`file_${this.generateRandomString(5)}`, file.raw);
-                    } 
-                    else if (file?.uid) {
-                        formData.append(`file_${file.uid}`, this.fileList[index].attachment_id);
-                    } 
-                    else {
-                        this.openNotification('warn', null, 'File is not valid', ' Please put in the expected format');
+                        formData.append(`file_${this.generateRandomString(5)}`, file.raw)
+                    } else if (file?.uid) {
+                        formData.append(`file_${file.uid}`, this.fileList[index].attachment_id)
+                    } else {
+                        this.openNotification(
+                            'warn',
+                            null,
+                            'File is not valid',
+                            ' Please put in the expected format'
+                        )
                     }
-                });
+                })
             }
 
-            this.handleSubmitData(formData);
+            this.handleSubmitData(formData)
         },
         async handleSubmitData(formData) {
-            this.loading = true;
+            this.loading = true
             try {
-                const res = await axios.post(`${this.URL.receiving_log}/${this.listenReceivingLogId}?n=${this.listenNodeId}`, formData, this.Helper.header());
-                this.openNotification('success', null, "Success", res?.data?.message ||  "Success Update Data");
+                const res = await axios.post(
+                    `${this.URL.receiving_log}/${this.listenReceivingLogId}?n=${this.listenNodeId}`,
+                    formData,
+                    this.Helper.header()
+                )
+                this.openNotification(
+                    'success',
+                    null,
+                    'Success',
+                    res?.data?.message || 'Success Update Data'
+                )
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Failed',
+                    err?.response?.data?.message || 'Something went wrong'
+                )
             } finally {
-                this.loading = false;
-                this.cancel();
+                this.loading = false
+                this.cancel()
             }
         },
-        handleClearForm(){
-            this.receiving_log_id = '',
-            this.inbound_number = '',  
-            this.item_number = '',  
-            this.status = '', 
-            this.remark = '',
-            this.fileList = [];
+        handleClearForm() {
+            ;(this.receiving_log_id = ''),
+                (this.inbound_number = ''),
+                (this.item_number = ''),
+                (this.status = ''),
+                (this.remark = ''),
+                (this.fileList = [])
         },
         cancel() {
             this.handleClearForm()
             this.$emit('closeDialog')
         },
         handleFileChange(file, fileList) {
-        if (fileList.length > this.maxFiles) {
-            this.openNotification('warn', null, 'File limit exceeded', 'You can upload up to 5 files only.');
-            this.fileList = fileList.slice(0, this.maxFiles);
-        }
-    },
-        generateRandomString(length) {
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let result = '';
-            for (let i = 0; i < length; i++) {
-                const randomIndex = Math.floor(Math.random() * characters.length);
-                result += characters.charAt(randomIndex);
+            if (fileList.length > this.maxFiles) {
+                this.openNotification(
+                    'warn',
+                    null,
+                    'File limit exceeded',
+                    'You can upload up to 5 files only.'
+                )
+                this.fileList = fileList.slice(0, this.maxFiles)
             }
-            return result;
+        },
+        generateRandomString(length) {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+            let result = ''
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * characters.length)
+                result += characters.charAt(randomIndex)
+            }
+            return result
         },
         isImage(file) {
-            if (file.name !== "") {
-                return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(file.name);
+            if (file.name !== '') {
+                return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(file.name)
             } else {
-                return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(file.url);
-            }  
+                return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(file.url)
+            }
         },
         isPDF(file) {
-            if (file.name !== "") {
-                return /\.(pdf)$/i.test(file.name);
+            if (file.name !== '') {
+                return /\.(pdf)$/i.test(file.name)
             } else {
-                return /\.(pdf)$/i.test(file.url);
+                return /\.(pdf)$/i.test(file.url)
             }
         },
         async handleRemove(file) {
-            const uploadedFiles = this.$refs.upload.uploadFiles;
-            const index = uploadedFiles.findIndex(item => item.url === file.url);
+            const uploadedFiles = this.$refs.upload.uploadFiles
+            const index = uploadedFiles.findIndex((item) => item.url === file.url)
             if (index !== -1) {
-                uploadedFiles.splice(index, 1);
+                uploadedFiles.splice(index, 1)
             }
         },
         handlePictureCardPreview(file) {
-            this.dialogImageUrl = file.url;
-            this.dialogImageVisible = true;
+            this.dialogImageUrl = file.url
+            this.dialogImageVisible = true
         },
         handleFilePreview(file) {
-            this.dialogFileUrl = file.url;
-            this.dialogFileVisible = true;
+            this.dialogFileUrl = file.url
+            this.dialogFileVisible = true
         },
-        
     },
     mounted() {
         this.handleSubmitShortcut(this.handleSubmit)
-    }
+    },
 }
 </script>
 <style scoped>
