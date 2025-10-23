@@ -526,6 +526,7 @@ export default {
                 case 'destination':
                     this.handleClearForm()
                     this.destination = val
+                    this.setActiveInput('formInputSorting')
             }
         },
         updateSearchBy(key, val, dataType) {
