@@ -132,13 +132,18 @@ const Master = {
                 }
             }
 
-            // Refocus ke input aktif
-            this.$nextTick(() => {
-                const activeEl = this.getInputByRef(this.activeInput)
-                if (activeEl && document.activeElement !== activeEl) {
-                    activeEl.focus()
-                }
-            })
+            const isNonInputInteractive = nextEl?.closest?.(
+                'input, textarea, select, button, a, [role="button"], .vs-dropdown, .el-select, .v-select, [tabindex]'
+            )
+
+            if (!isNonInputInteractive) {
+                this.$nextTick(() => {
+                    const activeEl = this.getInputByRef(this.activeInput)
+                    if (activeEl && document.activeElement !== activeEl) {
+                        activeEl.focus()
+                    }
+                })
+            }
         },
 
         getInputByRef(refName) {
