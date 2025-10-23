@@ -82,7 +82,9 @@ export default {
         actived(val) {
             if (val && this.inbound_number) {
                 this.loadRemarks()
-                this.setActiveInput('formInputInboundRemark')
+                if (!this.loading) {
+                    this.setActiveInput('formInputInboundRemark')
+                }
             }
         },
     },
