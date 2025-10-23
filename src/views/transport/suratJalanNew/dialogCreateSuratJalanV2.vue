@@ -328,7 +328,9 @@ export default {
         },
         active: function (val) {
             if (val == true) {
-                this.setActiveInput('scanBag', 'formSuratJalan', () => this.dialogTraceBag)
+                this.$nextTick(() => {
+                    this.setActiveInput('scanBag', 'formSuratJalan', () => this.dialogTraceBag)
+                })
                 this.getDestination2()
                 this.getNoModeAngkutan()
                 // this.getLov();

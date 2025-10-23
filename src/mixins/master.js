@@ -131,16 +131,27 @@ const Master = {
                     return
                 }
             }
+        },
 
-            this.$nextTick(() => {
-                // Wait one paint frame to let browser finish processing the blur event
-                requestAnimationFrame(() => {
-                    const activeEl = this.getInputByRef(this.activeInput)
-                    if (activeEl && document.activeElement !== activeEl) {
-                        activeEl.focus()
-                    }
+        handleGlobalClick(e) {
+            const activeEl = this.getInputByRef(this.activeInput)
+            if (!activeEl) return
+
+            const nextEl = e.target
+
+            const isNextInput =
+                nextEl.tagName === 'INPUT' ||
+                nextEl.closest?.('input, textarea, select, .vs-input, .el-select, .v-select')
+
+            if (!isNextInput) {
+                this.$nextTick(() => {
+                    requestAnimationFrame(() => {
+                        if (document.activeElement !== activeEl) {
+                            activeEl.focus({ preventScroll: true })
+                        }
+                    })
                 })
-            })
+            }
         },
 
         getInputByRef(refName) {
@@ -863,9 +874,11 @@ const Master = {
     mounted() {
         this.checkIfMobile()
         window.addEventListener('resize', this.checkIfMobile)
+        document.addEventListener('mousedown', this.handleGlobalClick)
     },
     beforeDestroy() {
         window.removeEventListener('resize', this.checkIfMobile)
+        document.removeEventListener('mousedown', this.handleGlobalClick)
     },
     created() {
         this.URL = URL
