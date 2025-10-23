@@ -25,6 +25,7 @@
                             :isAllowCreate="true"
                             :autofocus="true"
                             @updateValue="updateValue"
+                           @click="setActive('koliCode')"
                         />
                     </form>
                 </vs-col>
@@ -50,7 +51,8 @@
                             :isMultiple="false"
                             :disabled="false"
                             :isAllowCreate="true"
-                            @updateValue="updateValue"  
+                            @updateValue="updateValue" 
+                            @click="setActive('removeKoliCode')" 
                         />
                     </form>
                 </vs-col>
@@ -186,6 +188,14 @@ export default {
         is_history(newValue, oldValue) {
             if (newValue !== oldValue) {
                 this.refresh();
+            }
+        },
+        dialogValidateTracingActive(newVal) {
+            if (newVal) {
+                this.$nextTick(() => {
+                    const el = this.getInputByRef(this.activeInput);
+                    if (el && typeof el.blur === 'function') el.blur();
+                });
             }
         }
     },
@@ -349,6 +359,14 @@ export default {
         }
     },
     methods: {
+        setActive(refName) {
+            console.log(refName,refName === 'koliCode')
+            if (refName === 'koliCode') {
+                this.setActiveInput('koliCode', null, () => this.dialogValidateTracingActive)
+            } else if (refName === 'removeKoliCode') {
+                this.setActiveInput('removeKoliCode', null, () => this.dialogValidateTracingActive)
+            }
+        },
         async getTableData(limit, page, q, from, to) {
             this.loading = true;
 
@@ -461,9 +479,11 @@ export default {
             this.validateType = actionType;
             if (actionType === 'create' && this.koliCode?.length) {
                 this.validateCreateItem({ items: this.koliCode });
+                this.setActiveInput('koliCode', null, () => this.dialogValidateTracingActive)
             } else if (actionType === 'remove' && this.removeKoliCode?.length) {
                 // TODO: Adjust after Remove Validation API ready
                 this.validateRemoveItem(this.removeKoliCode.map(el => ({item_number: el, status: "SUCCESS"})));
+                this.setActiveInput('removeKoliCode', null, () => this.dialogValidateTracingActive)
             }
         },
         closeDialog() {
@@ -570,6 +590,7 @@ export default {
     },
     mounted() {
         window.addEventListener('timezone-changed', this.refresh);
+        this.setActiveInput('koliCode', null, () => this.dialogValidateTracingActive)
         this.refresh();
     },
     beforeDestroy () {
