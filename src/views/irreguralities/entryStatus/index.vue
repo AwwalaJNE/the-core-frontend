@@ -24,6 +24,7 @@
                             :isAllowCreate="true"
                             :autofocus="true"
                             @updateValue="updateValue" 
+                            @click="setActive('koliCode')"
                         />
                     </form>
                 </vs-col>
@@ -50,6 +51,7 @@
                             :disabled="!hasPermission('delete-irregularity')"
                             :isAllowCreate="true"
                             @updateValue="updateValue"  
+                            @click="setActive('removeKoliCode')"
                         />
                     </form>
                 </vs-col>
@@ -302,6 +304,14 @@ export default {
         }
     },
     methods: {
+        setActive(refName) {
+            console.log(refName)
+            if (refName === 'koliCode') {
+                this.setActiveInput('koliCode', null)
+            } else if (refName === 'removeKoliCode') {
+                this.setActiveInput('removeKoliCode', null)
+            }
+        },
         refresh(){
             let from = '';
             let to = '';
@@ -637,6 +647,7 @@ export default {
     },
     mounted() {
         window.addEventListener('timezone-changed', this.refresh);
+        this.setActiveInput('koliCode', null)
         this.refresh()   
     }
 }
