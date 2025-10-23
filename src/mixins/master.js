@@ -131,17 +131,25 @@ const Master = {
                     return
                 }
             }
+        },
 
-            const isNonInputInteractive = nextEl?.closest?.(
-                'input, textarea, select, button, a, [role="button"], .vs-dropdown, .el-select, .v-select, [tabindex]'
-            )
+        handleGlobalClick(e) {
+            const activeEl = this.getInputByRef(this.activeInput)
+            if (!activeEl) return
 
-            if (!isNonInputInteractive) {
+            const nextEl = e.target
+
+            const isNextInput =
+                nextEl.tagName === 'INPUT' ||
+                nextEl.closest?.('input, textarea, select, .vs-input, .el-select, .v-select')
+
+            if (!isNextInput) {
                 this.$nextTick(() => {
-                    const activeEl = this.getInputByRef(this.activeInput)
-                    if (activeEl && document.activeElement !== activeEl) {
-                        activeEl.focus()
-                    }
+                    requestAnimationFrame(() => {
+                        if (document.activeElement !== activeEl) {
+                            activeEl.focus({ preventScroll: true })
+                        }
+                    })
                 })
             }
         },
@@ -866,9 +874,11 @@ const Master = {
     mounted() {
         this.checkIfMobile()
         window.addEventListener('resize', this.checkIfMobile)
+        document.addEventListener('mousedown', this.handleGlobalClick)
     },
     beforeDestroy() {
         window.removeEventListener('resize', this.checkIfMobile)
+        document.removeEventListener('mousedown', this.handleGlobalClick)
     },
     created() {
         this.URL = URL

@@ -17,6 +17,7 @@
                                     v-model="item_number" 
                                     v-uppercase
                                     :autofocus="true"
+                                    ref="itemNumber"
                                 />
                             </form>
                         </vs-col>
@@ -357,6 +358,7 @@ export default {
     mounted() {
         window.addEventListener('timezone-changed', this.refresh);
         this.refresh();
+        this.setActiveInput('itemNumber')
     }
 }
 </script>

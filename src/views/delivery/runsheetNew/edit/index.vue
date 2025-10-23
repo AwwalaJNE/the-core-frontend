@@ -28,12 +28,12 @@
                                 border
                                 type="text"
                                 label-placeholder="Scan Bag Pra Runsheet Here"
-                                autofocus
                                 icon-after
                                 v-uppercase
                                 :disabled="disabledApprove"
                                 @keydown.enter="updateValueBag"
                                 @click-icon="$refs.cameraScanner.open('formInputBag')"
+                                @focus="activeInput = 'formInputBag'"
                             >
                                 <template #icon>
                                 <i class="bx bx-barcode-reader" />
@@ -51,12 +51,12 @@
                             border
                             type="text"
                             label-placeholder="Scan Connote Here"
-                            autofocus
                             icon-after
                             v-uppercase
                             :disabled="disabledApprove"
                             @keydown.enter="updateValue"
                             @click-icon="$refs.cameraScanner.open('formInputConnote')"
+                            @focus="activeInput = 'formInputConnote'"
                         >
                             <template #icon>
                                 <i class="bx bx-barcode-reader" />
@@ -72,12 +72,12 @@
                             border
                             type="text"
                             label-placeholder="Remove Connote Here"
-                            autofocus
                             icon-after
                             v-uppercase
                             :disabled="disabledApprove"
                             @keydown.enter="removeValue"
                             @click-icon="$refs.cameraScanner.open('formRemoveConnote')"
+                            @focus="activeInput = 'formRemoveConnote'"
                         >
                             <template #icon>
                                 <i class="bx bx-barcode-reader" />
@@ -382,23 +382,25 @@ export default {
     mounted() {
         window.addEventListener('timezone-changed', this.reload);
         this.getStatus();
+        this.setFocusRemove();
+        this.setFocusPra();
         this.setFocus();
         this.getDataCourier();
     },
     methods: {
         setFocus() {
             this.$nextTick(() => {
-                this.$refs.formInputConnote?.$el.querySelector('input')?.focus();
+                this.focusInput('formInputConnote')
             });
         },
         setFocusPra() {
             this.$nextTick(() => {
-                this.$refs.formInputConnote?.$el.querySelector('input')?.focus();
+                this.focusInput('formInputBag')
             });
         },
         setFocusRemove() {
             this.$nextTick(() => {
-                this.$refs.formRemoveConnote?.$el.querySelector('input')?.focus();
+                this.focusInput('formRemoveConnote')
             });
         },
         reload() {
@@ -1093,6 +1095,41 @@ export default {
         },
         handleValidateCourier(val) {
             this.is_validate_courier = val.target.checked;
+        },
+        setActiveInput(refName) {
+            this.activeInput = refName
+            this.$nextTick(() => {
+                this.focusInput(refName)
+            })
+        },
+        focusInput(refName) {
+            this.$nextTick(() => {
+                const inputEl = this.$refs[refName]?.$el.querySelector('input')
+                if (inputEl) {
+                    inputEl.focus()
+                    inputEl.removeEventListener('blur', this.preventUnfocus)
+                    inputEl.addEventListener('blur', this.preventUnfocus)
+                }
+            })
+        },
+        preventUnfocus(e) {
+            this.$nextTick(() => {
+                const inputConnote =
+                    this.$refs.formInputConnote?.$el.querySelector('input')
+                const inputBag =
+                    this.$refs.formInputBag?.$el.querySelector('input')
+                const inputRemoveConnote = 
+                    this.$refs.formRemoveConnote?.$el.querySelector('input')
+                const nextEl = e.relatedTarget
+                if (
+                    nextEl === inputConnote ||
+                    nextEl === inputBag ||
+                    nextEl === inputRemoveConnote
+                ) {
+                    return
+                }
+                this.focusInput(this.activeInput)
+            })
         },
     }
 };

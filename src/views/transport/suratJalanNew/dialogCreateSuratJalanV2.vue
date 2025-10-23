@@ -328,7 +328,9 @@ export default {
         },
         active: function (val) {
             if (val == true) {
-                this.setActiveInput('scanBag', 'formSuratJalan', () => this.dialogTraceBag)
+                this.$nextTick(() => {
+                    this.setActiveInput('scanBag', 'formSuratJalan', () => this.dialogTraceBag)
+                })
                 this.getDestination2()
                 this.getNoModeAngkutan()
                 // this.getLov();
@@ -921,26 +923,6 @@ export default {
     },
     mounted() {
         this.handlePrintShortcut(this.print)
-
-        // NOTES: FOR AUTO FOCUS SCAN BAG IF UNSELECT DATE TIME
-        this._scanBagClickHandler = (e) => {
-            const scanBagInput = this.getInputByRef('scanBag')
-            if (!scanBagInput) return
-
-            const target = e.target
-
-            if (scanBagInput.contains(target)) return
-            if (target.closest('.el-date-editor, .el-select-dropdown')) return
-            if (this.dialogTraceBag) return
-
-            scanBagInput.focus()
-            this.activeInput = 'scanBag'
-        }
-
-        document.addEventListener('click', this._scanBagClickHandler, true)
-    },
-    beforeUnmount() {
-        document.removeEventListener('click', this._scanBagClickHandler, true)
     },
 }
 </script>

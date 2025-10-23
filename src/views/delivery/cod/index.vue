@@ -250,5 +250,8 @@ export default {
         });
     }
   },
+  mounted() {
+    this.setActiveInput('hrsNumber')
+  }
 };
 </script>
