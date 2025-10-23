@@ -132,12 +132,14 @@ const Master = {
                 }
             }
 
-            // Refocus ke input aktif
             this.$nextTick(() => {
-                const activeEl = this.getInputByRef(this.activeInput)
-                if (activeEl && document.activeElement !== activeEl) {
-                    activeEl.focus()
-                }
+                // Wait one paint frame to let browser finish processing the blur event
+                requestAnimationFrame(() => {
+                    const activeEl = this.getInputByRef(this.activeInput)
+                    if (activeEl && document.activeElement !== activeEl) {
+                        activeEl.focus()
+                    }
+                })
             })
         },
 

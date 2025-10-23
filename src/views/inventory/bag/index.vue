@@ -85,6 +85,7 @@
                                     :valueData="item_number"
                                     :hasBarcode="true"
                                     :enter_to_update="true"
+                                    :disabled="dialogActiveManualDestination"
                                     @click-icon="handleIconClick"
                                     @updateValue="updateValue"
                                     @enterUpdate="processItem"
@@ -315,9 +316,14 @@ export default {
 
         openDialog() {
             this.dialogActiveManualDestination = true
+            this.autoFocusInput(this.dialogActiveManualDestination)
         },
         closeDialog() {
             this.dialogActiveManualDestination = false
+            this.autoFocusInput(this.dialogActiveManualDestination)
+        },
+        autoFocusInput(value) {
+            this.setActiveInput('scanItem', null, () => value)
         },
     },
     created() {

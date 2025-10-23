@@ -143,12 +143,12 @@
                                 label-placeholder="Masukkan Koli/Connote"
                                 v-on:keyup.enter="addBagDetail"
                                 icon-after
-                                :autofocus="true"
                                 v-uppercase
                                 ref="formInputBaggingKoli"
                                 @click-icon="$refs.cameraScanner.open('formInputBaggingKoli')"
                                 v-bind:data-kt="'scan_input'"
                                 :data-testid="`input-item_number`"
+                                :disabled="dialogActive"
                                 @input="sanitizeAlphanumeric('item_number')"
                             >
                                 <template #icon>
@@ -164,10 +164,10 @@
                                 label-placeholder="Masukkan code Bag"
                                 v-on:keyup.enter="addBagDetail"
                                 icon-after
-                                :autofocus="true"
                                 v-uppercase
                                 :data-testid="`input-item_number`"
                                 ref="formInputBaggingBag"
+                                :disabled="dialogActive"
                                 @click-icon="$refs.cameraScanner.open('formInputBaggingBag')"
                                 v-bind:data-kt="'scan_input'"
                                 @input="sanitizeAlphanumeric('item_number')"
@@ -216,24 +216,27 @@
                         formKey="destination"
                         :querySearch="querySearch"
                         :selectedValue="destinationLabel"
-                        :disabled="disabledApprove && !loading"
+                        :disabled="(disabledApprove && !loading) || dialogActive"
                         @inputFocus="inputFocus"
                         @updateValue="updateValue"
+                        @click.native="focusDestinationInput"
                     />
                 </vs-col>
                 <vs-col xs="12" sm="4" lg="2">
                     <span class="c-label">Weight</span>
                     <vs-input
+                        ref="weight"
                         v-model="weight"
                         type="text"
                         border
                         name="weight"
                         placeholder="Weight"
-                        :disabled="disabledApprove && !loading"
+                        :disabled="(disabledApprove && !loading) || dialogActive"
                         @keypress="onlyNumber"
                         @keyup.enter="updateBag"
                         icon-after
                         :data-testid="`input-weight`"
+                        @click="focusWeightInput"
                     >
                         <template #icon> Kg </template>
                     </vs-input>
@@ -490,6 +493,7 @@ export default {
             tipe_bag: '',
 
             autoCompleteUrl: '',
+            dialogActive: false,
         }
     },
     watch: {
@@ -759,29 +763,29 @@ export default {
         },
         openDialogTransit() {
             this.dialogTransitActive = true
+            this.setInputFocus2(this.dialogTransitActive)
         },
         closeDialogTransit() {
             this.dialogTransitActive = false
+            this.setInputFocus2(this.dialogTransitActive)
         },
         editBag() {
             this.dialogHelpdeskEditBag = true
         },
         setInputFocus() {
-            this.$nextTick(() => {
-                let inputElement = null
-                if (this.is_masterbag) {
-                    inputElement = this.$refs.formInputBaggingKoli?.$el.querySelector('input')
-                } else {
-                    inputElement = this.$refs.formInputBaggingBag?.$el.querySelector('input')
-                }
-                if (inputElement) {
-                    inputElement.focus()
-                }
-
-                if (inputElement) {
-                    inputElement.focus()
-                }
-            })
+            if (this.is_masterbag) {
+                this.setActiveInput('formInputBaggingBag')
+            } else {
+                this.setActiveInput('formInputBaggingKoli')
+            }
+        },
+        setInputFocus2(val) {
+            this.dialogActive = val
+            if (this.is_masterbag) {
+                this.setActiveInput('formInputBaggingBag', null, () => this.dialogActive)
+            } else {
+                this.setActiveInput('formInputBaggingKoli', null, () => this.dialogActive)
+            }
         },
         approveAction(val) {
             if (
@@ -845,6 +849,12 @@ export default {
                     )
                 })
             this.loadingConfirmUnpproveBag = false
+        },
+        focusWeightInput() {
+            this.setActiveInput('weight')
+        },
+        focusDestinationInput() {
+            this.setActiveInput('destination')
         },
     },
     mounted() {

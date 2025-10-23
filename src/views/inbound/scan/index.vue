@@ -674,11 +674,11 @@ export default {
 
             if (!this.dialogActive) {
                 if (!this.hasInboundNumber && !this.is_prealert) {
-                    this.setActiveInput('formInputParentInbound', null)
+                    this.setActiveInput('formInputParentInbound', null, () => this.dialogActive)
                 } else if (this.hasInboundNumber && !this.is_prealert) {
-                    this.setActiveInput('formInputChildInbound', null)
+                    this.setActiveInput('formInputChildInbound', null, () => this.dialogActive)
                 } else if (this.is_prealert) {
-                    this.setActiveInput('formInputInbound', null)
+                    this.setActiveInput('formInputInbound', null, () => this.dialogActive)
                 }
             }
         },

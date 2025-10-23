@@ -21,6 +21,7 @@
                     name="Bag Destination"
                     formKey="destination"
                     rules="required"
+                    ref="destination"
                     :querySearch="querySearch"
                     :selectedValue="destinationLabel"
                     @inputFocus="inputFocus"
@@ -100,6 +101,13 @@ export default {
         },
         listenLoading() {
             return this.loading
+        },
+    },
+    watch: {
+        active(val) {
+            if (val) {
+                this.setActiveInput('destination')
+            }
         },
     },
     methods: {
