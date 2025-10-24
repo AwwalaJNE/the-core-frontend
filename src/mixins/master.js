@@ -11,10 +11,16 @@ import helper from '@/helper.js'
 import moment from 'moment'
 import axios from 'axios'
 
+import Vue from 'vue'
+
 import successSound from '@/assets/sound/success.mp3'
 import failedSound from '@/assets/sound/failed.mp3'
 import warnSound from '@/assets/sound/warn.mp3'
 import defaultSound from '@/assets/sound/default.mp3'
+
+import joniNgintip from '@/assets/svg/mascot-ngintip.svg'
+
+import DialogMaster from '@/components/dialog/DialogMaster.vue'
 
 // import { parse } from "vue-currency-input";
 const Master = {
@@ -201,35 +207,34 @@ const Master = {
         },
         openNotification(type = null, code, title, msg) {
             this.playNotificationSound(type)
+
             if (type === 'success') {
                 return
-            }
-
-            const notifications = document.querySelectorAll('.vs-notification')
-            for (const notification of notifications) {
-                const message = notification.querySelector('p').textContent
-                if (msg === message) {
-                    return
+            } else if (type === 'warn') {
+                const notifications = document.querySelectorAll('.vs-notification')
+                for (const notification of notifications) {
+                    const message = notification.querySelector('p').textContent
+                    if (msg === message) {
+                        return
+                    }
                 }
-            }
 
-            // type success, danger, warn
-            const noti = this.$vs.notification({
-                duration: 3000,
-                progress: 'auto',
-                color: type,
-                position: 'top-right',
-                title: `
+                const noti = this.$vs.notification({
+                    duration: 3000,
+                    progress: 'auto',
+                    color: type,
+                    position: 'top-right',
+                    title: `
                     <div style="padding-left: 2rem;">
                         ${title}
                     </div>
                 `,
-                text: `
+                    text: `
                     <div style="padding-left: 2rem;">
                         ${msg}
                     </div>
                 `,
-                icon: `
+                    icon: `
                     <div style="display: flex; flex-direction: column; align-items: center; min-width: 64px; margin-left: 30px;">
                         <i class="bx ${
                             type === 'success' || type === 'success-with-notif'
@@ -241,7 +246,104 @@ const Master = {
                         </div>
                     </div>
                 `,
-            })
+                })
+            } else if (type === 'danger') {
+                const DialogConstructor = Vue.extend(DialogMaster)
+                const instance = new DialogConstructor({
+                    propsData: {
+                        actived: true,
+                        width: 'md',
+                        hideCloseIcon: false,
+                        closeDialog: () => {
+                            instance.modalActive = false
+                        },
+                    },
+                })
+
+                instance.$mount()
+                document.body.appendChild(instance.$el)
+
+                // === SLOT HEADER ===
+                instance.$slots.header = [
+                    instance.$createElement('div', {
+                        domProps: {
+                            innerHTML: `
+                                <div 
+                                    style="
+                                        background:#ff4d4f;
+                                        border-radius:12px 12px 0 0;
+                                        position:relative;
+                                        height:110px;
+                                        display:flex;
+                                        justify-content:center;
+                                    "
+                                >
+                                    <img 
+                                        src="${joniNgintip}" 
+                                        alt="mascot" 
+                                        style="
+                                            position: absolute;
+                                            bottom: -15px;
+                                            height: 90px;
+                                        " 
+                                    />
+                                </div>
+                            `,
+                        },
+                    }),
+                ]
+
+                // === SLOT CONTENT ===
+                instance.$slots.content = [
+                    instance.$createElement('div', {
+                        domProps: {
+                            innerHTML: `
+                                <div 
+                                    style="
+                                        text-align: center;
+                                        padding: 40px 20px 25px;
+                                    "
+                                >
+                                    <h2 
+                                        style="
+                                            margin: 0;
+                                            color: #333;
+                                            font-weight: 600;
+                                        "
+                                    >
+                                        ${title || 'Error'}
+                                    </h2>
+                                    ${
+                                        code
+                                            ? `<div style="color: #999; margin-top: 4px;">${code}</div>`
+                                            : ''
+                                    }
+                                    <div 
+                                        style="margin-top: 10px; font-size: 15px; color:#555;"
+                                    >
+                                        ${msg || ''}
+                                    </div>
+                                    <a 
+                                        href="/help/error-dictionary" 
+                                        style="
+                                            display: inline-block;
+                                            margin-top: 14px;
+                                            color: #409EFF;
+                                            font-size: 14px;
+                                            text-decoration: underline;
+                                        "
+                                    >
+                                        What does this means?
+                                    </a>
+                                </div>
+                            `,
+                        },
+                    }),
+                ]
+
+                instance.$forceUpdate()
+                instance.modalActive = true
+            }
         },
         openNotificationCenter(type = null, code, title, msg) {
             this.playNotificationSound(type)
