@@ -311,6 +311,19 @@ export default {
                 this.setActiveInput('removeKoliCode', null)
             }
         },
+        handleTabFocus(e) {
+            if (e.key !== 'Tab') return
+
+            const refs = ['koliCode', 'removeKoliCode']
+
+            e.preventDefault()
+
+            const currentIndex = refs.indexOf(this.activeInput)
+            const nextIndex = (currentIndex + 1) % refs.length
+
+            const nextRef = refs[nextIndex]
+            this.setActive(nextRef)
+        },
         refresh(){
             let from = '';
             let to = '';
@@ -645,9 +658,13 @@ export default {
         window.removeEventListener('timezone-changed', this.refresh);
     },
     mounted() {
+        window.addEventListener('keydown', this.handleTabFocus)
         window.addEventListener('timezone-changed', this.refresh);
         this.setActiveInput('koliCode', null)
         this.refresh()   
-    }
+    },
+    beforeUnmount() {
+        window.removeEventListener('keydown', this.handleTabFocus)
+    },
 }
 </script>
