@@ -34,6 +34,7 @@
                                 @keydown.enter="updateValueBag"
                                 @click-icon="$refs.cameraScanner.open('formInputBag')"
                                 @focus="activeInput = 'formInputBag'"
+                                @click="setActive('formInputBag')"
                             >
                                 <template #icon>
                                 <i class="bx bx-barcode-reader" />
@@ -53,10 +54,12 @@
                             label-placeholder="Scan Connote Here"
                             icon-after
                             v-uppercase
+                            autofocus
                             :disabled="disabledApprove"
                             @keydown.enter="updateValue"
                             @click-icon="$refs.cameraScanner.open('formInputConnote')"
                             @focus="activeInput = 'formInputConnote'"
+                            @click="setActive('formInputConnote')"
                         >
                             <template #icon>
                                 <i class="bx bx-barcode-reader" />
@@ -78,6 +81,7 @@
                             @keydown.enter="removeValue"
                             @click-icon="$refs.cameraScanner.open('formRemoveConnote')"
                             @focus="activeInput = 'formRemoveConnote'"
+                            @click="setActive('formRemoveConnote')"
                         >
                             <template #icon>
                                 <i class="bx bx-barcode-reader" />
@@ -379,30 +383,60 @@ export default {
     beforeDestroy() {
         window.removeEventListener('timezone-changed', this.reload);
     },
+    beforeUnmount() {
+        window.removeEventListener('keydown', this.handleTabNavigation);
+    },
     mounted() {
+        this.allowedRefs = ['formInputBag', 'formInputConnote', 'formRemoveConnote'];
+        window.addEventListener('keydown', this.handleTabNavigation);
         window.addEventListener('timezone-changed', this.reload);
         this.getStatus();
-        this.setFocusRemove();
-        this.setFocusPra();
-        this.setFocus();
         this.getDataCourier();
     },
     methods: {
-        setFocus() {
-            this.$nextTick(() => {
-                this.focusInput('formInputConnote')
-            });
-        },
-        setFocusPra() {
-            this.$nextTick(() => {
-                this.focusInput('formInputBag')
-            });
-        },
-        setFocusRemove() {
-            this.$nextTick(() => {
-                this.focusInput('formRemoveConnote')
-            });
-        },
+        setActive(refName) {
+        if (['formInputConnote', 'formInputBag', 'formRemoveConnote'].includes(refName)) {
+            this.setActiveInput(refName, null, () => this.dialogValidateTracingActive);
+        }
+    },
+
+    handleTabNavigation(e) {
+        if (e.key !== 'Tab') return;
+
+        const activeElement = document.activeElement;
+        const refs = this.allowedRefs.map(ref => this.$refs[ref]).filter(Boolean);
+
+        const activeRefIndex = refs.findIndex(ref => {
+            const inputEl = ref?.$el?.querySelector('input');
+            return inputEl === activeElement;
+        });
+
+        e.preventDefault(); // blok tab default
+
+        // jika belum ada yang aktif, arahkan ke input pertama
+        if (activeRefIndex === -1) {
+            this.focusRef(this.allowedRefs[0]);
+            return;
+        }
+
+        // tentukan ref berikutnya
+        const nextIndex = (activeRefIndex + 1) % refs.length;
+        this.focusRef(this.allowedRefs[nextIndex]);
+    },
+
+    focusRef(refName) {
+        const ref = this.$refs[refName];
+        if (!ref) return;
+
+        // ambil elemen input asli dari dalam vs-input
+        const el = ref.$el?.querySelector('input');
+        if (el && typeof el.focus === 'function') {
+            el.focus();
+        }
+
+        // set status aktif kamu
+        this.setActive(refName);
+    },
         reload() {
             this.getDataDelivery();
         },

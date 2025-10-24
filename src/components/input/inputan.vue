@@ -5,7 +5,7 @@
 -->
 
 <template>
-    <ValidationProvider class="validation" :name="name" :rules="rules" v-slot="{ errors }">
+    <ValidationProvider class="validation" :name="name" :rules="rules" v-slot="{ errors }" @click="setActiveInput(name)">
         <slot name='inputan' v-bind:err="errors[0]"></slot>
         <p v-if="errors[0]" class="err-message">{{ errors[0] }}</p>
     </ValidationProvider>
