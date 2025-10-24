@@ -256,12 +256,23 @@ const Master = {
                         hideCloseIcon: false,
                         closeDialog: () => {
                             instance.modalActive = false
+                            clearInterval(instance.timer)
                         },
+                    },
+                    data() {
+                        return {
+                            progress: 100,
+                            timer: null,
+                        }
                     },
                 })
 
                 instance.$mount()
                 document.body.appendChild(instance.$el)
+
+                const bgColor = '#ff4d4f'
+                const duration = 5000
+                const step = 100 / (duration / 200)
 
                 // === SLOT HEADER ===
                 instance.$slots.header = [
@@ -270,7 +281,7 @@ const Master = {
                             innerHTML: `
                                 <div 
                                     style="
-                                        background:#ff4d4f;
+                                        background:${bgColor};
                                         border-radius:12px 12px 0 0;
                                         position:relative;
                                         height:110px;
@@ -341,8 +352,49 @@ const Master = {
                     }),
                 ]
 
+                // === SLOT FOOTER ===
+                instance.$slots.footer = [
+                    instance.$createElement('div', {
+                        style: `
+                            position: relative;
+                            width: 100%;
+                            height: 4px;
+                            border-radius: 0 0 12px 12px;
+                            overflow: hidden;
+                        `,
+                        ref: 'progressWrapper',
+                    }),
+                ]
+
                 instance.$forceUpdate()
                 instance.modalActive = true
+
+                // === Progress Bar Element ===
+                instance.$nextTick(() => {
+                    const bar = document.createElement('div')
+                    bar.style = `
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        height: 100%;
+                        width: ${instance.progress}%;
+                        background: ${bgColor};
+                        transition: width 0.2s linear;
+                    `
+                    instance.$refs.progressWrapper.appendChild(bar)
+
+                    // === Timer logic ===
+                    instance.timer = setInterval(() => {
+                        instance.progress -= step
+                        if (instance.progress <= 0) {
+                            clearInterval(instance.timer)
+                            bar.style.width = '0%'
+                            instance.modalActive = false
+                        } else {
+                            bar.style.width = `${instance.progress}%`
+                        }
+                    }, 200)
+                })
             }
         },
         openNotificationCenter(type = null, code, title, msg) {
