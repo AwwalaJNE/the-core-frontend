@@ -366,6 +366,23 @@ export default {
                 this.setActiveInput('removeKoliCode', null, () => this.dialogValidateTracingActive)
             }
         },
+        handleTabFocus(e) {
+            if (e.key !== 'Tab') return
+
+            // Daftar input yang boleh fokus
+            const refs = ['koliCode', 'removeKoliCode']
+
+            // Cegah perilaku tab default (pindah ke input lain)
+            e.preventDefault()
+
+            // Cari index ref yang sedang aktif
+            const currentIndex = refs.indexOf(this.activeInput)
+            const nextIndex = (currentIndex + 1) % refs.length // looping
+
+            // Pindah fokus ke ref berikutnya
+            const nextRef = refs[nextIndex]
+            this.setActive(nextRef)
+        },
         async getTableData(limit, page, q, from, to) {
             this.loading = true;
 
@@ -588,13 +605,17 @@ export default {
         }
     },
     mounted() {
+        window.addEventListener('keydown', this.handleTabFocus)
         window.addEventListener('timezone-changed', this.refresh);
         this.setActiveInput('koliCode', null, () => this.dialogValidateTracingActive)
         this.refresh();
     },
     beforeDestroy () {
         window.removeEventListener('timezone-changed', this.refresh);
-    }
+    },
+    beforeUnmount() {
+        window.removeEventListener('keydown', this.handleTabFocus)
+    },
 }
 </script>
 <style scoped>
