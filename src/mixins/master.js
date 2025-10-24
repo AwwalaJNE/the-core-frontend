@@ -271,18 +271,18 @@ const Master = {
                 document.body.appendChild(instance.$el)
 
                 // inject CSS (hilangkan margin/padding bawaan)
-                const styleTag = document.createElement('style')
-                styleTag.textContent = `
-                    .vs-dialog-content,
-                    .vs-dialog__content,
-                    .con-form,
-                    .footer-dialog,
-                    .not-margin {
-                        margin: 0 !important;
-                        padding: 0 !important;
-                    }
-                `
-                document.head.appendChild(styleTag)
+                // const styleTag = document.createElement('style')
+                // styleTag.textContent = `
+                //     .vs-dialog-content,
+                //     .vs-dialog__content,
+                //     .con-form,
+                //     .footer-dialog,
+                //     .not-margin {
+                //         margin: 0 !important;
+                //         padding: 0 !important;
+                //     }
+                // `
+                // document.head.appendChild(styleTag)
 
                 const bgColor = '#ff4d4f'
                 const duration = 3000
@@ -371,7 +371,7 @@ const Master = {
                     instance.$createElement('div', {
                         style: `
                             position: relative;
-                            width: 100%;
+                            width: 98%;
                             height: 8px;
                             border-radius: 0 0 20px 20px;
                             overflow: hidden;
