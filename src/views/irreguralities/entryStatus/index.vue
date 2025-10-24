@@ -305,7 +305,6 @@ export default {
     },
     methods: {
         setActive(refName) {
-            console.log(refName)
             if (refName === 'koliCode') {
                 this.setActiveInput('koliCode', null)
             } else if (refName === 'removeKoliCode') {

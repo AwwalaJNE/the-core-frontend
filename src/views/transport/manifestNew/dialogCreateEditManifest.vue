@@ -170,8 +170,7 @@
                                     v-model="item_number"
                                     v-on:keyup.enter="updateValue"
                                     v-uppercase
-                                    :autofocus="true"
-                                    :disabled="isDisabled"
+                                    :disabled="isDisabled || isAnyDialogOpen"
                                     :data-testid="`input-item_number`"
                                     @click-icon="handleIconClick"
                                     @input="sanitizeAlphanumeric('item_number')"
@@ -210,14 +209,34 @@
         <dialog-trace-bag
             title="Trace Bag Activity"
             :active="dialogTraceBag"
-            :closeDialog="() => (dialogTraceBag = false)"
+            :closeDialog="
+                () => {
+                    this.dialogTraceBag = false
+                    this.isAnyDialogOpen = false
+                    this.setActiveInput(
+                        'formInputItemManifest',
+                        'formSuratMuatanController',
+                        () => this.isAnyDialogOpen
+                    )
+                }
+            "
             :bag_number="selectedBagNumber"
         />
 
         <dialog-select-manifest-stock
             title="Pilih Stock"
             :active="showSelectStockModal"
-            :close="() => (showSelectStockModal = false)"
+            :close="
+                () => {
+                    this.showSelectStockModal = false
+                    this.isAnyDialogOpen = false
+                    this.setActiveInput(
+                        'formInputItemManifest',
+                        'formSuratMuatanController',
+                        () => this.isAnyDialogOpen
+                    )
+                }
+            "
             :mode="manifest_method_id"
             @selectManifest="handleSelectManifest"
         />
@@ -401,6 +420,7 @@ export default {
             vehicle_form: [],
             vehicle: [],
             selected_manifest_vehicle: '',
+            isAnyDialogOpen: false,
         }
     },
     computed: {
@@ -465,6 +485,14 @@ export default {
                     await this.getEditDataByApi()
                 }
 
+                this.$nextTick(() => {
+                    this.setActiveInput(
+                        'formInputItemManifest',
+                        'formSuratMuatanController',
+                        () => this.isAnyDialogOpen
+                    )
+                })
+
                 this.getDataVehicleMode()
                 this.originNode()
             }
@@ -523,10 +551,12 @@ export default {
         openSelectStockModal() {
             if (!this.isDisabled) {
                 this.showSelectStockModal = true
+                this.isAnyDialogOpen = true
             }
         },
         closeSelectStockModal() {
             this.showSelectStockModal = false
+            this.sisAnyDialogOpen = false
         },
         getEditData(val) {
             this.is_sm_edit = true
@@ -777,6 +807,7 @@ export default {
                 case 'trace_bag':
                     this.selectedBagNumber = val.item_number
                     this.dialogTraceBag = true
+                    this.isAnyDialogOpen = true
                     break
                 default:
             }
@@ -1061,6 +1092,11 @@ export default {
                 )
             } finally {
                 this.loading = false
+                this.setActiveInput(
+                    'formInputItemManifest',
+                    'formSuratMuatanController',
+                    () => this.isAnyDialogOpen
+                )
             }
         },
         async removeSuratMuatanDetail() {
@@ -1318,6 +1354,9 @@ export default {
             this.manifest_method_id = 0
         },
         updateValue() {
+            if (!this.item_number || this.item_number.trim() === '') {
+                return
+            }
             this.$refs.formSuratMuatanController.handleSubmit()
         },
         onChangeCustom(type, val, info = {}) {
@@ -1468,6 +1507,7 @@ export default {
         },
         openTraceBagDialog() {
             this.dialogTraceBag = true
+            this.isAnyDialogOpen = true
         },
         updateVehicleValue(form) {
             let form_id = Date.now() + Math.random()
@@ -1514,13 +1554,22 @@ export default {
         },
         openDialogCreateSmStock() {
             this.dialogActiveStock = true
+            this.isAnyDialogOpen = true
         },
         closeDialogCreateSmStock() {
             this.dialogActiveStock = false
+            this.isAnyDialogOpen = false
+
+            this.setActiveInput(
+                'formInputItemManifest',
+                'formSuratMuatanController',
+                () => this.isAnyDialogOpen
+            )
         },
         openDialogManageVehicleManifest() {
             if (this.is_sm_edit) {
                 this.dialogManageVehicleManifest = true
+                this.isAnyDialogOpen = true
             } else {
                 if (this.manifest_method_id === 0) {
                     this.openNotification(
@@ -1531,11 +1580,19 @@ export default {
                     )
                 } else {
                     this.dialogManageVehicleManifest = true
+                    this.isAnyDialogOpen = true
                 }
             }
         },
         closeDialogManageVehicleManifest() {
             this.dialogManageVehicleManifest = false
+            this.isAnyDialogOpen = false
+
+            this.setActiveInput(
+                'formInputItemManifest',
+                'formSuratMuatanController',
+                () => this.isAnyDialogOpen
+            )
 
             if (this.is_sm_edit) {
                 this.getManifestVehicle()
