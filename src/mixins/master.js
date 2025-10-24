@@ -270,8 +270,22 @@ const Master = {
                 instance.$mount()
                 document.body.appendChild(instance.$el)
 
+                // inject CSS (hilangkan margin/padding bawaan)
+                const styleTag = document.createElement('style')
+                styleTag.textContent = `
+                    .vs-dialog-content,
+                    .vs-dialog__content,
+                    .con-form,
+                    .footer-dialog,
+                    .not-margin {
+                        margin: 0 !important;
+                        padding: 0 !important;
+                    }
+                `
+                document.head.appendChild(styleTag)
+
                 const bgColor = '#ff4d4f'
-                const duration = 5000
+                const duration = 3000
                 const step = 100 / (duration / 200)
 
                 // === SLOT HEADER ===
@@ -282,7 +296,7 @@ const Master = {
                                 <div 
                                     style="
                                         background:${bgColor};
-                                        border-radius:12px 12px 0 0;
+                                        border-radius:20px 20px 0 0;
                                         position:relative;
                                         height:110px;
                                         display:flex;
@@ -294,7 +308,7 @@ const Master = {
                                         alt="mascot" 
                                         style="
                                             position: absolute;
-                                            bottom: -15px;
+                                            bottom: -5px;
                                             height: 90px;
                                         " 
                                     />
@@ -358,8 +372,8 @@ const Master = {
                         style: `
                             position: relative;
                             width: 100%;
-                            height: 4px;
-                            border-radius: 0 0 12px 12px;
+                            height: 8px;
+                            border-radius: 0 0 20px 20px;
                             overflow: hidden;
                         `,
                         ref: 'progressWrapper',
