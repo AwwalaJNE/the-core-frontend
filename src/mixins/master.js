@@ -253,6 +253,7 @@ const Master = {
                     propsData: {
                         actived: true,
                         width: 'md',
+                        className: 'dialog-danger',
                         hideCloseIcon: false,
                         closeDialog: () => {
                             instance.modalActive = false
@@ -271,18 +272,18 @@ const Master = {
                 document.body.appendChild(instance.$el)
 
                 // inject CSS (hilangkan margin/padding bawaan)
-                // const styleTag = document.createElement('style')
-                // styleTag.textContent = `
-                //     .vs-dialog-content,
-                //     .vs-dialog__content,
-                //     .con-form,
-                //     .footer-dialog,
-                //     .not-margin {
-                //         margin: 0 !important;
-                //         padding: 0 !important;
-                //     }
-                // `
-                // document.head.appendChild(styleTag)
+                const styleTag = document.createElement('style')
+                styleTag.textContent = `
+                    .dialog-danger .vs-dialog-content,
+                    .dialog-danger .vs-dialog__content,
+                    .dialog-danger .con-form,
+                    .dialog-danger .footer-dialog,
+                    .dialog-danger .not-margin {
+                        margin: 0 !important;
+                        padding: 0 !important;
+                    }
+                `
+                document.head.appendChild(styleTag)
 
                 const bgColor = '#ff4d4f'
                 const duration = 3000
@@ -390,7 +391,7 @@ const Master = {
                         position: absolute;
                         top: 0;
                         left: 0;
-                        height: 100%;
+                        height: 98%;
                         width: ${instance.progress}%;
                         background: ${bgColor};
                         transition: width 0.2s linear;
