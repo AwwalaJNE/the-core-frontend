@@ -20,7 +20,7 @@ import defaultSound from '@/assets/sound/default.mp3'
 
 import joniNgintip from '@/assets/svg/mascot-ngintip.svg'
 
-import DialogMaster from '@/components/dialog/DialogMaster.vue'
+import DialogMaster from '@/components/dialog/dialogMaster.vue'
 
 // import { parse } from "vue-currency-input";
 const Master = {
