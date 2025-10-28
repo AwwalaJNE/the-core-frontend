@@ -359,18 +359,22 @@ const Master = {
                                     >
                                         ${msg || ''}
                                     </div>
-                                    <a 
-                                        href="/help/error-dictionary" 
-                                        style="
-                                            display: inline-block;
-                                            margin-top: 14px;
-                                            color: #409EFF;
-                                            font-size: 14px;
-                                            text-decoration: underline;
-                                        "
-                                    >
-                                        What does this means?
-                                    </a>
+                                    ${
+                                        code
+                                            ? `<a 
+                                                href="/help/error-dictionary?s=${code}" 
+                                                style="
+                                                    display: inline-block;
+                                                    margin-top: 14px;
+                                                    color: #409EFF;
+                                                    font-size: 14px;
+                                                    text-decoration: underline;
+                                                "
+                                            >
+                                                What does this mean?
+                                            </a>`
+                                            : ''
+                                    }
                                 </div>
                             `,
                         },
