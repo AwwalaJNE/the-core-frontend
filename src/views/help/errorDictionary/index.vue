@@ -12,8 +12,20 @@
         <section class="nodes">
             <div class="box view">
                 <template>
+                    <vs-row justify="end">
+                        <vs-col>
+                            <search-input
+                                key="searchInput"
+                                ref="searchInput"
+                                :placeholder="searchPlaceholder"
+                                @searchValue="searchValue"
+                            />
+                        </vs-col>
+                    </vs-row>
+                </template>
+                <template>
                     <transition name="slide-fade">
-                        <help-table :ref="'HelpTable'" />
+                        <help-table :ref="'HelpTable'" :query="tempSearch" />
                     </transition>
                 </template>
             </div>
@@ -24,6 +36,7 @@
 import master from '@/mixins/master'
 import NavItem from '@/components/navbar/navTab'
 import Breadcrumb from '@/components/breadcrumb/index'
+import SearchInput from '@/components/search/searchInput'
 
 import HelpTable from '@/views/help/errorDictionary/helpTable'
 
@@ -34,11 +47,19 @@ export default {
         'nav-item': NavItem,
         breadcrumb: Breadcrumb,
         'help-table': HelpTable,
+        'search-input': SearchInput,
     },
     data() {
         return {
             title: 'Error Dictionary',
+            tempSearch: '',
+            searchPlaceholder: 'Search...',
         }
+    },
+    methods: {
+        searchValue(val) {
+            this.tempSearch = val
+        },
     },
 }
 </script>
