@@ -1,89 +1,122 @@
 <template>
-  <div>
-    <table-master 
-      hideColumnKey="error-dictionary"
-      :dataTable="dataTable"
-      :dataColumn="datacolumn"
-      :tableLoading="loading"
-      :hasAction="false"
-      :hasPagination="false"
-    />
-  </div>
-</template>
-<script>
-import axios from "axios";
-import master from "@/mixins/master";
-import TableMaster from "@/components/table/tableMaster.vue";
-export default {
-  name: "error-dictionary",
-  mixins: [master],
-  components: {
-    "table-master": TableMaster,
-  },
-  data() {
-    return {
-      dataTable: [],
-      datacolumn: [
-        {
-          label: "Error Code",
-          key: "code",
-          width: "xs",
-        },
-        {
-          label: "Section",
-          key: "section",
-          width: "xs",
-        },
-        {
-          label: "Message",
-          key: "message",
-          width: "auto",
-        },
-        {
-          label: "Description",
-          key: "description",
-          width: "auto",
-        },
-      ],
-      loading: false,
-    };
-  },
-  methods: {
-    async getTableData() {
-      this.loading = true;
-      await axios
-        .get(
-          this.URL.documentation +
-            `/error?n=${this.listenNodeId}`,
-          this.Helper.header()
-        )
-        .then((res) => {
-          let apiData = []
-          for (const [key, value] of Object.entries(res.data.data)) {
-            apiData.push({
-              code: key,
-              section: value.section,
-              message: value.message,
-              description: value.description
-            })
-          }
+    <div>
+        <vs-row justify="end">
+            <vs-col>
+                <search-input
+                    ref="searchInput"
+                    :valueData="tempSearch"
+                    :placeholder="searchPlaceholder"
+                    @searchValue="searchValue"
+                />
+            </vs-col>
+        </vs-row>
 
-          this.dataTable = apiData
-          this.loading = false;
-        })
-        .catch((err) => {
-          this.loading = false;
-          this.openNotification(
-            "danger",
-            err.response ? err.response.data.code : '',
-            err.response?.data?.message ?? "Fail to populate dictionary",
-            err
-          );
-        });
+        <table-master
+            hideColumnKey="error-dictionary"
+            :dataTable="dataTable"
+            :dataColumn="dataColumn"
+            :tableLoading="loading"
+            :hasAction="false"
+            :hasPagination="false"
+        />
+    </div>
+</template>
+
+<script>
+import axios from 'axios'
+import master from '@/mixins/master'
+import TableMaster from '@/components/table/tableMaster.vue'
+import SearchInput from '@/components/search/searchInput.vue'
+
+export default {
+    name: 'error-dictionary',
+    mixins: [master],
+    components: {
+        'table-master': TableMaster,
+        'search-input': SearchInput,
     },
-  },
-  mounted() {
-    this.getTableData()
-  }
-};
+    data() {
+        return {
+            dataTable: [],
+            dataColumn: [
+                {
+                    label: 'Error Code',
+                    key: 'code',
+                    width: 'xs',
+                },
+                {
+                    label: 'Section',
+                    key: 'section',
+                    width: 'xs',
+                },
+                {
+                    label: 'Message',
+                    key: 'message',
+                    width: 'auto',
+                },
+                {
+                    label: 'Description',
+                    key: 'description',
+                    width: 'auto',
+                },
+            ],
+            loading: false,
+            tempSearch: '',
+            searchPlaceholder: 'Search...',
+        }
+    },
+    watch: {
+        tempSearch: function (val, old) {
+            if (val !== undefined) {
+                this.getTableData(val)
+            }
+        },
+    },
+    methods: {
+        async getTableData(q = '') {
+            this.loading = true
+            try {
+                const res = await axios.get(
+                    `${this.URL.documentation}/error?n=${this.listenNodeId}&s=${q}`,
+                    this.Helper.header()
+                )
+                this.dataTable = Object.entries(res.data.data).map(([code, details]) => ({
+                    code,
+                    ...details,
+                }))
+            } catch (err) {
+                this.openNotification(
+                    'danger',
+                    err.response?.data?.code || '',
+                    err.response?.data?.message ?? 'Failed to load error dictionary',
+                    err
+                )
+            } finally {
+                this.loading = false
+            }
+        },
+        searchValue(val) {
+            this.tempSearch = val
+        },
+        refresh() {
+            this.getTableData(this.tempSearch)
+        },
+    },
+    mounted() {
+        const urlParams = new URLSearchParams(window.location.search)
+        const searchParam = urlParams.get('s')
+
+        if (searchParam) {
+            this.tempSearch = searchParam
+            urlParams.delete('s')
+            const queryString = urlParams.toString()
+            const newUrl = queryString
+                ? `${window.location.pathname}?${queryString}`
+                : window.location.pathname
+            window.history.replaceState({}, '', newUrl)
+        } else {
+            this.refresh()
+        }
+    },
+}
 </script>

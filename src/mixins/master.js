@@ -137,7 +137,7 @@ const Master = {
                     return
                 }
             }
-            
+
             this.$nextTick(() => {
                 // Wait one paint frame to let browser finish processing the blur event
                 requestAnimationFrame(() => {
@@ -296,7 +296,7 @@ const Master = {
                 document.head.appendChild(styleTag)
 
                 const bgColor = '#ff4d4f'
-                const duration = 3000
+                const duration = 5000
                 const step = 100 / (duration / 200)
 
                 // === SLOT HEADER ===
@@ -359,18 +359,22 @@ const Master = {
                                     >
                                         ${msg || ''}
                                     </div>
-                                    <a 
-                                        href="/help/error-dictionary" 
-                                        style="
-                                            display: inline-block;
-                                            margin-top: 14px;
-                                            color: #409EFF;
-                                            font-size: 14px;
-                                            text-decoration: underline;
-                                        "
-                                    >
-                                        What does this means?
-                                    </a>
+                                    ${
+                                        code
+                                            ? `<a 
+                                                href="/help/error-dictionary?s=${code}" 
+                                                style="
+                                                    display: inline-block;
+                                                    margin-top: 14px;
+                                                    color: #409EFF;
+                                                    font-size: 14px;
+                                                    text-decoration: underline;
+                                                "
+                                            >
+                                                What does this mean?
+                                            </a>`
+                                            : ''
+                                    }
                                 </div>
                             `,
                         },
@@ -409,7 +413,20 @@ const Master = {
                     instance.$refs.progressWrapper.appendChild(bar)
 
                     // === Timer logic ===
+                    const dialogEl = instance.$el.querySelector('.vs-dialog')
+                    let isPaused = false
+
+                    if (dialogEl) {
+                        dialogEl.addEventListener('mouseenter', () => {
+                            isPaused = true
+                        })
+                        dialogEl.addEventListener('mouseleave', () => {
+                            isPaused = false
+                        })
+                    }
+
                     instance.timer = setInterval(() => {
+                        if (isPaused) return // skip progress update when hovering inside vs-dialog
                         instance.progress -= step
                         if (instance.progress <= 0) {
                             clearInterval(instance.timer)
