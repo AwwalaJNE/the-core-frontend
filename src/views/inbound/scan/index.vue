@@ -69,6 +69,9 @@
                                                     $refs.cameraScanner.open('formInputInbound')
                                                 "
                                                 @input="sanitizeAlphanumeric('item_no')"
+                                                @keydown.native="
+                                                    handleTabNavigation($event, 'formInputInbound')
+                                                "
                                             >
                                                 <template #icon>
                                                     <i class="bx bx-barcode-reader"></i>
@@ -111,6 +114,12 @@
                                                 $refs.cameraScanner.open('formInputParentInbound')
                                             "
                                             @input="sanitizeAlphanumeric('parent_no')"
+                                            @keydown.native="
+                                                handleTabNavigation(
+                                                    $event,
+                                                    'formInputParentInbound'
+                                                )
+                                            "
                                         >
                                             <template #icon v-if="!hasInboundNumber">
                                                 <i class="bx bx-barcode-reader"></i>
@@ -145,6 +154,9 @@
                                                 $refs.cameraScanner.open('formInputChildInbound')
                                             "
                                             @input="sanitizeAlphanumeric('child_no')"
+                                            @keydown.native="
+                                                handleTabNavigation($event, 'formInputChildInbound')
+                                            "
                                         >
                                             <template #icon>
                                                 <i class="bx bx-barcode-reader"></i>
@@ -679,6 +691,29 @@ export default {
                     this.setActiveInput('formInputChildInbound', null, () => this.dialogActive)
                 } else if (this.is_prealert) {
                     this.setActiveInput('formInputInbound', null, () => this.dialogActive)
+                }
+            }
+        },
+        handleTabNavigation(event, currentInputRef) {
+            if (event.key === 'Tab') {
+                event.preventDefault()
+
+                let inputOrder = []
+                if (!this.is_prealert) {
+                    inputOrder = ['formInputParentInbound', 'formInputChildInbound']
+                } else {
+                    inputOrder = ['formInputInbound']
+                }
+
+                const currentIndex = inputOrder.indexOf(currentInputRef)
+                if (currentIndex === -1) return
+
+                const nextIndex = (currentIndex + 1) % inputOrder.length
+                const nextRef = inputOrder[nextIndex]
+
+                if (this.$refs[nextRef]) {
+                    const nextInput = this.$refs[nextRef].$el.querySelector('input')
+                    if (nextInput) nextInput.focus()
                 }
             }
         },
