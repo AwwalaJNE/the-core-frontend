@@ -175,6 +175,25 @@ const Master = {
             return el?.querySelector ? el.querySelector('input') : el
         },
 
+        handleTabNavigation(event, currentInputRef, inputOrder) {
+            if (event.key === 'Tab') {
+                event.preventDefault()
+
+                if (!inputOrder || !inputOrder.length) return
+
+                const currentIndex = inputOrder.indexOf(currentInputRef)
+                if (currentIndex === -1) return
+
+                const nextIndex = (currentIndex + 1) % inputOrder.length
+                const nextRef = inputOrder[nextIndex]
+
+                if (this.$refs[nextRef]) {
+                    const nextInput = this.$refs[nextRef].$el.querySelector('input')
+                    if (nextInput) nextInput.focus()
+                }
+            }
+        },
+
         moneyformat(number) {
             let val =
                 number != 0

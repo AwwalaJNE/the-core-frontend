@@ -69,6 +69,13 @@
                                                     $refs.cameraScanner.open('formInputInbound')
                                                 "
                                                 @input="sanitizeAlphanumeric('item_no')"
+                                                @keydown.native="
+                                                    handleTabNavigation(
+                                                        $event,
+                                                        'formInputInbound',
+                                                        ['formInputInbound']
+                                                    )
+                                                "
                                             >
                                                 <template #icon>
                                                     <i class="bx bx-barcode-reader"></i>
@@ -111,6 +118,16 @@
                                                 $refs.cameraScanner.open('formInputParentInbound')
                                             "
                                             @input="sanitizeAlphanumeric('parent_no')"
+                                            @keydown.native="
+                                                handleTabNavigation(
+                                                    $event,
+                                                    'formInputParentInbound',
+                                                    [
+                                                        'formInputParentInbound',
+                                                        'formInputChildInbound',
+                                                    ]
+                                                )
+                                            "
                                         >
                                             <template #icon v-if="!hasInboundNumber">
                                                 <i class="bx bx-barcode-reader"></i>
@@ -145,6 +162,16 @@
                                                 $refs.cameraScanner.open('formInputChildInbound')
                                             "
                                             @input="sanitizeAlphanumeric('child_no')"
+                                            @keydown.native="
+                                                handleTabNavigation(
+                                                    $event,
+                                                    'formInputChildInbound',
+                                                    [
+                                                        'formInputParentInbound',
+                                                        'formInputChildInbound',
+                                                    ]
+                                                )
+                                            "
                                         >
                                             <template #icon>
                                                 <i class="bx bx-barcode-reader"></i>
