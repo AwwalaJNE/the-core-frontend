@@ -1,6 +1,7 @@
 <template>
     <div>
         <vs-row justify="end">
+            <vs-col>
                 <search-input
                     ref="searchInput"
                     :placeholder="searchPlaceholder"
@@ -59,9 +60,16 @@ export default {
                 },
             ],
             loading: false,
-            tempSearch: this.$route.query.s || '',
+            tempSearch: '',
             searchPlaceholder: 'Search...',
         }
+    },
+    watch: {
+        tempSearch: function (val, old) {
+            if (val !== undefined) {
+                this.getTableData(val)
+            }
+        },
     },
     methods: {
         async getTableData(q = '') {
@@ -71,7 +79,6 @@ export default {
                     `${this.URL.documentation}/error?n=${this.listenNodeId}&s=${q}`,
                     this.Helper.header()
                 )
-
                 this.dataTable = Object.entries(res.data.data).map(([code, details]) => ({
                     code,
                     ...details,
