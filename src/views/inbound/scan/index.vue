@@ -70,7 +70,11 @@
                                                 "
                                                 @input="sanitizeAlphanumeric('item_no')"
                                                 @keydown.native="
-                                                    handleTabNavigation($event, 'formInputInbound')
+                                                    handleTabNavigation(
+                                                        $event,
+                                                        'formInputInbound',
+                                                        ['formInputInbound']
+                                                    )
                                                 "
                                             >
                                                 <template #icon>
@@ -117,7 +121,11 @@
                                             @keydown.native="
                                                 handleTabNavigation(
                                                     $event,
-                                                    'formInputParentInbound'
+                                                    'formInputParentInbound',
+                                                    [
+                                                        'formInputParentInbound',
+                                                        'formInputChildInbound',
+                                                    ]
                                                 )
                                             "
                                         >
@@ -155,7 +163,14 @@
                                             "
                                             @input="sanitizeAlphanumeric('child_no')"
                                             @keydown.native="
-                                                handleTabNavigation($event, 'formInputChildInbound')
+                                                handleTabNavigation(
+                                                    $event,
+                                                    'formInputChildInbound',
+                                                    [
+                                                        'formInputParentInbound',
+                                                        'formInputChildInbound',
+                                                    ]
+                                                )
                                             "
                                         >
                                             <template #icon>
@@ -691,29 +706,6 @@ export default {
                     this.setActiveInput('formInputChildInbound', null, () => this.dialogActive)
                 } else if (this.is_prealert) {
                     this.setActiveInput('formInputInbound', null, () => this.dialogActive)
-                }
-            }
-        },
-        handleTabNavigation(event, currentInputRef) {
-            if (event.key === 'Tab') {
-                event.preventDefault()
-
-                let inputOrder = []
-                if (!this.is_prealert) {
-                    inputOrder = ['formInputParentInbound', 'formInputChildInbound']
-                } else {
-                    inputOrder = ['formInputInbound']
-                }
-
-                const currentIndex = inputOrder.indexOf(currentInputRef)
-                if (currentIndex === -1) return
-
-                const nextIndex = (currentIndex + 1) % inputOrder.length
-                const nextRef = inputOrder[nextIndex]
-
-                if (this.$refs[nextRef]) {
-                    const nextInput = this.$refs[nextRef].$el.querySelector('input')
-                    if (nextInput) nextInput.focus()
                 }
             }
         },
