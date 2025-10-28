@@ -22,6 +22,7 @@
                                 ref="formInputUnbagging"
                                 icon-after
                                 v-uppercase
+                                :data-testid="`input-formInputUnbagging`"
                                 @keyup.enter.native="updateValue"
                                 @click-icon="$refs.cameraScanner.open('formInputUnbagging')"
                             >

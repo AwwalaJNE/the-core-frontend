@@ -121,6 +121,7 @@
             v-model="selected"
             :isSingleSelect="listenIsSingleSelect"
             :class="{ scrollableAndStaticHeader: scrollableAndStaticHeader }"
+            :data-testid="`table-${hideColumnKey}`"
         >
             <template #header>
                 <template v-if="listenIsSearchAble">
@@ -1018,6 +1019,7 @@
                                                 }"
                                             >
                                                 <span
+                                                    :data-testid="`data-${column.key}-${item.no}`"
                                                     :class="{
                                                         'do-not-wrap':
                                                             column.isTransitTag ||
