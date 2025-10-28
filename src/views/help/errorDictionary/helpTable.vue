@@ -1,42 +1,42 @@
 <template>
     <div>
+        <vs-row justify="end">
+                <search-input
+                    ref="searchInput"
+                    :placeholder="searchPlaceholder"
+                    @searchValue="searchValue"
+                />
+            </vs-col>
+        </vs-row>
+
         <table-master
             hideColumnKey="error-dictionary"
             :dataTable="dataTable"
-            :dataColumn="datacolumn"
+            :dataColumn="dataColumn"
             :tableLoading="loading"
             :hasAction="false"
             :hasPagination="false"
         />
     </div>
 </template>
+
 <script>
 import axios from 'axios'
 import master from '@/mixins/master'
 import TableMaster from '@/components/table/tableMaster.vue'
+import SearchInput from '@/components/search/searchInput.vue'
+
 export default {
     name: 'error-dictionary',
     mixins: [master],
     components: {
         'table-master': TableMaster,
-    },
-    props: {
-        query: String,
-    },
-    watch: {
-        query: function (val, old) {
-            if (val !== undefined) {
-                this.searchValue = val
-                if (this.searchValue !== old) {
-                    this.getTableData(val)
-                }
-            }
-        },
+        'search-input': SearchInput,
     },
     data() {
         return {
             dataTable: [],
-            datacolumn: [
+            dataColumn: [
                 {
                     label: 'Error Code',
                     key: 'code',
@@ -59,13 +59,11 @@ export default {
                 },
             ],
             loading: false,
-            searchValue: this.query ? this.query : '',
+            tempSearch: this.$route.query.s || '',
+            searchPlaceholder: 'Search...',
         }
     },
     methods: {
-        refresh() {
-            this.getTableData(this.searchValue)
-        },
         async getTableData(q = '') {
             this.loading = true
             try {
@@ -74,28 +72,26 @@ export default {
                     this.Helper.header()
                 )
 
-                let apiData = []
-                for (const [key, value] of Object.entries(res.data.data)) {
-                    apiData.push({
-                        code: key,
-                        section: value.section,
-                        message: value.message,
-                        description: value.description,
-                    })
-                }
-
-                this.dataTable = apiData
-                this.loading = false
+                this.dataTable = Object.entries(res.data.data).map(([code, details]) => ({
+                    code,
+                    ...details,
+                }))
             } catch (err) {
                 this.openNotification(
                     'danger',
                     err.response?.data?.code || '',
-                    err.response?.data?.message ?? 'Fail to populate dictionary',
+                    err.response?.data?.message ?? 'Failed to load error dictionary',
                     err
                 )
             } finally {
                 this.loading = false
             }
+        },
+        searchValue(val) {
+            this.tempSearch = val
+        },
+        refresh() {
+            this.getTableData(this.tempSearch)
         },
     },
     mounted() {
