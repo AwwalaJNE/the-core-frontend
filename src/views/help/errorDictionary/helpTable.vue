@@ -66,39 +66,36 @@ export default {
         refresh() {
             this.getTableData(this.searchValue)
         },
-        async getTableData(q) {
+        async getTableData(q = '') {
             this.loading = true
-
-            let query = q || ''
-
-            await axios
-                .get(
-                    this.URL.documentation + `/error?n=${this.listenNodeId}&s=${query}`,
+            try {
+                const res = await axios.get(
+                    `${this.URL.documentation}/error?n=${this.listenNodeId}&s=${q}`,
                     this.Helper.header()
                 )
-                .then((res) => {
-                    let apiData = []
-                    for (const [key, value] of Object.entries(res.data.data)) {
-                        apiData.push({
-                            code: key,
-                            section: value.section,
-                            message: value.message,
-                            description: value.description,
-                        })
-                    }
 
-                    this.dataTable = apiData
-                    this.loading = false
-                })
-                .catch((err) => {
-                    this.loading = false
-                    this.openNotification(
-                        'danger',
-                        err.response ? err.response.data.code : '',
-                        err.response?.data?.message ?? 'Fail to populate dictionary',
-                        err
-                    )
-                })
+                let apiData = []
+                for (const [key, value] of Object.entries(res.data.data)) {
+                    apiData.push({
+                        code: key,
+                        section: value.section,
+                        message: value.message,
+                        description: value.description,
+                    })
+                }
+
+                this.dataTable = apiData
+                this.loading = false
+            } catch (err) {
+                this.openNotification(
+                    'danger',
+                    err.response?.data?.code || '',
+                    err.response?.data?.message ?? 'Fail to populate dictionary',
+                    err
+                )
+            } finally {
+                this.loading = false
+            }
         },
     },
     mounted() {
