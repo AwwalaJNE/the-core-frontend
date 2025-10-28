@@ -103,28 +103,20 @@ export default {
         },
     },
     mounted() {
-        // Get 's' from URL
         const urlParams = new URLSearchParams(window.location.search)
         const searchParam = urlParams.get('s')
 
         if (searchParam) {
             this.tempSearch = searchParam
-
-            // Remove 's' from URL
             urlParams.delete('s')
-
-            // Build new URL
             const queryString = urlParams.toString()
             const newUrl = queryString
                 ? `${window.location.pathname}?${queryString}`
                 : window.location.pathname
-
-            // Replace URL without reloading
             window.history.replaceState({}, '', newUrl)
+        } else {
+            this.refresh()
         }
-
-        // Load table data
-        this.refresh()
     },
 }
 </script>
