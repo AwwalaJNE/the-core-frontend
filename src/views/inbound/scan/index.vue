@@ -189,7 +189,7 @@
                         class="box information"
                         style="height: 100%; display: flex; flex-direction: column"
                     >
-                        <h4 align="left">Information SM/SJ/Pickup Number</h4>
+                        <h4 align="left">Receiving Information</h4>
                         <div class="nav-box" style="flex: 1; overflow: auto">
                             <transition name="slide-fade">
                                 <InboundInformation
@@ -207,10 +207,10 @@
                 <vs-col xs="12" sm="12" lg="12">
                     <div
                         class="box information"
-                        style="padding-top: 10px !important; margin-top: 10px !important"
+                        style="height: 100%; display: flex; flex-direction: column"
                     >
                         <div class="header-remark-bar mb-3">
-                            <h4 class="title">Inbound Detail</h4>
+                            <h4 class="title">Receiving Detail</h4>
                             <template v-if="dataTableProp.length > 0">
                                 <vs-button
                                     class="insert-remark-btn"
