@@ -242,16 +242,16 @@ export default {
 
                 this.openNotification('success', null, 'Success', res?.data?.message || 'Success')
             } catch (err) {
-                // TODO: HIDE & RECHECK LATER
-                // this.openNotification(
-                //     'danger',
-                //     err?.response?.data?.code || '',
-                //     'Failed',
-                //     err?.response?.data?.message || 'Something went wrong'
-                // )
-
-                // TODO: RECHECK LATER
-                this.openDialog()
+                if (['CORE-1146', 'CORE-1082', 'CORE-1156'].includes(err?.response?.data?.code)) {
+                    this.openNotification(
+                        'danger',
+                        err?.response?.data?.code || '',
+                        'Failed',
+                        err?.response?.data?.message || 'Something went wrong'
+                    )
+                } else {
+                    this.openDialog()
+                }
             } finally {
                 this.stopLoading()
             }
