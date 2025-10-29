@@ -890,7 +890,10 @@
                                             >
                                                 <span
                                                     class="text-danger"
-                                                    @click="handleEdit(item)"
+                                                    @click="
+                                                        handleEdit(item)
+                                                        copyToClipboard(item[column.key])
+                                                    "
                                                     >{{
                                                         item[column.key] ? item[column.key] : ''
                                                     }}</span
@@ -901,14 +904,24 @@
                                             >
                                                 <span
                                                     class="text-link priority-link"
-                                                    @click="handleEdit(item)"
+                                                    @click="
+                                                        handleEdit(item)
+                                                        copyToClipboard(item[column.key])
+                                                    "
                                                     v-html="item[column.key]"
                                                 ></span>
                                             </template>
                                             <template v-else>
-                                                <span class="text-link" @click="handleEdit(item)">{{
-                                                    item[column.key] ? item[column.key] : ''
-                                                }}</span>
+                                                <span
+                                                    class="text-link"
+                                                    @click="
+                                                        handleEdit(item)
+                                                        copyToClipboard(item[column.key])
+                                                    "
+                                                    >{{
+                                                        item[column.key] ? item[column.key] : ''
+                                                    }}</span
+                                                >
                                             </template>
                                         </template>
                                         <template
@@ -919,9 +932,16 @@
                                                 hasLinked2.includes(column.key.toLowerCase())
                                             "
                                         >
-                                            <span class="text-link" @click="handleEdit2(item)">{{
-                                                item[column.key] ? item[column.key] : ''
-                                            }}</span>
+                                            <span
+                                                class="text-link"
+                                                @click="
+                                                    handleEdit2(item)
+                                                    copyToClipboard(item[column.key])
+                                                "
+                                                >{{
+                                                    item[column.key] ? item[column.key] : ''
+                                                }}</span
+                                            >
                                         </template>
                                         <template
                                             v-else-if="
@@ -933,9 +953,16 @@
                                                     !item.is_kurir_user)
                                             "
                                         >
-                                            <span class="text-link" @click="handleEdit3(item)">{{
-                                                item[column.key] ? item[column.key] : ''
-                                            }}</span>
+                                            <span
+                                                class="text-link"
+                                                @click="
+                                                    handleEdit3(item)
+                                                    copyToClipboard(item[column.key])
+                                                "
+                                                >{{
+                                                    item[column.key] ? item[column.key] : ''
+                                                }}</span
+                                            >
                                         </template>
                                         <template
                                             v-else-if="
@@ -965,7 +992,10 @@
                                         >
                                             <span
                                                 class="text-link"
-                                                @click="handleEditCustom(item)"
+                                                @click="
+                                                    handleEditCustom(item)
+                                                    copyToClipboard(item[column.key])
+                                                "
                                                 >{{
                                                     item[column.key] ? item[column.key] : ''
                                                 }}</span
@@ -1888,6 +1918,7 @@
                                                                                     item,
                                                                                     itm
                                                                                 )
+                                                                                copyToClipboard(itm)
                                                                             "
                                                                         >
                                                                             {{ itm ? itm : '' }}
