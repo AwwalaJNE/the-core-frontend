@@ -2528,16 +2528,6 @@ export default {
                     return 'gray'
             }
         },
-        copyToClipboard(value) {
-            if (!value) return
-            navigator.clipboard.writeText(value.toString())
-            this.$vs?.notification({
-                color: 'primary',
-                title: 'Copied!',
-                text: `${value} copied to clipboard.`,
-                duration: 1500,
-            })
-        },
     },
     mounted() {
         document.addEventListener('click', this.closeOnOutsideClick)

@@ -71,6 +71,9 @@ const Master = {
                 false
             )
         },
+        listenIsDeveloperMode() {
+            return this.$ls.get('is_developer_mode') === '1' ? true : false
+        },
     },
     methods: {
         startLoading(target = null, text = 'Loading...') {
@@ -1084,6 +1087,13 @@ const Master = {
             const get = (type) => parts.find((p) => p.type === type)?.value
 
             return `${get('day')} ${get('month')} ${get('year')} ${get('hour')}:${get('minute')}`
+        },
+
+        copyToClipboard(value) {
+            if (this.listenIsDeveloperMode) {
+                if (!value) return
+                navigator.clipboard.writeText(value.toString())
+            }
         },
     },
     mounted() {
