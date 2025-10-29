@@ -1032,6 +1032,8 @@
                                                             ? { borderBottom: '1px solid #666' }
                                                             : {}
                                                     "
+                                                    @click="copyToClipboard(item[column.key])"
+                                                    style="cursor: pointer"
                                                 >
                                                     {{
                                                         item[column.key]
@@ -2525,6 +2527,16 @@ export default {
                 default:
                     return 'gray'
             }
+        },
+        copyToClipboard(value) {
+            if (!value) return
+            navigator.clipboard.writeText(value.toString())
+            this.$vs?.notification({
+                color: 'primary',
+                title: 'Copied!',
+                text: `${value} copied to clipboard.`,
+                duration: 1500,
+            })
         },
     },
     mounted() {

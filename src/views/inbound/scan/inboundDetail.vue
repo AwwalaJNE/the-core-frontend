@@ -58,7 +58,7 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: 'No item.',
+                    label: 'Item Number',
                     key: 'item_number',
                     width: 'sm',
                 },
