@@ -75,6 +75,7 @@
                         class="columns-label"
                         data-testid="columns-total"
                         style="margin: 0"
+                        @click="copyToClipboard(dataTable.length)"
                     >
                         Total: {{ dataTable.length }}
                     </p>
@@ -99,6 +100,7 @@
                             v-model="visibleKeys"
                             :val="col.key"
                             :data-testid="`column-checkbox-${col.key}`"
+                            @click="copyToClipboard(col.label)"
                         >
                             {{ col.label }}
                         </vs-checkbox>
@@ -161,16 +163,17 @@
                         </vs-th>
                     </template>
 
-                    <template v-if="isActionFirst == true">
-                        <vs-th class="action"> Action </vs-th>
-                    </template>
                     <template v-if="listenColumn.length > 0">
                         <template v-if="hasId == true">
                             <vs-th class="automation-id" v-bind:data-kt-table="'ID'"> ID </vs-th>
                         </template>
                         <template v-for="(item, key) of listenColumn">
                             <template v-if="!item.hasOwnProperty('hidden')">
-                                <vs-th :key="key" :class="item.width ? item.width : ''">
+                                <vs-th
+                                    :key="key"
+                                    :class="item.width ? item.width : ''"
+                                    @click="copyToClipboard(item.label)"
+                                >
                                     {{ item.label }}
                                     <vs-tooltip v-if="item.hasOwnProperty('tooltip_desc')" bottom>
                                         <i class="bx bx-info-circle"></i>
@@ -181,48 +184,21 @@
                                 </vs-th>
                             </template>
                         </template>
-                        <template v-if="hasAction == true">
-                            <vs-th class="action"> Action </vs-th>
-                        </template>
-                        <template v-if="hasDuplicateEditRemove == true">
-                            <vs-th class="action"> Action </vs-th>
-                        </template>
-                        <template v-if="editOnly == true">
-                            <vs-th class="action"> Action </vs-th>
-                        </template>
-                        <template v-if="removeOnly == true">
-                            <vs-th class="action"> Action </vs-th>
-                        </template>
-                        <template v-if="searchPreviewAction == true">
-                            <vs-th class="action"> Action </vs-th>
-                        </template>
-                        <template v-if="pickupListAction == true">
-                            <vs-th class="action"> Action </vs-th>
-                        </template>
-                        <template v-if="tracingListAction == true">
-                            <vs-th class="action"> Action </vs-th>
-                        </template>
-                        <template v-if="runsheetAction == true">
-                            <vs-th class="action"> Action </vs-th>
-                        </template>
-                        <template v-if="runsheetProofAction == true">
-                            <vs-th class="action"> Proof </vs-th>
-                        </template>
-                        <template
-                            v-if="
-                                printAction == true ||
-                                avoidAction == true ||
-                                codAction == true ||
-                                customBtn == true ||
-                                customAction == true
-                            "
-                        >
-                            <vs-th :class="isMobile ? 'action-mobile' : 'action'"> Action </vs-th>
-                        </template>
-                        <template v-if="removeDanger == true">
-                            <vs-th :class="[actionWidth ? actionWidth : '', 'action-responsive']">
-                                Action
-                            </vs-th>
+                        <template>
+                            <template v-if="showActionColumn">
+                                <vs-th class="action">Action</vs-th>
+                            </template>
+                            <template v-if="runsheetProofAction">
+                                <vs-th class="action">Proof</vs-th>
+                            </template>
+                            <template v-if="showSpecialActionColumn">
+                                <vs-th :class="isMobile ? 'action-mobile' : 'action'">Action</vs-th>
+                            </template>
+                            <template v-if="removeDanger">
+                                <vs-th :class="[actionWidth || '', 'action-responsive']">
+                                    Action
+                                </vs-th>
+                            </template>
                         </template>
                     </template>
                 </vs-tr>
@@ -1017,6 +993,7 @@
                                                         item[column.key]
                                                     ),
                                                 }"
+                                                @click="copyToClipboard(item[column.key])"
                                             >
                                                 {{ item[column.key] }}
                                             </span>
@@ -1025,9 +1002,14 @@
                                             <span
                                                 v-if="item[column.key] === 'DELIVERED'"
                                                 class="greenBackground"
+                                                @click="copyToClipboard(item[column.key])"
                                                 >{{ item[column.key] }}</span
                                             >
-                                            <span v-else>{{ item[column.key] }}</span>
+                                            <span
+                                                v-else
+                                                @click="copyToClipboard(item[column.key])"
+                                                >{{ item[column.key] }}</span
+                                            >
                                         </template>
                                         <template
                                             v-else-if="column.key === 'current_location_type'"
@@ -2244,6 +2226,28 @@ export default {
         },
         listenColumn() {
             return this.dataColumn.filter((col) => this.visibleKeys.includes(col.key))
+        },
+        showActionColumn() {
+            return (
+                this.isActionFirst ||
+                this.hasAction ||
+                this.hasDuplicateEditRemove ||
+                this.editOnly ||
+                this.removeOnly ||
+                this.searchPreviewAction ||
+                this.pickupListAction ||
+                this.tracingListAction ||
+                this.runsheetAction
+            )
+        },
+        showSpecialActionColumn() {
+            return (
+                this.printAction ||
+                this.avoidAction ||
+                this.codAction ||
+                this.customBtn ||
+                this.customAction
+            )
         },
     },
     watch: {
