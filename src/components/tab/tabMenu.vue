@@ -23,7 +23,7 @@
                 :data-testid="`tab-${key}`"
                 @click.native="handleSelect(item.url)"
             >
-                <i :class="`${item.icon}`" /> {{ item.label }}
+                <i :class="`${item.icon}`" /> <span v-copy="item.label">{{ item.label }}</span>
             </router-link>
         </div>
 

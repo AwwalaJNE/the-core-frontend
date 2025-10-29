@@ -9,7 +9,7 @@
         >
             <template v-slot:header>
                 <div class="button-helper">
-                    <div class="title-helper">
+                    <div class="title-helper" v-copy="listenTitle">
                         {{ listenTitle }}
                     </div>
 

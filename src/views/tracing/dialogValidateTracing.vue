@@ -1,25 +1,24 @@
 <template>
-    <dialog-master 
+    <dialog-master
         width="md"
         :actived="listenActive"
-        :loading="listenLoading" 
+        :loading="listenLoading"
         :closeDialog="cancel"
     >
-
         <template v-slot:header>
-            {{ listenTitle }}
+            <span v-copy="listenTitle">{{ listenTitle }}</span>
         </template>
 
         <template v-slot:content>
             <vs-row justify="space-between">
                 <vs-row>
-                    <vs-col 
+                    <vs-col
                         v-if="validItemNumber.length > 0"
-                        xs="12" 
-                        sm="12" 
-                        :lg="`${invalidItemNumber.length > 0 ? '6':'12'}`"
+                        xs="12"
+                        sm="12"
+                        :lg="`${invalidItemNumber.length > 0 ? '6' : '12'}`"
                     >
-                        <input-text-area 
+                        <input-text-area
                             id="valid_item"
                             label="Valid Bag / Connote"
                             v-model="validItemNumber"
@@ -27,7 +26,7 @@
                         />
                     </vs-col>
                     <vs-col xs="12" sm="12" lg="6" v-if="invalidItemNumber.length > 0">
-                        <input-text-area 
+                        <input-text-area
                             id="invalid_item"
                             label="Invalid Bag / Connote"
                             v-model="invalidItemNumber"
@@ -41,14 +40,7 @@
         <template v-slot:footer>
             <vs-row justify="flex-end">
                 <vs-col w="3">
-                    <vs-button
-                        block
-                        danger
-                        flat
-                        transparent
-                        :active="true"
-                        @click="cancel"
-                    >
+                    <vs-button block danger flat transparent :active="true" @click="cancel">
                         Cancel
                     </vs-button>
                 </vs-col>
@@ -61,29 +53,26 @@
                         :active="true"
                         @click="handleSubmit"
                     >
-                       Submit
+                        Submit
                     </vs-button>
                 </vs-col>
             </vs-row>
-                
-                
         </template>
-
     </dialog-master>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master";
+import axios from 'axios'
+import master from '@/mixins/master'
 
-import InputTextArea from "@/components/input/textArea";
-import DialogMaster from "@/components/dialog/dialogMaster";
+import InputTextArea from '@/components/input/textArea'
+import DialogMaster from '@/components/dialog/dialogMaster'
 
 export default {
-    name:"dialog-validate-tracing",
-    mixins:[master],
+    name: 'dialog-validate-tracing',
+    mixins: [master],
     components: {
-        "dialog-master": DialogMaster,
-        "input-text-area": InputTextArea,
+        'dialog-master': DialogMaster,
+        'input-text-area': InputTextArea,
     },
     props: {
         active: Boolean,
@@ -94,10 +83,10 @@ export default {
         validateType: String,
     },
     computed: {
-        listenActive(){
+        listenActive() {
             return this.active
         },
-        listenLoading(){
+        listenLoading() {
             return this.loadingSubmit
         },
         listenValidItem() {
@@ -108,46 +97,50 @@ export default {
         },
         listenValidateType() {
             return this.validateType
-        }
+        },
     },
     watch: {
         active: function (val) {
             if (val == true) {
                 this.initDataItem()
             }
-        }
+        },
     },
     data() {
         return {
             form: {},
             validItemNumber: [],
-            invalidItemNumber: []
+            invalidItemNumber: [],
         }
     },
     methods: {
         initDataItem() {
             if (this.listenValidItem.length > 0) {
                 this.validItemNumber = this.listenValidItem
-                    .filter(item => item.status === 'SUCCESS')
-                    .map(item => item.item_number);
+                    .filter((item) => item.status === 'SUCCESS')
+                    .map((item) => item.item_number)
                 this.invalidItemNumber = this.listenValidItem
-                    .filter(item => item.status !== 'SUCCESS')
-                    .map(item => item.item_number);
+                    .filter((item) => item.status !== 'SUCCESS')
+                    .map((item) => item.item_number)
             }
         },
         async handleSubmit() {
             if (this.listenValidateType === 'create') {
-                this.$emit("updateValue", 'SUBMIT_DIALOG_CREATE_VALIDATE_TRACING', {item_number: this.validItemNumber});
+                this.$emit('updateValue', 'SUBMIT_DIALOG_CREATE_VALIDATE_TRACING', {
+                    item_number: this.validItemNumber,
+                })
             } else {
-                this.$emit("updateValue", 'SUBMIT_DIALOG_REMOVE_VALIDATE_TRACING', {item_number: this.validItemNumber});
+                this.$emit('updateValue', 'SUBMIT_DIALOG_REMOVE_VALIDATE_TRACING', {
+                    item_number: this.validItemNumber,
+                })
             }
         },
         cancel() {
             this.closeDialog()
-        }
+        },
     },
     mounted() {
         this.handleSubmitShortcut(this.handleSubmit)
-    }
+    },
 }
 </script>

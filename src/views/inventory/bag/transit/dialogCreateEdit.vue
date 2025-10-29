@@ -7,7 +7,7 @@
             :loading="listenLoading"
         >
             <template v-slot:header>
-                {{ listenTitle }}
+                <span v-copy="listenTitle">{{ listenTitle }}</span>
             </template>
 
             <template v-slot:content>

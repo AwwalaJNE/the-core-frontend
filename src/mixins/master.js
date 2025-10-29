@@ -1088,13 +1088,6 @@ const Master = {
 
             return `${get('day')} ${get('month')} ${get('year')} ${get('hour')}:${get('minute')}`
         },
-
-        copyToClipboard(value) {
-            if (this.listenIsDeveloperMode) {
-                if (!value) return
-                navigator.clipboard.writeText(value.toString())
-            }
-        },
     },
     mounted() {
         this.checkIfMobile()

@@ -3,7 +3,7 @@
         <vs-col xs="12" sm="12" lg="12">
             <div class="titlePage">
                 <Breadcrumb />
-                <h2>{{ title }}</h2>
+                <h2 v-copy="title">{{ title }}</h2>
             </div>
         </vs-col>
         <vs-col xs="12" sm="12" lg="12">

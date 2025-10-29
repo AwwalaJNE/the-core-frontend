@@ -8,14 +8,14 @@
         >
             <template v-slot:header>
                 <template v-if="Object.keys(editData).length === 0">
-                    <div>
+                    <div v-copy="listenTitle">
                         {{ listenTitle }}
                     </div>
                 </template>
                 <template v-else>
                     <vs-row justify="flex-end">
                         <vs-col w="6">
-                            {{ listenTitle }}
+                            <span v-copy="listenTitle">{{ listenTitle }}</span>
                         </vs-col>
                         <vs-col w="3" justify="flex-end" style="display: flex">
                             <template v-if="listenUserRoleName === 'HELPDESK'">

@@ -1,17 +1,17 @@
 <template>
-    <dialog-master 
-    :actived="listenActive" 
-    :loading="listenLoading"
-    :closeDialog="closeDialog"
-    width="lg">
-
+    <dialog-master
+        :actived="listenActive"
+        :loading="listenLoading"
+        :closeDialog="closeDialog"
+        width="lg"
+    >
         <template v-slot:header>
-            {{listenTitle}}
+            <span v-copy="listenTitle">{{ listenTitle }}</span>
         </template>
 
         <template v-slot:content>
             <div>
-                <p>{{listenMessage}}</p>
+                <p v-copy="listenMessage">{{ listenMessage }}</p>
             </div>
         </template>
 
@@ -19,83 +19,80 @@
             <vs-row justify="flex-end">
                 <vs-col w="3">
                     <vs-button
-                    transparent
-                    block
-                    danger
-                    flat
-                    :active="true"
-                    :data-testid="`cancel-button`"
-                    @click="cancel"
+                        transparent
+                        block
+                        danger
+                        flat
+                        :active="true"
+                        :data-testid="`cancel-button`"
+                        @click="cancel"
                     >
                         Cancel
                     </vs-button>
                 </vs-col>
                 <vs-col w="3">
                     <vs-button
-                    transparent
-                    block
-                    flat
-                    :active="true"
-                    type="submit"
-                    :data-testid="`submit-button`"
-                    @click="confirm"
+                        transparent
+                        block
+                        flat
+                        :active="true"
+                        type="submit"
+                        :data-testid="`submit-button`"
+                        @click="confirm"
                     >
                         Okay
                     </vs-button>
                 </vs-col>
             </vs-row>
-                
-                
         </template>
-
     </dialog-master>
 </template>
 <script>
-import dialogMaster from "@/components/dialog/dialogMaster"
+import dialogMaster from '@/components/dialog/dialogMaster'
 export default {
-    name: "dialog-confirm",
+    name: 'dialog-confirm',
     components: {
-        "dialog-master": dialogMaster
+        'dialog-master': dialogMaster,
     },
     props: {
         closeDialog: Function,
         active: Boolean,
-        loading:Boolean,
+        loading: Boolean,
         title: String,
-        message: String
+        message: String,
     },
     computed: {
-        listenActive(){
+        listenActive() {
             return this.active
         },
-        listenLoading(){
-          return this.loading
+        listenLoading() {
+            return this.loading
         },
-        listenTitle(){
+        listenTitle() {
             return this.title
         },
         listenMessage() {
             return this.message
-        }
+        },
     },
     methods: {
         confirm() {
-            this.$emit("confirm",true)
+            this.$emit('confirm', true)
         },
         cancel(val) {
-          this.$emit("cancel",true)
+            this.$emit('cancel', true)
         },
         handleConfirmShortcut() {
             document.addEventListener('keydown', (e) => {
                 if (this.listenActive && (e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-                    e.preventDefault();
-                    this.confirm();
+                    e.preventDefault()
+                    this.confirm()
                 }
-            });
+            })
         },
     },
     mounted() {
         this.handleConfirmShortcut()
-    }
+    },
 }
 </script>

@@ -6,7 +6,7 @@
         :loading="listenLoading"
     >
         <template v-slot:header>
-            {{ listenTitle }}
+            <span v-copy="listenTitle">{{ listenTitle }}</span>
         </template>
 
         <template v-slot:content>
@@ -26,36 +26,36 @@
                     :isDisabled="true"
                 />
                 <div class="mt-2 mb-2">
-                    <table-master 
+                    <table-master
                         hideColumnKey="dialog-surat-jalan-airport"
                         :dataTable="dataTable"
                         :dataColumn="datacolumn"
                         :hasAction="false"
                         :hasPagination="false"
                     />
-                </div> 
+                </div>
             </div>
         </template>
     </dialog-master>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master";
-import moment from "moment";
-import DialogMaster from "@/components/dialog/dialogMaster";
-import FormInputController from "@/components/form/formInputController";
-import TableMaster from "@/components/table/tableMaster";
-import InputGeneral from "@/components/input/general";
-import CameraScanner from "@/components/scanner/camera";
+import axios from 'axios'
+import master from '@/mixins/master'
+import moment from 'moment'
+import DialogMaster from '@/components/dialog/dialogMaster'
+import FormInputController from '@/components/form/formInputController'
+import TableMaster from '@/components/table/tableMaster'
+import InputGeneral from '@/components/input/general'
+import CameraScanner from '@/components/scanner/camera'
 
 export default {
-    name: "dialog-create-surat-jalan",
+    name: 'dialog-create-surat-jalan',
     mixins: [master],
     components: {
-        "dialog-master": DialogMaster,
-        "table-master": TableMaster,
-        "input-general": InputGeneral,
-        "form-input-controller": FormInputController,
+        'dialog-master': DialogMaster,
+        'table-master': TableMaster,
+        'input-general': InputGeneral,
+        'form-input-controller': FormInputController,
         CameraScanner,
     },
     props: {
@@ -71,138 +71,159 @@ export default {
         return {
             DataArr: [],
             loading: false,
-            manifest_do_number: "",
+            manifest_do_number: '',
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Item Number",
-                    key: "item_number",
-                    width: "xs",
+                    label: 'Item Number',
+                    key: 'item_number',
+                    width: 'xs',
                 },
                 {
-                    label: "Cost Weight (Kg)",
-                    key: "cost_weight",
-                    width: "xs",
+                    label: 'Cost Weight (Kg)',
+                    key: 'cost_weight',
+                    width: 'xs',
                 },
                 {
-                    label: "Actual Weight (Kg)",
-                    key: "actual_weight",
-                    width: "xs",
+                    label: 'Actual Weight (Kg)',
+                    key: 'actual_weight',
+                    width: 'xs',
                 },
                 {
-                    label: "Destination",
-                    key: "destination",
-                    width: "sm",
+                    label: 'Destination',
+                    key: 'destination',
+                    width: 'sm',
                 },
                 {
-                    label: "Destination Name",
-                    key: "destination_name",
-                    width: "sm",
+                    label: 'Destination Name',
+                    key: 'destination_name',
+                    width: 'sm',
                 },
                 {
-                    label: "Type",
-                    key: "item_type",
-                    width: "xs",
+                    label: 'Type',
+                    key: 'item_type',
+                    width: 'xs',
                 },
                 {
-                    label: "Received",
-                    key: "received_status",
-                    type: "status",
-                    width: "xs",
+                    label: 'Received',
+                    key: 'received_status',
+                    type: 'status',
+                    width: 'xs',
                 },
             ],
-            manifest_lov: "",
+            manifest_lov: '',
             manifest_lov_list: [
                 // {
                 //     label: "Multi Destination",
                 //     value: "ALL",
                 // },
                 {
-                    label: "Single Destination",
-                    value: "SAME DESTINATION",
+                    label: 'Single Destination',
+                    value: 'SAME DESTINATION',
                 },
             ],
             editData: {},
-        };
+        }
     },
     computed: {
         listenActive() {
-            return this.active;
+            return this.active
         },
         listenLoading() {
-            return this.loading;
+            return this.loading
         },
         listenTitle() {
-            return this.title;
+            return this.title
         },
     },
     watch: {
-        dataItem: function(val) {
+        dataItem: function (val) {
             if (val !== undefined) {
-                this.getEditData(val);
+                this.getEditData(val)
             }
         },
-        active: function(val) {
+        active: function (val) {
             if (val == true) {
-                this.getLov();
+                this.getLov()
             }
         },
     },
     methods: {
         getEditData(val) {
-            this.manifest_do_number = val.manifest_do_number;
+            this.manifest_do_number = val.manifest_do_number
 
-            this.dataTable = val.detail;
-            this.dataTable.forEach(item => {
-                item.destination = item.bag?.destination?.node_tariff_code || item.koli?.connote?.connote_receiver_tariff_code || item.manifest?.destination?.node_tariff_code || '';
+            this.dataTable = val.detail
+            this.dataTable.forEach((item) => {
+                item.destination =
+                    item.bag?.destination?.node_tariff_code ||
+                    item.koli?.connote?.connote_receiver_tariff_code ||
+                    item.manifest?.destination?.node_tariff_code ||
+                    ''
 
-                if (val.status !== "READY") {
-                    item.button_status = { remove: false };
+                if (val.status !== 'READY') {
+                    item.button_status = { remove: false }
                 }
-                item.destination_name = item?.bag?.destination?.node_name || '';
-                item.received_status = item.received_at ? 1 : 0;
-            });
+                item.destination_name = item?.bag?.destination?.node_name || ''
+                item.received_status = item.received_at ? 1 : 0
+            })
 
-            this.editData = val;
+            this.editData = val
 
-            this.getArr(val.node_id_destination, val.destination.node_name, val.destination.node_code, "SET_SURAT_JALAN_DESTINATION_ID_ArrData");
-            this.getArr(val.no_moda_angkutan_id, val.vehicle.vehicle_name, val.vehicle.vehicle_code, "SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID_ArrData");
-            this.getArr(val.driver_id, val.pic.employee_name, val.pic.employee_code, "SET_SURAT_JALAN_DRIVER_ID_ArrData");
+            this.getArr(
+                val.node_id_destination,
+                val.destination.node_name,
+                val.destination.node_code,
+                'SET_SURAT_JALAN_DESTINATION_ID_ArrData'
+            )
+            this.getArr(
+                val.no_moda_angkutan_id,
+                val.vehicle.vehicle_name,
+                val.vehicle.vehicle_code,
+                'SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID_ArrData'
+            )
+            this.getArr(
+                val.driver_id,
+                val.pic.employee_name,
+                val.pic.employee_code,
+                'SET_SURAT_JALAN_DRIVER_ID_ArrData'
+            )
         },
         cancel() {
-            this.loading = false;
-            this.$refs.formSuratJalan.handleClearForm();
-            this.dataTable = [];
-            this.closeDialog();
+            this.loading = false
+            this.$refs.formSuratJalan.handleClearForm()
+            this.dataTable = []
+            this.closeDialog()
         },
         getLov() {
-            let arr = [];
+            let arr = []
             this.manifest_lov_list.map((item) => {
-                let obj = {};
-                obj["label"] = item.label;
-                obj["value"] = item.value;
+                let obj = {}
+                obj['label'] = item.label
+                obj['value'] = item.value
 
-                arr.push(obj);
-            });
+                arr.push(obj)
+            })
             this.$store.dispatch(
-                "SET_SURAT_JALAN_MANIFEST_LOV_ArrData",
+                'SET_SURAT_JALAN_MANIFEST_LOV_ArrData',
                 arr.length > 0 ? arr : null
-            );
+            )
             if (this.dataItem && this.dataItem.manifest_lov) {
-                this.manifest_lov = this.dataItem.manifest_lov;
+                this.manifest_lov = this.dataItem.manifest_lov
             }
         },
         getArr(data_id, data_name, data_code, data_table) {
             let data = {
-                label: data_code ? data_name + " (" + data_code + ")" : data_name,
-                value: data_id
+                label: data_code ? data_name + ' (' + data_code + ')' : data_name,
+                value: data_id,
             }
 
-            this.$store.dispatch(data_table, [{
-                ...data,
-                item: data
-            }]);
+            this.$store.dispatch(data_table, [
+                {
+                    ...data,
+                    item: data,
+                },
+            ])
         },
     },
-};
+}
 </script>
