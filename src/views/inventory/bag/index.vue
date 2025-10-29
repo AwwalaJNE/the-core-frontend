@@ -88,7 +88,7 @@
                                     :disabled="dialogActiveManualDestination"
                                     @click-icon="handleIconClick"
                                     @updateValue="updateValue"
-                                    @enterUpdate="processItem"
+                                    @enterUpdate="validateItem"
                                 />
                             </vs-col>
                         </vs-row>
@@ -222,7 +222,7 @@ export default {
             if (this.bag_type === 'pra runsheet') {
                 this.createBag()
             } else {
-                await this.validateItem()
+                await this.processSorting()
             }
         },
         async validateItem() {
@@ -236,7 +236,7 @@ export default {
                     this.Helper.header()
                 )
 
-                this.processSorting()
+                this.processItem()
 
                 this.openNotification('success', null, 'Success', res?.data?.message || 'Success')
             } catch (err) {
