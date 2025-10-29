@@ -561,7 +561,7 @@ export default {
                 this.loading = true
                 try {
                     const res = await axios.post(
-                        `${this.URL.sorting_zip_code_validation}?n=${this.listenNodeId}`,
+                        `${this.URL.sorting_validation}?n=${this.listenNodeId}`,
                         JSON.stringify(this.form),
                         this.Helper.header()
                     )
