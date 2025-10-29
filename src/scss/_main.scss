@@ -91,6 +91,13 @@ a {
     }
 }
 
+.box-v1 {
+    @extend .box;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 .disabled-section {
     pointer-events: none;
     opacity: 0.5;

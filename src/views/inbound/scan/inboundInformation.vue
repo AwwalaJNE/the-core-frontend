@@ -1,86 +1,86 @@
 <template>
     <div>
-        <table-master 
-            hideColumnKey="receiving-master-info" 
-            :dataTable="dataTable" 
-            :dataColumn="datacolumn" 
+        <table-master
+            hideColumnKey="receiving-master-info"
+            :dataTable="dataTable"
+            :dataColumn="datacolumn"
             :tableLoading="listenLoading"
-            
             :hasAction="false"
             :hasPagination="false"
-            
             @handleEdit="actionDetail"
         />
     </div>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master"
-import TableMaster from "@/components/table/tableMaster.vue"
+import axios from 'axios'
+import master from '@/mixins/master'
+import TableMaster from '@/components/table/tableMaster.vue'
 export default {
-    name:"Inbound-Incoming",
+    name: 'Inbound-Incoming',
     mixins: [master],
     props: {
         dataTableProp: [Array, Object],
         loading: Boolean,
     },
     components: {
-        "table-master" : TableMaster
+        'table-master': TableMaster,
     },
     data() {
         return {
             dataTable: this.dataTableProp,
             datacolumn: [
                 {
-                    label: "Manifest No.",
-                    key: "inbound_number",
-                    width: "xs"
+                    label: 'Receiving Number',
+                    key: 'inbound_number',
+                    width: 'xs',
                 },
                 {
-                    label: "Received",
-                    key: "total_received",
-                    width: "xxs"
+                    label: 'Type',
+                    key: 'document_type',
+                    width: 'xs',
                 },
                 {
-                  label: "Unreceived",
-                  key: "total_unreceived",
-                  width: "xxs"
+                    label: 'Received',
+                    key: 'total_received',
+                    width: 'xxs',
+                },
+                {
+                    label: 'Unreceived',
+                    key: 'total_unreceived',
+                    width: 'xxs',
                 },
 
                 {
-                  label: "Status",
-                  key: "status_received",
-                  width: "xxs"
+                    label: 'Status',
+                    key: 'status_received',
+                    width: 'xxs',
                 },
             ],
-            
         }
     },
     computed: {
-        listenLoading(){
+        listenLoading() {
             return this.loading
         },
-        listendataTableProp(){
+        listendataTableProp() {
             return this.dataTableProp
         },
     },
     watch: {
-        dataTableProp: function(val) {
-            if(val != undefined) {
-                this.dataTable = val   
+        dataTableProp: function (val) {
+            if (val != undefined) {
+                this.dataTable = val
             }
         },
     },
     methods: {
-        
-        actionDetail(row){
-          this.$router.push({ name: 'detailConnote', params: { id: row.transaction_id } });
-          this.setRoutePageHistory(this.$route.meta, false);
-        }
-
+        actionDetail(row) {
+            this.$router.push({ name: 'detailConnote', params: { id: row.transaction_id } })
+            this.setRoutePageHistory(this.$route.meta, false)
+        },
     },
     mounted() {
         // this.getTableData()
-    }
+    },
 }
 </script>

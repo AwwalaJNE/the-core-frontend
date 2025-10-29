@@ -28,169 +28,119 @@
         </vs-row>
 
         <section>
-            <vs-row style="display: flex; gap: 20px; margin-top: 20px">
-                <vs-col
-                    xs="12"
-                    sm="6"
-                    lg="6"
-                    style="flex: 1; min-height: 300px; justify-content: flex-end"
-                >
-                    <div
-                        class="box information"
-                        style="height: 280px; display: flex; flex-direction: column; gap: 30px"
-                    >
+            <vs-row justify="space-between" align="stretch" style="padding: 1em 0">
+                <vs-col xs="12" sm="6" lg="6">
+                    <div class="box-v1" style="gap: 1em">
                         <template v-if="is_prealert">
                             <h4 align="left">List of Bags</h4>
-                            <div
-                                class="nav-box"
-                                style="
-                                    flex: 1;
-                                    overflow: hidden;
-                                    display: flex;
-                                    flex-direction: column;
-                                    justify-content: flex-start;
-                                "
-                            >
-                                <vs-row style="padding-bottom: 5px">
-                                    <vs-col xs="12" sm="12" lg="12" style="padding: 15px 0">
-                                        <div class="center">
-                                            <vs-input
-                                                border
-                                                type="text"
-                                                v-model="item_no"
-                                                label-placeholder="Masukkan code BAG / Connote"
-                                                icon-after
-                                                v-uppercase
-                                                ref="formInputInbound"
-                                                :disabled="processing || dialogActive"
-                                                :data-testid="`input-item_no`"
-                                                @keyup.enter.native="updateValue('item_no')"
-                                                @click-icon="
-                                                    $refs.cameraScanner.open('formInputInbound')
-                                                "
-                                                @input="sanitizeAlphanumeric('item_no')"
-                                                @keydown.native="
-                                                    handleTabNavigation(
-                                                        $event,
-                                                        'formInputInbound',
-                                                        ['formInputInbound']
-                                                    )
-                                                "
-                                            >
-                                                <template #icon>
-                                                    <i class="bx bx-barcode-reader"></i>
-                                                </template>
-                                            </vs-input>
-                                        </div>
-                                    </vs-col>
-                                </vs-row>
-                            </div>
+                            <vs-row style="margin-top: 2em">
+                                <vs-col xs="12" sm="12" lg="12">
+                                    <vs-input
+                                        border
+                                        type="text"
+                                        v-model="item_no"
+                                        label-placeholder="Masukkan code Bag / Connote"
+                                        icon-after
+                                        v-uppercase
+                                        ref="formInputInbound"
+                                        :disabled="processing || dialogActive"
+                                        :data-testid="`input-item_no`"
+                                        @keyup.enter.native="updateValue('item_no')"
+                                        @click-icon="$refs.cameraScanner.open('formInputInbound')"
+                                        @input="sanitizeAlphanumeric('item_no')"
+                                        @keydown.native="
+                                            handleTabNavigation($event, 'formInputInbound', [
+                                                'formInputInbound',
+                                            ])
+                                        "
+                                    >
+                                        <template #icon>
+                                            <i class="bx bx-barcode-reader"></i>
+                                        </template>
+                                    </vs-input>
+                                </vs-col>
+                            </vs-row>
                         </template>
 
                         <template v-else>
                             <h4 align="left">Scan Item</h4>
-                            <div
-                                class="nav-box"
-                                style="
-                                    flex: 1;
-                                    overflow: auto;
-                                    padding: 0px 15px 0px 0px;
-                                    display: flex;
-                                    flex-direction: column;
-                                    justify-content: flex-start;
-                                    margin-top: 0px;
-                                "
-                            >
-                                <vs-row style="padding-bottom: 5px">
-                                    <vs-col xs="12" sm="12" lg="12" style="padding: 15px 0">
-                                        <vs-input
-                                            border
-                                            type="text"
-                                            v-model="parent_no"
-                                            label-placeholder="Masukkan SM / SJ / Pickup"
-                                            icon-after
-                                            v-uppercase
-                                            ref="formInputParentInbound"
-                                            :disabled="hasInboundNumber"
-                                            :data-testid="`input-parent_no`"
-                                            @keyup.enter.native="updateValue('parent_no')"
-                                            @click-icon="
-                                                $refs.cameraScanner.open('formInputParentInbound')
-                                            "
-                                            @input="sanitizeAlphanumeric('parent_no')"
-                                            @keydown.native="
-                                                handleTabNavigation(
-                                                    $event,
-                                                    'formInputParentInbound',
-                                                    [
-                                                        'formInputParentInbound',
-                                                        'formInputChildInbound',
-                                                    ]
-                                                )
-                                            "
-                                        >
-                                            <template #icon v-if="!hasInboundNumber">
-                                                <i class="bx bx-barcode-reader"></i>
-                                            </template>
-                                        </vs-input>
-                                        <template v-if="hasInboundNumber">
-                                            <div style="position: absolute; right: 20px; top: 15px">
-                                                <span
-                                                    class="vs-select__chips__chip__close"
-                                                    :data-testid="`close-button-parent_no`"
-                                                    @click="removeInboundNumber"
-                                                >
-                                                    <i class="vs-icon-close vs-icon-hover-less"></i>
-                                                </span>
-                                            </div>
+                            <vs-row style="gap: 2em">
+                                <vs-col xs="12" sm="12" lg="12">
+                                    <vs-input
+                                        border
+                                        type="text"
+                                        v-model="parent_no"
+                                        label-placeholder="Masukkan SM / SJ / Pickup"
+                                        icon-after
+                                        v-uppercase
+                                        ref="formInputParentInbound"
+                                        :disabled="hasInboundNumber"
+                                        :data-testid="`input-parent_no`"
+                                        @keyup.enter.native="updateValue('parent_no')"
+                                        @click-icon="
+                                            $refs.cameraScanner.open('formInputParentInbound')
+                                        "
+                                        @input="sanitizeAlphanumeric('parent_no')"
+                                        @keydown.native="
+                                            handleTabNavigation($event, 'formInputParentInbound', [
+                                                'formInputParentInbound',
+                                                'formInputChildInbound',
+                                            ])
+                                        "
+                                    >
+                                        <template #icon v-if="!hasInboundNumber">
+                                            <i class="bx bx-barcode-reader"></i>
                                         </template>
-                                    </vs-col>
-
-                                    <vs-col xs="12" sm="12" lg="12" style="padding: 15px 0">
-                                        <vs-input
-                                            border
-                                            type="text"
-                                            v-model="child_no"
-                                            label-placeholder="Master Bag / Bag / Connote"
-                                            icon-after
-                                            v-uppercase
-                                            ref="formInputChildInbound"
-                                            :disabled="processing || dialogActive"
-                                            :data-testid="`input-child_no`"
-                                            @keyup.enter.native="updateValue('child_no')"
-                                            @click-icon="
-                                                $refs.cameraScanner.open('formInputChildInbound')
-                                            "
-                                            @input="sanitizeAlphanumeric('child_no')"
-                                            @keydown.native="
-                                                handleTabNavigation(
-                                                    $event,
-                                                    'formInputChildInbound',
-                                                    [
-                                                        'formInputParentInbound',
-                                                        'formInputChildInbound',
-                                                    ]
-                                                )
-                                            "
-                                        >
-                                            <template #icon>
-                                                <i class="bx bx-barcode-reader"></i>
-                                            </template>
-                                        </vs-input>
-                                    </vs-col>
-                                </vs-row>
-                            </div>
+                                    </vs-input>
+                                    <template v-if="hasInboundNumber">
+                                        <div style="position: absolute; right: 20px; top: 15px">
+                                            <span
+                                                class="vs-select__chips__chip__close"
+                                                :data-testid="`close-button-parent_no`"
+                                                @click="removeInboundNumber"
+                                            >
+                                                <i class="vs-icon-close vs-icon-hover-less"></i>
+                                            </span>
+                                        </div>
+                                    </template>
+                                </vs-col>
+                                <vs-col xs="12" sm="12" lg="12">
+                                    <vs-input
+                                        border
+                                        type="text"
+                                        v-model="child_no"
+                                        label-placeholder="Masukkan Masterbag / Bag / Connote"
+                                        icon-after
+                                        v-uppercase
+                                        ref="formInputChildInbound"
+                                        :disabled="processing || dialogActive"
+                                        :data-testid="`input-child_no`"
+                                        @keyup.enter.native="updateValue('child_no')"
+                                        @click-icon="
+                                            $refs.cameraScanner.open('formInputChildInbound')
+                                        "
+                                        @input="sanitizeAlphanumeric('child_no')"
+                                        @keydown.native="
+                                            handleTabNavigation($event, 'formInputChildInbound', [
+                                                'formInputParentInbound',
+                                                'formInputChildInbound',
+                                            ])
+                                        "
+                                    >
+                                        <template #icon>
+                                            <i class="bx bx-barcode-reader"></i>
+                                        </template>
+                                    </vs-input>
+                                </vs-col>
+                            </vs-row>
                         </template>
                     </div>
                 </vs-col>
 
-                <vs-col xs="12" sm="6" lg="6" style="flex: 1; min-height: 300px">
-                    <div
-                        class="box information"
-                        style="height: 100%; display: flex; flex-direction: column"
-                    >
-                        <h4 align="left">Information SM/SJ/Pickup Number</h4>
-                        <div class="nav-box" style="flex: 1; overflow: auto">
+                <vs-col xs="12" sm="6" lg="6">
+                    <div class="box-v1">
+                        <h4 align="left">Receiving Information</h4>
+                        <div class="nav-box">
                             <transition name="slide-fade">
                                 <InboundInformation
                                     :ref="'inboundInformation'"
@@ -203,14 +153,11 @@
                 </vs-col>
             </vs-row>
 
-            <vs-row style="margin-top: 20px">
+            <vs-row>
                 <vs-col xs="12" sm="12" lg="12">
-                    <div
-                        class="box information"
-                        style="padding-top: 10px !important; margin-top: 10px !important"
-                    >
+                    <div class="box">
                         <div class="header-remark-bar mb-3">
-                            <h4 class="title">Inbound Detail</h4>
+                            <h4 class="title">Receiving Detail</h4>
                             <template v-if="dataTableProp.length > 0">
                                 <vs-button
                                     class="insert-remark-btn"
@@ -247,8 +194,7 @@
                         </div>
                     </div>
                     <vs-button
-                        class="mt-1"
-                        style="float: right"
+                        style="float: right; margin-top: 1em"
                         square
                         active
                         :data-testid="`back-button`"
@@ -544,6 +490,7 @@ export default {
                             item.item_type = 'MASTERBAG'
                         }
                         item.is_missroute = item.is_missroute == true ? 1 : 0
+                        item.total_connote = item.total_connote.toString()
                     })
                     this.dataTableProp.map((item) => {
                         item, (item['button_status'] = { entry_status: item.is_received == '0' })
