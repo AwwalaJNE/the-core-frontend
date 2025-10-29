@@ -162,9 +162,17 @@ setInterval(checkVersion, 60000)
 // -------------------- Copy Vue --------------------
 
 Vue.directive('copy', {
-    bind(el, binding) {
+    bind(el, binding, vnode) {
         el.addEventListener('click', () => {
-            navigator.clipboard.writeText(binding.value || '')
+            const value = binding.value || ''
+            const vm = vnode.context // same as "this" in the component
+
+            // ✅ check developer mode from component
+            if (!vm?.listenIsDeveloperMode) return
+            if (!value) return
+
+            // Copy text
+            navigator.clipboard.writeText(value.toString())
         })
     },
 })
