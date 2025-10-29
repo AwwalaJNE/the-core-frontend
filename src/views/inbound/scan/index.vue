@@ -544,6 +544,7 @@ export default {
                             item.item_type = 'MASTERBAG'
                         }
                         item.is_missroute = item.is_missroute == true ? 1 : 0
+                        item.total_connote = item.total_connote.toString()
                     })
                     this.dataTableProp.map((item) => {
                         item, (item['button_status'] = { entry_status: item.is_received == '0' })
