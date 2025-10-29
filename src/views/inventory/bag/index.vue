@@ -228,8 +228,11 @@ export default {
         async validateItem() {
             this.startLoading(this.$refs.baggingSection)
             try {
-                const res = await axios.get(
+                const res = await axios.post(
                     `${this.URL.validation_item}?n=${this.listenNodeId}`,
+                    {
+                        item_number: this.item_number,
+                    },
                     this.Helper.header()
                 )
 
