@@ -1,32 +1,27 @@
 <template>
     <div class="box view">
-        <h3 class="title">{{ title }}</h3>
+        <h3 class="title" v-copy="title">{{ title }}</h3>
         <vs-row>
-            <vs-col 
-                v-for="(item, index) in dataLabel" 
-                :w="item.width || 12"
-                :key="index"
-            >
-                <p class="label">{{ item.label }}</p>
-                <p class="value">{{ dataItem[item.key] || '-' }}</p>
+            <vs-col v-for="(item, index) in dataLabel" :w="item.width || 12" :key="index">
+                <p class="label" v-copy="item.label">{{ item.label }}</p>
+                <p class="value" v-copy="dataItem[item.key]">{{ dataItem[item.key] || '-' }}</p>
             </vs-col>
         </vs-row>
     </div>
 </template>
-  
-<script>
 
-import master from "@/mixins/master";
+<script>
+import master from '@/mixins/master'
 
 export default {
-    name: "card-info",
+    name: 'card-info',
     mixins: [master],
     props: {
         dataLabel: Array,
         dataItem: Object,
-        title: String
-    }
-};
+        title: String,
+    },
+}
 </script>
 
 <style scoped>
@@ -40,16 +35,16 @@ export default {
 }
 
 .label {
-  font-size: 0.75rem;
-  color: #7f8c8d;
-  margin-bottom: 0.2rem;
-  text-align: left;
+    font-size: 0.75rem;
+    color: #7f8c8d;
+    margin-bottom: 0.2rem;
+    text-align: left;
 }
 
 .value {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #2d3436;
-  text-align: left;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #2d3436;
+    text-align: left;
 }
 </style>

@@ -4,7 +4,7 @@
             <vs-col xs="6" sm="4" lg="4">
                 <div class="titlePage">
                     <breadcrumb />
-                    <h2>{{ listenTitle }}</h2>
+                    <h2 v-copy="listenTitle">{{ listenTitle }}</h2>
                 </div>
             </vs-col>
         </vs-row>
