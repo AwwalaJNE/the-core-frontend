@@ -30,7 +30,7 @@
         <section>
             <vs-row justify="space-between" align="stretch" style="padding: 1em 0">
                 <vs-col xs="12" sm="6" lg="6">
-                    <div class="box-v1" style="gap: 0.7em">
+                    <div class="box-v1" style="gap: 1em">
                         <template v-if="is_prealert">
                             <h4 align="left">List of Bags</h4>
                             <vs-row style="margin-top: 2em">
