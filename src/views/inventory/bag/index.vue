@@ -222,7 +222,29 @@ export default {
             if (this.bag_type === 'pra runsheet') {
                 this.createBag()
             } else {
-                await this.processSorting()
+                await this.validateItem()
+            }
+        },
+        async validateItem() {
+            this.startLoading(this.$refs.baggingSection)
+            try {
+                const res = await axios.get(
+                    `${this.URL.validation_item}?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
+
+                this.processSorting()
+
+                this.openNotification('success', null, 'Success', res?.data?.message || 'Success')
+            } catch (err) {
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Failed',
+                    err?.response?.data?.message || 'Something went wrong'
+                )
+            } finally {
+                this.stopLoading()
             }
         },
         async processSorting() {
@@ -242,16 +264,7 @@ export default {
 
                 this.openNotification('success', null, 'Success', res?.data?.message || 'Success')
             } catch (err) {
-                if (['CORE-1146', 'CORE-1082', 'CORE-1156'].includes(err?.response?.data?.code)) {
-                    this.openNotification(
-                        'danger',
-                        err?.response?.data?.code || '',
-                        'Failed',
-                        err?.response?.data?.message || 'Something went wrong'
-                    )
-                } else {
-                    this.openDialog()
-                }
+                this.openDialog()
             } finally {
                 this.stopLoading()
             }
