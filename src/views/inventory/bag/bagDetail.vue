@@ -4,7 +4,7 @@
             <div class="titlePage">
                 <breadcrumb />
                 <div style="display: flex; align-items: center">
-                    <h2 style="margin-right: 10px">{{ title }}</h2>
+                    <h2 style="margin-right: 10px" v-copy="title">{{ title }}</h2>
 
                     <vs-tooltip bottom v-if="!isAllowed && !loading">
                         <i class="bx bx-info-circle"></i>

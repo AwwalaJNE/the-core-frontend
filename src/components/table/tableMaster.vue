@@ -277,22 +277,29 @@
                                     "
                                 >
                                     <vs-td :key="key" :class="column.width ? column.width : ''">
-                                        <template
-                                            v-if="
-                                                split(column.key).length == 2 &&
-                                                item.hasOwnProperty(split(column.key)[0])
-                                            "
-                                        >
-                                            {{
-                                                item.hasOwnProperty(split(column.key)[0])
-                                                    ? item[split(column.key)[0]][
-                                                          split(column.key)[1]
-                                                      ]
-                                                    : ''
-                                            }}
-                                        </template>
-                                        <template v-else>
-                                            {{ item[column.key] ? item[column.key] : '' }}
+                                        <template>
+                                            <span
+                                                v-if="
+                                                    split(column.key).length === 2 &&
+                                                    item?.[split(column.key)[0]]
+                                                "
+                                                @click="
+                                                    copyToClipboard(
+                                                        item?.[split(column.key)[0]]?.[
+                                                            split(column.key)[1]
+                                                        ] || ''
+                                                    )
+                                                "
+                                            >
+                                                {{
+                                                    item?.[split(column.key)[0]]?.[
+                                                        split(column.key)[1]
+                                                    ] || ''
+                                                }}
+                                            </span>
+                                            <span v-else @click="copyToClipboard(item[column.key])">
+                                                {{ item[column.key] ? item[column.key] : '' }}
+                                            </span>
                                         </template>
                                     </vs-td>
                                 </template>
