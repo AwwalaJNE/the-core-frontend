@@ -362,6 +362,9 @@ export default {
     // Sorting Validation Zip Code
     sorting_zip_code_validation: api + 'validation/zip-code-new',
 
+    // Just Sorting Validation
+    sorting_validation: api + 'validation/zip-code',
+
     // Sorting Validation Zip Code Bag
     sorting_zip_code_validation_bag: api + 'validation/bag-destination',
 
