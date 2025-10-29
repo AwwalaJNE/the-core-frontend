@@ -173,14 +173,6 @@ Vue.directive('copy', {
 
             // Copy text
             navigator.clipboard.writeText(value.toString())
-
-            // ✅ Show Vuesax toast
-            vm.$vs?.notification({
-                color: 'primary',
-                title: 'Copied!',
-                text: `${value} copied to clipboard.`,
-                duration: 1500,
-            })
         })
     },
 })
