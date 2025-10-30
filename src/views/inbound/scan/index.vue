@@ -207,20 +207,7 @@
                         </div>
                         <div class="nav-box">
                             <transition name="slide-fade">
-                                <InboundDetail
-                                    ref="inboundDetail"
-                                    :dataTableProp="dataTableProp"
-                                    :loading="loading"
-                                    :pageSize="page_size"
-                                    :page="page"
-                                    :limit="limit"
-                                    :actionLimit="actionLimit"
-                                    :actionPagination="actionPagination"
-                                    :receivingLogs="receivingLogs"
-                                    :inboundNumber="inboundNumber"
-                                    @autoFocusInput="autoFocusInput"
-                                    @refresh="refresh"
-                                />
+                                <MisrouteBag ref="misrouteBag" />
                             </transition>
                         </div>
                     </div>
@@ -251,6 +238,7 @@ import Breadcrumb from '@/components/breadcrumb/index'
 
 import InboundInformation from '@/views/inbound/scan/inboundInformation'
 import InboundDetail from '@/views/inbound/scan/inboundDetail'
+import MisrouteBag from '@/views/inbound/scan/misrouteBag'
 import InboundReceivingLog from '@/views/inbound/scan/inboundReceivingLog'
 import CameraScanner from '@/components/scanner/camera.vue'
 import dialogInsertRemark from '@/views/inbound/scan/dialogInsertRemark.vue'
@@ -264,6 +252,7 @@ export default {
         InboundInformation: InboundInformation,
         InboundDetail: InboundDetail,
         ReceivingLog: InboundReceivingLog,
+        MisrouteBag: MisrouteBag,
         CameraScanner,
         dialogInsertRemark,
     },
@@ -381,6 +370,7 @@ export default {
         },
         refresh() {
             this.getTableData()
+            this.$refs.misrouteBag.refresh()
         },
         updateValue(type) {
             switch (type) {
