@@ -37,7 +37,7 @@
                     :isMultipleSelectWithIndex="true"
                     :isShowCheckboxAll="true"
                     :onRowClickCallback="onRowClickCallback"
-                    :allCheckCallback="onAllCheckCallback"
+                    :isAllCheckedCheckCallback="onAllCheckCallback"
                     @actionLimit="actionLimit"
                     @actionPagination="actionPagination"
                     @updateSelected2="updateSelected"
