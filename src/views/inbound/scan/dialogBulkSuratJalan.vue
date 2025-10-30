@@ -11,6 +11,11 @@
 
         <template v-slot:content>
             <vs-row>
+                <vs-col>
+                    <progress-stepper :steps="steps" :currentStep="currentStep" />
+                </vs-col>
+            </vs-row>
+            <vs-row>
                 <vs-col w="12">
                     <div>
                         <div class="text-left">
@@ -47,7 +52,7 @@
 
         <template v-slot:footer>
             <vs-row justify="flex-end">
-                <vs-col w="3">
+                <!-- <vs-col w="3">
                     <vs-button
                         transparent
                         block
@@ -59,8 +64,34 @@
                     >
                         Cancel
                     </vs-button>
+                </vs-col> -->
+                <vs-col w="3">
+                    <vs-button
+                        transparent
+                        block
+                        flat
+                        :active="true"
+                        type="submit"
+                        :data-testid="`submit-button`"
+                        @click="prevStep"
+                    >
+                        Prev Step
+                    </vs-button>
                 </vs-col>
                 <vs-col w="3">
+                    <vs-button
+                        transparent
+                        block
+                        flat
+                        :active="true"
+                        type="submit"
+                        :data-testid="`submit-button`"
+                        @click="nextStep"
+                    >
+                        Next Step
+                    </vs-button>
+                </vs-col>
+                <!-- <vs-col w="3">
                     <vs-button
                         transparent
                         block
@@ -72,7 +103,7 @@
                     >
                         Submit
                     </vs-button>
-                </vs-col>
+                </vs-col> -->
             </vs-row>
         </template>
     </dialog-master>
@@ -82,12 +113,14 @@ import axios from 'axios'
 import master from '@/mixins/master'
 
 import DialogMaster from '@/components/dialog/dialogMaster'
+import ProgressStepper from '@/components/progress/progressStepper'
 
 export default {
     name: 'Inbound-Dialog-Bulk-Surat-Jalan',
     mixins: [master],
     components: {
         'dialog-master': DialogMaster,
+        'progress-stepper': ProgressStepper,
     },
     props: {
         active: Boolean,
@@ -150,6 +183,9 @@ export default {
                     enableItemPlaceholder: 'Insert Connote Number',
                 },
             ],
+
+            currentStep: 1,
+            steps: ['Choose Type', 'Validate Each Item', ''],
         }
     },
     methods: {
@@ -170,6 +206,12 @@ export default {
         cancel() {
             this.handleClearForm()
             this.$emit('closeDialog')
+        },
+        nextStep() {
+            if (this.currentStep < this.steps.length) this.currentStep++
+        },
+        prevStep() {
+            if (this.currentStep > 1) this.currentStep--
         },
     },
     mounted() {
