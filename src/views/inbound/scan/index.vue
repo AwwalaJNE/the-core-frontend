@@ -159,7 +159,10 @@
                         <div class="header-remark-bar">
                             <h4 align="left">Receiving Detail</h4>
                             <template v-if="dataTableProp.length > 0">
-                                <vs-button :data-testid="`remark-button`" @click="openDialog">
+                                <vs-button
+                                    :data-testid="`remark-button`"
+                                    @click="openDialog('receiving_log')"
+                                >
                                     <i class="bx bx-pencil mr-1"></i> Insert Remark
                                 </vs-button>
                                 <dialog-insert-remark
@@ -196,10 +199,16 @@
                             <h4 align="left">Misrouted Bag</h4>
                             <template v-if="dataTableProp.length > 0">
                                 <div style="display: flex">
-                                    <vs-button :data-testid="`remark-button`" @click="openDialog">
+                                    <vs-button
+                                        :data-testid="`remark-button`"
+                                        @click="openDialog('surat_jalan')"
+                                    >
                                         <i class="bx bx-plus"></i> Surat Jalan
                                     </vs-button>
-                                    <vs-button :data-testid="`remark-button`" @click="openDialog">
+                                    <vs-button
+                                        :data-testid="`remark-button`"
+                                        @click="openDialog('surat_muatan')"
+                                    >
                                         <i class="bx bx-plus"></i> Surat Muatan
                                     </vs-button>
                                 </div>
@@ -223,6 +232,14 @@
                 <i class="bx bxs-chevron-left"> </i> BACK
             </vs-button>
         </section>
+
+        <dialog-bulk-surat-jalan
+            title="Create Surat Jalan"
+            :active="dialogSuratJalan"
+            :closeDialog="closeDialog"
+            @refresh="refresh"
+        />
+
         <camera-scanner
             ref="cameraScanner"
             :data-testid="`camera-button`"
@@ -242,6 +259,7 @@ import MisrouteBag from '@/views/inbound/scan/misrouteBag'
 import InboundReceivingLog from '@/views/inbound/scan/inboundReceivingLog'
 import CameraScanner from '@/components/scanner/camera.vue'
 import dialogInsertRemark from '@/views/inbound/scan/dialogInsertRemark.vue'
+import DialogBulkSuratJalan from '@/views/inbound/scan/dialogBulkSuratJalan.vue'
 
 export default {
     name: 'inbound-scan',
@@ -255,6 +273,7 @@ export default {
         MisrouteBag: MisrouteBag,
         CameraScanner,
         dialogInsertRemark,
+        'dialog-bulk-surat-jalan': DialogBulkSuratJalan,
     },
     computed: {
         is_prealert() {
@@ -312,6 +331,8 @@ export default {
             refloading: null,
 
             dialogActive: false,
+
+            dialogSuratJalan: false,
         }
     },
     methods: {
@@ -632,14 +653,25 @@ export default {
             this.page = val
             this.refresh()
         },
-        openDialog() {
-            this.showDialog = true
-            this.autoFocusInput(true)
+        openDialog(type) {
+            if (type === 'receiving_log') {
+                this.showDialog = true
+                this.autoFocusInput(true)
+            } else if (type === 'surat_jalan') {
+                this.dialogSuratJalan = true
+                // console.log('cek')
+                console.log('CEKK', this.$refs.misrouteBag.selectedData)
+            } else if (type === 'surat_muatan') {
+                console.log('CEKK', this.$refs.misrouteBag.selectedData)
+            }
         },
         closeDialog() {
             this.showDialog = false
 
             this.autoFocusInput(false)
+        },
+        closeDialog2() {
+            this.dialogSuratJalan = false
         },
 
         async closePreAlert() {
