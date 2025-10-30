@@ -1,24 +1,39 @@
 <template>
-    <div class="progress-stepper">
-        <div v-for="(step, index) in steps" :key="index" class="step-container">
-            <!-- Step circle -->
+    <div
+        class="progress-stepper"
+        role="progressbar"
+        :aria-valuenow="currentStep"
+        :aria-valuemin="1"
+        :aria-valuemax="steps.length"
+    >
+        <div
+            v-for="(step, index) in steps"
+            :key="`step-${index}`"
+            class="step-container"
+            :style="{ width: `${100 / steps.length}%` }"
+        >
             <div
                 class="circle"
                 :class="{
-                    active: index + 1 === currentStep,
-                    completed: index + 1 < currentStep,
+                    active: stepIndex(index) === currentStep,
+                    completed: stepIndex(index) < currentStep,
                 }"
+                :aria-label="`Step ${stepIndex(index)}: ${step}`"
+                :aria-current="stepIndex(index) === currentStep ? 'step' : undefined"
             >
-                {{ index + 1 }}
+                {{ stepIndex(index) }}
             </div>
 
-            <!-- Connecting line -->
             <div v-if="index < steps.length - 1" class="line">
-                <!-- full line for completed -->
-                <div v-if="index + 1 < currentStep" class="line-fill full"></div>
-
-                <!-- half and animated line for current -->
-                <div v-else-if="index + 1 === currentStep" class="line-fill half"></div>
+                <div
+                    class="line-fill"
+                    :class="{
+                        full: stepIndex(index) < currentStep,
+                        half: stepIndex(index) === currentStep,
+                        [animationDirection]: stepIndex(index) === currentStep,
+                    }"
+                    :key="`line-${index}-${animationKey}`"
+                ></div>
             </div>
         </div>
     </div>
@@ -28,13 +43,30 @@
 export default {
     name: 'ProgressStepper',
     props: {
-        steps: {
-            type: Array,
-            required: true,
+        steps: { type: Array, required: true },
+        currentStep: { type: Number, default: 1 },
+    },
+    data() {
+        return {
+            prevStep: 1,
+            animationDirection: 'forward',
+            animationKey: 0,
+        }
+    },
+    methods: {
+        stepIndex(index) {
+            return index + 1
         },
-        currentStep: {
-            type: Number,
-            default: 1,
+    },
+    watch: {
+        currentStep(newVal, oldVal) {
+            if (newVal > oldVal) {
+                this.animationDirection = 'forward'
+            } else if (newVal < oldVal) {
+                this.animationDirection = 'backward'
+            }
+            this.prevStep = newVal
+            this.animationKey = Date.now()
         },
     },
 }
@@ -44,19 +76,22 @@ export default {
 .progress-stepper {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
-.step-container {
-    display: flex;
-    align-items: center;
+    width: 100%;
+    margin-bottom: 24px;
     position: relative;
 }
 
+.step-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+}
+
 .circle {
-    width: 30px;
-    height: 30px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     border: 2px solid #d0d0d0;
     color: #777;
@@ -67,59 +102,69 @@ export default {
     background-color: #fff;
     transition: all 0.3s ease;
     z-index: 2;
+    font-size: 14px;
+    flex-shrink: 0;
 }
 
-.circle.active {
-    border-color: #3b82f6;
-    background-color: #3b82f6;
-    color: #fff;
-}
-
+.circle.active,
 .circle.completed {
-    border-color: #3b82f6;
-    background-color: #3b82f6;
+    border-color: #195bff;
+    background-color: #195bff;
     color: #fff;
 }
 
 .line {
-    width: 60px;
-    height: 3px;
-    background-color: #d0d0d0;
-    position: relative;
+    position: absolute;
+    left: 50%;
+    right: -50%;
+    height: 6px;
+    background-color: #e0e0e0;
+    top: 50%;
+    transform: translateY(-50%);
     overflow: hidden;
+    border-radius: 9999px;
 }
 
-/* default blue fill */
 .line-fill {
     height: 100%;
+    width: 100%;
     position: absolute;
     top: 0;
-    background-color: #3b82f6;
-    transition: width 0.4s ease;
+    background-color: #195bff;
+    border-radius: 9999px;
+    transform-origin: left center;
+    transform: scaleX(0);
+    transition: transform 0.6s cubic-bezier(0.55, 0.1, 0.3, 1);
 }
 
-/* full line (for completed steps) */
 .line-fill.full {
-    left: 0;
-    width: 100%;
+    transform: scaleX(1) !important;
 }
 
-/* half line (for current step) */
-.line-fill.half {
-    left: 0;
-    width: 50%;
-    animation: flowHalf 1s ease-in-out forwards;
+.line-fill.half.forward {
+    animation: fillForward 0.8s cubic-bezier(0.45, 0, 0.25, 1) forwards;
 }
 
-/* animation: flowing left → right */
-@keyframes flowHalf {
+.line-fill.half.backward {
+    transform-origin: right center;
+    animation: fillBackward 0.8s cubic-bezier(0.45, 0, 0.25, 1) forwards;
+}
+
+@keyframes fillForward {
     0% {
-        width: 0%;
-        left: 0;
+        transform: scaleX(0);
     }
     100% {
-        width: 50%;
-        left: 0;
+        transform: scaleX(0.5);
+    }
+}
+
+@keyframes fillBackward {
+    0% {
+        transform: scaleX(0.5);
+    }
+    100% {
+        transform: scaleX(0);
     }
 }
 </style>
