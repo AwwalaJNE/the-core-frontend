@@ -35,11 +35,9 @@
                     :isHideFilterColumn="true"
                     :isHideTotalPerPage="false"
                     :isMultipleSelectWithIndex="true"
-                    :selectedData="selectedData"
-                    :onRowClickCallback="onRowClickCallback"
-                    :isAllCheckedCheckCallback="onAllCheckCallback"
-                    :isAllChecked="isAllChecked"
                     :isShowCheckboxAll="true"
+                    :onRowClickCallback="onRowClickCallback"
+                    :allCheckCallback="onAllCheckCallback"
                     @actionLimit="actionLimit"
                     @actionPagination="actionPagination"
                     @updateSelected2="updateSelected"
@@ -209,7 +207,6 @@ export default {
                     limit: parseInt(res.meta.per_page),
                     page_size: res.meta.last_page,
                 }
-                console.log('CEK', this.dataTable)
             }
         },
         actionLimit(val) {
@@ -222,7 +219,7 @@ export default {
             this.refresh()
         },
         updateValue(key, val, info) {
-            if (key === 'filter_type ') {
+            if (key === 'filter_type') {
                 this.filterTypeBy = val
                 this.refresh()
             } else if (key === 'destination') {
@@ -250,15 +247,28 @@ export default {
         },
         onAllCheckCallback(val) {
             // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING ALL CHECKBOX
-            this.selectedData = val ? this.dataTable : []
+            this.selectedData = val
+                ? this.dataTable.map((item) => ({ ...item, selected: true }))
+                : []
+            this.$emit('update-selected', this.selectedData)
         },
         updateSelected(val, checkedItem) {
             // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING CHECKBOX
-            this.selectedData = checkedItem
+            const selectedSet = new Set(checkedItem.map((item) => item.bag_number))
+            this.selectedData = this.dataTable
+                .filter((item) => selectedSet.has(item.bag_number))
+                .map((item) => ({ ...item, selected: true }))
+
+            this.$emit('update-selected', this.selectedData)
         },
         onRowClickCallback(event, val, checkedItem) {
             // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING ROW
-            this.selectedData = checkedItem
+            const selectedSet = new Set(checkedItem.map((item) => item.bag_number))
+            this.selectedData = this.dataTable
+                .filter((item) => selectedSet.has(item.bag_number))
+                .map((item) => ({ ...item, selected: true }))
+
+            this.$emit('update-selected', this.selectedData)
         },
     },
     mounted() {

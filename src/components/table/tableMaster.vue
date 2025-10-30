@@ -155,7 +155,7 @@
                         <vs-th>
                             <vs-checkbox
                                 v-if="listenIsShowCheckboxAll"
-                                v-model="isAllChecked"
+                                v-model="localIsAllChecked"
                                 :indeterminate="selected.length == listenDataTable.length"
                                 @change="onAllCheckWithIndexChange"
                             />
@@ -2149,6 +2149,7 @@ export default {
             showColumnDropdown: false,
             visibleKeys: [],
             toggleAllVisible: true,
+            localIsAllChecked: this.isAllChecked,
         }
     },
     computed: {
@@ -2292,6 +2293,9 @@ export default {
             } else {
                 this.toggleAllVisible = false
             }
+        },
+        isAllChecked(newVal) {
+            this.localIsAllChecked = newVal
         },
     },
     methods: {
@@ -2461,6 +2465,8 @@ export default {
         },
 
         onAllCheckWithIndexChange(val) {
+            this.$emit('update:isAllChecked', val)
+
             this.selected = this.$vs.checkAll(this.selected, this.listenDataTable)
 
             if (typeof this.isAllCheckedCheckCallback === 'function') {

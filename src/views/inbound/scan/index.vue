@@ -1,7 +1,7 @@
 <template>
     <div>
         <vs-row justify="space-between">
-            <vs-col xs="6" sm="4" lg="4">
+            <vs-col xs="6" sm="6" lg="6">
                 <div class="titlePage">
                     <breadcrumb />
                     <h2 v-copy="title">{{ title }}</h2>
