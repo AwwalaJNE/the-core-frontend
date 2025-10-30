@@ -226,7 +226,6 @@ export default {
             }
         },
         async validateItem() {
-            this.startLoading(this.$refs.baggingSection)
             try {
                 const res = await axios.post(
                     `${this.URL.validation_item}?n=${this.listenNodeId}`,
@@ -246,8 +245,6 @@ export default {
                     'Failed',
                     err?.response?.data?.message || 'Something went wrong'
                 )
-            } finally {
-                this.stopLoading()
             }
         },
         async processSorting() {
