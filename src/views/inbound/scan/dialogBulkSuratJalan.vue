@@ -17,7 +17,7 @@
             </vs-row>
             <vs-row>
                 <vs-col w="12">
-                    <div>
+                    <div v-if="currentStep === 1">
                         <div class="text-left">
                             <h2>Choose Type</h2>
                             <p>
@@ -30,21 +30,55 @@
                             <div
                                 v-for="(item, index) in suratJalanTypeArray"
                                 :key="index"
-                                :class="[
-                                    'surat-jalan-box',
-                                    { active: surat_jalan_type === item.value },
-                                ]"
+                                :class="['surat-jalan-box', { active: sj_type === item.value }]"
                                 :data-testid="`bag-${item.label}`"
                                 @click="selectTipeSuratJalan(item)"
                             >
-                                <i
-                                    v-if="surat_jalan_type === item.value"
-                                    class="bx bx-check check-icon"
-                                ></i>
+                                <i v-if="sj_type === item.value" class="bx bx-check check-icon"></i>
                                 <i :class="item.icon" class="bag-icon"></i>
                                 <div class="bag-label">{{ item.label }}</div>
                             </div>
                         </div>
+                    </div>
+                    <div v-else-if="currentStep === 2">
+                        <div class="text-left">
+                            <h2>Validate Each Item</h2>
+                            <p>Please {{ getScanLabel().toLowerCase() }} here</p>
+                        </div>
+
+                        <vs-row>
+                            <vs-col xs="12" sm="6" lg="6">
+                                <input-general
+                                    icon-after
+                                    name=""
+                                    rules=""
+                                    formKey="scanItemNumber"
+                                    ref="scanItemNumber"
+                                    :valueData="item_number"
+                                    :typeInput="`text`"
+                                    :enter_to_update="true"
+                                    @click-icon="handleIconClick"
+                                    @updateValue="updateValue"
+                                    @enterUpdate="validateItem"
+                                >
+                                    <template #icon>
+                                        <i class="bx bx-barcode-reader"></i>
+                                    </template>
+                                </input-general>
+                            </vs-col>
+                        </vs-row>
+                        <vs-row>
+                            <vs-col w="12">
+                                <table-master
+                                    hideColumnKey="validate-surat-jalan-bulk"
+                                    :dataTable="dataTable"
+                                    :dataColumn="dataColumn"
+                                    :tableLoading="listenLoading"
+                                    :hasAction="false"
+                                    :hasPagination="false"
+                                />
+                            </vs-col>
+                        </vs-row>
                     </div>
                 </vs-col>
             </vs-row>
@@ -52,7 +86,7 @@
 
         <template v-slot:footer>
             <vs-row justify="flex-end">
-                <!-- <vs-col w="3">
+                <vs-col w="3" v-if="currentStep === 1">
                     <vs-button
                         transparent
                         block
@@ -64,21 +98,20 @@
                     >
                         Cancel
                     </vs-button>
-                </vs-col> -->
-                <vs-col w="3">
+                </vs-col>
+                <vs-col w="3" v-if="currentStep !== 1">
                     <vs-button
                         transparent
                         block
                         flat
-                        :active="true"
                         type="submit"
                         :data-testid="`submit-button`"
                         @click="prevStep"
                     >
-                        Prev Step
+                        Previous Steps
                     </vs-button>
                 </vs-col>
-                <vs-col w="3">
+                <vs-col w="3" v-if="currentStep !== steps.length">
                     <vs-button
                         transparent
                         block
@@ -88,10 +121,10 @@
                         :data-testid="`submit-button`"
                         @click="nextStep"
                     >
-                        Next Step
+                        Next Steps
                     </vs-button>
                 </vs-col>
-                <!-- <vs-col w="3">
+                <vs-col w="3" v-if="currentStep === steps.length">
                     <vs-button
                         transparent
                         block
@@ -101,9 +134,9 @@
                         :data-testid="`submit-button`"
                         @click="handleSubmit"
                     >
-                        Submit
+                        Proceed
                     </vs-button>
-                </vs-col> -->
+                </vs-col>
             </vs-row>
         </template>
     </dialog-master>
@@ -113,18 +146,23 @@ import axios from 'axios'
 import master from '@/mixins/master'
 
 import DialogMaster from '@/components/dialog/dialogMaster'
+import InputGeneral from '@/components/input/general'
 import ProgressStepper from '@/components/progress/progressStepper'
+import TableMaster from '@/components/table/tableMaster'
 
 export default {
     name: 'Inbound-Dialog-Bulk-Surat-Jalan',
     mixins: [master],
     components: {
         'dialog-master': DialogMaster,
+        'input-general': InputGeneral,
         'progress-stepper': ProgressStepper,
+        'table-master': TableMaster,
     },
     props: {
         active: Boolean,
         closeDialog: Function,
+        dataItem: Array,
         title: String,
     },
     computed: {
@@ -139,8 +177,9 @@ export default {
         },
     },
     watch: {
-        active: function (val) {
-            if (val == true) {
+        dataItem: function (val) {
+            if (val !== undefined) {
+                this.dataTable = val
             }
         },
     },
@@ -151,8 +190,7 @@ export default {
             loading: false,
 
             isDisabled: false,
-            selected_surat_jalan_type: '',
-            surat_jalan_type: '',
+            sj_type: '',
             suratJalanTypeArray: [
                 {
                     label: 'SURAT JALAN',
@@ -185,13 +223,44 @@ export default {
             ],
 
             currentStep: 1,
-            steps: ['Choose Type', 'Validate Each Item', ''],
+            steps: ['Choose Type', 'Validate Each Item'],
+
+            dataTable: [],
+            dataColumn: [
+                {
+                    label: 'Bag Number',
+                    key: 'bag_number',
+                    width: 'sm',
+                },
+                {
+                    label: 'Destination',
+                    key: 'bag_destination_node_code',
+                    width: 'sm',
+                },
+                {
+                    label: 'Type',
+                    key: 'bag_type',
+                    width: 'sm',
+                },
+                {
+                    label: 'Status',
+                    key: 'status',
+                    type: 'status',
+                    width: 'sm',
+                },
+            ],
+            pagination: {
+                limit: 20,
+                page_size: 1,
+                page: 1,
+            },
+
+            item_number: '',
         }
     },
     methods: {
         selectTipeSuratJalan(item) {
-            this.selected_surat_jalan_type = item
-            this.surat_jalan_type = item.value
+            this.sj_type = item.value
             this.isDisabled = false
             // this.setActiveInput('scanItem')
         },
@@ -208,10 +277,90 @@ export default {
             this.$emit('closeDialog')
         },
         nextStep() {
+            if (this.currentStep === 1 && !this.sj_type) {
+                return
+            }
             if (this.currentStep < this.steps.length) this.currentStep++
         },
         prevStep() {
             if (this.currentStep > 1) this.currentStep--
+        },
+        getScanLabel() {
+            switch (this.sj_type) {
+                case 'SJ':
+                    return 'Scan Masterbag / Bag / Koli'
+                case 'HBAG':
+                    return 'Scan Masterbag / Bag'
+                case 'MTS':
+                    return 'Scan Koli'
+                case 'DO':
+                    return 'Scan Masterbag / Bag'
+                default:
+                    return 'Scan Item'
+            }
+        },
+        updateValue(key, val) {
+            switch (key) {
+                case 'scanItemNumber':
+                    this.item_number = val
+                    console.log('CEKK', val)
+                    break
+                default:
+            }
+        },
+        validateItem() {
+            let found = false
+
+            this.dataTable.forEach((bag) => {
+                if (bag.bag_number === this.item_number) {
+                    bag.status = true
+                    found = true
+                }
+            })
+
+            if (!found) {
+                this.openNotification('danger', '', 'Failed', 'Item number not found')
+            }
+            this.item_number = ''
+        },
+        async handleSubmit() {
+            let list_item_no = this.dataTable
+                .filter((bag) => bag.status === true)
+                .map((bag) => bag.bag_number)
+
+            if (list_item_no.length === 0) {
+                this.openNotification('danger', '', 'Failed', 'No items have been validated')
+            } else {
+                let form = {
+                    item_no: list_item_no,
+                    is_penerusan: true,
+                    sj_type: this.sj_type,
+                }
+
+                await this.createBulkSuratJalan(form)
+            }
+        },
+        async createBulkSuratJalan(form) {
+            this.loading = true
+
+            try {
+                const res = await axios.post(
+                    `${this.URL.revamp_surat_jalan_v3_bulk}?n=${this.listenNodeId}`,
+                    JSON.stringify(form),
+                    this.Helper.header()
+                )
+
+                this.openNotification('success', null, 'Success', 'Create surat jalan success')
+            } catch (err) {
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
+            } finally {
+                this.loading = false
+            }
         },
     },
     mounted() {

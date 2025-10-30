@@ -248,7 +248,7 @@ export default {
         onAllCheckCallback(val) {
             // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING ALL CHECKBOX
             this.selectedData = val
-                ? this.dataTable.map((item) => ({ ...item, selected: true }))
+                ? this.dataTable.map((item) => ({ ...item, selected: true, status: false }))
                 : []
             this.$emit('update-selected', this.selectedData)
         },
@@ -257,7 +257,7 @@ export default {
             const selectedSet = new Set(checkedItem.map((item) => item.bag_number))
             this.selectedData = this.dataTable
                 .filter((item) => selectedSet.has(item.bag_number))
-                .map((item) => ({ ...item, selected: true }))
+                .map((item) => ({ ...item, selected: true, status: false }))
 
             this.$emit('update-selected', this.selectedData)
         },
@@ -266,7 +266,7 @@ export default {
             const selectedSet = new Set(checkedItem.map((item) => item.bag_number))
             this.selectedData = this.dataTable
                 .filter((item) => selectedSet.has(item.bag_number))
-                .map((item) => ({ ...item, selected: true }))
+                .map((item) => ({ ...item, selected: true, status: false }))
 
             this.$emit('update-selected', this.selectedData)
         },

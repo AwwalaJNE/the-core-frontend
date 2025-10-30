@@ -197,7 +197,7 @@
                     <div class="box-v1">
                         <div class="header-remark-bar">
                             <h4 align="left">Misrouted Bag</h4>
-                            <template v-if="dataTableProp.length > 0">
+                            <template v-if="$refs.misrouteBag?.dataTable.length > 0">
                                 <div style="display: flex">
                                     <vs-button
                                         :data-testid="`remark-button`"
@@ -237,6 +237,7 @@
             title="Create Surat Jalan"
             :active="dialogSuratJalan"
             :closeDialog="closeDialog"
+            :dataItem="selectedData"
             @refresh="refresh"
         />
 
@@ -333,6 +334,7 @@ export default {
             dialogActive: false,
 
             dialogSuratJalan: false,
+            selectedData: [],
         }
     },
     methods: {
@@ -658,9 +660,12 @@ export default {
                 this.showDialog = true
                 this.autoFocusInput(true)
             } else if (type === 'surat_jalan') {
-                this.dialogSuratJalan = true
-                // console.log('cek')
-                console.log('CEKK', this.$refs.misrouteBag.selectedData)
+                if (this.$refs.misrouteBag?.selectedData.length < 1) {
+                    this.openNotification('danger', '', 'Failed', 'Please select at least one bag')
+                } else {
+                    this.dialogSuratJalan = true
+                    this.selectedData = this.$refs.misrouteBag.selectedData
+                }
             } else if (type === 'surat_muatan') {
                 console.log('CEKK', this.$refs.misrouteBag.selectedData)
             }

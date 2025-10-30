@@ -1,29 +1,18 @@
 <template>
-    <div
-        class="progress-stepper"
-        role="progressbar"
-        :aria-valuenow="currentStep"
-        :aria-valuemin="1"
-        :aria-valuemax="steps.length"
-    >
-        <div
-            v-for="(step, index) in steps"
-            :key="`step-${index}`"
-            class="step-container"
-            :style="{ width: `${100 / steps.length}%` }"
-        >
+    <div class="progress-stepper">
+        <div v-for="(step, index) in steps" :key="`step-${index}`" class="step-container">
+            <!-- Circle -->
             <div
                 class="circle"
                 :class="{
                     active: stepIndex(index) === currentStep,
                     completed: stepIndex(index) < currentStep,
                 }"
-                :aria-label="`Step ${stepIndex(index)}: ${step}`"
-                :aria-current="stepIndex(index) === currentStep ? 'step' : undefined"
             >
                 {{ stepIndex(index) }}
             </div>
 
+            <!-- Line (only between steps) -->
             <div v-if="index < steps.length - 1" class="line">
                 <div
                     class="line-fill"
@@ -60,11 +49,7 @@ export default {
     },
     watch: {
         currentStep(newVal, oldVal) {
-            if (newVal > oldVal) {
-                this.animationDirection = 'forward'
-            } else if (newVal < oldVal) {
-                this.animationDirection = 'backward'
-            }
+            this.animationDirection = newVal > oldVal ? 'forward' : 'backward'
             this.prevStep = newVal
             this.animationKey = Date.now()
         },
@@ -76,19 +61,17 @@ export default {
 .progress-stepper {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     width: 100%;
-    margin-bottom: 24px;
-    position: relative;
 }
 
 .step-container {
-    position: relative;
     display: flex;
     align-items: center;
-    justify-content: center;
-    height: 36px;
+    flex: 1;
 }
 
+/* Lingkaran */
 .circle {
     width: 36px;
     height: 36px;
@@ -113,16 +96,15 @@ export default {
     color: #fff;
 }
 
+/* Garis antar step */
 .line {
-    position: absolute;
-    left: 50%;
-    right: -50%;
+    flex: 1;
     height: 6px;
     background-color: #e0e0e0;
-    top: 50%;
-    transform: translateY(-50%);
-    overflow: hidden;
+    margin: 0 10px; /* <-- kasih gap antara lingkaran dan garis */
     border-radius: 9999px;
+    overflow: hidden;
+    position: relative;
 }
 
 .line-fill {
@@ -130,6 +112,7 @@ export default {
     width: 100%;
     position: absolute;
     top: 0;
+    left: 0;
     background-color: #195bff;
     border-radius: 9999px;
     transform-origin: left center;
