@@ -12,15 +12,17 @@
                             <span>See other apps</span>
                         </vs-col>
                         <vs-row>
-                            <vs-col 
-                                v-for="(button, index) in buttons" 
-                                :key="index" 
-                                xs="3" sm="3" lg="3"
+                            <vs-col
+                                v-for="(button, index) in buttons"
+                                :key="index"
+                                xs="3"
+                                sm="3"
+                                lg="3"
                             >
-                                <vs-button 
+                                <vs-button
                                     active
                                     block
-                                    type="submit" 
+                                    type="submit"
                                     @click="handleRedirect(button.url)"
                                 >
                                     {{ button.label }}
@@ -28,9 +30,13 @@
                             </vs-col>
                         </vs-row>
                     </vs-col>
-                    
+
                     <vs-col xs="3" sm="3" lg="3" class="avatar-column">
-                        <img src="@/assets/svg/mascot.svg" alt="Mascot JNE" style="width: 100%; height: 100%;"/>
+                        <img
+                            src="@/assets/svg/mascot.svg"
+                            alt="Mascot JNE"
+                            style="width: 100%; height: 100%"
+                        />
                     </vs-col>
                 </vs-row>
             </div>
@@ -45,54 +51,46 @@
                             :chart-data="dataInsightInventory"
                             :options="optionsInsightInventory"
                         />
-                        <div v-else class="no-data-message">
-                            No data available
-                        </div>
+                        <div v-else class="no-data-message">No data available</div>
                     </div>
                 </vs-col>
 
                 <vs-col xs="12" sm="6" lg="3">
                     <div class="box set-height">
                         <h4>Today Runsheet Summary</h4>
-                        <doughnut-chart 
-                            ref="insightRunsheetChart" 
+                        <doughnut-chart
+                            ref="insightRunsheetChart"
                             v-if="!is_empty_insight_runsheet"
-                            :chart-data="dataInsightRunsheet" 
-                            :options="optionsInsightRunsheet" 
+                            :chart-data="dataInsightRunsheet"
+                            :options="optionsInsightRunsheet"
                         />
-                        <div v-else class="no-data-message">
-                            No data available
-                        </div>
+                        <div v-else class="no-data-message">No data available</div>
                     </div>
                 </vs-col>
 
                 <vs-col xs="12" sm="6" lg="3">
                     <div class="box set-height">
                         <h4>Today Receive Summary</h4>
-                        <bar-chart 
-                            ref="insightReceiveChart" 
+                        <bar-chart
+                            ref="insightReceiveChart"
                             v-if="!is_empty_insight_receive"
-                            :chart-data="dataInsightReceive" 
-                            :options="optionsInsightReceive" 
+                            :chart-data="dataInsightReceive"
+                            :options="optionsInsightReceive"
                         />
-                        <div v-else class="no-data-message">
-                            No data available
-                        </div>
+                        <div v-else class="no-data-message">No data available</div>
                     </div>
                 </vs-col>
 
                 <vs-col xs="12" sm="6" lg="3">
                     <div class="box set-height">
                         <h4>Today Depart Summary</h4>
-                        <bar-chart 
-                            ref="insightDepartChart" 
+                        <bar-chart
+                            ref="insightDepartChart"
                             v-if="!is_empty_insight_depart"
-                            :chart-data="dataInsightDepart" 
-                            :options="optionsInsightDepart" 
+                            :chart-data="dataInsightDepart"
+                            :options="optionsInsightDepart"
                         />
-                        <div v-else class="no-data-message">
-                            No data available
-                        </div>
+                        <div v-else class="no-data-message">No data available</div>
                     </div>
                 </vs-col>
             </vs-row>
@@ -100,72 +98,71 @@
     </vs-row>
 </template>
 <script>
-
-import axios from "axios";
-import master from "@/mixins/master";
+import axios from 'axios'
+import master from '@/mixins/master'
 
 import { Bar, Doughnut } from 'vue-chartjs'
 
 export default {
-    name: "main-page",
+    name: 'main-page',
     mixins: [master],
     components: {
-        "bar-chart": Bar,
-        "doughnut-chart": Doughnut
+        'bar-chart': Bar,
+        'doughnut-chart': Doughnut,
     },
     computed: {
         buttons() {
             return [
-                { 
-                    label: "Dashboard Core", 
-                    url: this.URL.app_jne_core_dashboard 
+                {
+                    label: 'Dashboard Core',
+                    url: this.URL.app_jne_core_dashboard,
                 },
-                { 
-                    label: "Helpdesk Core", 
-                    url: this.URL.app_jne_core
+                {
+                    label: 'Helpdesk Core',
+                    url: this.URL.app_jne_core,
                 },
-                { 
-                    label: "JNE Main Page", 
-                    url: this.URL.app_jne_main
-                }
-            ];
-        }
+                {
+                    label: 'JNE Main Page',
+                    url: this.URL.app_jne_main,
+                },
+            ]
+        },
     },
     watch: {
         dataInsightInventory(newData) {
             if (newData) {
-                this.$refs.insightInventoryChart.renderChart(newData, this.optionsInsightInventory);
+                this.$refs.insightInventoryChart.renderChart(newData, this.optionsInsightInventory)
             }
         },
         dataInsightRunsheet(newData) {
             if (newData) {
-                this.$refs.insightRunsheetChart.renderChart(newData, this.optionsInsightRunsheet);
+                this.$refs.insightRunsheetChart.renderChart(newData, this.optionsInsightRunsheet)
             }
         },
         dataInsightReceive(newData) {
             if (newData) {
-                this.$refs.insightReceiveChart.renderChart(newData, this.optionsInsightReceive);
+                this.$refs.insightReceiveChart.renderChart(newData, this.optionsInsightReceive)
             }
         },
         dataInsightDepart(newData) {
             if (newData) {
-                this.$refs.insightDepartChart.renderChart(newData, this.optionsInsightDepart);
+                this.$refs.insightDepartChart.renderChart(newData, this.optionsInsightDepart)
             }
-        }
+        },
     },
     data() {
         return {
-            role_name: "",
-            node_name: "",
-            node_code: "",
-            user_login: "",
-            timeOfDay: "",
-            currentTime: "",
+            role_name: '',
+            node_name: '',
+            node_code: '',
+            user_login: '',
+            timeOfDay: '',
+            currentTime: '',
             is_empty_insight_invetory: false,
             dataInsightInventory: {},
             optionsInsightInventory: {
                 responsive: true,
-                maintainAspectRatio: false, 
+                maintainAspectRatio: false,
                 scales: {
                     y: {
                         beginAtZero: true,
@@ -238,7 +235,7 @@ export default {
             dataInsightReceive: {},
             optionsInsightReceive: {
                 responsive: true,
-                maintainAspectRatio: false, 
+                maintainAspectRatio: false,
                 scales: {
                     y: {
                         beginAtZero: true,
@@ -284,7 +281,7 @@ export default {
             dataInsightDepart: {},
             optionsInsightDepart: {
                 responsive: true,
-                maintainAspectRatio: false, 
+                maintainAspectRatio: false,
                 scales: {
                     y: {
                         beginAtZero: true,
@@ -326,200 +323,248 @@ export default {
                     },
                 },
             },
-        };
+        }
     },
     methods: {
         getInfo() {
-            this.role_name = this.listenActiveUser?.role?.[0]?.app_role_name || "";
-            this.node_name = this.listenCurrentNode?.node_name || "";
-            this.node_code = this.listenCurrentNode?.node_code || "";
-            this.user_login = this.listenActiveUser?.user_login || "";
+            this.role_name = this.listenActiveUser?.role?.[0]?.app_role_name || ''
+            this.node_name = this.listenCurrentNode?.node_name || ''
+            this.node_code = this.listenCurrentNode?.node_code || ''
+            this.user_login = this.listenActiveUser?.user_login || ''
         },
         handleRedirect(url) {
-            const newWindow = window.open(url, '_blank', 'noopener');
-      
+            const newWindow = window.open(url, '_blank', 'noopener')
+
             if (newWindow) {
-                newWindow.onload = function() {
-                    newWindow.print();
-                    newWindow.onafterprint = () => newWindow.close();
-                };
+                newWindow.onload = function () {
+                    newWindow.print()
+                    newWindow.onafterprint = () => newWindow.close()
+                }
             }
         },
         updateTime() {
-            const now = new Date();
-            this.currentTime = now.toLocaleTimeString();
-            this.timeOfDay = this.getTimeOfDay(now.getHours());
+            const now = new Date()
+            this.currentTime = now.toLocaleTimeString()
+            this.timeOfDay = this.getTimeOfDay(now.getHours())
         },
         getTimeOfDay(hour) {
             if (hour >= 5 && hour < 12) {
-                return "Morning";
+                return 'Morning'
             } else if (hour >= 12 && hour < 17) {
-                return "Afternoon";
+                return 'Afternoon'
             } else {
-                return "Evening";
+                return 'Evening'
             }
         },
         formattedArr(arr) {
-            return arr.map(item =>
+            return arr.map((item) =>
                 item
                     .split('_')
-                    .map(word =>
-                    word.toLowerCase() === 'sm' || word.toLowerCase() === 'sj'
-                        ? word.toUpperCase()
-                        : word.charAt(0).toUpperCase() + word.slice(1)
+                    .map((word) =>
+                        word.toLowerCase() === 'sm' || word.toLowerCase() === 'sj'
+                            ? word.toUpperCase()
+                            : word.charAt(0).toUpperCase() + word.slice(1)
                     )
                     .join(' ')
-                );
-            
+            )
         },
-        async getInsightInventory(){
-            this.loading = true;
+        async getInsightInventory() {
+            this.loading = true
             try {
-                const res = await axios.get(`${this.URL.insight_inventory}?n=${this.listenNodeId}`, this.Helper.header());
+                const res = await axios.get(
+                    `${this.URL.insight_inventory}?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
 
                 if (res.data.data) {
-                    const keys = Object.keys(res.data.data);
-                    const values = Object.values(res.data.data);
+                    const keys = Object.keys(res.data.data)
+                    const values = Object.values(res.data.data)
                     this.dataInsightInventory = {
                         labels: this.formattedArr(keys),
-                        datasets: [{
-                            label: 'Count',
-                            backgroundColor: (context) => {
-                                const gradient = context.chart.ctx.createLinearGradient(0, 0, 0, 400);
-                                
-                                gradient.addColorStop(0, '#1E88E5');
-                                gradient.addColorStop(1, '#90CAF9');
-                                return gradient;
-                            },
-                            hoverBackgroundColor: '#1565C0',
-                            borderRadius: 6,
-                            barThickness: 20,
-                            data: values,
-                        }]
-                    };
+                        datasets: [
+                            {
+                                label: 'Count',
+                                backgroundColor: (context) => {
+                                    const gradient = context.chart.ctx.createLinearGradient(
+                                        0,
+                                        0,
+                                        0,
+                                        400
+                                    )
 
-                    if (values.every(value => value === 0)) {
-                        this.is_empty_insight_invetory = true;
+                                    gradient.addColorStop(0, '#1E88E5')
+                                    gradient.addColorStop(1, '#90CAF9')
+                                    return gradient
+                                },
+                                hoverBackgroundColor: '#1565C0',
+                                borderRadius: 6,
+                                barThickness: 20,
+                                data: values,
+                            },
+                        ],
                     }
-                }                
+
+                    if (values.every((value) => value === 0)) {
+                        this.is_empty_insight_invetory = true
+                    }
+                }
             } catch (err) {
-                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Failed',
+                    err?.response?.data?.message || 'Something went wrong'
+                )
             } finally {
-                this.loading = false;
+                this.loading = false
             }
         },
-        async getInsightRunsheet(){
-            this.loading = true;
+        async getInsightRunsheet() {
+            this.loading = true
             try {
-                const res = await axios.get(`${this.URL.insight_runsheet}?n=${this.listenNodeId}`, this.Helper.header());
+                const res = await axios.get(
+                    `${this.URL.insight_runsheet}?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
 
                 if (res.data.data) {
-                    const keys = Object.keys(res.data.data);
-                    const values = Object.values(res.data.data);
+                    const keys = Object.keys(res.data.data)
+                    const values = Object.values(res.data.data)
                     this.dataInsightRunsheet = {
                         labels: this.formattedArr(keys),
-                        datasets: [{
-                            backgroundColor: [
-                                '#FF6384',
-                                '#36A2EB',
-                                '#FFCE56'
-                            ],
-                            hoverBackgroundColor: [
-                                '#FF6384',
-                                '#36A2EB',
-                                '#FFCE56'
-                            ],
-                            data: values,
-                        }]
-                    };
-
-                    if (values.every(value => value === 0)) {
-                        this.is_empty_insight_runsheet = true;
+                        datasets: [
+                            {
+                                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                                hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                                data: values,
+                            },
+                        ],
                     }
-                }                
+
+                    if (values.every((value) => value === 0)) {
+                        this.is_empty_insight_runsheet = true
+                    }
+                }
             } catch (err) {
-                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Failed',
+                    err?.response?.data?.message || 'Something went wrong'
+                )
             } finally {
-                this.loading = false;
+                this.loading = false
             }
         },
-        async getInsightReceive(){
-            this.loading = true;
+        async getInsightReceive() {
+            this.loading = true
             try {
-                const res = await axios.get(`${this.URL.insight_receive}?n=${this.listenNodeId}`, this.Helper.header());
+                const res = await axios.get(
+                    `${this.URL.insight_receive}?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
 
                 if (res.data.data) {
-                    const keys = Object.keys(res.data.data);
-                    const values = Object.values(res.data.data);
+                    const keys = Object.keys(res.data.data)
+                    const values = Object.values(res.data.data)
                     this.dataInsightReceive = {
                         labels: this.formattedArr(keys),
-                        datasets: [{
-                            label: 'Counts',
-                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-                            data: values,
-                        }]
-                    };
-
-                    if (values.every(value => value === 0)) {
-                        this.is_empty_insight_receive = true;
+                        datasets: [
+                            {
+                                label: 'Counts',
+                                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                                data: values,
+                            },
+                        ],
                     }
-                }                
+
+                    if (values.every((value) => value === 0)) {
+                        this.is_empty_insight_receive = true
+                    }
+                }
             } catch (err) {
-                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Failed',
+                    err?.response?.data?.message || 'Something went wrong'
+                )
             } finally {
-                this.loading = false;
+                this.loading = false
             }
         },
-        async getInsightDepart(){
-            this.loading = true;
+        async getInsightDepart() {
+            this.loading = true
             try {
-                const res = await axios.get(`${this.URL.insight_depart}?n=${this.listenNodeId}`, this.Helper.header());
+                const res = await axios.get(
+                    `${this.URL.insight_depart}?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
 
                 if (res.data.data) {
-                    const keys = Object.keys(res.data.data);
-                    const values = Object.values(res.data.data);
+                    const keys = Object.keys(res.data.data)
+                    const values = Object.values(res.data.data)
                     this.dataInsightDepart = {
                         labels: this.formattedArr(keys),
-                        datasets: [{
-                            label: 'Counts',
-                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-                            data: values,
-                        }]
-                    };
-
-                    if (values.every(value => value === 0)) {
-                        this.is_empty_insight_depart = true;
+                        datasets: [
+                            {
+                                label: 'Counts',
+                                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                                data: values,
+                            },
+                        ],
                     }
-                }                
+
+                    if (values.every((value) => value === 0)) {
+                        this.is_empty_insight_depart = true
+                    }
+                }
             } catch (err) {
-                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Failed',
+                    err?.response?.data?.message || 'Something went wrong'
+                )
             } finally {
-                this.loading = false;
+                this.loading = false
             }
         },
     },
-    mounted() {
-        this.updateTime();
+    async mounted() {
+        this.updateTime()
 
-        this.getInfo();
+        this.getInfo()
 
-        this.getInsightInventory().then(() => {
-            this.$refs.insightInventoryChart?.renderChart(this.dataInsightInventory, this.optionsInsightInventory);
-        });
+        await this.getInsightInventory().then(() => {
+            this.$refs.insightInventoryChart?.renderChart(
+                this.dataInsightInventory,
+                this.optionsInsightInventory
+            )
+        })
 
-        this.getInsightRunsheet().then(() => {
-            this.$refs.insightRunsheetChart?.renderChart(this.dataInsightRunsheet, this.optionsInsightRunsheet);
-        });
+        await this.getInsightRunsheet().then(() => {
+            this.$refs.insightRunsheetChart?.renderChart(
+                this.dataInsightRunsheet,
+                this.optionsInsightRunsheet
+            )
+        })
 
-        this.getInsightReceive().then(() => {
-            this.$refs.insightReceiveChart?.renderChart(this.dataInsightReceive, this.optionsInsightReceive);
-        });
+        await this.getInsightReceive().then(() => {
+            this.$refs.insightReceiveChart?.renderChart(
+                this.dataInsightReceive,
+                this.optionsInsightReceive
+            )
+        })
 
-        this.getInsightDepart().then(() => {
-            this.$refs.insightDepartChart?.renderChart(this.dataInsightDepart, this.optionsInsightDepart);
-        });
+        await this.getInsightDepart().then(() => {
+            this.$refs.insightDepartChart?.renderChart(
+                this.dataInsightDepart,
+                this.optionsInsightDepart
+            )
+        })
     },
-};
+}
 </script>
 
 <style scoped>
@@ -539,5 +584,4 @@ export default {
     text-align: center;
     font-size: 12px;
 }
-
 </style>
