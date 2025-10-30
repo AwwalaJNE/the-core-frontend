@@ -88,7 +88,7 @@
                                     :disabled="dialogActiveManualDestination"
                                     @click-icon="handleIconClick"
                                     @updateValue="updateValue"
-                                    @enterUpdate="processItem"
+                                    @enterUpdate="validateItem"
                                 />
                             </vs-col>
                         </vs-row>
@@ -225,6 +225,31 @@ export default {
                 await this.processSorting()
             }
         },
+        async validateItem() {
+            this.startLoading(this.$refs.baggingSection)
+            try {
+                const res = await axios.post(
+                    `${this.URL.validation_item}?n=${this.listenNodeId}`,
+                    {
+                        item_number: this.item_number,
+                    },
+                    this.Helper.header()
+                )
+
+                this.processItem()
+
+                this.openNotification('success', null, 'Success', res?.data?.message || 'Success')
+            } catch (err) {
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Failed',
+                    err?.response?.data?.message || 'Something went wrong'
+                )
+            } finally {
+                this.stopLoading()
+            }
+        },
         async processSorting() {
             this.startLoading(this.$refs.baggingSection)
             try {
@@ -242,16 +267,7 @@ export default {
 
                 this.openNotification('success', null, 'Success', res?.data?.message || 'Success')
             } catch (err) {
-                if (['CORE-1146', 'CORE-1082', 'CORE-1156'].includes(err?.response?.data?.code)) {
-                    this.openNotification(
-                        'danger',
-                        err?.response?.data?.code || '',
-                        'Failed',
-                        err?.response?.data?.message || 'Something went wrong'
-                    )
-                } else {
-                    this.openDialog()
-                }
+                this.openDialog()
             } finally {
                 this.stopLoading()
             }
