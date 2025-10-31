@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="progress-stepper-wrapper">
         <div class="progress-stepper-container">
             <div class="line-full"></div>
             <div class="line-progress" :style="{ width: progressWidth }"></div>
@@ -16,11 +16,11 @@
         </div>
 
         <div class="stepper-content">
-            <slot :current-step="currentStep"></slot>
+            <slot :name="`step-${currentStepIndex}`"></slot>
         </div>
 
         <vs-row justify="flex-end" align="center" class="stepper-buttons">
-            <vs-col w="3" v-if="currentStep === 0">
+            <vs-col w="3" v-if="currentStepIndex === 0">
                 <vs-button
                     transparent
                     block
@@ -34,7 +34,7 @@
                 </vs-button>
             </vs-col>
 
-            <vs-col w="3" v-if="currentStep > 0">
+            <vs-col w="3" v-if="currentStepIndex > 0">
                 <vs-button
                     transparent
                     block
@@ -47,7 +47,7 @@
                 </vs-button>
             </vs-col>
 
-            <vs-col w="3" v-if="currentStep < steps.length - 1">
+            <vs-col w="3" v-if="currentStepIndex < steps.length - 1">
                 <vs-button
                     transparent
                     block
@@ -61,7 +61,7 @@
                 </vs-button>
             </vs-col>
 
-            <vs-col w="3" v-if="currentStep === steps.length - 1">
+            <vs-col w="3" v-if="currentStepIndex === steps.length - 1">
                 <vs-button
                     transparent
                     block
@@ -80,7 +80,7 @@
 
 <script>
 export default {
-    name: 'ProgressStepperFull',
+    name: 'ProgressStepper',
     props: {
         steps: { type: Array, required: true },
         initialStep: { type: Number, default: 0 },
@@ -91,9 +91,6 @@ export default {
         }
     },
     computed: {
-        currentStep() {
-            return this.currentStepIndex
-        },
         progressWidth() {
             if (this.steps.length <= 1) return '0%'
             return `${(this.currentStepIndex / (this.steps.length - 1)) * 100}%`
@@ -101,16 +98,10 @@ export default {
     },
     methods: {
         nextStep() {
-            if (this.currentStepIndex < this.steps.length - 1) {
-                this.currentStepIndex++
-                this.$emit('change-step', this.currentStepIndex)
-            }
+            if (this.currentStepIndex < this.steps.length - 1) this.currentStepIndex++
         },
         prevStep() {
-            if (this.currentStepIndex > 0) {
-                this.currentStepIndex--
-                this.$emit('change-step', this.currentStepIndex)
-            }
+            if (this.currentStepIndex > 0) this.currentStepIndex--
         },
         isCircleActive(index) {
             return index <= this.currentStepIndex
@@ -127,6 +118,10 @@ export default {
 </script>
 
 <style scoped>
+.progress-stepper-wrapper {
+    width: 100%;
+}
+
 .progress-stepper-container {
     position: relative;
     width: 100%;
@@ -156,7 +151,7 @@ export default {
     border-radius: 9999px;
     transform: translateY(-50%);
     transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 1;
+    z-index: 2;
     pointer-events: none;
 }
 
@@ -164,7 +159,7 @@ export default {
     display: flex;
     justify-content: space-between;
     position: relative;
-    z-index: 2;
+    z-index: 3;
 }
 
 .circle {
@@ -178,17 +173,23 @@ export default {
     font-weight: bold;
     color: #333;
     position: relative;
-    z-index: 2;
     transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-        color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        color 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s ease;
 }
 
 .circle.active {
     background-color: #195bff;
     color: #fff;
+    transform: scale(1.1);
 }
 
 .stepper-content {
     margin-bottom: 20px;
+    min-height: 150px;
+    transition: all 0.3s ease;
+}
+
+.stepper-buttons {
+    margin-top: 10px;
 }
 </style>

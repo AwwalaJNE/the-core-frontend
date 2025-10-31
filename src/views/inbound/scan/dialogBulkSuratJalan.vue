@@ -3,7 +3,7 @@
         :actived="listenActive"
         :loading="listenLoading"
         :closeDialog="cancel"
-        width="md"
+        width="lg"
     >
         <template v-slot:header>
             {{ listenTitle }}
@@ -17,12 +17,8 @@
             </vs-row>
             <vs-row>
                 <vs-col w="12">
-                    <progress-stepper
-                        :steps="steps"
-                        :initialStep="currentStep"
-                        @change-step="currentStep = $event"
-                    >
-                        <template v-if="currentStep === 0" #default="{ currentStep }">
+                    <progress-stepper :steps="steps">
+                        <template #step-0>
                             <div class="text-left">
                                 <h2>Choose Type</h2>
                                 <p>
@@ -48,7 +44,7 @@
                                 </div>
                             </div>
                         </template>
-                        <template v-else-if="currentStep === 1" #default="{ currentStep }">
+                        <template #step-1>
                             <div class="text-left">
                                 <h2>Validate Each Item</h2>
                                 <p>Please {{ getScanLabel().toLowerCase() }} here</p>
