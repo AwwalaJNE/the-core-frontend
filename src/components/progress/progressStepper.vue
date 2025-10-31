@@ -1,16 +1,19 @@
 <template>
     <div class="progress-stepper-wrapper">
         <div class="progress-stepper-container">
-            <div class="line-full"></div>
-            <div class="line-progress" :style="{ width: progressWidth }"></div>
             <div class="steps">
-                <div
-                    v-for="index in steps.length + 1"
-                    :key="index"
-                    class="circle"
-                    :class="{ active: isCircleActive(index - 1) }"
-                >
-                    {{ index === steps.length + 1 ? '' : index }}
+                <div v-for="(step, index) in stepsWithDummy" :key="index" class="step-wrapper">
+                    <div
+                        class="circle"
+                        :class="{ active: isCircleActive(index), dummy: index === steps.length }"
+                    >
+                        {{ index === steps.length ? '' : step.label || index + 1 }}
+                    </div>
+                    <div
+                        v-if="index < stepsWithDummy.length - 1"
+                        class="line"
+                        :class="{ active: isLineActive(index) }"
+                    ></div>
                 </div>
             </div>
         </div>
@@ -93,16 +96,8 @@ export default {
         }
     },
     computed: {
-        progressWidth() {
-            const totalCircles = this.steps.length + 1
-            const segment = 100 / (totalCircles - 1)
-
-            if (this.currentStepIndex === 0) return `${segment / 2}%`
-
-            if (this.currentStepIndex < this.steps.length)
-                return `${(this.currentStepIndex + 0.5) * segment}%`
-
-            return '100%'
+        stepsWithDummy() {
+            return [...this.steps, { label: null, dummy: true }]
         },
     },
     methods: {
@@ -120,6 +115,9 @@ export default {
         isCircleActive(index) {
             return index <= this.currentStepIndex
         },
+        isLineActive(index) {
+            return index < this.currentStepIndex
+        },
         cancel() {
             this.currentStepIndex = 0
             this.$emit('cancel')
@@ -130,11 +128,8 @@ export default {
                 this.$emit('invalid-step', this.currentStepIndex)
                 return
             }
-
             this.$emit('submit', (success = true) => {
-                if (success) {
-                    this.currentStepIndex = this.steps.length
-                }
+                if (success) this.currentStepIndex = this.steps.length
             })
         },
     },
@@ -153,43 +148,17 @@ export default {
     margin: 2.5em auto;
 }
 
-.line-separator {
-    height: 1px;
-    background-color: #e0e0e0;
-    border-radius: 9999px;
-}
-
-.line-full {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 6px;
-    background-color: #e0e0e0;
-    border-radius: 9999px;
-    transform: translateY(-50%);
-    z-index: 1;
-    pointer-events: none;
-}
-
-.line-progress {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    height: 6px;
-    background-color: #195bff;
-    border-radius: 9999px;
-    transform: translateY(-50%);
-    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 2;
-    pointer-events: none;
-}
-
 .steps {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
     position: relative;
-    z-index: 3;
+    gap: 0.5rem;
+}
+
+.step-wrapper {
+    display: flex;
+    align-items: center;
 }
 
 .circle {
@@ -202,15 +171,38 @@ export default {
     justify-content: center;
     font-weight: bold;
     color: darkgrey;
-    position: relative;
-    transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-        color 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .circle.active {
     background-color: #195bff;
     color: #fff;
     transform: scale(1.1);
+}
+
+.circle.dummy {
+    background-color: #cfd8dc;
+    color: transparent;
+}
+
+.line {
+    width: 60px;
+    height: 6px;
+    background-color: #e0e0e0;
+    border-radius: 9999px;
+    margin: 0 10px;
+    transition: background-color 0.3s ease;
+}
+
+.line.active {
+    background-color: #195bff;
+}
+
+.line-separator {
+    height: 1px;
+    background-color: #e0e0e0;
+    border-radius: 9999px;
+    margin-top: 10px;
 }
 
 .stepper-content {
