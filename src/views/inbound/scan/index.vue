@@ -168,7 +168,7 @@
                                 <dialog-insert-remark
                                     :actived="showDialog"
                                     :loading="false"
-                                    :closeDialog="closeDialog"
+                                    :closeDialog="() => closeDialog('receiving_log')"
                                     :inbound_number="inbound_number"
                                 />
                             </template>
@@ -212,6 +212,13 @@
                                         <i class="bx bx-plus"></i> Surat Muatan
                                     </vs-button>
                                 </div>
+                                <dialog-bulk-surat-jalan
+                                    title="Create Surat Jalan"
+                                    :active="dialogSuratJalan"
+                                    :dataItem="selectedData"
+                                    @closeDialog="() => closeDialog('surat_jalan')"
+                                    @refresh="refresh"
+                                />
                             </template>
                         </div>
                         <div class="nav-box">
@@ -232,15 +239,6 @@
                 <i class="bx bxs-chevron-left"> </i> BACK
             </vs-button>
         </section>
-
-        <dialog-bulk-surat-jalan
-            title="Create Surat Jalan"
-            :active="dialogSuratJalan"
-            :closeDialog="closeDialog"
-            :dataItem="selectedData"
-            @closeDialog="closeDialog2"
-            @refresh="refresh"
-        />
 
         <camera-scanner
             ref="cameraScanner"
@@ -668,16 +666,17 @@ export default {
                     this.selectedData = this.$refs.misrouteBag.selectedData
                 }
             } else if (type === 'surat_muatan') {
-                console.log('CEKK', this.$refs.misrouteBag.selectedData)
             }
         },
-        closeDialog() {
-            this.showDialog = false
-
-            this.autoFocusInput(false)
-        },
-        closeDialog2() {
-            this.dialogSuratJalan = false
+        closeDialog(type) {
+            if (type === 'receiving_log') {
+                this.showDialog = false
+                this.autoFocusInput(false)
+            } else if (type === 'surat_jalan') {
+                this.dialogSuratJalan = false
+                this.$refs.misrouteBag?.refresh // TODO: RECHECK THIS
+            } else if (type === 'surat_muatan') {
+            }
         },
 
         async closePreAlert() {

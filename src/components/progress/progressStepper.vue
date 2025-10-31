@@ -15,6 +15,8 @@
             </div>
         </div>
 
+        <div class="line-separator"></div>
+
         <div class="stepper-content" v-if="currentStepIndex < steps.length">
             <slot :name="`step-${currentStepIndex}`"></slot>
         </div>
@@ -141,7 +143,13 @@ export default {
     position: relative;
     width: 100%;
     height: 36px;
-    margin-bottom: 20px;
+    margin: 2.5em auto;
+}
+
+.line-separator {
+    height: 1px;
+    background-color: #e0e0e0;
+    border-radius: 9999px;
 }
 
 .line-full {
@@ -186,7 +194,7 @@ export default {
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    color: #333;
+    color: darkgrey;
     position: relative;
     transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
         color 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s ease;

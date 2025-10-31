@@ -51,7 +51,7 @@
                                 <p>Please {{ getScanLabel().toLowerCase() }} here</p>
                             </div>
 
-                            <vs-row>
+                            <vs-row style="gap: 1em">
                                 <vs-col xs="12" sm="6" lg="6">
                                     <input-general
                                         icon-after
@@ -64,15 +64,14 @@
                                         :enter_to_update="true"
                                         @click-icon="handleIconClick"
                                         @updateValue="updateValue"
-                                        @enterUpdate="validateItem"
+                                        @enterUpdate="validateScanItem"
                                     >
                                         <template #icon>
                                             <i class="bx bx-barcode-reader"></i>
                                         </template>
                                     </input-general>
                                 </vs-col>
-                            </vs-row>
-                            <vs-row>
+
                                 <vs-col w="12">
                                     <table-master
                                         hideColumnKey="validate-surat-jalan-bulk"
@@ -120,7 +119,7 @@ export default {
             return this.active
         },
         listenLoading() {
-            return this.loadingStatus || this.loading
+            return this.loading
         },
         listenTitle() {
             return this.title
@@ -213,7 +212,6 @@ export default {
         selectTipeSuratJalan(item) {
             this.sj_type = item.value
             this.isDisabled = false
-            // this.setActiveInput('scanItem')
         },
         handleClearForm() {
             this.sj_type = ''
@@ -259,7 +257,7 @@ export default {
                 default:
             }
         },
-        validateItem() {
+        validateScanItem() {
             let found = false
 
             this.dataTable.forEach((bag) => {
@@ -274,7 +272,6 @@ export default {
             }
             this.item_number = ''
         },
-
         async handleSubmit(done) {
             let form = {
                 item_no: this.list_item_no,
