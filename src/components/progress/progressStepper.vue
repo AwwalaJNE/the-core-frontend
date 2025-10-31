@@ -2,7 +2,11 @@
     <div class="progress-stepper-wrapper">
         <div class="progress-stepper-container">
             <div class="steps">
-                <div v-for="(step, index) in stepsWithDummy" :key="index" class="step-wrapper">
+                <div
+                    v-for="(step, index) in stepsWithDummy"
+                    :key="index"
+                    :class="index !== steps.length ? 'step-wrapper' : ''"
+                >
                     <div
                         class="circle"
                         :class="{ active: isCircleActive(index), dummy: index === steps.length }"
@@ -158,14 +162,14 @@ export default {
 .steps {
     display: flex;
     align-items: center;
-    justify-content: center;
-    position: relative;
-    gap: 0.5rem;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .step-wrapper {
     display: flex;
     align-items: center;
+    flex: 1;
 }
 
 .circle {
@@ -178,8 +182,7 @@ export default {
     justify-content: center;
     font-weight: bold;
     color: darkgrey;
-    transition: all 0.5s cubic-bezier(0.65, 0, 0.35, 1);
-    transform: scale(1);
+    z-index: 1;
 }
 
 .circle.active {
@@ -197,7 +200,7 @@ export default {
 /* --- Line --- */
 .line {
     position: relative;
-    width: 60px;
+    flex: 1;
     height: 6px;
     background-color: #e0e0e0;
     border-radius: 9999px;
