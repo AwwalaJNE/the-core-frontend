@@ -71,6 +71,7 @@
                         <div class="nomor-sj" v-if="manifest_do_number">
                             <input-general
                                 :name="`No ${listenBreadcrumbTitle}`"
+                                :formKey="listenSjType"
                                 :valueData="manifest_do_number"
                                 :typeInput="`text`"
                                 :disabled="true"

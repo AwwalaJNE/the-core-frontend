@@ -6,12 +6,15 @@
                 <template #inputan="props">
                     <!-- Title -->
                     <template v-if="!listenHiddenTitle">
-                        <span class="c-label">{{ name }}<span v-if="rules && rules.includes('required')"> *</span></span>
+                        <span class="c-label"
+                            >{{ name
+                            }}<span v-if="rules && rules.includes('required')"> *</span></span
+                        >
                     </template>
 
-                    <div style="display: flex; width: 100%; gap: 1rem;">
+                    <div style="display: flex; width: 100%; gap: 1rem">
                         <!-- First Div: Selects -->
-                        <div style="flex: 1;">
+                        <div style="flex: 1">
                             <!-- Multi-select -->
                             <el-select
                                 v-if="listenIsMultiple"
@@ -27,6 +30,7 @@
                                 @change="updateValue"
                                 @focus="inputFocus"
                                 @visible-change="onVisibleChange"
+                                :data-testid="`select-${formKey}`"
                                 :state="props.err ? 'danger' : 'gray'"
                             >
                                 <el-option
@@ -55,6 +59,7 @@
                                 @change="updateValue"
                                 @focus="inputFocus"
                                 @visible-change="onVisibleChange"
+                                :data-testid="`select-${formKey}`"
                                 :state="props.err ? 'danger' : 'gray'"
                             >
                                 <el-option
@@ -79,6 +84,7 @@
                                 @change="updateValue"
                                 @focus="inputFocus"
                                 @visible-change="onVisibleChange"
+                                :data-testid="`select-${formKey}`"
                                 :loading="loadingActive"
                                 :state="props.err ? 'danger' : 'gray'"
                             >
@@ -86,10 +92,15 @@
                                     v-for="(item, key) in DataArr"
                                     :key="key"
                                     :value="item.value"
-                                    :label="!item.hasOwnProperty('formattedLabel') ? item.label : ''"
+                                    :label="
+                                        !item.hasOwnProperty('formattedLabel') ? item.label : ''
+                                    "
                                 >
                                     <template v-if="item.formattedLabel">
-                                        <span v-for="(line, index) in item.formattedLabel" :key="index">
+                                        <span
+                                            v-for="(line, index) in item.formattedLabel"
+                                            :key="index"
+                                        >
                                             {{ line }}
                                             <br v-if="index < item.formattedLabel.length - 1" />
                                         </span>
@@ -102,27 +113,32 @@
                         </div>
 
                         <!-- Second Div: Camera Scanner and Icon -->
-                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div
+                            style="
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-between;
+                            "
+                        >
                             <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
                             <i class="bx bx-barcode-reader" @click="handleIconClick"></i>
                         </div>
                     </div>
                 </template>
-
             </inputan>
         </template>
     </div>
 </template>
 
 <script>
-import CameraScanner from "@/components/scanner/camera";
-import Inputan from "@/components/input/inputan"
+import CameraScanner from '@/components/scanner/camera'
+import Inputan from '@/components/input/inputan'
 export default {
-    name:"select-filter",
+    name: 'select-filter',
     components: {
-        "camera-scanner": CameraScanner,
-        "inputan": Inputan
-    }, 
+        'camera-scanner': CameraScanner,
+        inputan: Inputan,
+    },
     props: {
         name: String,
         rules: String,
@@ -134,35 +150,37 @@ export default {
         isMultiple: Boolean,
         isMultipleTag: Boolean,
         border: Boolean,
-        placeholder:String,
+        placeholder: String,
         tabindex: [Number, String],
         disabled: Boolean,
         hiddenTitle: Boolean,
         collapseTags: Boolean,
         isAllowCreate: Boolean,
-        customBind: String
+        customBind: String,
     },
     data() {
         return {
-            DataArr: this.valueData ? this.valueData : [
-                {
-                    label: 'No Data',
-                    value: 'nodata'
-                }
-            ],
-            value: this.selectedValue ? this.selectedValue :"",
+            DataArr: this.valueData
+                ? this.valueData
+                : [
+                      {
+                          label: 'No Data',
+                          value: 'nodata',
+                      },
+                  ],
+            value: this.selectedValue ? this.selectedValue : '',
             arrValue: this.selectedValue ? this.selectedValue : [],
             loadingActive: false,
         }
     },
     computed: {
-        listenFormKey(){
+        listenFormKey() {
             return this.formKey || ''
         },
-        listenIsMultiple(){
+        listenIsMultiple() {
             return this.isMultiple ? this.isMultiple : false
         },
-        listenIsMultipleTags(){
+        listenIsMultipleTags() {
             return this.isMultipleTag ? this.isMultipleTag : false
         },
         listenTabIndex() {
@@ -179,7 +197,7 @@ export default {
         },
         listenAllowCreate() {
             return this.isAllowCreate ? this.isAllowCreate : false
-        }
+        },
     },
     watch: {
         valueData: function (val) {
@@ -189,114 +207,123 @@ export default {
         },
         selectedValue: function (val) {
             if (val != undefined) {
-                if(this.isMultiple == false && this.listenIsMultipleTags == false) {
+                if (this.isMultiple == false && this.listenIsMultipleTags == false) {
                     this.value = val
-                } else if(this.listenIsMultipleTags == true) {
-                    this.arrValue = val;
+                } else if (this.listenIsMultipleTags == true) {
+                    this.arrValue = val
                 } else {
                     this.arrValue = val
                 }
             }
         },
-        loading: function(val) {
-          if(val !== undefined) {
-            this.loadingActive = val || false
-          }
-
+        loading: function (val) {
+            if (val !== undefined) {
+                this.loadingActive = val || false
+            }
         },
     },
     methods: {
-        updateValue(val){
-            let dataValue = this.listenIsMultiple == false && this.isMultipleTag === false ? this.value : this.arrValue
-            let obj = this.DataArr.filter(item => item.value == val)[0]
-            this.$emit("updateValue", this.listenFormKey, dataValue, obj, this.dataObj)
+        updateValue(val) {
+            let dataValue =
+                this.listenIsMultiple == false && this.isMultipleTag === false
+                    ? this.value
+                    : this.arrValue
+            let obj = this.DataArr.filter((item) => item.value == val)[0]
+            this.$emit('updateValue', this.listenFormKey, dataValue, obj, this.dataObj)
         },
         inputFocus() {
-            this.$emit("inputFocus", this.dataObj)
+            this.$emit('inputFocus', this.dataObj)
         },
         getCustomAttribute(label) {
             return {
-                [this.customBind]: label
-            };
+                [this.customBind]: label,
+            }
         },
         handleIconClick() {
             if (!this.listenIsDisabled) {
-                this.$refs.cameraScanner.open(this.listenFormKey);
+                this.$refs.cameraScanner.open(this.listenFormKey)
             }
         },
         onCameraScannerGetData(data) {
-            if (!this.listenIsDisabled && data?.event === "result" && data.namespace === this.listenFormKey) {
-                let dataValue = this.listenIsMultiple == false && this.isMultipleTag === false ? this.value : this.arrValue
-                let obj = this.DataArr.filter(item => item.value == data.data.text)[0]
+            if (
+                !this.listenIsDisabled &&
+                data?.event === 'result' &&
+                data.namespace === this.listenFormKey
+            ) {
+                let dataValue =
+                    this.listenIsMultiple == false && this.isMultipleTag === false
+                        ? this.value
+                        : this.arrValue
+                let obj = this.DataArr.filter((item) => item.value == data.data.text)[0]
 
                 // NOTES: Possible change, based on the qr data (current code expectation is: qr scanned value = id)
-                this.$emit("updateValue", this.listenFormKey, data.data.text, obj, this.dataObj)
+                this.$emit('updateValue', this.listenFormKey, data.data.text, obj, this.dataObj)
             }
         },
         onVisibleChange(visible) {
             if (visible) {
                 this.$nextTick(() => {
-                    const inputEl = this.$refs.selectInput?.$el?.querySelector('input');
+                    const inputEl = this.$refs.selectInput?.$el?.querySelector('input')
                     if (inputEl) {
-                        inputEl.addEventListener('input', this.sanitizeInput);
+                        inputEl.addEventListener('input', this.sanitizeInput)
                     }
-                });
+                })
             }
         },
         sanitizeInput(event) {
-            const input = event.target;
-            const sanitized = input.value.replace(/[^a-zA-Z0-9_\-\*\(\)~ ,\/]/g, '');
+            const input = event.target
+            const sanitized = input.value.replace(/[^a-zA-Z0-9_\-\*\(\)~ ,\/]/g, '')
             if (sanitized !== input.value) {
-                input.value = sanitized;
-                this.value = sanitized;
+                input.value = sanitized
+                this.value = sanitized
             }
-        }
+        },
     },
 }
 </script>
 <style lang="scss" scoped>
-    .m-select{
-        &.vs-select-content{
-            max-width: unset;
-            margin: 10px 0;
-        }
-        .vs-select__label--label{
-            transform: translate(-3px, -28px) !important;
-        }
-        .vs-select.activeOptions .vs-select__input:focus ~ .vs-select__label--label {
-            transform: translate(-3%, -28px) !important;
-        }
-        &.el-select .el-input .el-input__inner{
-            margin-bottom: 0;
-        }
+.m-select {
+    &.vs-select-content {
+        max-width: unset;
+        margin: 10px 0;
+    }
+    .vs-select__label--label {
+        transform: translate(-3px, -28px) !important;
+    }
+    .vs-select.activeOptions .vs-select__input:focus ~ .vs-select__label--label {
+        transform: translate(-3%, -28px) !important;
+    }
+    &.el-select .el-input .el-input__inner {
+        margin-bottom: 0;
+    }
 
-        &.el-input{
-            &.el-input--suffix{
-                .el-input__suffix{
-                    .el-input__suffix-inner{
-                        position: relative;
-                        top: 8px;
-                    }
+    &.el-input {
+        &.el-input--suffix {
+            .el-input__suffix {
+                .el-input__suffix-inner {
+                    position: relative;
+                    top: 8px;
                 }
             }
         }
-        .el-input__icon{
-            height: auto;
-        }
     }
-    .c-label{
-            font-size: 0.75rem;
-            /* left: 0px; */
-            position: relative;
-            align-content: start;
-            display: block;
-            padding: 4px 7px;
-            text-align: left;
-        }
+    .el-input__icon {
+        height: auto;
+    }
+}
+.c-label {
+    font-size: 0.75rem;
+    /* left: 0px; */
+    position: relative;
+    align-content: start;
+    display: block;
+    padding: 4px 7px;
+    text-align: left;
+}
 </style>
 <style scoped>
-    .el-select-dropdown__item {
-        min-height: 34px;
-        height: fit-content !important;
-    }
+.el-select-dropdown__item {
+    min-height: 34px;
+    height: fit-content !important;
+}
 </style>

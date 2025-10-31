@@ -1,11 +1,12 @@
 <template>
     <div>
-        <div style="position: absolute; top: 0; right: 0; width: 100px;">
-            <vs-button 
-                flat 
-                square 
-                block 
-                :active="true" 
+        <div style="position: absolute; top: 0; right: 0; width: 100px">
+            <vs-button
+                flat
+                square
+                block
+                :active="true"
+                :data-testid="`create-button-surat-jalan`"
                 @click="openDialog"
             >
                 <i class="bx bx-plus"></i> New
@@ -19,18 +20,18 @@
                         <vs-col xs="12" sm="12" lg="6">
                             <vs-row justify="end">
                                 <vs-col xs="6" sm="8" lg="4">
-                                    <select-search-by 
+                                    <select-search-by
                                         :key="listenBreadcrumbTitle"
-                                        :isMultiple="false" 
-                                        :border="true" 
-                                        :valueData="searchParams" 
-                                        :selectedValue="searchBy" 
-                                        @updateSearchBy="updateSearchBy" 
+                                        :isMultiple="false"
+                                        :border="true"
+                                        :valueData="searchParams"
+                                        :selectedValue="searchBy"
+                                        @updateSearchBy="updateSearchBy"
                                     />
                                 </vs-col>
                                 <vs-col xs="6" sm="4" lg="4">
-                                    <search-input 
-                                        ref="searchInput" 
+                                    <search-input
+                                        ref="searchInput"
                                         :placeholder="searchPlaceholder"
                                         @searchValue="searchValue"
                                         @handleSearch="handleSearch"
@@ -53,40 +54,40 @@
                                 >
                                     <template>
                                         <vs-option
-                                            v-for="(item,key) in filterStatus"
+                                            v-for="(item, key) in filterStatus"
                                             :key="key"
                                             :label="item.label"
                                             :value="item.value"
                                         >
-                                            {{item.label}}
+                                            {{ item.label }}
                                         </vs-option>
                                     </template>
                                 </vs-select>
                             </template>
                         </vs-col>
-                        <vs-col xs="12" sm="12" lg="6" >
+                        <vs-col xs="12" sm="12" lg="6">
                             <vs-row>
                                 <vs-col w="4">
-                                    <select-search-by 
-                                        :isMultiple="false" 
-                                        :border="true"  
-                                        :valueData="dateParams" 
-                                        :selectedValue="filterDateBy" 
+                                    <select-search-by
+                                        :isMultiple="false"
+                                        :border="true"
+                                        :valueData="dateParams"
+                                        :selectedValue="filterDateBy"
                                         @updateSearchBy="updateFilterDateBy"
                                     />
                                 </vs-col>
                                 <vs-col w="8">
-                                    <date-time 
-                                        :name="''" 
-                                        :rules="''" 
-                                        :formKey="'DATE_TIME_WITHOUT_SECONDS'" 
+                                    <date-time
+                                        :name="''"
+                                        :rules="''"
+                                        :formKey="'DATE_TIME_WITHOUT_SECONDS'"
                                         :valueData="tempDate"
-                                        typeInput="datetimerange" 
-                                        @updateValue="searchDate" 
+                                        typeInput="datetimerange"
+                                        @updateValue="searchDate"
                                     />
                                 </vs-col>
                             </vs-row>
-                        </vs-col>                        
+                        </vs-col>
                     </vs-row>
                 </div>
                 <template>
@@ -125,220 +126,221 @@
                 :closeDialog="closeDialogSuratJalan"
                 @refresh="refresh"
             />
-        </div>        
+        </div>
     </div>
 </template>
 
 <script>
+import Breadcrumb from '@/components/breadcrumb/index'
+import DateRange from '@/components/daterange/index'
+import NavItem from '@/components/navbar/navTab'
+import SearchInput from '@/components/search/searchInput'
+import SelectSearchBy from '@/components/search/selectSearchBy'
+import DateTime from '@/components/input/dateTime'
 
-import Breadcrumb from "@/components/breadcrumb/index";
-import DateRange from "@/components/daterange/index";
-import NavItem from "@/components/navbar/navTab";
-import SearchInput from "@/components/search/searchInput";
-import SelectSearchBy from "@/components/search/selectSearchBy";
-import DateTime from "@/components/input/dateTime";
-
-import SuratJalan from "@/views/transport/suratJalanNew/suratJalan";
-import DialogCreateSuratJalan from "@/views/transport/suratJalanNew/dialogCreateSuratJalan";
-import DialogCreateSuratJalanV2 from "@/views/transport/suratJalanNew/dialogCreateSuratJalanV2";
-
+import SuratJalan from '@/views/transport/suratJalanNew/suratJalan'
+import DialogCreateSuratJalan from '@/views/transport/suratJalanNew/dialogCreateSuratJalan'
+import DialogCreateSuratJalanV2 from '@/views/transport/suratJalanNew/dialogCreateSuratJalanV2'
 
 export default {
-    name: "transport-surat-jalan-new",
+    name: 'transport-surat-jalan-new',
     components: {
-        "breadcrumb": Breadcrumb,
-        "daterange-filter": DateRange,
-        "nav-item": NavItem,
-        "search-input": SearchInput,
-        "select-search-by": SelectSearchBy,
-        "date-time": DateTime,
+        breadcrumb: Breadcrumb,
+        'daterange-filter': DateRange,
+        'nav-item': NavItem,
+        'search-input': SearchInput,
+        'select-search-by': SelectSearchBy,
+        'date-time': DateTime,
 
-        "SuratJalan": SuratJalan,
-        "dialogCreateSuratJalan": DialogCreateSuratJalan,
-        "dialogCreateSuratJalanV2": DialogCreateSuratJalanV2,
+        SuratJalan: SuratJalan,
+        dialogCreateSuratJalan: DialogCreateSuratJalan,
+        dialogCreateSuratJalanV2: DialogCreateSuratJalanV2,
     },
     data() {
         return {
             dialogSuratJalan: false,
-            tempSearch: "",            
-            searchPlaceholder: "Search Surat Jalan",
-            searchBy:"manifest do number",
+            tempSearch: '',
+            searchPlaceholder: 'Search Surat Jalan',
+            searchBy: 'manifest do number',
             searchParams: [],
-            filterDateBy:"create",
+            filterDateBy: 'create',
             tempDate: [],
             dateParams: [
                 {
                     label: 'Created Date',
-                    value: 'create'
+                    value: 'create',
                 },
                 {
                     label: 'Departed Time',
-                    value: 'departed_time'
+                    value: 'departed_time',
                 },
                 {
                     label: 'ETD',
-                    value: 'etd'
+                    value: 'etd',
                 },
                 {
                     label: 'ETA',
-                    value: 'eta'
-                }
+                    value: 'eta',
+                },
             ],
-            filterStatusBy: "",
+            filterStatusBy: '',
             filterStatus: [
                 {
                     label: 'UNAPPROVED',
-                    value: 'UNAPPROVED'
+                    value: 'UNAPPROVED',
                 },
                 {
                     label: 'APPROVED',
-                    value: 'APPROVED'
+                    value: 'APPROVED',
                 },
                 {
                     label: 'CANCELED',
-                    value: 'CANCELED'
+                    value: 'CANCELED',
                 },
                 {
                     label: 'UNRECEIVED',
-                    value: 'UNRECEIVED'
+                    value: 'UNRECEIVED',
                 },
                 {
                     label: 'RECEIVED',
-                    value: 'RECEIVED'
+                    value: 'RECEIVED',
                 },
                 {
                     label: 'MISSROUTE RECEIVED',
-                    value: 'MISSROUTE RECEIVED'
-                }
+                    value: 'MISSROUTE RECEIVED',
+                },
             ],
-        };
+        }
     },
     computed: {
         listenBreadcrumbTitle() {
-            return this.$route.meta.breadCrumb;
+            return this.$route.meta.breadCrumb
         },
         listenBreadcrumbCode() {
-            return this.$route.meta.breadCrumbCode || "";
+            return this.$route.meta.breadCrumbCode || ''
         },
     },
     watch: {
         searchBy(old, val) {
             if (old !== val) {
                 this.$nextTick(() => {
-                    this.refresh();
-                });
+                    this.refresh()
+                })
             }
         },
         listenBreadcrumbTitle: {
             handler(val, oldVal) {
                 if (val !== oldVal && val !== undefined) {
-                    this.setSearchParams();
+                    this.setSearchParams()
                 }
             },
-            immediate: true
+            immediate: true,
         },
     },
     methods: {
         setSearchParams() {
-            
             this.searchParams = [
                 {
                     label: `No ${this.listenBreadcrumbTitle}`,
-                    value: 'manifest do number'
+                    value: 'manifest do number',
                 },
                 {
                     label: 'Orion Number',
-                    value: 'do_number'
+                    value: 'do_number',
                 },
                 {
                     label: 'Vehicle Type',
-                    value: 'vehicle_type'
+                    value: 'vehicle_type',
                 },
                 {
                     label: 'Driver',
-                    value: 'pic'
+                    value: 'pic',
                 },
                 {
                     label: 'Mode',
-                    value: 'mode'
+                    value: 'mode',
                 },
                 {
                     label: 'Origin',
-                    value: 'origin'
+                    value: 'origin',
                 },
                 {
                     label: 'Destination',
-                    value: 'destination'
+                    value: 'destination',
                 },
                 {
                     label: 'Weight',
-                    value: 'weight'
+                    value: 'weight',
                 },
                 {
                     label: 'Status',
-                    value: 'status'
-                }
+                    value: 'status',
+                },
             ]
         },
         refresh() {
-            this.$refs.SuratJalan.refresh();
+            this.$refs.SuratJalan.refresh()
         },
         searchValue(val) {
-            this.tempSearch = val;
+            this.tempSearch = val
         },
         searchDate(formKey, val) {
-            this.tempDate = val;
+            this.tempDate = val
         },
         clearSearch() {
-            this.$refs.searchInput.clear();
+            this.$refs.searchInput.clear()
         },
         closeDialogSuratJalan() {
-            this.dialogSuratJalan = false;
-            this.refresh();
+            this.dialogSuratJalan = false
+            this.refresh()
         },
         openDialog() {
-            this.dialogSuratJalan = true;
+            this.dialogSuratJalan = true
         },
         updateSearchBy(key, val) {
-            val = val.replaceAll(" ", "_");
-            this.searchBy = val;
-            this.searchPlaceholder = key;
+            val = val.replaceAll(' ', '_')
+            this.searchBy = val
+            this.searchPlaceholder = key
         },
-        updateFilterDateBy(key,val) {
-            this.filterDateBy = val;
+        updateFilterDateBy(key, val) {
+            this.filterDateBy = val
         },
-        updateFilterStatus(key){
+        updateFilterStatus(key) {
             this.refresh()
         },
         createNewShortcut() {
-            const keysPressed = {};
+            const keysPressed = {}
 
             document.addEventListener('keydown', (e) => {
                 if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
-                    e.preventDefault();
+                    e.preventDefault()
                 }
-                
-                keysPressed[e.key.toLowerCase()] = true;
-                if ((e.ctrlKey || e.metaKey) && e.shiftKey && keysPressed['s'] && keysPressed['j']) {
-                    e.preventDefault();
-                    this.openDialog();
+
+                keysPressed[e.key.toLowerCase()] = true
+                if (
+                    (e.ctrlKey || e.metaKey) &&
+                    e.shiftKey &&
+                    keysPressed['s'] &&
+                    keysPressed['j']
+                ) {
+                    e.preventDefault()
+                    this.openDialog()
                 }
-            });
+            })
 
             document.addEventListener('keyup', (e) => {
-                keysPressed[e.key.toLowerCase()] = false;
-            });
+                keysPressed[e.key.toLowerCase()] = false
+            })
         },
         handleSearch() {
             this.$nextTick(() => {
-                this.refresh();
-                this.$refs.searchInput.clear();
-            });
-        }
+                this.refresh()
+                this.$refs.searchInput.clear()
+            })
+        },
     },
     mounted() {
         this.createNewShortcut()
-    }
-};
+    },
+}
 </script>
-
