@@ -38,6 +38,8 @@
                     :isShowCheckboxAll="true"
                     :onRowClickCallback="onRowClickCallback"
                     :isAllCheckedCheckCallback="onAllCheckCallback"
+                    :isAllChecked="isAllChecked"
+                    :selectedData="selectedData"
                     @actionLimit="actionLimit"
                     @actionPagination="actionPagination"
                     @updateSelected2="updateSelected"
@@ -65,6 +67,7 @@ export default {
     },
     data() {
         return {
+            changes_form: [],
             selectedData: [],
 
             dataTable: [],
@@ -132,6 +135,7 @@ export default {
     },
     methods: {
         refresh() {
+            this.resetCheckbox()
             this.getTableData(
                 this.pagination.limit,
                 this.pagination.page,
@@ -245,30 +249,44 @@ export default {
                 console.error('error', error)
             }
         },
+        updateSelection(itemsToSelect, selectAll = false) {
+            const selectedSet = new Set(itemsToSelect.map((i) => i.bag_number))
+            this.dataTable = this.dataTable.map((item) => ({
+                ...item,
+                selected: selectAll ? true : selectedSet.has(item.bag_number),
+            }))
+
+            this.selectedData = this.dataTable.filter((item) => item.selected)
+
+            const changesMap = new Map(this.changes_form.map((i) => [i.bag_number, i]))
+            this.dataTable.forEach((item) => {
+                if (changesMap.has(item.bag_number)) {
+                    changesMap.get(item.bag_number).selected = item.selected
+                } else if (item.selected) {
+                    changesMap.set(item.bag_number, { ...item, selected: true })
+                }
+            })
+            this.changes_form = [...changesMap.values()]
+
+            this.$emit('update-selected', this.changes_form)
+        },
         onAllCheckCallback(val) {
             // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING ALL CHECKBOX
-            this.selectedData = val
-                ? this.dataTable.map((item) => ({ ...item, selected: true, status: false }))
-                : []
-            this.$emit('update-selected', this.selectedData)
+            this.updateSelection(this.dataTable, val)
         },
         updateSelected(val, checkedItem) {
             // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING CHECKBOX
-            const selectedSet = new Set(checkedItem.map((item) => item.bag_number))
-            this.selectedData = this.dataTable
-                .filter((item) => selectedSet.has(item.bag_number))
-                .map((item) => ({ ...item, selected: true, status: false }))
-
-            this.$emit('update-selected', this.selectedData)
+            this.updateSelection(checkedItem)
         },
         onRowClickCallback(event, val, checkedItem) {
             // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING ROW
-            const selectedSet = new Set(checkedItem.map((item) => item.bag_number))
-            this.selectedData = this.dataTable
-                .filter((item) => selectedSet.has(item.bag_number))
-                .map((item) => ({ ...item, selected: true, status: false }))
-
-            this.$emit('update-selected', this.selectedData)
+            this.updateSelection(checkedItem)
+        },
+        resetCheckbox() {
+            this.dataTable = this.dataTable.map((item) => ({ ...item, selected: false }))
+            this.selectedData = []
+            this.changes_form = []
+            this.$emit('update-selected', [])
         },
     },
     mounted() {

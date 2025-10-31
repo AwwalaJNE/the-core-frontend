@@ -54,7 +54,6 @@
                             <vs-row style="gap: 1em">
                                 <vs-col xs="12" sm="6" lg="6">
                                     <input-general
-                                        icon-after
                                         name=""
                                         rules=""
                                         formKey="scanItemNumber"
@@ -62,6 +61,7 @@
                                         :valueData="item_number"
                                         :typeInput="`text`"
                                         :enter_to_update="true"
+                                        :hasBarcode="true"
                                         @click-icon="handleIconClick"
                                         @updateValue="updateValue"
                                         @enterUpdate="validateScanItem"
@@ -87,6 +87,7 @@
                     </progress-stepper>
                 </vs-col>
             </vs-row>
+            <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
         </template>
     </dialog-master>
 </template>
@@ -94,6 +95,7 @@
 import axios from 'axios'
 import master from '@/mixins/master'
 
+import CameraScanner from '@/components/scanner/camera'
 import DialogMaster from '@/components/dialog/dialogMaster'
 import InputGeneral from '@/components/input/general'
 import ProgressStepper from '@/components/progress/progressStepper'
@@ -103,6 +105,7 @@ export default {
     name: 'Inbound-Dialog-Bulk-Surat-Jalan',
     mixins: [master],
     components: {
+        CameraScanner,
         'dialog-master': DialogMaster,
         'input-general': InputGeneral,
         'progress-stepper': ProgressStepper,
@@ -271,6 +274,14 @@ export default {
                 this.openNotification('danger', '', 'Failed', 'Item number not found')
             }
             this.item_number = ''
+        },
+        handleIconClick() {
+            this.$refs.cameraScanner.open('item_number')
+        },
+        onCameraScannerGetData(data) {
+            if (data?.event === 'result' && data.namespace === 'item_number') {
+                this.item_number = data.data.text
+            }
         },
         async handleSubmit(done) {
             let form = {

@@ -674,7 +674,7 @@ export default {
                 this.autoFocusInput(false)
             } else if (type === 'surat_jalan') {
                 this.dialogSuratJalan = false
-                this.$refs.misrouteBag?.refresh // TODO: RECHECK THIS
+                this.$refs.misrouteBag.refresh()
             } else if (type === 'surat_muatan') {
             }
         },
