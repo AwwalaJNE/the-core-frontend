@@ -9,7 +9,11 @@
                 >
                     <div
                         class="circle"
-                        :class="{ active: isCircleActive(index), dummy: index === steps.length }"
+                        :class="{
+                            active: isCircleActive(index),
+                            dummy: index === steps.length,
+                            'delayed-active': isCircleDelayedActive(index),
+                        }"
                     >
                         {{ index === steps.length ? '' : step.label || index + 1 }}
                     </div>
@@ -19,7 +23,8 @@
                         class="line"
                         :class="{
                             'active-full': isLineActive(index),
-                            'active-half': isLineHalfActive(index),
+                            'active-half-right': isLineHalfRightActive(index),
+                            'active-half-left': isLineHalfLeftActive(index),
                         }"
                     ></div>
                 </div>
@@ -101,6 +106,7 @@ export default {
     data() {
         return {
             currentStepIndex: 0,
+            delayedActiveIndex: 0,
         }
     },
     computed: {
@@ -115,22 +121,42 @@ export default {
                 this.$emit('invalid-step', this.currentStepIndex)
                 return
             }
-            if (this.currentStepIndex < this.steps.length - 1) this.currentStepIndex++
+
+            if (this.currentStepIndex < this.steps.length - 1) {
+                const nextIndex = this.currentStepIndex + 1
+                this.delayedActiveIndex = -1
+
+                this.currentStepIndex++
+
+                setTimeout(() => {
+                    this.delayedActiveIndex = nextIndex
+                }, 600)
+            }
         },
         prevStep() {
-            if (this.currentStepIndex > 0) this.currentStepIndex--
+            if (this.currentStepIndex > 0) {
+                this.currentStepIndex--
+                this.delayedActiveIndex = this.currentStepIndex
+            }
         },
         isCircleActive(index) {
-            return index <= this.currentStepIndex
-        },
-        isLineActive(index) {
             return index < this.currentStepIndex
         },
-        isLineHalfActive(index) {
+        isCircleDelayedActive(index) {
+            return index === this.delayedActiveIndex
+        },
+        isLineActive(index) {
+            return index < this.currentStepIndex - 1
+        },
+        isLineHalfRightActive(index) {
+            return index === this.currentStepIndex - 1
+        },
+        isLineHalfLeftActive(index) {
             return index === this.currentStepIndex
         },
         cancel() {
             this.currentStepIndex = 0
+            this.delayedActiveIndex = -1
             this.$emit('cancel')
         },
         handleSubmit() {
@@ -183,13 +209,16 @@ export default {
     font-weight: bold;
     color: darkgrey;
     z-index: 1;
+    transition: all 0.3s ease;
 }
 
-.circle.active {
+.circle.active,
+.circle.delayed-active {
     background-color: #195bff;
     color: #fff;
     transform: scale(1.15);
     box-shadow: 0 0 10px rgba(25, 91, 255, 0.4);
+    transition: all 0.4s ease;
 }
 
 .circle.dummy {
@@ -197,7 +226,6 @@ export default {
     color: transparent;
 }
 
-/* --- Line --- */
 .line {
     position: relative;
     flex: 1;
@@ -223,8 +251,15 @@ export default {
     width: 100%;
 }
 
-.line.active-half::before {
+.line.active-half-left::before {
     width: 50%;
+    left: 0;
+    transition-delay: 0.6s;
+}
+
+.line.active-half-right::before {
+    width: 100%;
+    transition-delay: 0s;
 }
 
 .line-separator {
@@ -240,7 +275,6 @@ export default {
     transition: all 0.5s cubic-bezier(0.65, 0, 0.35, 1);
     transform: translateY(0);
 }
-
 .stepper-content-enter-active,
 .stepper-content-leave-active {
     transition: all 0.5s cubic-bezier(0.65, 0, 0.35, 1);
