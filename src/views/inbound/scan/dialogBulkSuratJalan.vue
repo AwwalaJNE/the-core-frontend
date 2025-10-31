@@ -11,15 +11,10 @@
 
         <template v-slot:content>
             <vs-row>
-                <vs-col>
-                    <!-- <progress-stepper :steps="steps" :currentStep="currentStep" /> -->
-                </vs-col>
-            </vs-row>
-            <vs-row>
                 <vs-col w="12">
                     <progress-stepper
                         :steps="steps"
-                        :step-validators="[validateTypeSection, null, null]"
+                        :step-validators="[validateTypeSection, validateBagSection]"
                         @invalid-step="handleInvalidStep"
                         @cancel="cancel"
                         @submit="handleSubmit"
@@ -211,6 +206,7 @@ export default {
             },
 
             item_number: '',
+            list_item_no: [],
         }
     },
     methods: {
@@ -229,12 +225,17 @@ export default {
         validateTypeSection() {
             return this.sj_type
         },
-        validateStep1() {
-            // optional validation step 1
-            return true
+        validateBagSection() {
+            this.list_item_no = this.dataTable
+                .filter((bag) => bag.status === true)
+                .map((bag) => bag.bag_number)
+            return this.list_item_no.length > 0
         },
         handleInvalidStep(stepIndex) {
-            this.openNotification('danger', '', 'Failed', 'Wajib memilih tipe surat jalan')
+            if (stepIndex === 0)
+                this.openNotification('danger', '', 'Failed', 'Wajib memilih tipe surat jalan')
+            else if (stepIndex === 1)
+                this.openNotification('danger', '', 'Failed', 'No items have been validated')
         },
         getScanLabel() {
             switch (this.sj_type) {
@@ -273,24 +274,17 @@ export default {
             }
             this.item_number = ''
         },
-        async handleSubmit() {
-            let list_item_no = this.dataTable
-                .filter((bag) => bag.status === true)
-                .map((bag) => bag.bag_number)
 
-            if (list_item_no.length === 0) {
-                this.openNotification('danger', '', 'Failed', 'No items have been validated')
-            } else {
-                let form = {
-                    item_no: list_item_no,
-                    is_penerusan: true,
-                    sj_type: this.sj_type,
-                }
-
-                await this.createBulkSuratJalan(form)
+        async handleSubmit(done) {
+            let form = {
+                item_no: this.list_item_no,
+                is_penerusan: true,
+                sj_type: this.sj_type,
             }
+
+            await this.createBulkSuratJalan(form, done)
         },
-        async createBulkSuratJalan(form) {
+        async createBulkSuratJalan(form, done) {
             this.loading = true
 
             try {
@@ -301,6 +295,8 @@ export default {
                 )
 
                 this.openNotification('success', null, 'Success', 'Create surat jalan success')
+                done(true)
+                this.cancel()
             } catch (err) {
                 this.openNotification(
                     'danger',
@@ -308,6 +304,7 @@ export default {
                     'Failed',
                     err?.response?.data?.message ?? 'Something went wrong'
                 )
+                done(false)
             } finally {
                 this.loading = false
             }

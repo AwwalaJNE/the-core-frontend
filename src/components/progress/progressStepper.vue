@@ -5,17 +5,17 @@
             <div class="line-progress" :style="{ width: progressWidth }"></div>
             <div class="steps">
                 <div
-                    v-for="(step, index) in steps"
+                    v-for="index in steps.length + 1"
                     :key="index"
                     class="circle"
-                    :class="{ active: isCircleActive(index) }"
+                    :class="{ active: isCircleActive(index - 1) }"
                 >
-                    {{ index + 1 }}
+                    {{ index === steps.length + 1 ? '' : index }}
                 </div>
             </div>
         </div>
 
-        <div class="stepper-content">
+        <div class="stepper-content" v-if="currentStepIndex < steps.length">
             <slot :name="`step-${currentStepIndex}`"></slot>
         </div>
 
@@ -34,7 +34,7 @@
                 </vs-button>
             </vs-col>
 
-            <vs-col w="3" v-if="currentStepIndex > 0">
+            <vs-col w="3" v-if="currentStepIndex > 0 && currentStepIndex < steps.length">
                 <vs-button
                     transparent
                     block
@@ -83,24 +83,17 @@ export default {
     name: 'ProgressStepper',
     props: {
         steps: { type: Array, required: true },
-        initialStep: { type: Number, default: 0 },
-        stepValidators: {
-            type: Array,
-            default: () => [],
-        },
+        stepValidators: { type: Array, default: () => [] },
     },
     data() {
         return {
-            currentStepIndex: this.initialStep,
+            currentStepIndex: 0,
         }
     },
     computed: {
-        currentStep() {
-            return this.currentStepIndex
-        },
         progressWidth() {
-            if (this.steps.length <= 1) return '0%'
-            return `${(this.currentStepIndex / (this.steps.length - 1)) * 100}%`
+            const totalCircles = this.steps.length + 1
+            return `${(this.currentStepIndex / (totalCircles - 1)) * 100}%`
         },
     },
     methods: {
@@ -110,15 +103,10 @@ export default {
                 this.$emit('invalid-step', this.currentStepIndex)
                 return
             }
-
-            if (this.currentStepIndex < this.steps.length - 1) {
-                this.currentStepIndex++
-            }
+            if (this.currentStepIndex < this.steps.length - 1) this.currentStepIndex++
         },
         prevStep() {
-            if (this.currentStepIndex > 0) {
-                this.currentStepIndex--
-            }
+            if (this.currentStepIndex > 0) this.currentStepIndex--
         },
         isCircleActive(index) {
             return index <= this.currentStepIndex
@@ -128,7 +116,17 @@ export default {
             this.$emit('cancel')
         },
         handleSubmit() {
-            this.$emit('submit')
+            const validator = this.stepValidators[this.currentStepIndex]
+            if (validator && !validator()) {
+                this.$emit('invalid-step', this.currentStepIndex)
+                return
+            }
+
+            this.$emit('submit', (success = true) => {
+                if (success) {
+                    this.currentStepIndex = this.steps.length
+                }
+            })
         },
     },
 }
