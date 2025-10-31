@@ -228,6 +228,13 @@ export default {
                 this.refresh()
             } else if (key === 'destination') {
                 this.destination_node_code = info?.data?.node_code
+
+                if (
+                    (info && Object.keys(info).length > 0) ||
+                    (info && Object.keys(info).length === 0 && val === '')
+                ) {
+                    this.refresh()
+                }
             }
         },
         inputFocus() {
@@ -254,6 +261,7 @@ export default {
             this.dataTable = this.dataTable.map((item) => ({
                 ...item,
                 selected: selectAll ? true : selectedSet.has(item.bag_number),
+                status: false,
             }))
 
             this.selectedData = this.dataTable.filter((item) => item.selected)
