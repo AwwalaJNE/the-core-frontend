@@ -217,13 +217,12 @@
                                     :active="dialogSuratJalan"
                                     :dataItem="selectedData"
                                     @closeDialog="() => closeDialog('surat_jalan')"
-                                    @refresh="refresh"
                                 />
                             </template>
                         </div>
                         <div class="nav-box">
                             <transition name="slide-fade">
-                                <MisrouteBag ref="misrouteBag" />
+                                <MisrouteBag ref="misrouteBag" @autoFocusInput="autoFocusInput" />
                             </transition>
                         </div>
                     </div>
@@ -655,9 +654,10 @@ export default {
             this.refresh()
         },
         openDialog(type) {
+            this.autoFocusInput(true)
+
             if (type === 'receiving_log') {
                 this.showDialog = true
-                this.autoFocusInput(true)
             } else if (type === 'surat_jalan') {
                 if (this.$refs.misrouteBag?.selectedData.length < 1) {
                     this.openNotification('danger', '', 'Failed', 'Please select at least one bag')
@@ -671,12 +671,13 @@ export default {
         closeDialog(type) {
             if (type === 'receiving_log') {
                 this.showDialog = false
-                this.autoFocusInput(false)
             } else if (type === 'surat_jalan') {
                 this.dialogSuratJalan = false
                 this.$refs.misrouteBag.refresh()
             } else if (type === 'surat_muatan') {
             }
+
+            this.autoFocusInput(false)
         },
 
         async closePreAlert() {

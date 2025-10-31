@@ -59,7 +59,7 @@ import Selector from '@/components/input/select'
 export default {
     name: 'Misroute-Bag',
     mixins: [master],
-    props: {},
+    props: { autoFocusInput: Function },
     components: {
         'auto-complete': AutoComplete,
         'table-master': TableMaster,
@@ -112,10 +112,10 @@ export default {
                     label: 'MASTERBAG',
                     value: 'masterbag',
                 },
-                {
-                    label: 'PRA RUNSHEET',
-                    value: 'pra runsheet',
-                },
+                // {
+                //     label: 'PRA RUNSHEET',
+                //     value: 'pra runsheet',
+                // },
                 {
                     label: 'HVO',
                     value: 'hvo',
@@ -142,6 +142,7 @@ export default {
                 this.destination_node_code,
                 this.filterTypeBy
             )
+            this.$emit('autoFocusInput', false)
         },
         async getTableData(limit, page, destination_node_code, type) {
             this.loading = true
@@ -277,6 +278,7 @@ export default {
             this.changes_form = [...changesMap.values()]
 
             this.$emit('update-selected', this.changes_form)
+            this.$emit('autoFocusInput', false)
         },
         onAllCheckCallback(val) {
             // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING ALL CHECKBOX
