@@ -161,57 +161,6 @@ export default {
                 this.dataTable = []
             } finally {
                 this.loading = false
-
-                // TODO: REMOVE LATER
-                let res = {
-                    data: [
-                        {
-                            bag_number: '1',
-                            bag_destination_node_id: 2301,
-                            bag_destination_node_code: 'CGK750',
-                            bag_type: 'OM',
-                        },
-                        {
-                            bag_number: '2',
-                            bag_destination_node_id: 2301,
-                            bag_destination_node_code: 'CGK750',
-                            bag_type: 'OM',
-                        },
-                        {
-                            bag_number: '3',
-                            bag_destination_node_id: 2301,
-                            bag_destination_node_code: 'CGK750',
-                            bag_type: 'OM',
-                        },
-                        {
-                            bag_number: '4',
-                            bag_destination_node_id: 2301,
-                            bag_destination_node_code: 'CGK750',
-                            bag_type: 'OM',
-                        },
-                    ],
-                    links: {
-                        first: 'url',
-                        last: 'url',
-                        prev: null,
-                        next: null,
-                    },
-                    meta: {
-                        current_page: 1,
-                        from: 1,
-                        last_page: 1,
-                        path: 'url',
-                        per_page: '20',
-                        to: 10,
-                        total: 10,
-                    },
-                }
-                this.dataTable = res.data
-                this.pagination = {
-                    page: res.meta.current_page,
-                    limit: parseInt(res.meta.per_page),
-                    page_size: res.meta.last_page,
-                }
             }
         },
         actionLimit(val) {

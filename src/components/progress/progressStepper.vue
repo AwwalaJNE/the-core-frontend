@@ -135,8 +135,8 @@ export default {
         },
         prevStep() {
             if (this.currentStepIndex > 0) {
+                this.delayedActiveIndex = this.currentStepIndex - 1
                 this.currentStepIndex--
-                this.delayedActiveIndex = this.currentStepIndex
             }
         },
         isCircleActive(index) {
