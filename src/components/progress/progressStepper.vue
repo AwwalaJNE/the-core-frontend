@@ -9,10 +9,14 @@
                     >
                         {{ index === steps.length ? '' : step.label || index + 1 }}
                     </div>
+
                     <div
                         v-if="index < stepsWithDummy.length - 1"
                         class="line"
-                        :class="{ active: isLineActive(index) }"
+                        :class="{
+                            'active-full': isLineActive(index),
+                            'active-half': isLineHalfActive(index),
+                        }"
                     ></div>
                 </div>
             </div>
@@ -24,7 +28,7 @@
             <slot :name="`step-${currentStepIndex}`"></slot>
         </div>
 
-        <vs-row justify="flex-end" align="center" class="stepper-buttons">
+        <vs-row justify="flex-end" align="center">
             <vs-col w="3" v-if="currentStepIndex === 0">
                 <vs-button
                     transparent
@@ -118,6 +122,9 @@ export default {
         isLineActive(index) {
             return index < this.currentStepIndex
         },
+        isLineHalfActive(index) {
+            return index === this.currentStepIndex
+        },
         cancel() {
             this.currentStepIndex = 0
             this.$emit('cancel')
@@ -171,13 +178,15 @@ export default {
     justify-content: center;
     font-weight: bold;
     color: darkgrey;
-    transition: all 0.3s ease;
+    transition: all 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+    transform: scale(1);
 }
 
 .circle.active {
     background-color: #195bff;
     color: #fff;
-    transform: scale(1.1);
+    transform: scale(1.15);
+    box-shadow: 0 0 10px rgba(25, 91, 255, 0.4);
 }
 
 .circle.dummy {
@@ -185,17 +194,34 @@ export default {
     color: transparent;
 }
 
+/* --- Line --- */
 .line {
+    position: relative;
     width: 60px;
     height: 6px;
     background-color: #e0e0e0;
     border-radius: 9999px;
     margin: 0 10px;
-    transition: background-color 0.3s ease;
+    overflow: hidden;
 }
 
-.line.active {
+.line::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
     background-color: #195bff;
+    transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+    width: 0%;
+}
+
+.line.active-full::before {
+    width: 100%;
+}
+
+.line.active-half::before {
+    width: 50%;
 }
 
 .line-separator {
@@ -208,10 +234,20 @@ export default {
 .stepper-content {
     margin-bottom: 20px;
     min-height: 150px;
-    transition: all 0.3s ease;
+    transition: all 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+    transform: translateY(0);
 }
 
-.stepper-buttons {
-    margin-top: 10px;
+.stepper-content-enter-active,
+.stepper-content-leave-active {
+    transition: all 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.stepper-content-enter {
+    opacity: 0;
+    transform: translateY(10px);
+}
+.stepper-content-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
 }
 </style>
