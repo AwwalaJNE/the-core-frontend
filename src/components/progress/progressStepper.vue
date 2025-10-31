@@ -84,6 +84,10 @@ export default {
     props: {
         steps: { type: Array, required: true },
         initialStep: { type: Number, default: 0 },
+        stepValidators: {
+            type: Array,
+            default: () => [],
+        },
     },
     data() {
         return {
@@ -91,6 +95,9 @@ export default {
         }
     },
     computed: {
+        currentStep() {
+            return this.currentStepIndex
+        },
         progressWidth() {
             if (this.steps.length <= 1) return '0%'
             return `${(this.currentStepIndex / (this.steps.length - 1)) * 100}%`
@@ -98,10 +105,20 @@ export default {
     },
     methods: {
         nextStep() {
-            if (this.currentStepIndex < this.steps.length - 1) this.currentStepIndex++
+            const validator = this.stepValidators[this.currentStepIndex]
+            if (validator && !validator()) {
+                this.$emit('invalid-step', this.currentStepIndex)
+                return
+            }
+
+            if (this.currentStepIndex < this.steps.length - 1) {
+                this.currentStepIndex++
+            }
         },
         prevStep() {
-            if (this.currentStepIndex > 0) this.currentStepIndex--
+            if (this.currentStepIndex > 0) {
+                this.currentStepIndex--
+            }
         },
         isCircleActive(index) {
             return index <= this.currentStepIndex

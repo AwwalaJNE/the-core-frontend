@@ -238,6 +238,7 @@
             :active="dialogSuratJalan"
             :closeDialog="closeDialog"
             :dataItem="selectedData"
+            @closeDialog="closeDialog2"
             @refresh="refresh"
         />
 

@@ -17,7 +17,13 @@
             </vs-row>
             <vs-row>
                 <vs-col w="12">
-                    <progress-stepper :steps="steps">
+                    <progress-stepper
+                        :steps="steps"
+                        :step-validators="[validateTypeSection, null, null]"
+                        @invalid-step="handleInvalidStep"
+                        @cancel="cancel"
+                        @submit="handleSubmit"
+                    >
                         <template #step-0>
                             <div class="text-left">
                                 <h2>Choose Type</h2>
@@ -172,7 +178,7 @@ export default {
             ],
 
             currentStep: 0,
-            steps: ['Choose Type', 'Validate Each Item', ''],
+            steps: ['Choose Type', 'Validate Each Item'],
 
             dataTable: [],
             dataColumn: [
@@ -214,25 +220,21 @@ export default {
             // this.setActiveInput('scanItem')
         },
         handleClearForm() {
-            ;(this.receiving_log_id = ''),
-                (this.inbound_number = ''),
-                (this.item_number = ''),
-                (this.status = ''),
-                (this.remark = ''),
-                (this.fileList = [])
+            this.sj_type = ''
         },
         cancel() {
             this.handleClearForm()
             this.$emit('closeDialog')
         },
-        nextStep() {
-            if (this.currentStep === 1 && !this.sj_type) {
-                return
-            }
-            if (this.currentStep < this.steps.length) this.currentStep++
+        validateTypeSection() {
+            return this.sj_type
         },
-        prevStep() {
-            if (this.currentStep > 1) this.currentStep--
+        validateStep1() {
+            // optional validation step 1
+            return true
+        },
+        handleInvalidStep(stepIndex) {
+            this.openNotification('danger', '', 'Failed', 'Wajib memilih tipe surat jalan')
         },
         getScanLabel() {
             switch (this.sj_type) {
@@ -252,7 +254,6 @@ export default {
             switch (key) {
                 case 'scanItemNumber':
                     this.item_number = val
-                    console.log('CEKK', val)
                     break
                 default:
             }
