@@ -95,7 +95,14 @@ export default {
     computed: {
         progressWidth() {
             const totalCircles = this.steps.length + 1
-            return `${(this.currentStepIndex / (totalCircles - 1)) * 100}%`
+            const segment = 100 / (totalCircles - 1)
+
+            if (this.currentStepIndex === 0) return `${segment / 2}%`
+
+            if (this.currentStepIndex < this.steps.length)
+                return `${(this.currentStepIndex + 0.5) * segment}%`
+
+            return '100%'
         },
     },
     methods: {
