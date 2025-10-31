@@ -12,130 +12,83 @@
         <template v-slot:content>
             <vs-row>
                 <vs-col>
-                    <progress-stepper :steps="steps" :currentStep="currentStep" />
+                    <!-- <progress-stepper :steps="steps" :currentStep="currentStep" /> -->
                 </vs-col>
             </vs-row>
             <vs-row>
                 <vs-col w="12">
-                    <div v-if="currentStep === 1">
-                        <div class="text-left">
-                            <h2>Choose Type</h2>
-                            <p>
-                                Please select your surat jalan type, bear in mind that each type has
-                                its own purpose
-                            </p>
-                        </div>
-
-                        <div class="surat-jalan-container">
-                            <div
-                                v-for="(item, index) in suratJalanTypeArray"
-                                :key="index"
-                                :class="['surat-jalan-box', { active: sj_type === item.value }]"
-                                :data-testid="`bag-${item.label}`"
-                                @click="selectTipeSuratJalan(item)"
-                            >
-                                <i v-if="sj_type === item.value" class="bx bx-check check-icon"></i>
-                                <i :class="item.icon" class="bag-icon"></i>
-                                <div class="bag-label">{{ item.label }}</div>
+                    <progress-stepper
+                        :steps="steps"
+                        :initialStep="currentStep"
+                        @change-step="currentStep = $event"
+                    >
+                        <template v-if="currentStep === 0" #default="{ currentStep }">
+                            <div class="text-left">
+                                <h2>Choose Type</h2>
+                                <p>
+                                    Please select your surat jalan type, bear in mind that each type
+                                    has its own purpose
+                                </p>
                             </div>
-                        </div>
-                    </div>
-                    <div v-else-if="currentStep === 2">
-                        <div class="text-left">
-                            <h2>Validate Each Item</h2>
-                            <p>Please {{ getScanLabel().toLowerCase() }} here</p>
-                        </div>
 
-                        <vs-row>
-                            <vs-col xs="12" sm="6" lg="6">
-                                <input-general
-                                    icon-after
-                                    name=""
-                                    rules=""
-                                    formKey="scanItemNumber"
-                                    ref="scanItemNumber"
-                                    :valueData="item_number"
-                                    :typeInput="`text`"
-                                    :enter_to_update="true"
-                                    @click-icon="handleIconClick"
-                                    @updateValue="updateValue"
-                                    @enterUpdate="validateItem"
+                            <div class="surat-jalan-container">
+                                <div
+                                    v-for="(item, index) in suratJalanTypeArray"
+                                    :key="index"
+                                    :class="['surat-jalan-box', { active: sj_type === item.value }]"
+                                    :data-testid="`bag-${item.label}`"
+                                    @click="selectTipeSuratJalan(item)"
                                 >
-                                    <template #icon>
-                                        <i class="bx bx-barcode-reader"></i>
-                                    </template>
-                                </input-general>
-                            </vs-col>
-                        </vs-row>
-                        <vs-row>
-                            <vs-col w="12">
-                                <table-master
-                                    hideColumnKey="validate-surat-jalan-bulk"
-                                    :dataTable="dataTable"
-                                    :dataColumn="dataColumn"
-                                    :tableLoading="listenLoading"
-                                    :hasAction="false"
-                                    :hasPagination="false"
-                                />
-                            </vs-col>
-                        </vs-row>
-                    </div>
-                </vs-col>
-            </vs-row>
-        </template>
+                                    <i
+                                        v-if="sj_type === item.value"
+                                        class="bx bx-check check-icon"
+                                    ></i>
+                                    <i :class="item.icon" class="bag-icon"></i>
+                                    <div class="bag-label">{{ item.label }}</div>
+                                </div>
+                            </div>
+                        </template>
+                        <template v-else-if="currentStep === 1" #default="{ currentStep }">
+                            <div class="text-left">
+                                <h2>Validate Each Item</h2>
+                                <p>Please {{ getScanLabel().toLowerCase() }} here</p>
+                            </div>
 
-        <template v-slot:footer>
-            <vs-row justify="flex-end">
-                <vs-col w="3" v-if="currentStep === 1">
-                    <vs-button
-                        transparent
-                        block
-                        danger
-                        flat
-                        :active="true"
-                        :data-testid="`cancel-button`"
-                        @click="cancel"
-                    >
-                        Cancel
-                    </vs-button>
-                </vs-col>
-                <vs-col w="3" v-if="currentStep !== 1">
-                    <vs-button
-                        transparent
-                        block
-                        flat
-                        type="submit"
-                        :data-testid="`submit-button`"
-                        @click="prevStep"
-                    >
-                        Previous Steps
-                    </vs-button>
-                </vs-col>
-                <vs-col w="3" v-if="currentStep !== steps.length">
-                    <vs-button
-                        transparent
-                        block
-                        flat
-                        :active="true"
-                        type="submit"
-                        :data-testid="`submit-button`"
-                        @click="nextStep"
-                    >
-                        Next Steps
-                    </vs-button>
-                </vs-col>
-                <vs-col w="3" v-if="currentStep === steps.length">
-                    <vs-button
-                        transparent
-                        block
-                        flat
-                        :active="true"
-                        type="submit"
-                        :data-testid="`submit-button`"
-                        @click="handleSubmit"
-                    >
-                        Proceed
-                    </vs-button>
+                            <vs-row>
+                                <vs-col xs="12" sm="6" lg="6">
+                                    <input-general
+                                        icon-after
+                                        name=""
+                                        rules=""
+                                        formKey="scanItemNumber"
+                                        ref="scanItemNumber"
+                                        :valueData="item_number"
+                                        :typeInput="`text`"
+                                        :enter_to_update="true"
+                                        @click-icon="handleIconClick"
+                                        @updateValue="updateValue"
+                                        @enterUpdate="validateItem"
+                                    >
+                                        <template #icon>
+                                            <i class="bx bx-barcode-reader"></i>
+                                        </template>
+                                    </input-general>
+                                </vs-col>
+                            </vs-row>
+                            <vs-row>
+                                <vs-col w="12">
+                                    <table-master
+                                        hideColumnKey="validate-surat-jalan-bulk"
+                                        :dataTable="dataTable"
+                                        :dataColumn="dataColumn"
+                                        :tableLoading="listenLoading"
+                                        :hasAction="false"
+                                        :hasPagination="false"
+                                    />
+                                </vs-col>
+                            </vs-row>
+                        </template>
+                    </progress-stepper>
                 </vs-col>
             </vs-row>
         </template>
@@ -222,8 +175,8 @@ export default {
                 },
             ],
 
-            currentStep: 1,
-            steps: ['Choose Type', 'Validate Each Item'],
+            currentStep: 0,
+            steps: ['Choose Type', 'Validate Each Item', ''],
 
             dataTable: [],
             dataColumn: [
