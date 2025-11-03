@@ -451,5 +451,5 @@ export default {
 
     validation_item: api + 'validation/item',
 
-    bag_misroute: api + 'bag-misroute',
+    bag_misroute: api + 'bag/bag-missroute',
 }
