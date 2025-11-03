@@ -450,6 +450,4 @@ export default {
     user_preferences: api + 'user-preferences',
 
     validation_item: api + 'validation/item',
-
-    bag_misroute: api + 'bag/bag-missroute',
 }
