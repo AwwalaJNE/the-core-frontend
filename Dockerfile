@@ -20,6 +20,8 @@ RUN npm install
 # Copy source code
 COPY . .
 
+ENV NODE_OPTIONS="--max-old-space-size=4096"
+
 # Build the app
 RUN npm run build
 

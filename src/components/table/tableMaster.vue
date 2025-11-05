@@ -893,6 +893,9 @@
                                                     class="text-link"
                                                     @click="handleEdit(item)"
                                                     v-copy="item[column.key]"
+                                                    :data-testid="`data-${column.key}-${
+                                                        item[column.key]
+                                                    }`"
                                                     >{{
                                                         item[column.key] ? item[column.key] : ''
                                                     }}</span
@@ -1893,6 +1896,7 @@
                                                                                 )
                                                                             "
                                                                             v-copy="itm"
+                                                                            :data-testid="`data-${c_item}-${itm}`"
                                                                         >
                                                                             {{ itm ? itm : '' }}
                                                                         </p>

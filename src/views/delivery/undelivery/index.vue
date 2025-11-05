@@ -4,15 +4,17 @@
             <vs-col xs="8" sm="8" lg="8">
                 <div class="titlePage">
                     <breadcrumb />
-                    <h2>{{title}} - {{ employeeName }} ({{ employeeCode }})</h2>
+                    <h2>{{ title }} - {{ employeeName }} ({{ employeeCode }})</h2>
                 </div>
             </vs-col>
             <vs-col xs="4" sm="4" lg="4" align="right">
                 <div class="btn-print-all">
-                    <vs-button class="btn-cash-register"
+                    <vs-button
+                        class="btn-cash-register"
                         square
                         block
                         @click="finishReceiving"
+                        :data-testid="'approve-button'"
                         :disabled="!isFinishReceiving"
                     >
                         Approve HRS
@@ -24,25 +26,26 @@
         <section>
             <vs-row>
                 <vs-col lg="6" sm="6" xs="12">
-                    <div class="box information" style="padding-top: 1px !important;">
+                    <div class="box information" style="padding-top: 1px !important">
                         <div class="nav-box">
                             <vs-row justify="space-between">
                                 <vs-col xs="12" sm="6" lg="6" style="margin-top: 2em">
                                     <template>
                                         <div class="center">
-                                            <vs-input 
-                                                border 
-                                                type="text" 
-                                                v-model="item_no" 
-                                                label-placeholder="Masukkan Item" 
-                                                v-on:keyup.enter="updateValue" 
-                                                autofocus 
-                                                icon-after 
+                                            <vs-input
+                                                border
+                                                type="text"
+                                                v-model="item_no"
+                                                label-placeholder="Masukkan Item"
+                                                v-on:keyup.enter="updateValue"
+                                                autofocus
+                                                icon-after
                                                 v-uppercase
                                                 ref="formInputInbound"
+                                                :data-testid="'input-item_no'"
                                             >
                                                 <template #icon>
-                                                    <i class='bx bxs-file'> </i>
+                                                    <i class="bx bxs-file"> </i>
                                                 </template>
                                             </vs-input>
                                         </div>
@@ -52,8 +55,8 @@
                         </div>
                     </div>
                     <vs-col lg="12" sm="12" xs="12">
-                        <div class="box information" style="padding-top: 1px !important;">
-                            <vs-row style="padding-top:5px" justify="space-around">
+                        <div class="box information" style="padding-top: 1px !important">
+                            <vs-row style="padding-top: 5px" justify="space-around">
                                 <vs-col lg="12" sm="12" xs="12" w="3">
                                     <h5 align="left">List All Connote Runsheet</h5>
                                 </vs-col>
@@ -61,7 +64,7 @@
                             <div class="nav-box">
                                 <template>
                                     <transition name="slide-fade">
-                                        <ConnoteRunsheetInformation 
+                                        <ConnoteRunsheetInformation
                                             :ref="'ConnoteRunsheetInformation'"
                                             :employeeId="listenEmployeeId"
                                             :loadingScan="loading"
@@ -75,19 +78,23 @@
 
                 <!-- col for detail unreceive item-->
                 <vs-col lg="6" sm="6" xs="12">
-                    <div class="box information" style="padding-top: 1px !important;">
-                        <vs-row style="padding-top:5px" justify="space-around">
+                    <div class="box information" style="padding-top: 1px !important">
+                        <vs-row style="padding-top: 5px" justify="space-around">
                             <vs-col lg="12" sm="12" xs="12" w="3">
-                                <h5 align="left">List Connote Undelivered ({{ this.totalConnote ? this.totalConnote : 0 }})</h5>
+                                <h5 align="left">
+                                    List Connote Undelivered ({{
+                                        this.totalConnote ? this.totalConnote : 0
+                                    }})
+                                </h5>
                             </vs-col>
                         </vs-row>
 
                         <div class="nav-box">
                             <template>
                                 <transition name="slide-fade">
-                                    <UndeliveryInformation 
+                                    <UndeliveryInformation
                                         :ref="'undeliveryInformation'"
-                                        :employeeId="listenEmployeeId" 
+                                        :employeeId="listenEmployeeId"
                                         v-on:total-connote="getTotal"
                                         :loadingScan="loading"
                                     />
@@ -95,13 +102,9 @@
                             </template>
                         </div>
                     </div>
-                    
-                    <vs-button class="mt-1" style="float: right"
-                        square
-                        active
-                        @click="back"
-                    >
-                        <i class="bx bxs-chevron-left"> </i>  BACK
+
+                    <vs-button class="mt-1" style="float: right" square active @click="back">
+                        <i class="bx bxs-chevron-left"> </i> BACK
                     </vs-button>
                 </vs-col>
             </vs-row>
@@ -117,130 +120,159 @@
             @confirm="confirm"
             @cancel="closeDialogConfirm"
         />
-
     </div>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master"
-import NavItem from "@/components/navbar/navTab"
-import Breadcrumb from "@/components/breadcrumb/index"
+import axios from 'axios'
+import master from '@/mixins/master'
+import NavItem from '@/components/navbar/navTab'
+import Breadcrumb from '@/components/breadcrumb/index'
 
-import UndeliveryInformation from "@/views/delivery/undelivery/UndeliveryInformation"
-import DialogConfirm from "@/components/dialog/dialogConfirm"
-import ConnoteRunsheetInformation from "@/views/delivery/undelivery/ConnoteRunsheetInformation"
-
+import UndeliveryInformation from '@/views/delivery/undelivery/UndeliveryInformation'
+import DialogConfirm from '@/components/dialog/dialogConfirm'
+import ConnoteRunsheetInformation from '@/views/delivery/undelivery/ConnoteRunsheetInformation'
 
 export default {
-    name:"undelivery-hrs",
+    name: 'undelivery-hrs',
     mixins: [master],
     components: {
-        "nav-item": NavItem,
-        "breadcrumb": Breadcrumb,
-        "UndeliveryInformation": UndeliveryInformation,
-        "dialog-confirm": DialogConfirm,
-        "ConnoteRunsheetInformation": ConnoteRunsheetInformation
+        'nav-item': NavItem,
+        breadcrumb: Breadcrumb,
+        UndeliveryInformation: UndeliveryInformation,
+        'dialog-confirm': DialogConfirm,
+        ConnoteRunsheetInformation: ConnoteRunsheetInformation,
     },
     data() {
         return {
-            title:"Handover Runsheet",
-            item_no:'',
-            no_runsheet:'',
-            form:{},
-            totalConnote:0,
+            title: 'Handover Runsheet',
+            item_no: '',
+            no_runsheet: '',
+            form: {},
+            totalConnote: 0,
             activeDialogFinishReceiving: false,
             activeLoadingFinishReceiving: false,
             isFinishReceivingButtonVisible: false,
             isFinishReceiving: false,
-            employeeName: "",
-            employeeCode: "",
+            employeeName: '',
+            employeeCode: '',
             loading: false,
         }
     },
     computed: {
         listenEmployeeId() {
-            return this.$route.params.employee_id;
-        }
+            return this.$route.params.employee_id
+        },
     },
     watch: {
         isFinishReceiving(newVal, oldVal) {
             if (newVal !== oldVal) {
-                this.getButtonValue();
+                this.getButtonValue()
             }
         },
     },
     methods: {
         getTotal(val) {
-            this.totalConnote = val;
+            this.totalConnote = val
         },
-        refresh(){
+        refresh() {
             this.$refs.undeliveryInformation.refresh() // trigger function refresh form dari luar component list
             this.$refs.ConnoteRunsheetInformation.refresh() // trigger function refresh form dari luar component list
-            this.getButtonValue();
+            this.getButtonValue()
         },
-        updateValue(){
+        updateValue() {
             this.form = {
                 item_number: this.item_no,
-            };
-            this.processUndelivery();
+            }
+            this.processUndelivery()
         },
         async processUndelivery() {
-            this.loading = true;
+            this.loading = true
             try {
-                const res = await axios.post(`${this.URL.undelivery}?n=${this.listenNodeId}`, JSON.stringify(this.form), this.Helper.header());
+                const res = await axios.post(
+                    `${this.URL.undelivery}?n=${this.listenNodeId}`,
+                    JSON.stringify(this.form),
+                    this.Helper.header()
+                )
             } catch (err) {
-                this.refresh();
-                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                this.refresh()
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
             } finally {
-                this.loading = false;
-                this.refresh();
-                this.handleClearForm();
+                this.loading = false
+                this.refresh()
+                this.handleClearForm()
             }
         },
         async getButtonValue() {
             try {
-                const res = await axios.get(`${this.URL.courier_delivery}/${this.listenEmployeeId}/hrs-status?n=${this.listenNodeId}`, this.Helper.header());
-                this.isFinishReceiving = res.data.data.ready_to_hrs;
+                const res = await axios.get(
+                    `${this.URL.courier_delivery}/${this.listenEmployeeId}/hrs-status?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
+                this.isFinishReceiving = res.data.data.ready_to_hrs
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
-            } 
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
+            }
         },
-        back(){
+        back() {
             this.$router.push('/hrs')
-            this.setRoutePageHistory(this.$route.meta, false);
+            this.setRoutePageHistory(this.$route.meta, false)
         },
-        handleClearForm(){
+        handleClearForm() {
             this.form = {}
-            this.item_no = ""
-            this.no_runsheet= ""
+            this.item_no = ''
+            this.no_runsheet = ''
         },
-        finishReceiving(){
+        finishReceiving() {
             this.activeDialogFinishReceiving = true
         },
-        closeDialogConfirm(){
+        closeDialogConfirm() {
             this.activeDialogFinishReceiving = false
         },
         confirm(val) {
-            if(val) {
-                this.activeLoadingFinishReceiving=true
+            if (val) {
+                this.activeLoadingFinishReceiving = true
                 this.addData()
             }
         },
         async addData() {
             let payload = {
-                courier_id: this.listenEmployeeId
+                courier_id: this.listenEmployeeId,
             }
 
             try {
-                const res = await axios.post(`${this.URL.handover_runsheet}?n=${this.listenNodeId}`, JSON.stringify(payload), this.Helper.header());
+                const res = await axios.post(
+                    `${this.URL.handover_runsheet}?n=${this.listenNodeId}`,
+                    JSON.stringify(payload),
+                    this.Helper.header()
+                )
 
-                this.openNotification('success', null, "Success", res?.data?.message ?? 'Success Receiving Runsheet')
+                this.openNotification(
+                    'success',
+                    null,
+                    'Success',
+                    res?.data?.message ?? 'Success Receiving Runsheet'
+                )
 
                 this.activeDialogFinishReceiving = false
                 this.activeLoadingFinishReceiving = false
-                this.back();
+                this.back()
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
                 this.activeDialogFinishReceiving = false
                 this.activeLoadingFinishReceiving = false
                 this.refresh()
@@ -248,32 +280,40 @@ export default {
         },
         async getEmployeeData() {
             try {
-                const res = await axios.get(`${this.URL.employee}/${this.listenEmployeeId}?n=${this.listenNodeId}`, this.Helper.header());
-                
+                const res = await axios.get(
+                    `${this.URL.employee}/${this.listenEmployeeId}?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
+
                 this.employeeName = res.data.data.employee_name
                 this.employeeCode = res.data.data.employee_code
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
-            } 
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
+            }
         },
     },
     mounted() {
         this.refresh()
         this.getEmployeeData()
         this.setActiveInput('formInputInbound')
-    }
+    },
 }
 </script>
 <style lang="scss">
-.mb-15{
+.mb-15 {
     margin-bottom: 1.5em;
 }
-.custom-title{
+.custom-title {
     padding: 0.6em;
     text-align: right;
     font-weight: 600;
 }
-.nav-box{
+.nav-box {
     margin-top: 1em;
 }
 .in-get-bag-flex {
