@@ -824,6 +824,7 @@ export default {
         onSubmit(refs) {
             refs.form.validate().then((success) => {
                 if (!success) {
+                    this.formNotError = false
                     return
                 }
                 this.InputObject =
@@ -860,7 +861,7 @@ export default {
 
                 // Wait until the models are updated in the UI
                 this.$nextTick(() => {
-                    refs.form.reset()
+                    refs.form?.reset()
                 })
             })
         },

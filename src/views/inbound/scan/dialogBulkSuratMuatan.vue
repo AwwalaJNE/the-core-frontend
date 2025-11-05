@@ -2,7 +2,7 @@
     <dialog-master
         :actived="listenActive"
         :loading="listenLoading"
-        :closeDialog="cancel"
+        :closeDialog="cancel2"
         width="lg"
     >
         <template v-slot:header>
@@ -21,7 +21,7 @@
                         ]"
                         @invalid-step="handleInvalidStep"
                         @valid-step="handleValidStep"
-                        @cancel="cancel"
+                        @cancel="cancel2"
                         @submit="handleSubmit"
                     >
                         <template #step-0>
@@ -63,7 +63,11 @@
                             </div>
 
                             <div>
-                                <vs-row align="center" justify="end" style="position: absolute">
+                                <vs-row
+                                    align="center"
+                                    justify="end"
+                                    style="position: absolute; margin-top: 0.5em"
+                                >
                                     <vs-col w="2">
                                         <vs-button
                                             flat
@@ -83,16 +87,77 @@
                                     @formData="formData"
                                     @inputFocus="inputFocus"
                                     @onChangeCustom="onChangeCustom"
+                                    @handleIconClick="openDialog('search_sm_stock')"
                                 />
-                                <vs-button
-                                    shadow
-                                    :active="false"
-                                    :data-testid="`add-vehicle-button`"
-                                    @click="openDialog('manifest_vehicle')"
-                                    style="margin-top: 1em"
-                                >
-                                    <i class="bx bx-plus"></i> Vehicle
-                                </vs-button>
+                                <vs-row align="center" style="margin-top: 1em">
+                                    <template v-if="vehicle.length === 0">
+                                        <vs-col w="6">
+                                            <vs-button
+                                                shadow
+                                                :active="false"
+                                                :data-testid="`add-vehicle-button`"
+                                                @click="openDialog('manifest_vehicle')"
+                                            >
+                                                <i class="bx bx-plus"></i> Vehicle
+                                            </vs-button>
+                                        </vs-col>
+                                        <vs-col w="6" justify="end">
+                                            <div
+                                                class="container-clear-item"
+                                                :data-testid="`reset-button`"
+                                                @click="
+                                                    handleClearForm()
+                                                    resetForm()
+                                                "
+                                            >
+                                                Reset Inputs
+                                            </div>
+                                        </vs-col>
+                                    </template>
+                                    <template v-else>
+                                        <vs-row align="center" justify="space-between">
+                                            <h3 class="title">List Vehicle</h3>
+                                            <vs-button
+                                                shadow
+                                                :active="false"
+                                                :disabled="isDisabled"
+                                                :data-testid="`more-vehicle-button`"
+                                                @click="openDialog('manifest_vehicle')"
+                                                style="min-width: 120px"
+                                            >
+                                                <i class="bx bx-plus"></i> More Vehicle
+                                            </vs-button>
+                                        </vs-row>
+
+                                        <vs-row>
+                                            <vs-col w="12">
+                                                <radio-with-card
+                                                    :name="'manifest_vehicle'"
+                                                    :value-data="vehicle"
+                                                    :selected-value="listenSelectedManifestVehicle"
+                                                    :isRemoveButton="true"
+                                                    @updateValue="chooseRow"
+                                                    @removeRow="removeRow"
+                                                />
+                                            </vs-col>
+                                        </vs-row>
+
+                                        <vs-row align="center">
+                                            <vs-col w="12" justify="end">
+                                                <div
+                                                    class="container-clear-item"
+                                                    :data-testid="`reset-button`"
+                                                    @click="
+                                                        handleClearForm()
+                                                        resetForm()
+                                                    "
+                                                >
+                                                    Reset Inputs
+                                                </div>
+                                            </vs-col>
+                                        </vs-row>
+                                    </template>
+                                </vs-row>
                             </div>
                         </template>
                         <template #step-2>
@@ -145,6 +210,24 @@
                 :closeDialog="() => closeDialog2('sm_stock')"
                 @handleCreateManifestStock="handleCreateManifestStock"
             />
+
+            <dialog-select-manifest-stock
+                title="Pilih Stock"
+                :active="dialogSearchStockActive"
+                :close="() => closeDialog2('search_sm_stock')"
+                :mode="parseInt(sm_type.value)"
+                @selectManifest="handleSelectManifest"
+            />
+
+            <dialog-manage-vehicle-manifest
+                title="Manifest Vehicle"
+                :manifest_number="manifest_number"
+                :manifest_method="parseInt(sm_type.value)"
+                :active="dialogManifestVehicleActive"
+                :closeDialog="() => closeDialog2('manifest_vehicle')"
+                :submitType="'prefill'"
+                @updateVehicleValue="updateVehicleValue"
+            />
         </template>
     </dialog-master>
 </template>
@@ -157,9 +240,12 @@ import DialogMaster from '@/components/dialog/dialogMaster'
 import FormInputController from '@/components/form/formInputController'
 import InputGeneral from '@/components/input/general'
 import ProgressStepper from '@/components/progress/progressStepper'
+import RadioWithCard from '@/components/input/radioWithCard'
 import TableMaster from '@/components/table/tableMaster'
 
 import DialogCreateEditStock from '@/views/settings/suratMuatan/stock/dialogCreateEdit'
+import DialogManageVehicleManifest from '@/views/transport/manifestVehicle/dialogCreateManage'
+import DialogSelectManifestStock from '@/views/transport/manifestNew/dialogSelectManifestStock'
 
 export default {
     name: 'Inbound-Dialog-Bulk-Surat-Muatan',
@@ -167,10 +253,13 @@ export default {
     components: {
         CameraScanner,
         'dialog-create-edit-stock': DialogCreateEditStock,
+        'dialog-manage-vehicle-manifest': DialogManageVehicleManifest,
+        'dialog-select-manifest-stock': DialogSelectManifestStock,
         'dialog-master': DialogMaster,
         'form-input-controller': FormInputController,
         'input-general': InputGeneral,
         'progress-stepper': ProgressStepper,
+        'radio-with-card': RadioWithCard,
         'table-master': TableMaster,
     },
     props: {
@@ -188,6 +277,9 @@ export default {
         },
         listenTitle() {
             return this.title
+        },
+        listenSelectedManifestVehicle() {
+            return this.selected_manifest_vehicle || ''
         },
     },
     watch: {
@@ -271,10 +363,16 @@ export default {
             item_number: '',
             list_item_no: [],
 
+            vehicle: [],
+            vehicle_form: [],
+
             form: {},
             manifest_number: '',
             dialogStockActive: false,
-            dialogManifestVehicleActive: true,
+            dialogManifestVehicleActive: false,
+            dialogSearchStockActive: false,
+
+            selected_manifest_vehicle: '',
         }
     },
     methods: {
@@ -284,10 +382,30 @@ export default {
         },
         handleClearForm() {
             this.sm_type = ''
+            this.$refs?.formSuratMuatanBulkController?.handleClearForm()
+            this.form = {}
+            this.vehicle = []
+            this.vehicle_form = []
+            this.item_number = ''
+        },
+        resetForm() {
+            this.$store.dispatch('SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION', '')
+            this.$store.dispatch('SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION_ValueData', {})
+            this.$store.dispatch('SET_SURAT_MUATAN_BULK_ETD', '')
+            this.$store.dispatch('SET_SURAT_MUATAN_BULK_ETA', '')
+
+            this.$store.dispatch('SET_SURAT_MUATAN_BULK_MANIFEST_NUMBER_isDisabled', false)
+            this.$store.dispatch('SET_SURAT_MUATAN_BULK_NODE_ID_ORIGIN_isDisabled', false)
+            this.$store.dispatch('SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION_isDisabled', false)
+            this.$store.dispatch('SET_SURAT_MUATAN_BULK_ETD_isDisabled', false)
+            this.$store.dispatch('SET_SURAT_MUATAN_BULK_ETA_isDisabled', false)
         },
         cancel() {
-            this.handleClearForm()
             this.$emit('closeDialog')
+        },
+        cancel2() {
+            this.handleClearForm
+            this.cancel()
         },
         validateTypeSection() {
             return this.sm_type.value
@@ -347,35 +465,12 @@ export default {
             }
         },
         async handleSubmit(done) {
-            console.log('CEK')
+            // TODO: RECHECK WHY FORM NOT UPDATED
+            console.log('CEK', this.form)
             let form = {
-                auto_depart: true,
-                manifest_method_id: 2,
-                manifest_prefix: 'SMDT-',
-                manifest_number: 'SMDT-758275827582578',
-                max_weight: '100',
-                node_id_origin: 84185,
-                node_id_destination: 83549,
-                etd: '2025-10-30 00:00:00',
-                eta: '2025-10-31 00:00:00',
-                vehicles: [
-                    {
-                        vehicle_id: 1979,
-                        vehicle_type_id: '2',
-                        pic_employee_id: 666,
-                        flight_number: '',
-                        flight_schedule: '',
-                        etd: '2025-10-30 00:00:00',
-                        eta: '2025-10-31 00:00:00',
-                        origin_branch_code: '',
-                        destination_branch_code: '',
-                        is_active: true,
-                    },
-                ],
-                vehicle_id: 1979,
-                vehicle_type_id: '2',
-                pickup_node_id_requestor: 84185,
-                manifest_item: ['OM/BDO/SUX/1761790401802', 'OM/BDO/SUX/1761790401803'],
+                ...this.form,
+                manifest_method_id: parseInt(this.sm_type.value),
+                manifest_item: this.list_item_no,
             }
 
             await this.createBulkSuratMuatan(form, done)
@@ -392,7 +487,7 @@ export default {
 
                 this.openNotification('success', null, 'Success', 'Create surat muatan success')
                 done(true)
-                this.cancel()
+                this.cancel2()
             } catch (err) {
                 this.openNotification(
                     'danger',
@@ -410,6 +505,8 @@ export default {
                 this.dialogStockActive = true
             } else if (type === 'manifest_vehicle') {
                 this.dialogManifestVehicleActive = true
+            } else if (type === 'search_sm_stock') {
+                this.dialogSearchStockActive = true
             }
         },
         closeDialog2(type) {
@@ -417,10 +514,52 @@ export default {
                 this.dialogStockActive = false
             } else if (type === 'manifest_vehicle') {
                 this.dialogManifestVehicleActive = false
+            } else if (type === 'search_sm_stock') {
+                this.dialogSearchStockActive = false
             }
         },
+        handleSelectManifest(val) {
+            this.manifest_number = val.manifest_number
+            // this.manifest_method_id = parseInt(val.vehicle_mode_id)
+            // this.vehicle_type_id = val.vehicle_type_id
+            this.$store.dispatch(
+                'SET_SURAT_MUATAN_BULK_MANIFEST_PREFIX',
+                val.vehicle_prefix_name + '-'
+            )
+            this.$store.dispatch('SET_SURAT_MUATAN_BULK_MANIFEST_NUMBER', val.manifest_number)
+            this.$store.dispatch(
+                'SET_SURAT_MUATAN_BULK_NODE_ID_ORIGIN',
+                val?.node_name_origin + ' (' + val?.node_code_origin + ')'
+            )
+            this.$store.dispatch(
+                'SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION',
+                val?.node_name_destination + ' (' + val?.node_code_destination + ')'
+            )
+            this.$store.dispatch('SET_SURAT_MUATAN_BULK_ETD', val.etd)
+            this.$store.dispatch('SET_SURAT_MUATAN_BULK_ETA', val.eta)
+
+            this.$store.dispatch(
+                'SET_SURAT_MUATAN_BULK_MANIFEST_PREFIX_ValueData',
+                val.vehicle_prefix_name + '-'
+            )
+            this.$store.dispatch(
+                'SET_SURAT_MUATAN_BULK_NODE_ID_ORIGIN_ValueData',
+                val.node_id_origin
+            )
+            this.$store.dispatch(
+                'SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION_ValueData',
+                val.node_id_destination
+            )
+
+            this.$store.dispatch('SET_SURAT_MUATAN_BULK_MANIFEST_NUMBER_isDisabled', true)
+            this.$store.dispatch('SET_SURAT_MUATAN_BULK_NODE_ID_ORIGIN_isDisabled', true)
+            this.$store.dispatch('SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION_isDisabled', true)
+            this.$store.dispatch('SET_SURAT_MUATAN_BULK_ETD_isDisabled', true)
+            this.$store.dispatch('SET_SURAT_MUATAN_BULK_ETA_isDisabled', true)
+
+            this.getManifestVehicleSMStock()
+        },
         handleCreateManifestStock(val) {
-            // this.handleClearForm()
             this.manifest_number = val
             this.getAndApplySmStock()
             this.getManifestVehicleSMStock()
@@ -544,6 +683,73 @@ export default {
                 this.loading = false
             }
         },
+        chooseRow(newKey, done) {
+            this.selected_manifest_vehicle = newKey
+            this.vehicle = this.vehicle.map((item) => ({
+                ...item,
+                state: {
+                    ...item.state,
+                    is_active: item.key === newKey,
+                },
+            }))
+            this.vehicle_form = this.vehicle_form.map((item) => ({
+                ...item,
+                state: {
+                    ...item.state,
+                    flight_schedule: this.formatToWIB(item?.flight_schedule) || '',
+                    etd: this.formatToWIB(item?.etd_vehicle) || '',
+                    eta: this.formatToWIB(item?.eta_vehicle) || '',
+                    is_active: item.key === newKey,
+                },
+            }))
+        },
+        removeRow(row_id) {
+            this.vehicle = this.vehicle.filter((item) => item.key !== row_id)
+            this.vehicle_form = this.vehicle_form.filter((item) => item.key !== row_id)
+        },
+        updateVehicleValue(form) {
+            let form_id = Date.now() + Math.random()
+
+            if (this.selected_manifest_vehicle === '') this.selected_manifest_vehicle = form_id
+
+            let created_vehicle = {
+                key: form_id,
+                state: {
+                    origin_vehicle: form?.origin_vehicle_name || '',
+                    destination_vehicle: form?.destination_vehicle_name || '',
+                    origin_vehicle_tlc: form?.origin_vehicle?.value || form.origin_vehicle || '',
+                    destination_vehicle_tlc:
+                        form?.destination_vehicle?.value || form.destination_vehicle || '',
+                    vehicle_id: form.vehicle_name,
+                    pic_employee_id:
+                        form.pic_employee_id?.employee_name || form?.pic_employee_id || '',
+                    flight_number: form.flight_number,
+                    flight_schedule: form.flight_schedule,
+                    etd_vehicle: form.etd_vehicle,
+                    eta_vehicle: form.eta_vehicle,
+                    is_active: this.vehicle.length === 0,
+                },
+            }
+
+            let vehicle_form = {
+                key: form_id,
+                state: {
+                    vehicle_id: form?.vehicle_id || '',
+                    vehicle_type_id: form?.vehicle_type_id || '',
+                    pic_employee_id: form?.pic_employee_id?.employee_id || '',
+                    flight_number: form?.flight_number || '',
+                    flight_schedule: this.formatToWIB(form?.flight_schedule) || '',
+                    etd: this.formatToWIB(form?.etd_vehicle) || '',
+                    eta: this.formatToWIB(form?.eta_vehicle) || '',
+                    origin_branch_code: form?.origin_vehicle || '',
+                    destination_branch_code: form?.destination_vehicle || '',
+                    is_active: this.vehicle.length === 0,
+                },
+            }
+
+            this.vehicle.push(created_vehicle)
+            this.vehicle_form.push(vehicle_form)
+        },
         async querySearch(queryString, cb) {
             try {
                 const res = await axios.get(
@@ -581,7 +787,48 @@ export default {
         },
         onChangeCustom(type, val, info = {}) {},
         formData(form) {
+            let userTimezone = this.$ls.get('timezone')
+
+            form.node_id_origin =
+                form.node_id_origin?.node_id ||
+                form.node_id_origin ||
+                this.listenCurrentNode.node_id
+            form.node_id_destination = form.node_id_destination?.node_id || form.node_id_destination
+
+            form.vehicles = this.vehicle_form.map((item) => item.state)
+
+            let active_vehicle = this.vehicle_form.find((item) => item.state.is_active)?.state
+            form.vehicle_id = active_vehicle?.vehicle_id
+            form.vehicle_type_id = active_vehicle?.vehicle_type_id
+            form.vehicle_mode_id = active_vehicle?.vehicle_mode_id
+
+            if (form.manifest_prefix && form.manifest_number) {
+                form.manifest_number = `${form.manifest_prefix}${form.manifest_number}`
+            }
+
             this.form = form
+
+            console.log('CEKK', this.form, form)
+
+            if (this.form.eta > this.form.etd) {
+                this.form.etd = this.Helper.convertTimezone(
+                    this.form.etd,
+                    userTimezone,
+                    'Asia/Jakarta'
+                )
+                this.form.eta = this.Helper.convertTimezone(
+                    this.form.eta,
+                    userTimezone,
+                    'Asia/Jakarta'
+                )
+                // this.form.pickup_node_id_requestor = this.listenNodeId
+            } else {
+                this.openNotification(
+                    'warning',
+                    'Wrong Input in ETA/ETD field',
+                    'ETA must more than ETD'
+                )
+            }
         },
         setDefaultData() {
             this.$store.dispatch(
