@@ -1,7 +1,7 @@
 <template>
     <div>
         <vs-row justify="space-between">
-            <vs-col xs="6" sm="4" lg="4">
+            <vs-col xs="6" sm="6" lg="6">
                 <div class="titlePage">
                     <breadcrumb />
                     <h2 v-copy="title">{{ title }}</h2>
@@ -153,23 +153,22 @@
                 </vs-col>
             </vs-row>
 
-            <vs-row>
-                <vs-col xs="12" sm="12" lg="12">
-                    <div class="box">
-                        <div class="header-remark-bar mb-3">
-                            <h4 class="title">Receiving Detail</h4>
+            <vs-row justify="space-between" align="stretch" style="padding: 1em 0">
+                <vs-col xs="12" sm="6" lg="6">
+                    <div class="box-v1">
+                        <div class="header-remark-bar">
+                            <h4 align="left">Receiving Detail</h4>
                             <template v-if="dataTableProp.length > 0">
                                 <vs-button
-                                    class="insert-remark-btn"
                                     :data-testid="`remark-button`"
-                                    @click="openDialog"
+                                    @click="openDialog('receiving_log')"
                                 >
                                     <i class="bx bx-pencil mr-1"></i> Insert Remark
                                 </vs-button>
                                 <dialog-insert-remark
                                     :actived="showDialog"
                                     :loading="false"
-                                    :closeDialog="closeDialog"
+                                    :closeDialog="() => closeDialog('receiving_log')"
                                     :inbound_number="inbound_number"
                                 />
                             </template>
@@ -193,18 +192,53 @@
                             </transition>
                         </div>
                     </div>
-                    <vs-button
-                        style="float: right; margin-top: 1em"
-                        square
-                        active
-                        :data-testid="`back-button`"
-                        @click="back"
-                    >
-                        <i class="bx bxs-chevron-left"> </i> BACK
-                    </vs-button>
+                </vs-col>
+                <vs-col xs="12" sm="6" lg="6">
+                    <div class="box-v1">
+                        <div class="header-remark-bar">
+                            <h4 align="left">Misrouted Bag</h4>
+                            <template v-if="$refs.misrouteBag?.dataTable.length > 0">
+                                <div style="display: flex">
+                                    <vs-button
+                                        :data-testid="`remark-button`"
+                                        @click="openDialog('surat_jalan')"
+                                    >
+                                        <i class="bx bx-plus"></i> Surat Jalan
+                                    </vs-button>
+                                    <vs-button
+                                        :data-testid="`remark-button`"
+                                        @click="openDialog('surat_muatan')"
+                                    >
+                                        <i class="bx bx-plus"></i> Surat Muatan
+                                    </vs-button>
+                                </div>
+                                <dialog-bulk-surat-jalan
+                                    title="Create Surat Jalan"
+                                    :active="dialogSuratJalan"
+                                    :dataItem="selectedData"
+                                    @closeDialog="() => closeDialog('surat_jalan')"
+                                />
+                            </template>
+                        </div>
+                        <div class="nav-box">
+                            <transition name="slide-fade">
+                                <MisrouteBag ref="misrouteBag" @autoFocusInput="autoFocusInput" />
+                            </transition>
+                        </div>
+                    </div>
                 </vs-col>
             </vs-row>
+            <vs-button
+                style="float: right; margin-top: 1em"
+                square
+                active
+                :data-testid="`back-button`"
+                @click="back"
+            >
+                <i class="bx bxs-chevron-left"> </i> BACK
+            </vs-button>
         </section>
+
         <camera-scanner
             ref="cameraScanner"
             :data-testid="`camera-button`"
@@ -220,9 +254,11 @@ import Breadcrumb from '@/components/breadcrumb/index'
 
 import InboundInformation from '@/views/inbound/scan/inboundInformation'
 import InboundDetail from '@/views/inbound/scan/inboundDetail'
+import MisrouteBag from '@/views/inbound/scan/misrouteBag'
 import InboundReceivingLog from '@/views/inbound/scan/inboundReceivingLog'
 import CameraScanner from '@/components/scanner/camera.vue'
 import dialogInsertRemark from '@/views/inbound/scan/dialogInsertRemark.vue'
+import DialogBulkSuratJalan from '@/views/inbound/scan/dialogBulkSuratJalan.vue'
 
 export default {
     name: 'inbound-scan',
@@ -233,8 +269,10 @@ export default {
         InboundInformation: InboundInformation,
         InboundDetail: InboundDetail,
         ReceivingLog: InboundReceivingLog,
+        MisrouteBag: MisrouteBag,
         CameraScanner,
         dialogInsertRemark,
+        'dialog-bulk-surat-jalan': DialogBulkSuratJalan,
     },
     computed: {
         is_prealert() {
@@ -292,6 +330,9 @@ export default {
             refloading: null,
 
             dialogActive: false,
+
+            dialogSuratJalan: false,
+            selectedData: [],
         }
     },
     methods: {
@@ -350,6 +391,7 @@ export default {
         },
         refresh() {
             this.getTableData()
+            this.$refs.misrouteBag.refresh()
         },
         updateValue(type) {
             switch (type) {
@@ -611,12 +653,29 @@ export default {
             this.page = val
             this.refresh()
         },
-        openDialog() {
-            this.showDialog = true
+        openDialog(type) {
             this.autoFocusInput(true)
+
+            if (type === 'receiving_log') {
+                this.showDialog = true
+            } else if (type === 'surat_jalan') {
+                if (this.$refs.misrouteBag?.selectedData.length < 1) {
+                    this.openNotification('danger', '', 'Failed', 'Please select at least one bag')
+                } else {
+                    this.dialogSuratJalan = true
+                    this.selectedData = this.$refs.misrouteBag.selectedData
+                }
+            } else if (type === 'surat_muatan') {
+            }
         },
-        closeDialog() {
-            this.showDialog = false
+        closeDialog(type) {
+            if (type === 'receiving_log') {
+                this.showDialog = false
+            } else if (type === 'surat_jalan') {
+                this.dialogSuratJalan = false
+                this.$refs.misrouteBag.refresh()
+            } else if (type === 'surat_muatan') {
+            }
 
             this.autoFocusInput(false)
         },
@@ -676,15 +735,5 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 12px;
-}
-
-.header-remark-bar .title {
-    margin: 0;
-    font-size: 1.1rem;
-    font-weight: 600;
-}
-.insert-remark-btn {
-    margin-top: 5px; /* ✅ Turunkan tombol sedikit */
 }
 </style>

@@ -9,7 +9,7 @@
                     class="inline-input"
                     v-model="value"
                     :fetch-suggestions="querySearch"
-                    :placeholder="`Search ${name}`"
+                    :placeholder="`Search ${name || formKey}`"
                     :trigger-on-focus="false"
                     :debounce="400"
                     :data-testid="`autocomplete-${formKey}`"

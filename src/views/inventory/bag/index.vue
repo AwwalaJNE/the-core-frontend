@@ -348,7 +348,7 @@ export default {
     },
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .bag-container {
     display: grid;
     gap: 16px;

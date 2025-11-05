@@ -140,16 +140,6 @@ const Master = {
                     return
                 }
             }
-
-            this.$nextTick(() => {
-                // Wait one paint frame to let browser finish processing the blur event
-                requestAnimationFrame(() => {
-                    const activeEl = this.getInputByRef(this.activeInput)
-                    if (activeEl && document.activeElement !== activeEl) {
-                        activeEl.focus()
-                    }
-                })
-            })
         },
 
         handleGlobalClick(e) {
