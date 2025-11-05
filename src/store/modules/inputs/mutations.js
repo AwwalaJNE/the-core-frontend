@@ -5099,4 +5099,131 @@ export default {
     },
 
     // ====== END ACTIVE BAG WEIGHT ====== //
+
+    // ====== START SURAT MUATAN BULK ====== //
+    SET_SURAT_MUATAN_BULK_MANIFEST_PREFIX(state, payload) {
+        state.surat_muatan_bulk.manifest_prefix.value = payload
+    },
+    SET_SURAT_MUATAN_BULK_MANIFEST_PREFIX_value(state, payload) {
+        state.surat_muatan_bulk.manifest_prefix.value = payload
+    },
+    SET_SURAT_MUATAN_BULK_MANIFEST_PREFIX_ValueData(state, payload) {
+        state.surat_muatan_bulk.manifest_prefix.valueData = payload
+    },
+    SET_SURAT_MUATAN_BULK_MANIFEST_PREFIX_isDisabled(state, payload) {
+        state.surat_muatan_bulk.manifest_prefix.isDisabled = payload
+    },
+
+    SET_SURAT_MUATAN_BULK_MANIFEST_NUMBER(state, payload) {
+        state.surat_muatan_bulk.manifest_number.value = payload
+    },
+    SET_SURAT_MUATAN_BULK_MANIFEST_NUMBER_isDisabled(state, payload) {
+        state.surat_muatan_bulk.manifest_number.isDisabled = payload
+    },
+    SET_SURAT_MUATAN_BULK_MANIFEST_NUMBER_ValueData(state, payload) {
+        state.surat_muatan_bulk.manifest_number.valueData = payload
+    },
+
+    SET_SURAT_MUATAN_BULK_MAX_WEIGHT(state, payload) {
+        state.surat_muatan_bulk.max_weight.value = payload
+    },
+    SET_SURAT_MUATAN_BULK_MAX_WEIGHT_ValueData(state, payload) {
+        state.surat_muatan_bulk.max_weight.valueData = payload
+    },
+
+    SET_SURAT_MUATAN_BULK_FLIGHT_NUMBER(state, payload) {
+        state.surat_muatan_bulk.flight_number.value = payload
+    },
+    SET_SURAT_MUATAN_BULK_FLIGHT_NUMBER_ValueData(state, payload) {
+        state.surat_muatan_bulk.flight_number.valueData = payload
+    },
+    SET_SURAT_MUATAN_BULK_FLIGHT_NUMBER_visible(state, payload) {
+        state.surat_muatan_bulk.flight_number.visible = payload
+    },
+    SET_SURAT_MUATAN_BULK_FLIGHT_NUMBER_isDisabled(state, payload) {
+        state.surat_muatan_bulk.flight_number.isDisabled = payload
+    },
+
+    SET_SURAT_MUATAN_BULK_NODE_ID_ORIGIN(state, payload) {
+        state.surat_muatan_bulk.node_id_origin.value = payload
+    },
+    SET_SURAT_MUATAN_BULK_NODE_ID_ORIGIN_ValueData(state, payload) {
+        state.surat_muatan_bulk.node_id_origin.valueData = payload
+    },
+    SET_SURAT_MUATAN_BULK_NODE_ID_ORIGIN_ArrData(state, payload) {
+        state.surat_muatan_bulk.node_id_origin.hasOwnProperty('arrData')
+            ? (state.surat_muatan_bulk.node_id_origin.arrData = payload)
+            : (state.surat_muatan_bulk.node_id_origin.arrData = [])
+    },
+    SET_SURAT_MUATAN_BULK_NODE_ID_ORIGIN_isDisabled(state, payload) {
+        state.surat_muatan_bulk.node_id_origin.isDisabled = payload
+    },
+
+    SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION(state, payload) {
+        state.surat_muatan_bulk.node_id_destination.value = payload
+    },
+    SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION_ValueData(state, payload) {
+        state.surat_muatan_bulk.node_id_destination.valueData = payload
+    },
+    SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION_ArrData(state, payload) {
+        state.surat_muatan_bulk.node_id_destination.hasOwnProperty('arrData')
+            ? (state.surat_muatan_bulk.node_id_destination.arrData = payload)
+            : (state.surat_muatan_bulk.node_id_destination.arrData = [])
+    },
+    SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION_isDisabled(state, payload) {
+        state.surat_muatan_bulk.node_id_destination.isDisabled = payload
+    },
+
+    SET_SURAT_MUATAN_BULK_VEHICLE_TYPE_ID(state, payload) {
+        state.surat_muatan_bulk.vehicle_type_id.value = payload
+    },
+    SET_SURAT_MUATAN_BULK_VEHICLE_TYPE_ID_ValueData(state, payload) {
+        state.surat_muatan_bulk.vehicle_type_id.valueData = payload
+    },
+    SET_SURAT_MUATAN_BULK_VEHICLE_TYPE_ID_ArrData(state, payload) {
+        state.surat_muatan_bulk.vehicle_type_id.hasOwnProperty('arrData')
+            ? (state.surat_muatan_bulk.vehicle_type_id.arrData = payload)
+            : (state.surat_muatan_bulk.vehicle_type_id.arrData = [])
+    },
+
+    SET_SURAT_MUATAN_BULK_VEHICLE_ID(state, payload) {
+        state.surat_muatan_bulk.vehicle_id.value = payload
+    },
+    SET_SURAT_MUATAN_BULK_VEHICLE_ID_ValueData(state, payload) {
+        state.surat_muatan_bulk.vehicle_id.valueData = payload
+    },
+    SET_SURAT_MUATAN_BULK_VEHICLE_ID_ArrData(state, payload) {
+        state.surat_muatan_bulk.vehicle_id.hasOwnProperty('arrData')
+            ? (state.surat_muatan_bulk.vehicle_id.arrData = payload)
+            : (state.surat_muatan_bulk.vehicle_id.arrData = [])
+    },
+
+    SET_SURAT_MUATAN_BULK_ETD(state, payload) {
+        state.surat_muatan_bulk.etd.value = payload
+    },
+    SET_SURAT_MUATAN_BULK_ETD_ValueData(state, payload) {
+        state.surat_muatan_bulk.etd.valueData = payload
+    },
+    SET_SURAT_MUATAN_BULK_ETD_isDisabled(state, payload) {
+        state.surat_muatan_bulk.etd.isDisabled = payload
+    },
+
+    SET_SURAT_MUATAN_BULK_ETA(state, payload) {
+        state.surat_muatan_bulk.eta.value = payload
+    },
+    SET_SURAT_MUATAN_BULK_ETA_ValueData(state, payload) {
+        state.surat_muatan_bulk.eta.valueData = payload
+    },
+    SET_SURAT_MUATAN_BULK_ETA_isDisabled(state, payload) {
+        state.surat_muatan_bulk.eta.isDisabled = payload
+    },
+
+    SET_SURAT_MUATAN_BULK_AUTO_DEPART(state, payload) {
+        state.surat_muatan_bulk.auto_depart.value = payload
+    },
+    SET_SURAT_MUATAN_BULK_AUTO_DEPART_ValueData(state, payload) {
+        state.surat_muatan_bulk.auto_depart.valueData = payload
+    },
+
+    // ====== END SURAT MUATAN BULK ====== //
 }

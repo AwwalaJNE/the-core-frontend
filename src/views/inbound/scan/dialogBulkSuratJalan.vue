@@ -32,12 +32,15 @@
                                 <div
                                     v-for="(item, index) in suratJalanTypeArray"
                                     :key="index"
-                                    :class="['surat-jalan-box', { active: sj_type === item.value }]"
+                                    :class="[
+                                        'surat-jalan-box',
+                                        { active: sj_type.value === item.value },
+                                    ]"
                                     :data-testid="`bag-${item.label}`"
                                     @click="selectTipeSuratJalan(item)"
                                 >
                                     <i
-                                        v-if="sj_type === item.value"
+                                        v-if="sj_type.value === item.value"
                                         class="bx bx-check check-icon"
                                     ></i>
                                     <i :class="item.icon" class="bag-icon"></i>
@@ -48,7 +51,7 @@
                         <template #step-1>
                             <div class="text-left">
                                 <h2>Validate Each Item</h2>
-                                <p>Please {{ getScanLabel().toLowerCase() }} here</p>
+                                <p>Please {{ sj_type.enableItemPlaceholder.toLowerCase() }} here</p>
                             </div>
 
                             <vs-row style="gap: 1em">
@@ -148,33 +151,28 @@ export default {
                     label: 'SURAT JALAN',
                     value: 'SJ',
                     icon: 'bx bx-archive',
-                    enableItem: 'Connote',
-                    enableItemPlaceholder: 'Insert Connote Number',
+                    enableItemPlaceholder: 'Scan Masterbag / Bag / Koli',
                 },
                 {
                     label: 'DO',
                     value: 'DO',
                     icon: 'bx bx-archive',
-                    enableItem: 'Bag',
-                    enableItemPlaceholder: 'Insert Bag Number',
+                    enableItemPlaceholder: 'Scan Masterbag / Bag',
                 },
                 {
                     label: 'MTS',
                     value: 'MTS',
                     icon: 'bx bx-archive',
-                    enableItem: 'Connote',
-                    enableItemPlaceholder: 'Insert Connote Number',
+                    enableItemPlaceholder: 'Scan Koli',
                 },
                 {
                     label: 'HBAG',
                     value: 'HBAG',
                     icon: 'bx bx-archive',
-                    enableItem: 'Connote',
-                    enableItemPlaceholder: 'Insert Connote Number',
+                    enableItemPlaceholder: 'Scan Masterbag / Bag',
                 },
             ],
 
-            currentStep: 0,
             steps: ['Choose Type', 'Validate Each Item'],
 
             dataTable: [],
@@ -213,7 +211,7 @@ export default {
     },
     methods: {
         selectTipeSuratJalan(item) {
-            this.sj_type = item.value
+            this.sj_type = item
             this.isDisabled = false
         },
         handleClearForm() {
@@ -224,7 +222,7 @@ export default {
             this.$emit('closeDialog')
         },
         validateTypeSection() {
-            return this.sj_type
+            return this.sj_type.value
         },
         validateBagSection() {
             this.list_item_no = this.dataTable
@@ -237,20 +235,6 @@ export default {
                 this.openNotification('danger', '', 'Failed', 'Wajib memilih tipe surat jalan')
             else if (stepIndex === 1)
                 this.openNotification('danger', '', 'Failed', 'No items have been validated')
-        },
-        getScanLabel() {
-            switch (this.sj_type) {
-                case 'SJ':
-                    return 'Scan Masterbag / Bag / Koli'
-                case 'HBAG':
-                    return 'Scan Masterbag / Bag'
-                case 'MTS':
-                    return 'Scan Koli'
-                case 'DO':
-                    return 'Scan Masterbag / Bag'
-                default:
-                    return 'Scan Item'
-            }
         },
         updateValue(key, val) {
             switch (key) {
@@ -287,7 +271,7 @@ export default {
             let form = {
                 item_no: this.list_item_no,
                 is_penerusan: true,
-                sj_type: this.sj_type,
+                sj_type: this.sj_type.value,
             }
 
             await this.createBulkSuratJalan(form, done)
