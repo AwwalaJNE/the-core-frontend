@@ -12,10 +12,18 @@
             <template>
                 <vs-col xs="12" sm="3" lg="3">
                     <vs-row class="mb-2" style="gap: 1rem">
-                        <vs-checkbox v-model="is_auto_open_bag" @change="handleAutoOpenBag">
+                        <vs-checkbox
+                            v-model="is_auto_open_bag"
+                            @change="handleAutoOpenBag"
+                            :data-testid="'checkbox-auto_open_bag'"
+                        >
                             Auto Open Bag
                         </vs-checkbox>
-                        <vs-checkbox v-model="is_validate_courier" @change="handleValidateCourier">
+                        <vs-checkbox
+                            v-model="is_validate_courier"
+                            @change="handleValidateCourier"
+                            :data-testid="'checkbox-validate_courier'"
+                        >
                             Validate Courier
                         </vs-checkbox>
                     </vs-row>
@@ -31,6 +39,7 @@
                                 icon-after
                                 v-uppercase
                                 :disabled="disabledApprove"
+                                :data-testid="'input-formInputBag'"
                                 @keydown.enter="updateValueBag"
                                 @click-icon="$refs.cameraScanner.open('formInputBag')"
                                 @focus="activeInput = 'formInputBag'"
@@ -56,6 +65,7 @@
                             v-uppercase
                             autofocus
                             :disabled="disabledApprove"
+                            :data-testid="'input-formInputConnote'"
                             @keydown.enter="updateValue"
                             @click-icon="$refs.cameraScanner.open('formInputConnote')"
                             @focus="activeInput = 'formInputConnote'"
@@ -78,6 +88,7 @@
                             icon-after
                             v-uppercase
                             :disabled="disabledApprove"
+                            :data-testid="'input-formRemoveConnote'"
                             @keydown.enter="removeValue"
                             @click-icon="$refs.cameraScanner.open('formRemoveConnote')"
                             @focus="activeInput = 'formRemoveConnote'"
@@ -148,6 +159,7 @@
                                             style="float: right"
                                             :loading="loadingConfirm"
                                             :disabled="disabledConfirm"
+                                            :data-testid="'confirm-status-button'"
                                             @click="confirmAction"
                                         >
                                             <span> Confirm Status </span>
@@ -160,6 +172,7 @@
                                                     style="float: left"
                                                     :disabled="hrsStatus"
                                                     :loading="loadingApprove"
+                                                    :data-testid="'approve-runsheet-button'"
                                                     @click="approveAction(true)"
                                                 >
                                                     <span> Approve Runsheet </span>
@@ -171,6 +184,7 @@
                                                     style="float: left"
                                                     :disabled="hrsStatus"
                                                     :loading="loadingApprove"
+                                                    :data-testid="'unapprove-runsheet-button'"
                                                     @click="approveAction(false)"
                                                 >
                                                     <span> Unapprove Runsheet </span>
@@ -182,6 +196,7 @@
                                                 style="float: left"
                                                 :disabled="disabledApprove"
                                                 :loading="loadingApprove"
+                                                :data-testid="'approve-runsheet-button'"
                                                 @click="approveAction(true)"
                                             >
                                                 <span>

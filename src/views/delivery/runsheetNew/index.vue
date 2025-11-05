@@ -10,7 +10,13 @@
             <vs-col xs="6" sm="3" lg="3">
                 <div style="position: relative; display: flex; justify-content: flex-end">
                     <div style="width: 100px; padding-right: 5px">
-                        <vs-button flat block :active="true" @click="openDialog">
+                        <vs-button
+                            flat
+                            block
+                            :active="true"
+                            @click="openDialog"
+                            :data-testid="'create-new-runsheet-button'"
+                        >
                             <i class="bx bx-plus"></i> New
                         </vs-button>
                     </div>
