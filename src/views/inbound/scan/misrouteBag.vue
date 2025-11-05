@@ -152,6 +152,8 @@ export default {
                     this.Helper.header()
                 )
                 this.dataTable = res.data.data
+                this.$emit('misroute-length-changed', this.dataTable.length)
+
                 this.pagination = {
                     page: res.data.meta.current_page,
                     limit: parseInt(res.data.meta.per_page),

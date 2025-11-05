@@ -197,7 +197,7 @@
                     <div class="box-v1">
                         <div class="header-remark-bar">
                             <h4 align="left">Misrouted Bag</h4>
-                            <template v-if="$refs.misrouteBag?.dataTable.length > 0">
+                            <template v-if="misrouteLength">
                                 <div style="display: flex">
                                     <vs-button
                                         :data-testid="`remark-button`"
@@ -222,7 +222,11 @@
                         </div>
                         <div class="nav-box">
                             <transition name="slide-fade">
-                                <MisrouteBag ref="misrouteBag" @autoFocusInput="autoFocusInput" />
+                                <MisrouteBag
+                                    ref="misrouteBag"
+                                    @autoFocusInput="autoFocusInput"
+                                    @misroute-length-changed="onLengthChanged"
+                                />
                             </transition>
                         </div>
                     </div>
@@ -333,6 +337,7 @@ export default {
 
             dialogSuratJalan: false,
             selectedData: [],
+            misrouteLength: 0,
         }
     },
     methods: {
@@ -714,6 +719,10 @@ export default {
                     this.setActiveInput('formInputInbound', null, () => this.dialogActive)
                 }
             }
+        },
+
+        onLengthChanged(length) {
+            this.misrouteLength = length
         },
     },
     async mounted() {
