@@ -652,6 +652,7 @@ export default {
             submit_Enter: this.submitByEnter || false,
 
             iterateInputWait: null,
+            formNotError: false,
         }
     },
     computed: {
@@ -853,6 +854,8 @@ export default {
                         this.form[this.InputObject[item].key] = this.InputObject[item].value
                     }
                 })
+
+                this.formNotError = true
                 this.$emit('formData', this.form)
 
                 // Wait until the models are updated in the UI
@@ -948,6 +951,9 @@ export default {
                 } catch (error) {}
             })
             this.form = {}
+        },
+        hasErrors() {
+            return this.formNotError
         },
     },
     mounted() {
