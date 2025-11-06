@@ -4781,7 +4781,7 @@ export default {
     SET_SURAT_MUATAN_BULK_ETA_ValueData({ commit }, payload) {
         commit('SET_SURAT_MUATAN_BULK_ETA_ValueData', payload)
     },
-    SET_SURAT_MUATAN_BULK_ET_AisDisabled({ commit }, payload) {
+    SET_SURAT_MUATAN_BULK_ETA_isDisabled({ commit }, payload) {
         commit('SET_SURAT_MUATAN_BULK_ETA_isDisabled', payload)
     },
 

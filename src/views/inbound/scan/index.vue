@@ -680,12 +680,12 @@ export default {
                     this.selectedData = this.$refs.misrouteBag.selectedData
                 }
             } else if (type === 'surat_muatan') {
-                // if (this.$refs.misrouteBag?.selectedData.length < 1) {
-                //     this.openNotification('danger', '', 'Failed', 'Please select at least one bag')
-                // } else {
-                this.dialogSuratMuatan = true
-                this.selectedData = this.$refs.misrouteBag.selectedData
-                // }
+                if (this.$refs.misrouteBag?.selectedData.length < 1) {
+                    this.openNotification('danger', '', 'Failed', 'Please select at least one bag')
+                } else {
+                    this.dialogSuratMuatan = true
+                    this.selectedData = this.$refs.misrouteBag.selectedData
+                }
             }
         },
         closeDialog(type) {
