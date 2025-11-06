@@ -526,8 +526,6 @@ export default {
         },
         handleSelectManifest(val) {
             this.manifest_number = val.manifest_number
-            // this.manifest_method_id = parseInt(val.vehicle_mode_id)
-            // this.vehicle_type_id = val.vehicle_type_id
             this.$store.dispatch(
                 'SET_SURAT_MUATAN_BULK_MANIFEST_PREFIX',
                 val.vehicle_prefix_name + '-'
@@ -579,17 +577,7 @@ export default {
                 )
                 let arr = res.data.data
 
-                this.manifest_method_id = parseInt(arr.vehicle_mode_id)
-                this.vehicle_type_id = arr.vehicle_type_id
-                this.$store.dispatch(
-                    'SET_SURAT_MUATAN_BULK_MANIFEST_PREFIX',
-                    arr.vehicle_prefix_name + '-'
-                )
                 this.$store.dispatch('SET_SURAT_MUATAN_BULK_MANIFEST_NUMBER', arr.manifest_number)
-                this.$store.dispatch(
-                    'SET_SURAT_MUATAN_BULK_MANIFEST_METHOD_ID',
-                    parseInt(arr.vehicle_mode_id)
-                )
                 this.$store.dispatch(
                     'SET_SURAT_MUATAN_BULK_NODE_ID_ORIGIN',
                     arr.node_name_origin + ' (' + arr.node_code_origin + ')'
@@ -672,7 +660,7 @@ export default {
                         origin_branch_code: item?.origin_tlc || '',
                         destination_branch_code: item?.destination_tlc || '',
                         flight_number: item?.flight_number || '',
-                        flight_schedule: this.manifest_method_id === 1 ? item?.etd : '' || '',
+                        flight_schedule: this.sm_type.value === '1' ? item?.etd : '' || '',
                         etd: item?.etd || '',
                         eta: item?.eta || '',
                         is_active: item?.status === 'ACTIVE',
