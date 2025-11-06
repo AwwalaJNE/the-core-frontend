@@ -106,6 +106,8 @@ export default {
                 this.mode == 0
             ) {
                 moda = 'ALL'
+            } else {
+                moda = this.mode
             }
 
             try {

@@ -115,14 +115,18 @@ export default {
         },
     },
     methods: {
-        nextStep() {
+        async nextStep() {
             const validator = this.stepValidators[this.currentStepIndex]
-            if (validator && !validator()) {
-                this.$emit('invalid-step', this.currentStepIndex)
-                return
-            } else {
-                this.$emit('valid-step', this.currentStepIndex)
+
+            if (validator) {
+                const isValid = await validator()
+                if (!isValid) {
+                    this.$emit('invalid-step', this.currentStepIndex)
+                    return
+                }
             }
+
+            this.$emit('valid-step', this.currentStepIndex)
 
             if (this.currentStepIndex < this.steps.length - 1) {
                 const nextIndex = this.currentStepIndex + 1

@@ -4541,6 +4541,7 @@ export default {
             value: '',
             isDisabled: false,
             width: '4',
+            showIcon: true,
         },
         max_weight: {
             label: 'Max Weight',
