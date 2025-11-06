@@ -36,15 +36,17 @@
                         <template v-if="vehicle.length === 0">
                             <vs-row justify="space-between" align="center" style="margin-top: 20px">
                                 <vs-col w="10">
-                                    <selector
-                                        formKey="vehicle_mode"
-                                        name=""
-                                        rules=""
-                                        placeholder="Select Vehicle Mode"
-                                        :valueData="vehicleModeArray"
-                                        :selectedValue="vehicle_mode"
-                                        @updateValue="updateValue"
-                                    />
+                                    <template v-if="!vehicleMode">
+                                        <selector
+                                            formKey="vehicle_mode"
+                                            name=""
+                                            rules=""
+                                            placeholder="Select Vehicle Mode"
+                                            :valueData="vehicleModeArray"
+                                            :selectedValue="vehicle_mode"
+                                            @updateValue="updateValue"
+                                        />
+                                    </template>
                                 </vs-col>
                                 <vs-col w="2">
                                     <vs-button
@@ -143,7 +145,11 @@
             title="Manifest Vehicle"
             :manifest_number="edit_data.manifest_number"
             :manifest_method="
-                is_edit ? parseInt(edit_data.vehicle_mode_id) : parseInt(vehicle_mode)
+                is_edit
+                    ? parseInt(edit_data.vehicle_mode_id)
+                    : vehicleMode
+                    ? parseInt(vehicleMode)
+                    : parseInt(vehicle_mode)
             "
             :active="dialogManageVehicleManifest"
             :closeDialog="closeDialogManageVehicleManifest"
@@ -188,6 +194,7 @@ export default {
         dataItem: Object,
         title: String,
         source: String,
+        vehicleMode: Number,
     },
     data() {
         return {
@@ -469,7 +476,7 @@ export default {
             if (this.is_edit) {
                 this.dialogManageVehicleManifest = true
             } else {
-                if (!this.vehicle_mode) {
+                if (!this.vehicle_mode && !this.vehicleMode) {
                     this.openNotification(
                         'warn',
                         null,

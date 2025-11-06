@@ -86,7 +86,6 @@
                                     :querySearch="querySearch"
                                     @formData="formData"
                                     @inputFocus="inputFocus"
-                                    @onChangeCustom="onChangeCustom"
                                     @handleIconClick="openDialog('search_sm_stock')"
                                 />
                                 <vs-row align="center" style="margin-top: 1em">
@@ -208,6 +207,7 @@
                 source="sm_create"
                 :active="dialogStockActive"
                 :closeDialog="() => closeDialog2('sm_stock')"
+                :vehicleMode="parseInt(sm_type.value)"
                 @handleCreateManifestStock="handleCreateManifestStock"
             />
 
@@ -377,11 +377,14 @@ export default {
     },
     methods: {
         selectTipeSuratMuatan(item) {
+            if (this.sm_type && this.sm_type.value !== item.value) {
+                this.resetForm()
+                this.handleClearForm()
+            }
             this.sm_type = item
             this.isDisabled = false
         },
         handleClearForm() {
-            this.sm_type = ''
             this.$refs?.formSuratMuatanBulkController?.handleClearForm()
             this.form = {}
             this.vehicle = []
@@ -389,6 +392,7 @@ export default {
             this.item_number = ''
         },
         resetForm() {
+            this.$store.dispatch('SET_SURAT_MUATAN_BULK_MANIFEST_NUMBER', '')
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION', '')
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION_ValueData', {})
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_ETD', '')
@@ -404,6 +408,7 @@ export default {
             this.$emit('closeDialog')
         },
         cancel2() {
+            this.sm_type = ''
             this.handleClearForm
             this.cancel()
         },
@@ -412,6 +417,9 @@ export default {
         },
         async validateSuratMuatanForm() {
             const success = await this.$refs.formSuratMuatanBulkController.handleSubmit()
+            if (success && this.vehicle.length === 0) {
+                return false
+            }
             return success
         },
         validateBagSection() {
@@ -423,6 +431,8 @@ export default {
         handleInvalidStep(stepIndex) {
             if (stepIndex === 0)
                 this.openNotification('danger', '', 'Failed', 'Wajib memilih tipe surat muatan')
+            if (stepIndex === 1)
+                this.openNotification('danger', '', 'Failed', 'Harap menambahkan vehicle')
             else if (stepIndex === 2)
                 this.openNotification('danger', '', 'Failed', 'No items have been validated')
         },
@@ -463,8 +473,6 @@ export default {
             }
         },
         async handleSubmit(done) {
-            // TODO: RECHECK WHY FORM NOT UPDATED
-            console.log('CEK', this.form)
             let form = {
                 ...this.form,
                 manifest_method_id: parseInt(this.sm_type.value),
@@ -783,7 +791,6 @@ export default {
                 }
             }
         },
-        onChangeCustom(type, val, info = {}) {},
         formData(form) {
             let userTimezone = this.$ls.get('timezone')
 
@@ -799,6 +806,8 @@ export default {
             form.vehicle_id = active_vehicle?.vehicle_id
             form.vehicle_type_id = active_vehicle?.vehicle_type_id
             form.vehicle_mode_id = active_vehicle?.vehicle_mode_id
+
+            form.pickup_node_id_requestor = this.listenNodeId
 
             if (form.manifest_prefix && form.manifest_number) {
                 form.manifest_number = `${form.manifest_prefix}${form.manifest_number}`
