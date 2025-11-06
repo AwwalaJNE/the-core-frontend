@@ -410,11 +410,9 @@ export default {
         validateTypeSection() {
             return this.sm_type.value
         },
-        validateSuratMuatanForm() {
-            // TODO: RECHECK THIS< HARUS KLIK 2X
-            this.$refs.formSuratMuatanBulkController.handleSubmit()
-
-            return this.$refs.formSuratMuatanBulkController.hasErrors()
+        async validateSuratMuatanForm() {
+            const success = await this.$refs.formSuratMuatanBulkController.handleSubmit()
+            return success
         },
         validateBagSection() {
             this.list_item_no = this.dataTable
@@ -807,8 +805,6 @@ export default {
             }
 
             this.form = form
-
-            console.log('CEKK', this.form, form)
 
             if (this.form.eta > this.form.etd) {
                 this.form.etd = this.Helper.convertTimezone(

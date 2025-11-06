@@ -819,7 +819,17 @@ export default {
             this.$emit('inputFocus', info)
         },
         handleSubmit() {
-            this.$refs.formMaster.formSubmit() // trigger function submit form dari luar component formMaster
+            return new Promise((resolve) => {
+                const unwatch = this.$watch(
+                    () => this.formNotError,
+                    (newVal) => {
+                        unwatch()
+                        resolve(newVal)
+                    }
+                )
+
+                this.$refs.formMaster.formSubmit()
+            })
         },
         onSubmit(refs) {
             refs.form.validate().then((success) => {
@@ -952,9 +962,6 @@ export default {
                 } catch (error) {}
             })
             this.form = {}
-        },
-        hasErrors() {
-            return this.formNotError
         },
     },
     mounted() {
