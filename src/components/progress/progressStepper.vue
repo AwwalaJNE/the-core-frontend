@@ -120,6 +120,8 @@ export default {
             if (validator && !validator()) {
                 this.$emit('invalid-step', this.currentStepIndex)
                 return
+            } else {
+                this.$emit('valid-step', this.currentStepIndex)
             }
 
             if (this.currentStepIndex < this.steps.length - 1) {

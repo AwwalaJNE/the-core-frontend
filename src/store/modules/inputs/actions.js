@@ -4687,4 +4687,110 @@ export default {
     },
 
     // ====== END ACTIVE BAG WEIGHT ====== //
+
+    // ====== START SURAT MUATAN BULK ====== //
+    SET_SURAT_MUATAN_BULK_MANIFEST_PREFIX({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_MANIFEST_PREFIX', payload)
+    },
+    SET_SURAT_MUATAN_BULK_MANIFEST_PREFIX_value({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_MANIFEST_PREFIX_value', payload)
+    },
+    SET_SURAT_MUATAN_BULK_MANIFEST_PREFIX_ValueData({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_MANIFEST_PREFIX_ValueData', payload)
+    },
+    SET_SURAT_MUATAN_BULK_MANIFEST_PREFIX_isDisabled({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_MANIFEST_PREFIX_isDisabled', payload)
+    },
+
+    SET_SURAT_MUATAN_BULK_MANIFEST_NUMBER({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_MANIFEST_NUMBER', payload)
+    },
+    SET_SURAT_MUATAN_BULK_MANIFEST_NUMBER_isDisabled({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_MANIFEST_NUMBER_isDisabled', payload)
+    },
+    SET_SURAT_MUATAN_BULK_MANIFEST_NUMBER_ValueData({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_MANIFEST_NUMBER_ValueData', payload)
+    },
+
+    SET_SURAT_MUATAN_BULK_MAX_WEIGHT({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_MAX_WEIGHT', payload)
+    },
+    SET_SURAT_MUATAN_BULK_MAX_WEIGHT_ValueData({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_MAX_WEIGHT_ValueData', payload)
+    },
+
+    SET_SURAT_MUATAN_BULK_NODE_ID_ORIGIN({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_NODE_ID_ORIGIN', payload)
+    },
+    SET_SURAT_MUATAN_BULK_NODE_ID_ORIGIN_ValueData({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_NODE_ID_ORIGIN_ValueData', payload)
+    },
+    SET_SURAT_MUATAN_BULK_NODE_ID_ORIGIN_ArrData({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_NODE_ID_ORIGIN_ArrData', payload)
+    },
+    SET_SURAT_MUATAN_BULK_NODE_ID_ORIGIN_isDisabled({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_NODE_ID_ORIGIN_isDisabled', payload)
+    },
+
+    SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION', payload)
+    },
+    SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION_ValueData({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION_ValueData', payload)
+    },
+    SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION_ArrData({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION_ArrData', payload)
+    },
+    SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION_isDisabled({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION_isDisabled', payload)
+    },
+
+    SET_SURAT_MUATAN_BULK_VEHICLE_TYPE_ID({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_VEHICLE_TYPE_ID', payload)
+    },
+    SET_SURAT_MUATAN_BULK_VEHICLE_TYPE_ID_ValueData({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_VEHICLE_TYPE_ID_ValueData', payload)
+    },
+    SET_SURAT_MUATAN_BULK_VEHICLE_TYPE_ID_ArrData({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_VEHICLE_TYPE_ID_ArrData', payload)
+    },
+
+    SET_SURAT_MUATAN_BULK_VEHICLE_ID({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_VEHICLE_ID', payload)
+    },
+    SET_SURAT_MUATAN_BULK_VEHICLE_ID_ValueData({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_VEHICLE_ID_ValueData', payload)
+    },
+    SET_SURAT_MUATAN_BULK_VEHICLE_ID_ArrData({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_VEHICLE_ID_ArrData', payload)
+    },
+
+    SET_SURAT_MUATAN_BULK_ETD({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_ETD', payload)
+    },
+    SET_SURAT_MUATAN_BULK_ETD_ValueData({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_ETD_ValueData', payload)
+    },
+    SET_SURAT_MUATAN_BULK_ETD_isDisabled({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_ETD_isDisabled', payload)
+    },
+
+    SET_SURAT_MUATAN_BULK_ETA({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_ETA', payload)
+    },
+    SET_SURAT_MUATAN_BULK_ETA_ValueData({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_ETA_ValueData', payload)
+    },
+    SET_SURAT_MUATAN_BULK_ET_AisDisabled({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_ETA_isDisabled', payload)
+    },
+
+    SET_SURAT_MUATAN_BULK_AUTO_DEPART({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_AUTO_DEPART', payload)
+    },
+    SET_SURAT_MUATAN_BULK_AUTO_DEPART_ValueData({ commit }, payload) {
+        commit('SET_SURAT_MUATAN_BULK_AUTO_DEPART_ValueData', payload)
+    },
+
+    // ====== END SURAT MUATAN BULK ====== //
 }

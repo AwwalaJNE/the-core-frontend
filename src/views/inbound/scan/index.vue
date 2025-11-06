@@ -200,13 +200,13 @@
                             <template v-if="misrouteLength">
                                 <div style="display: flex">
                                     <vs-button
-                                        :data-testid="`remark-button`"
+                                        :data-testid="`surat-jalan-button`"
                                         @click="openDialog('surat_jalan')"
                                     >
                                         <i class="bx bx-plus"></i> Surat Jalan
                                     </vs-button>
                                     <vs-button
-                                        :data-testid="`remark-button`"
+                                        :data-testid="`surat-muaatn-button`"
                                         @click="openDialog('surat_muatan')"
                                     >
                                         <i class="bx bx-plus"></i> Surat Muatan
@@ -217,6 +217,12 @@
                                     :active="dialogSuratJalan"
                                     :dataItem="selectedData"
                                     @closeDialog="() => closeDialog('surat_jalan')"
+                                />
+                                <dialog-bulk-surat-muatan
+                                    title="Create Surat Muatan"
+                                    :active="dialogSuratMuatan"
+                                    :dataItem="selectedData"
+                                    @closeDialog="() => closeDialog('surat_muatan')"
                                 />
                             </template>
                         </div>
@@ -263,6 +269,7 @@ import InboundReceivingLog from '@/views/inbound/scan/inboundReceivingLog'
 import CameraScanner from '@/components/scanner/camera.vue'
 import dialogInsertRemark from '@/views/inbound/scan/dialogInsertRemark.vue'
 import DialogBulkSuratJalan from '@/views/inbound/scan/dialogBulkSuratJalan.vue'
+import DialogBulkSuratMuatan from '@/views/inbound/scan/dialogBulkSuratMuatan.vue'
 
 export default {
     name: 'inbound-scan',
@@ -277,6 +284,7 @@ export default {
         CameraScanner,
         dialogInsertRemark,
         'dialog-bulk-surat-jalan': DialogBulkSuratJalan,
+        'dialog-bulk-surat-muatan': DialogBulkSuratMuatan,
     },
     computed: {
         is_prealert() {
@@ -336,6 +344,7 @@ export default {
             dialogActive: false,
 
             dialogSuratJalan: false,
+            dialogSuratMuatan: false,
             selectedData: [],
             misrouteLength: 0,
         }
@@ -671,6 +680,12 @@ export default {
                     this.selectedData = this.$refs.misrouteBag.selectedData
                 }
             } else if (type === 'surat_muatan') {
+                // if (this.$refs.misrouteBag?.selectedData.length < 1) {
+                //     this.openNotification('danger', '', 'Failed', 'Please select at least one bag')
+                // } else {
+                this.dialogSuratMuatan = true
+                this.selectedData = this.$refs.misrouteBag.selectedData
+                // }
             }
         },
         closeDialog(type) {
@@ -680,6 +695,8 @@ export default {
                 this.dialogSuratJalan = false
                 this.$refs.misrouteBag.refresh()
             } else if (type === 'surat_muatan') {
+                this.dialogSuratMuatan = false
+                this.$refs.misrouteBag.refresh()
             }
 
             this.autoFocusInput(false)
