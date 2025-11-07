@@ -390,6 +390,7 @@ export default {
             this.vehicle = []
             this.vehicle_form = []
             this.item_number = ''
+            this.selected_manifest_vehicle = ''
         },
         resetForm() {
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_MANIFEST_NUMBER', '')
