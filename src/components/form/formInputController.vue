@@ -820,11 +820,15 @@ export default {
         },
         handleSubmit() {
             return new Promise((resolve) => {
+                this.formNotError = false
+
                 const unwatch = this.$watch(
                     () => this.formNotError,
                     (newVal) => {
-                        unwatch()
-                        resolve(newVal)
+                        if (newVal !== null) {
+                            unwatch()
+                            resolve(newVal)
+                        }
                     }
                 )
 

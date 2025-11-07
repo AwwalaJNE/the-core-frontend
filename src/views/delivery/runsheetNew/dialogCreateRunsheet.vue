@@ -1,26 +1,26 @@
 <template>
-    <dialog-master 
+    <dialog-master
         width="md"
-        :actived="listenActive" 
+        :actived="listenActive"
         :loading="listenLoading"
         :closeDialog="cancel"
     >
-
         <template v-slot:header>
-            {{listenTitle}}
+            {{ listenTitle }}
         </template>
 
         <template v-slot:content>
             <div>
-                <selector 
+                <selector
                     ref="courier"
-                    name="Courier" 
+                    name="Courier"
                     formKey="courier"
-                    :rules="''" 
+                    :rules="''"
                     :valueData="courier_arr"
                     :selectedValue="''"
                     :isMultiple="false"
-                    @updateValue="updateValue" 
+                    :data-testid="`select-courier`"
+                    @updateValue="updateValue"
                 />
             </div>
         </template>
@@ -35,6 +35,7 @@
                         flat
                         :active="true"
                         @click="cancel"
+                        :data-testid="`cancel-button`"
                     >
                         Cancel
                     </vs-button>
@@ -46,9 +47,10 @@
                         flat
                         :active="true"
                         type="submit"
+                        :data-testid="`sumit-button`"
                         @click="handleSubmit"
                     >
-                        {{btnBlue || 'Add'}}
+                        {{ btnBlue || 'Add' }}
                     </vs-button>
                 </vs-col>
             </vs-row>
@@ -56,44 +58,44 @@
     </dialog-master>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master"
+import axios from 'axios'
+import master from '@/mixins/master'
 
-import DialogMaster from "@/components/dialog/dialogMaster"
-import FormInputController from "@/components/form/formInputController"
-import Selector from "@/components/input/select"
+import DialogMaster from '@/components/dialog/dialogMaster'
+import FormInputController from '@/components/form/formInputController'
+import Selector from '@/components/input/select'
 
 export default {
-    name:"dialog-create-runsheet",
+    name: 'dialog-create-runsheet',
     mixins: [master],
     components: {
-        "dialog-master": DialogMaster,
-        "form-input-controller": FormInputController,   
-        "selector": Selector
+        'dialog-master': DialogMaster,
+        'form-input-controller': FormInputController,
+        selector: Selector,
     },
     props: {
         active: Boolean,
         btnRed: String,
         btnBlue: String,
-        closeDialog: Function, 
+        closeDialog: Function,
         dataItem: Object,
-        title: String
+        title: String,
     },
     data() {
         return {
             loading: false,
             employee_id: '',
-            courier_arr: []
+            courier_arr: [],
         }
     },
     computed: {
-        listenActive(){
+        listenActive() {
             return this.active
         },
-        listenTitle(){
+        listenTitle() {
             return this.title
         },
-        listenLoading(){
+        listenLoading() {
             return this.loading
         },
     },
@@ -102,76 +104,90 @@ export default {
             if (val == true) {
                 this.getDataCourier()
             }
-        }
+        },
     },
     methods: {
-        handleSubmit(){
+        handleSubmit() {
             if (this.employee_id) {
-                this.$router.push({ 
-                    name: 'delivery-runsheet-new', 
-                    params: { 
-                        employee_id: this.employee_id
-                    } 
-                });
-                this.setRoutePageHistory(this.$route.meta, false);
+                this.$router.push({
+                    name: 'delivery-runsheet-new',
+                    params: {
+                        employee_id: this.employee_id,
+                    },
+                })
+                this.setRoutePageHistory(this.$route.meta, false)
             } else {
-                this.openNotification("warning", null, "Warning", "Courier not choosen yet");
+                this.openNotification('warning', null, 'Warning', 'Courier not choosen yet')
             }
         },
-        updateValue(key, val, info){
-            switch(key) {
-                case "courier":
-                    let obj = this.courier_arr.filter(item => item.value == val)[0]
+        updateValue(key, val, info) {
+            switch (key) {
+                case 'courier':
+                    let obj = this.courier_arr.filter((item) => item.value == val)[0]
 
-                    if(Object.keys(obj).length > 0) {
-                        if(obj.hasOwnProperty('item')) {
+                    if (Object.keys(obj).length > 0) {
+                        if (obj.hasOwnProperty('item')) {
                             this.employee_id = obj.item.employee_id || ''
                         }
                     }
-                    break;
+                    break
             }
         },
         async getDataCourier() {
-            this.loading = true;
+            this.loading = true
 
             await axios
-                .get(this.URL.courier_delivery + `/list?n=${this.listenNodeId}`, this.Helper.header())
-                .then(res => { 
-                    if(res.data.data.length > 0) {
+                .get(
+                    this.URL.courier_delivery + `/list?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
+                .then((res) => {
+                    if (res.data.data.length > 0) {
                         let arr = []
-                        res.data.data.map(item => {
+                        res.data.data.map((item) => {
                             let obj = {}
-                            obj["label"] = item.employee_name + ' ( ' + item.employee_code + ' ) '
-                            obj["value"] = item.employee_id
-                            obj["item"] = item
+                            obj['label'] = item.employee_name + ' ( ' + item.employee_code + ' ) '
+                            obj['value'] = item.employee_id
+                            obj['item'] = item
 
                             arr.push(obj)
                         })
 
-                        if(arr.length == 0) {
-                            arr = [{'label': null, 'value': null}]
+                        if (arr.length == 0) {
+                            arr = [{ label: null, value: null }]
                         }
 
                         this.courier_arr = arr
                     } else {
-                        this.openNotification('warn', null, 'Delivery courier data is empty!', ' Please create a new courier delivery')
+                        this.openNotification(
+                            'warn',
+                            null,
+                            'Delivery courier data is empty!',
+                            ' Please create a new courier delivery'
+                        )
                     }
-                }).catch(err => {
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate delivery courier list', err.response ? err.response.data.message : 'something went wrong')
+                })
+                .catch((err) => {
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Failed to populate delivery courier list',
+                        err.response ? err.response.data.message : 'something went wrong'
+                    )
                 })
 
             this.loading = false
         },
-        handleClearForm(){
-            this.employee = ""
+        handleClearForm() {
+            this.employee = ''
         },
         cancel() {
             this.handleClearForm()
             this.closeDialog()
-        }
+        },
     },
     mounted() {
         this.handleSubmitShortcut(this.handleSubmit)
-    }
+    },
 }
 </script>
