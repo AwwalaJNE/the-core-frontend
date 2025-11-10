@@ -174,16 +174,16 @@ export default {
         getTotal(val) {
             this.totalConnote = val
         },
-        refresh() {
-            this.$refs.undeliveryInformation.refresh() // trigger function refresh form dari luar component list
-            this.$refs.ConnoteRunsheetInformation.refresh() // trigger function refresh form dari luar component list
-            this.getButtonValue()
+        async refresh() {
+            await this.$refs.undeliveryInformation.refresh() // trigger function refresh form dari luar component list
+            await this.$refs.ConnoteRunsheetInformation.refresh() // trigger function refresh form dari luar component list
+            await this.getButtonValue()
         },
-        updateValue() {
+        async updateValue() {
             this.form = {
                 item_number: this.item_no,
             }
-            this.processUndelivery()
+            await this.processUndelivery()
         },
         async processUndelivery() {
             this.loading = true
@@ -194,7 +194,6 @@ export default {
                     this.Helper.header()
                 )
             } catch (err) {
-                this.refresh()
                 this.openNotification(
                     'danger',
                     err?.response?.data?.code ?? '',
@@ -203,7 +202,7 @@ export default {
                 )
             } finally {
                 this.loading = false
-                this.refresh()
+                await this.refresh()
                 this.handleClearForm()
             }
         },
@@ -238,33 +237,26 @@ export default {
         closeDialogConfirm() {
             this.activeDialogFinishReceiving = false
         },
-        confirm(val) {
+        async confirm(val) {
             if (val) {
-                this.activeLoadingFinishReceiving = true
-                this.addData()
+                await this.addData()
             }
         },
         async addData() {
-            let payload = {
-                courier_id: this.listenEmployeeId,
-            }
-
+            let payload = { courier_id: this.listenEmployeeId }
+            this.activeLoadingFinishReceiving = true
             try {
                 const res = await axios.post(
                     `${this.URL.handover_runsheet}?n=${this.listenNodeId}`,
                     JSON.stringify(payload),
                     this.Helper.header()
                 )
-
                 this.openNotification(
                     'success',
                     null,
                     'Success',
                     res?.data?.message ?? 'Success Receiving Runsheet'
                 )
-
-                this.activeDialogFinishReceiving = false
-                this.activeLoadingFinishReceiving = false
                 this.back()
             } catch (err) {
                 this.openNotification(
@@ -273,9 +265,10 @@ export default {
                     'Failed',
                     err?.response?.data?.message ?? 'Something went wrong'
                 )
+                await this.refresh()
+            } finally {
                 this.activeDialogFinishReceiving = false
                 this.activeLoadingFinishReceiving = false
-                this.refresh()
             }
         },
         async getEmployeeData() {
@@ -297,9 +290,9 @@ export default {
             }
         },
     },
-    mounted() {
-        this.refresh()
-        this.getEmployeeData()
+    async mounted() {
+        await this.refresh()
+        await this.getEmployeeData()
         this.setActiveInput('formInputInbound')
     },
 }
