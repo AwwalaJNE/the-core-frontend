@@ -882,11 +882,6 @@ const Master = {
             // Validate dates
             if (isNaN(start.getTime()) || isNaN(end.getTime())) return '-'
 
-            // If already finished, just show the end date
-            if (endDate) {
-                return `Completed at ${this.formatTimezone(end.toLocaleString())}`
-            }
-
             // Calculate difference
             const diff = end - start
             const isOverdue = diff > 0
@@ -899,7 +894,16 @@ const Master = {
             const seconds = Math.floor((absDiff / 1000) % 60)
 
             const timeString = `${days} day(s) ${hours} hour(s) ${minutes} minute(s) ${seconds} second(s)`
-            return isOverdue ? `Overdue by ${timeString}` : `Remaining ${timeString}`
+
+            if (endDate) {
+                const completedText = `Completed at ${this.formatTimezone(end.toLocaleString())}`
+                if (isOverdue) {
+                    return `${completedText}\nOverdue: ${timeString}`
+                }
+                return completedText
+            }
+
+            return isOverdue ? `Overdue: ${timeString}` : `Remaining: ${timeString}`
         },
         sanitizeAlphanumeric(fieldName) {
             this[fieldName] = this[fieldName].replace(/[^a-zA-Z0-9_\/-]/g, '')
