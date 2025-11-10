@@ -209,6 +209,7 @@ export default {
             cardNumber: '',
             paymentBtnDisabled: false,
             ecodi_id: '',
+            loadingDataRole: false,
         }
     },
     methods: {
@@ -256,48 +257,36 @@ export default {
             this.typePayment = obj
         },
         async getListPayment() {
-            this.loadingDataRole = true
-            await axios
-                .get(
+            try {
+                this.loadingDataRole = true
+                const res = await axios.get(
                     this.URL.payment + `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
                     this.Helper.header()
                 )
-                .then((res) => {
-                    if (res.data.data.length > 0) {
-                        let data = res.data.data
-                        let arr = []
-                        data.map((item) => {
-                            let obj = {}
-                            obj['label'] = item.description
-                            obj['payment_type_name'] = item.description
-                            obj['payment_provider_name'] = item.description
-                            obj['key'] = `${item.payment_method_id}_${item.description}`
-                            obj['payment_provider_code_number'] = item.payment_method_id
 
-                            if (item.description.toLowerCase().includes('cash')) {
-                                arr.unshift(obj)
-                            } else {
-                                arr.push(obj)
-                            }
-                        })
-
-                        this.navItemm = arr
-                        this.typePayment = arr[0]
-                    } else {
-                        // this.openNotification('warn', null, 'Payment method not found!', '')
-                    }
-
-                    this.loadingDataRole = false
-                })
-                .catch((err) => {
-                    this.checkAuth(err.response.status)
-                    this.openNotification(
-                        'danger',
-                        err.response ? err.response.data.code : '',
-                        'Failed to get Payment method',
-                        err.response.data.message || 'something went wrong'
-                    )
-                })
+                if (res.data.data.length > 0) {
+                    let arr = res.data.data.map((item) => ({
+                        label: item.description,
+                        payment_type_name: item.description,
+                        payment_provider_name: item.description,
+                        key: `${item.payment_method_id}_${item.description}`,
+                        payment_provider_code_number: item.payment_method_id,
+                    }))
+                    arr.sort((a, b) => (a.label.toLowerCase().includes('cash') ? -1 : 1))
+                    this.navItemm = arr
+                    this.typePayment = arr[0]
+                }
+            } catch (err) {
+                this.checkAuth(err.response?.status)
+                this.openNotification(
+                    'danger',
+                    err.response?.data?.code ?? '',
+                    'Failed to get Payment method',
+                    err.response?.data?.message ?? 'something went wrong'
+                )
+            } finally {
+                this.loadingDataRole = false
+            }
         },
         async CreatePayment() {
             if (this.transaction_id !== null) {

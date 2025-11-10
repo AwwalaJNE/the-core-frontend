@@ -214,7 +214,7 @@ export default {
             return this.$store.getters.getTransaction.transaction.connote.length
         },
         listenNodeLabel() {
-            return this.listenCurrentNode.label
+            return this.listenCurrentNode.label || ''
         },
         listenUserRole() {
             return this.listenUserRole
@@ -512,25 +512,23 @@ export default {
             }, 1000)
         },
         async getCustomerCode() {
-            await axios
-                .get(
+            try {
+                const res = await axios.get(
                     this.URL.node +
                         `?n=${this.listenNodeId}&sort_order=desc&s=${this.listenNodeLabel}`,
                     this.Helper.header()
                 )
-                .then((res) => {
-                    this.customerCode = res.data.data[0]['node_customer_code']
-                    this.loading = false
-                })
-                .catch((err) => {
-                    this.loading = false
-                    this.openNotification(
-                        'danger',
-                        err.response ? err.response.data.code : '',
-                        'Failed to populate node list',
-                        err.response.data.message
-                    )
-                })
+                this.customerCode = res.data.data[0]['node_customer_code']
+                this.loading = false
+            } catch (err) {
+                this.loading = false
+                this.openNotification(
+                    'danger',
+                    err.response ? err.response.data.code : '',
+                    'Failed to populate node list',
+                    err.response?.data?.message || 'something went wrong'
+                )
+            }
         },
 
         addMoreConnote() {
