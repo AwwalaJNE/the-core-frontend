@@ -321,7 +321,6 @@ export default {
     data() {
         return {
             title: 'Edit Assign',
-            tempDate: [],
             item_no: '',
             item_bag: '',
             item_no_remove: '',
@@ -522,7 +521,6 @@ export default {
                         params: {
                             employee_id: this.selectedCourier,
                             delivery_runsheet_number: this.delivery_runsheet_number,
-                            date_filter: this.tempDate,
                         },
                     })
                     this.setRoutePageHistory(this.$route.meta, false)
@@ -577,10 +575,6 @@ export default {
             if (this.$route.name === 'delivery-runsheet-edit') {
                 this.delivery_runsheet_number =
                     this.$route.params.delivery_runsheet_number.toString()
-                this.tempDate =
-                    typeof this.$route.params.date_filter !== 'undefined'
-                        ? this.$route.params.date_filter.toString()
-                        : moment().format('YYYY-MM-DD')
 
                 this.getDataDelivery()
             }
@@ -1001,7 +995,7 @@ export default {
             this.loadingRunsheet = true
             await axios
                 .get(
-                    `${this.URL.employee}/${this.employee_id}/delivery?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}&date_filter=${this.tempDate}`,
+                    `${this.URL.employee}/${this.employee_id}/delivery?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}`,
                     this.Helper.header()
                 )
                 .then((res) => {

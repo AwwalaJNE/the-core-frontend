@@ -1,169 +1,202 @@
 <template>
     <div>
-        <table-master 
-        hideColumnKey="runsheet" 
-        :dataTable="dataTable" 
-        :dataColumn="datacolumn" 
-        :tableLoading="loading"
-        :pageSize="pagination.page_size"
-        :page="pagination.page"
-        :limit="pagination.limit"
-        :hasAction="false"
-        :hasLinkedChild="['Runsheet #']"
-        :hasPagination="true"
-        :expandable="true"
-        :hasChildStatus="true"
-        @actionLimit="actionLimit"
-        @actionPagination="actionPagination"
-        @handleEditLinkedChild="actionDetail"
+        <table-master
+            hideColumnKey="runsheet"
+            :dataTable="dataTable"
+            :dataColumn="datacolumn"
+            :tableLoading="loading"
+            :pageSize="pagination.page_size"
+            :page="pagination.page"
+            :limit="pagination.limit"
+            :hasAction="false"
+            :hasLinkedChild="['Runsheet #']"
+            :hasPagination="true"
+            :expandable="true"
+            :hasChildStatus="true"
+            @actionLimit="actionLimit"
+            @actionPagination="actionPagination"
+            @handleEditLinkedChild="actionDetail"
         />
-
     </div>
 </template>
 <script>
-import moment from "moment";
-import axios from "axios";
-import master from "@/mixins/master";
+import moment from 'moment'
+import axios from 'axios'
+import master from '@/mixins/master'
 
-import TableMaster from "@/components/table/tableMaster";
+import TableMaster from '@/components/table/tableMaster'
 
 export default {
-    name:"delivery-runsheet",
+    name: 'delivery-runsheet',
     mixins: [master],
     props: {
         dateFilter: Array,
         filterDateBy: String,
         filterPriorityBy: String,
-        node:String,
+        node: String,
         query: String,
         searchBy: String,
     },
     components: {
-        "table-master" : TableMaster
+        'table-master': TableMaster,
     },
     data() {
         return {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Courier Code",
-                    key: "employee_code",
-                    width: "xs"
+                    label: 'Courier Code',
+                    key: 'employee_code',
+                    width: 'xs',
                 },
                 {
-                    label: "Name",
-                    key: "employee_name",
-                    width: "sm"
+                    label: 'Name',
+                    key: 'employee_name',
+                    width: 'sm',
                 },
                 {
-                    label: "Total Runsheet",
-                    key: "total_runsheet",
-                    width: "xs"
+                    label: 'Total Runsheet',
+                    key: 'total_runsheet',
+                    width: 'xs',
                 },
                 {
-                    label: "Total HRS",
-                    key: "total_hrs",
-                    width: "xs"
+                    label: 'Total HRS',
+                    key: 'total_hrs',
+                    width: 'xs',
                 },
                 {
-                    label: "Total Connote",
-                    key: "total_koli",
-                    width: "xs"
+                    label: 'Total Connote',
+                    key: 'total_koli',
+                    width: 'xs',
                 },
                 {
-                    label: "Open",
-                    key: "total_open",
-                    width: "xs"
+                    label: 'Open',
+                    key: 'total_open',
+                    width: 'xs',
                 },
                 {
-                    label: "Delivered",
-                    key: "total_delivered",
-                    width: "xs"
+                    label: 'Delivered',
+                    key: 'total_delivered',
+                    width: 'xs',
                 },
                 {
-                    label: "Undelivered",
-                    key: "total_undelivered",
-                    width: "xs"
+                    label: 'Undelivered',
+                    key: 'total_undelivered',
+                    width: 'xs',
                 },
                 {
-                  label: "Undelivered Receiving",
-                  key: "total_undelivery_received",
-                  width: "xs"
-                }
+                    label: 'Undelivered Receiving',
+                    key: 'total_undelivery_received',
+                    width: 'xs',
+                },
             ],
             loading: false,
             dataItem: {},
-            tempSearch: "",
+            tempSearch: '',
             tempDate: [],
             tempPriority: this.filterPriorityBy,
-            date: "",
+            date: '',
             dialogTariff: false,
             pagination: {
-                limit:20,
+                limit: 20,
                 page_size: 1,
-                page: 1
-            }
+                page: 1,
+            },
         }
     },
     watch: {
-        query: function(val, old) {
-            if(val !== undefined) {
+        query: function (val, old) {
+            if (val !== undefined) {
                 this.tempSearch = val
-                if(this.tempSearch !== old) {
+                if (this.tempSearch !== old) {
                     this.pagination.page = 1
-                    this.getTableData(this.pagination.limit, 1, val, this.startDate, this.endDate, this.node_filter, this.tempPriority)
+                    this.getTableData(
+                        this.pagination.limit,
+                        1,
+                        val,
+                        this.startDate,
+                        this.endDate,
+                        this.node_filter,
+                        this.tempPriority
+                    )
                 }
             }
         },
-        dateFilter: function(val, old) {
-            if(val !== undefined) {
+        dateFilter: function (val, old) {
+            if (val !== undefined) {
                 this.tempDate = val
-                if(this.tempDate !== old ) {
+                if (this.tempDate !== old) {
                     this.startDate = this.tempDate !== null ? this.tempDate[0] : ''
                     this.endDate = this.tempDate !== null ? this.tempDate[1] : ''
                 }
-                this.getTableData(this.pagination.limit, 1, this.tempSearch, this.startDate, this.endDate, this.node_filter, this.tempPriority)
+                this.getTableData(
+                    this.pagination.limit,
+                    1,
+                    this.tempSearch,
+                    this.startDate,
+                    this.endDate,
+                    this.node_filter,
+                    this.tempPriority
+                )
             }
         },
-        node: function(val, old) {
-            if(val !== undefined) {
+        node: function (val, old) {
+            if (val !== undefined) {
                 this.node_filter = val
-                if(this.node_filter !== old) {
-                    this.getTableData(this.pagination.limit, 1, this.tempSearch, this.startDate, this.endDate, val, this.tempPriority)
+                if (this.node_filter !== old) {
+                    this.getTableData(
+                        this.pagination.limit,
+                        1,
+                        this.tempSearch,
+                        this.startDate,
+                        this.endDate,
+                        val,
+                        this.tempPriority
+                    )
                 }
             }
         },
-        filterPriorityBy: function(val, old) {
-            if(val !== undefined) {
+        filterPriorityBy: function (val, old) {
+            if (val !== undefined) {
                 this.tempPriority = val
-                if(this.tempPriority !== old) {
-                    this.getTableData(this.pagination.limit, 1, this.tempSearch, this.startDate, this.endDate, this.node_filter, val)
+                if (this.tempPriority !== old) {
+                    this.getTableData(
+                        this.pagination.limit,
+                        1,
+                        this.tempSearch,
+                        this.startDate,
+                        this.endDate,
+                        this.node_filter,
+                        val
+                    )
                 }
             }
         },
     },
     methods: {
-        async getTableData(limit,page,q, from, to, node, tempPriority) {
+        async getTableData(limit, page, q, from, to, node, tempPriority) {
             this.loading = true
-            let query = "";
-            let startDate = "";
-            let endDate = "";
-            let priority = "";
-            if(q !== undefined) {
+            let query = ''
+            let startDate = ''
+            let endDate = ''
+            let priority = ''
+            if (q !== undefined) {
                 query = q
             }
-            if(from !== undefined && to !== undefined) {
+            if (from !== undefined && to !== undefined) {
                 startDate = this.formatToWIB(from)
                 endDate = this.formatToWIB(to)
             }
-            if(tempPriority !== undefined) {
+            if (tempPriority !== undefined) {
                 priority = tempPriority
             }
             await axios
-                .get(this.URL.courier_delivery +
-                `?n=${this.listenNodeId}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&page=${page}&limit=${limit}&priority=${priority}`,
-                this.Helper.header())
-                .then(res => {
+                .get(
+                    this.URL.courier_delivery +
+                        `?n=${this.listenNodeId}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&page=${page}&limit=${limit}&priority=${priority}`,
+                    this.Helper.header()
+                )
+                .then((res) => {
                     let arr = res.data.data
                     arr.map((item) => {
                         let children = {}
@@ -178,30 +211,30 @@ export default {
                         let total_undelivered = []
                         let total_undelivery_received = []
                         item['children_width'] = {
-                            'Priority': 'auto',
+                            Priority: 'auto',
                             'Runsheet #': 'md',
                             'DRI Number': 'sm',
                             'HRS Number': 'sm',
                             'Total Koli': 'auto',
-                            'Open': 'xxxs',
-                            'Status': 'xxxs',
-                            'Delivered': 'xxxs',
-                            'Undelivered': 'xxxs',
+                            Open: 'xxxs',
+                            Status: 'xxxs',
+                            Delivered: 'xxxs',
+                            Undelivered: 'xxxs',
                             'Undelivered Received': 'xs',
-                            'HRS': 'xxxxs'
+                            HRS: 'xxxxs',
                         }
                         item['children_hide_label'] = ['Priority']
                         item['children_type'] = {
-                            'Priority': 'icon-warning'
+                            Priority: 'icon-warning',
                         }
                         item['children_icon_tooltip'] = {
-                            'Priority': 'Contains Undelivered Koli'
+                            Priority: 'Contains Undelivered Koli',
                         }
                         item.delivery.map((el) => {
                             has_undelivered_connote.push(el.has_undelivered_connote)
                             delivery_runsheet_number.push(el.delivery_runsheet_number)
-                            dri.push(el.dri ?? "-")
-                            hrs.push(el.hrs ?? "-")
+                            dri.push(el.dri ?? '-')
+                            hrs.push(el.hrs ?? '-')
                             is_hrs.push(el.is_hrs ? true : false)
                             total_koli.push(el.total_koli)
                             total_open.push(el.total_open)
@@ -226,12 +259,18 @@ export default {
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page
                     this.loading = false
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loading = false
-                    this.openNotification('danger', err?.response?.data?.code ?? '', err?.response?.data?.message ?? 'Failed to populate Delivery Runsheet list', err?.response?.data?.message ?? 'something went wrong');
+                    this.openNotification(
+                        'danger',
+                        err?.response?.data?.code ?? '',
+                        err?.response?.data?.message ?? 'Failed to populate Delivery Runsheet list',
+                        err?.response?.data?.message ?? 'something went wrong'
+                    )
                 })
         },
-        actionLimit(val){
+        actionLimit(val) {
             this.pagination.limit = val
             this.pagination.page = 1
             this.refresh()
@@ -240,26 +279,29 @@ export default {
             this.pagination.page = val
             this.refresh()
         },
-        refresh(){
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate, this.node_filter, this.tempPriority)
+        refresh() {
+            this.getTableData(
+                this.pagination.limit,
+                this.pagination.page,
+                this.tempSearch,
+                this.startDate,
+                this.endDate,
+                this.node_filter,
+                this.tempPriority
+            )
         },
-        actionDetail(row, item){
-            console.log("CEK", row, item)
-            const rowMap = new Map(row?.delivery?.map(i => [i?.delivery_runsheet_number, i]));
-            const createdAt = rowMap.get(item)?.created_at;
-
+        actionDetail(row, item) {
             let params = {
                 employee_id: row.employee_id,
                 delivery_runsheet_number: item,
-                date_filter: moment(decodeURIComponent(createdAt)).format("YYYY-MM-DD")
             }
             let routeName = 'delivery-runsheet-edit'
             this.$router.push({ name: routeName, params: params })
-            this.setRoutePageHistory(this.$route.meta, false);
+            this.setRoutePageHistory(this.$route.meta, false)
         },
     },
     mounted() {
         this.refresh()
-    }
+    },
 }
 </script>
