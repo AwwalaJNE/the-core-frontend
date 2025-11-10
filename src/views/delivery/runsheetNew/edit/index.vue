@@ -372,9 +372,6 @@ export default {
             is_approve: '0',
             is_auto_open_bag: true,
             is_validate_courier: false,
-
-            stopTimer: null,
-            sla_connote_formatted: '',
         }
     },
     computed: {
@@ -1077,10 +1074,6 @@ export default {
                 item.employee_code = data.employee_code
                 item.warning_koli_record_id = item?.warning_koli_record_id
                 item.created_at = this.formatTimezone(item?.created_at)
-
-                item.sla_connote_formatted = this.formatSlaTime(item.sla_date, item.end_date)
-                // item.sla_connote_formatted = this.formatSlaTime(item.sla_date, item.end_date)
-                // item.sla_connote_formatted = this.formatSlaTime('2025-11-10 14:16:00', null)
 
                 if (item?.days_elapsed != null) {
                     item.days_elapsed = this.formatElapsedDay(item.days_elapsed)

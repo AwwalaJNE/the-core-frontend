@@ -77,11 +77,6 @@ export default {
             dataTable: this.dataDelivery || [],
             datacolumn: [
                 {
-                    label: 'SLA Connote',
-                    key: 'sla_connote_formatted',
-                    width: 'auto',
-                },
-                {
                     label: 'Id',
                     key: 'inbound_id',
                     type: 'text',
@@ -183,11 +178,11 @@ export default {
                         'Durasi dari runsheet hingga pengiriman berhasil atau waktu saat ini',
                     width: 'auto',
                 },
-                // {
-                //     label: 'SLA Connote',
-                //     key: 'sla_connote_formatted',
-                //     width: 'auto',
-                // },
+                {
+                    label: 'SLA Connote',
+                    key: 'sla_connote_formatted',
+                    width: 'auto',
+                },
                 {
                     label: 'Delivery Area',
                     key: 'geolocation_subdistrict_kode_routing',

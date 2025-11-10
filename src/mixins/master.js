@@ -884,7 +884,7 @@ const Master = {
 
             // If already finished, just show the end date
             if (endDate) {
-                return `Completed at ${end.toLocaleString()}`
+                return `Completed at ${this.formatTimezone(end.toLocaleString())}`
             }
 
             // Calculate difference
