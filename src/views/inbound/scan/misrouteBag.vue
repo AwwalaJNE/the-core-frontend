@@ -106,27 +106,27 @@ export default {
                 },
                 {
                     label: 'REGULAR',
-                    value: 'normal',
+                    value: 'REGULAR',
                 },
                 {
                     label: 'MASTERBAG',
-                    value: 'masterbag',
+                    value: 'MASTERBAG',
                 },
-                // {
-                //     label: 'PRA RUNSHEET',
-                //     value: 'pra runsheet',
-                // },
+                {
+                    label: 'PRA RUNSHEET',
+                    value: 'PRA',
+                },
                 {
                     label: 'HVO',
-                    value: 'hvo',
+                    value: 'HVO',
                 },
                 {
                     label: 'HACB',
-                    value: 'hacb',
+                    value: 'HACB',
                 },
                 {
                     label: 'OM',
-                    value: 'om',
+                    value: 'OM',
                 },
             ],
 
