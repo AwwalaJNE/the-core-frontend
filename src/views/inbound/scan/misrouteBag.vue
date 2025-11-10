@@ -148,7 +148,11 @@ export default {
             this.loading = true
             try {
                 const res = await axios.get(
-                    `${this.URL.revamp_bag}/bag-missroute?n=${this.listenNodeId}&page=${page}&limit=${limit}&destination_node_code=${destination_node_code}&type=${type}`,
+                    `${this.URL.revamp_bag}/bag-missroute?n=${
+                        this.listenNodeId
+                    }&page=${page}&limit=${limit}&destination_node_code=${
+                        destination_node_code || ''
+                    }&type=${type}`,
                     this.Helper.header()
                 )
                 this.dataTable = res.data.data
