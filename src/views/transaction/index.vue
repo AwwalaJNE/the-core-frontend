@@ -244,9 +244,6 @@ export default {
         }
     },
     methods: {
-        async initialize() {
-            await this.getCustomerCode()
-        },
         openPaymentDialog() {
             this.dialogPayment = true
         },
@@ -350,159 +347,140 @@ export default {
         },
 
         async processBookingCode() {
-            await axios
-                .get(
+            try {
+                const res = await axios.get(
                     this.URL.booking_connote + `/${this.bookingCode}?n=${this.listenNodeId}`,
                     this.Helper.header()
                 )
-                .then((res) => {
-                    // console.log('res processBookingCode', res.data.data)
-                    if (res.data.data) {
-                        let data = res.data.data
-                        if (data.transaction_id) {
-                            this.hasCodeBooking = true
 
-                            this.$store.dispatch(`FILL_CONNOTE_NUMBER`, data.connote_number || '')
-
-                            // Origin
-                            this.$store.dispatch(
-                                `SET_ORIGIN_ORIGIN_NAME`,
-                                data.connote_shipper_name || ''
-                            )
-                            this.$store.dispatch(
-                                `SET_ORIGIN_ORIGIN_PHONE`,
-                                data.connote_shipper_phone_number || ''
-                            )
-                            this.$store.dispatch(
-                                `SET_ORIGIN_ORIGIN_ADDRESS`,
-                                data.connote_shipper_street_address || ''
-                            )
-                            this.$store.dispatch(
-                                `SET_ORIGIN_ORIGIN_SUBDISTRICT_ID`,
-                                data.connote_shipper_geolocation_subdistrict_id || ''
-                            )
-                            this.$store.dispatch(
-                                `SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS`,
-                                data.connote_shipper_administrative_address || ''
-                            )
-                            this.$store.dispatch(
-                                `SET_ORIGIN_ORIGIN_ZIP_CODE`,
-                                data.connote_shipper_zip_code || ''
-                            )
-                            this.$store.dispatch(`SET_PACKAGE_PACKAGE_COD_Visible`, true)
-
-                            // destination
-                            let destinationObj = {}
-                            destinationObj['customer_address_type'] =
-                                data.connote_receiver_address_type || ''
-                            destinationObj['geolocation_subdistrict_zip_code'] =
-                                data.connote_receiver_zip_code || ''
-                            destinationObj['geolocation_subdistrict_tarif_code'] =
-                                data.connote_receiver_tariff_code || ''
-                            destinationObj['customer_name'] = data.connote_receiver_name || ''
-                            destinationObj['customer_phone'] =
-                                data.connote_receiver_phone_number || ''
-
-                            destinationObj['customer_subdistrict_id'] =
-                                data.connote_receiver_geolocation_subdistrict_id || ''
-                            destinationObj['geolocation_location_name'] =
-                                data.connote_receiver_administrative_address || ''
-                            destinationObj['connote_service_code'] = data.connote_service_code || ''
-                            this.$refs.destinationComponent.updateValue(
-                                'detination',
-                                destinationObj,
-                                true
-                            )
-                            this.$store.dispatch(
-                                `SET_DESTINATION_DESTINATION_ADDRESS`,
-                                data.connote_receiver_street_address || ''
-                            )
-                            this.$refs.originComponent.$el.querySelector('input').focus()
-                        } else {
-                            this.hasCodeBooking = true
-
-                            this.$store.dispatch(
-                                `FILL_CONNOTE_NUMBER`,
-                                data.booking_connote_number || ''
-                            )
-
-                            // Origin
-                            this.$store.dispatch(
-                                `SET_ORIGIN_ORIGIN_NAME`,
-                                data.booking_connote_shipper_name || ''
-                            )
-                            this.$store.dispatch(
-                                `SET_ORIGIN_ORIGIN_PHONE`,
-                                data.booking_connote_shipper_phone_number || ''
-                            )
-                            this.$store.dispatch(
-                                `SET_ORIGIN_ORIGIN_ADDRESS`,
-                                data.booking_connote_shipper_street_address || ''
-                            )
-                            this.$store.dispatch(
-                                `SET_ORIGIN_ORIGIN_SUBDISTRICT_ID`,
-                                data.booking_connote_shipper_geolocation_subdistrict_id || ''
-                            )
-                            this.$store.dispatch(
-                                `SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS`,
-                                data.booking_connote_shipper_administrative_address || ''
-                            )
-                            this.$store.dispatch(
-                                `SET_ORIGIN_ORIGIN_ZIP_CODE`,
-                                data.booking_connote_shipper_zip_code || ''
-                            )
-                            this.$store.dispatch(`SET_PACKAGE_PACKAGE_COD_Visible`, true)
-
-                            // destination
-                            let destinationObj = {}
-                            destinationObj['customer_address_type'] =
-                                data.booking_connote_receiver_address_type || ''
-                            destinationObj['geolocation_subdistrict_zip_code'] =
-                                data.booking_connote_receiver_zip_code || ''
-                            destinationObj['geolocation_subdistrict_tarif_code'] =
-                                data.booking_connote_receiver_tariff_code || ''
-                            destinationObj['customer_name'] =
-                                data.booking_connote_receiver_name || ''
-                            destinationObj['customer_phone'] =
-                                data.booking_connote_receiver_phone_number || ''
-
-                            destinationObj['customer_subdistrict_id'] =
-                                data.booking_connote_receiver_geolocation_subdistrict_id || ''
-                            destinationObj['geolocation_location_name'] =
-                                data.booking_connote_receiver_administrative_address || ''
-                            destinationObj['booking_connote_service_code'] =
-                                data.booking_connote_service_code || ''
-                            this.$refs.destinationComponent.updateValue(
-                                'detination',
-                                destinationObj,
-                                true
-                            )
-                            this.$store.dispatch(
-                                `SET_DESTINATION_DESTINATION_ADDRESS`,
-                                data.booking_connote_receiver_street_address || ''
-                            )
-                            this.$refs.originComponent.$el.querySelector('input').focus()
-                        }
-                    } else {
-                        this.openNotification(
-                            'danger',
-                            err.response ? err.response.data.code : '',
-                            'Booking code not found',
-                            err.response ? err.response.data.message : 'something went wrong'
-                        )
-                    }
-                })
-                .catch((err) => {
+                const data = res.data.data
+                if (!data) {
                     this.openNotification(
                         'danger',
-                        err.response ? err.response.data.code : '',
+                        '',
                         'Booking code not found',
-                        err.response ? err.response.data.message : 'something went wrong'
+                        'something went wrong'
                     )
-                    // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
-                })
-        },
+                    return
+                }
 
+                if (data.transaction_id) {
+                    this.hasCodeBooking = true
+
+                    this.$store.dispatch(`FILL_CONNOTE_NUMBER`, data.connote_number || '')
+
+                    // Origin
+                    this.$store.dispatch(`SET_ORIGIN_ORIGIN_NAME`, data.connote_shipper_name || '')
+                    this.$store.dispatch(
+                        `SET_ORIGIN_ORIGIN_PHONE`,
+                        data.connote_shipper_phone_number || ''
+                    )
+                    this.$store.dispatch(
+                        `SET_ORIGIN_ORIGIN_ADDRESS`,
+                        data.connote_shipper_street_address || ''
+                    )
+                    this.$store.dispatch(
+                        `SET_ORIGIN_ORIGIN_SUBDISTRICT_ID`,
+                        data.connote_shipper_geolocation_subdistrict_id || ''
+                    )
+                    this.$store.dispatch(
+                        `SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS`,
+                        data.connote_shipper_administrative_address || ''
+                    )
+                    this.$store.dispatch(
+                        `SET_ORIGIN_ORIGIN_ZIP_CODE`,
+                        data.connote_shipper_zip_code || ''
+                    )
+                    this.$store.dispatch(`SET_PACKAGE_PACKAGE_COD_Visible`, true)
+
+                    // destination
+                    let destinationObj = {}
+                    destinationObj['customer_address_type'] =
+                        data.connote_receiver_address_type || ''
+                    destinationObj['geolocation_subdistrict_zip_code'] =
+                        data.connote_receiver_zip_code || ''
+                    destinationObj['geolocation_subdistrict_tarif_code'] =
+                        data.connote_receiver_tariff_code || ''
+                    destinationObj['customer_name'] = data.connote_receiver_name || ''
+                    destinationObj['customer_phone'] = data.connote_receiver_phone_number || ''
+
+                    destinationObj['customer_subdistrict_id'] =
+                        data.connote_receiver_geolocation_subdistrict_id || ''
+                    destinationObj['geolocation_location_name'] =
+                        data.connote_receiver_administrative_address || ''
+                    destinationObj['connote_service_code'] = data.connote_service_code || ''
+                    this.$refs.destinationComponent.updateValue('detination', destinationObj, true)
+                    this.$store.dispatch(
+                        `SET_DESTINATION_DESTINATION_ADDRESS`,
+                        data.connote_receiver_street_address || ''
+                    )
+                    this.$refs.originComponent.$el.querySelector('input').focus()
+                } else {
+                    this.hasCodeBooking = true
+
+                    this.$store.dispatch(`FILL_CONNOTE_NUMBER`, data.booking_connote_number || '')
+
+                    // Origin
+                    this.$store.dispatch(
+                        `SET_ORIGIN_ORIGIN_NAME`,
+                        data.booking_connote_shipper_name || ''
+                    )
+                    this.$store.dispatch(
+                        `SET_ORIGIN_ORIGIN_PHONE`,
+                        data.booking_connote_shipper_phone_number || ''
+                    )
+                    this.$store.dispatch(
+                        `SET_ORIGIN_ORIGIN_ADDRESS`,
+                        data.booking_connote_shipper_street_address || ''
+                    )
+                    this.$store.dispatch(
+                        `SET_ORIGIN_ORIGIN_SUBDISTRICT_ID`,
+                        data.booking_connote_shipper_geolocation_subdistrict_id || ''
+                    )
+                    this.$store.dispatch(
+                        `SET_ORIGIN_ORIGIN_ONCHANGE_ADDRESS`,
+                        data.booking_connote_shipper_administrative_address || ''
+                    )
+                    this.$store.dispatch(
+                        `SET_ORIGIN_ORIGIN_ZIP_CODE`,
+                        data.booking_connote_shipper_zip_code || ''
+                    )
+                    this.$store.dispatch(`SET_PACKAGE_PACKAGE_COD_Visible`, true)
+
+                    // destination
+                    let destinationObj = {}
+                    destinationObj['customer_address_type'] =
+                        data.booking_connote_receiver_address_type || ''
+                    destinationObj['geolocation_subdistrict_zip_code'] =
+                        data.booking_connote_receiver_zip_code || ''
+                    destinationObj['geolocation_subdistrict_tarif_code'] =
+                        data.booking_connote_receiver_tariff_code || ''
+                    destinationObj['customer_name'] = data.booking_connote_receiver_name || ''
+                    destinationObj['customer_phone'] =
+                        data.booking_connote_receiver_phone_number || ''
+
+                    destinationObj['customer_subdistrict_id'] =
+                        data.booking_connote_receiver_geolocation_subdistrict_id || ''
+                    destinationObj['geolocation_location_name'] =
+                        data.booking_connote_receiver_administrative_address || ''
+                    destinationObj['booking_connote_service_code'] =
+                        data.booking_connote_service_code || ''
+                    this.$refs.destinationComponent.updateValue('detination', destinationObj, true)
+                    this.$store.dispatch(
+                        `SET_DESTINATION_DESTINATION_ADDRESS`,
+                        data.booking_connote_receiver_street_address || ''
+                    )
+                    this.$refs.originComponent.$el.querySelector('input').focus()
+                }
+            } catch (err) {
+                this.openNotification(
+                    'danger',
+                    err.response?.data?.code || '',
+                    'Booking code not found',
+                    err.response?.data?.message || 'something went wrong'
+                )
+            }
+        },
         handleBlurCustomerCode() {
             this.$store.dispatch('SET_CUSTOMER_CODE_TARIFF', this.customerCode)
         },
@@ -577,65 +555,43 @@ export default {
         },
 
         async createConnote2() {
-            // this.rerender = true
-            let has_bpik = false
-            if (this.prosesDataTransaction['connote'][0].hasOwnProperty('connote_bpik')) {
-                if (this.prosesDataTransaction['connote'][0]['connote_bpik'].length > 0) {
-                    has_bpik = true
-                }
-            }
-
+            let has_bpik = this.prosesDataTransaction?.connote?.[0]?.connote_bpik?.length > 0
             this.openLoading()
-            await axios
 
-                .post(
+            try {
+                const res = await axios.post(
                     this.URL.connote + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.prosesDataTransaction),
                     this.Helper.header()
                 )
-                .then((res) => {
-                    if (res.status == 200) {
-                        this.prosesDataTransaction = {}
-                        this.tempConnote = res.data.data
-                        this.handleDataTransaction()
-                        this.wrapKoliNumber()
 
-                        if (this.typeAction == 'addconnote') {
-                            // this.refreshTransactionFields()
-                            // this.$refs.originComponent.setFocus()
-                        } else {
-                            if (has_bpik == true) {
-                                let self = this
-                                setTimeout(function () {
-                                    self.printBPIK(res.data.data['connote_number'])
-                                }, 1000)
-                            }
-                            this.inputDisabled = true
-                            this.$nextTick(() => {
-                                this.openPaymentDialog()
-                            })
-                        }
-                        // this.rerender = false
+                if (res.status === 200) {
+                    this.prosesDataTransaction = {}
+                    this.tempConnote = res.data.data
+                    this.handleDataTransaction()
+                    this.wrapKoliNumber()
+
+                    if (this.typeAction === 'addconnote') {
+                        // this.refreshTransactionFields()
+                        // this.$refs.originComponent.setFocus()
                     } else {
-                        this.openNotification(
-                            'danger',
-                            err.response ? err.response.data.code : '',
-                            'Transaction failed',
-                            err.response ? err.response.data.message : 'something went wrong'
-                        )
+                        if (has_bpik) {
+                            setTimeout(() => this.printBPIK(res.data.data['connote_number']), 1000)
+                        }
+                        this.inputDisabled = true
+                        this.$nextTick(() => this.openPaymentDialog())
                     }
-                    this.closeLoading()
-                })
-                .catch((err) => {
-                    // this.rerender = false
-                    this.openNotification(
-                        'danger',
-                        err.response ? err.response.data.code : '',
-                        'Transaction failed',
-                        err.response ? err.response.data.message : 'something went wrong'
-                    )
-                    this.closeLoading()
-                })
+                }
+            } catch (err) {
+                this.openNotification(
+                    'danger',
+                    err.response?.data?.code || '',
+                    'Transaction failed',
+                    err.response?.data?.message || 'something went wrong'
+                )
+            } finally {
+                this.closeLoading()
+            }
         },
 
         async printBPIK(connote_id) {
@@ -956,7 +912,7 @@ export default {
         // mixin->transaction
         this.getDefaultState()
 
-        await this.initialize()
+        await this.getCustomerCode()
 
         this.$nextTick(() => {
             let inputCodeBooking = this.$refs.inputCodeBooking

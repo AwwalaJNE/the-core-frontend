@@ -162,9 +162,10 @@ export default {
         },
     },
     watch: {
-        active: function (val) {
+        async active(val) {
             if (val != undefined) {
                 if (val == true) {
+                    await this.getListPayment()
                     this.initialize()
                 }
             }
@@ -369,8 +370,7 @@ export default {
             this.discount = 0
         },
     },
-    async mounted() {
-        await this.getListPayment()
+    mounted() {
         this.handleSubmitShortcut(this.CreatePayment)
     },
 }
