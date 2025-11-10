@@ -45,23 +45,23 @@
             <template v-slot:content>
                 <template v-if="Object.keys(editData).length === 0">
                     <vs-col xs="12" sm="6" lg="6">
-                        <form @submit.prevent="createSuratJalan">
-                            <input-general
-                                icon-after
-                                :name="getScanLabel"
-                                rules=""
-                                formKey="scanBag"
-                                ref="scanBag"
-                                :valueData="item_number"
-                                :typeInput="`text`"
-                                @click-icon="handleIconClick"
-                                @updateValue="updateValue"
-                            >
-                                <template #icon>
-                                    <i class="bx bx-barcode-reader"></i>
-                                </template>
-                            </input-general>
-                        </form>
+                        <input-general
+                            :name="getScanLabel"
+                            rules=""
+                            formKey="scanBag"
+                            ref="scanBag"
+                            :valueData="item_number"
+                            :typeInput="`text`"
+                            :enter_to_update="true"
+                            :hasBarcode="true"
+                            @click-icon="handleIconClick"
+                            @updateValue="updateValue"
+                            @enterUpdate="createSuratJalan"
+                        >
+                            <template #icon>
+                                <i class="bx bx-barcode-reader"></i>
+                            </template>
+                        </input-general>
                     </vs-col>
                 </template>
                 <template v-else>
