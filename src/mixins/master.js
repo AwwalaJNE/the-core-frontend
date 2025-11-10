@@ -892,13 +892,13 @@ const Master = {
             const isOverdue = diff > 0
             const absDiff = Math.abs(diff)
 
-            // Break into hours/minutes/seconds
-            const hours = Math.floor(absDiff / (1000 * 60 * 60))
-            const minutes = Math.floor((absDiff % (1000 * 60 * 60)) / (1000 * 60))
-            const seconds = Math.floor((absDiff % (1000 * 60)) / 1000)
+            // Break down into days, hours, minutes, seconds
+            const days = Math.floor(absDiff / (1000 * 60 * 60 * 24))
+            const hours = Math.floor((absDiff / (1000 * 60 * 60)) % 24)
+            const minutes = Math.floor((absDiff / (1000 * 60)) % 60)
+            const seconds = Math.floor((absDiff / 1000) % 60)
 
-            // Format text
-            const timeString = `${hours} hour(s) ${minutes} minute(s) ${seconds} second(s)`
+            const timeString = `${days} day(s) ${hours} hour(s) ${minutes} minute(s) ${seconds} second(s)`
             return isOverdue ? `Overdue by ${timeString}` : `Remaining ${timeString}`
         },
         sanitizeAlphanumeric(fieldName) {
