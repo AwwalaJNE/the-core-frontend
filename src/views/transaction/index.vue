@@ -69,7 +69,7 @@
                 </vs-col>
             </vs-row>
             <vs-row justify="space-between">
-                <vs-col xs="12" sm="9" lg="8">
+                <vs-col xs="12" sm="8" lg="8">
                     <div>
                         <template>
                             <form-master ref="formTransaction" @onSubmit="onSubmit">
@@ -147,7 +147,7 @@
                         </vs-row>
                     </div>
                 </vs-col>
-                <vs-col xs="12" sm="3" lg="4">
+                <vs-col xs="12" sm="4" lg="4">
                     <calc />
                 </vs-col>
             </vs-row>
