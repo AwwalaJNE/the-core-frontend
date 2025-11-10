@@ -168,7 +168,7 @@
                                 :selectedValue="filterDateBy"
                             />
                         </vs-col>
-                        <vs-col xs="12" sm="4" lg="3">
+                        <vs-col xs="12" sm="4" lg="4">
                             <date-time
                                 :name="''"
                                 :rules="''"
@@ -181,7 +181,7 @@
                         <vs-col
                             xs="12"
                             sm="8"
-                            :lg="listenBreadcrumbCode === 'Pre Alert' ? 2 : 5"
+                            :lg="listenBreadcrumbCode === 'Pre Alert' ? 1 : 4"
                             style="display: flex; justify-content: end"
                         >
                             <vs-button
@@ -613,9 +613,9 @@ export default {
         },
     },
 
-    mounted() {
-        this.getDataNodeType()
-        this.getDataOrigin()
+    async mounted() {
+        await this.getDataNodeType()
+        await this.getDataOrigin()
     },
 }
 </script>

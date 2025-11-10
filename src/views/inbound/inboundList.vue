@@ -592,19 +592,19 @@ export default {
             this.confirmDialog = false
         },
 
-        actionLimit(val) {
+        async actionLimit(val) {
             this.pagination.limit = val
             this.pagination.page = 1
-            this.refresh()
+            await this.refresh()
         },
 
-        actionPagination(val) {
+        async actionPagination(val) {
             this.pagination.page = val
-            this.refresh()
+            await this.refresh()
         },
 
-        refresh() {
-            this.getTableData(
+        async refresh() {
+            await this.getTableData(
                 this.pagination.limit,
                 this.pagination.page,
                 this.tempSearch,
@@ -631,8 +631,8 @@ export default {
         },
         handleHasLinkedItem(value) {},
     },
-    mounted() {
-        this.refresh()
+    async mounted() {
+        await this.refresh()
         window.addEventListener('timezone-changed', this.refresh)
     },
 
