@@ -1329,7 +1329,7 @@ const routes = [
                 },
             },
             {
-                path: '/delivery/runsheet/:employee_id/edit/:delivery_runsheet_number/:date_filter?',
+                path: '/delivery/runsheet/:employee_id/edit/:delivery_runsheet_number',
                 name: 'delivery-runsheet-edit',
                 component: DeliveryRunsheetEdit,
                 meta: {
