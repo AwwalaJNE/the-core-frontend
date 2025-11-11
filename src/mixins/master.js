@@ -872,6 +872,39 @@ const Master = {
             return `${days} day(s)`
         },
 
+        formatSlaTime(slaDate, endDate) {
+            if (!slaDate) return '-'
+
+            // Normalize format (replace space for ISO compatibility)
+            const start = new Date(slaDate.replace(' ', 'T'))
+            const end = endDate ? new Date(endDate.replace(' ', 'T')) : new Date()
+
+            // Validate dates
+            if (isNaN(start.getTime()) || isNaN(end.getTime())) return '-'
+
+            // Calculate difference
+            const diff = end - start
+            const isOverdue = diff > 0
+            const absDiff = Math.abs(diff)
+
+            // Break down into days, hours, minutes, seconds
+            const days = Math.floor(absDiff / (1000 * 60 * 60 * 24))
+            const hours = Math.floor((absDiff / (1000 * 60 * 60)) % 24)
+            const minutes = Math.floor((absDiff / (1000 * 60)) % 60)
+            const seconds = Math.floor((absDiff / 1000) % 60)
+
+            const timeString = `${days} day(s) ${hours} hour(s) ${minutes} minute(s) ${seconds} second(s)`
+
+            if (endDate) {
+                const completedText = `Completed at ${this.formatTimezone(end.toLocaleString())}`
+                if (isOverdue) {
+                    return `${completedText}\nOverdue: ${timeString}`
+                }
+                return completedText
+            }
+
+            return isOverdue ? `Overdue: ${timeString}` : `Remaining: ${timeString}`
+        },
         sanitizeAlphanumeric(fieldName) {
             this[fieldName] = this[fieldName].replace(/[^a-zA-Z0-9_\/-]/g, '')
         },

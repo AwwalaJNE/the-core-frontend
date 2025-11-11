@@ -390,6 +390,13 @@ export default {
         window.addEventListener('timezone-changed', this.reload)
         this.getStatus()
         this.getDataCourier()
+
+        this.timer = setInterval(() => {
+            this.dataDelivery = this.dataDelivery.map((item) => ({
+                ...item,
+                sla_connote_formatted: this.formatSlaTime(item.sla_date, item.end_date),
+            }))
+        }, 1000)
     },
     methods: {
         setActive(refName) {
@@ -1361,6 +1368,10 @@ export default {
                 this.focusInput(this.activeInput)
             })
         },
+    },
+    beforeUnmount() {
+        // Stop the timer when leaving the page
+        clearInterval(this.timer)
     },
 }
 </script>

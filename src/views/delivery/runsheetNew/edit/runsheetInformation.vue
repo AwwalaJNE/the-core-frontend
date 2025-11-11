@@ -179,6 +179,11 @@ export default {
                     width: 'auto',
                 },
                 {
+                    label: 'SLA Connote',
+                    key: 'sla_connote_formatted',
+                    width: 'auto',
+                },
+                {
                     label: 'Delivery Area',
                     key: 'geolocation_subdistrict_kode_routing',
                     width: 'auto',
