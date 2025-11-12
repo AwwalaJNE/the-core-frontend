@@ -36,7 +36,7 @@
                                         </vs-col>
                                     </vs-row>
                                 </template>
-                                <template v-if="navActive === 'k-KOLI'">
+                                <template v-else-if="navActive === 'k-KOLI'">
                                     <vs-row>
                                         <vs-col vs-align="center" w="6">
                                             <select-search-by-connote
@@ -54,6 +54,28 @@
                                                 :placeholder="searchPlaceholder"
                                                 class="search-input"
                                                 :isNumeric="searchByDataType"
+                                            />
+                                        </vs-col>
+                                    </vs-row>
+                                </template>
+                                <template v-else-if="navActive === 'k-ARCHIVE'">
+                                    <vs-row>
+                                        <vs-col vs-align="center" w="6">
+                                            <select-search-by
+                                                :border="true"
+                                                :isMultiple="false"
+                                                :selectedValue="searchByArchive"
+                                                :valueData="searchParamsArchive"
+                                                @updateSearchBy="updateSearchByArchive"
+                                            />
+                                        </vs-col>
+                                        <vs-col vs-align="center" w="6">
+                                            <search-input
+                                                ref="searchInput"
+                                                :placeholder="searchPlaceholderArchive"
+                                                :isNumeric="searchByDataTypeArchive"
+                                                @handleSearch="handleSearch"
+                                                @searchValue="searchValue"
                                             />
                                         </vs-col>
                                     </vs-row>
@@ -108,7 +130,7 @@
                                 />
                             </transition>
                         </template>
-                        <template v-if="navActive === 'k-KOLI'">
+                        <template v-else-if="navActive === 'k-KOLI'">
                             <vs-row>
                                 <vs-col vs-align="center" xs="6" sm="2" lg="2">
                                     <select-status-bag
@@ -152,6 +174,54 @@
                                     :queryBag="status_bag"
                                     :querySearch="searchBy"
                                     :queryDate="filterDateBy"
+                                    :hasStatusDelivery="'0'"
+                                />
+                            </transition>
+                        </template>
+                        <template v-else-if="navActive === 'k-ARCHIVE'">
+                            <vs-row>
+                                <vs-col vs-align="center" xs="6" sm="2" lg="2">
+                                    <selector
+                                        formKey="status_delivery"
+                                        :hiddenTitle="true"
+                                        :valueData="dataStatusDelivery"
+                                        :selectedValue="selectedStatusDelivery"
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateValue="updateStatusStatusDelivery"
+                                    />
+                                </vs-col>
+                                <vs-col vs-align="center" xs="6" sm="3" lg="2">
+                                    <select-search-by
+                                        :border="true"
+                                        :isMultiple="false"
+                                        :selectedValue="filterDateBy"
+                                        :valueData="dateParams"
+                                        @updateSearchBy="updateFilterDateBy"
+                                    />
+                                </vs-col>
+                                <vs-col xs="6" sm="5" lg="6">
+                                    <date-time
+                                        :name="''"
+                                        :rules="''"
+                                        :formKey="'DATE_TIME_WITHOUT_SECONDS'"
+                                        :valueData="tempDate"
+                                        typeInput="datetimerange"
+                                        @updateValue="searchDate"
+                                    />
+                                </vs-col>
+                            </vs-row>
+                            <transition name="slide-fade">
+                                <koli-list
+                                    :ref="navActive"
+                                    :dateFilter="tempDate"
+                                    :query="tempSearch"
+                                    :queryInventory="statusinventory"
+                                    :queryBag="status_bag"
+                                    :querySearch="searchByArchive"
+                                    :queryDate="filterDateBy"
+                                    :hasStatusDelivery="'1'"
+                                    :statusDelivery="selectedStatusDelivery"
                                 />
                             </transition>
                         </template>
@@ -219,6 +289,11 @@ export default {
                     key: 'k-CONNOTE',
                     title: 'Connote List',
                 },
+                {
+                    label: 'ARCHIVE',
+                    key: 'k-ARCHIVE',
+                    title: 'Archive List',
+                },
             ],
             navActive: 'k-KOLI',
             title: 'Connote List',
@@ -236,10 +311,15 @@ export default {
             statusinventory: '',
             status_bag_cnote: '',
             statusinventorycnote: '',
+
             searchBy: 'connote',
-            searchByCnote: 'connote',
+            searchByDataType: false,
             searchPlaceholder: 'Search Koli',
+
+            searchByCnote: 'connote',
             searchPlaceholderCnote: 'Search Connote',
+            searchByDataTypeCnote: false,
+
             filterDateBy: 'create',
             dateParams: [
                 {
@@ -255,8 +335,58 @@ export default {
                     value: 'received',
                 },
             ],
-            searchByDataType: false,
-            searchByDataTypeCnote: false,
+
+            searchByArchive: 'connote',
+            searchPlaceholderArchive: 'Search Koli',
+            searchByDataTypeArchive: false,
+            searchParamsArchive: [
+                {
+                    label: 'Connote',
+                    value: 'connote',
+                },
+                {
+                    label: 'Bag',
+                    value: 'bag',
+                },
+                {
+                    label: 'Origin',
+                    value: 'origin',
+                },
+                {
+                    label: 'Destination',
+                    value: 'destination',
+                },
+                {
+                    label: 'Weight',
+                    value: 'weight',
+                    isNumeric: true,
+                },
+                {
+                    label: 'Service',
+                    value: 'service',
+                },
+                {
+                    label: 'Amount COD',
+                    value: 'amount_cod',
+                    isNumeric: true,
+                },
+            ],
+
+            selectedStatusDelivery: '-',
+            dataStatusDelivery: [
+                {
+                    label: 'All Status',
+                    value: '-',
+                },
+                {
+                    label: 'Delivered',
+                    value: 'DELIVERED',
+                },
+                {
+                    label: 'Undelivered',
+                    value: 'UNDELIVERED',
+                },
+            ],
         }
     },
     methods: {
@@ -272,6 +402,9 @@ export default {
         updateStatusinventoryCnote(key, val) {
             this.statusinventorycnote = val
         },
+        updateStatusStatusDelivery(key, val) {
+            this.selectedStatusDelivery = val
+        },
         updateSearchBy(key, val, dataType) {
             this.searchBy = val
             this.searchPlaceholder = key
@@ -281,6 +414,11 @@ export default {
             this.searchByCnote = val
             this.searchPlaceholderCnote = key
             this.searchByDataTypeCnote = dataType
+        },
+        updateSearchByArchive(key, val, dataType) {
+            this.searchByArchive = val
+            this.searchPlaceholderArchive = key
+            this.searchByDataTypeArchive = dataType
         },
         updateFilterDateBy(key, val) {
             this.filterDateBy = val
