@@ -11,7 +11,7 @@
             </template>
 
             <template v-slot:content>
-                <vs-row align="center">
+                <vs-row align="center" v-if="!isViewOnly">
                     <vs-col w="10" style="padding-bottom: 1em">
                         <auto-complete
                             ref="origin_code"
@@ -42,7 +42,7 @@
                             <draggable-card
                                 :cardType="'transit-card'"
                                 :valueData="data"
-                                :isRemoveButton="true"
+                                :isRemoveButton="!isViewOnly"
                                 @update-order="updateTransit"
                                 @remove="removeTransit"
                             />
@@ -81,6 +81,7 @@ export default {
         active: Boolean,
         bagNumber: String,
         closeDialog: Function,
+        isViewOnly: Boolean,
         title: String,
     },
     data() {
