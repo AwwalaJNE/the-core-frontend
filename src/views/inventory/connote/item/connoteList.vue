@@ -1,42 +1,54 @@
-<!--
-    - @desc component yang handle crud frontend connote item
-    - @param -
-    - @emit -
-    - @props -
--->
-
 <template>
     <div>
-        <table-master 
-        hideColumnKey="inventory-koli"
-        :dataTable="dataTable" 
-        :dataColumn="datacolumn" 
-        :tableLoading="loading"
-        :pageSize="pagination.page_size"
-        :page="pagination.page"
-        :limit="pagination.limit"
-        :hasAction="false"
-        :hasLinked="['koli_number']"
-        :hasLinkedDanger="'status_irregularity'"
-        :hasPagination="true"
-        :hasId="true"
-        :key="selectedTimezone"
-        @actionUpdate="actionUpdate"
-        @actionRemove="actionRemove"
-        @actionLimit="actionLimit"
-        @actionPagination="actionPagination"
-        @handleEdit="showData"
-        />
-
+        <template v-if="hasStatusDelivery === '1'">
+            <table-master
+                hideColumnKey="inventory-archive"
+                :dataTable="dataTable"
+                :dataColumn="datacolumn"
+                :tableLoading="loading"
+                :pageSize="pagination.page_size"
+                :page="pagination.page"
+                :limit="pagination.limit"
+                :hasAction="false"
+                :hasLinked="['koli_number']"
+                :hasLinkedDanger="'status_irregularity'"
+                :hasPagination="true"
+                :hasId="true"
+                @actionLimit="actionLimit"
+                @actionPagination="actionPagination"
+                @handleEdit="showData"
+            />
+        </template>
+        <template v-else>
+            <table-master
+                hideColumnKey="inventory-koli"
+                :dataTable="dataTable"
+                :dataColumn="datacolumn"
+                :tableLoading="loading"
+                :pageSize="pagination.page_size"
+                :page="pagination.page"
+                :limit="pagination.limit"
+                :hasAction="false"
+                :hasLinked="['koli_number']"
+                :hasLinkedDanger="'status_irregularity'"
+                :hasPagination="true"
+                :hasId="true"
+                @actionLimit="actionLimit"
+                @actionPagination="actionPagination"
+                @handleEdit="showData"
+            />
+        </template>
     </div>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master"
-import TableMaster from "@/components/table/tableMaster.vue"
-import moment from "moment"
+import axios from 'axios'
+import moment from 'moment'
+
+import master from '@/mixins/master'
+import TableMaster from '@/components/table/tableMaster.vue'
+
 export default {
-    name:"list-user",
+    name: 'list-user',
     mixins: [master],
     props: {
         query: String,
@@ -45,289 +57,244 @@ export default {
         querySearch: String,
         queryDate: String,
         dateFilter: Array,
+        hasStatusDelivery: String,
+        statusDelivery: String,
     },
     components: {
-        "table-master" : TableMaster
+        'table-master': TableMaster,
     },
     watch: {
-        query: function(val, old) {
-            if(val !== undefined) {
-                this.tempSearch = val
-                if(this.tempSearch !== old) {
-                    this.pagination.page = 1
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
+        $props: {
+            handler() {
+                this.refresh()
+            },
+            deep: true,
+        },
+        hasStatusDelivery: {
+            handler(val) {
+                if (val !== undefined && val !== null && val !== '') {
+                    this.setDatacolumn()
                 }
-            }
-        },
-        queryInventory: function(val, old) {
-          if(val !== undefined) {
-            this.statusinventory = val
-            if(this.statusinventory !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, val, this.startDate, this.endDate, this.querySearch, this.queryDate)
-            }
-          }
-        },
-        queryDate: function(val, old) {
-          if(val !== undefined) {
-            if(val !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, val)
-            }
-          }
-        },
-        dateFilter: function (val, old) {
-            if (val !== undefined && val !== null) {
-                let d = new Date()
-                let from = ''
-                let to = ''
-                
-                this.tempDate = val;
-                if (this.tempDate !== old) {
-                    if(this.tempDate.length > 0) {
-                        from = moment(this.tempDate[0]).format("YYYY-MM-DD")
-                        to = moment(this.tempDate[1]).format("YYYY-MM-DD")
-                    } else {
-                        from = moment(d).format("YYYY-MM-DD")
-                        to = moment(d).format("YYYY-MM-DD")
-                    }
-                    this.startDate = from
-                    this.endDate = to
-                }
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, this.statusinventory, from, to, this.querySearch, this.queryDate);
-            }
-            else {
-                this.startDate = ""
-                this.endDate = ""
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate);
-            }
-        },
-        queryBag: function(val, old) {
-          if(val !== undefined) {
-            this.status_bag = val
-            if(this.status_bag !== old) {
-              this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
-            }
-          }
-        },
-        querySearch: function(val, old) {
-            if(val !== undefined) {
-                if(val !== old) {
-                    this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, val, this.queryDate)
-                }
-            }
+            },
+            immediate: true,
         },
     },
     data() {
         return {
             dataTable: [],
-            datacolumn: [
-                {
-                    label: "Koli Number",
-                    key: "koli_number",
-                    width: "xs"
-                },
-                {
-                    label: "Bag",
-                    key: "bag_number",
-                    width: "xxxs"
-                },
-                {
-                    label: "Connote Created Date",
-                    key: "created_at",
-                    width: "xs"
-                },
-                {
-                    label: "Created By",
-                    key: "created_by_user",
-                    width: "xs"
-                },
-                {
-                    label: "Receiving Date",
-                    key: "received_at",
-                    width: "xs"
-                },
-                {
-                    label: "Received By",
-                    key: "latest_received_by_user_name",
-                    width: "xs"
-                }, 
-                {
-                    label: "Last Bag Opened Date",
-                    key: "latest_opened_bag",
-                    width: "xs"
-                },
-                {
-                    label: "Origin",
-                    key: "origin_tariff_code",
-                    width: "auto"
-                },
-                {
-                    label: "Destination",
-                    key: "destination_tariff_code",
-                    width: "auto"
-                },
-                {
-                    label: "Actual Weight(Kg)",
-                    key: "connote_actual_weight",
-                    width: "auto"
-                },
-                {
-                    label: "Cost Weight(Kg)",
-                    key: "connote_chargeable_weight",
-                    width: "auto"
-                },
-                {
-                    label: "Routing Type",
-                    key: "routing_type",
-                    width: "auto"
-                },
-                {
-                    label: "Service",
-                    key: "connote_service_code",
-                    width: "auto"
-                },
-                {
-                    label: "COD",
-                    key: "is_cod",
-                    width: "auto"
-                },
-                {
-                    label: "Amount COD (Rp)",
-                    key: "amount_cod",
-                    width: "xxxs",
-                    type_amount: true,
-                    textAlign: "right"
-                },
-                {
-                    label: "SLA",
-                    key: "connote_sla_date",
-                    width: "xs"
-                },
-                {
-                    label: "Runsheet Number",
-                    key: "delivery_runsheet_number",
-                    width: "xs"
-                },
-                {
-                    label: "Wood Package",
-                    key: "packing_kayu_type",
-                    width: "auto"
-                },
-                {
-                  label: "Cancel",
-                  key: "is_void_status",
-                  width: "auto"
-                },
-                {
-                    label: "Status POD",
-                    key: "delivery_status_code",
-                    width: "auto"
-                },
-                {
-                    label: "Status Irregularity",
-                    key: "status_irregularity",
-                    width: "auto"
-                },
-                {
-                    label: "Status",
-                    key: "is_confirmed",
-                    width: "auto"
-                },
-            ],
+            datacolumn: [],
             loading: false,
-            dataItem: {},
-            tempSearch: this.query ? this.query : "",
-            tempDate: [],
-            startDate: "",
-            endDate: "",
-            dialogUser: false,
-            status_bag:"",
-            statusinventory:"",
+            startDate: '',
+            endDate: '',
             pagination: {
-                limit:20,
+                limit: 20,
                 page_size: 1,
-                page: 1
+                page: 1,
             },
-            loadInterval: null
+            loadInterval: null,
         }
     },
     methods: {
-        pollData () {
+        setDatacolumn() {
+            this.datacolumn = [
+                {
+                    label: 'Koli Number',
+                    key: 'koli_number',
+                    width: 'xs',
+                },
+                ...(this.hasStatusDelivery !== '1'
+                    ? [
+                          {
+                              label: 'Bag',
+                              key: 'bag_number',
+                              width: 'xxxs',
+                          },
+                      ]
+                    : []),
+                {
+                    label: 'Connote Created Date',
+                    key: 'created_at',
+                    width: 'xs',
+                },
+                {
+                    label: 'Created By',
+                    key: 'created_by_user',
+                    width: 'xs',
+                },
+
+                ...(this.hasStatusDelivery !== '1'
+                    ? [
+                          {
+                              label: 'Receiving Date',
+                              key: 'received_at',
+                              width: 'xs',
+                          },
+                          {
+                              label: 'Received By',
+                              key: 'latest_received_by_user_name',
+                              width: 'xs',
+                          },
+                          {
+                              label: 'Last Bag Opened Date',
+                              key: 'latest_opened_bag',
+                              width: 'xs',
+                          },
+                      ]
+                    : []),
+
+                {
+                    label: 'Origin',
+                    key: 'origin_tariff_code',
+                    width: 'auto',
+                },
+                {
+                    label: 'Destination',
+                    key: 'destination_tariff_code',
+                    width: 'auto',
+                },
+                {
+                    label: 'Actual Weight(Kg)',
+                    key: 'connote_actual_weight',
+                    width: 'auto',
+                },
+                {
+                    label: 'Cost Weight(Kg)',
+                    key: 'connote_chargeable_weight',
+                    width: 'auto',
+                },
+                {
+                    label: 'Routing Type',
+                    key: 'routing_type',
+                    width: 'auto',
+                },
+                {
+                    label: 'Service',
+                    key: 'connote_service_code',
+                    width: 'auto',
+                },
+                {
+                    label: 'COD',
+                    key: 'is_cod',
+                    width: 'auto',
+                },
+                {
+                    label: 'Amount COD (Rp)',
+                    key: 'amount_cod',
+                    width: 'xxxs',
+                    type_amount: true,
+                    textAlign: 'right',
+                },
+                {
+                    label: 'SLA',
+                    key: 'connote_sla_date',
+                    width: 'xs',
+                },
+                {
+                    label: 'Runsheet Number',
+                    key: 'delivery_runsheet_number',
+                    width: 'xs',
+                },
+                {
+                    label: 'Wood Package',
+                    key: 'packing_kayu_type',
+                    width: 'auto',
+                },
+                {
+                    label: 'Cancel',
+                    key: 'is_void_status',
+                    width: 'auto',
+                },
+                ...(this.hasStatusDelivery === '1'
+                    ? [
+                          {
+                              label: 'Status POD',
+                              key: 'delivery_status_code',
+                              width: 'auto',
+                          },
+                      ]
+                    : []),
+
+                {
+                    label: 'Status Irregularity',
+                    key: 'status_irregularity',
+                    width: 'auto',
+                },
+                {
+                    label: 'Status',
+                    key: 'is_confirmed',
+                    width: 'auto',
+                },
+            ]
+        },
+        pollData() {
             this.loadInterval = setInterval(() => {
                 this.refresh()
             }, 60000) // 1 menit
         },
-        async getTableData(limit,page,q, statusBag, statusInventory, from, to, searchBy, filterDateBy) {
+        formatDateRange() {
+            if (this.dateFilter?.length) {
+                this.startDate = moment(this.dateFilter[0]).format('YYYY-MM-DD')
+                this.endDate = moment(this.dateFilter[1]).format('YYYY-MM-DD')
+            } else {
+                this.startDate = ''
+                this.endDate = ''
+            }
+        },
+        async getTableData() {
             this.loading = true
-            let query = "";
-            let isOnBag = "";
-            let isInventory = "";
-            if(q !== undefined) {
-                query = q
-            }
-            if(statusBag !== undefined && statusBag !== '-') {
-              isOnBag = statusBag
-            }
-            if(statusInventory !== undefined && statusInventory !== '-') {
-              isInventory = statusInventory
-            }
-            await axios
-                .get(
-                    this.URL.koli +
-                    `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&is_confirmed=${isInventory}&is_on_bag=${isOnBag}&page=${page}&s=${query}&start_date=${from}&end_date=${to}&search_by=${searchBy}&filter_date_by=${filterDateBy}`,
-                    this.Helper.header())
-                .then(res => {
-                    let arr = res.data.data
-                    arr.map(item => {
-                        item.created_at = this.formatTimezone(item.created_at);
-                        item.received_at = this.formatTimezone(item.received_at);
-                        item.latest_opened_bag = this.formatTimezone(item.latest_opened_bag);
-                        item["is_cod"] = item.is_cod == 1 ? 'YES' : '-'
-                        item["is_confirmed"] = item.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed'
-                        item["is_void_status"] = item.is_void == 1 ? 'YES' : '-'
-                        item["packing_kayu_type"] = item.packing_kayu_type != null ? 'Y' : '-'
-                        item["status_irregularity"] = item.irregularity?.irregularity_status_description
-                    })
-                    this.dataTable = arr
-                    this.pagination.page = res.data.meta.current_page
-                    this.pagination.limit = parseInt(res.data.meta.per_page)
-                    this.pagination.page_size = res.data.meta.last_page
-                    // if(res.data.data.length == 0) {
-                    //     this.openNotification('warn', null, 'Failed to populate User data', )
-                    // }
-                    
-                    this.loading = false
-                }).catch(err => {
-                    this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate users list', err.response.data.message)
-                })
-        },
-        actionUpdate(val){
-            if(this.dataTable.length > 0) {
-                let obj = this.dataTable.filter(item => {
-                    return item.user_id === val.user_id
-                })
-                this.dataItem = obj[0]
+            this.formatDateRange()
 
-                this.$nextTick(() => {
-                    this.dialogUser = true
-                });
+            const params = {
+                n: this.listenNodeId,
+                sort_order: 'desc',
+                limit: this.pagination.limit,
+                page: this.pagination.page,
+                s: this.query || '',
+                is_on_bag: this.queryBag || '',
+                is_confirmed: this.queryInventory || '',
+                start_date: this.startDate,
+                end_date: this.endDate,
+                search_by: this.querySearch || '',
+                filter_date_by: this.queryDate || '',
+                has_status_delivery: this.hasStatusDelivery || '0',
+                status_delivery: this.statusDelivery || '',
+            }
+
+            try {
+                const res = await axios.get(this.URL.koli, {
+                    params,
+                    ...this.Helper.header(),
+                })
+                const arr = res.data.data.map((item) => ({
+                    ...item,
+                    created_at: this.formatTimezone(item.created_at),
+                    received_at: this.formatTimezone(item.received_at),
+                    latest_opened_bag: this.formatTimezone(item.latest_opened_bag),
+                    is_cod: item.is_cod == 1 ? 'YES' : '-',
+                    is_confirmed: item.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed',
+                    is_void_status: item.is_void == 1 ? 'YES' : '-',
+                    packing_kayu_type: item.packing_kayu_type ? 'Y' : '-',
+                    status_irregularity: item.irregularity?.irregularity_status_description,
+                }))
+                this.dataTable = arr
+                this.pagination.page = res.data.meta.current_page
+                this.pagination.limit = parseInt(res.data.meta.per_page)
+                this.pagination.page_size = res.data.meta.last_page
+            } catch (err) {
+                this.openNotification(
+                    'danger',
+                    err.response?.data?.code,
+                    'Failed to populate users list',
+                    err.response?.data?.message
+                )
+            } finally {
+                this.loading = false
             }
         },
-        async actionRemove(val){
-            await axios
-                .delete(
-                    this.URL.user + `/${val.user_id}`,
-                    this.Helper.header())
-                .then(res => {
-
-                    this.refresh()
-                    this.openNotification(null, 'Romove success', 'Romove role is success')
-                }).catch(err => {
-                    this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Romove role is failed', err)
-                })
+        refresh() {
+            this.getTableData()
         },
-        actionLimit(val){
+        actionLimit(val) {
             this.pagination.limit = val
             this.pagination.page = 1
             this.refresh()
@@ -336,25 +303,18 @@ export default {
             this.pagination.page = val
             this.refresh()
         },
-        refresh(val){
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
-        },
-        closeDialogUser(){
-            this.dialogUser = false
-        },
-
         showData(row) {
-          this.$router.push(`/connote-detail/${row.koli_number}`);
-          this.setRoutePageHistory(this.$route.meta, false);
+            this.$router.push(`/connote-detail/${row.koli_number}`)
+            this.setRoutePageHistory(this.$route.meta, false)
         },
     },
     mounted() {
-        window.addEventListener('timezone-changed', this.refresh);
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.status_bag, this.statusinventory, this.startDate, this.endDate, this.querySearch, this.queryDate)
+        window.addEventListener('timezone-changed', this.refresh)
+        this.refresh()
     },
-    beforeDestroy () {
-        window.removeEventListener('timezone-changed', this.refresh);
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh)
         clearInterval(this.loadInterval) // prevent memory leaks
-    }
+    },
 }
 </script>
