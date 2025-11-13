@@ -70,47 +70,21 @@ export default {
             },
             deep: true,
         },
-        hasStatusDelivery: {
-            handler(val) {
-                if (val !== undefined && val !== null && val !== '') {
-                    this.setDatacolumn()
-                }
-            },
-            immediate: true,
-        },
     },
     data() {
         return {
             dataTable: [],
-            datacolumn: [],
-            loading: false,
-            startDate: '',
-            endDate: '',
-            pagination: {
-                limit: 20,
-                page_size: 1,
-                page: 1,
-            },
-            loadInterval: null,
-        }
-    },
-    methods: {
-        setDatacolumn() {
-            this.datacolumn = [
+            datacolumn: [
                 {
                     label: 'Koli Number',
                     key: 'koli_number',
                     width: 'xs',
                 },
-                ...(this.hasStatusDelivery !== '1'
-                    ? [
-                          {
-                              label: 'Bag',
-                              key: 'bag_number',
-                              width: 'xxxs',
-                          },
-                      ]
-                    : []),
+                {
+                    label: 'Bag',
+                    key: 'bag_number',
+                    width: 'xxxs',
+                },
                 {
                     label: 'Connote Created Date',
                     key: 'created_at',
@@ -121,27 +95,21 @@ export default {
                     key: 'created_by_user',
                     width: 'xs',
                 },
-
-                ...(this.hasStatusDelivery !== '1'
-                    ? [
-                          {
-                              label: 'Receiving Date',
-                              key: 'received_at',
-                              width: 'xs',
-                          },
-                          {
-                              label: 'Received By',
-                              key: 'latest_received_by_user_name',
-                              width: 'xs',
-                          },
-                          {
-                              label: 'Last Bag Opened Date',
-                              key: 'latest_opened_bag',
-                              width: 'xs',
-                          },
-                      ]
-                    : []),
-
+                {
+                    label: 'Receiving Date',
+                    key: 'received_at',
+                    width: 'xs',
+                },
+                {
+                    label: 'Received By',
+                    key: 'latest_received_by_user_name',
+                    width: 'xs',
+                },
+                {
+                    label: 'Last Bag Opened Date',
+                    key: 'latest_opened_bag',
+                    width: 'xs',
+                },
                 {
                     label: 'Origin',
                     key: 'origin_tariff_code',
@@ -204,16 +172,11 @@ export default {
                     key: 'is_void_status',
                     width: 'auto',
                 },
-                ...(this.hasStatusDelivery === '1'
-                    ? [
-                          {
-                              label: 'Status POD',
-                              key: 'delivery_status_code',
-                              width: 'auto',
-                          },
-                      ]
-                    : []),
-
+                {
+                    label: 'Status POD',
+                    key: 'delivery_status_code',
+                    width: 'auto',
+                },
                 {
                     label: 'Status Irregularity',
                     key: 'status_irregularity',
@@ -224,8 +187,19 @@ export default {
                     key: 'is_confirmed',
                     width: 'auto',
                 },
-            ]
-        },
+            ],
+            loading: false,
+            startDate: '',
+            endDate: '',
+            pagination: {
+                limit: 20,
+                page_size: 1,
+                page: 1,
+            },
+            loadInterval: null,
+        }
+    },
+    methods: {
         pollData() {
             this.loadInterval = setInterval(() => {
                 this.refresh()
