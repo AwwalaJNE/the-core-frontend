@@ -4,17 +4,20 @@
             <vs-col xs="6" sm="4" lg="4">
                 <div class="titlePage">
                     <breadcrumb />
-                    <h2>{{title}}</h2>
+                    <h2>{{ title }}</h2>
                 </div>
             </vs-col>
         </vs-row>
 
-        
         <section class="users">
             <vs-row justify="space-around">
-                <vs-col vs-type="flex" vs-justify="center" vs-align="center" :w="`${navActive === 'k-PERMISSIONS'?'4':'12'}`">
+                <vs-col
+                    vs-type="flex"
+                    vs-justify="center"
+                    vs-align="center"
+                    :w="`${navActive === 'k-PERMISSIONS' ? '4' : '12'}`"
+                >
                     <div class="box view">
-
                         <vs-row justify="space-between">
                             <vs-col xs="12" sm="6" lg="8">
                                 <nav-item :navItem="navItemm" @activeTab="activeTab" />
@@ -23,201 +26,291 @@
                                 <template v-if="navActive === 'k-CONNOTE'">
                                     <vs-row>
                                         <vs-col vs-align="center" w="6">
-                                            <select-search-by-cnote :isMultiple="false" :border="true" @updateSearchBy="updateSearchByCnote"  :selectedValue="searchByCnote"/>
+                                            <select-search-by
+                                                :key="navActive"
+                                                :border="true"
+                                                :isMultiple="false"
+                                                :selectedValue="searchByConnote"
+                                                :valueData="searchParamsConnote"
+                                                @updateSearchBy="updateSearchByConnote"
+                                            />
                                         </vs-col>
                                         <vs-col vs-align="center" w="6">
-                                            <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholderCnote" class="search-input" :isNumeric="searchByDataTypeCnote"/>
+                                            <search-input
+                                                ref="searchInput"
+                                                :key="navActive"
+                                                :placeholder="searchPlaceholderConnote"
+                                                :isNumeric="searchByDataTypeConnote"
+                                                @handleSearch="handleSearch"
+                                                @searchValue="searchValue"
+                                            />
                                         </vs-col>
                                     </vs-row>
                                 </template>
                             </vs-col>
                         </vs-row>
 
-
                         <template v-if="navActive === 'k-CONNOTE'">
-                          <vs-row >
-                            <vs-col vs-align="center" xs="6" sm="2" lg="2">
-                                <select-status-bag-cnote ref="is_in_bag" :isMultiple="false" :border="true" @updateStatusBag="updateStatusBagCnote" />
-                            </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="2" lg="2">
-                                <select-status-inventory-cnote :isMultiple="false" :border="true" @updateStatusinventory="updateStatusinventoryCnote" />
-                            </vs-col>
-                            <vs-col vs-align="center" xs="6" sm="3" lg="2">
-                                <select-filter-date-by-cnote :isMultiple="false" :border="true" @updateFilterDateBy="updateFilterDateBy" />
-                            </vs-col>
-                            <vs-col xs="6" sm="5" lg="6">
-                                <date-time
-                                    :name="''"
-                                    :rules="''"
-                                    :formKey="'TRIGGER_DATE'"
-                                    :valueData="tempDate"
-                                    typeInput="daterange"
-                                    @updateValue="searchDate" 
-                                />
-                            </vs-col>
-                          </vs-row>
+                            <vs-row>
+                                <vs-col vs-align="center" xs="6" sm="2" lg="2">
+                                    <selector
+                                        formKey="bag-status-by"
+                                        :ref="navActive"
+                                        :hiddenTitle="true"
+                                        :valueData="dataStatusBagConnote"
+                                        :selectedValue="selectedStatusBagConnote"
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateValue="updateStatusBagConnote"
+                                    />
+                                </vs-col>
+                                <vs-col vs-align="center" xs="6" sm="2" lg="2">
+                                    <selector
+                                        formKey="inventory-status-by"
+                                        :ref="navActive"
+                                        :hiddenTitle="true"
+                                        :valueData="dataStatusInventoryConnote"
+                                        :selectedValue="selectedStatusInventoryConnote"
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateValue="updateStatusInventoryConnote"
+                                    />
+                                </vs-col>
+                                <vs-col vs-align="center" xs="6" sm="3" lg="2">
+                                    <select-search-by
+                                        :ref="navActive"
+                                        :border="true"
+                                        :isMultiple="false"
+                                        :selectedValue="filterDateByConnote"
+                                        :valueData="dateParamsConnote"
+                                        @updateSearchBy="updateFilterDateByConnote"
+                                    />
+                                </vs-col>
+                                <vs-col xs="6" sm="5" lg="6">
+                                    <date-time
+                                        :ref="navActive"
+                                        :name="''"
+                                        :rules="''"
+                                        :formKey="'DATE_TIME_WITHOUT_SECONDS'"
+                                        :valueData="tempDateConnote"
+                                        typeInput="datetimerange"
+                                        @updateValue="searchDateConnote"
+                                    />
+                                </vs-col>
+                            </vs-row>
                             <transition name="slide-fade">
-                                <connote-list :ref="navActive" :dateFilter="tempDate" :query="tempSearch" :queryInventory="statusinventorycnote" :queryBag="status_bag_cnote" :querySearch="searchByCnote" :queryDate="filterDateBy" />
+                                <connote-list
+                                    :ref="navActive"
+                                    :dateFilter="tempDateConnote"
+                                    :query="tempSearch"
+                                    :queryInventory="selectedStatusInventoryConnote"
+                                    :queryBag="selectedStatusBagConnote"
+                                    :querySearch="searchByConnote"
+                                    :queryDate="filterDateByConnote"
+                                />
                             </transition>
-                        </template>                        
+                        </template>
                     </div>
                 </vs-col>
-                
             </vs-row>
         </section>
-
     </div>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master"
+import axios from 'axios'
+import master from '@/mixins/master'
 
-import Breadcrumb from "@/components/breadcrumb/index"
-import TableMaster from "@/components/table/tableMaster.vue"
-import NavItem from "@/components/navbar/navTab"
+import Breadcrumb from '@/components/breadcrumb/index'
+import TableMaster from '@/components/table/tableMaster.vue'
+import NavItem from '@/components/navbar/navTab'
 
-import SearchInput from "@/components/search/searchInput"
-import Selector from "@/components/input/select"
-import SelectSearchBy from "@/components/search/selectSearchBy"
-import DateTime from "@/components/input/dateTime"
-import SelectBagStatusConnote from "@/views/inventory/connote/connote/selectBagStatus"
-import SelectInventoryConnote from "@/views/inventory/connote/connote/selectInventoryStatus"
-import SelectSearchByCnote from "@/views/inventory/connote/connote/selectSearchBy"
-import SelectFilterDateByConnote from "@/views/inventory/connote/connote/selectFilterDateBy"
-
+import SearchInput from '@/components/search/searchInput'
+import Selector from '@/components/input/select'
+import SelectSearchBy from '@/components/search/selectSearchBy'
+import DateTime from '@/components/input/dateTime'
 
 // Connote
-import ConnoteList from "@/views/inventory/connote/connote/cnoteList"
+import ConnoteList from '@/views/inventory/connote/connote/cnoteList'
 
 export default {
-    name:"Helpdesk Connote Table",
+    name: 'helpdesk-connote',
     mixins: [master],
     components: {
-        "table-master" : TableMaster,
-        "nav-item": NavItem,
-        "breadcrumb": Breadcrumb,
-        "search-input": SearchInput,
-        "connote-list": ConnoteList,
-        "selector": Selector,
-        "select-search-by": SelectSearchBy,
-        "date-time": DateTime,
-        "select-status-bag-cnote": SelectBagStatusConnote,
-        "select-status-inventory-cnote": SelectInventoryConnote,
-        "select-search-by-cnote": SelectSearchByCnote,
-        "select-filter-date-by-cnote": SelectFilterDateByConnote,
+        'table-master': TableMaster,
+        'nav-item': NavItem,
+        breadcrumb: Breadcrumb,
+        'search-input': SearchInput,
+        'connote-list': ConnoteList,
+        selector: Selector,
+        'select-search-by': SelectSearchBy,
+        'date-time': DateTime,
     },
     data() {
         return {
             navItemm: [
                 {
-                    label: "CONNOTE",
-                    key: "k-CONNOTE",
-                    title: "Connote List"
-                }
+                    label: 'CONNOTE',
+                    key: 'k-CONNOTE',
+                    title: 'Connote List',
+                },
             ],
-            navActive: "k-CONNOTE",
-            title: "Connote List",
+            navActive: 'k-CONNOTE',
+            title: 'Connote List',
             loading: false,
-            dataItem: {},
-            tempSearch: "",
-            tempDate: [],
+            tempSearch: '',
             pagination: {
-                limit:5,
+                limit: 10,
                 page_size: 1,
-                page: 1
+                page: 1,
             },
-            refreshInject:"",
-            status_bag:"",
-            statusinventory:"",
-            status_bag_cnote:"",
-            statusinventorycnote:"",
-            bagDestination:"",
-            searchBy:"",
-            searchByBag:"bag_number",
-            searchByCnote:"",
-            searchPlaceholderCnote: "Search Connote",
-            filterDateBy: "create",
-            dateParams: [
+            refreshInject: '',
+
+            // ==== START FILTER CONNOTE TAB
+            searchByConnote: 'connote',
+            searchByDataTypeConnote: false,
+            searchPlaceholderConnote: 'Search Connote',
+            searchParamsConnote: [
+                {
+                    label: 'Connote',
+                    value: 'connote',
+                },
+                {
+                    label: 'Bag',
+                    value: 'bag',
+                },
+                {
+                    label: 'Origin',
+                    value: 'origin',
+                },
+                {
+                    label: 'Destination',
+                    value: 'destination',
+                },
+                {
+                    label: 'Weight',
+                    value: 'weight',
+                    isNumeric: true,
+                },
+                {
+                    label: 'Service',
+                    value: 'service',
+                },
+                {
+                    label: 'Amount COD',
+                    value: 'amount_cod',
+                    isNumeric: true,
+                },
+            ],
+
+            selectedStatusBagConnote: 'ALL',
+            dataStatusBagConnote: [
+                {
+                    label: 'All Bag',
+                    value: 'ALL',
+                },
+                {
+                    label: 'Is In Bag',
+                    value: '1',
+                },
+                {
+                    label: 'Not In Bag',
+                    value: '0',
+                },
+            ],
+
+            selectedStatusInventoryConnote: 'ALL',
+            dataStatusInventoryConnote: [
+                {
+                    label: 'All Status',
+                    value: 'ALL',
+                },
+                {
+                    label: 'Confirmed',
+                    value: '1',
+                },
+                {
+                    label: 'Unconfirmed',
+                    value: '0',
+                },
+            ],
+
+            tempDateConnote: [],
+            filterDateByConnote: 'create',
+            dateParamsConnote: [
                 {
                     label: 'Created Date',
-                    value: 'create'
-                }
+                    value: 'create',
+                },
+                {
+                    label: 'Receiving Date',
+                    value: 'receive',
+                },
+                {
+                    label: 'Opened Date',
+                    value: 'opened',
+                },
+                {
+                    label: 'SLA',
+                    value: 'sla',
+                },
             ],
-            bagRouting:"",
-            bagTipe:"",
-            searchByDataType: false,
-            searchByDataTypeCnote: false,
+
+            // ==== END FILTER CONNOTE TAB
         }
     },
     methods: {
-        updateStatusBag(key,val) {
-          this.status_bag = val;
+        updateStatusBagConnote(key, val) {
+            this.selectedStatusBagConnote = val
         },
-        updateStatusBagCnote(key,val) {
-          this.status_bag_cnote = val;
+        updateStatusInventoryConnote(key, val) {
+            this.selectedStatusInventoryConnote = val
         },
-        updateStatusinventory(key,val) {
-          this.statusinventory = val;
+        updateSearchByConnote(key, val, dataType) {
+            this.searchByConnote = val
+            this.searchPlaceholderConnote = key
+            this.searchByDataTypeConnote = dataType
         },
-        updateStatusinventoryCnote(key,val) {
-          this.statusinventorycnote = val;
+        updateFilterDateByConnote(key, val) {
+            this.filterDateByConnote = val
+
+            if (this.tempDateConnote.length !== 0) {
+                this.tempDateConnote = []
+            }
         },
-        updateSearchBy(key,val, dataType) {
-            this.searchBy = val;
-            this.searchPlaceholder = key;
-            this.searchByDataType = dataType;
-        },
-        updateSearchByBag(key,val) {
-            this.searchByBag = val;
-            this.searchPlaceholderBag = key;
-        },
-        updateSearchByCnote(key,val, dataType) {
-            this.searchByCnote = val;
-            this.searchPlaceholderCnote = key;
-            this.searchByDataTypeCnote = dataType
-        },
-        updateFilterDateBy(key,val) {
-          this.filterDateBy = val;
-        },
-        updateBagDestination(key,val) {
-          this.bagDestination = val
-        },
-        updateBagRouting(key,val){
-            this.bagRouting = val
-        },
-        updateBagTipe(key,val){
-            this.bagTipe = val
-        },
-        refresh(){
+        refresh() {
             let el = this.refreshInject
             this.$refs[el].refresh() // trigger function refresh form dari luar component list
         },
-        searchValue (val) {
+        searchValue(val) {
             this.tempSearch = val
         },
-        searchDate(key, val) {
-            this.tempDate = val;
+        searchDateConnote(key, val) {
+            this.tempDateConnote = val
         },
         clearSearch() {
             this.$refs.searchInput.clear()
-            if (this.navActive === 'k-BAG') {
-                this.filterDateBy = 'create'
-            }
+            this.tempSearch = ''
             this.tempDate = []
         },
         activeTab(val) {
             this.navActive = val
             this.clearSearch()
-            let item = this.navItemm.filter(item => {
+            let item = this.navItemm.filter((item) => {
                 return item.key == val
             })
             this.title = item[0].title
         },
-        actionLimit(val){
+        actionLimit(val) {
             this.pagination.limit = val
         },
         actionPagination(val) {
             this.pagination.page = val
+        },
+        handleSearch() {
+            this.$nextTick(() => {
+                this.refresh()
+                this.$refs.searchInput.clear()
+            })
         },
     },
 }

@@ -4,19 +4,19 @@
             <vs-col xs="6" sm="4" lg="4">
                 <div class="titlePage">
                     <breadcrumb />
-                    <h2>{{title}}</h2>
+                    <h2>{{ title }}</h2>
                 </div>
             </vs-col>
             <vs-col xs="6" sm="3" lg="3">
-                <div style="position:relative;display:flex;justify-content: flex-end;">
-                    <div v-if="navActive !== 'upload-sla'" style="width: 100px;padding-right: 5px;">
+                <div style="position: relative; display: flex; justify-content: flex-end">
+                    <div v-if="navActive !== 'upload-sla'" style="width: 100px; padding-right: 5px">
                         <vs-button
                             flat
                             block
                             :active="true"
                             :data-testid="`create-button-${navActive}`"
                             @click="openDialog"
-                        > 
+                        >
                             <i class="bx bx-plus"></i> New
                         </vs-button>
                     </div>
@@ -34,19 +34,19 @@
                             <template v-if="navActive === 'sla-koli'">
                                 <vs-row>
                                     <vs-col vs-align="center" w="6">
-                                        <select-search-by 
-                                            :isMultiple="false" 
-                                            :border="true" 
-                                            :valueData="searchSlaKoliParams" 
-                                            :selectedValue="searchSlaKoliBy" 
-                                            @updateSearchBy="updateSearchBy" 
+                                        <select-search-by
+                                            :isMultiple="false"
+                                            :border="true"
+                                            :valueData="searchSlaKoliParams"
+                                            :selectedValue="searchSlaKoliBy"
+                                            @updateSearchBy="updateSearchBy"
                                         />
                                     </vs-col>
                                     <vs-col vs-align="center" w="6">
-                                        <search-input 
-                                            ref="searchInput" 
-                                            @searchValue="searchValue" 
-                                            :placeholder="searchSlaKoliPlaceholder" 
+                                        <search-input
+                                            ref="searchInput"
+                                            @searchValue="searchValue"
+                                            :placeholder="searchSlaKoliPlaceholder"
                                             class="search-input"
                                         />
                                     </vs-col>
@@ -55,19 +55,19 @@
                             <template v-else-if="navActive === 'sla-inter-activity'">
                                 <vs-row>
                                     <vs-col vs-align="center" w="6">
-                                        <select-search-by 
-                                            :isMultiple="false" 
-                                            :border="true" 
-                                            :valueData="searchSlaInterActivityParams" 
-                                            :selectedValue="searchSlaInterActivityBy" 
-                                            @updateSearchBy="updateSearchBy" 
+                                        <select-search-by
+                                            :isMultiple="false"
+                                            :border="true"
+                                            :valueData="searchSlaInterActivityParams"
+                                            :selectedValue="searchSlaInterActivityBy"
+                                            @updateSearchBy="updateSearchBy"
                                         />
                                     </vs-col>
                                     <vs-col vs-align="center" w="6">
-                                        <search-input 
-                                            ref="searchInput" 
-                                            @searchValue="searchValue" 
-                                            :placeholder="searchSlaInterActivityPlaceholder" 
+                                        <search-input
+                                            ref="searchInput"
+                                            @searchValue="searchValue"
+                                            :placeholder="searchSlaInterActivityPlaceholder"
                                             class="search-input"
                                         />
                                     </vs-col>
@@ -76,19 +76,19 @@
                             <template v-else-if="navActive === 'sla-node-to-node-a'">
                                 <vs-row>
                                     <vs-col vs-align="center" w="6">
-                                        <select-search-by 
-                                            :isMultiple="false" 
-                                            :border="true" 
-                                            :valueData="searchSlaNodeToNodeAParams" 
-                                            :selectedValue="searchSlaNodeToNodeABy" 
-                                            @updateSearchBy="updateSearchBy" 
+                                        <select-search-by
+                                            :isMultiple="false"
+                                            :border="true"
+                                            :valueData="searchSlaNodeToNodeAParams"
+                                            :selectedValue="searchSlaNodeToNodeABy"
+                                            @updateSearchBy="updateSearchBy"
                                         />
                                     </vs-col>
                                     <vs-col vs-align="center" w="6">
-                                        <search-input 
-                                            ref="searchInput" 
-                                            @searchValue="searchValue" 
-                                            :placeholder="searchSlaNodeToNodeAPlaceholder" 
+                                        <search-input
+                                            ref="searchInput"
+                                            @searchValue="searchValue"
+                                            :placeholder="searchSlaNodeToNodeAPlaceholder"
                                             class="search-input"
                                         />
                                     </vs-col>
@@ -97,19 +97,19 @@
                             <template v-else-if="navActive === 'sla-node-to-node-b'">
                                 <vs-row>
                                     <vs-col vs-align="center" w="6">
-                                        <select-search-by 
-                                            :isMultiple="false" 
-                                            :border="true" 
-                                            :valueData="searchSlaNodeToNodeBParams" 
-                                            :selectedValue="searchSlaNodeToNodeBBy" 
-                                            @updateSearchBy="updateSearchBy" 
+                                        <select-search-by
+                                            :isMultiple="false"
+                                            :border="true"
+                                            :valueData="searchSlaNodeToNodeBParams"
+                                            :selectedValue="searchSlaNodeToNodeBBy"
+                                            @updateSearchBy="updateSearchBy"
                                         />
                                     </vs-col>
                                     <vs-col vs-align="center" w="6">
-                                        <search-input 
-                                            ref="searchInput" 
-                                            @searchValue="searchValue" 
-                                            :placeholder="searchSlaNodeToNodeBPlaceholder" 
+                                        <search-input
+                                            ref="searchInput"
+                                            @searchValue="searchValue"
+                                            :placeholder="searchSlaNodeToNodeBPlaceholder"
                                             class="search-input"
                                         />
                                     </vs-col>
@@ -127,10 +127,10 @@
                                         />
                                     </vs-col>
                                     <vs-col vs-align="center" w="6">
-                                        <search-input 
-                                            ref="searchInput" 
-                                            @searchValue="searchValue" 
-                                            :placeholder="searchSlaBagPlaceholder" 
+                                        <search-input
+                                            ref="searchInput"
+                                            @searchValue="searchValue"
+                                            :placeholder="searchSlaBagPlaceholder"
                                             class="search-input"
                                         />
                                     </vs-col>
@@ -141,62 +141,82 @@
                 </div>
                 <template v-if="navActive === 'sla-koli'">
                     <transition name="slide-fade">
-                        <sla-koli :ref="navActive" :query="tempSearch" :searchBy="searchSlaKoliBy"/>
+                        <sla-koli
+                            :ref="navActive"
+                            :query="tempSearch"
+                            :searchBy="searchSlaKoliBy"
+                        />
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'sla-inter-activity'">
                     <transition name="slide-fade">
-                        <sla-inter-activity :ref="navActive" :query="tempSearch" :searchBy="searchSlaInterActivityBy"/>
+                        <sla-inter-activity
+                            :ref="navActive"
+                            :query="tempSearch"
+                            :searchBy="searchSlaInterActivityBy"
+                        />
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'sla-node-to-node-a'">
                     <transition name="slide-fade">
-                        <sla-node-to-node-a :ref="navActive" :query="tempSearch" :searchBy="searchSlaNodeToNodeABy"/>
+                        <sla-node-to-node-a
+                            :ref="navActive"
+                            :query="tempSearch"
+                            :searchBy="searchSlaNodeToNodeABy"
+                        />
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'sla-node-to-node-b'">
                     <transition name="slide-fade">
-                        <sla-node-to-node-b :ref="navActive" :query="tempSearch" :searchBy="searchSlaNodeToNodeBBy"/>
+                        <sla-node-to-node-b
+                            :ref="navActive"
+                            :query="tempSearch"
+                            :searchBy="searchSlaNodeToNodeBBy"
+                        />
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'sla-bag'">
                     <transition name="slide-fade">
-                        <sla-bag :ref="navActive" :query="tempSearch" :searchBy="searchSlaBagBy"></sla-bag>
+                        <sla-bag
+                            :ref="navActive"
+                            :query="tempSearch"
+                            :searchBy="searchSlaBagBy"
+                        ></sla-bag>
                     </transition>
                 </template>
                 <template v-else-if="navActive === 'upload-sla'">
                     <transition name="slide-fade">
-                        <upload-sla :ref="navActive"/>
+                        <upload-sla :ref="navActive" />
                     </transition>
                 </template>
             </div>
         </section>
         <dialog-create-edit-sla-koli
-            :active="dialogSlaKoli" 
+            :active="dialogSlaKoli"
             @refresh="refresh"
             :closeDialog="closeDialog"
             title="Create SLA Koli"
         />
         <dialog-create-edit-sla-inter-activity
-            :active="dialogSlaInterActivity" 
+            :active="dialogSlaInterActivity"
             @refresh="refresh"
             :closeDialog="closeDialog"
             title="Create SLA Inter Activity"
         />
         <dialog-create-edit-sla-node-to-node-a
-            :active="dialogSlaNodeToNodeA" 
+            :active="dialogSlaNodeToNodeA"
             @refresh="refresh"
             :closeDialog="closeDialog"
             title="Create SLA Node To Node A"
         />
         <dialog-create-edit-sla-node-to-node-b
-            :active="dialogSlaNodeToNodeB" 
+            :active="dialogSlaNodeToNodeB"
             @refresh="refresh"
             :closeDialog="closeDialog"
             title="Create SLA Node To Node B"
         />
         <dialog-create-edit-sla-bag
-            :active="dialogSlaBag" 
+            :active="dialogSlaBag"
             @refresh="refresh"
             :closeDialog="closeDialog"
             title="Create SLA Bag"
@@ -204,241 +224,241 @@
     </div>
 </template>
 <script>
-import NavItem from "@/components/navbar/navTab"
-import Breadcrumb from "@/components/breadcrumb/index"
-import SearchInput from "@/components/search/searchInput"
-import SelectSearchBy from "@/views/inventory/connote/item/selectSearchBy"
+import NavItem from '@/components/navbar/navTab'
+import Breadcrumb from '@/components/breadcrumb/index'
+import SearchInput from '@/components/search/searchInput'
+import SelectSearchBy from '@/components/search/selectSearchBy'
 
-import SlaKoli from "@/views/settings/sla/slaKoli/index"
-import SlaInterActivity from "@/views/settings/sla/slaInterActivity/index"
-import SlaNodeToNodeA from "@/views/settings/sla/slaNodeToNodeA/index"
-import SlaNodeToNodeB from "@/views/settings/sla/slaNodeToNodeB/index"
-import SlaBag from "@/views/settings/sla/slaBag/index"
-import DialogCreateEditSlaKoli from "@/views/settings/sla/slaKoli/dialogCreateEditSla"
-import DialogCreateEditSlaInterActivity from "@/views/settings/sla/slaInterActivity/dialogCreateEditSla"
-import DialogCreateEditSlaNodeToNodeA from "@/views/settings/sla/slaNodeToNodeA/dialogCreateEditSla"
-import DialogCreateEditSlaNodeToNodeB from "@/views/settings/sla/slaNodeToNodeB/dialogCreateEditSla"
-import DialogCreateEditSlaBag from "./slaBag/dialogCreateEditSla.vue"
-import UploadSla from "@/views/settings/sla/uploadSla/index"
+import SlaKoli from '@/views/settings/sla/slaKoli/index'
+import SlaInterActivity from '@/views/settings/sla/slaInterActivity/index'
+import SlaNodeToNodeA from '@/views/settings/sla/slaNodeToNodeA/index'
+import SlaNodeToNodeB from '@/views/settings/sla/slaNodeToNodeB/index'
+import SlaBag from '@/views/settings/sla/slaBag/index'
+import DialogCreateEditSlaKoli from '@/views/settings/sla/slaKoli/dialogCreateEditSla'
+import DialogCreateEditSlaInterActivity from '@/views/settings/sla/slaInterActivity/dialogCreateEditSla'
+import DialogCreateEditSlaNodeToNodeA from '@/views/settings/sla/slaNodeToNodeA/dialogCreateEditSla'
+import DialogCreateEditSlaNodeToNodeB from '@/views/settings/sla/slaNodeToNodeB/dialogCreateEditSla'
+import DialogCreateEditSlaBag from './slaBag/dialogCreateEditSla.vue'
+import UploadSla from '@/views/settings/sla/uploadSla/index'
 
 export default {
-    name:"sla-index",
+    name: 'sla-index',
     components: {
-        "nav-item": NavItem,
-        "breadcrumb": Breadcrumb,
-        "search-input": SearchInput,
-        "sla-koli": SlaKoli,
-        "sla-inter-activity": SlaInterActivity,
-        "sla-node-to-node-a": SlaNodeToNodeA,
-        "sla-node-to-node-b": SlaNodeToNodeB,
-        "sla-bag": SlaBag,
-        "dialog-create-edit-sla-koli": DialogCreateEditSlaKoli,
-        "dialog-create-edit-sla-inter-activity": DialogCreateEditSlaInterActivity,
-        "dialog-create-edit-sla-node-to-node-a": DialogCreateEditSlaNodeToNodeA,
-        "dialog-create-edit-sla-node-to-node-b": DialogCreateEditSlaNodeToNodeB,
-        "dialog-create-edit-sla-bag": DialogCreateEditSlaBag,
-        "select-search-by": SelectSearchBy,
-        "upload-sla": UploadSla
+        'nav-item': NavItem,
+        breadcrumb: Breadcrumb,
+        'search-input': SearchInput,
+        'sla-koli': SlaKoli,
+        'sla-inter-activity': SlaInterActivity,
+        'sla-node-to-node-a': SlaNodeToNodeA,
+        'sla-node-to-node-b': SlaNodeToNodeB,
+        'sla-bag': SlaBag,
+        'dialog-create-edit-sla-koli': DialogCreateEditSlaKoli,
+        'dialog-create-edit-sla-inter-activity': DialogCreateEditSlaInterActivity,
+        'dialog-create-edit-sla-node-to-node-a': DialogCreateEditSlaNodeToNodeA,
+        'dialog-create-edit-sla-node-to-node-b': DialogCreateEditSlaNodeToNodeB,
+        'dialog-create-edit-sla-bag': DialogCreateEditSlaBag,
+        'select-search-by': SelectSearchBy,
+        'upload-sla': UploadSla,
     },
     data() {
         return {
             navItemm: [
                 {
-                    label: "SLA KOLI",
-                    key: "sla-koli",
-                    title: "SLA KOLI"
+                    label: 'SLA KOLI',
+                    key: 'sla-koli',
+                    title: 'SLA KOLI',
                 },
                 {
-                    label: "SLA INTER ACTIVITY",
-                    key: "sla-inter-activity",
-                    title: "SLA INTER ACTIVITY"
+                    label: 'SLA INTER ACTIVITY',
+                    key: 'sla-inter-activity',
+                    title: 'SLA INTER ACTIVITY',
                 },
                 {
-                    label: "SLA NODE TO NODE A",
-                    key: "sla-node-to-node-a",
-                    title: "SLA NODE TO NODE A"
+                    label: 'SLA NODE TO NODE A',
+                    key: 'sla-node-to-node-a',
+                    title: 'SLA NODE TO NODE A',
                 },
                 {
-                    label: "SLA NODE TO NODE B",
-                    key: "sla-node-to-node-b",
-                    title: "SLA NODE TO NODE B"
+                    label: 'SLA NODE TO NODE B',
+                    key: 'sla-node-to-node-b',
+                    title: 'SLA NODE TO NODE B',
                 },
                 {
-                    label: "SLA BAG",
-                    key: "sla-bag",
-                    title: "SLA BAG"
+                    label: 'SLA BAG',
+                    key: 'sla-bag',
+                    title: 'SLA BAG',
                 },
                 {
-                    label: "UPLOAD SLA",
-                    key: "upload-sla",
-                    title: "UPLOAD SLA"
+                    label: 'UPLOAD SLA',
+                    key: 'upload-sla',
+                    title: 'UPLOAD SLA',
                 },
             ],
-            title:"SLA KOLI",
-            navActive: "sla-koli",
-            tempSearch: "",
+            title: 'SLA KOLI',
+            navActive: 'sla-koli',
+            tempSearch: '',
             dialogNode: false,
             dialogSlaKoli: false,
             dialogSlaInterActivity: false,
             dialogSlaNodeToNodeA: false,
             dialogSlaNodeToNodeB: false,
             dialogSlaBag: false,
-            searchSlaKoliPlaceholder: "Search Group Name",
-            searchSlaKoliBy: "group_name",
+            searchSlaKoliPlaceholder: 'Search Group Name',
+            searchSlaKoliBy: 'group_name',
             searchSlaKoliParams: [
                 {
-                    label: "Group Name",
-                    value: "group_name"
+                    label: 'Group Name',
+                    value: 'group_name',
                 },
                 {
-                    label: "Origin",
-                    value: "origin"
+                    label: 'Origin',
+                    value: 'origin',
                 },
                 {
-                    label: "Destination",
-                    value: "destination"
+                    label: 'Destination',
+                    value: 'destination',
                 },
                 {
-                    label: "Service",
-                    value: "service_code"
+                    label: 'Service',
+                    value: 'service_code',
                 },
                 {
-                    label: "Customer Code",
-                    value: "customer_code"
+                    label: 'Customer Code',
+                    value: 'customer_code',
                 },
                 {
-                    label: "Customer Name",
-                    value: "customer_name"
+                    label: 'Customer Name',
+                    value: 'customer_name',
                 },
                 {
-                    label: "SLA",
-                    value: "sla"
+                    label: 'SLA',
+                    value: 'sla',
                 },
             ],
-            searchSlaInterActivityPlaceholder: "Search Group Name",
-            searchSlaInterActivityBy: "group_name",
+            searchSlaInterActivityPlaceholder: 'Search Group Name',
+            searchSlaInterActivityBy: 'group_name',
             searchSlaInterActivityParams: [
                 {
-                    label: "Group Name",
-                    value: "group_name"
+                    label: 'Group Name',
+                    value: 'group_name',
                 },
                 {
-                    label: "Origin",
-                    value: "origin"
+                    label: 'Origin',
+                    value: 'origin',
                 },
                 {
-                    label: "Destination",
-                    value: "destination"
+                    label: 'Destination',
+                    value: 'destination',
                 },
                 {
-                    label: "Service",
-                    value: "service_code"
+                    label: 'Service',
+                    value: 'service_code',
                 },
                 {
-                    label: "Customer Code",
-                    value: "customer_code"
+                    label: 'Customer Code',
+                    value: 'customer_code',
                 },
                 {
-                    label: "Customer Name",
-                    value: "customer_name"
+                    label: 'Customer Name',
+                    value: 'customer_name',
                 },
                 {
-                    label: "Node Code",
-                    value: "node_code"
+                    label: 'Node Code',
+                    value: 'node_code',
                 },
                 {
-                    label: "Current Activity",
-                    value: "previous_activity"
+                    label: 'Current Activity',
+                    value: 'previous_activity',
                 },
                 {
-                    label: "Next Activity",
-                    value: "next_activity"
+                    label: 'Next Activity',
+                    value: 'next_activity',
                 },
                 {
-                    label: "SLA",
-                    value: "sla"
+                    label: 'SLA',
+                    value: 'sla',
                 },
             ],
-            searchSlaNodeToNodeAPlaceholder: "Search Group Name",
-            searchSlaNodeToNodeABy: "group_name",
+            searchSlaNodeToNodeAPlaceholder: 'Search Group Name',
+            searchSlaNodeToNodeABy: 'group_name',
             searchSlaNodeToNodeAParams: [
                 {
-                    label: "Group Name",
-                    value: "group_name"
+                    label: 'Group Name',
+                    value: 'group_name',
                 },
                 {
-                    label: "Type",
-                    value: "type"
+                    label: 'Type',
+                    value: 'type',
                 },
                 {
-                    label: "Node Origin",
-                    value: "node_origin"
+                    label: 'Node Origin',
+                    value: 'node_origin',
                 },
                 {
-                    label: "Node Destination",
-                    value: "node_destination"
+                    label: 'Node Destination',
+                    value: 'node_destination',
                 },
                 {
-                    label: "SLA",
-                    value: "sla"
+                    label: 'SLA',
+                    value: 'sla',
                 },
             ],
-            searchSlaNodeToNodeBPlaceholder: "Search Group Name",
-            searchSlaNodeToNodeBBy: "group_name",
+            searchSlaNodeToNodeBPlaceholder: 'Search Group Name',
+            searchSlaNodeToNodeBBy: 'group_name',
             searchSlaNodeToNodeBParams: [
                 {
-                    label: "Group Name",
-                    value: "group_name"
+                    label: 'Group Name',
+                    value: 'group_name',
                 },
                 {
-                    label: "Origin",
-                    value: "origin_code"
+                    label: 'Origin',
+                    value: 'origin_code',
                 },
                 {
-                    label: "Type",
-                    value: "type"
+                    label: 'Type',
+                    value: 'type',
                 },
                 {
-                    label: "Node Origin",
-                    value: "node_origin"
+                    label: 'Node Origin',
+                    value: 'node_origin',
                 },
                 {
-                    label: "Node Destination",
-                    value: "node_destination"
+                    label: 'Node Destination',
+                    value: 'node_destination',
                 },
                 {
-                    label: "Delivery Zone",
-                    value: "delivery_zone"
+                    label: 'Delivery Zone',
+                    value: 'delivery_zone',
                 },
                 {
-                    label: "SLA",
-                    value: "sla"
+                    label: 'SLA',
+                    value: 'sla',
                 },
             ],
-            searchSlaBagPlaceholder: "Search Group Name",
-            searchSlaBagBy: "group_name",
+            searchSlaBagPlaceholder: 'Search Group Name',
+            searchSlaBagBy: 'group_name',
             searchSlaBagParams: [
                 {
-                    label: "Group Name",
-                    value: "group_name"
+                    label: 'Group Name',
+                    value: 'group_name',
                 },
                 {
-                    label: "Bag Type",
-                    value: "bag_type"
+                    label: 'Bag Type',
+                    value: 'bag_type',
                 },
                 {
-                    label: "SLA Type",
-                    value: "sla_type"
+                    label: 'SLA Type',
+                    value: 'sla_type',
                 },
             ],
         }
     },
     methods: {
-        refresh(){
+        refresh() {
             let el = this.refreshInject
             this.$refs[el].refresh()
         },
-        searchValue (val) {
+        searchValue(val) {
             this.tempSearch = val
         },
         clearSearch() {
@@ -448,74 +468,74 @@ export default {
             this.navActive = val
             this.clearSearch()
 
-            let item = this.navItemm.filter(item => {
+            let item = this.navItemm.filter((item) => {
                 return item.key == val
             })
             this.title = item[0].title
         },
-        openDialog(){
-            switch(this.navActive) {
-                case "sla-koli":
+        openDialog() {
+            switch (this.navActive) {
+                case 'sla-koli':
                     this.dialogSlaKoli = true
-                    break;
-                case "sla-inter-activity":
+                    break
+                case 'sla-inter-activity':
                     this.dialogSlaInterActivity = true
-                    break;
-                case "sla-node-to-node-a":
+                    break
+                case 'sla-node-to-node-a':
                     this.dialogSlaNodeToNodeA = true
-                    break;
-                case "sla-node-to-node-b":
+                    break
+                case 'sla-node-to-node-b':
                     this.dialogSlaNodeToNodeB = true
-                    break;
-                case "sla-bag":
+                    break
+                case 'sla-bag':
                     this.dialogSlaBag = true
-                    break;
+                    break
                 default:
             }
             this.refreshInject = this.navActive
         },
         closeDialog() {
-            switch(this.navActive) {
-                case "sla-koli":
+            switch (this.navActive) {
+                case 'sla-koli':
                     this.dialogSlaKoli = false
-                    break;
-                case "sla-inter-activity":
+                    break
+                case 'sla-inter-activity':
                     this.dialogSlaInterActivity = false
-                    break;
-                case "sla-node-to-node-a":
+                    break
+                case 'sla-node-to-node-a':
                     this.dialogSlaNodeToNodeA = false
-                    break;
-                case "sla-node-to-node-b":
+                    break
+                case 'sla-node-to-node-b':
                     this.dialogSlaNodeToNodeB = false
-                    break;
-                case "sla-bag":
+                    break
+                case 'sla-bag':
                     this.dialogSlaBag = false
-                    break;
+                    break
                 default:
             }
         },
-        updateSearchBy(key,val) {
-            switch(this.navActive) {
-                case "sla-koli":
-                    this.searchSlaKoliBy = val;
-                    this.searchSlaKoliPlaceholder = key;
-                    break;
-                case "sla-inter-activity":
-                    this.searchSlaInterActivityBy = val;
-                    this.searchSlaInterActivityPlaceholder = key;
-                    break;
-                case "sla-node-to-node-a":
-                    this.searchSlaNodeToNodeABy = val;
-                    this.searchSlaNodeToNodeAPlaceholder = key;
-                    break;
-                case "sla-node-to-node-b":
-                    this.searchSlaNodeToNodeBBy = val;
-                    this.searchSlaNodeToNodeBPlaceholder = key;
-                    break;
-                case "sla-bag":
-                    this.searchSlaBagBy = val;
-                    this.searchSlaBagPlaceholder = key;
-                    break;
+        updateSearchBy(key, val) {
+            switch (this.navActive) {
+                case 'sla-koli':
+                    this.searchSlaKoliBy = val
+                    this.searchSlaKoliPlaceholder = key
+                    break
+                case 'sla-inter-activity':
+                    this.searchSlaInterActivityBy = val
+                    this.searchSlaInterActivityPlaceholder = key
+                    break
+                case 'sla-node-to-node-a':
+                    this.searchSlaNodeToNodeABy = val
+                    this.searchSlaNodeToNodeAPlaceholder = key
+                    break
+                case 'sla-node-to-node-b':
+                    this.searchSlaNodeToNodeBBy = val
+                    this.searchSlaNodeToNodeBPlaceholder = key
+                    break
+                case 'sla-bag':
+                    this.searchSlaBagBy = val
+                    this.searchSlaBagPlaceholder = key
+                    break
                 default:
             }
         },

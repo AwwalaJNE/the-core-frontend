@@ -1,10 +1,3 @@
-<!--
-    - @desc component yang handle crud frontend connote item
-    - @param -
-    - @emit -
-    - @props -
--->
-
 <template>
     <div>
         <template v-if="hasStatusDelivery === '1'">
@@ -21,8 +14,6 @@
                 :hasLinkedDanger="'status_irregularity'"
                 :hasPagination="true"
                 :hasId="true"
-                :key="selectedTimezone"
-                @actionRemove="actionRemove"
                 @actionLimit="actionLimit"
                 @actionPagination="actionPagination"
                 @handleEdit="showData"
@@ -42,8 +33,6 @@
                 :hasLinkedDanger="'status_irregularity'"
                 :hasPagination="true"
                 :hasId="true"
-                :key="selectedTimezone"
-                @actionRemove="actionRemove"
                 @actionLimit="actionLimit"
                 @actionPagination="actionPagination"
                 @handleEdit="showData"
@@ -53,9 +42,11 @@
 </template>
 <script>
 import axios from 'axios'
+import moment from 'moment'
+
 import master from '@/mixins/master'
 import TableMaster from '@/components/table/tableMaster.vue'
-import moment from 'moment'
+
 export default {
     name: 'list-user',
     mixins: [master],
@@ -66,7 +57,7 @@ export default {
         querySearch: String,
         queryDate: String,
         dateFilter: Array,
-        hasStatusDelivery: Boolean,
+        hasStatusDelivery: String,
         statusDelivery: String,
     },
     components: {
