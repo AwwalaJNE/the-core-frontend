@@ -18,10 +18,10 @@
                 <vs-button
                     v-if="listenUserRoleName !== 'HELPDESK' && tipe_bag === 'OM'"
                     @click="openDialogTransit"
-                    :disabled="disabledAddTransit"
                     :data-testid="`button-add-transit`"
                 >
-                    <i class="bx bx-plus"></i> Add Transit
+                    <i v-if="!disabledAddTransit" class="bx bx-plus"></i>
+                    {{ disabledAddTransit ? 'View Transit' : 'Add Transit' }}
                 </vs-button>
                 <template v-if="listenUserRoleName === 'HELPDESK'">
                     <vs-button
@@ -269,9 +269,10 @@
         />
 
         <dialog-create-edit-transit
-            title="Add Transit Route"
+            :title="disabledAddTransit ? 'Transit Route' : 'Add Transit Route'"
             :active="dialogTransitActive"
             :bagNumber="bag_id"
+            :isViewOnly="disabledAddTransit"
             :closeDialog="closeDialogTransit"
         />
     </div>
