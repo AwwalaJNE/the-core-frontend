@@ -71,8 +71,8 @@ export default {
             deep: true,
         },
         hasStatusDelivery: {
-            handler(val, oldVal) {
-                if (val !== oldVal && val !== undefined) {
+            handler(val) {
+                if (val !== undefined && val !== null && val !== '') {
                     this.setDatacolumn()
                 }
             },
@@ -204,7 +204,7 @@ export default {
                     key: 'is_void_status',
                     width: 'auto',
                 },
-                ...(this.hasStatusDelivery !== '1'
+                ...(this.hasStatusDelivery === '1'
                     ? [
                           {
                               label: 'Status POD',
