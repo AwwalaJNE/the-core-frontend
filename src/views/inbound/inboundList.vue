@@ -353,10 +353,10 @@ export default {
                     this.dataTable = res.data.data
                     this.dataTable.map((item) => {
                         let im = []
-                        item['manifestDeliveryOrder'] =
-                            item?.manifestDeliveryOrder?.do ||
-                            item?.manifestDeliveryOrder?.hbag ||
-                            item?.manifestDeliveryOrder?.mts ||
+                        item['orion_number'] =
+                            item?.['manifest_delivery_order']?.do ||
+                            item?.['manifest_delivery_order']?.hbag ||
+                            item?.['manifest_delivery_order']?.mts ||
                             ''
                         item['flight_number'] = item?.manifest?.flight_number
                         item['inbound_branch'] = item?.inbound_branch_name_origin
