@@ -353,6 +353,11 @@ export default {
                     this.dataTable = res.data.data
                     this.dataTable.map((item) => {
                         let im = []
+                        item['manifestDeliveryOrder'] =
+                            item?.manifestDeliveryOrder?.do ||
+                            item?.manifestDeliveryOrder?.hbag ||
+                            item?.manifestDeliveryOrder?.mts ||
+                            ''
                         item['flight_number'] = item?.manifest?.flight_number
                         item['inbound_branch'] = item?.inbound_branch_name_origin
                             ? item?.inbound_branch_code_origin +
@@ -445,6 +450,17 @@ export default {
                     key: 'status',
                     width: 'xxs',
                 },
+                ...(!['Receiving Connote', 'Receiving Bag', 'RCVB'].includes(
+                    this.listenBreadcrumbTitle
+                )
+                    ? [
+                          {
+                              label: 'Orion Number',
+                              key: 'orion_number',
+                              width: 'xxxs',
+                          },
+                      ]
+                    : []),
                 ...(!['Receiving Connote', 'Receiving Bag', 'RCVB'].includes(
                     this.listenBreadcrumbTitle
                 )
