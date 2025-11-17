@@ -252,6 +252,7 @@ export default {
             vehicle_max_weight: 0,
             no_moda_angkutan_id: null,
             etd: null,
+            eta: null,
             estimated_time_in_hour: null,
             manifest_lov: '',
             destinationUnlock: '',
@@ -387,6 +388,9 @@ export default {
 
             this.no_moda_angkutan_id = val.no_moda_angkutan_id || null
 
+            this.etd = this.formatToWIB(val.etd)
+            this.eta = this.formatToWIB(val.eta)
+
             this.master_form = {
                 node_id_origin: val.node_id_origin,
                 node_id_destination: val.node_id_destination,
@@ -474,8 +478,12 @@ export default {
                     break
 
                 case 'etd':
-                    this.etd = this.formatToWIB(val)
-                    updateMasterForm('etd', this.formatToWIB(val))
+                    if (this.etd === this.formatToWIB(val)) {
+                        updateMasterForm('etd', val)
+                    } else {
+                        updateMasterForm('etd', this.formatToWIB(val))
+                    }
+
                     break
 
                 case 'eta':
@@ -485,7 +493,12 @@ export default {
                             .add(this.estimated_time_in_hour, 'hours')
                             .format('YYYY-MM-DD HH:mm:ss')
                     )
-                    updateMasterForm('eta', this.formatToWIB(val))
+
+                    if (this.eta === this.formatToWIB(val)) {
+                        updateMasterForm('eta', val)
+                    } else {
+                        updateMasterForm('eta', this.formatToWIB(val))
+                    }
                     break
 
                 case 'manifest_lov':
@@ -549,24 +562,6 @@ export default {
                 printWindow.onload = function () {
                     printWindow.print()
                     printWindow.onafterprint = () => printWindow.close()
-                }
-            }
-        },
-        handlePenerusan(val) {
-            if (this.isDisabled) {
-                this.is_penerusan = !val.target.checked
-                this.openNotification('warn', null, 'Information', 'Surat Jalan is DEPARTED')
-            } else {
-                this.is_penerusan = val.target.checked
-                if (this.manifest_do_number) {
-                    const updateMasterForm = (key, value) => {
-                        if (this.manifest_do_number && this.master_form?.[key] !== value) {
-                            this.master_form = { ...this.master_form, [key]: value }
-                            this.updateSuratJalan()
-                        }
-                    }
-
-                    updateMasterForm('is_penerusan', this.is_penerusan)
                 }
             }
         },
@@ -780,6 +775,7 @@ export default {
             this.vehicle_max_weight = 0
             this.no_moda_angkutan_id = null
             this.etd = null
+            this.eta = null
             this.estimated_time_in_hour = null
             this.manifest_lov = ''
             this.form = {}
