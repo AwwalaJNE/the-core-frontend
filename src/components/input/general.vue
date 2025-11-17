@@ -238,6 +238,8 @@
                         @input="updateValue"
                         @focus="focus(true)"
                         @blur="focus(false)"
+                        @keydown.native="lockPrefix"
+                        @keypress="checkOnlyNumber"
                         ref="generalInput"
                         :min="listenMinValue"
                         :data-testid="`input-${formKey}`"
@@ -452,9 +454,34 @@ export default {
             }
         },
         checkOnlyNumber(e) {
-            if (this.isOnlyNumber && !this.rules.includes('decimal')) {
+            if (
+                (this.isOnlyNumber && !this.rules.includes('decimal')) ||
+                this.rules?.includes('phone')
+            ) {
                 if (!/[0-9]/.test(e.key)) {
                     e.preventDefault()
+                }
+            }
+        },
+        lockPrefix(e) {
+            if (this.rules?.includes('phone')) {
+                // NOTES: PREFIX MUST BE 62 FOR PHONE NUMBER
+                const prefix = '62'
+                const input = e.target
+                const pos = input.selectionStart
+                const end = input.selectionEnd
+
+                // block deleting or typing inside prefix
+                if (
+                    (e.key === 'Backspace' && pos <= prefix.length) ||
+                    (e.key === 'Delete' && pos < prefix.length) ||
+                    // typing while selection overlaps the prefix
+                    (pos < prefix.length && end > 0 && e.key.length === 1)
+                ) {
+                    e.preventDefault()
+                    this.$nextTick(() => {
+                        input.setSelectionRange(prefix.length, prefix.length)
+                    })
                 }
             }
         },
