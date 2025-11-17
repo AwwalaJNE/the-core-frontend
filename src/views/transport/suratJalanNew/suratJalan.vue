@@ -220,6 +220,15 @@ export default {
                     key: 'manifest_do_number',
                     width: 'xxxs',
                 },
+                ...(this.listenBreadcrumbCode === 'DO'
+                ? [
+                        {
+                            label: `No RDO`,
+                            key: 'rdo',
+                            width: 'xxxs'
+                        }
+                    ]
+                : []),
                 {
                     label: 'Status',
                     key: 'status_with_tooltip',
