@@ -103,6 +103,10 @@ export default {
       if (q !== undefined) {
         query = q;
       }
+      if (from !== undefined && to !== undefined) {
+        startDate = this.formatToWIB(from)
+        endDate = this.formatToWIB(to)
+      }
       await axios
         .get(
           this.URL.cash_register +
@@ -111,7 +115,9 @@ export default {
         )
         .then((res) => {
           let arr = res.data.data;
-
+          arr.map((item) => {
+            item.created_at = this.formatTimezone(item.created_at);
+          })
 
           this.dataTable = arr;
 
@@ -200,8 +206,12 @@ export default {
     }
   },
   mounted() {
+    window.addEventListener('timezone-changed', this.refresh);
     this.refresh();
     this.handlePrintShortcut(this.actionPrintSelected)
+  },
+  beforeDestroy() {
+    window.removeEventListener('timezone-changed', this.refresh);
   },
 };
 </script>

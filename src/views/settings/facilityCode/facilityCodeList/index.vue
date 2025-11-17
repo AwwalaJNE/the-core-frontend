@@ -95,6 +95,26 @@ export default {
                     key: "destination",
                     width: "xs"
                 },
+                {
+                    label: "Created At",
+                    key: "created_at",
+                    width: "lg"
+                },
+                {
+                    label: "Created By",
+                    key: "user_creator",
+                    width: "lg"
+                },
+                {
+                    label: "Updated At",
+                    key: "updated_at",
+                    width: "lg"
+                },
+                {
+                    label: "Updated By",
+                    key: "user_editor",
+                    width: "lg"
+                },
             ],
             loading: false,
             dataItem: {},
@@ -152,6 +172,8 @@ export default {
                     if(res.data.data.length > 0) {
                         this.dataTable = res.data.data
                         this.dataTable.length > 0 && this.dataTable.map((item) => {
+                            item.created_at = this.formatTimezone(item.created_at)
+                            item.updated_at = this.formatTimezone(item.updated_at)
                             item["user_name"] = item.users.map((itm, index) => {
                                 const { user_name } = itm || {};
                                 let newline = "\n";
@@ -238,7 +260,11 @@ export default {
         },
     },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.refresh()
+    },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
     },
 }
 </script>

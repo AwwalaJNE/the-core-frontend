@@ -1,13 +1,18 @@
 <template>
-    <vs-row style="gap: 20px;">
+    <vs-row style="gap: 20px">
         <vs-col>
             <template v-if="cardType === 'transit-card'">
                 <div
-                    v-for="(item, idx) in DataArr.filter(item => item.transit_at)"
+                    v-for="(item, idx) in DataArr.filter((item) => item.transit_at)"
                     :key="item.id || idx"
                     class="card-wrapper disabled-item"
+                    :data-test-id="`disabled-transit-card-${idx}`"
                 >
-                    <transit-card :data="item" :isDisabled="true" />
+                    <transit-card
+                        :data="item"
+                        :isDisabled="true"
+                        data-test-id="disabled-transit-card-component"
+                    />
                 </div>
 
                 <draggable
@@ -15,29 +20,44 @@
                     :options="dragOptions"
                     @start="drag = true"
                     @end="onDragEnd"
+                    data-test-id="transit-draggable-container"
                 >
-                <transition-group tag="div" name="flip-list" :css="!drag">
-                    <div
-                        v-for="(item, idx) in draggableItems"
-                        :key="item.id || idx"
-                        class="card-wrapper"
+                    <transition-group
+                        tag="div"
+                        name="flip-list"
+                        :css="!drag"
+                        data-test-id="transit-card-list"
                     >
+                        <div
+                            v-for="(item, idx) in draggableItems"
+                            :key="item.id || idx"
+                            class="card-wrapper"
+                            :data-test-id="`transit-card-${idx}`"
+                        >
+                            <div
+                                v-if="listenRemoveButton"
+                                class="drag-button"
+                                data-test-id="drag-button"
+                            >
+                                <img src="@/assets/svg/dot-menu.svg" />
+                            </div>
 
-                    <div v-if="listenRemoveButton" class="drag-button">
-                        <img src="@/assets/svg/dot-menu.svg" />
-                    </div>
+                            <div
+                                v-if="listenRemoveButton"
+                                class="remove-button"
+                                @click.stop="remove(item.bag_transit_route_id)"
+                                data-test-id="remove-button"
+                            >
+                                <i class="bx bx-trash"></i>
+                            </div>
 
-                    <div
-                        v-if="listenRemoveButton"
-                        class="remove-button"
-                        @click.stop="remove(item.bag_transit_route_id)"
-                    >
-                        <i class="bx bx-trash"></i>
-                    </div>
-
-                    <transit-card :data="item" :isDisabled="false" />
-                    </div>
-                </transition-group>
+                            <transit-card
+                                :data="item"
+                                :isDisabled="false"
+                                data-test-id="transit-card-component"
+                            />
+                        </div>
+                    </transition-group>
                 </draggable>
             </template>
 
@@ -49,12 +69,12 @@
 </template>
 
 <script>
-import draggable from "vuedraggable";
-import TransitCard from "@/components/card/transitCard";
+import draggable from 'vuedraggable'
+import TransitCard from '@/components/card/transitCard'
 
 export default {
-    name: "draggable-card",
-    components: { draggable, "transit-card": TransitCard },
+    name: 'draggable-card',
+    components: { draggable, 'transit-card': TransitCard },
     props: {
         cardType: String,
         valueData: Array,
@@ -64,46 +84,46 @@ export default {
         return {
             DataArr: this.valueData || [],
             drag: false,
-        };
+        }
     },
     watch: {
         valueData(newVal) {
-            this.DataArr = newVal;
+            this.DataArr = newVal
         },
     },
     computed: {
         listenRemoveButton() {
-            return this.isRemoveButton || false;
+            return this.isRemoveButton || false
         },
         draggableItems: {
             get() {
-                return this.DataArr.filter(item => !item.transit_at);
+                return this.DataArr.filter((item) => !item.transit_at)
             },
             set(newOrder) {
-                const transitItems = this.DataArr.filter(item => item.transit_at);
-                this.DataArr = [...transitItems, ...newOrder];
+                const transitItems = this.DataArr.filter((item) => item.transit_at)
+                this.DataArr = [...transitItems, ...newOrder]
             },
         },
         dragOptions() {
             return {
                 animation: 200,
-                ghostClass: "ghost",
-                handle: ".drag-button",
-                filter: ".disabled-item",
+                ghostClass: 'ghost',
+                handle: '.drag-button',
+                filter: '.disabled-item',
                 preventOnFilter: false,
-            };
+            }
         },
     },
     methods: {
         remove(id) {
-            this.$emit("remove", id);
+            this.$emit('remove', id)
         },
         onDragEnd() {
-            this.drag = false;
-            this.$emit("update-order", this.DataArr);
+            this.drag = false
+            this.$emit('update-order', this.DataArr)
         },
     },
-};
+}
 </script>
 
 <style scoped lang="scss">

@@ -1,57 +1,72 @@
 <template>
-    <vs-row style="padding: 1rem 0;">
+    <vs-row style="padding: 1rem 0">
         <button
             v-if="canScrollLeft"
             class="scroll-btn left"
+            data-testid="scroll-left-btn"
             @click="scrollTabs(-150)"
         >
-            <i class='bx bx-chevrons-left' ></i>
+            <i class="bx bx-chevrons-left"></i>
         </button>
 
-        <div class="tab-container" ref="tabContainer" @scroll="updateScrollButtons">
-           <router-link
-            v-for="(item, key) in listenTab"
-            :key="key"
-            :to="item.url"
-            :class="['tab', { active: isActiveUrl(item.url) }]"
-            @click.native="handleSelect(item.url)"
+        <div
+            class="tab-container"
+            ref="tabContainer"
+            data-testid="tab-container"
+            @scroll="updateScrollButtons"
+        >
+            <router-link
+                v-for="(item, key) in listenTab"
+                :key="key"
+                :to="item.url"
+                :class="['tab', { active: isActiveUrl(item.url) }]"
+                :data-testid="`tab-${key}`"
+                @click.native="handleSelect(item.url)"
             >
-            <i :class="`${item.icon}`" /> {{ item.label }}
+                <i :class="`${item.icon}`" /> <span v-copy="item.label">{{ item.label }}</span>
             </router-link>
         </div>
-        
+
         <button
             v-if="canScrollRight"
             class="scroll-btn right"
+            data-testid="scroll-right-btn"
             @click="scrollTabs(150)"
         >
-            <i class='bx bx-chevrons-right'></i>
+            <i class="bx bx-chevrons-right"></i>
         </button>
     </vs-row>
 </template>
 
 <script>
 export default {
-    name: "tab-menu",
+    name: 'tab-menu',
     props: {
-        tab: Array
+        tab: Array,
     },
     computed: {
         listenTab() {
-            return this.tab || [];
-        }
+            return this.tab || []
+        },
     },
     data() {
         return {
-            isActive: "",
+            isActive: '',
             canScrollLeft: false,
             canScrollRight: false,
-        };
+        }
     },
     watch: {
         '$route.path'() {
-            this.updateActiveTabFromRoute();
-        }
+            this.updateActiveTabFromRoute()
+            this.$nextTick(() => this.updateScrollButtons()) // ensure updated DOM
+        },
+        tab: {
+            handler() {
+                this.$nextTick(() => this.updateScrollButtons())
+            },
+            deep: true,
+        },
     },
     methods: {
         handleSelect(url) {
@@ -65,28 +80,28 @@ export default {
             return current === baseUrl || current.startsWith(baseUrl + '/')
         },
         updateScrollButtons() {
-            const el = this.$refs.tabContainer;
-            this.canScrollLeft = el.scrollLeft > 5;
-            this.canScrollRight = el.scrollLeft + el.clientWidth < el.scrollWidth - 5;
+            const el = this.$refs.tabContainer
+            this.canScrollLeft = el.scrollLeft > 5
+            this.canScrollRight = el.scrollLeft + el.clientWidth < el.scrollWidth - 5
         },
         scrollTabs(offset) {
-            this.$refs.tabContainer.scrollBy({ left: offset, behavior: "smooth" });
+            this.$refs.tabContainer.scrollBy({ left: offset, behavior: 'smooth' })
         },
         updateActiveTabFromRoute() {
-            const currentPath = this.$route.path;
-            const match = this.listenTab.find(tab => tab.url === currentPath);
-            this.isActive = match ? match.url : "";
-        }
+            const currentPath = this.$route.path
+            const match = this.listenTab.find((tab) => tab.url === currentPath)
+            this.isActive = match ? match.url : ''
+        },
     },
     mounted() {
-        this.updateActiveTabFromRoute();
-        this.updateScrollButtons();
-        window.addEventListener("resize", this.updateScrollButtons);
+        this.updateActiveTabFromRoute()
+        this.updateScrollButtons()
+        window.addEventListener('resize', this.updateScrollButtons)
     },
     beforeUnmount() {
-        window.removeEventListener("resize", this.updateScrollButtons);
+        window.removeEventListener('resize', this.updateScrollButtons)
     },
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -126,8 +141,8 @@ export default {
 
     &.active {
         border-radius: 9999px;
-        background-color: #F3F7FF;
-        color: #195BFF;
+        background-color: #f3f7ff;
+        color: #195bff;
     }
 }
 

@@ -4,18 +4,19 @@
             <vs-col xs="6" sm="4" lg="4">
                 <div class="titlePage">
                     <breadcrumb />
-                    <h2>{{ title }}</h2>
+                    <h2 v-copy="title">{{ title }}</h2>
                 </div>
             </vs-col>
             <vs-col xs="6" sm="3" lg="3">
-                <div style="position:relative;display:flex;justify-content: flex-end;">
-                    <div style="width: 100px;padding-right: 5px;">
+                <div style="position: relative; display: flex; justify-content: flex-end">
+                    <div style="width: 100px; padding-right: 5px">
                         <vs-button
                             flat
                             block
                             :active="true"
                             @click="openDialog"
-                        > 
+                            :data-testid="'create-new-runsheet-button'"
+                        >
                             <i class="bx bx-plus"></i> New
                         </vs-button>
                     </div>
@@ -27,40 +28,48 @@
             <div class="box view">
                 <div class="nav-box">
                     <vs-row justify>
-                        <vs-col xs="6" sm="2" lg="3" class="mb-15">
-                            <vs-input 
+                        <vs-col xs="6" sm="2" lg="4" class="mb-15">
+                            <!-- <vs-input 
                                 v-model="tempDate" 
                                 type="date" 
+                            /> -->
+                            <date-time
+                                :name="''"
+                                :rules="''"
+                                :formKey="'DATE_TIME_WITHOUT_SECONDS'"
+                                :valueData="tempDate"
+                                typeInput="datetimerange"
+                                @updateValue="updateValue"
                             />
                         </vs-col>
-                        <vs-col xs="6" sm="2" lg="3">
+                        <vs-col xs="6" sm="2" lg="2">
                             <div class="select-delivery">
-                                <selector 
+                                <selector
                                     formKey="filter_priority"
                                     :valueData="filterPriority"
                                     :selectedValue="filterPriorityBy"
                                     :isMultiple="false"
                                     :loading="loading"
-                                    @updateValue="updatefilterPriorityBy" 
+                                    @updateValue="updatefilterPriorityBy"
                                 />
                             </div>
                         </vs-col>
                         <vs-col xs="12" sm="12" lg="6">
                             <vs-row justify="end">
                                 <vs-col xs="6" sm="8" lg="4">
-                                    <select-search-by 
-                                        :isMultiple="false" 
-                                        :border="true" 
-                                        :selectedValue="searchBy" 
-                                        :valueData="searchParams" 
-                                        @updateSearchBy="updateSearchBy" 
+                                    <select-search-by
+                                        :isMultiple="false"
+                                        :border="true"
+                                        :selectedValue="searchBy"
+                                        :valueData="searchParams"
+                                        @updateSearchBy="updateSearchBy"
                                     />
                                 </vs-col>
                                 <vs-col xs="6" sm="4" lg="4">
-                                    <search-input 
-                                        ref="searchInput" 
-                                        :placeholder="searchPlaceholder" 
-                                        @searchValue="searchValue" 
+                                    <search-input
+                                        ref="searchInput"
+                                        :placeholder="searchPlaceholder"
+                                        @searchValue="searchValue"
                                         @handleSearch="handleSearch"
                                     />
                                 </vs-col>
@@ -86,119 +95,122 @@
 
         <dialog-create-runsheet
             title="Create New Runsheet"
-            :active="dialogCreateRunsheet" 
+            :active="dialogCreateRunsheet"
             :closeDialog="closeDialog"
-            @refresh="refresh"        
+            @refresh="refresh"
         />
     </div>
 </template>
 <script>
-import axios from "axios";
-import moment from "moment";
-import master from "@/mixins/master";
+import axios from 'axios'
+import moment from 'moment'
+import master from '@/mixins/master'
 
-import Breadcrumb from "@/components/breadcrumb/index";
-import dateRange from "@/components/daterange/index";
-import NavItem from "@/components/navbar/navTab";
-import SearchInput from "@/components/search/searchInput";
-import SelectSearchBy from "@/components/search/selectSearchBy";
-import Selector from "@/components/input/select";
+import Breadcrumb from '@/components/breadcrumb/index'
+import DateTime from '@/components/input/dateTime'
+import dateRange from '@/components/daterange/index'
+import NavItem from '@/components/navbar/navTab'
+import SearchInput from '@/components/search/searchInput'
+import SelectSearchBy from '@/components/search/selectSearchBy'
+import Selector from '@/components/input/select'
 
-import DeliveryRunsheetTable from "@/views/delivery/runsheetNew/runsheetTable";
-import DialogCreateRunsheet from "@/views/delivery/runsheetNew/dialogCreateRunsheet";
+import DeliveryRunsheetTable from '@/views/delivery/runsheetNew/runsheetTable'
+import DialogCreateRunsheet from '@/views/delivery/runsheetNew/dialogCreateRunsheet'
 
 export default {
-    name: "Inbound-List",
+    name: 'Inbound-List',
     mixins: [master],
     components: {
-        "nav-item": NavItem,
+        'nav-item': NavItem,
         breadcrumb: Breadcrumb,
-        "search-input": SearchInput,
-        "daterange-filter": dateRange,
-        "select-search-by" : SelectSearchBy,
+        'search-input': SearchInput,
+        'daterange-filter': dateRange,
+        'select-search-by': SelectSearchBy,
         DeliveryRunsheetTable: DeliveryRunsheetTable,
-        "dialog-create-runsheet": DialogCreateRunsheet,
-        "selector": Selector,
+        'dialog-create-runsheet': DialogCreateRunsheet,
+        selector: Selector,
+        'date-time': DateTime,
     },
     data() {
         return {
-            title: "Assign",
-            tempSearch: "",
-            tempDate: moment().format("YYYY-MM-DD"),
+            loading: false,
+            title: 'Assign',
+            tempSearch: '',
+            tempDate: [],
             DataNode: [],
-            node_request: "",
-            node_origin: "",
-            node_destination: "",
-            searchBy:"delivery_runsheet_number",
-            filterDateBy:"create",
-            searchPlaceholder: "Search Runsheet Number",
+            node_request: '',
+            node_origin: '',
+            node_destination: '',
+            searchBy: 'delivery_runsheet_number',
+            filterDateBy: 'create',
+            searchPlaceholder: 'Search Runsheet Number',
             searchParams: [
                 {
-                    label: "Runsheet Number",
-                    value: "delivery_runsheet_number",
+                    label: 'Runsheet Number',
+                    value: 'delivery_runsheet_number',
                 },
                 {
-                    label: "DRI Number",
-                    value: "dri_number",
+                    label: 'DRI Number',
+                    value: 'dri_number',
                 },
                 {
-                    label: "HRS Number",
-                    value: "hrs_number",
+                    label: 'HRS Number',
+                    value: 'hrs_number',
                 },
                 {
-                    label: "Courier Code",
-                    value: "courier_code",
+                    label: 'Courier Code',
+                    value: 'courier_code',
                 },
                 {
-                    label: "Courier Name",
-                    value: "courier_name",
-                }
+                    label: 'Courier Name',
+                    value: 'courier_name',
+                },
             ],
             dateParams: [
                 {
                     label: 'Create Date Delivery',
-                    value: 'create'
+                    value: 'create',
                 },
             ],
             dialogCreateRunsheet: false,
-            filterPriorityBy: "ALL",
+            filterPriorityBy: 'ALL',
             filterPriority: [
                 {
                     label: 'All Priority',
-                    value: 'ALL'
+                    value: 'ALL',
                 },
                 {
                     label: 'Priority Runsheet',
-                    value: '1'
+                    value: '1',
                 },
                 {
                     label: 'Non Priority Runsheet',
-                    value: '0'
+                    value: '0',
                 },
             ],
-        };
+        }
     },
     watch: {
         searchBy(old, val) {
             if (old !== val) {
                 this.$nextTick(() => {
-                    this.refresh();
-                });
+                    this.refresh()
+                })
             }
         },
     },
     methods: {
         updatefilterPriorityBy(key, val) {
-            this.filterPriorityBy = val;
+            this.filterPriorityBy = val
         },
         refresh() {
-            this.$refs.DeliveryRunsheetTable.refresh();
+            this.$refs.DeliveryRunsheetTable.refresh()
         },
         searchValue(val) {
-            this.tempSearch = val;
+            this.tempSearch = val
         },
         async getDataNodeType() {
-            this.loading = true;
+            this.loading = true
             await axios
                 .get(
                     this.URL.node_type +
@@ -206,30 +218,34 @@ export default {
                     this.Helper.header()
                 )
                 .then((res) => {
-
                     if (res.data.data.length > 0) {
                         res.data.data.map((item) => {
-                            let obj = {};
-                            obj["label"] = item.node_type_name;
-                            obj["value"] = item.node_type_id;
+                            let obj = {}
+                            obj['label'] = item.node_type_name
+                            obj['value'] = item.node_type_id
 
-                            this.DataNode.push(obj);
-                        });
+                            this.DataNode.push(obj)
+                        })
                     }
 
-                    this.loading = false;
+                    this.loading = false
                 })
                 .catch((err) => {
-                    this.loading = false;
-                    this.openNotification("danger", err?.response?.data?.code ?? '', "Failed to populate node list", err?.response?.data?.message ?? 'something went wrong');
-                });
+                    this.loading = false
+                    this.openNotification(
+                        'danger',
+                        err?.response?.data?.code ?? '',
+                        'Failed to populate node list',
+                        err?.response?.data?.message ?? 'something went wrong'
+                    )
+                })
         },
         updateSearchBy(key, val) {
-            val = val.replaceAll(" ", "_");
-            this.searchBy = val;
-            this.searchPlaceholder = key;
+            val = val.replaceAll(' ', '_')
+            this.searchBy = val
+            this.searchPlaceholder = key
         },
-        openDialog(){
+        openDialog() {
             this.dialogCreateRunsheet = true
         },
         closeDialog() {
@@ -238,22 +254,29 @@ export default {
         createNewShortcut() {
             document.addEventListener('keydown', (e) => {
                 if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'r') {
-                    e.preventDefault();
-                    this.openDialog();
+                    e.preventDefault()
+                    this.openDialog()
                 }
-            });
+            })
         },
         handleSearch() {
             this.$nextTick(() => {
-                this.refresh();
-                this.$refs.searchInput.clear();
-            });
-        }
+                this.refresh()
+                this.$refs.searchInput.clear()
+            })
+        },
+        updateValue(key, val) {
+            switch (key) {
+                case 'DATE_TIME_WITHOUT_SECONDS':
+                    this.tempDate = val
+                    break
+            }
+        },
     },
     mounted() {
         this.createNewShortcut()
-    }
-};
+    },
+}
 </script>
 <style scoped>
 .select-delivery {

@@ -3,7 +3,20 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-import { Autocomplete, Checkbox, CheckboxButton, CheckboxGroup, Collapse, CollapseItem, DatePicker, FormItem, Option, Select, TimePicker, Upload } from 'element-ui'
+import {
+    Autocomplete,
+    Checkbox,
+    CheckboxButton,
+    CheckboxGroup,
+    Collapse,
+    CollapseItem,
+    DatePicker,
+    FormItem,
+    Option,
+    Select,
+    TimePicker,
+    Upload,
+} from 'element-ui'
 import locale from 'element-ui/lib/locale'
 import lang from 'element-ui/lib/locale/lang/en'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -18,20 +31,24 @@ import axios from 'axios'
 
 // -------------------- Axios Interceptor --------------------
 axios.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response) {
-      const status = error.response.status
-      const data = error.response.data
+    (response) => response,
+    (error) => {
+        if (error.response) {
+            const status = error.response.status
+            const data = error.response.data
 
-      if (status === 401 || (data && data.reason && data.reason.toLowerCase().includes('unauthenticated')) || (data && data.type === "AuthenticationException")) {
-        localStorage.clear()
-        router.push('/login')
+            if (
+                status === 401 ||
+                (data && data.reason && data.reason.toLowerCase().includes('unauthenticated')) ||
+                (data && data.type === 'AuthenticationException')
+            ) {
+                localStorage.clear()
+                router.push('/login')
+                return Promise.reject(error)
+            }
+        }
         return Promise.reject(error)
-      }
     }
-    return Promise.reject(error)
-  }
 )
 
 // -------------------- Element UI --------------------
@@ -52,16 +69,27 @@ Vue.use(FormItem)
 
 // -------------------- VueCurrencyInput --------------------
 Vue.use(VueCurrencyInput, {
-  globalOptions: { 
-    currency: {prefix: 'Rp ', suffix: ''},
-    allowNegative: false,
-    distractionFree: {
-      hideNegligibleDecimalDigits: true,
-      hideGroupingSymbol: false,
-      hideCurrencySymbol: false
+    globalOptions: {
+        currency: { prefix: 'Rp ', suffix: '' },
+        locale: 'id-ID',
+        precision: 0, // 0 decimal places
+        valueAsInteger: false, // save number as is (not multiplied by 100)
+        autoDecimalDigits: false, // don't automatically add decimal digits
+        hideCurrencySymbolOnFocus: true,
+        hideGroupingSeparatorOnFocus: false, // Show grouping separator on focus
+        allowNegative: false, // Don't allow negative numbers
+        distractionFree: {
+            hideNegligibleDecimalDigits: true,
+            hideGroupingSymbol: false,
+            hideCurrencySymbol: false,
+        },
+        // Custom formatting for Indonesian Rupiah
+        currencyDisplay: 'symbol',
+        currencySign: 'standard',
+        useGrouping: true, // Enable thousand separators
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
     },
-    autoDecimalMode: false
-  }
 })
 
 // -------------------- Vue LS --------------------
@@ -76,65 +104,82 @@ Vue.prototype.$nextTick = Vue.nextTick
 
 // -------------------- Uppercase Directive --------------------
 Vue.directive('uppercase', {
-  bind(el, binding) {
-    const input = el.querySelector('input')
-    if (!input) return
-    if (binding.value) input.value = binding.value.toUpperCase()
-    input.addEventListener('input', () => {
-      input.value = input.value.toUpperCase()
-      input.dispatchEvent(new Event('input'))
-    })
-  },
-  update(el, binding) {
-    const input = el.querySelector('input')
-    if (!input) return
-    if (binding.value !== undefined) {
-      input.value = binding.value.toUpperCase()
-      input.dispatchEvent(new Event('input'))
-    }
-  }
+    bind(el, binding) {
+        const input = el.querySelector('input')
+        if (!input) return
+        if (binding.value) input.value = binding.value.toUpperCase()
+        input.addEventListener('input', () => {
+            input.value = input.value.toUpperCase()
+            input.dispatchEvent(new Event('input'))
+        })
+    },
+    update(el, binding) {
+        const input = el.querySelector('input')
+        if (!input) return
+        if (binding.value !== undefined) {
+            input.value = binding.value.toUpperCase()
+            input.dispatchEvent(new Event('input'))
+        }
+    },
 })
 
 // -------------------- Version Auto-Refresh --------------------
-let currentVersion = null;
+let currentVersion = null
 
-const channel = new BroadcastChannel('version_channel');
+const channel = new BroadcastChannel('version_channel')
 
 async function checkVersion() {
-  try {
-    const res = await fetch('/version.json?cacheBust=' + Date.now());
-    const { version } = await res.json();
+    try {
+        const res = await fetch('/version.json?cacheBust=' + Date.now())
+        const { version } = await res.json()
 
-    if (!currentVersion) {
-      currentVersion = version;
-    } else if (currentVersion !== version) {
-      console.log('🔄 New version detected, broadcasting reload...');
+        if (!currentVersion) {
+            currentVersion = version
+        } else if (currentVersion !== version) {
+            console.log('🔄 New version detected, broadcasting reload...')
 
-      channel.postMessage(version);
+            channel.postMessage(version)
 
-      window.location.reload(true);
+            window.location.reload(true)
+        }
+    } catch (e) {
+        console.error('❌ Version check failed:', e)
     }
-  } catch (e) {
-    console.error("❌ Version check failed:", e);
-  }
 }
 
 channel.onmessage = (event) => {
-  const newVersion = event.data;
-  if (newVersion && newVersion !== currentVersion) {
-    console.log('🔄 Reload triggered from another tab via BroadcastChannel');
-    window.location.reload(true);
-  }
-};
+    const newVersion = event.data
+    if (newVersion && newVersion !== currentVersion) {
+        console.log('🔄 Reload triggered from another tab via BroadcastChannel')
+        window.location.reload(true)
+    }
+}
 
-checkVersion();
+checkVersion()
 
-setInterval(checkVersion, 60000);
+setInterval(checkVersion, 60000)
 
+// -------------------- Copy Vue --------------------
+
+Vue.directive('copy', {
+    bind(el, binding, vnode) {
+        el.addEventListener('click', () => {
+            const value = binding.value || ''
+            const vm = vnode.context // same as "this" in the component
+
+            // ✅ check developer mode from component
+            if (!vm?.listenIsDeveloperMode) return
+            if (!value) return
+
+            // Copy text
+            navigator.clipboard.writeText(value.toString())
+        })
+    },
+})
 
 // -------------------- Mount Vue --------------------
 new Vue({
-  router,
-  store,
-  render: h => h(App),
+    router,
+    store,
+    render: (h) => h(App),
 }).$mount('#app')

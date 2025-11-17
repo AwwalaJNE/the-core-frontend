@@ -25,6 +25,7 @@
                             :isAllowCreate="true"
                             :autofocus="true"
                             @updateValue="updateValue"
+                           @click="setActive('koliCode')"
                         />
                     </form>
                 </vs-col>
@@ -50,7 +51,8 @@
                             :isMultiple="false"
                             :disabled="false"
                             :isAllowCreate="true"
-                            @updateValue="updateValue"  
+                            @updateValue="updateValue" 
+                            @click="setActive('removeKoliCode')" 
                         />
                     </form>
                 </vs-col>
@@ -186,6 +188,14 @@ export default {
         is_history(newValue, oldValue) {
             if (newValue !== oldValue) {
                 this.refresh();
+            }
+        },
+        dialogValidateTracingActive(newVal) {
+            if (newVal) {
+                this.$nextTick(() => {
+                    const el = this.getInputByRef(this.activeInput);
+                    if (el && typeof el.blur === 'function') el.blur();
+                });
             }
         }
     },
@@ -349,6 +359,30 @@ export default {
         }
     },
     methods: {
+        setActive(refName) {
+            if (refName === 'koliCode') {
+                this.setActiveInput('koliCode', null, () => this.dialogValidateTracingActive)
+            } else if (refName === 'removeKoliCode') {
+                this.setActiveInput('removeKoliCode', null, () => this.dialogValidateTracingActive)
+            }
+        },
+        handleTabFocus(e) {
+            if (e.key !== 'Tab') return
+
+            // Daftar input yang boleh fokus
+            const refs = ['koliCode', 'removeKoliCode']
+
+            // Cegah perilaku tab default (pindah ke input lain)
+            e.preventDefault()
+
+            // Cari index ref yang sedang aktif
+            const currentIndex = refs.indexOf(this.activeInput)
+            const nextIndex = (currentIndex + 1) % refs.length // looping
+
+            // Pindah fokus ke ref berikutnya
+            const nextRef = refs[nextIndex]
+            this.setActive(nextRef)
+        },
         async getTableData(limit, page, q, from, to) {
             this.loading = true;
 
@@ -366,6 +400,7 @@ export default {
                     } else {
                         item.koli_with_priority = item.koli_number;
                     }
+                    item.created_at = this.formatTimezone(item.created_at);
 
                     return item;
                 })
@@ -460,9 +495,11 @@ export default {
             this.validateType = actionType;
             if (actionType === 'create' && this.koliCode?.length) {
                 this.validateCreateItem({ items: this.koliCode });
+                this.setActiveInput('koliCode', null, () => true)
             } else if (actionType === 'remove' && this.removeKoliCode?.length) {
                 // TODO: Adjust after Remove Validation API ready
                 this.validateRemoveItem(this.removeKoliCode.map(el => ({item_number: el, status: "SUCCESS"})));
+                this.setActiveInput('removeKoliCode', null, () => true)
             }
         },
         closeDialog() {
@@ -568,8 +605,17 @@ export default {
         }
     },
     mounted() {
+        window.addEventListener('keydown', this.handleTabFocus)
+        window.addEventListener('timezone-changed', this.refresh);
+        this.setActiveInput('koliCode', null, () => this.dialogValidateTracingActive)
         this.refresh();
-    }
+    },
+    beforeDestroy () {
+        window.removeEventListener('timezone-changed', this.refresh);
+    },
+    beforeUnmount() {
+        window.removeEventListener('keydown', this.handleTabFocus)
+    },
 }
 </script>
 <style scoped>

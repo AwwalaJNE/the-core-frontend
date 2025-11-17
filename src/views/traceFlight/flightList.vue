@@ -107,6 +107,10 @@ export default {
             try {
                 const res = await axios.get(`${this.URL.sync_flight}?n=${this.listenNodeId}&transport_type=${transport_type}&flight_status=${flight_status}&flight_date=${flight_date}&flight_iata=${flight_iata}&limit=${limit}&page=${page}`, this.Helper.header());
                 this.dataTable = res.data.data;
+                this.dataTable.map(item => {
+                    item.eta = this.formatTimezone(item.eta)
+                    item.etd = this.formatTimezone(item.etd)
+                })
             } catch (err) {
                 this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
             } finally {
@@ -128,6 +132,10 @@ export default {
     },
     mounted() {
         this.refresh();
+        window.addEventListener('timezone-changed', this.refresh);
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    }
 }
 </script>

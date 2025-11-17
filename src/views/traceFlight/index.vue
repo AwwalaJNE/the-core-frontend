@@ -2,28 +2,26 @@
     <div>
         <vs-row justify="space-between">
             <vs-col xs="6" sm="4" lg="4">
-                <div class="titlePage">
-                </div>
+                <div class="titlePage"></div>
             </vs-col>
         </vs-row>
         <section>
             <div class="box view">
-                <form @submit.prevent="processFlightNumber" style="display: flex; margin-top: 2em;">
+                <form @submit.prevent="processFlightNumber" style="display: flex; margin-top: 2em">
                     <vs-col w="3">
-                        <vs-input 
+                        <vs-input
                             id="traceFlight"
-                            border 
+                            border
                             type="text"
                             v-model="flightNumber"
                             label-placeholder="Masukkan Flight Number"
-                            :autofocus="true"
                             :disabled="hasFlightNumber"
                             v-uppercase
                             ref="formFlightNumber"
                             @keyup.enter="processFlightNumber"
                         />
                         <template v-if="hasFlightNumber">
-                            <div style="position:absolute;right:20px; top:15px;">
+                            <div style="position: absolute; right: 20px; top: 15px">
                                 <span class="vs-select__chips__chip__close" @click="clearInput">
                                     <i class="vs-icon-close vs-icon-hover-less"></i>
                                 </span>
@@ -42,7 +40,7 @@
                 <vs-col w="12">
                     <nav-item :navItem="navItem" @activeTab="activeTab" />
                 </vs-col>
-                <vs-row >
+                <vs-row>
                     <template v-if="navActive === 'k-FLIGHT-LIST'">
                         <vs-col xs="12" sm="12" lg="12">
                             <flight-list :flightNumber="flightNumber" />
@@ -52,97 +50,87 @@
             </div>
         </section>
     </div>
-  </template>
-  
+</template>
+
 <script>
+import master from '@/mixins/master'
 
-import master from "@/mixins/master";
+import Breadcrumb from '@/components/breadcrumb/index'
+import NavItem from '@/components/navbar/navTab'
 
-import Breadcrumb from "@/components/breadcrumb/index";
-import NavItem from "@/components/navbar/navTab";
-
-import FlightList from "@/views/traceFlight/flightList";
+import FlightList from '@/views/traceFlight/flightList'
 
 export default {
-    name: "trace-flight",
+    name: 'trace-flight',
     mixins: [master],
     components: {
-        "nav-item": NavItem,
-        "breadcrumb": Breadcrumb,
-        "flight-list": FlightList,
+        'nav-item': NavItem,
+        breadcrumb: Breadcrumb,
+        'flight-list': FlightList,
     },
     data() {
         return {
-            flightNumber: "",
+            flightNumber: '',
             hasFlightNumber: false,
             navItem: [
                 {
-                    label: "FLIGHT LIST",
-                    key: "k-FLIGHT-LIST",
-                    title: "Flight List"
-                }
+                    label: 'FLIGHT LIST',
+                    key: 'k-FLIGHT-LIST',
+                    title: 'Flight List',
+                },
             ],
-            title: "Flight List",
-            navActive: "k-FLIGHT-LIST",
-        };
+            title: 'Flight List',
+            navActive: 'k-FLIGHT-LIST',
+        }
     },
     methods: {
         activeTab(val) {
-            this.navActive = val;
-            let item = this.navItem.filter(item => {
-                return item.key == val;
-            });
-            this.title = item[0].title;
+            this.navActive = val
+            let item = this.navItem.filter((item) => {
+                return item.key == val
+            })
+            this.title = item[0].title
         },
         async processFlightNumber() {
-            if (!this.flightNumber || this.flightNumber.trim() === "") {
-                return;
+            if (!this.flightNumber || this.flightNumber.trim() === '') {
+                return
             }
 
-            const encoded = encodeURIComponent(this.flightNumber.trim());
-            await this.$router.push(`/trace/trace-flight/${encoded}`);
-            this.setRoutePageHistory(this.$route.meta, false);
-            this.hasFlightNumber = true;
+            const encoded = encodeURIComponent(this.flightNumber.trim())
+            await this.$router.push(`/trace/trace-flight/${encoded}`)
+            this.setRoutePageHistory(this.$route.meta, false)
+            this.hasFlightNumber = true
         },
         clearInput() {
-            this.hasFlightNumber = false;
-            this.flightNumber = "";
-            this.activeTab("k-FLIGHT-LIST");
-            this.$router.push("/trace/trace-flight");
-            this.setRoutePageHistory(this.$route.meta, false);
-            this.focusFlightInput();
+            this.hasFlightNumber = false
+            this.flightNumber = ''
+            this.activeTab('k-FLIGHT-LIST')
+            this.$router.push('/trace/trace-flight')
+            this.setRoutePageHistory(this.$route.meta, false)
         },
-        focusFlightInput() {
-            this.$nextTick(() => {
-                const input = this.$refs.formFlightNumber?.$el?.querySelector("input");
-                if (input && !input.disabled) {
-                    input.focus();
-                }
-            });
-        }
     },
     mounted() {
-    const id = this.$route.params?.id;
-      if (id) {
-        const decoded = decodeURIComponent(id);
-        this.flightNumber = decoded;
-        this.hasFlightNumber = true;
-      } else {
-        this.clearInput();
-      }
-    this.focusFlightInput();
+        const id = this.$route.params?.id
+        if (id) {
+            const decoded = decodeURIComponent(id)
+            this.flightNumber = decoded
+            this.hasFlightNumber = true
+        } else {
+            this.clearInput()
+        }
+        this.setActiveInput('formFlightNumber')
     },
     watch: {
-      "$route.params.id"(val) {
-        if (val) {
-          const decoded = decodeURIComponent(val);
-          this.flightNumber = decoded;
-          this.hasFlightNumber = true;
-        } else {
-          this.clearInput();
-        }
-      }
-    }
-};
+        '$route.params.id'(val) {
+            if (val) {
+                const decoded = decodeURIComponent(val)
+                this.flightNumber = decoded
+                this.hasFlightNumber = true
+            } else {
+                this.clearInput()
+                this.setActiveInput('formFlightNumber')
+            }
+        },
+    },
+}
 </script>
-  

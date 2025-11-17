@@ -128,6 +128,7 @@
         </section>
         <dialog-create-edit-stock
             title="Create Surat Muatan Stock"
+            source="setting"
             :active="dialogActiveStock"
             :closeDialog="closeDialog"
             @refresh="refresh"

@@ -5,22 +5,27 @@
                 <i :class="icon" @click="clear"></i>
             </template>
             <template v-else>
-                <img 
-                    :src="require('../../assets/svg/receiving.svg')" 
-                >
+                <img :src="receivingIcon" />
             </template>
         </button>
     </div>
 </template>
 <script>
+import receivingIcon from '@/assets/svg/receiving.svg'
+
 export default {
-    name: "FloatingActionButton",
+    name: 'FloatingActionButton',
     props: {
         handleClick: Function,
         customIcon: Boolean,
         icon: String,
-    }
-};
+    },
+    data() {
+        return {
+            receivingIcon,
+        }
+    },
+}
 </script>
 <style scoped>
 .fab-container {
@@ -46,4 +51,3 @@ export default {
     transition: all 0.3s ease;
 }
 </style>
-  

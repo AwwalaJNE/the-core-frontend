@@ -1,11 +1,12 @@
 <template>
     <div>
-        <div style="position: absolute; top: 0; right: 0; width: 100px;">
-            <vs-button 
-                flat 
-                square 
-                block 
-                :active="true" 
+        <div style="position: absolute; top: 0; right: 0; width: 100px">
+            <vs-button
+                flat
+                square
+                block
+                :active="true"
+                :data-testid="`receiving-button`"
                 @click="openDialog"
             >
                 RECEIVING
@@ -14,425 +15,460 @@
 
         <section class="nodes">
             <div class="box view">
-              <div class="nav-box">
-                <vs-row justify="space-between">
-                  <vs-col xs="12" sm="6" lg="6" style="padding: 0;">
-                    <vs-row>
-                      <vs-col xs="12" sm="6" lg="4">
-                        <template v-if="DataNode.length > 1">
-                          <vs-select
-                              class="m-select"
-                              filter
-                              :multiple="false"
-                              autocomplete="off"
-                              
-                              v-model="node_request"
-                              :border="true"
-                              @change="updateNode"
-                          >
-                            <template v-if="DataNode.length > 1">
-                              <vs-option
-                                  v-for="(item,key) in DataNode"
-                                  :key="key"
-                                  :label="item.label"
-                                  :value="item.value">
-                                {{item.label}}
-                              </vs-option>
-                            </template>
-
-                          </vs-select>
-
-                        </template>
-                      </vs-col>
-                      <vs-col xs="12" sm="6" lg="6">
-                        <template v-if="nodeOrigin.length > 0">
-                          <vs-select
-                              class="m-select"
-                              filter
-                              :multiple="false"
-                              placeholder="Origin"
-                              v-model="node_origin"
-                              :border="false"
-                              @change="updateNode"
-                          >
-                            <template v-if="nodeOrigin.length > 0">
-                              <vs-option
-                                  v-for="(item,key) in nodeOrigin"
-                                  :key="key"
-                                  :label="item.label"
-                                  :value="item.value">
-                                {{item.label}}
-                              </vs-option>
-                            </template>
-
-                          </vs-select>
-
-                        </template>
-                      </vs-col>
+                <div class="nav-box">
+                    <vs-row justify="space-between">
+                        <vs-col xs="12" sm="6" lg="6" style="padding: 0">
+                            <vs-row>
+                                <vs-col xs="12" sm="6" lg="4">
+                                    <template v-if="DataNode.length > 1">
+                                        <vs-select
+                                            class="m-select"
+                                            filter
+                                            :multiple="false"
+                                            autocomplete="off"
+                                            v-model="node_request"
+                                            :border="true"
+                                            :data-testid="`select-button-node`"
+                                            @change="updateNode"
+                                        >
+                                            <template v-if="DataNode.length > 1">
+                                                <vs-option
+                                                    v-for="(item, key) in DataNode"
+                                                    :key="key"
+                                                    :label="item.label"
+                                                    :value="item.value"
+                                                >
+                                                    {{ item.label }}
+                                                </vs-option>
+                                            </template>
+                                        </vs-select>
+                                    </template>
+                                </vs-col>
+                                <vs-col xs="12" sm="6" lg="6">
+                                    <template v-if="nodeOrigin.length > 0">
+                                        <vs-select
+                                            class="m-select"
+                                            filter
+                                            :multiple="false"
+                                            placeholder="Origin"
+                                            v-model="node_origin"
+                                            :border="false"
+                                            :data-testid="`search-origin`"
+                                            @change="updateNode"
+                                        >
+                                            <template v-if="nodeOrigin.length > 0">
+                                                <vs-option
+                                                    v-for="(item, key) in nodeOrigin"
+                                                    :key="key"
+                                                    :label="item.label"
+                                                    :value="item.value"
+                                                >
+                                                    {{ item.label }}
+                                                </vs-option>
+                                            </template>
+                                        </vs-select>
+                                    </template>
+                                </vs-col>
+                            </vs-row>
+                        </vs-col>
+                        <vs-col xs="12" sm="6" lg="6" style="padding: 0">
+                            <vs-row justify="end">
+                                <vs-col xs="12" sm="4" lg="4">
+                                    <select-search-by
+                                        :key="listenBreadcrumbCode"
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateSearchBy="updateSearchBy"
+                                        :valueData="searchParams"
+                                        :selectedValue="searchBy"
+                                    />
+                                </vs-col>
+                                <search-input
+                                    ref="searchInput"
+                                    @searchValue="searchValue"
+                                    :placeholder="searchPlaceholder"
+                                    :isNumeric="searchByNumeric"
+                                />
+                            </vs-row>
+                        </vs-col>
                     </vs-row>
-                  </vs-col>
-                  <vs-col xs="12" sm="6" lg="6" style="padding: 0;">
-                    <vs-row justify="end">
-                      <vs-col xs="12" sm="4" lg="4">
-                        <select-search-by 
-                          :key="listenBreadcrumbCode"
-                          :isMultiple="false" 
-                          :border="true" 
-                          @updateSearchBy="updateSearchBy" 
-                          :valueData="searchParams" 
-                          :selectedValue="searchBy" 
-                        />
-                      </vs-col>
-                      <search-input ref="searchInput" @searchValue="searchValue" :placeholder="searchPlaceholder" :isNumeric="searchByNumeric" />
+                    <vs-row justify>
+                        <vs-col xs="6" sm="4" lg="2">
+                            <inputan :name="name" :rules="rules">
+                                <template v-slot:inputan="props">
+                                    <vs-select
+                                        class="m-select"
+                                        filter
+                                        :multiple="listenIsMultiple"
+                                        :placeholder="name"
+                                        :label="name"
+                                        v-model="value"
+                                        :border="border"
+                                        @change="updateStatusInbound"
+                                        :data-testid="`select-status`"
+                                        :state="
+                                            props.err !== undefined && props.err !== ''
+                                                ? 'danger'
+                                                : 'gray'
+                                        "
+                                    >
+                                        <template v-if="DataArr.length > 0">
+                                            <vs-option
+                                                v-for="(item, key) in DataArr"
+                                                :key="key"
+                                                :label="item.label"
+                                                :value="item.value"
+                                            >
+                                                {{ item.label }}
+                                            </vs-option>
+                                        </template>
+                                    </vs-select>
+                                </template>
+                            </inputan>
+                        </vs-col>
+                        <vs-col xs="6" sm="4" lg="3" v-if="listenBreadcrumbCode === 'Pre Alert'">
+                            <inputan :name="name" :rules="rules">
+                                <template v-slot:inputan="props">
+                                    <vs-select
+                                        class="m-select"
+                                        filter
+                                        :placeholder="name"
+                                        :label="name"
+                                        v-model="values"
+                                        :border="border"
+                                        multiple
+                                        @change="updatePrealert"
+                                        :data-testid="`multiple-select-pre-alert`"
+                                        :state="
+                                            props.err !== undefined && props.err !== ''
+                                                ? 'danger'
+                                                : 'gray'
+                                        "
+                                    >
+                                        <template v-if="DataFilterPrealert.length > 0">
+                                            <vs-option
+                                                v-for="(item, key) in DataFilterPrealert"
+                                                :key="key"
+                                                :label="item.label"
+                                                :value="item.value"
+                                            >
+                                                {{ item.label }}
+                                            </vs-option>
+                                        </template>
+                                    </vs-select>
+                                </template>
+                            </inputan>
+                        </vs-col>
+                        <vs-col xs="12" sm="4" lg="2">
+                            <select-search-by
+                                :isMultiple="false"
+                                :border="true"
+                                @updateSearchBy="updateFilterDateBy"
+                                :valueData="dateParams"
+                                :selectedValue="filterDateBy"
+                            />
+                        </vs-col>
+                        <vs-col xs="12" sm="4" lg="4">
+                            <date-time
+                                :name="''"
+                                :rules="''"
+                                :formKey="'DATE_TIME_WITHOUT_SECONDS'"
+                                :valueData="tempDate"
+                                typeInput="datetimerange"
+                                @updateValue="searchDate"
+                            />
+                        </vs-col>
+                        <vs-col
+                            xs="12"
+                            sm="8"
+                            :lg="listenBreadcrumbCode === 'Pre Alert' ? 1 : 4"
+                            style="display: flex; justify-content: end"
+                        >
+                            <vs-button
+                                border
+                                style="margin: 0"
+                                @click="resetFilters"
+                                :class="'span-button'"
+                                :data-testid="`button-reset-filter`"
+                            >
+                                Reset Filters
+                            </vs-button>
+                        </vs-col>
                     </vs-row>
-                  </vs-col>
-                </vs-row>
-                <vs-row justify>
-                  <vs-col xs="6" sm="4" lg="2">
-                    <inputan :name="name" :rules="rules">
-                      <template v-slot:inputan="props">
-                        <vs-select
-                            class="m-select"
-                            filter
-                            :multiple="listenIsMultiple"
-                            :placeholder="name"
-                            :label="name"
-                            v-model="value"
-                            :border="border"
-                            @change="updateStatusInbound"
-                            :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
-                        >
-                          <template v-if="DataArr.length > 0">
-                            <vs-option
-                                v-for="(item,key) in DataArr"
-                                :key="key"
-                                :label="item.label"
-                                :value="item.value">
-                              {{item.label}}
-                            </vs-option>
-                          </template>
-
-                        </vs-select>
-                      </template>
-                    </inputan>
-                  </vs-col>
-                  <vs-col xs="6" sm="4" lg="3" v-if="listenBreadcrumbCode === 'Pre Alert'">
-                    <inputan :name="name" :rules="rules">
-                      <template v-slot:inputan="props">
-                        <vs-select
-                            class="m-select"
-                            filter
-                            :placeholder="name"
-                            :label="name"
-                            v-model="values"
-                            :border="border"
-                            multiple
-                            @change="updatePrealert"
-                            :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
-                        >
-                          <template v-if="DataFilterPrealert.length > 0">
-                            <vs-option
-                                v-for="(item,key) in DataFilterPrealert"
-                                :key="key"
-                                :label="item.label"
-                                :value="item.value">
-                              {{item.label}}
-                            </vs-option>
-                          </template>
-
-                        </vs-select>
-                      </template>
-                    </inputan>
-                  </vs-col>
-                  <vs-col xs="12" sm="4" lg="2">
-                    <select-search-by :isMultiple="false" :border="true" @updateSearchBy="updateFilterDateBy" :valueData="dateParams" :selectedValue="filterDateBy" />
-                  </vs-col>
-                  <vs-col xs="12" sm="4" lg="3">
-                     <date-time 
-                        :name="''" 
-                        :rules="''" 
-                        :formKey="'DATE_TIME_WITHOUT_SECONDS'" 
-                        :valueData="tempDate"
-                        typeInput="datetimerange" 
-                        @updateValue="searchDate" 
-                    />
-                  </vs-col>
-                  <vs-col xs="12" sm="8" :lg="listenBreadcrumbCode === 'Pre Alert' ? 2: 5" style="display: flex; justify-content: end;">
-                    <vs-button
-                        border
-                        style="margin: 0;"
-                        @click="resetFilters"
-                        :class="'span-button'"
-                        > Reset Filters
-                    </vs-button>
-                  </vs-col>
-                </vs-row>                
-              </div>
+                </div>
                 <template>
                     <transition name="slide-fade">
-                        <InboundIncoming 
-                          :ref="'inboundIncoming'"   
-                          :nodeType="node_request" 
-                          :received="value" 
-                          :origin="node_origin" 
-                          :query="tempSearch" 
-                          :prealert="values" 
-                          :hasLinkedItem="hasLinkedItems"
-                          :filterDateBy="filterDateBy"
-                          :dateFilter="tempDate"
-                          :isReset="reset"
-                          :searchBy="searchBy"
-                          :title="listenBreadcrumbTitle"
-                          :type="listenBreadcrumbCode"
-                          @updateLocalStorage="updateLocalStorage"
+                        <InboundIncoming
+                            :ref="'inboundIncoming'"
+                            :nodeType="node_request"
+                            :received="value"
+                            :origin="node_origin"
+                            :query="tempSearch"
+                            :prealert="values"
+                            :hasLinkedItem="hasLinkedItems"
+                            :filterDateBy="filterDateBy"
+                            :dateFilter="tempDate"
+                            :isReset="reset"
+                            :searchBy="searchBy"
+                            :title="listenBreadcrumbTitle"
+                            :type="listenBreadcrumbCode"
+                            @updateLocalStorage="updateLocalStorage"
                         />
                     </transition>
                 </template>
             </div>
         </section>
-
     </div>
 </template>
 <script>
-
-import axios from "axios";
-import master from "@/mixins/master";
-import NavItem from "@/components/navbar/navTab"
-import Breadcrumb from "@/components/breadcrumb/index"
-import SearchInput from "@/components/search/searchInput"
-import Inputan from "@/components/input/inputan"
-import InboundIncoming from "@/views/inbound/inboundList"
-import DateTime from "@/components/input/dateTime"
-import dateRange from "@/components/daterange/index"
-import SelectSearchBy from "@/components/search/selectSearchBy";
+import axios from 'axios'
+import master from '@/mixins/master'
+import NavItem from '@/components/navbar/navTab'
+import Breadcrumb from '@/components/breadcrumb/index'
+import SearchInput from '@/components/search/searchInput'
+import Inputan from '@/components/input/inputan'
+import InboundIncoming from '@/views/inbound/inboundList'
+import DateTime from '@/components/input/dateTime'
+import dateRange from '@/components/daterange/index'
+import SelectSearchBy from '@/components/search/selectSearchBy'
 
 export default {
-    name:"Inbound-List",
-    mixins:[master],
+    name: 'Inbound-List',
+    mixins: [master],
     components: {
-        "nav-item": NavItem,
-        "breadcrumb": Breadcrumb,
-        "search-input": SearchInput,
-        "date-time": DateTime,
-        "InboundIncoming": InboundIncoming,
-        "inputan": Inputan,
-        "select-search-by": SelectSearchBy,
+        'nav-item': NavItem,
+        breadcrumb: Breadcrumb,
+        'search-input': SearchInput,
+        'date-time': DateTime,
+        InboundIncoming: InboundIncoming,
+        inputan: Inputan,
+        'select-search-by': SelectSearchBy,
     },
     props: {
-      name: String,
-      rules: String,
-      valueData: Array,
-      selectedValue: [Array, String, Number],
-      formKey: String,
-      isMultiple: Boolean,
-      border: Boolean,
-      hasLinkedItems: Array
+        name: String,
+        rules: String,
+        valueData: Array,
+        selectedValue: [Array, String, Number],
+        formKey: String,
+        isMultiple: Boolean,
+        border: Boolean,
+        hasLinkedItems: Array,
     },
     data() {
         return {
-            title:"Receiving ",
-            tempSearch: JSON.parse(localStorage.getItem("InboundFilters"))?.tempSearch|| '',
-            tempDate: JSON.parse(localStorage.getItem("InboundFilters"))?.tempDate || [],
-            DataNode:[
-              {
-                label: "All Nodes",
-                value: ""
-              }
+            title: 'Receiving ',
+            tempSearch: JSON.parse(localStorage.getItem('InboundFilters'))?.tempSearch || '',
+            tempDate: JSON.parse(localStorage.getItem('InboundFilters'))?.tempDate || [],
+            DataNode: [
+                {
+                    label: 'All Nodes',
+                    value: '',
+                },
             ],
-            nodeOrigin:[],
-            node_request: JSON.parse(localStorage.getItem("InboundFilters"))?.node_request||'',
-            node_origin: JSON.parse(localStorage.getItem("InboundFilters"))?.node_origin||'',
-            DataArr: this.valueData ? this.valueData : [
-              {
-                label: 'All Status',
-                value: '-'
-              },
-              {
-                label: 'Outstanding',
-                value: 'OUTSTANDING'
-              },
-              {
-                label: 'Unreceived',
-                value: 'UNRECEIVED'
-              },
-              {
-                label: 'Received',
-                value: 'RECEIVED'
-              },
-              {
-                label: 'Missroute Received',
-                value: 'MISSROUTE RECEIVED'
-              }
-            ],
-            values: JSON.parse(localStorage.getItem("InboundFilters"))?.values || '-',
-            DataFilterPrealert: this.valueData ? this.valueData : [
-              {
-                label: 'All Prealert',
-                value: '-'
-              },
-              {
-                label: 'SM',
-                value: 'SM'
-              },
-              {
-                label: 'SJ',
-                value: 'SJ'
-              },
-              {
-                label: 'DO',
-                value: 'DO'
-              },
-              {
-                label: 'HBAG',
-                value: 'HBAG'
-              },
-              {
-                label: 'MTS',
-                value: 'MTS'
-              },
-            ],
-            value: JSON.parse(localStorage.getItem("InboundFilters"))?.value || '-',
-            arrValue: this.selectedValue ? this.selectedValue : [ {
-              value: "-",
-              label: "All Status"
-            }],
-            filterDateBy:JSON.parse(localStorage.getItem("InboundFilters"))?.filterDateBy || 'received',
-            searchBy:JSON.parse(localStorage.getItem("InboundFilters"))?.searchBy || 'inbound_number',
+            nodeOrigin: [],
+            node_request: JSON.parse(localStorage.getItem('InboundFilters'))?.node_request || '',
+            node_origin: JSON.parse(localStorage.getItem('InboundFilters'))?.node_origin || '',
+            DataArr: this.valueData
+                ? this.valueData
+                : [
+                      {
+                          label: 'All Status',
+                          value: '-',
+                      },
+                      {
+                          label: 'Outstanding',
+                          value: 'OUTSTANDING',
+                      },
+                      {
+                          label: 'Unreceived',
+                          value: 'UNRECEIVED',
+                      },
+                      {
+                          label: 'Received',
+                          value: 'RECEIVED',
+                      },
+                      {
+                          label: 'Missroute Received',
+                          value: 'MISSROUTE RECEIVED',
+                      },
+                  ],
+            values: JSON.parse(localStorage.getItem('InboundFilters'))?.values || '-',
+            DataFilterPrealert: this.valueData
+                ? this.valueData
+                : [
+                      {
+                          label: 'All Prealert',
+                          value: '-',
+                      },
+                      {
+                          label: 'SM',
+                          value: 'SM',
+                      },
+                      {
+                          label: 'SJ',
+                          value: 'SJ',
+                      },
+                      {
+                          label: 'DO',
+                          value: 'DO',
+                      },
+                      {
+                          label: 'HBAG',
+                          value: 'HBAG',
+                      },
+                      {
+                          label: 'MTS',
+                          value: 'MTS',
+                      },
+                  ],
+            value: JSON.parse(localStorage.getItem('InboundFilters'))?.value || '-',
+            arrValue: this.selectedValue
+                ? this.selectedValue
+                : [
+                      {
+                          value: '-',
+                          label: 'All Status',
+                      },
+                  ],
+            filterDateBy:
+                JSON.parse(localStorage.getItem('InboundFilters'))?.filterDateBy || 'received',
+            searchBy:
+                JSON.parse(localStorage.getItem('InboundFilters'))?.searchBy || 'inbound_number',
             searchByNumeric: false,
-            searchPlaceholder: "Search Inbound Number",
+            searchPlaceholder: 'Search Inbound Number',
             searchParams: [],
             dateParams: [
-              {
-                label: 'Received Time',
-                value: 'received'
-              },
-              {
-                label: 'ETD',
-                value: 'etd'
-              },
-              {
-                label: 'ETA',
-                value: 'eta'
-              },
-              {
-                label: 'Departed Time',
-                value: 'departed'
-              },
-              {
-                label: 'Created Date',
-                value: 'created'
-              }
+                {
+                    label: 'Received Time',
+                    value: 'received',
+                },
+                {
+                    label: 'ETD',
+                    value: 'etd',
+                },
+                {
+                    label: 'ETA',
+                    value: 'eta',
+                },
+                {
+                    label: 'Departed Time',
+                    value: 'departed',
+                },
+                {
+                    label: 'Created Date',
+                    value: 'created',
+                },
             ],
             reset: false,
         }
     },
     computed: {
-      listenFormKey(){
-        return this.formKey || ''
-      },
-      listenIsMultiple(){
-        return this.isMultiple ? this.isMultiple : false
-      },
-      listenBreadcrumbTitle() {
-        return this.$route.meta.breadCrumb;
-      },
-      listenBreadcrumbCode() {
-        return this.$route.meta.breadCrumbCode || "";
-      },
+        listenFormKey() {
+            return this.formKey || ''
+        },
+        listenIsMultiple() {
+            return this.isMultiple ? this.isMultiple : false
+        },
+        listenBreadcrumbTitle() {
+            return this.$route.meta.breadCrumb
+        },
+        listenBreadcrumbCode() {
+            return this.$route.meta.breadCrumbCode || ''
+        },
     },
     watch: {
-      valueData: function (val) {
-        if (val != undefined) {
-          this.DataArr = val
-          this.updateLocalStorage()
-        }
-      },
-      selectedValue: function (val) {
-        if (val != undefined) {
-          if(this.isMultiple == false) {
-            this.value = val
-          } else {
-            this.arrValue = val
-          }
-          this.updateLocalStorage()
-        }
-      },
-      searchByNumeric: function(val, old) {
-        if (val !== old) {
-          this.clearSearch()
-          this.updateLocalStorage()
-        }
-      },
-      listenBreadcrumbCode: {
-        handler(val, oldVal) {
-          if (val !== oldVal && val !== undefined) {
-            this.setSearchParams();
-          }
+        valueData: function (val) {
+            if (val != undefined) {
+                this.DataArr = val
+                this.updateLocalStorage()
+            }
         },
-        immediate: true
-      },
+        selectedValue: function (val) {
+            if (val != undefined) {
+                if (this.isMultiple == false) {
+                    this.value = val
+                } else {
+                    this.arrValue = val
+                }
+                this.updateLocalStorage()
+            }
+        },
+        searchByNumeric: function (val, old) {
+            if (val !== old) {
+                this.clearSearch()
+                this.updateLocalStorage()
+            }
+        },
+        listenBreadcrumbCode: {
+            handler(val, oldVal) {
+                if (val !== oldVal && val !== undefined) {
+                    this.setSearchParams()
+                }
+            },
+            immediate: true,
+        },
     },
     methods: {
         setSearchParams() {
-            
             this.searchParams = [
-              {
-                label: `${this.listenBreadcrumbCode} Number`,
-                value: "inbound_number",
-              },
-              {
-                label: "IM Numbers",
-                value: "manifestItems",
-              },
-              {
-                label: "Vehicle",
-                value: "vehicle_type_name",
-              },
-              {
-                label: "Origin",
-                value: "inbound_node_name_origin",
-
-              },
-              {
-                label: "Type Inbound",
-                value: "inbound_type",
-
-              },
-              {
-                label: "Quantity Bag",
-                value: "inbound_total_bag",
-                isNumeric: true,
-
-              },
-              {
-                label: "Quantity Connote",
-                value: "inbound_total_koli",
-                isNumeric: true,
-              },
-              {
-                label: "Weight",
-                value: "inbound_total_weight",
-                isNumeric: true,
-              },
-              {
-                label: "PIC",
-                value: "carrier_employee_name",
-              },
-              {
-                label: "Received At",
-                value: "inbound_node_name_receiver",
-              }
+                {
+                    label: `${
+                        this.listenBreadcrumbCode === 'Pre Alert'
+                            ? 'Incoming'
+                            : this.listenBreadcrumbCode
+                    } Number`,
+                    value: 'inbound_number',
+                },
+                {
+                    label: 'IM Numbers',
+                    value: 'manifestItems',
+                },
+                {
+                    label: 'Vehicle',
+                    value: 'vehicle_type_name',
+                },
+                {
+                    label: 'Origin',
+                    value: 'inbound_node_name_origin',
+                },
+                {
+                    label: 'Type Inbound',
+                    value: 'inbound_type',
+                },
+                {
+                    label: 'Quantity Bag',
+                    value: 'inbound_total_bag',
+                    isNumeric: true,
+                },
+                {
+                    label: 'Quantity Connote',
+                    value: 'inbound_total_koli',
+                    isNumeric: true,
+                },
+                {
+                    label: 'Weight',
+                    value: 'inbound_total_weight',
+                    isNumeric: true,
+                },
+                {
+                    label: 'PIC',
+                    value: 'carrier_employee_name',
+                },
+                {
+                    label: 'Received At',
+                    value: 'inbound_node_name_receiver',
+                },
             ]
         },
-        refresh(){
+        refresh() {
             this.$refs.inboundIncoming.refresh() // trigger function refresh form dari luar component list
         },
-        searchValue (val) {
+        searchValue(val) {
             this.tempSearch = val
             this.updateLocalStorage()
         },
         searchDate(formKey, val) {
-            this.tempDate = val;
+            this.tempDate = val
             this.updateLocalStorage()
         },
         clearSearch() {
@@ -440,152 +476,169 @@ export default {
             this.updateLocalStorage()
         },
         clearDate() {
-            this.tempDate = [];
+            this.tempDate = []
             this.updateLocalStorage()
         },
-        openDialog(){
+        openDialog() {
             this.$router.push('/inbound/prealert/scan')
-            this.setRoutePageHistory(this.$route.meta, false);
+            this.setRoutePageHistory(this.$route.meta, false)
         },
-        updateFilterDateBy(key,val) {
-          this.filterDateBy = val;
-          this.updateLocalStorage()
+        updateFilterDateBy(key, val) {
+            this.filterDateBy = val
+            this.updateLocalStorage()
         },
 
         updateLocalStorage() {
-          const filterData = {
-            searchBy: this.searchBy,
-            tempSearch: this.tempSearch,
-            filterDateBy: this.filterDateBy,
-            tempDate: this.tempDate,
-            node_request: this.node_request,
-            node_origin: this.node_origin,
-            value: this.value,
-            values: this.values,
-            searchPlaceholder: this.searchPlaceholder,
-          };
-          localStorage.setItem("InboundFilters", JSON.stringify(filterData));
+            const filterData = {
+                searchBy: this.searchBy,
+                tempSearch: this.tempSearch,
+                filterDateBy: this.filterDateBy,
+                tempDate: this.tempDate,
+                node_request: this.node_request,
+                node_origin: this.node_origin,
+                value: this.value,
+                values: this.values,
+                searchPlaceholder: this.searchPlaceholder,
+            }
+            localStorage.setItem('InboundFilters', JSON.stringify(filterData))
         },
 
         async getDataNodeType() {
-          this.loading = true
-          await axios
-              .get(this.URL.node_type +
-                  `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1&s=&is_active=1`,
-                  this.Helper.header())
-              .then(res => {
-                if(res.data.data.length > 0) {
-                  res.data.data.map(item => {
-                    let obj = {}
-                    obj["label"] = item.node_type_name
-                    obj["value"] = item.node_type_id
+            this.loading = true
+            await axios
+                .get(
+                    this.URL.node_type +
+                        `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1&s=&is_active=1`,
+                    this.Helper.header()
+                )
+                .then((res) => {
+                    if (res.data.data.length > 0) {
+                        res.data.data.map((item) => {
+                            let obj = {}
+                            obj['label'] = item.node_type_name
+                            obj['value'] = item.node_type_id
 
-                    this.DataNode.push(obj)
-                  })
-                }
+                            this.DataNode.push(obj)
+                        })
+                    }
 
-                this.loading = false
-              }).catch(err => {
-                this.loading = false
-                this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate node list', err)
-              })
+                    this.loading = false
+                })
+                .catch((err) => {
+                    this.loading = false
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Failed to populate node list',
+                        err
+                    )
+                })
         },
         async getDataOrigin() {
-          this.loading = true
-          await axios
-              .get(this.URL.node +
-                  `/${this.listenNodeId}/origin-link?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&case=receiving_menu&s=`,
-                  this.Helper.header())
-              .then(res => {
-                if(res.data.data.length > 0) {
-                  res.data.data.map(item => {
-                    let obj = {}
-                    obj["label"] = item.node_name
-                    obj["value"] = item.node_id
+            this.loading = true
+            await axios
+                .get(
+                    this.URL.node +
+                        `/${this.listenNodeId}/origin-link?n=${this.listenNodeId}&sort_order=desc&&limit=1000&page=1&case=receiving_menu&s=`,
+                    this.Helper.header()
+                )
+                .then((res) => {
+                    if (res.data.data.length > 0) {
+                        res.data.data.map((item) => {
+                            let obj = {}
+                            obj['label'] = item.node_name
+                            obj['value'] = item.node_id
 
-                    this.nodeOrigin.push(obj)
-                  })
-                }
+                            this.nodeOrigin.push(obj)
+                        })
+                    }
 
-                this.loading = false
-              }).catch(err => {
-                this.loading = false
-                this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate node list', err)
-              })
+                    this.loading = false
+                })
+                .catch((err) => {
+                    this.loading = false
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Failed to populate node list',
+                        err
+                    )
+                })
         },
-        updateNode(val){
-
+        updateNode(val) {},
+        getNodeTypeLogin() {
+            return this.listenCurrentNode.node_type
+                ? this.listenCurrentNode.node_type.node_type_name.toLowerCase()
+                : ''
         },
-        getNodeTypeLogin(){
-          return this.listenCurrentNode.node_type ? this.listenCurrentNode.node_type.node_type_name.toLowerCase() : '';
+        updateStatusInbound(val) {
+            this.$emit('updateStatusInbound', this.listenFormKey, val)
+            this.updateLocalStorage()
         },
-        updateStatusInbound(val){
-          this.$emit("updateStatusInbound", this.listenFormKey, val)
-          this.updateLocalStorage()
+        updatePrealert(val) {
+            const indexOfBag = val.indexOf('bag')
+            if (indexOfBag !== -1) {
+                this.hasLinkedItems = []
+            } else if (indexOfBag === -1) {
+                this.hasLinkedItems = ['inbound_number']
+            }
+            this.updateLocalStorage()
         },
-        updatePrealert(val){
-          const indexOfBag = val.indexOf('bag');
-          if (indexOfBag !== -1) {
-            this.hasLinkedItems = [];
-          } else if (indexOfBag === -1) {
-            this.hasLinkedItems = ['inbound_number'];
-          } 
-          this.updateLocalStorage()
+        updateSearchBy(key, val, isNumeric) {
+            val = val.replaceAll(' ', '_')
+            this.searchBy = val
+            this.searchPlaceholder = key
+            this.searchByNumeric = isNumeric
+            this.updateLocalStorage()
         },
-      updateSearchBy(key, val, isNumeric) {
-        val = val.replaceAll(" ", "_");
-        this.searchBy = val;
-        this.searchPlaceholder = key;
-        this.searchByNumeric = isNumeric;
-        this.updateLocalStorage()
-      },
-      updateFilterDateBy(key,val) {
-        this.filterDateBy = val;
-        this.updateLocalStorage()
-      },
-      resetFilters() {
-        this.reset = true
-        this.searchBy = "inbound_number"
-        this.searchPlaceholder = "Search Inbound Number"
-        this.clearSearch()
-        this.filterDateBy = "received"
-        this.clearDate()
-        this.node_request = ""
-        this.node_origin = ""
-        this.value = "-"
-        this.values = "-"
-        this.$nextTick(() => {
-          this.reset = false
-        });
-        localStorage.removeItem("InboundFilters")
-      },
+        updateFilterDateBy(key, val) {
+            this.filterDateBy = val
+            this.updateLocalStorage()
+        },
+        resetFilters() {
+            this.reset = true
+            this.searchBy = 'inbound_number'
+            this.searchPlaceholder = 'Search Inbound Number'
+            this.clearSearch()
+            this.filterDateBy = 'received'
+            this.clearDate()
+            this.node_request = ''
+            this.node_origin = ''
+            this.value = '-'
+            this.values = '-'
+            this.$nextTick(() => {
+                this.reset = false
+            })
+            localStorage.removeItem('InboundFilters')
+        },
     },
 
-    mounted() {
-        this.getDataNodeType()
-        this.getDataOrigin()
-    }
+    async mounted() {
+        await this.getDataNodeType()
+        await this.getDataOrigin()
+    },
 }
 </script>
 <style scoped>
-  .span-button.vs-button--border:before, .span-button.vs-button--border:hover:before {
+.span-button.vs-button--border:before,
+.span-button.vs-button--border:hover:before {
     border: 0;
-  }
-  .span-button:hover {
+}
+.span-button:hover {
     text-decoration: underline;
-  }
-  .span-button:focus {
+}
+.span-button:focus {
     background: transparent;
     color: rgb(25, 91, 255);
-  }
+}
 </style>
 <style lang="scss">
-  .mb-15{
-   margin-bottom: 1.5em;
-  }
-  .custom-title{
+.mb-15 {
+    margin-bottom: 1.5em;
+}
+.custom-title {
     padding: 0.6em;
     text-align: right;
     font-weight: 600;
-  }
+}
 </style>

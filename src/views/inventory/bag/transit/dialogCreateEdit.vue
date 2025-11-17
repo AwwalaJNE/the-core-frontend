@@ -1,18 +1,18 @@
 <template>
     <div>
-        <dialog-master 
+        <dialog-master
             width="lg"
-            :actived="listenActive" 
+            :actived="listenActive"
             :closeDialog="cancel"
             :loading="listenLoading"
         >
             <template v-slot:header>
-                {{listenTitle}}
+                <span v-copy="listenTitle">{{ listenTitle }}</span>
             </template>
 
             <template v-slot:content>
-                <vs-row align="center">
-                    <vs-col w="10">
+                <vs-row align="center" v-if="!isViewOnly">
+                    <vs-col w="10" style="padding-bottom: 1em">
                         <auto-complete
                             ref="origin_code"
                             formKey="origin_code"
@@ -29,6 +29,7 @@
                             transparent
                             type="submit"
                             :active="true"
+                            :data-testid="`add-button`"
                             @click="createTransit"
                         >
                             <i class="bx bx-plus"></i> Add
@@ -41,16 +42,16 @@
                             <draggable-card
                                 :cardType="'transit-card'"
                                 :valueData="data"
-                                :isRemoveButton="true"
+                                :isRemoveButton="!isViewOnly"
                                 @update-order="updateTransit"
                                 @remove="removeTransit"
                             />
                         </vs-col>
                     </template>
                     <template v-else>
-                        <div style="padding: 2rem;">
-                            <img 
-                                src="@/assets/svg/not-found-transit.svg" 
+                        <div style="padding: 2rem">
+                            <img
+                                src="@/assets/svg/not-found-transit.svg"
                                 alt="No Transit Route Found"
                             />
                         </div>
@@ -61,26 +62,27 @@
     </div>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master";
+import axios from 'axios'
+import master from '@/mixins/master'
 
-import AutoComplete from "@/components/input/autoComplete";
-import DialogMaster from "@/components/dialog/dialogMaster";
-import DragableCard from '@/components/input/draggableCard';
+import AutoComplete from '@/components/input/autoComplete'
+import DialogMaster from '@/components/dialog/dialogMaster'
+import DragableCard from '@/components/input/draggableCard'
 
 export default {
-    name:"transit-dialog",
+    name: 'transit-dialog',
     mixins: [master],
     components: {
-        "auto-complete": AutoComplete,
-        "dialog-master": DialogMaster,
-        "draggable-card": DragableCard,
+        'auto-complete': AutoComplete,
+        'dialog-master': DialogMaster,
+        'draggable-card': DragableCard,
     },
     props: {
         active: Boolean,
         bagNumber: String,
         closeDialog: Function,
-        title: String
+        isViewOnly: Boolean,
+        title: String,
     },
     data() {
         return {
@@ -90,14 +92,14 @@ export default {
         }
     },
     computed: {
-        listenActive(){
-            return this.active;
+        listenActive() {
+            return this.active
         },
-        listenTitle(){
-            return this.title;
+        listenTitle() {
+            return this.title
         },
         listenLoading() {
-            return this.loading;
+            return this.loading
         },
         listenSelectedManifestVehicle() {
             return this.data || ''
@@ -106,102 +108,149 @@ export default {
     watch: {
         active(newVal, oldVal) {
             if (newVal === true && newVal !== oldVal) {
-                this.getDataTransit();
+                this.getDataTransit()
             }
-        }
+        },
     },
     methods: {
         async getDataTransit() {
             this.loading = true
-            
+
             try {
-                const res = await axios.get(`${this.URL.bag}/${this.bagNumber}/route-transit?n=${this.listenNodeId}`, this.Helper.header());
-                this.data = res?.data?.data || [];
+                const res = await axios.get(
+                    `${this.URL.bag}/${this.bagNumber}/route-transit?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
+                this.data = res?.data?.data || []
             } catch (err) {
-                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Failed',
+                    err?.response?.data?.message || 'Something went wrong'
+                )
             } finally {
-                this.loading = false;
+                this.loading = false
             }
         },
         async createTransit() {
             if (Object.keys(this.form).length === 0) {
-                this.openNotification('warn', null, "Missing Origin Code", "Please select an origin code to proceed with this action");
-                return;
+                this.openNotification(
+                    'warn',
+                    null,
+                    'Missing Origin Code',
+                    'Please select an origin code to proceed with this action'
+                )
+                return
             }
 
-            this.loading = true;
+            this.loading = true
             try {
-                const res = await axios.post(`${this.URL.bag}/${this.bagNumber}/route-transit?n=${this.listenNodeId}`, this.form, this.Helper.header());
-                this.openNotification('success', null, "Success", res?.data?.message || "Success Add Transit Data");
+                const res = await axios.post(
+                    `${this.URL.bag}/${this.bagNumber}/route-transit?n=${this.listenNodeId}`,
+                    this.form,
+                    this.Helper.header()
+                )
+                this.openNotification(
+                    'success',
+                    null,
+                    'Success',
+                    res?.data?.message || 'Success Add Transit Data'
+                )
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Failed',
+                    err?.response?.data?.message || 'Something went wrong'
+                )
             } finally {
-                this.loading = false;
-                this.handleClear();
-                this.getDataTransit();
+                this.loading = false
+                this.handleClear()
+                this.getDataTransit()
             }
         },
         async updateTransit(arr) {
             let form_order = {
-                bag_transit_route_ids: arr.map(item => (item.bag_transit_route_id))
-            };
+                bag_transit_route_ids: arr.map((item) => item.bag_transit_route_id),
+            }
 
-            this.loading = true;
+            this.loading = true
             try {
-                const res = await axios.patch(`${this.URL.bag}/${this.bagNumber}/route-transit?n=${this.listenNodeId}`, form_order, this.Helper.header());
-                this.openNotification('success', null, "Success", "Update manifest vehicle success");
+                const res = await axios.patch(
+                    `${this.URL.bag}/${this.bagNumber}/route-transit?n=${this.listenNodeId}`,
+                    form_order,
+                    this.Helper.header()
+                )
+                this.openNotification('success', null, 'Success', 'Update manifest vehicle success')
 
-                await this.getDataTransit();
+                await this.getDataTransit()
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Failed',
+                    err?.response?.data?.message || 'Something went wrong'
+                )
             } finally {
-                this.loading = false;
-                this.getDataTransit();
+                this.loading = false
+                this.getDataTransit()
             }
         },
         async removeTransit(id) {
-            this.loading = true;
+            this.loading = true
             try {
-                const res = await axios.delete(`${this.URL.bag}/${this.bagNumber}/route-transit/${id}?n=${this.listenNodeId}`, this.Helper.header());
-                this.openNotification('success', null, "Success", "Remove transit success");
+                const res = await axios.delete(
+                    `${this.URL.bag}/${this.bagNumber}/route-transit/${id}?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
+                this.openNotification('success', null, 'Success', 'Remove transit success')
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Failed',
+                    err?.response?.data?.message || 'Something went wrong'
+                )
             } finally {
-                this.loading = false;
-                this.getDataTransit();
+                this.loading = false
+                this.getDataTransit()
             }
         },
-        async querySearch(queryString, cb){
+        async querySearch(queryString, cb) {
             try {
-                const res = await axios.get(`${this.URL.origin_code}?n=${this.listenNodeId}` + `&s=${queryString}`, this.Helper.header());
-                const result = res.data.data || [];
-                const suggestions = result.map(item => {
-                    const value = item.node_name || '';
-                    return { value, data: item };
-                });
-                cb(suggestions);
+                const res = await axios.get(
+                    `${this.URL.origin_code}?n=${this.listenNodeId}` + `&s=${queryString}`,
+                    this.Helper.header()
+                )
+                const result = res.data.data || []
+                const suggestions = result.map((item) => {
+                    const value = item.node_name || ''
+                    return { value, data: item }
+                })
+                cb(suggestions)
             } catch (error) {
-                console.error("error", error);
+                console.error('error', error)
             }
         },
-        updateValue(key, val, info){
-            switch(key) {
-                case "origin_code":
-                    let data = info?.data;
-                    this.form = { 
-                        origin_code: data?.origin_code
-                    };
-                    break;
+        updateValue(key, val, info) {
+            switch (key) {
+                case 'origin_code':
+                    let data = info?.data
+                    this.form = {
+                        origin_code: data?.origin_code,
+                    }
+                    break
             }
         },
         handleClear() {
             this.$refs.origin_code.clear()
-            this.data = [];
-            this.form = {};
+            this.data = []
+            this.form = {}
         },
         cancel() {
-            this.handleClear();
-            this.closeDialog();
+            this.handleClear()
+            this.closeDialog()
         },
     },
     mounted() {

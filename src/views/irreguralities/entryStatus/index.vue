@@ -24,6 +24,7 @@
                             :isAllowCreate="true"
                             :autofocus="true"
                             @updateValue="updateValue" 
+                            @click="setActive('koliCode')"
                         />
                     </form>
                 </vs-col>
@@ -50,6 +51,7 @@
                             :disabled="!hasPermission('delete-irregularity')"
                             :isAllowCreate="true"
                             @updateValue="updateValue"  
+                            @click="setActive('removeKoliCode')"
                         />
                     </form>
                 </vs-col>
@@ -81,9 +83,9 @@
                                     <date-time
                                         :name="''"
                                         :rules="''"
-                                        :formKey="'TRIGGER_DATE'"
+                                        :formKey="'DATE_TIME_WITHOUT_SECONDS'"
                                         :valueData="dateRange"
-                                        typeInput="daterange"
+                                        typeInput="datetimerange"
                                         @updateValue="updateValue" />
                                 </vs-col>
                             </vs-row>
@@ -302,18 +304,38 @@ export default {
         }
     },
     methods: {
-        refresh(){
+        setActive(refName) {
+            if (refName === 'koliCode') {
+                this.setActiveInput('koliCode', null)
+            } else if (refName === 'removeKoliCode') {
+                this.setActiveInput('removeKoliCode', null)
+            }
+        },
+        handleTabFocus(e) {
+            if (e.key !== 'Tab') return
 
-            let d = new Date()
-            let from = ''
-            let to = ''
+            const refs = ['koliCode', 'removeKoliCode']
+
+            e.preventDefault()
+
+            const currentIndex = refs.indexOf(this.activeInput)
+            const nextIndex = (currentIndex + 1) % refs.length
+
+            const nextRef = refs[nextIndex]
+            this.setActive(nextRef)
+        },
+        refresh(){
+            let from = '';
+            let to = '';
 
             if(this.dateRange.length > 0) {
-                from = moment(this.dateRange[0]).format("YYYY-MM-DD")
-                to = moment(this.dateRange[1]).format("YYYY-MM-DD")
+                from = this.dateRange[0];
+                to = this.dateRange[1];
             } else {
-                from = moment(d).format("YYYY-MM-DD")
-                to = moment(d).format("YYYY-MM-DD")
+                let d = new Date()
+
+                from = moment(d).startOf('day').format("YYYY-MM-DD HH:mm:ss");
+                to   = moment(d).endOf('day').format("YYYY-MM-DD HH:mm:ss");
             }
 
             
@@ -337,8 +359,8 @@ export default {
                 query = q
             }
             if(from !== undefined && to !== undefined) {
-              startDate = from
-              endDate = to
+              startDate = this.formatToWIB(from)
+              endDate = this.formatToWIB(to)
             }
             await axios
                 .get(this.URL.irregularities +
@@ -346,6 +368,9 @@ export default {
                 this.Helper.header())
                 .then(res => {
                     let arr = res.data.data
+                    arr.map(item => {
+                        item["created_at"] = this.formatTimezone(item?.created_at);
+                    });
                     
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
@@ -449,7 +474,7 @@ export default {
                 case "REMOVE_KOLI_CODE":
                     this.removeKoliCode = this.$refs.removeKoliCode.value;
                     break;
-                case "TRIGGER_DATE":
+                case "DATE_TIME_WITHOUT_SECONDS":
                     this.dateRange = val
                     this.refresh()
                     break;
@@ -629,8 +654,17 @@ export default {
             this.loadingConfirmRemoveBulk=false
         },
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    },
     mounted() {
+        window.addEventListener('keydown', this.handleTabFocus)
+        window.addEventListener('timezone-changed', this.refresh);
+        this.setActiveInput('koliCode', null)
         this.refresh()   
-    }
+    },
+    beforeUnmount() {
+        window.removeEventListener('keydown', this.handleTabFocus)
+    },
 }
 </script>

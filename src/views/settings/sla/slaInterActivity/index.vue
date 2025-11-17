@@ -205,6 +205,26 @@ export default {
                     width: "lg"
                 },
                 {
+                    label: "Created At",
+                    key: "created_at",
+                    width: "lg"
+                },
+                {
+                    label: "Created By",
+                    key: "user_creator",
+                    width: "lg"
+                },
+                {
+                    label: "Updated At",
+                    key: "updated_at",
+                    width: "lg"
+                },
+                {
+                    label: "Updated By",
+                    key: "user_editor",
+                    width: "lg"
+                },
+                {
                     label: "Active",
                     key: "is_active",
                     width: "xs",
@@ -289,6 +309,10 @@ export default {
                 this.Helper.header())
                 .then(res => {
                         this.dataTable = res.data.data
+                        this.dataTable.map(item => {
+                            item.created_at = this.formatTimezone(item.created_at)
+                            item.updated_at = this.formatTimezone(item.updated_at)
+                        })
                         this.pagination.page = res.data.meta.current_page
                         this.pagination.limit = parseInt(res.data.meta.per_page)
                         this.pagination.page_size = res.data.meta.last_page                    
@@ -412,8 +436,12 @@ export default {
         },
     },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.getActivityName();
         this.refresh()
     },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    }
 }
 </script>

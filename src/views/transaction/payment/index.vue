@@ -1,11 +1,6 @@
 <template>
-    <dialog-master 
-    :actived="listenActive" 
-    width="lg"
-    :closeDialog="cancel">
-        <template v-slot:header>
-            
-        </template>
+    <dialog-master :actived="listenActive" width="lg" :closeDialog="cancel" :hide-close-icon="true">
+        <template v-slot:header> </template>
 
         <template v-slot:content>
             <div class="payment_dialog">
@@ -13,21 +8,21 @@
                 <vs-row>
                     <vs-col xs="12" sm="3" lg="3">
                         <p>Jumlah Connote</p>
-                        <h3>{{connote_qty}}</h3>
+                        <h3>{{ connote_qty }}</h3>
                     </vs-col>
                     <vs-col xs="12" sm="3" lg="3">
                         <p>Jumlah Koli</p>
-                        <h3>{{koli_qty}}</h3>
+                        <h3>{{ koli_qty }}</h3>
                     </vs-col>
                     <vs-col xs="12" sm="3" lg="3">
                         <p>Total Price</p>
-                        <h3>{{moneyformat(grand_total)}}</h3>
-                        <br>
+                        <h3>{{ moneyformat(grand_total) }}</h3>
+                        <br />
                         <!-- <p>Special Tariff Discount</p>
                         <h3>{{moneyformat(discount)}}</h3>
                         <br> -->
                         <p>Total After Discount</p>
-                        <h3>{{moneyformat(price)}}</h3>
+                        <h3>{{ moneyformat(price) }}</h3>
                     </vs-col>
                 </vs-row>
                 <h2>Payment Method</h2>
@@ -37,8 +32,19 @@
                             <ul class="mnu_payment">
                                 <template v-for="(item, key) in navItemm">
                                     <li :key="key">
-                                        <a href="javascript:void(0)" @click="changeTypePayment(item)">
-                                            <i class='bx bx-dots-horizontal-rounded' v-if="navActive.toLowerCase().includes(`${item.label.toLowerCase()}`)"></i> {{item.label}}
+                                        <a
+                                            href="javascript:void(0)"
+                                            @click="changeTypePayment(item)"
+                                        >
+                                            <i
+                                                class="bx bx-dots-horizontal-rounded"
+                                                v-if="
+                                                    navActive
+                                                        .toLowerCase()
+                                                        .includes(`${item.label.toLowerCase()}`)
+                                                "
+                                            ></i>
+                                            {{ item.label }}
                                         </a>
                                     </li>
                                 </template>
@@ -58,7 +64,11 @@
                                                 <p>Payment</p>
                                             </vs-col>
                                             <vs-col xs="12" sm="6" lg="6">
-                                                <vs-input v-model="jumlahbayar" placeholder="payment" @input="updateValue" />
+                                                <vs-input
+                                                    v-model="jumlahbayar"
+                                                    placeholder="payment"
+                                                    @input="updateValue"
+                                                />
                                             </vs-col>
                                         </vs-row>
                                         <vs-row>
@@ -66,7 +76,11 @@
                                                 <p>Change</p>
                                             </vs-col>
                                             <vs-col xs="12" sm="6" lg="6">
-                                                <vs-input v-model="change" placeholder="change" :disabled="true"/>
+                                                <vs-input
+                                                    v-model="change"
+                                                    placeholder="change"
+                                                    :disabled="true"
+                                                />
                                             </vs-col>
                                         </vs-row>
                                     </div>
@@ -80,7 +94,11 @@
                                                 <p>Card Number</p>
                                             </vs-col>
                                             <vs-col xs="12" sm="6" lg="6">
-                                                <vs-input v-model="cardNumber" placeholder="Card Number" @input="updateValue" />
+                                                <vs-input
+                                                    v-model="cardNumber"
+                                                    placeholder="Card Number"
+                                                    @input="updateValue"
+                                                />
                                             </vs-col>
                                         </vs-row>
                                     </div>
@@ -89,10 +107,11 @@
                             <template v-else-if="navActive.toLowerCase().includes('wallet')">
                                 <transition name="slide-fade">
                                     <div class="wallet_box">
-                                        <iframe 
-                                        :src="`https://staging.ecodi.cloud/f/0ea4ad92b532e972aeae55aab4887169/TCR/${ecodi_id}/${price}`" 
-                                        loading="auto" 
-                                        id="myId"></iframe>
+                                        <iframe
+                                            :src="`https://staging.ecodi.cloud/f/0ea4ad92b532e972aeae55aab4887169/TCR/${ecodi_id}/${price}`"
+                                            loading="auto"
+                                            id="myId"
+                                        ></iframe>
                                     </div>
                                 </transition>
                             </template>
@@ -101,52 +120,52 @@
                 </vs-row>
 
                 <vs-row justify="flex-end" class="mt-1">
-                            <vs-col xs="6" sm="2" lg="2">
-                                <vs-button
-                                transparent
-                                block
-                                flat
-                                :active="true"
-                                :disabled="paymentBtnDisabled"
-                                type="submit"
-                                @click="CreatePayment()"
-                                >
-                                    PAY
-                                </vs-button>
-                            </vs-col>
+                    <vs-col xs="6" sm="2" lg="2">
+                        <vs-button
+                            transparent
+                            block
+                            flat
+                            :active="true"
+                            :disabled="paymentBtnDisabled"
+                            type="submit"
+                            @click="CreatePayment()"
+                        >
+                            PAY
+                        </vs-button>
+                    </vs-col>
                 </vs-row>
-                
             </div>
         </template>
 
-        <template v-slot:footer>
-        </template>
+        <template v-slot:footer> </template>
     </dialog-master>
 </template>
 <script>
-import axios from "axios"
-import master from "@/mixins/master"
-import TransactionMixin from "@/mixins/transaction.js"
-import DialogMaster from "@/components/dialog/dialogMaster"
+import axios from 'axios'
+import master from '@/mixins/master'
+import TransactionMixin from '@/mixins/transaction.js'
+import DialogMaster from '@/components/dialog/dialogMaster'
 export default {
-    name: "dialog-payment",
+    name: 'dialog-payment',
     mixins: [master, TransactionMixin],
     components: {
-        "dialog-master": DialogMaster,
+        'dialog-master': DialogMaster,
     },
     props: {
         closeDialog: Function,
         active: Boolean,
+        koli_number: String,
     },
     computed: {
-        listenActive(){
+        listenActive() {
             return this.active
         },
     },
     watch: {
-        active: function(val) {
-            if(val != undefined) {
-                if(val == true) {
+        async active(val) {
+            if (val != undefined) {
+                if (val == true) {
+                    await this.getListPayment()
                     this.initialize()
                 }
             }
@@ -188,32 +207,32 @@ export default {
             transaction_id: null,
             jumlahbayar: 0,
             change: 0,
-            cardNumber:'',
+            cardNumber: '',
             paymentBtnDisabled: false,
-            ecodi_id: ''
+            ecodi_id: '',
+            loadingDataRole: false,
         }
     },
     methods: {
         initialize() {
             this.grand_total = 0
             let data = this.$store.getters.getTransaction.transaction
-            if(data['transaction_id'] !== '' && data['transaction_finished'] == true) {
-                
+            if (data['transaction_id'] !== '' && data['transaction_finished'] == true) {
                 this.transaction_id = data['transaction_id']
                 this.connote_qty = data['connote'].length
                 let diskon = 0
                 let amount_total_price = 0
-                data['connote'].map(item => {
-                    if(item.amount_discount) {
+                data['connote'].map((item) => {
+                    if (item.amount_discount) {
                         diskon += Number(item.amount_discount)
                     }
                     amount_total_price += Number(item.amount_total_price)
                 })
-                this.grand_total = diskon > 0 ? amount_total_price + diskon : data['grand_total']// data['grand_total'] sebelumnya sudah kena efek diskon saat proses calculation
+                this.grand_total = diskon > 0 ? amount_total_price + diskon : data['grand_total'] // data['grand_total'] sebelumnya sudah kena efek diskon saat proses calculation
                 this.price = amount_total_price
                 this.discount = diskon
                 let koli_qty = 0
-                data['connote'].map(item => {
+                data['connote'].map((item) => {
                     let connotekoli = item['connote_koli_item'].length
                     koli_qty += connotekoli
                 })
@@ -221,160 +240,191 @@ export default {
                 this.koli_qty = koli_qty
             }
             this.ecodi_id = `TCR${this.transaction_id}`
-            
         },
-        updateValue(){
-            switch(this.navActive) {
-                case "k-CASH":
-                    this.change = this.jumlahbayar > this.price ? Math.abs(this.jumlahbayar - this.price) : 0
+        updateValue() {
+            switch (this.navActive) {
+                case 'k-CASH':
+                    this.change =
+                        this.jumlahbayar > this.price ? Math.abs(this.jumlahbayar - this.price) : 0
                     this.paymentBtnDisabled = this.jumlahbayar < this.price
-                    break;
+                    break
                 default:
 
-                    // code block
+                // code block
             }
         },
         changeTypePayment(obj) {
             this.navActive = obj['key']
             this.typePayment = obj
-
         },
-        async getListPayment(){
-            this.loadingDataRole = true
-            await axios
-                .get(this.URL.payment + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, 
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
+        async getListPayment() {
+            try {
+                this.loadingDataRole = true
+                const res = await axios.get(
+                    this.URL.payment + `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                    this.Helper.header()
+                )
 
-                        let data = res.data.data
-                        let arr = []
-                        data.map(item => {
-                            let obj = {}
-                            obj['label'] = item.description
-                            obj['payment_type_name'] = item.description
-                            obj['payment_provider_name'] = item.description
-                            obj['key'] = `${item.payment_method_id}_${item.description}`
-                            obj['payment_provider_code_number'] = item.payment_method_id
-
-                            if(item.description.toLowerCase().includes('cash')) {
-                                arr.unshift(obj)
-                            } else {
-                                arr.push(obj)
-                            }
-                        })
-
-                        this.navItemm = arr
-                        this.typePayment = arr[0]
-                    } else {
-                        // this.openNotification('warn', null, 'Payment method not found!', '')
-                    }
-                    
-                    this.loadingDataRole = false
-                }).catch(err => {
-                    this.checkAuth(err.response.status)
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to get Payment method', err.response.data.message || 'something went wrong')
-                })
+                if (res.data.data.length > 0) {
+                    let arr = res.data.data.map((item) => ({
+                        label: item.description,
+                        payment_type_name: item.description,
+                        payment_provider_name: item.description,
+                        key: `${item.payment_method_id}_${item.description}`,
+                        payment_provider_code_number: item.payment_method_id,
+                    }))
+                    arr.sort((a, b) => (a.label.toLowerCase().includes('cash') ? -1 : 1))
+                    this.navItemm = arr
+                    this.typePayment = arr[0]
+                }
+            } catch (err) {
+                this.checkAuth(err.response?.status)
+                this.openNotification(
+                    'danger',
+                    err.response?.data?.code ?? '',
+                    'Failed to get Payment method',
+                    err.response?.data?.message ?? 'something went wrong'
+                )
+            } finally {
+                this.loadingDataRole = false
+            }
         },
         async CreatePayment() {
-            if(this.transaction_id !== null) {
-
+            if (this.transaction_id !== null) {
                 let form = {}
                 form['payment_amount'] = this.price
                 form['payment_type_name'] = this.typePayment['payment_type_name']
                 form['payment_provider_name'] = this.typePayment['payment_provider_name']
-                form['payment_provider_code_number'] = this.typePayment['payment_provider_code_number']
+                form['payment_provider_code_number'] =
+                    this.typePayment['payment_provider_code_number']
                 form['payment_type_id'] = this.typePayment['payment_provider_code_number']
 
-
                 await axios
-                .post(
-                    this.URL.transaction + `/${this.transaction_id}/payment?n=${this.listenNodeId}`,
-                    JSON.stringify(form), 
-                    this.Helper.header())
-                .then(res => {
+                    .post(
+                        this.URL.transaction +
+                            `/${this.transaction_id}/payment?n=${this.listenNodeId}`,
+                        JSON.stringify(form),
+                        this.Helper.header()
+                    )
+                    .then((res) => {
+                        this.dataTransaction = {}
+                        this.koli_qty = 0
+                        this.connote_qty = 0
+                        this.price = 0
+                        this.discount = 0
+                        // this.$store.dispatch("CLEAR_TRANSACTION_DATA_CONNOTE", true)
+                        // this.$store.dispatch("EMPTY_TRANSACTION_DATA_CONNOTE", true)
+                        // this.refreshTransactionStore()
 
-                    this.dataTransaction= {}
-                    this.koli_qty= 0
-                    this.connote_qty= 0
-                    this.price= 0
-                    this.discount= 0  
-                    // this.$store.dispatch("CLEAR_TRANSACTION_DATA_CONNOTE", true)
-                    // this.$store.dispatch("EMPTY_TRANSACTION_DATA_CONNOTE", true)
-                    // this.refreshTransactionStore()
-
-                    this.$router.push({ name: 'transactionComplete', params: { id: this.transaction_id } });
-                    this.setRoutePageHistory(this.$route.meta, false);
-                    this.openNotification(null, 'Success', 'Payment success')
-                }).catch(err => {
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Payment failed', err)
-                })
+                        this.$router.push({
+                            name: 'transactionComplete',
+                            params: { id: this.transaction_id },
+                        })
+                        this.setRoutePageHistory(this.$route.meta, false)
+                        this.openNotification(null, 'Success', 'Payment success')
+                        this.getDataKoli()
+                    })
+                    .catch((err) => {
+                        this.openNotification(
+                            'danger',
+                            err.response ? err.response.data.code : '',
+                            'Payment failed',
+                            err
+                        )
+                    })
             }
+        },
+        async getDataKoli() {
+            await axios
+                .get(
+                    this.URL.print + `/${this.koli_number}/koli?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
+                .then((res) => {
+                    this.legacySystemHTML = res.data.html
+
+                    this.$nextTick(() => {
+                        var myWindow = window.open('', 'MsgWindow', 'width=600,height=400')
+                        myWindow.document.write(`${this.legacySystemHTML}`)
+                        myWindow.document.close()
+                        // myWindow.focus();
+                        // window action print setelah 3s
+                        // setTimeout(function(){ myWindow.print(); }, 3000);
+                    })
+                })
+                .catch((err) => {
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Print koli failed',
+                        err.response ? err.response.data.message : 'something went wrong'
+                    )
+                })
         },
         cancel() {
             this.closeDialog()
-            this.dataTransaction= {}
-            this.koli_qty= 0
-            this.connote_qty= 0
-            this.price= 0
-            this.discount= 0        
+            this.dataTransaction = {}
+            this.koli_qty = 0
+            this.connote_qty = 0
+            this.price = 0
+            this.discount = 0
         },
     },
     mounted() {
-        this.getListPayment()
         this.handleSubmitShortcut(this.CreatePayment)
     },
 }
 </script>
 <style lang="scss">
-    .payment_dialog{
-        text-align: left;
-        h3,h2,p{
-            margin: 0 .5em
-        }
+.payment_dialog {
+    text-align: left;
+    h3,
+    h2,
+    p {
+        margin: 0 0.5em;
+    }
 
-        .box{
-            padding: .5em;
-            min-height: 200px;
-            min-width: auto;
-        }
-        ul{
-            padding: 0;
-            margin: 0;
-            &.mnu_payment{
-                li{
-                    display: flex;
-                    i{
-                        position: absolute;
-                        left: -1px;
-                        top: 11px;
-                    }
-                }
-                a{
-                    position: relative;
-                    width: 100%;
-                    height: 40px;
-                    display: block;
-                    padding-top: .5em;
-                    padding-left: 1.2em;
-                    border-radius: 6px;
-                    transition: all ease .4s;
-                    &:hover{
-                        background: rgba(204, 204, 204, .2);
-                    }
+    .box {
+        padding: 0.5em;
+        min-height: 200px;
+        min-width: auto;
+    }
+    ul {
+        padding: 0;
+        margin: 0;
+        &.mnu_payment {
+            li {
+                display: flex;
+                i {
+                    position: absolute;
+                    left: -1px;
+                    top: 11px;
                 }
             }
-        }
-        .wallet_box{
-            iframe{
-                border: 0;
+            a {
                 position: relative;
                 width: 100%;
-                height: 100%;
-                min-height: 300px;
+                height: 40px;
                 display: block;
+                padding-top: 0.5em;
+                padding-left: 1.2em;
+                border-radius: 6px;
+                transition: all ease 0.4s;
+                &:hover {
+                    background: rgba(204, 204, 204, 0.2);
+                }
             }
         }
     }
+    .wallet_box {
+        iframe {
+            border: 0;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+            display: block;
+        }
+    }
+}
 </style>

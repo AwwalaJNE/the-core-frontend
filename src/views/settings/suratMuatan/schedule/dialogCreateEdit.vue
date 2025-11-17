@@ -142,8 +142,18 @@ export default {
             }
         },
         formData(form) {
+            const processedForm = { ...form };
+            
+            processedForm.etd_timezone = 'WIB';
+            processedForm.eta_timezone = 'WIB';
+            
+            const userTimezone = this.$ls.get('timezone');
+            
+            processedForm.etd = this.Helper.convertTimezone(processedForm.etd, userTimezone, 'Asia/Jakarta');
+            processedForm.eta = this.Helper.convertTimezone(processedForm.eta, userTimezone, 'Asia/Jakarta');
+            
             this.form = {
-                ...form,
+                ...processedForm,
                 is_external_source: 'N',
             };
 
@@ -155,6 +165,7 @@ export default {
                     this.handleClearForm();
                     this.vehicle_mode_id = parseInt(val);
                     this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_MODE_ID", val);
+                    this.checkMode(val);
                     break;
                 case "vehicle_id":
                     this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_VEHICLE_ID_ValueData", parseInt(obj?.data?.vehicle_id));
@@ -190,7 +201,7 @@ export default {
                     }
                     break;
                 case "vehicle_id":
-                    this.autoComplateUrl = `${this.URL.vehicle}?n=${this.listenNodeId}&search_by=vehicle_name&sort_order=desc&limit=15&page=1`;
+                    this.autoComplateUrl = `${this.URL.vehicle_list_v2}/${this.vehicle_mode_id}?n=${this.listenNodeId}&search_by=vehicle_name&sort_order=desc&limit=15&page=1`;
                     break;
                 default:
                     break;
@@ -232,12 +243,39 @@ export default {
             this.form = {};
             this.id = "";
             this.vehicle_mode_id = 0;
+
+            this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME_visible", false);
+            // this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_ORIGIN_IDENTIFIER_visible", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_ORIGIN_POINT_visible", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME_visible", false);
+            // this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_DESTINATION_IDENTIFIER_visible", false);
+            this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_DESTINATION_POINT_visible", false);
         },
         cancel() {
             this.handleClearForm();
             this.closeDialog();
             this.$emit("refresh");
         },
+        checkMode(val) {
+            switch(val){
+                case 2:
+                    this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME_visible", false);
+                    // this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_ORIGIN_IDENTIFIER_visible", false);
+                    this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_ORIGIN_POINT_visible", false);
+                    this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME_visible", false);
+                    // this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_DESTINATION_IDENTIFIER_visible", false);
+                    this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_DESTINATION_POINT_visible", false);
+                    break;
+                default:
+                    this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_ORIGIN_NAME_visible", true);
+                    // this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_ORIGIN_IDENTIFIER_visible", true);
+                    this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_ORIGIN_POINT_visible", true);
+                    this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_DESTINATION_NAME_visible", true);
+                    // this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_DESTINATION_IDENTIFIER_visible", true);
+                    this.$store.dispatch("SET_SURAT_MUATAN_SCHEDULE_DESTINATION_POINT_visible", true);
+                    break;
+            }
+        }
     },
     mounted() {
         this.handleSubmitShortcut(this.handleSubmit);

@@ -110,6 +110,8 @@ export default {
             ],
             dialogEdit: false,
             receivingLogId: "",
+            timezoneHandler: null,
+            is_processing: false
         }
     },
     computed: {
@@ -117,7 +119,47 @@ export default {
             return this.loading;
         },
     },
+    watch: {
+        statusSearch: {
+            handler() {
+                this.handleFilterChange();
+            },
+            immediate: false
+        },
+        startDate: {
+            handler() {
+                this.handleFilterChange();
+            }
+        },
+        endDate: {
+            handler() {
+                this.handleFilterChange();
+            }
+        },
+        searchValue: {
+            handler() {
+                this.handleFilterChange();
+            }
+        },
+        searchOriginBy: {
+            handler() {
+                this.handleFilterChange();
+            }
+        }
+    },
     methods: {
+        handleFilterChange() {
+            if (this.isProcessing) {
+                return;
+            }
+
+            this.isProcessing = true;
+            this.page = 1;
+            this.getTableDataReceivingLog()
+                .finally(() => {
+                    this.isProcessing = false;
+                });
+        },
         actionUpdate(val) {
             this.receivingLogId = val.receiving_log_id;
             this.dialogEdit = true;
@@ -137,6 +179,8 @@ export default {
                 let queryParams = `n=${this.listenNodeId}&page=${this.page}&limit=${this.limit}&search_by=${searchBy}&s=${searchValue}&status=${status}&pov=${pov}`;
                 
                 if (startDate && endDate) {
+                    startDate = this.formatToWIB(startDate);
+                    endDate = this.formatToWIB(endDate);
                     queryParams += `&filter_date=created_at&start_date=${startDate}&end_date=${endDate}`;
                 }
 
@@ -144,20 +188,24 @@ export default {
                 const data = res.data.data;
 
                 let processedData = Array.isArray(data) ? data : [data];
-                processedData = processedData.map(item => ({
-                    ...item,
-                    origin: (item.origin_node_name || item.origin_node_code) 
-                        ? ((item.origin_node_name || '') + 
-                        ((item.origin_node_name && item.origin_node_code) ? ' ' : '') + 
-                        (item.origin_node_code ? `(${item.origin_node_code})` : ''))
-                        : '',
-                    receiver: (item.receiver_node_name || item.receiver_node_code) 
-                        ? ((item.receiver_node_name || '') + 
-                        ((item.receiver_node_name && item.receiver_node_code) ? ' ' : '') + 
-                        (item.receiver_node_code ? `(${item.receiver_node_code})` : ''))
-                        : '',
-                    button_status: { edit: (item.status == null || item.status == undefined || item.status == '') }
-                }));
+                processedData = processedData.map(item => {
+                    item.created_at = this.formatTimezone(item.created_at);
+                    item.received_time = this.formatTimezone(item.received_time);
+                    return {
+                        ...item,
+                        origin: (item.origin_node_name || item.origin_node_code) 
+                            ? ((item.origin_node_name || '') + 
+                            ((item.origin_node_name && item.origin_node_code) ? ' ' : '') + 
+                            (item.origin_node_code ? `(${item.origin_node_code})` : ''))
+                            : '',
+                        receiver: (item.receiver_node_name || item.receiver_node_code) 
+                            ? ((item.receiver_node_name || '') + 
+                            ((item.receiver_node_name && item.receiver_node_code) ? ' ' : '') + 
+                            (item.receiver_node_code ? `(${item.receiver_node_code})` : ''))
+                            : '',
+                        button_status: { edit: (item.status == null || item.status == undefined || item.status == '') }
+                    }
+                });
 
                 this.dataTable = processedData;
 
@@ -188,7 +236,15 @@ export default {
         },
     },
     mounted() {
+        window.addEventListener('timezone-changed', () => {
+            this.getTableDataReceivingLog();
+        });
         this.getTableDataReceivingLog();
+    },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', () => {
+            this.getTableDataReceivingLog();
+        });
     }
 }
 </script>

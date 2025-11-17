@@ -21,6 +21,7 @@
                     :state="props.err !== undefined && props.err !== '' ? 'danger' : 'gray'"
                     @keyup.enter.native="addItem"
                     @change="updateValue"
+                    @click.native="$emit('click')"
                 >
                     <el-option
                         v-for="item in DataTemplate"

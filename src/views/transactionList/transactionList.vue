@@ -50,13 +50,23 @@ export default {
                     width: "xs"
                 },
                 {
-                    label: "Total Connotes",
-                    key: "total_connote",
+                    label: "Connote Number",
+                    key: "connote_number",
                     width: "auto"
                 },
                 {
                     label: "Shipper Name",
                     key: "connote_shipper_name",
+                    width: "auto"
+                },
+                {
+                    label: "Origin",
+                    key: "connote_origin",
+                    width: "auto"
+                },
+                {
+                    label: "Destination",
+                    key: "connote_destination",
                     width: "auto"
                 },
                 {
@@ -138,9 +148,9 @@ export default {
             if(q !== undefined) {
                 query = q
             }
-            if(from !== undefined && to !== undefined) {
-              startDate = from
-              endDate = to
+            if (from !== undefined && to !== undefined) {
+              startDate = this.formatToWIB(from)
+              endDate = this.formatToWIB(to)
             }
             await axios
                 .get(this.URL.transaction +
@@ -155,9 +165,14 @@ export default {
                         // if(item.hasOwnProperty('is_paid')) {
                         //     if(item['is_paid'] == '1') {
                                 total = Number(total) + Number(item.transaction_amount);
-                                item['total_connote'] = item.connote.length
-                                item['connote_shipper_name'] = item.connote.length > 0 ? item.connote[0].connote_shipper_name : null
-                                item['user_name'] = item.user ? item.user.user_name : '-'
+                                item.created_at = this.formatTimezone(item.created_at);
+                                item.updated_at = this.formatTimezone(item.updated_at);
+                                item.transaction_date = this.formatTimezone(item.transaction_date);
+                                item['connote_number'] = item.connote.connote_number;
+                                item['connote_shipper_name'] = item.connote.connote_shipper_name || null;
+                                item['user_name'] = item.user ? item.user.user_name : '-',
+                                item['connote_origin'] = item.connote.connote_shipper_tlc
+                                item['connote_destination'] = item.connote.connote_receiver_tlc
                         //     }
                         // }
                       
@@ -257,8 +272,12 @@ export default {
         }
     },
     mounted() {
+        window.addEventListener('timezone-changed', this.refresh);
         this.refresh()
         this.handlePrintShortcut(this.actionPrintSelected)
-    }
+    },
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh);
+    },
 }
 </script>

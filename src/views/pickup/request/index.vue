@@ -30,7 +30,14 @@
                                         :selectedValue="filterDateBy" />
                                 </vs-col>
                                 <vs-col w="8">
-                                    <daterange-filter @searchDate="searchDate" size="small" />
+                                    <date-time 
+                                        :name="''" 
+                                        :rules="''" 
+                                        :formKey="'DATE_TIME_WITHOUT_SECONDS'" 
+                                        :valueData="tempDate"
+                                        typeInput="datetimerange" 
+                                        @updateValue="updateValue" 
+                                    />
                                 </vs-col>
                             </vs-row>
                         </vs-col>
@@ -76,6 +83,7 @@ import Breadcrumb from "@/components/breadcrumb/index"
 import SearchInput from "@/components/search/searchInput"
 import dateRange from "@/components/daterange/index"
 import SelectSearchBy from "@/components/search/selectSearchBy";
+import DateTime from "@/components/input/dateTime"   
 
 import PickupRequest from "@/views/pickup/request/pickupRequest"
 
@@ -92,6 +100,7 @@ export default {
         "select-search-by": SelectSearchBy,
         "PickupRequest": PickupRequest,
         "dialogCreatePickupRequest": DialogCreatePickupRequest,
+        "date-time": DateTime,
     },
     data() {
         return {
@@ -162,6 +171,13 @@ export default {
         },
         updateFilterDateBy(key, val) {
             this.filterDateBy = val;
+        },
+        updateValue(key, val) {
+            switch(key) {
+                case "DATE_TIME_WITHOUT_SECONDS":
+                    this.tempDate = val
+                    break;
+            }
         },
     },
 }

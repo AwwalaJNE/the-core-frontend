@@ -1,4 +1,4 @@
-@import 'utilities/variables';
-@import '/mixins';
-// @import 'node_modules/bootstrap/scss/bootstrap.scss';
-@import '/main';
+// src/scss/style.scss
+@forward "variables";
+@forward "mixins";
+@forward "main";
