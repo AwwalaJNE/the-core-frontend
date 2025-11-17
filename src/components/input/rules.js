@@ -12,7 +12,7 @@ import {
 const phoneRule = {
     message: 'The {_field_} must be either a valid phone number',
     validate(value, args) {
-        const REGEX = /^62\d{8,12}$/
+        const REGEX = /^62\d{9,12}$/
 
         return REGEX.test(value)
     },
