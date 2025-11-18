@@ -241,11 +241,6 @@ export default {
                     width: 'xxxs',
                 },
                 {
-                    label: 'Type',
-                    key: 'sj_type',
-                    width: 'auto',
-                },
-                {
                     label: 'Orion Number',
                     key: 'orion_number',
                     width: 'xxxs',
