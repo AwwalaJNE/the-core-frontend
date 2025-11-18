@@ -96,26 +96,26 @@ const Master = {
         setActiveInput(refName, formRefName = null, shouldSkipFocus = () => false) {
             this.activeInput = refName
             if (!shouldSkipFocus()) {
-                this.$nextTick(() => this.focusInput(refName, formRefName, shouldSkipFocus))
+                this.$nextTick(() => {
+                    setTimeout(() => {
+                        this.focusInput(refName, formRefName, shouldSkipFocus)
+                    }, 0)
+                })
             }
         },
 
-        focusInput(refName, formRefName = null, shouldSkipFocus = () => false) {
+        focusInput(refName, formRefName, shouldSkipFocus) {
             if (shouldSkipFocus()) return
+
             const inputEl = this.getInputByRef(refName)
-            if (!inputEl) return
+
+            if (!inputEl) {
+                requestAnimationFrame(() => this.focusInput(refName, formRefName, shouldSkipFocus))
+                return
+            }
 
             inputEl.focus()
-
-            if (inputEl._blurHandler) {
-                inputEl.removeEventListener('blur', inputEl._blurHandler)
-                inputEl._blurHandler = null
-            }
-
-            inputEl._blurHandler = (e) => this.preventUnfocus(e, formRefName, shouldSkipFocus)
-            inputEl.addEventListener('blur', inputEl._blurHandler)
         },
-
         preventUnfocus(e, formRefName = null, shouldSkipFocus = () => false) {
             if (shouldSkipFocus()) return
 

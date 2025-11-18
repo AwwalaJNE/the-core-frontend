@@ -307,11 +307,11 @@ export default {
         employee_phone_number: {
             label: 'Phone Number',
             key: 'employee_phone_number',
-            rule: 'required|numeric|min:8',
+            rule: 'required|phone|numeric|min:10',
             typeInput: 'text',
             typeData: 'String',
             valueData: null,
-            value: '',
+            value: '62',
         },
         employee_no_sim: {
             label: 'No. SIM',
@@ -657,11 +657,11 @@ export default {
         customer_phone: {
             label: 'Customer phone',
             key: 'customer_phone',
-            rule: 'required',
+            rule: 'required|phone|numeric|min:10',
             typeInput: 'text',
             typeData: 'String',
             valueData: null,
-            value: '',
+            value: '62',
             placeholder: 'Masukan nomor telepon customer',
         },
         customer_type_id: {
