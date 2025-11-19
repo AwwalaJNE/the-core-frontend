@@ -332,6 +332,10 @@ export default {
                 this.$nextTick(() => {
                     this.setActiveInput('scanBag', 'formSuratJalan', () => this.dialogTraceBag)
                 })
+            }
+        },
+        manifest_do_number: function (val) {
+            if (val) {
                 this.getDestination2()
                 this.getNoModeAngkutan()
                 // this.getLov();
