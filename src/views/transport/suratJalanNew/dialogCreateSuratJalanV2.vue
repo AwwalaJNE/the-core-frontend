@@ -193,6 +193,15 @@ export default {
                     key: 'item_number',
                     width: 'sm',
                 },
+                ...(this.listenBreadcrumbTitle === 'Delivery Order'
+                    ? [
+                        {
+                            label: 'HVI',
+                            key: 'hvi',
+                            width: 'sm'
+                        }
+                      ]
+                    : []),
                 {
                     label: 'Trip Status',
                     key: 'status_trip',
@@ -342,6 +351,14 @@ export default {
                 this.getDriver()
             }
         },
+        listenBreadcrumbTitle: {
+            handler(val, oldVal) {
+                if (val !== oldVal && val !== undefined) {
+                    this.setDatacolumn()
+                }
+            },
+            immediate: true,
+        }
     },
     methods: {
         getEditData(val) {
@@ -885,6 +902,66 @@ export default {
         openTraceBagDialog() {
             this.dialogTraceBag = true
         },
+        setDatacolumn() {
+            this.datacolumn = [
+                {
+                    label: 'Item Number',
+                    key: 'item_number',
+                    width: 'sm',
+                },
+                ...(this.listenBreadcrumbTitle === 'Delivery Order'
+                    ? [
+                        {
+                            label: 'HVI',
+                            key: 'hvi',
+                            width: 'sm'
+                        }
+                      ]
+                    : []),
+                {
+                    label: 'Trip Status',
+                    key: 'status_trip',
+                    width: 'sm',
+                },
+                {
+                    label: 'Actual Weight (Kg)',
+                    key: 'actual_weight',
+                    width: 'sm',
+                },
+                {
+                    label: 'Cost Weight (Kg)',
+                    key: 'cost_weight',
+                    width: 'sm',
+                },
+                {
+                    label: 'Node Code Destination',
+                    key: 'node_code_destination',
+                    width: 'sm',
+                },
+                {
+                    label: 'Node Name Destination',
+                    key: 'node_name_destination',
+                    width: 'sm',
+                },
+                {
+                    label: 'Destination',
+                    key: 'destination',
+                    width: 'sm',
+                },
+                {
+                    label: 'Type',
+                    key: 'item_type',
+                    width: 'sm',
+                },
+                {
+                    label: 'Received',
+                    key: 'received_status',
+                    is_missroute: 'is_missroute',
+                    type: 'status',
+                    width: 'sm',
+                }
+            ]
+        }
     },
     mounted() {
         this.handlePrintShortcut(this.print)

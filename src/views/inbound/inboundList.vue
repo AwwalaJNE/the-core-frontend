@@ -402,6 +402,7 @@ export default {
                             im = [...new Set(im)]
                             item['im_numbers'] = im.join(', ')
                         }
+                        item['rdo'] = item['manifest_delivery_order']?.rdo || ''
                         total = Number(total) + Number(item.transaction_amount)
                     })
                     this.pagination.page = res.data.meta.current_page
@@ -431,7 +432,7 @@ export default {
                     label: `${
                         this.listenBreadcrumbCode === 'Pre Alert'
                             ? 'Incoming'
-                            : this.listenBreadcrumbCode
+                            : this.listenBreadcrumbCode === 'RDO' ? 'DO' : this.listenBreadcrumbCode
                     } Number`,
                     key: 'inbound_number',
                     width: 'xxxs',
@@ -441,6 +442,15 @@ export default {
                           {
                               label: `${this.listenBreadcrumbCode} Type`,
                               key: 'document_type',
+                              width: 'xxxs',
+                          },
+                      ]
+                    : []),
+                ...(this.listenBreadcrumbTitle === 'RDO'
+                    ? [
+                          {
+                              label: `${this.listenBreadcrumbCode} Number`,
+                              key: 'rdo',
                               width: 'xxxs',
                           },
                       ]
