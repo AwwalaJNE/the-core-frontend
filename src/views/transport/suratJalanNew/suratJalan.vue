@@ -420,8 +420,8 @@ export default {
                         item['total_outstanding'] =
                             item.total_outstanding === 0 ? '0' : item.total_outstanding
 
-                        item['etd'] = this.formatTimezone(item['etd'])
-                        item['eta'] = this.formatTimezone(item['eta'])
+                        // item['etd'] = this.formatTimezone(item['etd'])
+                        // item['eta'] = this.formatTimezone(item['eta'])
                         item['departed_time'] = this.formatTimezone(item['departed_time'])
 
                         if (

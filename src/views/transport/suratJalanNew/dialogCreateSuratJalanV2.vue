@@ -91,24 +91,24 @@
                         <div class="mt-2 mb-2">
                             <vs-row align="center">
                                 <vs-col xs="6" sm="3" lg="3">
-                                    <form @submit.prevent="submitSuratJalan">
-                                        <input-general
-                                            icon-after
-                                            :name="getScanLabel"
-                                            rules=""
-                                            formKey="scanBag"
-                                            ref="scanBag"
-                                            :valueData="item_number"
-                                            :typeInput="`text`"
-                                            :disabled="isDisabled || dialogTraceBag"
-                                            @click-icon="handleIconClick"
-                                            @updateValue="updateValue"
-                                        >
-                                            <template #icon>
-                                                <i class="bx bx-barcode-reader"></i>
-                                            </template>
-                                        </input-general>
-                                    </form>
+                                    <input-general
+                                        icon-after
+                                        :name="getScanLabel"
+                                        rules=""
+                                        formKey="scanBag"
+                                        ref="scanBag"
+                                        :valueData="item_number"
+                                        :typeInput="`text`"
+                                        :disabled="isDisabled || dialogTraceBag"
+                                        :enter_to_update="true"
+                                        @click-icon="handleIconClick"
+                                        @updateValue="updateValue"
+                                        @enterUpdate="addSuratJalanDetail"
+                                    >
+                                        <template #icon>
+                                            <i class="bx bx-barcode-reader"></i>
+                                        </template>
+                                    </input-general>
                                 </vs-col>
                             </vs-row>
                             <table-master
@@ -281,7 +281,6 @@ export default {
                 page_size: 1,
                 page: 1,
             },
-            editData: {},
             destination_name_code: '',
             is_missroute: false,
             dialogTraceBag: false,
@@ -333,6 +332,10 @@ export default {
                 this.$nextTick(() => {
                     this.setActiveInput('scanBag', 'formSuratJalan', () => this.dialogTraceBag)
                 })
+            }
+        },
+        manifest_do_number: function (val) {
+            if (val) {
                 this.getDestination2()
                 this.getNoModeAngkutan()
                 // this.getLov();
@@ -377,6 +380,15 @@ export default {
                 item.is_missroute = item.is_missroute === true ? 1 : 0
             })
 
+            const etd_ori = val.etd
+            const eta_ori = val.eta
+
+            this.etd = this.formatTimezone(val.etd)
+            this.eta = this.formatTimezone(val.eta)
+
+            val.etd = this.formatTimezone(etd_ori) // NOTES: CHANGE TO CURRENT TIMEZONE
+            val.eta = this.formatTimezone(eta_ori) // NOTES: CHANGE TO CURRENT TIMEZONE
+
             this.total_weight = val.total_weight
             this.editData = val
             this.editData.destination_id = val.node_id_destination
@@ -388,16 +400,13 @@ export default {
 
             this.no_moda_angkutan_id = val.no_moda_angkutan_id || null
 
-            this.etd = this.formatToWIB(val.etd)
-            this.eta = this.formatToWIB(val.eta)
-
             this.master_form = {
                 node_id_origin: val.node_id_origin,
                 node_id_destination: val.node_id_destination,
                 vehicle_id: val.vehicle_id,
                 pic_employee_id: val.pic_employee_id,
-                etd: val.etd,
-                eta: val.eta,
+                etd: etd_ori,
+                eta: eta_ori,
                 max_weight: val.max_weight,
                 manifest_lov: val.manifest_lov,
                 item_no: val.item_number,
@@ -416,36 +425,6 @@ export default {
         //         item: item_destination
         //     }]);
         // },
-        formData(form) {
-            const obj = {
-                node_id_origin: this.listenNodeId,
-                node_id_destination: form.destination_id,
-                vehicle_id: form.no_moda_angkutan_id,
-                pic_employee_id: form.driver_id,
-                etd: form.etd,
-                eta: form.eta,
-                max_weight: this.vehicle_max_weight,
-                manifest_lov: this.manifest_lov,
-                item_no: this.item_number,
-                is_penerusan: this.is_penerusan,
-            }
-
-            this.form = obj
-            if (this.form.eta > this.form.etd) {
-                if (this.manifest_do_number) {
-                    this.addSuratJalanDetail()
-                } else {
-                    this.createSuratJalan()
-                }
-            } else {
-                this.openNotification(
-                    'warning',
-                    null,
-                    'Wrong Input in ETA/ETD field',
-                    'ETA must more than ETD'
-                )
-            }
-        },
         onChangeCustom(type, val, obj) {
             const updateMasterForm = (key, value) => {
                 if (this.manifest_do_number && this.master_form?.[key] !== value) {
@@ -456,14 +435,15 @@ export default {
 
             switch (type) {
                 case 'destination_id':
-                    if (typeof obj === 'object') {
-                        const { item, value } = obj
-                        if (item?.estimated_time_in_hour) {
-                            this.estimated_time_in_hour = item.estimated_time_in_hour
-                            this.handleEta(this.etd, this.estimated_time_in_hour)
-                        }
-                        this.destinationUnlock = value
-                    }
+                    // TODO: RECHECK LATER SINCE CURRENTLY WE USE H+1 FOR ETA
+                    // if (typeof obj === 'object') {
+                    //     const { item, value } = obj
+                    //     if (item?.estimated_time_in_hour) {
+                    //         this.estimated_time_in_hour = item.estimated_time_in_hour
+                    //         this.handleEta(this.etd, this.estimated_time_in_hour)
+                    //     }
+                    //     this.destinationUnlock = value
+                    // }
                     updateMasterForm('node_id_destination', val)
                     break
 
@@ -478,25 +458,13 @@ export default {
                     break
 
                 case 'etd':
-                    if (this.etd === this.formatToWIB(val)) {
-                        updateMasterForm('etd', val)
-                    } else {
+                    if (this.formatToWIB(this.etd) !== this.formatToWIB(val)) {
                         updateMasterForm('etd', this.formatToWIB(val))
                     }
-
                     break
 
                 case 'eta':
-                    this.$store.dispatch(
-                        'SET_SURAT_JALAN_ETA',
-                        moment(val.length === 10 ? val + ' 00:00:00' : val)
-                            .add(this.estimated_time_in_hour, 'hours')
-                            .format('YYYY-MM-DD HH:mm:ss')
-                    )
-
-                    if (this.eta === this.formatToWIB(val)) {
-                        updateMasterForm('eta', val)
-                    } else {
+                    if (this.formatToWIB(this.eta) !== this.formatToWIB(val)) {
                         updateMasterForm('eta', this.formatToWIB(val))
                     }
                     break
@@ -565,9 +533,6 @@ export default {
                 }
             }
         },
-        submitSuratJalan() {
-            this.$refs.formSuratJalan.handleSubmit()
-        },
         async createSuratJalan() {
             this.loading = true
             let form = {
@@ -586,13 +551,16 @@ export default {
                 if (data) {
                     this.manifest_do_number = data.manifest_do_number
                     this.total_weight = data.total_weight
+                    this.etd = this.formatTimezone(data.etd)
+                    this.eta = this.formatTimezone(data.eta)
+
                     this.master_form = {
                         node_id_origin: data.node_id_origin,
                         node_id_destination: data.node_id_destination,
                         vehicle_id: data.vehicle_id || null,
                         pic_employee_id: data.pic_employee_id || null,
-                        etd: data.etd,
-                        eta: data.eta,
+                        etd: data.etd, // NOTES: ALREADY WIB FROM BE
+                        eta: data.eta, // NOTES: ALREADY WIB FROM BE
                         max_weight: data.max_weight,
                         manifest_lov: data.manifest_lov,
                         item_no: data.item_number,
@@ -606,8 +574,8 @@ export default {
                         destination_id: data.node_id_destination,
                         node_id_origin: data.node_id_origin,
                         node_id_destination: data.node_id_destination,
-                        etd: data.etd,
-                        eta: data.eta,
+                        etd: this.formatTimezone(data.etd),
+                        eta: this.formatTimezone(data.eta),
                         manifest_lov: data.manifest_lov,
                         item_no: data.item_number,
                         is_penerusan: data.is_penerusan,
