@@ -73,6 +73,11 @@ export default {
                     width: 'sm',
                 },
                 {
+                    label: 'HVI',
+                    key: 'hvi',
+                    width: 'sm',
+                },
+                {
                     label: 'Irregularity Status',
                     key: 'irregularity_status',
                     width: 'sm',
