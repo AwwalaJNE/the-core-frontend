@@ -446,15 +446,6 @@ export default {
                           },
                       ]
                     : []),
-                ...(this.listenBreadcrumbTitle === 'RDO'
-                    ? [
-                          {
-                              label: `${this.listenBreadcrumbCode} Number`,
-                              key: 'rdo',
-                              width: 'xxxs',
-                          },
-                      ]
-                    : []),
                 {
                     label: 'Status',
                     key: 'status',
@@ -467,6 +458,15 @@ export default {
                           {
                               label: 'Orion Number',
                               key: 'orion_number',
+                              width: 'xxxs',
+                          },
+                      ]
+                    : []),
+                ...(this.listenBreadcrumbTitle === 'RDO'
+                    ? [
+                          {
+                              label: `${this.listenBreadcrumbCode} Number`,
+                              key: 'rdo',
                               width: 'xxxs',
                           },
                       ]
