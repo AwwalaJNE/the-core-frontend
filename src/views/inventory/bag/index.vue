@@ -60,7 +60,8 @@
                                 </vs-checkbox>
                             </vs-col>
 
-                            <vs-col v-if="['normal'].includes(bag_type)" xs="12" sm="12" lg="6">
+                            <!-- TODO: UNCOMMENT IF STILL NEED THIS -->
+                            <!-- <vs-col v-if="['normal'].includes(bag_type)" xs="12" sm="12" lg="6">
                                 <vs-checkbox
                                     v-model="is_hub_delivery_validation"
                                     @change="handleValidateHubDelivery"
@@ -68,11 +69,15 @@
                                 >
                                     Validate Hub Delivery
                                 </vs-checkbox>
-                            </vs-col>
+                            </vs-col> -->
                         </vs-row>
 
                         <vs-row>
-                            <vs-col w="12">
+                            <vs-col
+                                xs="12"
+                                sm="12"
+                                :lg="['normal', 'hacb', 'hvo', 'om'].includes(bag_type) ? 8 : 12"
+                            >
                                 <input-general
                                     ref="scanItem"
                                     formKey="scanItem"
@@ -89,6 +94,25 @@
                                     @click-icon="handleIconClick"
                                     @updateValue="updateValue"
                                     @enterUpdate="validateItem"
+                                />
+                            </vs-col>
+                            <vs-col
+                                v-if="['normal', 'hacb', 'hvo', 'om'].includes(bag_type)"
+                                xs="12"
+                                sm="12"
+                                lg="4"
+                            >
+                                <selector
+                                    ref="destination"
+                                    name="Destination"
+                                    rules=""
+                                    placeholder="Select Destination"
+                                    formKey="destination"
+                                    :valueData="destinationArr"
+                                    :selectedValue="destination"
+                                    :isMultiple="false"
+                                    :customBind="'data-kt-bag-type'"
+                                    @updateValue="updateValue"
                                 />
                             </vs-col>
                         </vs-row>
@@ -188,6 +212,22 @@ export default {
 
             item_number: '',
             dialogActiveManualDestination: false,
+
+            destination: 'HUB_DELIVERY',
+            destinationArr: [
+                {
+                    label: 'Hub Delivery',
+                    value: 'HUB_DELIVERY',
+                },
+                {
+                    label: 'Delivery Area',
+                    value: 'DELIVERY_AREA',
+                },
+                {
+                    label: 'Smart Point',
+                    value: 'SMARTPOINT',
+                },
+            ],
         }
     },
     methods: {
@@ -211,11 +251,15 @@ export default {
         },
         updateValue(key, val) {
             if (key === 'scanItem') this.item_number = val
+            else if (key === 'destination') {
+                this.destination = val
+                this.setActiveInput('scanItem')
+            }
         },
         async processItem() {
             this.form = {
                 item_number: this.item_number,
-                destination_scope: 'HUB_DELIVERY',
+                destination_scope: this.destination,
                 auto_open_bag: this.is_auto_open_bag,
             }
 
