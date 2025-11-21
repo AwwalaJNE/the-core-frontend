@@ -13,7 +13,13 @@
                     v-if="!is_history"
                 >
                     <div style="width: 100px; padding-right: 5px">
-                        <vs-button flat block :active="true" @click="openDialogNewButton">
+                        <vs-button
+                            flat
+                            block
+                            :active="true"
+                            :data-testid="`create-button-${navActive}`"
+                            @click="openDialogNewButton"
+                        >
                             <i class="bx bx-plus"></i> New
                         </vs-button>
                     </div>
@@ -42,6 +48,7 @@
                                     <vs-row>
                                         <vs-col w="4">
                                             <select-search-by
+                                                :formKey="'date'"
                                                 :border="true"
                                                 :isMultiple="false"
                                                 :selectedValue="filterDateByRemark"
@@ -65,6 +72,7 @@
                                     <vs-row justify="end">
                                         <vs-col xs="6" sm="8" lg="4">
                                             <select-search-by
+                                                :key="navActive"
                                                 :border="true"
                                                 :isMultiple="false"
                                                 :valueData="searchParamsRemark"
@@ -99,6 +107,7 @@
                                     <vs-row>
                                         <vs-col w="4">
                                             <select-search-by
+                                                :formKey="'date'"
                                                 :border="true"
                                                 :isMultiple="false"
                                                 :selectedValue="filterDateByRunsheet"
@@ -122,6 +131,7 @@
                                     <vs-row justify="end">
                                         <vs-col xs="6" sm="8" lg="4">
                                             <select-search-by
+                                                :key="navActive"
                                                 :border="true"
                                                 :isMultiple="false"
                                                 :selectedValue="searchByRunsheet"
@@ -156,6 +166,7 @@
                                     <vs-row>
                                         <vs-col w="4">
                                             <select-search-by
+                                                :formKey="'date'"
                                                 :border="true"
                                                 :isMultiple="false"
                                                 :selectedValue="filterDateByMessage"
@@ -179,6 +190,7 @@
                                     <vs-row justify="end">
                                         <vs-col xs="6" sm="8" lg="4">
                                             <select-search-by
+                                                :ref="navActive"
                                                 :border="true"
                                                 :isMultiple="false"
                                                 :selectedValue="searchByMessage"

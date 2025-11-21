@@ -1,14 +1,11 @@
 <template>
-    <dialog-master 
-        :actived="listenActive" 
+    <dialog-master
+        :actived="listenActive"
         :loading="listenLoading"
         :closeDialog="cancel"
         width="md"
     >
-
-        <template v-slot:header>
-            Message Masking
-        </template>
+        <template v-slot:header> Message Masking </template>
 
         <template v-slot:content v-if="loadingMessage === false">
             <vs-row justify="space-between">
@@ -49,11 +46,7 @@
                     />
                 </vs-col>
                 <vs-col xs="12" sm="12" lg="12">
-                    <input-text-area 
-                        id="message"
-                        label="Message"
-                        v-model="form.message"
-                    />
+                    <input-text-area id="message" label="Message" v-model="form.message" />
                 </vs-col>
             </vs-row>
         </template>
@@ -67,6 +60,7 @@
                         danger
                         flat
                         :active="true"
+                        :data-testid="`cancel-button`"
                         @click="cancel"
                     >
                         Cancel
@@ -79,54 +73,54 @@
                         flat
                         type="submit"
                         :active="true"
+                        :data-testid="`submit-button`"
                         @click="handleSubmit"
                     >
-                       Submit
+                        Submit
                     </vs-button>
                 </vs-col>
-            </vs-row>  
+            </vs-row>
         </template>
-
     </dialog-master>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master";
+import axios from 'axios'
+import master from '@/mixins/master'
 
-import DialogMaster from "@/components/dialog/dialogMaster";
-import InputGeneral from "@/components/input/general";
-import InputTextArea from "@/components/input/textArea";
-import Selector from "@/components/input/select";
+import DialogMaster from '@/components/dialog/dialogMaster'
+import InputGeneral from '@/components/input/general'
+import InputTextArea from '@/components/input/textArea'
+import Selector from '@/components/input/select'
 
 export default {
-    name:"tracing-message-dialog",
-    mixins:[master],
+    name: 'tracing-message-dialog',
+    mixins: [master],
     components: {
-        "input-general": InputGeneral,
-        "selector": Selector,
-        "dialog-master": DialogMaster,
-        "input-text-area": InputTextArea,
+        'input-general': InputGeneral,
+        selector: Selector,
+        'dialog-master': DialogMaster,
+        'input-text-area': InputTextArea,
     },
     props: {
-       closeDialog: Function, 
-       active: Boolean,
-       title: String,
-       callRefreshMessageFunction: Function
+        closeDialog: Function,
+        active: Boolean,
+        title: String,
+        callRefreshMessageFunction: Function,
     },
     computed: {
         listenActive() {
-            return this.active;
+            return this.active
         },
-        listenLoading(){
+        listenLoading() {
             return this.loadingMessage
         },
     },
     watch: {
         active: function (val) {
             if (val === true) {
-                this.getDataMessage();
+                this.getDataMessage()
             }
-        }
+        },
     },
     data() {
         return {
@@ -137,33 +131,47 @@ export default {
                 created_at: '',
                 receiver_phone_number: '',
                 user_login: '',
-                message: '' 
-            }
+                message: '',
+            },
         }
     },
     methods: {
         async getDataMessage() {
-            this.loadingMessage = true;
+            this.loadingMessage = true
             try {
-                const response = await axios.get(`${this.URL.tracing}/${this.koli_number}?n=${this.listenNodeId}`, this.Helper.header());
-                const data = response.data;
+                const response = await axios.get(
+                    `${this.URL.tracing}/${this.koli_number}?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
+                const data = response.data
                 if (data) {
-                    const { koli_number, koli_created_at, receiver_phone_number, user_login, message_template } = data.data;
+                    const {
+                        koli_number,
+                        koli_created_at,
+                        receiver_phone_number,
+                        user_login,
+                        message_template,
+                    } = data.data
 
                     let form = {
                         koli_number: koli_number,
                         created_at: koli_created_at,
                         receiver_phone_number: receiver_phone_number,
                         user_login: user_login,
-                        message: message_template
-                    };
+                        message: message_template,
+                    }
 
-                    this.form = form;
+                    this.form = form
                 }
             } catch (err) {
-                this.openNotification('danger', err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
             } finally {
-                this.loadingMessage = false;
+                this.loadingMessage = false
             }
         },
         async handleSubmit() {
@@ -171,26 +179,38 @@ export default {
                 .post(
                     this.URL.tracing + `/${this.koli_number}/message?n=${this.listenNodeId}`,
                     JSON.stringify({
-                        "message": this.form.message
-                    }), 
-                    this.Helper.header())
-                .then(res => {
+                        message: this.form.message,
+                    }),
+                    this.Helper.header()
+                )
+                .then((res) => {
                     this.cancel()
-                    this.openNotification("success", null, "Success", res?.data?.message ?? 'Create new tracing message is success');
-                }).catch(err => {
+                    this.openNotification(
+                        'success',
+                        null,
+                        'Success',
+                        res?.data?.message ?? 'Create new tracing message is success'
+                    )
+                })
+                .catch((err) => {
                     this.loadingMessage = false
-                    this.openNotification('danger', err?.response?.data?.code ?? "", 'Create new tracing message failed', err?.response?.data?.message ?? 'Something went wrong');
+                    this.openNotification(
+                        'danger',
+                        err?.response?.data?.code ?? '',
+                        'Create new tracing message failed',
+                        err?.response?.data?.message ?? 'Something went wrong'
+                    )
                 })
 
             this.callRefreshMessageFunction()
         },
         cancel() {
-            this.form = {};
-            this.closeDialog();
-        }
+            this.form = {}
+            this.closeDialog()
+        },
     },
     mounted() {
         this.handleSubmitShortcut(this.handleSubmit)
-    }
+    },
 }
 </script>
