@@ -396,7 +396,7 @@ export default {
                         let arr = []
                         res.data.data.map((item) => {
                             let obj = {}
-                            obj['label'] = item.employee_name
+                            obj['label'] = item.employee_name + ' (' + item.employee_code + ')'
                             obj['value'] = item.employee_id
 
                             arr.push(obj)
