@@ -40,7 +40,15 @@
         <template v-slot:footer>
             <vs-row justify="flex-end">
                 <vs-col w="3">
-                    <vs-button block danger flat transparent :active="true" @click="cancel">
+                    <vs-button
+                        block
+                        danger
+                        flat
+                        transparent
+                        :active="true"
+                        :data-testid="`cancel-button`"
+                        @click="cancel"
+                    >
                         Cancel
                     </vs-button>
                 </vs-col>
@@ -51,6 +59,7 @@
                         transparent
                         type="submit"
                         :active="true"
+                        :data-testid="`submit-button`"
                         @click="handleSubmit"
                     >
                         Submit
