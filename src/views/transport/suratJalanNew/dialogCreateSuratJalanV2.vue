@@ -84,7 +84,6 @@
                             typeForm="surat_jalan"
                             :dataItem="editData"
                             :isDisabled="isDisabled"
-                            @formData="formData"
                             @onChangeCustom="onChangeCustom"
                         />
 
@@ -195,11 +194,11 @@ export default {
                 },
                 ...(this.listenBreadcrumbTitle === 'Delivery Order'
                     ? [
-                        {
-                            label: 'HVI',
-                            key: 'hvi',
-                            width: 'sm'
-                        }
+                          {
+                              label: 'HVI',
+                              key: 'hvi',
+                              width: 'sm',
+                          },
                       ]
                     : []),
                 {
@@ -358,7 +357,7 @@ export default {
                 }
             },
             immediate: true,
-        }
+        },
     },
     methods: {
         getEditData(val) {
@@ -658,6 +657,7 @@ export default {
                         received_status: item.received_at ? 1 : 0,
                         destination: item.item_destination,
                         node_code_destination: item.node_code_destination,
+                        node_name_destination: item?.bag?.destination?.node_name || '',
                         status_trip:
                             (item?.bag?.status_trip || '') +
                             ' ' +
@@ -911,11 +911,11 @@ export default {
                 },
                 ...(this.listenBreadcrumbTitle === 'Delivery Order'
                     ? [
-                        {
-                            label: 'HVI',
-                            key: 'hvi',
-                            width: 'sm'
-                        }
+                          {
+                              label: 'HVI',
+                              key: 'hvi',
+                              width: 'sm',
+                          },
                       ]
                     : []),
                 {
@@ -959,9 +959,9 @@ export default {
                     is_missroute: 'is_missroute',
                     type: 'status',
                     width: 'sm',
-                }
+                },
             ]
-        }
+        },
     },
     mounted() {
         this.handlePrintShortcut(this.print)
