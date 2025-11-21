@@ -8,14 +8,14 @@
                 </div>
             </vs-col>
         </vs-row>
-        <div class="mt-2" style="display: flex; justify-content: space-between;">
+        <div class="mt-2" style="display: flex; justify-content: space-between">
             <vs-row justify="space-between">
                 <vs-col xs="9" sm="9" lg="9">
                     <form @submit.prevent="openDialog">
                         <multi-input
                             ref="koliCode"
                             placeholder="Masukkan Nomor Bag / Connote"
-                            rules="" 
+                            rules=""
                             formKey="KOLI_CODE"
                             :loading="loading"
                             :selectedValue="koliCode"
@@ -23,16 +23,13 @@
                             :disabled="false"
                             :isAllowCreate="true"
                             :autofocus="true"
-                            @updateValue="updateValue" 
+                            @updateValue="updateValue"
                             @click="setActive('koliCode')"
                         />
                     </form>
                 </vs-col>
                 <vs-col xs="3" sm="3" lg="3">
-                    <vs-button
-                        :active="true"
-                        @click="openDialog"
-                    >
+                    <vs-button :active="true" :data-testid="`submit-button`" @click="openDialog">
                         Submit
                     </vs-button>
                 </vs-col>
@@ -43,14 +40,14 @@
                         <multi-input
                             ref="removeKoliCode"
                             placeholder="Masukkan Nomor Bag / Connote"
-                            rules="" 
+                            rules=""
                             formKey="REMOVE_KOLI_CODE"
                             :loading="loading"
                             :selectedValue="removeKoliCode"
                             :isMultiple="false"
                             :disabled="!hasPermission('delete-irregularity')"
                             :isAllowCreate="true"
-                            @updateValue="updateValue"  
+                            @updateValue="updateValue"
                             @click="setActive('removeKoliCode')"
                         />
                     </form>
@@ -60,6 +57,7 @@
                         danger
                         :active="true"
                         :disabled="!hasPermission('delete-irregularity')"
+                        :data-testid="`remove-button`"
                         @click="actionRemoveBulk"
                     >
                         Remove
@@ -75,9 +73,14 @@
                         <vs-col xs="12" sm="12" lg="6">
                             <vs-row>
                                 <vs-col w="4">
-                                    <select-search-by :isMultiple="false" :border="true"
-                                        @updateSearchBy="updateFilterDateBy" :valueData="dateParams"
-                                        :selectedValue="filterDateBy" />
+                                    <select-search-by
+                                        :formKey="'date'"
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateSearchBy="updateFilterDateBy"
+                                        :valueData="dateParams"
+                                        :selectedValue="filterDateBy"
+                                    />
                                 </vs-col>
                                 <vs-col w="8">
                                     <date-time
@@ -86,20 +89,28 @@
                                         :formKey="'DATE_TIME_WITHOUT_SECONDS'"
                                         :valueData="dateRange"
                                         typeInput="datetimerange"
-                                        @updateValue="updateValue" />
+                                        @updateValue="updateValue"
+                                    />
                                 </vs-col>
                             </vs-row>
                         </vs-col>
                         <vs-col xs="12" sm="12" lg="6">
                             <vs-row justify="end">
                                 <vs-col xs="6" sm="8" lg="4">
-                                    <select-search-by :isMultiple="false" :border="true"
-                                        @updateSearchBy="updateSearchBy" :valueData="searchParams"
-                                        :selectedValue="searchBy" />
+                                    <select-search-by
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateSearchBy="updateSearchBy"
+                                        :valueData="searchParams"
+                                        :selectedValue="searchBy"
+                                    />
                                 </vs-col>
                                 <vs-col xs="6" sm="4" lg="4">
-                                    <search-input ref="searchInput" @searchValue="searchValue"
-                                        :placeholder="searchPlaceholder" />
+                                    <search-input
+                                        ref="searchInput"
+                                        @searchValue="searchValue"
+                                        :placeholder="searchPlaceholder"
+                                    />
                                 </vs-col>
                             </vs-row>
                         </vs-col>
@@ -107,10 +118,10 @@
                 </div>
 
                 <div class="mt-05">
-                    <table-master 
-                        hideColumnKey="irregularity-entry-status" 
-                        :dataTable="dataTable" 
-                        :dataColumn="datacolumn" 
+                    <table-master
+                        hideColumnKey="irregularity-entry-status"
+                        :dataTable="dataTable"
+                        :dataColumn="datacolumn"
                         :tableLoading="loading"
                         :pageSize="pagination.page_size"
                         :page="pagination.page"
@@ -125,7 +136,6 @@
                     />
                 </div>
             </div>
-            
         </section>
 
         <dialog-entry-status
@@ -159,148 +169,148 @@
     </div>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master";
-import moment from "moment"
-import TableMaster from "@/components/table/tableMaster.vue"
-import DialogConfirm from "@/components/dialog/dialogConfirm"
-import NavItem from "@/components/navbar/navTab"
-import Breadcrumb from "@/components/breadcrumb/index"
-import SearchInput from "@/components/search/searchInput"
-import DateTime from "@/components/input/dateTime"
-import SelectSearchBy from "@/components/search/selectSearchBy";
-import MultiInput from "@/components/input/multiInput"
-import Selector from "@/components/input/select"
+import axios from 'axios'
+import master from '@/mixins/master'
+import moment from 'moment'
+import TableMaster from '@/components/table/tableMaster.vue'
+import DialogConfirm from '@/components/dialog/dialogConfirm'
+import NavItem from '@/components/navbar/navTab'
+import Breadcrumb from '@/components/breadcrumb/index'
+import SearchInput from '@/components/search/searchInput'
+import DateTime from '@/components/input/dateTime'
+import SelectSearchBy from '@/components/search/selectSearchBy'
+import MultiInput from '@/components/input/multiInput'
+import Selector from '@/components/input/select'
 
-import DialogEntryStatus from "@/views/irreguralities/entryStatus/dialogEntryStatus"
+import DialogEntryStatus from '@/views/irreguralities/entryStatus/dialogEntryStatus'
 export default {
-    name:"irregularities-entry-status",
-    mixins:[master],
+    name: 'irregularities-entry-status',
+    mixins: [master],
     components: {
-        "nav-item": NavItem,
-        "breadcrumb": Breadcrumb,
-        "search-input": SearchInput,
-        "date-time": DateTime,
-        "select-search-by": SelectSearchBy,
-        "table-master" : TableMaster,
-        "dialog-entry-status": DialogEntryStatus,
-        "multi-input": MultiInput,
-        "selector": Selector,
-        "dialog-confirm": DialogConfirm,
+        'nav-item': NavItem,
+        breadcrumb: Breadcrumb,
+        'search-input': SearchInput,
+        'date-time': DateTime,
+        'select-search-by': SelectSearchBy,
+        'table-master': TableMaster,
+        'dialog-entry-status': DialogEntryStatus,
+        'multi-input': MultiInput,
+        selector: Selector,
+        'dialog-confirm': DialogConfirm,
     },
     data() {
         return {
             koliCode: [],
             removeKoliCode: [],
             dateRange: [],
-            tempSearch: "",
+            tempSearch: '',
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Date",
-                    key: "created_at",
-                    width: "sm"
+                    label: 'Date',
+                    key: 'created_at',
+                    width: 'sm',
                 },
                 {
-                    label: "Connote",
-                    key: "koli_number",
-                    width: "xs"
+                    label: 'Connote',
+                    key: 'koli_number',
+                    width: 'xs',
                 },
                 {
-                    label: "Reference Type",
-                    key: "reference_type",
-                    width: "xs"
+                    label: 'Reference Type',
+                    key: 'reference_type',
+                    width: 'xs',
                 },
                 {
-                    label: "Reference Number",
-                    key: "reference_number",
-                    width: "xs"
+                    label: 'Reference Number',
+                    key: 'reference_number',
+                    width: 'xs',
                 },
                 {
-                    label: "Status Code",
-                    key: "irregularity_status_code",
-                    width: "auto"
+                    label: 'Status Code',
+                    key: 'irregularity_status_code',
+                    width: 'auto',
                 },
                 {
-                    label: "Status Description",
-                    key: "irregularity_status_description",
-                    width: "auto"
+                    label: 'Status Description',
+                    key: 'irregularity_status_description',
+                    width: 'auto',
                 },
                 {
-                    label: "Remark",
-                    key: "remark",
-                    width: "auto"
+                    label: 'Remark',
+                    key: 'remark',
+                    width: 'auto',
                 },
                 {
-                    label: "User",
-                    key: "user_name",
-                    width: "auto"
+                    label: 'User',
+                    key: 'user_name',
+                    width: 'auto',
                 },
                 {
-                    label: "Orion Number",
-                    key: "irg_sequence",
-                    width: "xs"
+                    label: 'Orion Number',
+                    key: 'irg_sequence',
+                    width: 'xs',
                 },
             ],
             dataItem: {},
             validItem: [],
-            loading:false,
+            loading: false,
             loadingSubmit: false,
             loadingValidation: false,
             pagination: {
                 limit: 10,
                 page_size: 1,
-                page: 1
+                page: 1,
             },
             form: {},
             dialogEntryStatusActive: false,
-            searchBy: "koli_number",
-            filterDateBy: "create",
-            searchPlaceholder: "Search Connote Number",
+            searchBy: 'koli_number',
+            filterDateBy: 'create',
+            searchPlaceholder: 'Search Connote Number',
             searchParams: [
                 {
                     label: 'Connote number',
-                    value: 'koli_number'
+                    value: 'koli_number',
                 },
                 {
-                    label: "Orion Number",
-                    value: "irg_sequence",
+                    label: 'Orion Number',
+                    value: 'irg_sequence',
                 },
                 {
                     label: 'Bag number',
-                    value: 'bag_number'
+                    value: 'bag_number',
                 },
                 {
-                    label: "Status Code",
-                    value: "irregularity_status_code",
+                    label: 'Status Code',
+                    value: 'irregularity_status_code',
                 },
                 {
-                    label: "Status Description",
-                    value: "irregularity_status_description",
+                    label: 'Status Description',
+                    value: 'irregularity_status_description',
                 },
                 {
-                    label: "Remarks",
-                    value: "remark",
+                    label: 'Remarks',
+                    value: 'remark',
                 },
                 {
-                    label: "User",
-                    value: "userApprove",
+                    label: 'User',
+                    value: 'userApprove',
                 },
             ],
             dateParams: [
                 {
                     label: 'Created Date',
-                    value: 'create'
-                }
+                    value: 'create',
+                },
             ],
             id: '',
             primaryKey: '',
             primaryKeyList: [],
             activeDialogConfirmRemove: false,
-            loadingConfirmRemove:false,
+            loadingConfirmRemove: false,
             activeDialogConfirmRemoveBulk: false,
-            loadingConfirmRemoveBulk:false,
-            listValidItem: []
+            loadingConfirmRemoveBulk: false,
+            listValidItem: [],
         }
     },
     methods: {
@@ -324,180 +334,207 @@ export default {
             const nextRef = refs[nextIndex]
             this.setActive(nextRef)
         },
-        refresh(){
-            let from = '';
-            let to = '';
+        refresh() {
+            let from = ''
+            let to = ''
 
-            if(this.dateRange.length > 0) {
-                from = this.dateRange[0];
-                to = this.dateRange[1];
+            if (this.dateRange.length > 0) {
+                from = this.dateRange[0]
+                to = this.dateRange[1]
             } else {
                 let d = new Date()
 
-                from = moment(d).startOf('day').format("YYYY-MM-DD HH:mm:ss");
-                to   = moment(d).endOf('day').format("YYYY-MM-DD HH:mm:ss");
+                from = moment(d).startOf('day').format('YYYY-MM-DD HH:mm:ss')
+                to = moment(d).endOf('day').format('YYYY-MM-DD HH:mm:ss')
             }
 
-            
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, from, to)
+            this.getTableData(
+                this.pagination.limit,
+                this.pagination.page,
+                this.tempSearch,
+                from,
+                to
+            )
         },
-        async editIrreg(val){
-            if(this.dataTable.length > 0) {
-                this.dataItem = val;
+        async editIrreg(val) {
+            if (this.dataTable.length > 0) {
+                this.dataItem = val
 
                 this.$nextTick(() => {
-                    this.dialogEntryStatusActive = true;
-                });
+                    this.dialogEntryStatusActive = true
+                })
             }
         },
-        async getTableData(limit,page,q, from, to) {
+        async getTableData(limit, page, q, from, to) {
             this.loading = true
-            let query = "";
-            let startDate = "";
-            let endDate = "";
-            if(q !== undefined) {
+            let query = ''
+            let startDate = ''
+            let endDate = ''
+            if (q !== undefined) {
                 query = q
             }
-            if(from !== undefined && to !== undefined) {
-              startDate = this.formatToWIB(from)
-              endDate = this.formatToWIB(to)
+            if (from !== undefined && to !== undefined) {
+                startDate = this.formatToWIB(from)
+                endDate = this.formatToWIB(to)
             }
             await axios
-                .get(this.URL.irregularities +
-                `?n=${this.listenNodeId}&show_archive=false&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
-                this.Helper.header())
-                .then(res => {
+                .get(
+                    this.URL.irregularities +
+                        `?n=${this.listenNodeId}&show_archive=false&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
+                    this.Helper.header()
+                )
+                .then((res) => {
                     let arr = res.data.data
-                    arr.map(item => {
-                        item["created_at"] = this.formatTimezone(item?.created_at);
-                    });
-                    
+                    arr.map((item) => {
+                        item['created_at'] = this.formatTimezone(item?.created_at)
+                    })
+
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
-                    this.pagination.page_size = res.data.meta.last_page                    
+                    this.pagination.page_size = res.data.meta.last_page
                     this.loading = false
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Irreguralities Problem', err)
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Failed to populate Irreguralities Problem',
+                        err
+                    )
                 })
         },
         async handleSubmit() {
-            const formData = new FormData();
+            const formData = new FormData()
             for (const key in this.form) {
-                formData.append(key, this.form[key]);
+                formData.append(key, this.form[key])
             }
 
-            this.loadingSubmit = true;
+            this.loadingSubmit = true
 
             if (this.form.irregularity_id) {
                 await axios
                     .post(
                         this.URL.irregularities + `/update?n=${this.listenNodeId}`,
-                        formData, 
-                        this.Helper.header())
-                    .then(res => {
-                        this.loadingSubmit = false;
+                        formData,
+                        this.Helper.header()
+                    )
+                    .then((res) => {
+                        this.loadingSubmit = false
                         this.dialogEntryStatusActive = false
                         this.refresh()
                         this.openNotification(null, 'Success', 'Create new entry status is success')
-                        this.handleClearForm();
-                    }).catch(err => {
-                        this.loadingSubmit = false;
-                        this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new entry status failed', err.response ? err.response.data.message : 'something went wrong')
+                        this.handleClearForm()
+                    })
+                    .catch((err) => {
+                        this.loadingSubmit = false
+                        this.openNotification(
+                            'danger',
+                            err.response ? err.response.data.code : '',
+                            'Create new entry status failed',
+                            err.response ? err.response.data.message : 'something went wrong'
+                        )
                     })
             } else {
                 await axios
                     .post(
                         this.URL.irregularities + `?n=${this.listenNodeId}`,
-                        formData, 
-                        this.Helper.header())
-                    .then(res => {
-                        this.loadingSubmit = false;
+                        formData,
+                        this.Helper.header()
+                    )
+                    .then((res) => {
+                        this.loadingSubmit = false
                         this.dialogEntryStatusActive = false
                         this.refresh()
                         this.openNotification(null, 'Success', 'Create new entry status is success')
-                        this.handleClearForm();
-                    }).catch(err => {
-                        this.loadingSubmit = false;
-                        this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new entry status failed', err.response ? err.response.data.message : 'something went wrong')
+                        this.handleClearForm()
                     })
-            }   
+                    .catch((err) => {
+                        this.loadingSubmit = false
+                        this.openNotification(
+                            'danger',
+                            err.response ? err.response.data.code : '',
+                            'Create new entry status failed',
+                            err.response ? err.response.data.message : 'something went wrong'
+                        )
+                    })
+            }
 
             this.$nextTick(() => {
-                const inputElement = this.$refs.koliCode.$el.querySelector('input');
+                const inputElement = this.$refs.koliCode.$el.querySelector('input')
                 if (inputElement) {
-                    inputElement.focus();
+                    inputElement.focus()
                 }
-            });
+            })
         },
-        searchValue (val) {
+        searchValue(val) {
             this.tempSearch = val
             this.refresh()
         },
         actionUpdate(val, key) {
-            switch(key) {
-                case "edit":
-                    if(this.dataTable.length > 0) {
+            switch (key) {
+                case 'edit':
+                    if (this.dataTable.length > 0) {
                         this.dataItem = val
 
                         this.$nextTick(() => {
                             this.dialogEntryStatus = true
-                        });
+                        })
                     }
-                    break;
+                    break
                 default:
             }
         },
         generateRandomString(length) {
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let result = '';
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+            let result = ''
             for (let i = 0; i < length; i++) {
-                const randomIndex = Math.floor(Math.random() * characters.length);
-                result += characters.charAt(randomIndex);
+                const randomIndex = Math.floor(Math.random() * characters.length)
+                result += characters.charAt(randomIndex)
             }
-            return result;
+            return result
         },
-        handleClearForm(){
+        handleClearForm() {
             this.$refs.koliCode.value = []
             this.$refs.dialogEntryStatus.handleClearForm()
         },
-        handleClearRemoveForm(){
+        handleClearRemoveForm() {
             this.$refs.removeKoliCode.value = []
             this.removeKoliCode = []
         },
         updateValue(key, val) {
-            switch(key) {
-                case "KOLI_CODE":
-                    this.koliCode = this.$refs.koliCode.value;
-                    break;
-                case "REMOVE_KOLI_CODE":
-                    this.removeKoliCode = this.$refs.removeKoliCode.value;
-                    break;
-                case "DATE_TIME_WITHOUT_SECONDS":
+            switch (key) {
+                case 'KOLI_CODE':
+                    this.koliCode = this.$refs.koliCode.value
+                    break
+                case 'REMOVE_KOLI_CODE':
+                    this.removeKoliCode = this.$refs.removeKoliCode.value
+                    break
+                case 'DATE_TIME_WITHOUT_SECONDS':
                     this.dateRange = val
                     this.refresh()
-                    break;
-                case "DIALOG_ENTRY_STATUS":
+                    break
+                case 'DIALOG_ENTRY_STATUS':
                     this.form = val
-                    let formattedItems = {};
-                        
-                    this.listValidItem.forEach(item => {
-                        let key = `item_number_${this.generateRandomString(5)}`;
-                        formattedItems[key] = item;
-                    });
+                    let formattedItems = {}
+
+                    this.listValidItem.forEach((item) => {
+                        let key = `item_number_${this.generateRandomString(5)}`
+                        formattedItems[key] = item
+                    })
 
                     this.form = {
                         ...this.form,
-                        ...formattedItems
-                    };
+                        ...formattedItems,
+                    }
 
                     this.handleSubmit()
-                    break;
+                    break
                 default:
             }
         },
-        actionLimit(val){
+        actionLimit(val) {
             this.pagination.limit = val
             this.pagination.page = 1
             this.refresh()
@@ -511,157 +548,199 @@ export default {
             this.dataItem = {}
         },
         openDialog() {
-            if(this.koliCode?.length > 0) {
+            if (this.koliCode?.length > 0) {
                 let validationKoliCode = {
-                    "items": (this.koliCode).map(item => item)
-                };
+                    items: this.koliCode.map((item) => item),
+                }
                 this.validationCreateItem(validationKoliCode)
             }
         },
         async validationCreateItem(validationKoliCode) {
             this.loadingValidation = true
-            
+
             await axios
                 .post(
                     this.URL.validation + `/create-irregularity?n=${this.listenNodeId}`,
-                    JSON.stringify(validationKoliCode), 
-                    this.Helper.header())
-                .then(res => {
+                    JSON.stringify(validationKoliCode),
+                    this.Helper.header()
+                )
+                .then((res) => {
                     this.validItem = res.data.data
                     this.listValidItem = this.validItem
-                        .filter(item => item.status === 'SUCCESS')
-                        .map(item => item.item_number);
+                        .filter((item) => item.status === 'SUCCESS')
+                        .map((item) => item.item_number)
 
                     if (this.listValidItem.length > 0) {
                         this.dialogEntryStatusActive = true
                     } else {
-                        this.refresh();
-                        this.handleClearForm();
-                        this.openNotification('danger', err.response ? err.response.data.code : '', 'Error', this.validItem?.[0].message ? this.validItem[0].message : 'something went wrong')
-                    }                    
-                }).catch(err => {
-                    this.refresh();
-                    this.handleClearForm();
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Input Validation Failed', err.response ? err.response.data.message : 'something went wrong')
+                        this.refresh()
+                        this.handleClearForm()
+                        this.openNotification(
+                            'danger',
+                            err.response ? err.response.data.code : '',
+                            'Error',
+                            this.validItem?.[0].message
+                                ? this.validItem[0].message
+                                : 'something went wrong'
+                        )
+                    }
+                })
+                .catch((err) => {
+                    this.refresh()
+                    this.handleClearForm()
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Input Validation Failed',
+                        err.response ? err.response.data.message : 'something went wrong'
+                    )
                 })
 
             this.loadingValidation = false
         },
         async validationRemoveItem(validationKoliCode) {
             this.loadingValidation = true
-            
+
             await axios
                 .post(
                     this.URL.validation + `/remove-irregularity?n=${this.listenNodeId}`,
-                    JSON.stringify(validationKoliCode), 
-                    this.Helper.header())
-                .then(res => {
+                    JSON.stringify(validationKoliCode),
+                    this.Helper.header()
+                )
+                .then((res) => {
                     this.validItem = res.data.data
                     this.listValidItem = this.validItem
-                        .filter(item => item.status === 'SUCCESS')
-                        .map(item => item.item_number);
-                    
+                        .filter((item) => item.status === 'SUCCESS')
+                        .map((item) => item.item_number)
+
                     if (this.listValidItem.length > 0) {
                         this.primaryKeyList = this.listValidItem
                         this.activeDialogConfirmRemoveBulk = true
                     } else {
-                        this.handleClearRemoveForm();
-                        this.refresh();
-                        this.openNotification('danger', err.response ? err.response.data.code : '', 'Error', this.validItem?.[0].message ? this.validItem[0].message : 'something went wrong')
-                    }     
-                }).catch(err => {
-                    this.handleClearRemoveForm();
-                    this.refresh();
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Input Validation Failed', err.response ? err.response.data.message : 'something went wrong')
+                        this.handleClearRemoveForm()
+                        this.refresh()
+                        this.openNotification(
+                            'danger',
+                            err.response ? err.response.data.code : '',
+                            'Error',
+                            this.validItem?.[0].message
+                                ? this.validItem[0].message
+                                : 'something went wrong'
+                        )
+                    }
+                })
+                .catch((err) => {
+                    this.handleClearRemoveForm()
+                    this.refresh()
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Input Validation Failed',
+                        err.response ? err.response.data.message : 'something went wrong'
+                    )
                 })
 
             this.loadingValidation = false
         },
         updateSearchBy(key, val) {
-            val = val.replaceAll(" ", "_");
-            this.searchBy = val;
-            this.searchPlaceholder = key;
+            val = val.replaceAll(' ', '_')
+            this.searchBy = val
+            this.searchPlaceholder = key
         },
         updateFilterDateBy(key, val) {
-            this.filterDateBy = val;
+            this.filterDateBy = val
         },
-        actionRemove(val){
-            this.id = val.irregularity_id;
+        actionRemove(val) {
+            this.id = val.irregularity_id
             this.primaryKey = val.koli_number
             this.activeDialogConfirmRemove = true
         },
         confirmRemove() {
-            this.loadingConfirmRemove=true
+            this.loadingConfirmRemove = true
             this.removeData()
         },
-        async removeData(){
+        async removeData() {
             await axios
                 .delete(
                     this.URL.irregularities + `/${this.id}?n=${this.listenNodeId}`,
-                    this.Helper.header())
-                .then(res => {
+                    this.Helper.header()
+                )
+                .then((res) => {
                     this.closeDialogConfirmRemove()
                     this.loadingConfirmRemove = false
                     this.refresh()
                     this.openNotification(null, 'Remove success', 'Remove Irreg success')
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loadingConfirmRemove = false
                     this.closeDialogConfirmRemove()
                     this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Remove Irreg failed', err.response.data.message)
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Remove Irreg failed',
+                        err.response.data.message
+                    )
                 })
         },
-        closeDialogConfirmRemove(){
+        closeDialogConfirmRemove() {
             this.activeDialogConfirmRemove = false
-            this.loadingConfirmRemove=false
+            this.loadingConfirmRemove = false
         },
-        actionRemoveBulk(){
+        actionRemoveBulk() {
             let validationKoliCode = {
-                "items": (this.removeKoliCode).map(item => item)
-            };
-            
-            this.validationRemoveItem(validationKoliCode);
+                items: this.removeKoliCode.map((item) => item),
+            }
+
+            this.validationRemoveItem(validationKoliCode)
         },
         confirmRemoveBulk() {
-            this.loadingConfirmRemoveBulk=true
+            this.loadingConfirmRemoveBulk = true
             this.removeDataBulk()
         },
-        async removeDataBulk(){
+        async removeDataBulk() {
             let form = {
-                item_number: this.listValidItem
+                item_number: this.listValidItem,
             }
 
             await axios
                 .put(
                     this.URL.irregularities + `/bulk?n=${this.listenNodeId}`,
                     form,
-                    this.Helper.header())
-                .then(res => {
+                    this.Helper.header()
+                )
+                .then((res) => {
                     this.closeDialogConfirmRemoveBulk()
                     this.loadingConfirmRemoveBulk = false
-                    this.handleClearRemoveForm();
+                    this.handleClearRemoveForm()
                     this.refresh()
                     this.openNotification(null, 'Remove Bulk success', 'Remove Bulk Irreg success')
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loadingConfirmRemoveBulk = false
                     this.closeDialogConfirmRemoveBulk()
                     this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Remove Bulk Irreg failed', err.response.data.message)
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Remove Bulk Irreg failed',
+                        err.response.data.message
+                    )
                 })
         },
-        closeDialogConfirmRemoveBulk(){
+        closeDialogConfirmRemoveBulk() {
             this.activeDialogConfirmRemoveBulk = false
-            this.loadingConfirmRemoveBulk=false
+            this.loadingConfirmRemoveBulk = false
         },
     },
     beforeDestroy() {
-        window.removeEventListener('timezone-changed', this.refresh);
+        window.removeEventListener('timezone-changed', this.refresh)
     },
     mounted() {
         window.addEventListener('keydown', this.handleTabFocus)
-        window.addEventListener('timezone-changed', this.refresh);
+        window.addEventListener('timezone-changed', this.refresh)
         this.setActiveInput('koliCode', null)
-        this.refresh()   
+        this.refresh()
     },
     beforeUnmount() {
         window.removeEventListener('keydown', this.handleTabFocus)
