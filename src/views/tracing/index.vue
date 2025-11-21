@@ -4,19 +4,19 @@
             <vs-col xs="6" sm="4" lg="4">
                 <div class="titlePage">
                     <breadcrumb />
-                    <h2>{{  is_history ? "Archive" : "Receiving & Inventory" }}</h2>
-                </div>                
+                    <h2>{{ is_history ? 'Archive' : 'Receiving & Inventory' }}</h2>
+                </div>
             </vs-col>
         </vs-row>
 
-        <div class="mt-2" style="display: flex; justify-content: space-between;" v-if="!is_history">
+        <div class="mt-2" style="display: flex; justify-content: space-between" v-if="!is_history">
             <vs-row justify="space-between">
                 <vs-col xs="9" sm="9" lg="9">
                     <form @submit.prevent="openDialog('create')">
                         <multi-input
                             ref="koliCode"
                             placeholder="Scan Item Here"
-                            rules="" 
+                            rules=""
                             formKey="KOLI_CODE"
                             :loading="loading"
                             :selectedValue="koliCode"
@@ -25,13 +25,14 @@
                             :isAllowCreate="true"
                             :autofocus="true"
                             @updateValue="updateValue"
-                           @click="setActive('koliCode')"
+                            @click="setActive('koliCode')"
                         />
                     </form>
                 </vs-col>
                 <vs-col xs="3" sm="3" lg="3">
                     <vs-button
                         :active="true"
+                        :data-testid="`submit-button`"
                         @click="openDialog('create')"
                     >
                         Submit
@@ -44,15 +45,15 @@
                         <multi-input
                             ref="removeKoliCode"
                             placeholder="Remove Item Here"
-                            rules="" 
+                            rules=""
                             formKey="REMOVE_KOLI_CODE"
                             :loading="loading"
                             :selectedValue="removeKoliCode"
                             :isMultiple="false"
                             :disabled="false"
                             :isAllowCreate="true"
-                            @updateValue="updateValue" 
-                            @click="setActive('removeKoliCode')" 
+                            @updateValue="updateValue"
+                            @click="setActive('removeKoliCode')"
                         />
                     </form>
                 </vs-col>
@@ -60,6 +61,7 @@
                     <vs-button
                         danger
                         :active="true"
+                        :data-testid="`remove-button`"
                         @click="openDialog('remove')"
                     >
                         Remove
@@ -75,22 +77,23 @@
                         <vs-col xs="12" sm="12" lg="6">
                             <vs-row>
                                 <vs-col w="4">
-                                    <select-search-by 
+                                    <select-search-by
+                                        :formKey="'date'"
                                         :border="true"
-                                        :isMultiple="false" 
-                                        :selectedValue="filterDateBy" 
+                                        :isMultiple="false"
+                                        :selectedValue="filterDateBy"
                                         :valueData="dateParams"
-                                        @updateSearchBy="updateFilterDateBy" 
+                                        @updateSearchBy="updateFilterDateBy"
                                     />
                                 </vs-col>
                                 <vs-col w="8">
-                                    <date-time 
-                                        :name="''" 
-                                        :rules="''" 
-                                        :formKey="'TRIGGER_DATE'" 
+                                    <date-time
+                                        :name="''"
+                                        :rules="''"
+                                        :formKey="'TRIGGER_DATE'"
                                         :valueData="dateRange"
-                                        typeInput="daterange" 
-                                        @updateValue="updateValue" 
+                                        typeInput="daterange"
+                                        @updateValue="updateValue"
                                     />
                                 </vs-col>
                             </vs-row>
@@ -98,18 +101,18 @@
                         <vs-col xs="12" sm="12" lg="6">
                             <vs-row justify="end">
                                 <vs-col xs="6" sm="8" lg="4">
-                                    <select-search-by 
+                                    <select-search-by
                                         :border="true"
-                                        :isMultiple="false" 
-                                        :selectedValue="searchBy" 
+                                        :isMultiple="false"
+                                        :selectedValue="searchBy"
                                         :valueData="searchParams"
-                                        @updateSearchBy="updateSearchBy" 
+                                        @updateSearchBy="updateSearchBy"
                                     />
                                 </vs-col>
                                 <vs-col xs="6" sm="4" lg="4">
-                                    <search-input 
+                                    <search-input
                                         ref="searchInput"
-                                        :placeholder="searchPlaceholder" 
+                                        :placeholder="searchPlaceholder"
                                         @searchValue="searchValue"
                                         @handleSearch="handleSearch"
                                     />
@@ -120,10 +123,10 @@
                 </div>
 
                 <div class="mt-05">
-                    <table-master 
-                        hideColumnKey="tracing" 
-                        :dataTable="dataTable" 
-                        :dataColumn="datacolumn" 
+                    <table-master
+                        hideColumnKey="tracing"
+                        :dataTable="dataTable"
+                        :dataColumn="datacolumn"
                         :tableLoading="loading"
                         :pageSize="pagination.page_size"
                         :page="pagination.page"
@@ -152,207 +155,206 @@
 </template>
 
 <script>
-import axios from "axios";
-import master from "@/mixins/master";
-import moment from "moment";
+import axios from 'axios'
+import master from '@/mixins/master'
+import moment from 'moment'
 
-import Breadcrumb from "@/components/breadcrumb/index"
-import DateTime from "@/components/input/dateTime"
-import NavItem from "@/components/navbar/navTab"
-import SearchInput from "@/components/search/searchInput"
-import TableMaster from "@/components/table/tableMaster.vue"
-import SelectSearchBy from "@/components/search/selectSearchBy";
-import MultiInput from "@/components/input/multiInput"
-import DialogValidateTracing from "@/views/tracing/dialogValidateTracing"
-
+import Breadcrumb from '@/components/breadcrumb/index'
+import DateTime from '@/components/input/dateTime'
+import NavItem from '@/components/navbar/navTab'
+import SearchInput from '@/components/search/searchInput'
+import TableMaster from '@/components/table/tableMaster.vue'
+import SelectSearchBy from '@/components/search/selectSearchBy'
+import MultiInput from '@/components/input/multiInput'
+import DialogValidateTracing from '@/views/tracing/dialogValidateTracing'
 
 export default {
-    name:"tracing",
-    mixins:[master],
+    name: 'tracing',
+    mixins: [master],
     components: {
-        "nav-item": NavItem,
-        "breadcrumb": Breadcrumb,
-        "search-input": SearchInput,
-        "date-time": DateTime,
-        "select-search-by": SelectSearchBy,
-        "table-master" : TableMaster,
-        "multi-input": MultiInput,
-        "dialog-validate-tracing": DialogValidateTracing,
+        'nav-item': NavItem,
+        breadcrumb: Breadcrumb,
+        'search-input': SearchInput,
+        'date-time': DateTime,
+        'select-search-by': SelectSearchBy,
+        'table-master': TableMaster,
+        'multi-input': MultiInput,
+        'dialog-validate-tracing': DialogValidateTracing,
     },
     computed: {
         is_history() {
-            return this.$route.fullPath.includes('history');
-        }
+            return this.$route.fullPath.includes('history')
+        },
     },
     watch: {
         is_history(newValue, oldValue) {
             if (newValue !== oldValue) {
-                this.refresh();
+                this.refresh()
             }
         },
         dialogValidateTracingActive(newVal) {
             if (newVal) {
                 this.$nextTick(() => {
-                    const el = this.getInputByRef(this.activeInput);
-                    if (el && typeof el.blur === 'function') el.blur();
-                });
+                    const el = this.getInputByRef(this.activeInput)
+                    if (el && typeof el.blur === 'function') el.blur()
+                })
             }
-        }
+        },
     },
     data() {
         return {
-            tempSearch: "",
-            loading:false,
+            tempSearch: '',
+            loading: false,
             dateRange: [],
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Connote",
-                    key: "koli_with_priority",
-                    width: "sm"
+                    label: 'Connote',
+                    key: 'koli_with_priority',
+                    width: 'sm',
                 },
                 {
-                    label: "HRS",
-                    key: "hrs_sequence",
-                    width: "xxs"
+                    label: 'HRS',
+                    key: 'hrs_sequence',
+                    width: 'xxs',
                 },
                 {
-                    label: "HRI",
-                    key: "hri_sequence",
-                    width: "xxs"
+                    label: 'HRI',
+                    key: 'hri_sequence',
+                    width: 'xxs',
                 },
                 {
-                    label: "HOC",
-                    key: "hoc",
-                    width: "xxs"
+                    label: 'HOC',
+                    key: 'hoc',
+                    width: 'xxs',
                 },
                 {
-                    label: "Shipper Name",
-                    key: "shipper_name",
-                    width: "xxs"
+                    label: 'Shipper Name',
+                    key: 'shipper_name',
+                    width: 'xxs',
                 },
                 {
-                    label: "Shipper Phone",
-                    key: "shipper_phone_number",
-                    width: "xxs"
+                    label: 'Shipper Phone',
+                    key: 'shipper_phone_number',
+                    width: 'xxs',
                 },
                 {
-                    label: "Receiver Name",
-                    key: "receiver_name",
-                    width: "xxs"
+                    label: 'Receiver Name',
+                    key: 'receiver_name',
+                    width: 'xxs',
                 },
                 {
-                    label: "Receiver Phone",
-                    key: "receiver_phone_number",
-                    width: "xxs"
+                    label: 'Receiver Phone',
+                    key: 'receiver_phone_number',
+                    width: 'xxs',
                 },
                 {
-                    label: "Origin",
-                    key: "origin",
-                    width: "xxs"
+                    label: 'Origin',
+                    key: 'origin',
+                    width: 'xxs',
                 },
                 {
-                    label: "Destination",
-                    key: "destination",
-                    width: "xxs"
+                    label: 'Destination',
+                    key: 'destination',
+                    width: 'xxs',
                 },
                 {
-                    label: "Service",
-                    key: "service_code",
-                    width: "xxs"
+                    label: 'Service',
+                    key: 'service_code',
+                    width: 'xxs',
                 },
                 {
-                    label: "Payment Type",
-                    key: "payment_type_name",
-                    width: "xxs"
+                    label: 'Payment Type',
+                    key: 'payment_type_name',
+                    width: 'xxs',
                 },
                 {
-                    label: "Remark Code",
-                    key: "status_code",
-                    width: "xxs"
+                    label: 'Remark Code',
+                    key: 'status_code',
+                    width: 'xxs',
                 },
                 {
-                  label: "Remark Label",
-                  key: "status_name",
-                  width: "xxs"
+                    label: 'Remark Label',
+                    key: 'status_name',
+                    width: 'xxs',
                 },
                 {
-                    label: "Date #",
-                    key: "created_at",
-                    width: "xxs"
+                    label: 'Date #',
+                    key: 'created_at',
+                    width: 'xxs',
                 },
             ],
             form: {},
             pagination: {
-                limit:20,
+                limit: 20,
                 page_size: 1,
-                page: 1
+                page: 1,
             },
-            searchBy: "koli_number",
-            filterDateBy: "created_at",
-            searchPlaceholder: "Search Connote Number",
+            searchBy: 'koli_number',
+            filterDateBy: 'created_at',
+            searchPlaceholder: 'Search Connote Number',
             searchParams: [
                 {
-                    label: "Connote Number",
-                    value: "koli_number",
+                    label: 'Connote Number',
+                    value: 'koli_number',
                 },
                 {
-                    label: "HRS Number",
-                    value: "hrs",
+                    label: 'HRS Number',
+                    value: 'hrs',
                 },
                 {
-                    label: "HRI Number",
-                    value: "hri",
+                    label: 'HRI Number',
+                    value: 'hri',
                 },
                 {
-                    label: "Shipper Name",
-                    value: "shipper_name",
+                    label: 'Shipper Name',
+                    value: 'shipper_name',
                 },
                 {
-                    label: "Shipper Phone",
-                    value: "shipper_phone",
+                    label: 'Shipper Phone',
+                    value: 'shipper_phone',
                 },
                 {
-                    label: "Receiver Name",
-                    value: "receiver_name",
+                    label: 'Receiver Name',
+                    value: 'receiver_name',
                 },
                 {
-                    label: "Receiver Phone",
-                    value: "receiver_phone",
+                    label: 'Receiver Phone',
+                    value: 'receiver_phone',
                 },
                 {
-                    label: "Origin",
-                    value: "origin",
+                    label: 'Origin',
+                    value: 'origin',
                 },
                 {
-                    label: "Destination",
-                    value: "destination",
+                    label: 'Destination',
+                    value: 'destination',
                 },
                 {
-                    label: "Status Code",
-                    value: "status_code",
+                    label: 'Status Code',
+                    value: 'status_code',
                 },
                 {
-                    label: "Status Name",
-                    value: "status_name",
+                    label: 'Status Name',
+                    value: 'status_name',
                 },
             ],
             dateParams: [
                 {
                     label: 'Created Date',
-                    value: 'created_at'
+                    value: 'created_at',
                 },
                 {
                     label: 'Updated Date',
-                    value: 'updated_at'
-                }                
+                    value: 'updated_at',
+                },
             ],
             koliCode: [],
             removeKoliCode: [],
             dialogValidateTracingActive: false,
             validItem: [],
             listValidItem: [],
-            loading:false,
+            loading: false,
             loadingSubmit: false,
             loadingValidation: false,
             validateType: 'create',
@@ -384,61 +386,79 @@ export default {
             this.setActive(nextRef)
         },
         async getTableData(limit, page, q, from, to) {
-            this.loading = true;
+            this.loading = true
 
-            let query = q ?? '';            
-            let startDate = from ?? "";
-            let endDate = to ?? "";
+            let query = q ?? ''
+            let startDate = from ?? ''
+            let endDate = to ?? ''
 
             try {
-                const res = await axios.get(`${this.URL.revamp_tracing}?n=${this.listenNodeId}&status=${this.is_history ? "1" : "0"}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`, this.Helper.header());
+                const res = await axios.get(
+                    `${this.URL.revamp_tracing}?n=${this.listenNodeId}&status=${
+                        this.is_history ? '1' : '0'
+                    }&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${
+                        this.searchBy
+                    }&filter_date_by=${this.filterDateBy}`,
+                    this.Helper.header()
+                )
 
-                this.dataTable = res.data.data;
-                this.dataTable.forEach(item => {
+                this.dataTable = res.data.data
+                this.dataTable.forEach((item) => {
                     if (item.is_priority) {
-                        item.koli_with_priority = item.koli_with_priority = `${item.koli_number} <span class="status-tooltip" title="Priority (${item.count_undelivered}x Undelivered)."><span style="font-size:15px; margin-bottom:5px; display:inline-block;">⚠️</span></span>`;
+                        item.koli_with_priority =
+                            item.koli_with_priority = `${item.koli_number} <span class="status-tooltip" title="Priority (${item.count_undelivered}x Undelivered)."><span style="font-size:15px; margin-bottom:5px; display:inline-block;">⚠️</span></span>`
                     } else {
-                        item.koli_with_priority = item.koli_number;
+                        item.koli_with_priority = item.koli_number
                     }
-                    item.created_at = this.formatTimezone(item.created_at);
+                    item.created_at = this.formatTimezone(item.created_at)
 
-                    return item;
+                    return item
                 })
                 this.pagination = {
                     page: res.data.meta.current_page,
                     limit: parseInt(res.data.meta.per_page, 10),
                     page_size: res.data.meta.last_page,
-                };
+                }
             } catch (err) {
-                this.openNotification('danger', err?.response?.data?.code ?? '', 'Failed', err?.response?.data?.message ?? 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
             } finally {
-                this.loading = false;
+                this.loading = false
             }
         },
         showData(row) {
-            const baseRoute = this.is_history ? 'history' : 'outstanding';
-            this.$router.push(`/tracing-${baseRoute}/${row.koli_number}`);
-            this.setRoutePageHistory(this.$route.meta, false);
-            this.refresh();
+            const baseRoute = this.is_history ? 'history' : 'outstanding'
+            this.$router.push(`/tracing-${baseRoute}/${row.koli_number}`)
+            this.setRoutePageHistory(this.$route.meta, false)
+            this.refresh()
         },
-        refresh(){
+        refresh() {
             let d = new Date()
             let from = ''
             let to = ''
-            
-            if(this.dateRange != null && this.dateRange.length > 0) {
-                from = moment(this.dateRange[0]).format("YYYY-MM-DD")
-                to = moment(this.dateRange[1]).format("YYYY-MM-DD")
+
+            if (this.dateRange != null && this.dateRange.length > 0) {
+                from = moment(this.dateRange[0]).format('YYYY-MM-DD')
+                to = moment(this.dateRange[1]).format('YYYY-MM-DD')
             }
 
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, from, to)
-
+            this.getTableData(
+                this.pagination.limit,
+                this.pagination.page,
+                this.tempSearch,
+                from,
+                to
+            )
         },
-        searchValue (val) {
-            this.tempSearch = val;
+        searchValue(val) {
+            this.tempSearch = val
             this.refresh()
         },
-        actionLimit(val){
+        actionLimit(val) {
             this.pagination.limit = val
             this.pagination.page = 1
             this.refresh()
@@ -448,57 +468,84 @@ export default {
             this.refresh()
         },
         async scanConnote() {
-            this.loadingScanConnote = true;
+            this.loadingScanConnote = true
 
             try {
-                const res = await axios.post(`${this.URL.revamp_tracing}/create?n=${this.listenNodeId}`, this.form, this.Helper.header());
-                this.openNotification("success", null, "Success", res?.data?.message ?? "Remove koli success");
+                const res = await axios.post(
+                    `${this.URL.revamp_tracing}/create?n=${this.listenNodeId}`,
+                    this.form,
+                    this.Helper.header()
+                )
+                this.openNotification(
+                    'success',
+                    null,
+                    'Success',
+                    res?.data?.message ?? 'Remove koli success'
+                )
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
             } finally {
-                this.loadingScanConnote = false;
-                this.dialogValidateTracingActive = false;
-                this.handleClearForm();
-                this.refresh();
+                this.loadingScanConnote = false
+                this.dialogValidateTracingActive = false
+                this.handleClearForm()
+                this.refresh()
             }
         },
         async removeConnote() {
-            this.loadingScanConnote = true;
+            this.loadingScanConnote = true
 
             try {
-                const res = await axios.delete(`${this.URL.revamp_tracing}/delete?n=${this.listenNodeId}`,
+                const res = await axios.delete(
+                    `${this.URL.revamp_tracing}/delete?n=${this.listenNodeId}`,
                     {
                         headers: this.Helper.header().headers,
                         data: this.form,
                     }
-                );
-                this.openNotification("success", null, "Success", res?.data?.message ?? "Remove item success");
+                )
+                this.openNotification(
+                    'success',
+                    null,
+                    'Success',
+                    res?.data?.message ?? 'Remove item success'
+                )
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code ?? "", "Failed", err?.response?.data?.message ?? 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
             } finally {
-                this.loadingScanConnote = false;
-                this.dialogValidateTracingActive = false;
-                this.handleClearForm();
-                this.refresh();
+                this.loadingScanConnote = false
+                this.dialogValidateTracingActive = false
+                this.handleClearForm()
+                this.refresh()
             }
         },
         updateSearchBy(key, val) {
-            val = val.replaceAll(" ", "_");
-            this.searchBy = val;
-            this.searchPlaceholder = key;
+            val = val.replaceAll(' ', '_')
+            this.searchBy = val
+            this.searchPlaceholder = key
         },
         updateFilterDateBy(key, val) {
-            this.filterDateBy = val;
-            this.refresh();
+            this.filterDateBy = val
+            this.refresh()
         },
         openDialog(actionType) {
-            this.validateType = actionType;
+            this.validateType = actionType
             if (actionType === 'create' && this.koliCode?.length) {
-                this.validateCreateItem({ items: this.koliCode });
+                this.validateCreateItem({ items: this.koliCode })
                 this.setActiveInput('koliCode', null, () => true)
             } else if (actionType === 'remove' && this.removeKoliCode?.length) {
                 // TODO: Adjust after Remove Validation API ready
-                this.validateRemoveItem(this.removeKoliCode.map(el => ({item_number: el, status: "SUCCESS"})));
+                this.validateRemoveItem(
+                    this.removeKoliCode.map((el) => ({ item_number: el, status: 'SUCCESS' }))
+                )
                 this.setActiveInput('removeKoliCode', null, () => true)
             }
         },
@@ -507,76 +554,88 @@ export default {
             this.dataItem = {}
         },
         updateValue(key, val) {
-            switch(key) {
-                case "KOLI_CODE":
-                    this.koliCode = this.$refs.koliCode.value;
-                    break;
-                case "REMOVE_KOLI_CODE":
-                    this.removeKoliCode = this.$refs.removeKoliCode.value;
-                    break;
-                case "TRIGGER_DATE":
+            switch (key) {
+                case 'KOLI_CODE':
+                    this.koliCode = this.$refs.koliCode.value
+                    break
+                case 'REMOVE_KOLI_CODE':
+                    this.removeKoliCode = this.$refs.removeKoliCode.value
+                    break
+                case 'TRIGGER_DATE':
                     this.dateRange = val
                     this.refresh()
-                    break;
-                case "SUBMIT_DIALOG_CREATE_VALIDATE_TRACING":
-                    this.form = val;
-                    this.scanConnote();
-                    break;
-                case "SUBMIT_DIALOG_REMOVE_VALIDATE_TRACING":
-                    this.form = val;
-                    this.removeConnote();
-                    break;
+                    break
+                case 'SUBMIT_DIALOG_CREATE_VALIDATE_TRACING':
+                    this.form = val
+                    this.scanConnote()
+                    break
+                case 'SUBMIT_DIALOG_REMOVE_VALIDATE_TRACING':
+                    this.form = val
+                    this.removeConnote()
+                    break
                 default:
             }
         },
         async validateCreateItem(validationKoliCode) {
             this.loadingValidation = true
-            
+
             await axios
                 .post(
                     this.URL.validation + `/create-tracing?n=${this.listenNodeId}`,
-                    validationKoliCode, 
-                    this.Helper.header())
-                .then(res => {
+                    validationKoliCode,
+                    this.Helper.header()
+                )
+                .then((res) => {
                     this.validItem = res.data.data
                     this.listValidItem = this.validItem
-                        .filter(item => item.status === 'SUCCESS')
-                        .map(item => item.item_number);
+                        .filter((item) => item.status === 'SUCCESS')
+                        .map((item) => item.item_number)
 
                     if (this.listValidItem.length > 0) {
                         this.dialogValidateTracingActive = true
                     } else {
-                        this.refresh();
-                        this.handleClearForm();
-                        this.openNotification('danger', err?.response?.data?.code ?? '', 'Error', this.validItem?.[0].message ?? 'something went wrong')
-                    }                    
-                }).catch(err => {
-                    this.refresh();
-                    this.handleClearForm();
-                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Input Validation Failed', err?.response?.data?.message ?? 'something went wrong')
+                        this.refresh()
+                        this.handleClearForm()
+                        this.openNotification(
+                            'danger',
+                            err?.response?.data?.code ?? '',
+                            'Error',
+                            this.validItem?.[0].message ?? 'something went wrong'
+                        )
+                    }
+                })
+                .catch((err) => {
+                    this.refresh()
+                    this.handleClearForm()
+                    this.openNotification(
+                        'danger',
+                        err?.response?.data?.code ?? '',
+                        'Input Validation Failed',
+                        err?.response?.data?.message ?? 'something went wrong'
+                    )
                 })
 
             this.loadingValidation = false
         },
         async validateRemoveItem(validationKoliCode) {
             this.loadingValidation = true
-            
+
             // TODO: REMOVE after API validation ready
-            this.validItem = validationKoliCode;
-            this.dialogValidateTracingActive = true;
+            this.validItem = validationKoliCode
+            this.dialogValidateTracingActive = true
 
             // TODO: USE after API validation ready
             // await axios
             //     .post(
             //         this.URL.validation + `/remove-irregularity?n=${this.listenNodeId}`,
-            //         JSON.stringify(validationKoliCode), 
+            //         JSON.stringify(validationKoliCode),
             //         this.Helper.header())
             //     .then(res => {
             //         this.validItem = res.data.data
             //         this.listValidItem = this.validItem
             //             .filter(item => item.status === 'SUCCESS')
             //             .map(item => item.item_number);
-                    
+
             //         if (this.listValidItem.length > 0) {
             //             this.primaryKeyList = this.listValidItem
             //             this.activeDialogConfirmRemoveBulk = true
@@ -584,7 +643,7 @@ export default {
             //             this.handleClearRemoveForm();
             //             this.refresh();
             //             this.openNotification('danger', err.response ? err.response.data.code : '', 'Error', this.validItem?.[0].message ? this.validItem[0].message : 'something went wrong')
-            //         }     
+            //         }
             //     }).catch(err => {
             //         this.handleClearRemoveForm();
             //         this.refresh();
@@ -593,25 +652,25 @@ export default {
 
             this.loadingValidation = false
         },
-        handleClearForm(){
-            this.$refs.koliCode.value = [];
-            this.$refs.removeKoliCode.value = [];
-        },  
+        handleClearForm() {
+            this.$refs.koliCode.value = []
+            this.$refs.removeKoliCode.value = []
+        },
         handleSearch() {
             this.$nextTick(() => {
-                this.refresh();
-                this.$refs.searchInput.clear();
-            });
-        }
+                this.refresh()
+                this.$refs.searchInput.clear()
+            })
+        },
     },
     mounted() {
         window.addEventListener('keydown', this.handleTabFocus)
-        window.addEventListener('timezone-changed', this.refresh);
+        window.addEventListener('timezone-changed', this.refresh)
         this.setActiveInput('koliCode', null, () => this.dialogValidateTracingActive)
-        this.refresh();
+        this.refresh()
     },
-    beforeDestroy () {
-        window.removeEventListener('timezone-changed', this.refresh);
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh)
     },
     beforeUnmount() {
         window.removeEventListener('keydown', this.handleTabFocus)
@@ -620,15 +679,15 @@ export default {
 </script>
 <style scoped>
 .status-tooltip {
-  margin-left: 5px;
-  font-weight: bold;
-  color: #666;
-  cursor: help;
+    margin-left: 5px;
+    font-weight: bold;
+    color: #666;
+    cursor: help;
 }
 
 .status-tooltip i.bx.bx-alert-triangle {
-  font-size: 1.5rem;
-  vertical-align: middle;
-  display: inline-block;
+    font-size: 1.5rem;
+    vertical-align: middle;
+    display: inline-block;
 }
 </style>

@@ -1,37 +1,35 @@
 <template>
-    <dialog-master 
+    <dialog-master
         :actived="listenActive"
-        :loading="listenLoading" 
+        :loading="listenLoading"
         :closeDialog="cancel"
         width="md"
     >
-
-        <template v-slot:header>
-            Entry Status
-        </template>
+        <template v-slot:header> Entry Status </template>
 
         <template v-slot:content>
             <vs-row justify="space-between">
                 <vs-col xs="12" sm="12" lg="12">
                     <template v-if="loadingStatus == false && status_code_arr.length > 0">
-                        <selector 
-                            name="Status Code" 
-                            :rules="''" 
+                        <selector
+                            name="Status Code"
+                            :rules="''"
                             formKey="status_code"
                             :valueData="status_code_arr"
                             :selectedValue="irregularity_status_code"
                             :isMultiple="false"
-                            @updateValue="updateValue" />
+                            @updateValue="updateValue"
+                        />
                     </template>
                 </vs-col>
                 <vs-row>
-                    <vs-col 
+                    <vs-col
                         v-if="validItemNumber.length > 0"
-                        xs="12" 
-                        sm="12" 
-                        :lg="`${invalidItemNumber.length > 0 ? '6':'12'}`"
+                        xs="12"
+                        sm="12"
+                        :lg="`${invalidItemNumber.length > 0 ? '6' : '12'}`"
                     >
-                        <input-text-area 
+                        <input-text-area
                             id="valid_item"
                             label="Valid Bag / Connote"
                             v-model="validItemNumber"
@@ -39,7 +37,7 @@
                         />
                     </vs-col>
                     <vs-col xs="12" sm="12" lg="6" v-if="invalidItemNumber.length > 0">
-                        <input-text-area 
+                        <input-text-area
                             id="invalid_item"
                             label="Invalid Bag / Connote"
                             v-model="invalidItemNumber"
@@ -47,7 +45,7 @@
                         />
                     </vs-col>
                 </vs-row>
-                
+
                 <vs-col xs="12" sm="12" lg="12">
                     <el-upload
                         ref="upload"
@@ -55,19 +53,22 @@
                         list-type="picture-card"
                         :auto-upload="false"
                         :file-list="fileList"
+                        :data-testid="`upload-wrapper`"
                     >
-                        <i slot="default" class="el-icon-plus"></i>
-                        <template slot="file" slot-scope="{file}">
+                        <i slot="default" class="el-icon-plus" :data-testid="`upload-add`"></i>
+                        <template slot="file" slot-scope="{ file }">
                             <template v-if="isImage(file)">
                                 <img
                                     class="el-upload-list__item-thumbnail"
-                                    :src="file.url" 
-                                    alt="preview" 
-                                >
+                                    :src="file.url"
+                                    alt="preview"
+                                    :data-testid="`upload-image-preview`"
+                                />
                                 <span class="el-upload-list__item-actions">
                                     <span
                                         v-if="!disabled"
                                         class="el-upload-list__item-preview"
+                                        :data-testid="`preview-image`"
                                         @click="handlePictureCardPreview(file)"
                                     >
                                         <i class="el-icon-zoom-in"></i>
@@ -75,6 +76,7 @@
                                     <span
                                         v-if="!disabled"
                                         class="el-upload-list__item-delete"
+                                        :data-testid="`remove-image`"
                                         @click="handleRemove(file)"
                                     >
                                         <i class="el-icon-delete"></i>
@@ -82,7 +84,7 @@
                                 </span>
                             </template>
                             <template v-else-if="isPDF(file)">
-                                <div class="file-display">
+                                <div class="file-display" :data-testid="`upload-file-preview`">
                                     <i class="el-icon-document large-icon"></i>
                                     <span class="small-text">{{ file.name || file.uid }}</span>
                                 </div>
@@ -90,6 +92,7 @@
                                     <span
                                         v-if="!disabled"
                                         class="el-upload-list__item-preview"
+                                        :data-testid="`preview-file`"
                                         @click="handleFilePreview(file)"
                                     >
                                         <i class="el-icon-zoom-in"></i>
@@ -97,6 +100,7 @@
                                     <span
                                         v-if="!disabled"
                                         class="el-upload-list__item-delete"
+                                        :data-testid="`remove-file`"
                                         @click="handleRemove(file)"
                                     >
                                         <i class="el-icon-delete"></i>
@@ -104,7 +108,7 @@
                                 </span>
                             </template>
                             <template v-else>
-                                <div class="file-display">
+                                <div class="file-display" :data-testid="`upload-file-preview`">
                                     <i class="el-icon-document large-icon"></i>
                                     <span class="small-text">{{ file.name || file.uid }}</span>
                                 </div>
@@ -112,6 +116,7 @@
                                     <span
                                         v-if="!disabled"
                                         class="el-upload-list__item-preview"
+                                        :data-testid="`download-file`"
                                     >
                                         <a :href="file.url">
                                             <i class="el-icon-download"></i>
@@ -120,6 +125,7 @@
                                     <span
                                         v-if="!disabled"
                                         class="el-upload-list__item-delete"
+                                        :data-testid="`remove-file`"
                                         @click="handleRemove(file)"
                                     >
                                         <i class="el-icon-delete"></i>
@@ -129,10 +135,15 @@
                         </template>
                     </el-upload>
                     <el-dialog :visible.sync="dialogImageVisible" title="Image Preview">
-                        <img width="100%" :src="dialogImageUrl" alt="PreviewImage">
+                        <img width="100%" :src="dialogImageUrl" alt="PreviewImage" />
                     </el-dialog>
                     <el-dialog :visible.sync="dialogFileVisible" width="80%" title="File Preview">
-                        <embed :src="dialogFileUrl" type="application/pdf" width="100%" height="500px" />
+                        <embed
+                            :src="dialogFileUrl"
+                            type="application/pdf"
+                            width="100%"
+                            height="500px"
+                        />
                     </el-dialog>
                 </vs-col>
                 <vs-col xs="12" sm="12" lg="12">
@@ -142,7 +153,7 @@
                         formKey="remark"
                         :valueData="remark"
                         typeInput="text"
-                        @updateValue="updateValue" 
+                        @updateValue="updateValue"
                     />
                 </vs-col>
             </vs-row>
@@ -157,6 +168,7 @@
                         danger
                         flat
                         :active="true"
+                        :data-testid="`cancel-button`"
                         @click="cancel"
                     >
                         Cancel
@@ -169,38 +181,36 @@
                         flat
                         :active="true"
                         type="submit"
+                        :data-testid="`submit-button`"
                         @click="handleSubmit"
                     >
-                       Submit
+                        Submit
                     </vs-button>
                 </vs-col>
             </vs-row>
-                
-                
         </template>
-
     </dialog-master>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master"
-import InputGeneral from "@/components/input/general"
-import InputTextArea from "@/components/input/textArea";
-import Selector from "@/components/input/select"
-import DialogMaster from "@/components/dialog/dialogMaster"
-import { Dialog } from 'element-ui';
+import axios from 'axios'
+import master from '@/mixins/master'
+import InputGeneral from '@/components/input/general'
+import InputTextArea from '@/components/input/textArea'
+import Selector from '@/components/input/select'
+import DialogMaster from '@/components/dialog/dialogMaster'
+import { Dialog } from 'element-ui'
 export default {
-    name:"irreguralities-cancel-dialog",
-    mixins:[master],
+    name: 'irreguralities-cancel-dialog',
+    mixins: [master],
     components: {
-        "input-general": InputGeneral,
-        "selector": Selector,
-        "dialog-master": DialogMaster,
+        'input-general': InputGeneral,
+        selector: Selector,
+        'dialog-master': DialogMaster,
         'el-dialog': Dialog,
-        "input-text-area": InputTextArea,
+        'input-text-area': InputTextArea,
     },
     props: {
-        closeDialog: Function, 
+        closeDialog: Function,
         active: Boolean,
         title: String,
         dataItem: Object,
@@ -208,13 +218,13 @@ export default {
         validItem: Array,
     },
     computed: {
-        listenActive(){
+        listenActive() {
             return this.active
         },
         listenDataItem() {
             return this.dataItem || {}
         },
-        listenLoading(){
+        listenLoading() {
             return this.loadingSubmit || this.loadingStatus
         },
         listenValidItem() {
@@ -227,7 +237,7 @@ export default {
                 this.getDataStatus()
                 this.initDataItem()
             }
-        }
+        },
     },
     data() {
         return {
@@ -235,14 +245,14 @@ export default {
             status_code_arr: [],
             irregularity_id: '',
             irregularity_type: '',
-            irregularity_status_code: '',            
+            irregularity_status_code: '',
             remark: '',
             loadingStatus: false,
             inputType: {
                 type: 'text',
                 label: '',
                 key: null,
-                value: ''
+                value: '',
             },
             dialogImageUrl: '',
             dialogImageVisible: false,
@@ -251,12 +261,12 @@ export default {
             disabled: false,
             fileList: [],
             validItemNumber: [],
-            invalidItemNumber: []
+            invalidItemNumber: [],
         }
     },
     methods: {
         initDataItem() {
-            if(Object.keys(this.listenDataItem).length > 0) {
+            if (Object.keys(this.listenDataItem).length > 0) {
                 this.irregularity_id = this.listenDataItem.irregularity_id || ''
                 this.irregularity_type = this.listenDataItem.irregularity_type || ''
                 this.irregularity_status_code = this.listenDataItem.irregularity_status_code || ''
@@ -289,34 +299,34 @@ export default {
                 //         this.imageUrls[key] = this.listenDataItem[key];
                 //     });
                 // }
-                
+
                 if (this.listenDataItem.attachment && this.listenDataItem.attachment.length > 0) {
-                    this.fileList = this.listenDataItem.attachment.map(item => ({
+                    this.fileList = this.listenDataItem.attachment.map((item) => ({
                         name: '',
                         attachment_id: item.attachment_id,
-                        url: item.url
-                    }));
+                        url: item.url,
+                    }))
                 } else {
-                    this.fileList = []; 
+                    this.fileList = []
                 }
             }
 
             if (this.listenValidItem.length > 0) {
                 this.validItemNumber = this.listenValidItem
-                    .filter(item => item.status === 'SUCCESS')
-                    .map(item => item.item_number);
+                    .filter((item) => item.status === 'SUCCESS')
+                    .map((item) => item.item_number)
                 this.invalidItemNumber = this.listenValidItem
-                    .filter(item => item.status !== 'SUCCESS')
-                    .map(item => item.item_number);
+                    .filter((item) => item.status !== 'SUCCESS')
+                    .map((item) => item.item_number)
             }
         },
-        updateValue(key, val, info){
-            switch(key) {
-                case "status_code":
-                    let obj = this.status_code_arr.filter(item => item.value == val)[0]
+        updateValue(key, val, info) {
+            switch (key) {
+                case 'status_code':
+                    let obj = this.status_code_arr.filter((item) => item.value == val)[0]
 
-                    if(Object.keys(obj).length > 0) {
-                        if(obj.hasOwnProperty('item')) {
+                    if (Object.keys(obj).length > 0) {
+                        if (obj.hasOwnProperty('item')) {
                             this.irregularity_type = obj.item.status_subtype || ''
                             this.irregularity_status_code = obj.item.status_code || ''
                         }
@@ -332,82 +342,83 @@ export default {
                         //     this.inputType['key'] = 'bag_number'
                         // }
                     }
-                    break;
-                case "remark":
-                    this.remark= val
-                    break;
-                case "inputType":
+                    break
+                case 'remark':
+                    this.remark = val
+                    break
+                case 'inputType':
                     this.inputType['value'] = val
-                    break;
+                    break
                 default:
             }
         },
         generateRandomString(length) {
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let result = '';
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+            let result = ''
             for (let i = 0; i < length; i++) {
-                const randomIndex = Math.floor(Math.random() * characters.length);
-                result += characters.charAt(randomIndex);
+                const randomIndex = Math.floor(Math.random() * characters.length)
+                result += characters.charAt(randomIndex)
             }
-            return result;
+            return result
         },
         isImage(file) {
-            if (file.name !== "") {
-                return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(file.name);
+            if (file.name !== '') {
+                return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(file.name)
             } else {
-                return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(file.url);
-            }  
-        },
-        isPDF(file) {
-            if (file.name !== "") {
-                return /\.(pdf)$/i.test(file.name);
-            } else {
-                return /\.(pdf)$/i.test(file.url);
+                return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(file.url)
             }
         },
-        async getDataStatus(){
+        isPDF(file) {
+            if (file.name !== '') {
+                return /\.(pdf)$/i.test(file.name)
+            } else {
+                return /\.(pdf)$/i.test(file.url)
+            }
+        },
+        async getDataStatus() {
             this.loadingStatus = true
             await axios
-                .get(this.URL.status + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
+                .get(
+                    this.URL.status + `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`,
+                    this.Helper.header()
+                )
+                .then((res) => {
+                    if (res.data.data.length > 0) {
                         let arr = []
-                        res.data.data.map(item => {
-                            if(item.hasOwnProperty('status_type')) {
+                        res.data.data.map((item) => {
+                            if (item.hasOwnProperty('status_type')) {
                                 // if(item['status_type'].toLowerCase().includes('problem')) {
-                                if(item['status_type'].toLowerCase() == ('irregularity')) {
+                                if (item['status_type'].toLowerCase() == 'irregularity') {
                                     let obj = {}
-                                    obj["label"] = item.status_description
-                                    obj["value"] = item.status_code
-                                    obj["item"] = item
+                                    obj['label'] = item.status_description
+                                    obj['value'] = item.status_code
+                                    obj['item'] = item
 
                                     arr.push(obj)
                                 }
                             }
                         })
 
-                        if(arr.length == 0) {
-                            arr = [{'label': null, 'value': null}]
+                        if (arr.length == 0) {
+                            arr = [{ label: null, value: null }]
                         }
 
                         this.status_code_arr = arr
-                        
                     } else {
                         // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
                     this.loadingStatus = false
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loadingStatus = false
                     // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
         async handleSubmit() {
-            const uploadComponent = this.$refs.upload;
+            const uploadComponent = this.$refs.upload
             if (this.irregularity_id) {
                 if (uploadComponent) {
-                    const uploadedFiles = uploadComponent.uploadFiles;
+                    const uploadedFiles = uploadComponent.uploadFiles
 
                     if (uploadedFiles.length > 0) {
                         let form = {
@@ -415,71 +426,81 @@ export default {
                             irregularity_type: this.irregularity_type,
                             irregularity_status_code: this.irregularity_status_code,
                             remark: this.remark,
-                        };
+                        }
                         uploadedFiles.forEach((file, index) => {
                             if (file.raw && file.raw instanceof Blob) {
-                                form[`file_${this.generateRandomString(5)}`] = file.raw;
+                                form[`file_${this.generateRandomString(5)}`] = file.raw
                             } else if (file?.uid) {
-                                form[`file_${file.uid}`] = this.fileList[index].attachment_id;
+                                form[`file_${file.uid}`] = this.fileList[index].attachment_id
                             } else {
-                                this.openNotification('warn', null, 'File is not valid', ' Please put in the expected format')
+                                this.openNotification(
+                                    'warn',
+                                    null,
+                                    'File is not valid',
+                                    ' Please put in the expected format'
+                                )
                             }
-                        });
+                        })
 
                         // form[this.inputType.key] = this.inputType.value;
 
-                        this.$emit("updateValue", 'DIALOG_ENTRY_STATUS', form);
+                        this.$emit('updateValue', 'DIALOG_ENTRY_STATUS', form)
                     } else {
                         let form = {
                             irregularity_id: this.irregularity_id,
                             irregularity_type: this.irregularity_type,
                             irregularity_status_code: this.irregularity_status_code,
                             remark: this.remark,
-                        };
+                        }
 
-                        this.$emit("updateValue", 'DIALOG_ENTRY_STATUS', form);
+                        this.$emit('updateValue', 'DIALOG_ENTRY_STATUS', form)
                     }
                 }
             } else {
                 if (uploadComponent) {
-                    const uploadedFiles = uploadComponent.uploadFiles;
+                    const uploadedFiles = uploadComponent.uploadFiles
 
                     if (uploadedFiles.length > 0) {
                         let form = {
                             irregularity_type: this.irregularity_type,
                             irregularity_status_code: this.irregularity_status_code,
                             remark: this.remark,
-                        };
+                        }
                         uploadedFiles.forEach((file, index) => {
                             if (file.raw && file.raw instanceof Blob) {
-                                form[`file_${this.generateRandomString(5)}`] = file.raw;
+                                form[`file_${this.generateRandomString(5)}`] = file.raw
                             } else {
-                                this.openNotification('warn', null, 'File is not valid', ' Please put in the expected format');
+                                this.openNotification(
+                                    'warn',
+                                    null,
+                                    'File is not valid',
+                                    ' Please put in the expected format'
+                                )
                             }
-                        });
+                        })
 
                         // form[this.inputType.key] = this.inputType.value;
 
-                        this.$emit("updateValue", 'DIALOG_ENTRY_STATUS', form);
+                        this.$emit('updateValue', 'DIALOG_ENTRY_STATUS', form)
                     } else {
                         let form = {
                             irregularity_type: this.irregularity_type,
                             irregularity_status_code: this.irregularity_status_code,
                             remark: this.remark,
-                        };
+                        }
 
-                        this.$emit("updateValue", 'DIALOG_ENTRY_STATUS', form);
+                        this.$emit('updateValue', 'DIALOG_ENTRY_STATUS', form)
                     }
                 }
             }
         },
-        handleClearForm(){
-            this.form = {};
-            this.irregularity_type = '';
-            this.irregularity_status_code = '';
-            this.remark = '';
-            this.fileList = [];
-            
+        handleClearForm() {
+            this.form = {}
+            this.irregularity_type = ''
+            this.irregularity_status_code = ''
+            this.remark = ''
+            this.fileList = []
+
             // this.inputType['key'] = null
             // this.inputType['value'] = ''
         },
@@ -488,24 +509,24 @@ export default {
             this.closeDialog()
         },
         async handleRemove(file) {
-            const uploadedFiles = this.$refs.upload.uploadFiles;
-            const index = uploadedFiles.findIndex(item => item.url === file.url);
+            const uploadedFiles = this.$refs.upload.uploadFiles
+            const index = uploadedFiles.findIndex((item) => item.url === file.url)
             if (index !== -1) {
-                uploadedFiles.splice(index, 1);
+                uploadedFiles.splice(index, 1)
             }
         },
         handlePictureCardPreview(file) {
-            this.dialogImageUrl = file.url;
-            this.dialogImageVisible = true;
+            this.dialogImageUrl = file.url
+            this.dialogImageVisible = true
         },
         handleFilePreview(file) {
-            this.dialogFileUrl = file.url;
-            this.dialogFileVisible = true;
-        }
+            this.dialogFileUrl = file.url
+            this.dialogFileVisible = true
+        },
     },
     mounted() {
         this.handleSubmitShortcut(this.handleSubmit)
-    }
+    },
 }
 </script>
 <style scoped>

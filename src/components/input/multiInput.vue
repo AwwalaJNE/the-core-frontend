@@ -19,6 +19,7 @@
                     :disabled="listenIsDisabled"
                     :loading="loadingActive"
                     :state="props.err !== undefined && props.err !== '' ? 'danger' : 'gray'"
+                    :data-testid="`multi-input-${formKey}`"
                     @keyup.enter.native="addItem"
                     @change="updateValue"
                     @click.native="$emit('click')"

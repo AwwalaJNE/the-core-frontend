@@ -9,85 +9,85 @@
             :placeholder="placeholder"
             class="text-area-input vs-input vs-input--control"
             :disabled="disabled"
+            :data-testid="`input-${id}`"
             @input="handleInput"
         ></textarea>
     </div>
-  </template>
-  
-  <script>
-  export default {
+</template>
+
+<script>
+export default {
     props: {
-      id: {
-        type: String,
-        required: true
-      },
-      label: {
-        type: String,
-        required: true
-      },
-      value: {
-        type: [String, Array],
-        default: ''
-      },
-      rows: {
-        type: Number,
-        default: 3
-      },
-      cols: {
-        type: Number,
-        default: 40
-      },
-      placeholder: {
-        type: String,
-        default: ''
-      },
-      disabled: {
-        type: Boolean,
-        default: false
-      }
-  },
-  data() {
-    return {
-      inputValue: this.formatValue(this.value)
-    };
-  },
-  watch: {
-    value(newValue) {
-      this.inputValue = this.formatValue(newValue);
+        id: {
+            type: String,
+            required: true,
+        },
+        label: {
+            type: String,
+            required: true,
+        },
+        value: {
+            type: [String, Array],
+            default: '',
+        },
+        rows: {
+            type: Number,
+            default: 3,
+        },
+        cols: {
+            type: Number,
+            default: 40,
+        },
+        placeholder: {
+            type: String,
+            default: '',
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
     },
-    inputValue(newInputValue) {
-      this.$emit('input', newInputValue);
-    }
-  },
-  methods: {
-    handleInput(event) {
-      this.inputValue = event.target.value;
+    data() {
+        return {
+            inputValue: this.formatValue(this.value),
+        }
     },
-    formatValue(value) {
-    if (Array.isArray(value)) {
-      return value.join('\n');
-    }
-    return value;
-  }
-  }
-};
+    watch: {
+        value(newValue) {
+            this.inputValue = this.formatValue(newValue)
+        },
+        inputValue(newInputValue) {
+            this.$emit('input', newInputValue)
+        },
+    },
+    methods: {
+        handleInput(event) {
+            this.inputValue = event.target.value
+        },
+        formatValue(value) {
+            if (Array.isArray(value)) {
+                return value.join('\n')
+            }
+            return value
+        },
+    },
+}
 </script>
 
 <style scoped>
-
 .text-area-style {
     padding: 10px 0px;
 }
 
 .text-area-label {
-  font-size: 0.8rem;
-  transition: all 0.25s ease;
-  cursor: text;
-  user-select: none;
-  pointer-events: none;
-  display: flex;
-  justify-content: flex-start;
-  padding: 0px 0px 5px 10px;
+    font-size: 0.8rem;
+    transition: all 0.25s ease;
+    cursor: text;
+    user-select: none;
+    pointer-events: none;
+    display: flex;
+    justify-content: flex-start;
+    padding: 0px 0px 5px 10px;
 }
 
 .text-area-input {
@@ -110,4 +110,3 @@
     outline: none;
 }
 </style>
-  
