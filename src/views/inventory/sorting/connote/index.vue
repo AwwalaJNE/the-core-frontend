@@ -428,7 +428,7 @@ export default {
             destination: 'HUB_DELIVERY',
             destinationArr: [
                 {
-                    label: 'Hub Delivery',
+                    label: 'Smart Point Center',
                     value: 'HUB_DELIVERY',
                 },
                 {

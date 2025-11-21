@@ -98,7 +98,7 @@
                     @change="handleValidateHubDelivery"
                     :data-testid="`checkbox-validate_hub_delivery`"
                 >
-                    Validate Hub Delivery
+                    Validate Destination
                 </vs-checkbox>
 
                 <!-- NOTES: HIDE SINCE CURRENTLY VALIDATION NOT USED -->
@@ -484,8 +484,7 @@ export default {
             is_actual_weight_mandatory: false,
             is_auto_open_bag:
                 this.$store.getters.getInputs.bag_is_auto_open_bag.bag_is_auto_open_bag.value,
-            is_hub_delivery_validation:
-                this.$store.getters.getInputs.is_hub_delivery_validation.value,
+            is_hub_delivery_validation: true,
             disable_hub_delivery: false,
             validation: '',
             validation_reference: [],
