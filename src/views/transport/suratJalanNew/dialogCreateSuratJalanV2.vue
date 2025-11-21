@@ -657,11 +657,8 @@ export default {
                         received_status: item.received_at ? 1 : 0,
                         destination: item.item_destination,
                         node_code_destination: item.node_code_destination,
-                        node_name_destination: item?.bag?.destination?.node_name || '',
-                        status_trip:
-                            (item?.bag?.status_trip || '') +
-                            ' ' +
-                            (item?.bag?.current_node_name || ''),
+                        node_name_destination: item?.node_name_destination || '',
+                        status_trip: item?.status_trip || '',
                         is_missroute: item.is_missroute,
                     }))
 
