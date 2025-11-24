@@ -212,7 +212,7 @@ export default {
                     children: [
                         {
                             label: 'Open Bag',
-                            url: '/inventory/unbagging',
+                            url: '/sorting/unbagging',
                             icon: 'bx bxs-checkbox',
                             permission: 'read-unbag',
                             meta: {

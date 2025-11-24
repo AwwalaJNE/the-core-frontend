@@ -1070,7 +1070,7 @@ const routes = [
             },
 
             {
-                path: 'inventory/unbagging',
+                path: 'sorting/unbagging',
                 name: 'unbagging',
                 component: Unbagging,
                 meta: {
