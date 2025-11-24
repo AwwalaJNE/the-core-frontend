@@ -3,35 +3,11 @@
         <template>
             <inputan :name="name" :rules="rules">
                 <template v-slot:inputan="props">
-                    <!-- <vs-select
-                        class="m-select"
-                        select="off"
-                        filter
-                        :multiple="listenIsMultiple"
-                        :placeholder="placeholder"
-                        :label="name"
-                        v-model="value"
-                        :border="border"
-                        :tabindex="listenTabIndex == -1 ? listenTabIndex : ''"
-                        @change="updateValue"
-                        :state="props.err !== undefined && props.err !== '' ?'danger':'gray'"
-                    >
-                        
-                            <vs-option 
-                            v-for="(item,key) in DataArr"
-                            :key="key"
-                            :label="item.label" 
-                            :value="item.value">
-                                {{item.label}}
-                            </vs-option>
-                        
-                        
-                    </vs-select> -->
                     <template v-if="listenHiddenTitle == false">
-                        <span class="c-label"
-                            >{{ name
-                            }}<span v-if="rules && rules.includes('required')"> *</span></span
-                        >
+                        <span class="c-label">
+                            {{ name }}
+                            <span v-if="rules && rules.includes('required')"> *</span>
+                        </span>
                     </template>
 
                     <template v-if="listenIsMultiple == true">
@@ -174,8 +150,6 @@ export default {
             value: this.selectedValue ? this.selectedValue : '',
             arrValue: this.selectedValue ? this.selectedValue : [],
             loadingActive: false,
-            // loading: true,
-            // loadingInjector : null
         }
     },
     computed: {
@@ -230,26 +204,8 @@ export default {
                 this.loadingActive = val || false
             }
         },
-        // loadingData: function (val) {
-        //     if(val != undefined) {
-        //         this.loading = val || false
-        //     }
-        // },
-        // loading : function (val) {
-        //     val == true ? this.loadingHandler() : this.closeLoading()
-        // }
     },
     methods: {
-        // loadingHandler(){
-        //     let ref = `${this.name}`
-        //     this.loadingInjector = this.$vs.loading({
-        //         target: this.$refs.nameah,
-        //         color: '#333'
-        //     })
-        // },
-        // closeLoading(){
-        //     this.loadingInjector !== null ? this.loadingInjector.close() : null
-        // },
         updateValue(val) {
             let dataValue =
                 this.listenIsMultiple == false && this.isMultipleTag === false
