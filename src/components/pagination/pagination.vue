@@ -54,34 +54,36 @@ export default {
     name: 'pagination-component',
     mixins: [master],
     props: {
-        page: [Number, String],
-        limit: [Number, String],
-        pageSize: [Number, String],
+        page: {
+            type: [Number, String],
+            default: 1,
+        },
+        limit: {
+            type: [Number, String],
+            default: 20,
+        },
+        pageSize: {
+            type: [Number, String],
+            default: 1,
+        },
     },
     data() {
         return {
-            current_page: this.page ? this.page : 1,
-            page_size: 1,
-            limit_page: 20,
-            limitSelector: [3, 20, 50, 100, 1000],
-            value: '',
+            current_page: Number(this.page),
+            page_size: Number(this.pageSize),
+            limit_page: Number(this.limit),
+            limitSelector: [20, 50, 100, 1000],
         }
     },
     watch: {
-        page: function (val) {
-            if (val !== undefined) {
-                this.current_page = val
-            }
+        page(val) {
+            this.current_page = Number(val)
         },
-        pageSize: function (val) {
-            if (val !== undefined) {
-                this.page_size = val
-            }
+        pageSize(val) {
+            this.page_size = Number(val)
         },
-        limit: function (val) {
-            if (val !== undefined) {
-                this.limit_page = val
-            }
+        limit(val) {
+            this.limit_page = Number(val)
         },
     },
     methods: {
