@@ -8,16 +8,11 @@
                 </div>
             </vs-col>
             <vs-col xs="6" sm="3" lg="3">
-                <div style="position:relative;display:flex;justify-content: flex-end;">
-                    <div style="width: 100px;padding-right: 5px;">
-                            <vs-button
-                            flat
-                            block
-                            :active="true"
-                            @click="openDialog"
-                            > 
-                                <i class="bx bx-plus"></i> New
-                            </vs-button>
+                <div style="position: relative; display: flex; justify-content: flex-end">
+                    <div style="width: 100px; padding-right: 5px">
+                        <vs-button flat block :active="true" @click="openDialog">
+                            <i class="bx bx-plus"></i> New
+                        </vs-button>
                     </div>
                 </div>
             </vs-col>
@@ -30,9 +25,13 @@
                         <vs-col xs="12" sm="12" lg="6">
                             <vs-row>
                                 <vs-col w="4">
-                                    <select-search-by :isMultiple="false" :border="true"
-                                        @updateSearchBy="updateFilterDateBy" :valueData="dateParams"
-                                        :selectedValue="filterDateBy" />
+                                    <select-search-by
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateSearchBy="updateFilterDateBy"
+                                        :valueData="dateParams"
+                                        :selectedValue="filterDateBy"
+                                    />
                                 </vs-col>
                                 <vs-col w="8">
                                     <date-time
@@ -41,20 +40,28 @@
                                         :formKey="'DATE_TIME_WITHOUT_SECONDS'"
                                         :valueData="dateRange"
                                         typeInput="datetimerange"
-                                        @updateValue="updateValue" />
+                                        @updateValue="updateValue"
+                                    />
                                 </vs-col>
                             </vs-row>
                         </vs-col>
                         <vs-col xs="12" sm="12" lg="6">
                             <vs-row justify="end">
                                 <vs-col xs="6" sm="8" lg="4">
-                                    <select-search-by :isMultiple="false" :border="true"
-                                        @updateSearchBy="updateSearchBy" :valueData="searchParams"
-                                        :selectedValue="searchBy" />
+                                    <select-search-by
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateSearchBy="updateSearchBy"
+                                        :valueData="searchParams"
+                                        :selectedValue="searchBy"
+                                    />
                                 </vs-col>
                                 <vs-col xs="6" sm="4" lg="4">
-                                    <search-input ref="searchInput" @searchValue="searchValue"
-                                        :placeholder="searchPlaceholder" />
+                                    <search-input
+                                        ref="searchInput"
+                                        @searchValue="searchValue"
+                                        :placeholder="searchPlaceholder"
+                                    />
                                 </vs-col>
                             </vs-row>
                         </vs-col>
@@ -62,36 +69,30 @@
                 </div>
 
                 <div class="mt-05">
-                    <table-master 
-                    hideColumnKey="irregularity-return" 
-                    :dataTable="dataTable" 
-                    :dataColumn="datacolumn" 
-                    :tableLoading="loading"
-                    :pageSize="pagination.page_size"
-                    :page="pagination.page"
-                    :limit="pagination.limit"
-                    
-                    :onRowClickCallback="updateSelected"
-                    :hasPagination="true"
-                    @actionLimit="actionLimit"
-                    @actionPagination="actionPagination"
-                    :hasAction="false"
-                    :printAction="true"
-                    @actionPrint="actionPrint"
-                    :dynamicCancel="validateCancel"
-                    :dynamicCancelColumn="'is_cancellable'"
-                    @actionCancel="actionCancel"
+                    <table-master
+                        hideColumnKey="irregularity-return"
+                        :dataTable="dataTable"
+                        :dataColumn="datacolumn"
+                        :tableLoading="loading"
+                        :pageSize="pagination.page_size"
+                        :page="pagination.page"
+                        :limit="pagination.limit"
+                        :onRowClickCallback="updateSelected"
+                        :hasPagination="true"
+                        @actionLimit="actionLimit"
+                        @actionPagination="actionPagination"
+                        :hasAction="false"
+                        :printAction="true"
+                        @actionPrint="actionPrint"
+                        :dynamicCancel="validateCancel"
+                        :dynamicCancelColumn="'is_cancellable'"
+                        @actionCancel="actionCancel"
                     />
                 </div>
             </div>
-            
         </section>
 
-        <dialog-return
-            :active="dialogReturnActive" 
-            :closeDialog="closeDialog"
-            :refresh="refresh"
-        />
+        <dialog-return :active="dialogReturnActive" :closeDialog="closeDialog" :refresh="refresh" />
 
         <dialog-confirm
             title="Cancel Connote Return"
@@ -105,193 +106,202 @@
     </div>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master";
-import moment from "moment"
-import TableMaster from "@/components/table/tableMaster.vue"
-import NavItem from "@/components/navbar/navTab"
-import Breadcrumb from "@/components/breadcrumb/index"
-import SearchInput from "@/components/search/searchInput"
-import DateTime from "@/components/input/dateTime"
-import SelectSearchBy from "@/components/search/selectSearchBy";
+import axios from 'axios'
+import master from '@/mixins/master'
+import moment from 'moment'
+import TableMaster from '@/components/table/tableMaster.vue'
+import NavItem from '@/components/navbar/navTab'
+import Breadcrumb from '@/components/breadcrumb/index'
+import SearchInput from '@/components/search/searchInput'
+import DateTime from '@/components/input/dateTime'
+import SelectSearchBy from '@/components/search/selectSearchBy'
 
-import DialogReturn from "@/views/irreguralities/return/dialogReturn"
-import DialogConfirm from "@/components/dialog/dialogConfirm"
+import DialogReturn from '@/views/irreguralities/return/dialogReturn'
+import DialogConfirm from '@/components/dialog/dialogConfirm'
 export default {
-    name:"irregularities-return",
-    mixins:[master],
+    name: 'irregularities-return',
+    mixins: [master],
     components: {
-        "nav-item": NavItem,
-        "breadcrumb": Breadcrumb,
-        "search-input": SearchInput,
-        "date-time": DateTime,
-        "table-master" : TableMaster,
-        "dialog-return" : DialogReturn,
-        "select-search-by": SelectSearchBy,
-        "dialog-confirm": DialogConfirm,
+        'nav-item': NavItem,
+        breadcrumb: Breadcrumb,
+        'search-input': SearchInput,
+        'date-time': DateTime,
+        'table-master': TableMaster,
+        'dialog-return': DialogReturn,
+        'select-search-by': SelectSearchBy,
+        'dialog-confirm': DialogConfirm,
     },
     data() {
         return {
-            koliCode: "",
+            koliCode: '',
             dateRange: [],
-            tempSearch: "",
+            tempSearch: '',
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Created Date",
-                    key: "created_at",
-                    width: "auto"
+                    label: 'Created Date',
+                    key: 'created_at',
+                    width: 'auto',
                 },
                 {
-                    label: "Old Connote",
-                    key: "koli_number_original",
-                    width: "auto"
+                    label: 'Old Connote',
+                    key: 'koli_number_original',
+                    width: 'auto',
                 },
                 {
-                    label: "Return Connote",
-                    key: "koli_number_return",
-                    width: "auto"
+                    label: 'Return Connote',
+                    key: 'koli_number_return',
+                    width: 'auto',
                 },
                 {
-                    label: "User",
-                    key: "user_login",
-                    width: "auto"
+                    label: 'User',
+                    key: 'user_login',
+                    width: 'auto',
                 },
             ],
-            loading:false,
+            loading: false,
             pagination: {
-                limit:5,
+                limit: 5,
                 page_size: 1,
-                page: 1
+                page: 1,
             },
             dialogReturnActive: false,
-            searchBy: "old connote",
-            filterDateBy: "create",
-            searchPlaceholder: "Search Old Connote",
+            searchBy: 'old connote',
+            filterDateBy: 'create',
+            searchPlaceholder: 'Search Old Connote',
             searchParams: [
-              {
-                label: 'Old Connote',
-                value: 'old connote'
-              },
-              {
-                label: "Return Connote",
-                value: "return_connote",
-              },
-              {
-                label: "User",
-                value: "user",
-              }
+                {
+                    label: 'Old Connote',
+                    value: 'old connote',
+                },
+                {
+                    label: 'Return Connote',
+                    value: 'return_connote',
+                },
+                {
+                    label: 'User',
+                    value: 'user',
+                },
             ],
             dateParams: [
-              {
-                label: 'Created Date',
-                value: 'create'
-              },
+                {
+                    label: 'Created Date',
+                    value: 'create',
+                },
             ],
             selectedRow: [],
             connote_number_return: '',
             activeDialogConfirm: false,
-            loadingDialogConfirm: false
+            loadingDialogConfirm: false,
         }
     },
     methods: {
-        refresh(){
-            
-            let from = '';
-            let to = '';
+        refresh() {
+            let from = ''
+            let to = ''
 
-            if(this.dateRange.length > 0) {
-                from = this.dateRange[0];
-                to = this.dateRange[1];
+            if (this.dateRange.length > 0) {
+                from = this.dateRange[0]
+                to = this.dateRange[1]
             } else {
                 let d = new Date()
 
-                from = moment(d).startOf('day').format("YYYY-MM-DD HH:mm:ss");
-                to   = moment(d).endOf('day').format("YYYY-MM-DD HH:mm:ss");
+                from = moment(d).startOf('day').format('YYYY-MM-DD HH:mm:ss')
+                to = moment(d).endOf('day').format('YYYY-MM-DD HH:mm:ss')
             }
 
-            
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, from, to)
+            this.getTableData(
+                this.pagination.limit,
+                this.pagination.page,
+                this.tempSearch,
+                from,
+                to
+            )
         },
-        async getTableData(limit,page,q, from, to, node) {
+        async getTableData(limit, page, q, from, to, node) {
             this.loading = true
-            let query = "";
-            let startDate = "";
-            let endDate = "";
-            if(q !== undefined) {
+            let query = ''
+            let startDate = ''
+            let endDate = ''
+            if (q !== undefined) {
                 query = q
             }
-            if(from !== undefined && to !== undefined) {
-              startDate = this.formatToWIB(from)
-              endDate = this.formatToWIB(to)
+            if (from !== undefined && to !== undefined) {
+                startDate = this.formatToWIB(from)
+                endDate = this.formatToWIB(to)
             }
             await axios
-                .get(this.URL.return +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
-                this.Helper.header())
-                .then(res => {
+                .get(
+                    this.URL.return +
+                        `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
+                    this.Helper.header()
+                )
+                .then((res) => {
                     // this.dataTable = res.data.data
                     let arr = res.data.data
-                    
+
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page
-                    if(res.data.data.length > 0) {
-                        
+                    if (res.data.data.length > 0) {
                     } else {
                         // this.openNotification('warn', null, 'Irreguralities Return data is empty!', ' Please create Irreguralities Return data')
                     }
-                    
+
                     this.loading = false
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Irreguralities Return', err)
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Failed to populate Irreguralities Return',
+                        err
+                    )
                 })
         },
-        handleSubmit() {
-
-        },
-        searchValue (val) {
+        handleSubmit() {},
+        searchValue(val) {
             this.tempSearch = val
             this.refresh()
         },
         updateValue(key, val) {
-            switch(key) {
-                case "DATE_TIME_WITHOUT_SECONDS":
+            switch (key) {
+                case 'DATE_TIME_WITHOUT_SECONDS':
                     this.dateRange = val
                     this.refresh()
-                    break;
+                    break
                 default:
 
-                    // code block
+                // code block
             }
         },
-        actionLimit(val){
+        actionLimit(val) {
             this.pagination.limit = val
             this.pagination.page = 1
             this.refresh()
         },
-        actionPrint(val){
-            let routeData = this.$router.resolve({ 
-                name: 'printGeneral', 
-                params: { 
-                    'id': val.koli_number_return, 
-                    'type': 'koli-reprint',
-                    'node_id': this.listenNodeId
-                } 
-            });
+        actionPrint(val) {
+            let routeData = this.$router.resolve({
+                name: 'printGeneral',
+                params: {
+                    id: val.koli_number_return,
+                    type: 'koli-reprint',
+                    node_id: this.listenNodeId,
+                },
+            })
 
-            const printWindow = window.open(routeData.href, '_blank', 'noopener');
-      
+            const printWindow = window.open(routeData.href, '_blank', 'noopener')
+
             if (printWindow) {
-                printWindow.onload = function() {
-                    printWindow.print();
-                    printWindow.onafterprint = () => printWindow.close();
-                };
+                printWindow.onload = function () {
+                    printWindow.print()
+                    printWindow.onafterprint = () => printWindow.close()
+                }
             }
         },
-        openDialog(){
+        openDialog() {
             this.dialogReturnActive = true
         },
         closeDialog() {
@@ -302,48 +312,52 @@ export default {
             this.refresh()
         },
         updateSearchBy(key, val) {
-            val = val.replaceAll(" ", "_");
-            this.searchBy = val;
-            this.searchPlaceholder = key;
+            val = val.replaceAll(' ', '_')
+            this.searchBy = val
+            this.searchPlaceholder = key
         },
         updateFilterDateBy(key, val) {
-            this.filterDateBy = val;
+            this.filterDateBy = val
         },
         updateSelected(_event, _item, selected) {
-          this.selectedRow = selected.map(el => el.koli_number_return)
+            this.selectedRow = selected.map((el) => el.koli_number_return)
         },
-        actionPrintSelected(){
+        actionPrintSelected() {
             if (this.selectedRow.length > 0) {
                 let routeData = this.$router.resolve({
                     name: 'printGeneral',
                     params: {
-                        'id': this.selectedRow.toString(),
-                        'type': 'koli-reprint',
-                        'node_id':this.listenNodeId
-                    }
-                });
-                
-                const printWindow = window.open(routeData.href, '_blank', 'noopener');
-      
+                        id: this.selectedRow.toString(),
+                        type: 'koli-reprint',
+                        node_id: this.listenNodeId,
+                    },
+                })
+
+                const printWindow = window.open(routeData.href, '_blank', 'noopener')
+
                 if (printWindow) {
-                    printWindow.onload = function() {
-                        printWindow.print();
-                        printWindow.onafterprint = () => printWindow.close();
-                    };
+                    printWindow.onload = function () {
+                        printWindow.print()
+                        printWindow.onafterprint = () => printWindow.close()
+                    }
                 }
-            }
-            else {
-                this.openNotification('warn', null, 'Shortcut Print Gagal', 'Silakan pilih Connote Return terlebih dahulu')
+            } else {
+                this.openNotification(
+                    'warn',
+                    null,
+                    'Shortcut Print Gagal',
+                    'Silakan pilih Connote Return terlebih dahulu'
+                )
             }
         },
         validateCancel(is_cancellable) {
             return is_cancellable === '0' ? false : true
         },
-        actionCancel(val){
-            this.connote_number_return = val.connote_number_return;
+        actionCancel(val) {
+            this.connote_number_return = val.connote_number_return
             this.activeDialogConfirm = true
         },
-        closeDialogConfirm(){
+        closeDialogConfirm() {
             this.activeDialogConfirm = false
             this.loadingDialogConfirm = false
         },
@@ -355,25 +369,37 @@ export default {
             this.loadingDialogConfirm = true
             await axios
                 .post(
-                    this.URL.return + `/${this.connote_number_return}/cancel?n=${this.listenNodeId}`,
+                    this.URL.return +
+                        `/${this.connote_number_return}/cancel?n=${this.listenNodeId}`,
                     null,
-                    this.Helper.header())
-                .then(res => {
-                    this.openNotification("success", null, "Success!", 'Success cancel connote return');
+                    this.Helper.header()
+                )
+                .then((res) => {
+                    this.openNotification(
+                        'success',
+                        null,
+                        'Success!',
+                        'Success cancel connote return'
+                    )
                 })
-                .catch(err => {
-                    this.openNotification('danger', err?.response?.data?.code ?? '', 'Cancel connote return is failed', err?.response?.data?.message ?? err)
+                .catch((err) => {
+                    this.openNotification(
+                        'danger',
+                        err?.response?.data?.code ?? '',
+                        'Cancel connote return is failed',
+                        err?.response?.data?.message ?? err
+                    )
                 })
                 .finally(() => {
-                    this.closeDialogConfirm();
-                    this.connote_number_return = '';
-                    this.refresh();
-                });
-        }
+                    this.closeDialogConfirm()
+                    this.connote_number_return = ''
+                    this.refresh()
+                })
+        },
     },
     mounted() {
-        this.refresh()   
+        this.refresh()
         this.handlePrintShortcut(this.actionPrintSelected)
-    }
+    },
 }
 </script>

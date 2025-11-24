@@ -10,21 +10,20 @@
                     <vs-row justify="space-between">
                         <vs-col xs="9" sm="9" lg="9">
                             <form @submit.prevent="openDialog">
-                                <vs-input border type="text"
+                                <vs-input
+                                    border
+                                    type="text"
                                     v-model="koliCode"
                                     label-placeholder="Masukkan Nomer Connote"
                                     :autofocus="true"
                                     v-uppercase
-                                    ref="formInputUnbagging">
+                                    ref="formInputUnbagging"
+                                >
                                 </vs-input>
                             </form>
                         </vs-col>
                         <vs-col xs="3" sm="3" lg="3">
-                            <vs-button
-                                @click="openDialog"
-                            >
-                                Submit
-                            </vs-button>
+                            <vs-button @click="openDialog"> Submit </vs-button>
                         </vs-col>
                     </vs-row>
                 </div>
@@ -38,9 +37,13 @@
                         <vs-col xs="12" sm="12" lg="6">
                             <vs-row>
                                 <vs-col w="4">
-                                    <select-search-by :isMultiple="false" :border="true"
-                                        @updateSearchBy="updateFilterDateBy" :valueData="dateParams"
-                                        :selectedValue="filterDateBy" />
+                                    <select-search-by
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateSearchBy="updateFilterDateBy"
+                                        :valueData="dateParams"
+                                        :selectedValue="filterDateBy"
+                                    />
                                 </vs-col>
                                 <vs-col w="8">
                                     <date-time
@@ -49,20 +52,28 @@
                                         :formKey="'DATE_TIME_WITHOUT_SECONDS'"
                                         :valueData="dateRange"
                                         typeInput="datetimerange"
-                                        @updateValue="updateValue" />
+                                        @updateValue="updateValue"
+                                    />
                                 </vs-col>
                             </vs-row>
                         </vs-col>
                         <vs-col xs="12" sm="12" lg="6">
                             <vs-row justify="end">
                                 <vs-col xs="6" sm="8" lg="4">
-                                    <select-search-by :isMultiple="false" :border="true"
-                                        @updateSearchBy="updateSearchBy" :valueData="searchParams"
-                                        :selectedValue="searchBy" />
+                                    <select-search-by
+                                        :isMultiple="false"
+                                        :border="true"
+                                        @updateSearchBy="updateSearchBy"
+                                        :valueData="searchParams"
+                                        :selectedValue="searchBy"
+                                    />
                                 </vs-col>
                                 <vs-col xs="6" sm="4" lg="4">
-                                    <search-input ref="searchInput" @searchValue="searchValue"
-                                        :placeholder="searchPlaceholder" />
+                                    <search-input
+                                        ref="searchInput"
+                                        @searchValue="searchValue"
+                                        :placeholder="searchPlaceholder"
+                                    />
                                 </vs-col>
                             </vs-row>
                         </vs-col>
@@ -82,28 +93,27 @@
                 </div>
 
                 <div class="mt-05">
-                    <table-master 
-                    hideColumnKey="irregularity-cancel" 
-                    :dataTable="dataTable" 
-                    :dataColumn="datacolumn" 
-                    :tableLoading="loading"
-                    :pageSize="pagination.page_size"
-                    :page="pagination.page"
-                    :limit="pagination.limit"
-                    :customBtn="true"
-                    customBtn_label="APPROVE"
-                    @actionUpdate="actionUpdate"
-                    :hasPagination="true"
-                    @actionLimit="actionLimit"
-                    @actionPagination="actionPagination"
+                    <table-master
+                        hideColumnKey="irregularity-cancel"
+                        :dataTable="dataTable"
+                        :dataColumn="datacolumn"
+                        :tableLoading="loading"
+                        :pageSize="pagination.page_size"
+                        :page="pagination.page"
+                        :limit="pagination.limit"
+                        :customBtn="true"
+                        customBtn_label="APPROVE"
+                        @actionUpdate="actionUpdate"
+                        :hasPagination="true"
+                        @actionLimit="actionLimit"
+                        @actionPagination="actionPagination"
                     />
                 </div>
             </div>
-            
         </section>
 
         <dialog-cancel
-            :active="dialogCancelActive" 
+            :active="dialogCancelActive"
             :closeDialog="closeDialog"
             @updateValue="updateValue"
         />
@@ -120,156 +130,166 @@
     </div>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master";
-import moment from "moment"
-import TableMaster from "@/components/table/tableMaster.vue"
-import NavItem from "@/components/navbar/navTab"
-import Breadcrumb from "@/components/breadcrumb/index"
-import SearchInput from "@/components/search/searchInput"
-import DateTime from "@/components/input/dateTime"
-import SelectSearchBy from "@/components/search/selectSearchBy";
+import axios from 'axios'
+import master from '@/mixins/master'
+import moment from 'moment'
+import TableMaster from '@/components/table/tableMaster.vue'
+import NavItem from '@/components/navbar/navTab'
+import Breadcrumb from '@/components/breadcrumb/index'
+import SearchInput from '@/components/search/searchInput'
+import DateTime from '@/components/input/dateTime'
+import SelectSearchBy from '@/components/search/selectSearchBy'
 
-import DialogConfirm from "@/components/dialog/dialogConfirm"
-import DialogCancel from "@/views/irreguralities/cancel/dialogCancel"
+import DialogConfirm from '@/components/dialog/dialogConfirm'
+import DialogCancel from '@/views/irreguralities/cancel/dialogCancel'
 export default {
-    name:"irregularities-cancel",
-    mixins:[master],
+    name: 'irregularities-cancel',
+    mixins: [master],
     components: {
-        "nav-item": NavItem,
-        "breadcrumb": Breadcrumb,
-        "search-input": SearchInput,
-        "date-time": DateTime,
-        "table-master" : TableMaster,
-        "dialog-cancel": DialogCancel,
-        "dialog-confirm": DialogConfirm,
-        "select-search-by": SelectSearchBy,
+        'nav-item': NavItem,
+        breadcrumb: Breadcrumb,
+        'search-input': SearchInput,
+        'date-time': DateTime,
+        'table-master': TableMaster,
+        'dialog-cancel': DialogCancel,
+        'dialog-confirm': DialogConfirm,
+        'select-search-by': SelectSearchBy,
     },
     data() {
         return {
-            koliCode: "",
+            koliCode: '',
             dateRange: [],
-            tempSearch: "",
+            tempSearch: '',
             dataTable: [],
             dataItem: {},
             datacolumn: [
                 {
-                    label: "Canceled Date",
-                    key: "created_at",
-                    width: "md"
+                    label: 'Canceled Date',
+                    key: 'created_at',
+                    width: 'md',
                 },
                 {
-                    label: "Koli",
-                    key: "koli_number",
-                    width: "auto"
+                    label: 'Koli',
+                    key: 'koli_number',
+                    width: 'auto',
                 },
                 {
-                    label: "Status Code",
-                    key: "irregularity_status_code",
-                    width: "auto"
+                    label: 'Status Code',
+                    key: 'irregularity_status_code',
+                    width: 'auto',
                 },
                 {
-                    label: "User",
-                    key: "user_name",
-                    width: "auto"
+                    label: 'User',
+                    key: 'user_name',
+                    width: 'auto',
                 },
                 {
-                    label: "Approved at",
-                    key: "approved_at",
-                    width: "auto"
+                    label: 'Approved at',
+                    key: 'approved_at',
+                    width: 'auto',
                 },
                 {
-                    label: "Approved By",
-                    key: "approve",
-                    width: "auto"
+                    label: 'Approved By',
+                    key: 'approve',
+                    width: 'auto',
                 },
             ],
-            loading:false,
+            loading: false,
             pagination: {
-                limit:5,
+                limit: 5,
                 page_size: 1,
-                page: 1
+                page: 1,
             },
             form: {},
             dialogCancelActive: false,
             dialogApproveActive: false,
             loadingApproveActive: false,
-            searchBy: "koli number",
-            filterDateBy: "create",
-            searchPlaceholder: "Search Koli Number",
+            searchBy: 'koli number',
+            filterDateBy: 'create',
+            searchPlaceholder: 'Search Koli Number',
             searchParams: [
-              {
-                label: 'Koli number',
-                value: 'koli number'
-              },
-              {
-                label: "Status Code",
-                value: "status_code",
-              },
-              {
-                label: "User",
-                value: "user_name",
-              },
-              {
-                label: "Approved By",
-                value: "userApprove",
-              },
+                {
+                    label: 'Koli number',
+                    value: 'koli number',
+                },
+                {
+                    label: 'Status Code',
+                    value: 'status_code',
+                },
+                {
+                    label: 'User',
+                    value: 'user_name',
+                },
+                {
+                    label: 'Approved By',
+                    value: 'userApprove',
+                },
             ],
             dateParams: [
-              {
-                label: 'Canceled Date',
-                value: 'create'
-              },
-              {
-                label: 'Approved Date',
-                value: 'approved_at'
-              },
-            ]
+                {
+                    label: 'Canceled Date',
+                    value: 'create',
+                },
+                {
+                    label: 'Approved Date',
+                    value: 'approved_at',
+                },
+            ],
         }
     },
     methods: {
-        refresh(){
+        refresh() {
+            let from = ''
+            let to = ''
 
-            let from = '';
-            let to = '';
-
-            if(this.dateRange.length > 0) {
-                from = this.dateRange[0];
-                to = this.dateRange[1];
+            if (this.dateRange.length > 0) {
+                from = this.dateRange[0]
+                to = this.dateRange[1]
             } else {
                 let d = new Date()
 
-                from = moment(d).startOf('day').format("YYYY-MM-DD HH:mm:ss");
-                to   = moment(d).endOf('day').format("YYYY-MM-DD HH:mm:ss");
+                from = moment(d).startOf('day').format('YYYY-MM-DD HH:mm:ss')
+                to = moment(d).endOf('day').format('YYYY-MM-DD HH:mm:ss')
             }
 
-            
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, from, to)
+            this.getTableData(
+                this.pagination.limit,
+                this.pagination.page,
+                this.tempSearch,
+                from,
+                to
+            )
         },
-        async getTableData(limit,page,q, from, to, node) {
+        async getTableData(limit, page, q, from, to, node) {
             this.loading = true
-            let query = "";
-            let startDate = "";
-            let endDate = "";
-            if(q !== undefined) {
+            let query = ''
+            let startDate = ''
+            let endDate = ''
+            if (q !== undefined) {
                 query = q
             }
-            if(from !== undefined && to !== undefined) {
-              startDate = this.formatToWIB(from)
-              endDate = this.formatToWIB(to)
+            if (from !== undefined && to !== undefined) {
+                startDate = this.formatToWIB(from)
+                endDate = this.formatToWIB(to)
             }
             await axios
-                .get(this.URL.irregularities +
-                `?n=${this.listenNodeId}&irregularity_type=CANCELED&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
+                .get(
+                    this.URL.irregularities +
+                        `?n=${this.listenNodeId}&irregularity_type=CANCELED&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}`,
+                    this.Helper.header()
+                )
+                .then((res) => {
+                    if (res.data.data.length > 0) {
                         let arr = res.data.data
-                        arr.map(item => {
-                            item["isDisabled"] = item.approved_by != null && item.approved_by != '' ? true : false;
-                            item["approve"] = item.approved_by != null && item.approved_by != '' ? item.user_approve.user_name : '-';
-                            item["created_at"] = this.formatTimezone(item?.created_at);
-                            item["approved_at"] = this.formatTimezone(item?.approved_at);
+                        arr.map((item) => {
+                            item['isDisabled'] =
+                                item.approved_by != null && item.approved_by != '' ? true : false
+                            item['approve'] =
+                                item.approved_by != null && item.approved_by != ''
+                                    ? item.user_approve.user_name
+                                    : '-'
+                            item['created_at'] = this.formatTimezone(item?.created_at)
+                            item['approved_at'] = this.formatTimezone(item?.approved_at)
                         })
                         this.dataTable = arr
                         this.pagination.page = res.data.meta.current_page
@@ -278,95 +298,113 @@ export default {
                     } else {
                         // this.openNotification('warn', null, 'Irreguralities Cancel data is empty!', ' Please create Irreguralities Cancel data')
                     }
-                    
+
                     this.loading = false
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Irreguralities Cancel', err)
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Failed to populate Irreguralities Cancel',
+                        err
+                    )
                 })
         },
         async handleSubmit() {
-
             await axios
                 .post(
                     this.URL.irregularities + `?n=${this.listenNodeId}`,
-                    JSON.stringify(this.form), 
-                    this.Helper.header())
-                .then(res => {
-
+                    JSON.stringify(this.form),
+                    this.Helper.header()
+                )
+                .then((res) => {
                     this.refresh()
 
                     this.dialogCancelActive = false
                     this.openNotification(null, 'Success', 'Create new cancel connote is success')
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loading = false
                     this.refresh()
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new cancel connote failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Create new cancel connote failed',
+                        err.response ? err.response.data.message : 'something went wrong'
+                    )
                 })
         },
-        searchValue (val) {
+        searchValue(val) {
             this.tempSearch = val
             this.refresh()
         },
         updateValue(key, val) {
-            switch(key) {
-                case "DATE_TIME_WITHOUT_SECONDS":
+            switch (key) {
+                case 'DATE_TIME_WITHOUT_SECONDS':
                     this.dateRange = val
                     this.refresh()
 
-                    break;
-                case "DIALOG_CANCEL":
+                    break
+                case 'DIALOG_CANCEL':
                     this.form = val
                     this.form['connote_number'] = this.koliCode
                     this.handleSubmit()
-                    break;
+                    break
                 default:
 
-                    // code block
+                // code block
             }
         },
-        actionUpdate(val){
-          if(this.dataTable.length > 0) {
-              //dibuat untuk approve saja jadi gapake switch case
-            this.dataItem = val;
-            this.$nextTick(() => {
-                this.dialogApproveActive = true;
-            });
-          }
+        actionUpdate(val) {
+            if (this.dataTable.length > 0) {
+                //dibuat untuk approve saja jadi gapake switch case
+                this.dataItem = val
+                this.$nextTick(() => {
+                    this.dialogApproveActive = true
+                })
+            }
         },
         confirmApprove(val) {
-          if(val) {
-            let formUpdate = {}
-            let irregularity_id = this.dataItem.irregularity_id.toString()
-            this.loadingApproveActive = true;
-            this.approveIrreg(formUpdate, irregularity_id)
-          }
+            if (val) {
+                let formUpdate = {}
+                let irregularity_id = this.dataItem.irregularity_id.toString()
+                this.loadingApproveActive = true
+                this.approveIrreg(formUpdate, irregularity_id)
+            }
         },
         async approveIrreg(formUpdate, irregularity_id) {
             this.loading = true
             await axios
-            .post(
-                this.URL.irregularities + `/${irregularity_id}/approve?n=${this.listenNodeId}`,
-                JSON.stringify(formUpdate), 
-                this.Helper.header())
-            .then(res => {
-                this.closeDialogApproveCancel()
-                this.refresh()
-                this.openNotification(null, 'Success', 'Cancel approved')
-            }).catch(err => {
-                this.closeDialogApproveCancel()
-                this.refresh()
-                this.openNotification('danger', err.response ? err.response.data.code : '', 'Cannot approve cancel irregularity', err.response ? err.response.data.message : 'something went wrong')
-            })
+                .post(
+                    this.URL.irregularities + `/${irregularity_id}/approve?n=${this.listenNodeId}`,
+                    JSON.stringify(formUpdate),
+                    this.Helper.header()
+                )
+                .then((res) => {
+                    this.closeDialogApproveCancel()
+                    this.refresh()
+                    this.openNotification(null, 'Success', 'Cancel approved')
+                })
+                .catch((err) => {
+                    this.closeDialogApproveCancel()
+                    this.refresh()
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Cannot approve cancel irregularity',
+                        err.response ? err.response.data.message : 'something went wrong'
+                    )
+                })
             this.loading = false
-            return true;
+            return true
         },
-        closeDialogApproveCancel(){
-            this.dataItem = {};
+        closeDialogApproveCancel() {
+            this.dataItem = {}
             this.loadingApproveActive = false
             this.dialogApproveActive = false
         },
-        actionLimit(val){
+        actionLimit(val) {
             this.pagination.limit = val
             this.pagination.page = 1
             this.refresh()
@@ -380,25 +418,25 @@ export default {
             this.dialogCancelActive = false
         },
         openDialog() {
-            if(this.koliCode !== '') {
+            if (this.koliCode !== '') {
                 this.dialogCancelActive = true
             }
         },
         updateSearchBy(key, val) {
-            val = val.replaceAll(" ", "_");
-            this.searchBy = val;
-            this.searchPlaceholder = key;
+            val = val.replaceAll(' ', '_')
+            this.searchBy = val
+            this.searchPlaceholder = key
         },
         updateFilterDateBy(key, val) {
-            this.filterDateBy = val;
+            this.filterDateBy = val
         },
     },
     beforeDestroy() {
-        window.removeEventListener('timezone-changed', this.refresh);
+        window.removeEventListener('timezone-changed', this.refresh)
     },
     mounted() {
-        window.addEventListener('timezone-changed', this.refresh);
-        this.refresh()   
-    }
+        window.addEventListener('timezone-changed', this.refresh)
+        this.refresh()
+    },
 }
 </script>

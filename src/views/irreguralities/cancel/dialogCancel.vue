@@ -1,36 +1,32 @@
 <template>
-    <dialog-master 
-    :actived="listenActive" 
-    :closeDialog="cancel"
-    width="md">
-
-        <template v-slot:header>
-            Cancel Connote
-        </template>
+    <dialog-master :actived="listenActive" :closeDialog="cancel" width="md">
+        <template v-slot:header> Cancel Connote </template>
 
         <template v-slot:content>
             <vs-row justify="space-between">
                 <vs-col xs="12" sm="12" lg="12">
                     <template v-if="loading == false && status_code_arr.length > 0">
-                        <selector 
+                        <selector
                             :ref="''"
-                            name="Status Code" 
-                            :rules="''" 
+                            name="Status Code"
+                            :rules="''"
                             formKey="status_code"
                             :valueData="status_code_arr"
                             :selectedValue="''"
                             :isMultiple="false"
-                            @updateValue="updateValue" />
+                            @updateValue="updateValue"
+                        />
                     </template>
                 </vs-col>
                 <vs-col xs="12" sm="12" lg="12">
                     <input-general
-                    name="Remark"
-                    :rules="''"
-                    formKey="remark"
-                    :valueData="''"
-                    typeInput="text"
-                    @updateValue="updateValue" />
+                        name="Remark"
+                        :rules="''"
+                        formKey="remark"
+                        :valueData="''"
+                        typeInput="text"
+                        @updateValue="updateValue"
+                    />
                 </vs-col>
             </vs-row>
         </template>
@@ -38,57 +34,47 @@
         <template v-slot:footer>
             <vs-row justify="flex-end">
                 <vs-col w="3">
-                    <vs-button
-                    transparent
-                    block
-                    danger
-                    flat
-                    :active="true"
-                    @click="cancel"
-                    >
+                    <vs-button transparent block danger flat :active="true" @click="cancel">
                         Cancel
                     </vs-button>
                 </vs-col>
                 <vs-col w="3">
                     <vs-button
-                    transparent
-                    block
-                    flat
-                    :active="true"
-                    type="submit"
-                    @click="handleSubmit"
+                        transparent
+                        block
+                        flat
+                        :active="true"
+                        type="submit"
+                        @click="handleSubmit"
                     >
-                       Submit
+                        Submit
                     </vs-button>
                 </vs-col>
             </vs-row>
-                
-                
         </template>
-
     </dialog-master>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master"
-import InputGeneral from "@/components/input/general"
-import Selector from "@/components/input/select"
-import DialogMaster from "@/components/dialog/dialogMaster"
+import axios from 'axios'
+import master from '@/mixins/master'
+import InputGeneral from '@/components/input/general'
+import Selector from '@/components/input/select'
+import DialogMaster from '@/components/dialog/dialogMaster'
 export default {
-    name:"irreguralities-cancel-dialog",
-    mixins:[master],
+    name: 'irreguralities-cancel-dialog',
+    mixins: [master],
     components: {
-        "input-general": InputGeneral,
-        "selector": Selector,
-        "dialog-master": DialogMaster,
+        'input-general': InputGeneral,
+        selector: Selector,
+        'dialog-master': DialogMaster,
     },
     props: {
-       closeDialog: Function, 
-       active: Boolean,
-       title: String,
+        closeDialog: Function,
+        active: Boolean,
+        title: String,
     },
     computed: {
-        listenActive(){
+        listenActive() {
             return this.active
         },
     },
@@ -97,7 +83,7 @@ export default {
             if (val == true) {
                 this.getDataStatus()
             }
-        }
+        },
     },
     data() {
         return {
@@ -106,88 +92,88 @@ export default {
             irregularity_type: '',
             irregularity_status_code: '',
             remark: '',
-            loading: true
+            loading: true,
         }
     },
     methods: {
-        updateValue(key, val, info){
-            switch(key) {
-                case "status_code":
-                    
-                    let obj = this.status_code_arr.filter(item => item.value == val)[0]
+        updateValue(key, val, info) {
+            switch (key) {
+                case 'status_code':
+                    let obj = this.status_code_arr.filter((item) => item.value == val)[0]
 
-                    if(Object.keys(obj).length > 0) {
-                        if(obj.hasOwnProperty('item')) {
+                    if (Object.keys(obj).length > 0) {
+                        if (obj.hasOwnProperty('item')) {
                             this.irregularity_type = obj.item.status_subtype || ''
                             this.irregularity_status_code = obj.item.status_code || ''
                         }
                     }
-                    break;
-                case "remark":
-                    this.remark= val
-                    break;
+                    break
+                case 'remark':
+                    this.remark = val
+                    break
                 default:
 
-                    // code block
+                // code block
             }
         },
-        async getDataStatus(){
+        async getDataStatus() {
             this.loading = true
             await axios
-                .get(this.URL.status + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
+                .get(
+                    this.URL.status + `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`,
+                    this.Helper.header()
+                )
+                .then((res) => {
+                    if (res.data.data.length > 0) {
                         let arr = []
-                        res.data.data.map(item => {
-                            if(item.hasOwnProperty('status_subtype')) {
-                                if(item['status_subtype'].toLowerCase().includes('cancel')) {
+                        res.data.data.map((item) => {
+                            if (item.hasOwnProperty('status_subtype')) {
+                                if (item['status_subtype'].toLowerCase().includes('cancel')) {
                                     let obj = {}
-                                    obj["label"] = item.status_description
-                                    obj["value"] = item.status_id
-                                    obj["item"] = item
+                                    obj['label'] = item.status_description
+                                    obj['value'] = item.status_id
+                                    obj['item'] = item
 
                                     arr.push(obj)
                                 }
                             }
                         })
 
-                        if(arr.length == 0) {
-                            arr = [{'label': null, 'value': null}]
+                        if (arr.length == 0) {
+                            arr = [{ label: null, value: null }]
                         }
 
                         this.status_code_arr = arr
-                        
                     } else {
                         // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
                     this.loading = false
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loading = false
                     // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
-        handleSubmit(){
+        handleSubmit() {
             let form = {}
             form['irregularity_type'] = this.irregularity_type
             form['irregularity_status_code'] = this.irregularity_status_code
             form['remark'] = this.remark
-            this.$emit("updateValue", 'DIALOG_CANCEL',form)
+            this.$emit('updateValue', 'DIALOG_CANCEL', form)
         },
-        handleClearForm(){
+        handleClearForm() {
             this.form = {}
             this.irregularity_type = ''
             this.irregularity_status_code = ''
-            this.remark= ''
+            this.remark = ''
         },
         cancel() {
             this.handleClearForm()
             this.closeDialog()
-        }
+        },
     },
     mounted() {
         this.handleSubmitShortcut(this.handleSubmit)
-    }
+    },
 }
 </script>

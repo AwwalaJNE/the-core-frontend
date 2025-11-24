@@ -1,9 +1,9 @@
 <template>
     <div>
-        <table-master 
+        <table-master
             hideColumnKey="irregularity-inventory"
-            :dataTable="dataTable" 
-            :dataColumn="datacolumn" 
+            :dataTable="dataTable"
+            :dataColumn="datacolumn"
             :tableLoading="loading"
             :pageSize="pagination.page_size"
             :page="pagination.page"
@@ -18,12 +18,12 @@
     </div>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master"
-import TableMaster from "@/components/table/tableMaster.vue"
-import moment from "moment"
+import axios from 'axios'
+import master from '@/mixins/master'
+import TableMaster from '@/components/table/tableMaster.vue'
+import moment from 'moment'
 export default {
-    name:"active-list",
+    name: 'active-list',
     mixins: [master],
     props: {
         query: String,
@@ -32,46 +32,86 @@ export default {
         dateFilter: Array,
     },
     components: {
-        "table-master" : TableMaster
+        'table-master': TableMaster,
     },
     watch: {
-        query: function(val, old) {
-            if(val !== undefined) {
+        query: function (val, old) {
+            if (val !== undefined) {
                 this.tempSearch = val
-                if(this.tempSearch !== old) {
+                if (this.tempSearch !== old) {
                     this.pagination.page = 1
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate, this.querySearch, this.queryDate)
+                    this.getTableData(
+                        this.pagination.limit,
+                        this.pagination.page,
+                        val,
+                        this.startDate,
+                        this.endDate,
+                        this.querySearch,
+                        this.queryDate
+                    )
                 }
             }
         },
-        queryDate: function(val, old) {
-          if(val !== undefined) {
-            this.filterDateBy = val
-            if(this.filterDateBy !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.querySearch, val);
-            }
-          }
-        },
-        querySearch: function(val, old) {
-          if(val !== undefined) {
-            if(val !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, val, this.queryDate);
-            }
-          }
-        },
-        dateFilter: function(val, old) {
+        queryDate: function (val, old) {
             if (val !== undefined) {
-                this.dateRange = val;
-                this.startDate = this.dateRange[0];
-                this.endDate = this.dateRange[1];
+                this.filterDateBy = val
+                if (this.filterDateBy !== old) {
+                    this.getTableData(
+                        this.pagination.limit,
+                        this.pagination.page,
+                        this.tempSearch,
+                        this.startDate,
+                        this.endDate,
+                        this.querySearch,
+                        val
+                    )
+                }
+            }
+        },
+        querySearch: function (val, old) {
+            if (val !== undefined) {
+                if (val !== old) {
+                    this.getTableData(
+                        this.pagination.limit,
+                        this.pagination.page,
+                        this.tempSearch,
+                        this.startDate,
+                        this.endDate,
+                        val,
+                        this.queryDate
+                    )
+                }
+            }
+        },
+        dateFilter: function (val, old) {
+            if (val !== undefined) {
+                this.dateRange = val
+                this.startDate = this.dateRange[0]
+                this.endDate = this.dateRange[1]
 
                 if (old !== null && old !== undefined) {
                     if (this.startDate !== old[0] || this.endDate !== old[1]) {
-                        this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.querySearch, this.queryDate);
+                        this.getTableData(
+                            this.pagination.limit,
+                            this.pagination.page,
+                            this.tempSearch,
+                            this.startDate,
+                            this.endDate,
+                            this.querySearch,
+                            this.queryDate
+                        )
                     }
                 }
             } else {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, "", "", this.querySearch, this.queryDate);
+                this.getTableData(
+                    this.pagination.limit,
+                    this.pagination.page,
+                    this.tempSearch,
+                    '',
+                    '',
+                    this.querySearch,
+                    this.queryDate
+                )
             }
         },
     },
@@ -80,97 +120,111 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Orion Number",
-                    key: "irg_sequence",
-                    width: "xs"
+                    label: 'Orion Number',
+                    key: 'irg_sequence',
+                    width: 'xs',
                 },
                 {
-                    label: "Connote Number",
-                    key: "koli_number",
-                    width: "md"
+                    label: 'Connote Number',
+                    key: 'koli_number',
+                    width: 'md',
                 },
                 {
-                    label: "Bag Number",
-                    key: "bag_number",
-                    width: "md"
+                    label: 'Bag Number',
+                    key: 'bag_number',
+                    width: 'md',
                 },
                 {
-                    label: "Status Code",
-                    key: "irregularity_status_code",
-                    width: "xs"
+                    label: 'Status Code',
+                    key: 'irregularity_status_code',
+                    width: 'xs',
                 },
                 {
-                    label: "Type",
-                    key: "irregularity_type",
-                    width: "auto"
+                    label: 'Type',
+                    key: 'irregularity_type',
+                    width: 'auto',
                 },
                 {
-                    label: "Status Description",
-                    key: "irregularity_status_description",
-                    width: "auto"
+                    label: 'Status Description',
+                    key: 'irregularity_status_description',
+                    width: 'auto',
                 },
                 {
-                    label: "Remark",
-                    key: "remark",
-                    width: "auto"
+                    label: 'Remark',
+                    key: 'remark',
+                    width: 'auto',
                 },
                 {
-                    label: "Created At",
-                    key: "created_at",
-                    width: "auto"
-                }
+                    label: 'Created At',
+                    key: 'created_at',
+                    width: 'auto',
+                },
             ],
             loading: false,
             dataItem: {},
-            tempSearch: this.query ? this.query : "",
+            tempSearch: this.query ? this.query : '',
             dateRange: this.dateFilter ? this.dateFilter : [],
-            startDate: "",
-            endDate: "",
+            startDate: '',
+            endDate: '',
             pagination: {
-                limit:20,
+                limit: 20,
                 page_size: 1,
-                page: 1
+                page: 1,
             },
-            loadInterval: null
+            loadInterval: null,
         }
     },
     methods: {
-        pollData () {
+        pollData() {
             this.loadInterval = setInterval(() => {
                 this.refresh()
             }, 60000) // 1 menit
         },
-        async getTableData(limit,page,q, from, to, searchBy, filterDateBy) {
+        async getTableData(limit, page, q, from, to, searchBy, filterDateBy) {
             this.loading = true
-            let query = "";
-            if(q !== undefined) {
+            let query = ''
+            if (q !== undefined) {
                 query = q
             }
             // TODO: CHANGE irregularity_type
             await axios
-                .get(this.URL.irregularities +
-                    `?n=${this.listenNodeId}&show_archive=false&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${this.formatToWIB(from)}&end_date=${this.formatToWIB(to)}&search_by=${searchBy}&filter_date_by=${filterDateBy}`,
-                    this.Helper.header())
-                .then(res => {
+                .get(
+                    this.URL.irregularities +
+                        `?n=${
+                            this.listenNodeId
+                        }&show_archive=false&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${this.formatToWIB(
+                            from
+                        )}&end_date=${this.formatToWIB(
+                            to
+                        )}&search_by=${searchBy}&filter_date_by=${filterDateBy}`,
+                    this.Helper.header()
+                )
+                .then((res) => {
                     let arr = res.data.data
-                    arr.map(item => {
-                        item["is_confirmed"] = item.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed'
-                        item["is_void_status"] = item.is_void == 1 ? 'YES' : '-'
-                        item["packing_kayu_type"] = item.packing_kayu_type != null ? 'Y' : '-'
-                        item["created_at"] = this.formatTimezone(item?.created_at);
+                    arr.map((item) => {
+                        item['is_confirmed'] = item.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed'
+                        item['is_void_status'] = item.is_void == 1 ? 'YES' : '-'
+                        item['packing_kayu_type'] = item.packing_kayu_type != null ? 'Y' : '-'
+                        item['created_at'] = this.formatTimezone(item?.created_at)
                     })
                     this.dataTable = arr
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page
-                    
+
                     this.loading = false
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate users list', err.response.data.message)
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Failed to populate users list',
+                        err.response.data.message
+                    )
                 })
         },
-        actionLimit(val){
+        actionLimit(val) {
             this.pagination.limit = val
             this.pagination.page = 1
             this.refresh()
@@ -179,22 +233,38 @@ export default {
             this.pagination.page = val
             this.refresh()
         },
-        refresh(val){
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate, this.querySearch, this.queryDate)
+        refresh(val) {
+            this.getTableData(
+                this.pagination.limit,
+                this.pagination.page,
+                this.tempSearch,
+                this.startDate,
+                this.endDate,
+                this.querySearch,
+                this.queryDate
+            )
         },
         showData(row) {
-          this.$router.push(`/connote-detail/${row.koli_number}`);
-          this.setRoutePageHistory(this.$route.meta, false);
+            this.$router.push(`/connote-detail/${row.koli_number}`)
+            this.setRoutePageHistory(this.$route.meta, false)
         },
     },
     mounted() {
-        window.addEventListener('timezone-changed', this.refresh);
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate, this.querySearch, this.queryDate)
+        window.addEventListener('timezone-changed', this.refresh)
+        this.getTableData(
+            this.pagination.limit,
+            this.pagination.page,
+            this.tempSearch,
+            this.startDate,
+            this.endDate,
+            this.querySearch,
+            this.queryDate
+        )
         this.pollData()
     },
-    beforeDestroy () {
-        window.removeEventListener('timezone-changed', this.refresh);
+    beforeDestroy() {
+        window.removeEventListener('timezone-changed', this.refresh)
         clearInterval(this.loadInterval) // prevent memory leaks
-    }
+    },
 }
 </script>

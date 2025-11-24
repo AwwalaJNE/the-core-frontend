@@ -1,17 +1,13 @@
 <template>
-    <dialog-master 
-        width="lg"
-        :actived="listenActive" 
-        :closeDialog="cancel"
-    >
+    <dialog-master width="lg" :actived="listenActive" :closeDialog="cancel">
         <template v-slot:header>
-            {{listenTitle}}
+            {{ listenTitle }}
         </template>
 
         <template v-slot:content>
             <div>
                 <form-input-controller
-                    ref="formSlaController" 
+                    ref="formSlaController"
                     typeForm="sla_inter_activity"
                     @formData="formData"
                     :dataItem="listenDataItem"
@@ -48,35 +44,35 @@
                         :data-testid="`submit-button`"
                         @click="handleSubmit"
                     >
-                        {{btnBlue || 'Add'}}
+                        {{ btnBlue || 'Save Changes' }}
                     </vs-button>
                 </vs-col>
-            </vs-row>                
+            </vs-row>
         </template>
     </dialog-master>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master"
-import FormInputController from "@/components/form/formInputController"
-import DialogMaster from "@/components/dialog/dialogMaster"
-import Selector from "@/components/input/select"
+import axios from 'axios'
+import master from '@/mixins/master'
+import FormInputController from '@/components/form/formInputController'
+import DialogMaster from '@/components/dialog/dialogMaster'
+import Selector from '@/components/input/select'
 
 export default {
-    name:"dialog-create-edit-sla",
+    name: 'dialog-create-edit-sla',
     mixins: [master],
     components: {
-        "dialog-master": DialogMaster,
-        "form-input-controller": FormInputController,
-        "selector": Selector   
+        'dialog-master': DialogMaster,
+        'form-input-controller': FormInputController,
+        selector: Selector,
     },
     props: {
-       closeDialog: Function,
-       active: Boolean,
-       title: String,
-       dataItem: Object,
-       btnRed: String,
-       btnBlue: String
+        closeDialog: Function,
+        active: Boolean,
+        title: String,
+        dataItem: Object,
+        btnRed: String,
+        btnBlue: String,
     },
     data() {
         return {
@@ -87,7 +83,7 @@ export default {
             customerNameArray: [],
             customerIdArray: [],
             activityArray: [],
-            customerId: "",
+            customerId: '',
             loadingDataOrigin: false,
             loadingDataDestination: false,
             loadingDataService: false,
@@ -95,273 +91,363 @@ export default {
             loadingDataCustomerCode: false,
             loadingDataNode: false,
             loadingDataActivity: false,
-            sla_id: "",
-            queryOri: "",
-            queryDest: ""
+            sla_id: '',
+            queryOri: '',
+            queryDest: '',
         }
     },
     computed: {
-        listenActive(){
-            if(this.active){
+        listenActive() {
+            if (this.active) {
                 this.getDataService()
-                this.getDataCustomerName()  
+                this.getDataCustomerName()
             }
             return this.active
         },
-        listenTitle(){
+        listenTitle() {
             return this.title
         },
         listenDataItem() {
             return this.dataItem
         },
         listenCustomerName() {
-            const customerName = this.$store.getters.getInputs.sla_inter_activity.customer_name.value;
+            const customerName =
+                this.$store.getters.getInputs.sla_inter_activity.customer_name.value
             if (customerName) {
-                return customerName;
+                return customerName
             }
-        }
+        },
     },
     watch: {
         dataItem: function (val) {
-            if(val !== undefined) {
+            if (val !== undefined) {
                 this.sla_id = val.sla_id
             }
         },
         listenCustomerName: {
             handler(newVal) {
                 if (newVal) {
-                    this.getDataCustomerCode();
+                    this.getDataCustomerCode()
                 }
             },
-            immediate: true
-        }
+            immediate: true,
+        },
     },
     methods: {
         checkPermission(permission) {
-            const permissions = this.listenPermissions?.core || [];
-            return permissions.includes(permission);
+            const permissions = this.listenPermissions?.core || []
+            return permissions.includes(permission)
         },
-        formData(form){
+        formData(form) {
             for (const key in form) {
                 if (key.endsWith('_radio')) {
-                    const baseKey = key.slice(0, -6);
-                    const radioValue = form[key];
-                    const relatedKey = baseKey + (form.hasOwnProperty(baseKey) ? '' : '_radio');
-                    
+                    const baseKey = key.slice(0, -6)
+                    const radioValue = form[key]
+                    const relatedKey = baseKey + (form.hasOwnProperty(baseKey) ? '' : '_radio')
+
                     if (form.hasOwnProperty(relatedKey)) {
                         switch (radioValue) {
                             case 'hari':
-                                form[relatedKey] *= 24 * 60;
-                                this.$store.dispatch("SET_SLA_INTER_ACTIVITY_" + relatedKey.toUpperCase() + "_ArrValueData", 'menit');
-                                break;
+                                form[relatedKey] *= 24 * 60
+                                this.$store.dispatch(
+                                    'SET_SLA_INTER_ACTIVITY_' +
+                                        relatedKey.toUpperCase() +
+                                        '_ArrValueData',
+                                    'menit'
+                                )
+                                break
                             case 'jam':
-                                form[relatedKey] *= 60;
-                                this.$store.dispatch("SET_SLA_INTER_ACTIVITY_" + relatedKey.toUpperCase() + "_ArrValueData", 'menit');
-                                break;
+                                form[relatedKey] *= 60
+                                this.$store.dispatch(
+                                    'SET_SLA_INTER_ACTIVITY_' +
+                                        relatedKey.toUpperCase() +
+                                        '_ArrValueData',
+                                    'menit'
+                                )
+                                break
                             case 'menit':
-                                break;
+                                break
                             default:
-                                break;
+                                break
                         }
 
-                        delete form[key];
+                        delete form[key]
                     }
                 }
             }
-            
+
             this.form = form
-            if(this.sla_id !== undefined && this.sla_id !== '') {
+            if (this.sla_id !== undefined && this.sla_id !== '') {
                 this.updateData()
             } else {
                 this.addData()
             }
         },
-        handleSubmit(){
+        handleSubmit() {
             this.$refs.formSlaController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
-        handleClearForm(){
+        handleClearForm() {
             this.$refs.formSlaController.handleClearForm()
             this.form = {}
-            this.sla_id = ""
+            this.sla_id = ''
         },
-        getDataOrigin(queryOri, cb){
+        getDataOrigin(queryOri, cb) {
             this.loadingDataOrigin = true
             axios
-                .get(this.URL.origin_code + `?n=${this.listenNodeId}&s=${queryOri}&limit=100`, this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
+                .get(
+                    this.URL.origin_code + `?n=${this.listenNodeId}&s=${queryOri}&limit=100`,
+                    this.Helper.header()
+                )
+                .then((res) => {
+                    if (res.data.data.length > 0) {
                         let arr = []
-                        res.data.data.map(item => {
+                        res.data.data.map((item) => {
                             let obj = {}
                             if (item.origin_code !== null) {
-                                obj["value"] = item.origin_code
-                                obj["data"] = item.origin_code
+                                obj['value'] = item.origin_code
+                                obj['data'] = item.origin_code
 
                                 arr.push(obj)
                             }
-                            
                         })
-                        cb(arr);
+                        cb(arr)
                     } else {
-                        this.openNotification('warn', null, 'Origin data is empty!', ' Please create a new origin data')
+                        this.openNotification(
+                            'warn',
+                            null,
+                            'Origin data is empty!',
+                            ' Please create a new origin data'
+                        )
                     }
                     this.loadingDataOrigin = false
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loadingDataOrigin = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate service list', err)
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Failed to populate service list',
+                        err
+                    )
                 })
         },
-        async getDataDestination(queryDest, cb){
+        async getDataDestination(queryDest, cb) {
             this.loadingDataDestination = true
             axios
-                .get(this.URL.destination_code + `?n=${this.listenNodeId}&s=${queryDest}&limit=100`, this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
+                .get(
+                    this.URL.destination_code + `?n=${this.listenNodeId}&s=${queryDest}&limit=100`,
+                    this.Helper.header()
+                )
+                .then((res) => {
+                    if (res.data.data.length > 0) {
                         let arr = []
-                        res.data.data.map(item => {
+                        res.data.data.map((item) => {
                             let obj = {}
                             if (item.geolocation_subdistrict_tarif_code !== null) {
-                                obj["value"] = item.geolocation_subdistrict_tarif_code
-                                obj["data"] = item.geolocation_subdistrict_tarif_code
+                                obj['value'] = item.geolocation_subdistrict_tarif_code
+                                obj['data'] = item.geolocation_subdistrict_tarif_code
 
                                 arr.push(obj)
                             }
-                            
                         })
-                        cb(arr);
+                        cb(arr)
                     } else {
-                        this.openNotification('warn', null, 'Destination data is empty!', ' Please create a new destination data')
+                        this.openNotification(
+                            'warn',
+                            null,
+                            'Destination data is empty!',
+                            ' Please create a new destination data'
+                        )
                     }
                     this.loadingDataDestination = false
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loadingDataDestination = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate Destination list', err)
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Failed to populate Destination list',
+                        err
+                    )
                 })
         },
-        async getDataService(){
+        async getDataService() {
             this.loadingDataService = true
             await axios
-                .get(this.URL.service + `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
+                .get(
+                    this.URL.service + `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                    this.Helper.header()
+                )
+                .then((res) => {
+                    if (res.data.data.length > 0) {
                         let arr = []
-                        res.data.data.map(item => {
+                        res.data.data.map((item) => {
                             let obj = {}
-                            obj["label"] = item.service_code
-                            obj["value"] = item.service_code
+                            obj['label'] = item.service_code
+                            obj['value'] = item.service_code
 
                             arr.push(obj)
                         })
                         this.serviceArray = arr
-                        this.$store.dispatch("SET_SLA_INTER_ACTIVITY_SERVICE_CODE_ArrData", arr)
+                        this.$store.dispatch('SET_SLA_INTER_ACTIVITY_SERVICE_CODE_ArrData', arr)
                     } else {
-                        this.openNotification('warn', null, 'Service data is empty!', ' Please create a new service data')
+                        this.openNotification(
+                            'warn',
+                            null,
+                            'Service data is empty!',
+                            ' Please create a new service data'
+                        )
                     }
                     this.loadingDataService = false
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loadingDataService = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate service list', err)
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Failed to populate service list',
+                        err
+                    )
                 })
         },
-        async getDataCustomerName(){
+        async getDataCustomerName() {
             this.loadingDataCustomerName = true
             await axios
-                .get(this.URL.customer + `/name?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`, this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
+                .get(
+                    this.URL.customer +
+                        `/name?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                    this.Helper.header()
+                )
+                .then((res) => {
+                    if (res.data.data.length > 0) {
                         let arr = []
-                        res.data.data.map(item => {
+                        res.data.data.map((item) => {
                             let obj = {}
-                            obj["label"] = item.customer_name
-                            obj["value"] = item.customer_name
+                            obj['label'] = item.customer_name
+                            obj['value'] = item.customer_name
 
                             arr.push(obj)
                         })
                         this.customerNameArray = arr
-                        this.$store.dispatch("SET_SLA_INTER_ACTIVITY_CUSTOMER_NAME_ArrData", arr)
+                        this.$store.dispatch('SET_SLA_INTER_ACTIVITY_CUSTOMER_NAME_ArrData', arr)
                     } else {
-                        this.openNotification('warn', null, 'Customer Name data is empty!', ' Please create a new Customer Name data')
+                        this.openNotification(
+                            'warn',
+                            null,
+                            'Customer Name data is empty!',
+                            ' Please create a new Customer Name data'
+                        )
                     }
                     this.loadingDataCustomerName = false
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loadingDataCustomerName = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate service list', err)
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Failed to populate service list',
+                        err
+                    )
                 })
         },
-        async getDataCustomerCode(){
+        async getDataCustomerCode() {
             this.loadingDataCustomerCode = true
             await axios
-                .get(this.URL.customer + `/code?n=${this.listenNodeId}&customer_name=${this.listenCustomerName}&sort_order=desc&limit=1000&page=1`, this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
+                .get(
+                    this.URL.customer +
+                        `/code?n=${this.listenNodeId}&customer_name=${this.listenCustomerName}&sort_order=desc&limit=1000&page=1`,
+                    this.Helper.header()
+                )
+                .then((res) => {
+                    if (res.data.data.length > 0) {
                         let arr = []
-                        res.data.data.map(item => {
+                        res.data.data.map((item) => {
                             let obj = {}
-                            obj["label"] = item.customer_code
-                            obj["value"] = item.customer_code
+                            obj['label'] = item.customer_code
+                            obj['value'] = item.customer_code
 
                             arr.push(obj)
                         })
                         this.customerIdArray = arr
-                        this.$store.dispatch("SET_SLA_INTER_ACTIVITY_CUSTOMER_CODE_ArrData", arr)
+                        this.$store.dispatch('SET_SLA_INTER_ACTIVITY_CUSTOMER_CODE_ArrData', arr)
                     } else {
                         // this.openNotification('warn', null, 'Customer ID data is empty!', ' Please create a new Customer Id data')
                     }
                     this.loadingDataCustomerCode = false
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loadingDataCustomerCode = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate service list', err)
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Failed to populate service list',
+                        err
+                    )
                 })
         },
         compareSharedProperties(obj1, obj2) {
-            const keys1 = Object.keys(obj1).filter(key => key !== 'is_active');
-            
+            const keys1 = Object.keys(obj1).filter((key) => key !== 'is_active')
+
             for (const key of keys1) {
                 if (obj1[key] !== obj2[key]) {
-                    return false;
+                    return false
                 }
             }
-            return true;
+            return true
         },
-        async updateData(){
-            const isActiveDifferent = this.form.is_active !== this.dataItem.is_active;
-            const areOthersEqual = this.compareSharedProperties(this.form, this.dataItem);
+        async updateData() {
+            const isActiveDifferent = this.form.is_active !== this.dataItem.is_active
+            const areOthersEqual = this.compareSharedProperties(this.form, this.dataItem)
 
             if (isActiveDifferent && areOthersEqual) {
                 await axios
                     .patch(
                         this.URL.sla_inter_activity + `/${this.sla_id}?n=${this.listenNodeId}`,
                         JSON.stringify({
-                            is_active: this.form.is_active
-                        }), 
-                        this.Helper.header())
-                    .then(res => {
+                            is_active: this.form.is_active,
+                        }),
+                        this.Helper.header()
+                    )
+                    .then((res) => {
                         this.handleClearForm()
                         this.closeDialog()
-                        this.$emit("refresh")
+                        this.$emit('refresh')
                         this.openNotification(null, 'Update success', 'Update sla is success')
-                    }).catch(err => {
+                    })
+                    .catch((err) => {
                         this.loading = false
                         this.closeDialog()
-                        this.$emit("refresh")
-                        this.openNotification('danger', err.response ? err.response.data.code : '', 'Update failed', err.response.data.message)
+                        this.$emit('refresh')
+                        this.openNotification(
+                            'danger',
+                            err.response ? err.response.data.code : '',
+                            'Update failed',
+                            err.response.data.message
+                        )
                     })
             } else {
                 await axios
                     .put(
                         this.URL.sla_inter_activity + `/${this.sla_id}?n=${this.listenNodeId}`,
-                        JSON.stringify(this.form), 
-                        this.Helper.header())
-                    .then(res => {
+                        JSON.stringify(this.form),
+                        this.Helper.header()
+                    )
+                    .then((res) => {
                         this.handleClearForm()
                         this.closeDialog()
-                        this.$emit("refresh")
+                        this.$emit('refresh')
                         this.openNotification(null, 'Update success', 'Update sla is success')
-                    }).catch(err => {
+                    })
+                    .catch((err) => {
                         this.loading = false
                         this.closeDialog()
-                        this.$emit("refresh")
-                        this.openNotification('danger', err.response ? err.response.data.code : '', 'Update failed', err.response.data.message)
+                        this.$emit('refresh')
+                        this.openNotification(
+                            'danger',
+                            err.response ? err.response.data.code : '',
+                            'Update failed',
+                            err.response.data.message
+                        )
                     })
             }
         },
@@ -369,18 +455,25 @@ export default {
             await axios
                 .post(
                     this.URL.sla_inter_activity + `?n=${this.listenNodeId}`,
-                    JSON.stringify(this.form), 
-                    this.Helper.header())
-                .then(res => {
+                    JSON.stringify(this.form),
+                    this.Helper.header()
+                )
+                .then((res) => {
                     this.handleClearForm()
                     this.closeDialog()
-                    this.$emit("refresh")
+                    this.$emit('refresh')
                     this.openNotification(null, 'Create Success', 'Create new sla is success')
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loading = false
                     this.closeDialog()
-                    this.$emit("refresh")
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create failed', err.response.data.message)
+                    this.$emit('refresh')
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Create failed',
+                        err.response.data.message
+                    )
                 })
         },
         cancel() {
@@ -388,8 +481,7 @@ export default {
             this.closeDialog()
         },
     },
-    created() {
-    },
+    created() {},
     mounted() {
         this.handleSubmitShortcut(this.handleSubmit)
     },

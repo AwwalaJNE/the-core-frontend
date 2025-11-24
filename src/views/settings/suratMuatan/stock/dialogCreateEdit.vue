@@ -133,7 +133,7 @@
                             :data-testid="`submit-button`"
                             @click="handleSubmit"
                         >
-                            {{ btnBlue || source === 'setting' ? 'Save' : 'Save and Use' }}
+                            {{ btnBlue || source === 'setting' ? 'Save Changes' : 'Save and Use' }}
                         </vs-button>
                     </vs-col>
                 </vs-row>

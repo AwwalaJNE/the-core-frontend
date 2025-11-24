@@ -720,7 +720,7 @@ const Master = {
                             this.$router.push('/inventory/bagging')
                             break
                         case 'o':
-                            this.$router.push('/inventory/unbagging')
+                            this.$router.push('/sorting/unbagging')
                             break
                         default:
                     }

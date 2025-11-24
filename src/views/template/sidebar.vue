@@ -212,7 +212,7 @@ export default {
                     children: [
                         {
                             label: 'Open Bag',
-                            url: '/inventory/unbagging',
+                            url: '/sorting/unbagging',
                             icon: 'bx bxs-checkbox',
                             permission: 'read-unbag',
                             meta: {
@@ -1031,7 +1031,7 @@ export default {
     },
     mounted() {
         this.listenNodeType()
-        this.customFilter()
+        // this.customFilter()
     },
     methods: {
         isActive(item) {

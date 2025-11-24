@@ -1,21 +1,16 @@
 <template>
-    <dialog-master 
-    :actived="listenActive" 
-    width="lg"
-    :closeDialog="cancel">
-
+    <dialog-master :actived="listenActive" width="lg" :closeDialog="cancel">
         <template v-slot:header>
-            {{listenTitle}}
+            {{ listenTitle }}
         </template>
 
         <template v-slot:content>
             <div>
-                <form-input-controller 
+                <form-input-controller
                     ref="formCostingSettingController"
                     @formData="formData"
                     :dataItem="listenDataItem"
                     typeForm="cost_to_cost_setting"
-
                     :querySearch="querySearch"
                 />
             </div>
@@ -24,185 +19,164 @@
         <template v-slot:footer>
             <vs-row justify="flex-end">
                 <vs-col w="3">
-                    <vs-button
-                    transparent
-                    block
-                    danger
-                    flat
-                    :active="true"
-                    @click="cancel"
-                    >
+                    <vs-button transparent block danger flat :active="true" @click="cancel">
                         Cancel
                     </vs-button>
                 </vs-col>
                 <vs-col w="3">
                     <vs-button
-                    transparent
-                    block
-                    flat
-                    :active="true"
-                    type="submit"
-                    @click="handleSubmit"
+                        transparent
+                        block
+                        flat
+                        :active="true"
+                        type="submit"
+                        @click="handleSubmit"
                     >
-                        {{btnBlue || 'Add'}}
+                        {{ btnBlue || 'Save Changes' }}
                     </vs-button>
                 </vs-col>
             </vs-row>
-                
-                
         </template>
-
-
     </dialog-master>
-
-
 </template>
 
 <script>
-import axios from "axios";
-import master from "@/mixins/master"
-import FormInputController from "@/components/form/formInputController"
-import DialogMaster from "@/components/dialog/dialogMaster"
+import axios from 'axios'
+import master from '@/mixins/master'
+import FormInputController from '@/components/form/formInputController'
+import DialogMaster from '@/components/dialog/dialogMaster'
 
 export default {
-    name:"dialog-create-edit-costing-setting",
+    name: 'dialog-create-edit-costing-setting',
     mixins: [master],
     components: {
-        "dialog-master": DialogMaster,
-        "form-input-controller": FormInputController,
+        'dialog-master': DialogMaster,
+        'form-input-controller': FormInputController,
     },
     props: {
-       closeDialog: Function,
-       active: Boolean,
-       title: String,
-       dataItem: Object,
-       btnRed: String,
-       btnBlue: String
+        closeDialog: Function,
+        active: Boolean,
+        title: String,
+        dataItem: Object,
+        btnRed: String,
+        btnBlue: String,
     },
     data() {
         return {
             form: {},
             cosToCostId: '',
-            dialogGetCustomer:false,
-            listcostGroup :[
+            dialogGetCustomer: false,
+            listcostGroup: [
                 {
-                    "label" : "INBOUND",
-                    "value" : "INBOUND"
+                    label: 'INBOUND',
+                    value: 'INBOUND',
                 },
                 {
-                    "label" : "OUTBOUND",
-                    "value" : "OUTBOUND"
-                }
+                    label: 'OUTBOUND',
+                    value: 'OUTBOUND',
+                },
             ],
-            autoComplateUrl: ""
+            autoComplateUrl: '',
         }
     },
     computed: {
-        listenActive(){
+        listenActive() {
             return this.active
         },
-        listenTitle(){
+        listenTitle() {
             return this.title
         },
         listenDataItem() {
             return this.dataItem
-        }
+        },
     },
     watch: {
         dataItem: function (val) {
-            if(val !== undefined) {
+            if (val !== undefined) {
                 this.cosToCostId = val.cost_to_cost_id
             }
-        }
+        },
     },
     methods: {
-        formData(form){
- 
-            if(form != undefined){
-                let cost_value =[]
-                form.dynamicinputcomponent_cost_to_cost_detail_value.map((item, index) =>{
-                  let obj_cost = {}
+        formData(form) {
+            if (form != undefined) {
+                let cost_value = []
+                form.dynamicinputcomponent_cost_to_cost_detail_value.map((item, index) => {
+                    let obj_cost = {}
                     obj_cost[item.inputs[0].key] = item.inputs[0].value
                     obj_cost[item.inputs[1].key] = item.inputs[1].value
                     obj_cost[item.inputs[2].key] = item.inputs[2].value
 
                     cost_value.push(obj_cost)
-
                 })
-                let cost_rule =[]
-                form.dynamicinputcomponent_cost_to_cost_rule.map((item, index) =>{
-                  let obj_rule = {}
+                let cost_rule = []
+                form.dynamicinputcomponent_cost_to_cost_rule.map((item, index) => {
+                    let obj_rule = {}
                     obj_rule[item.inputs[0].key] = item.inputs[0].value
                     obj_rule[item.inputs[1].key] = item.inputs[1].value
                     obj_rule[item.inputs[2].key] = item.inputs[2].value
 
                     cost_rule.push(obj_rule)
-
                 })
-                form["cost_owner_node_id"] = form["cost_owner_node_id"]["node_id"]
-                form["cost_payer_node_id"] = form["cost_payer_node_id"]["node_id"]
-              
-              this.form = form
-              this.form.rule = cost_rule
-              this.form.cost_value = cost_value
+                form['cost_owner_node_id'] = form['cost_owner_node_id']['node_id']
+                form['cost_payer_node_id'] = form['cost_payer_node_id']['node_id']
+
+                this.form = form
+                this.form.rule = cost_rule
+                this.form.cost_value = cost_value
             }
 
-            if(this.cosToCostId !== undefined && this.cosToCostId !== ''){
+            if (this.cosToCostId !== undefined && this.cosToCostId !== '') {
                 this.updateData()
-            }else{
+            } else {
                 this.addData()
-            } 
+            }
             //   this.addData()
-
         },
-        handleSubmit(){
+        handleSubmit() {
             this.$refs.formCostingSettingController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
-        handleClearForm(){
+        handleClearForm() {
             this.$refs.formCostingSettingController.handleClearForm()
             this.form = {}
-            this.node_id = ""
+            this.node_id = ''
         },
 
         openGetCustomer() {
-          this.dialogGetCustomer = true
-
+            this.dialogGetCustomer = true
         },
         closeGetCustomer() {
-          this.dialogGetCustomer = false
+            this.dialogGetCustomer = false
         },
-        updateValue(key,value) {
-
-          
+        updateValue(key, value) {},
+        initForm() {
+            this.$store.dispatch(
+                'SET_COST_TO_COST_SETTING_COST_GROUP_CODE_ArrData',
+                this.listcostGroup.length > 0 ? this.listcostGroup : null
+            )
         },
-        initForm(){
-           this.$store.dispatch("SET_COST_TO_COST_SETTING_COST_GROUP_CODE_ArrData", this.listcostGroup.length > 0 ? this.listcostGroup : null)
-        },
-        querySearch(queryString, cb){
-            
+        querySearch(queryString, cb) {
             // let flag = this.listenFlag
- 
- 
-            axios.get(this.autoComplateUrl +`&s=${queryString}`, this.Helper.header())
-            .then(res => {
-                let result = res.data.data
-                let suggestions = [];
 
-                result.length > 0 && result.map(item => {
-                    if(item.hasOwnProperty('node_name')) {
-                        suggestions.push({
-                                value: item['node_name'],
-                                data: item
-                        });
-                    }
+            axios
+                .get(this.autoComplateUrl + `&s=${queryString}`, this.Helper.header())
+                .then((res) => {
+                    let result = res.data.data
+                    let suggestions = []
+
+                    result.length > 0 &&
+                        result.map((item) => {
+                            if (item.hasOwnProperty('node_name')) {
+                                suggestions.push({
+                                    value: item['node_name'],
+                                    data: item,
+                                })
+                            }
+                        })
+
+                    cb(suggestions)
                 })
-                
-
- 
-
-                cb(suggestions);
-                })
-            .catch(error => console.log("error", error));
+                .catch((error) => console.log('error', error))
         },
         // async getDataNode(){
         //     await axios
@@ -225,130 +199,167 @@ export default {
         //             } else {
         //                 // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
         //             }
-                    
+
         //         }).catch(err => {
         //             // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
         //         })
         // },
-        async getCostingRules(){
+        async getCostingRules() {
             await axios
-                .get(this.URL.cost_to_cost_rules +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
+                .get(
+                    this.URL.cost_to_cost_rules +
+                        `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                    this.Helper.header()
+                )
+                .then((res) => {
+                    if (res.data.data.length > 0) {
                         let arr = []
-                        res.data.data.map(item => {
+                        res.data.data.map((item) => {
                             let obj = {}
-                            obj["label"] = item.description
-                            obj["value"] = item.name
+                            obj['label'] = item.description
+                            obj['value'] = item.name
 
                             arr.push(obj)
                         })
                         // this.dataNodeType = arr
-                        this.$store.dispatch("SET_COST_TO_COST_SETTING_RULE_CONDITION_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch(
+                            'SET_COST_TO_COST_SETTING_RULE_CONDITION_ArrData',
+                            arr.length > 0 ? arr : null
+                        )
                     } else {
                         // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
-                    
-                }).catch(err => {
+                })
+                .catch((err) => {
                     // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
-        async getCostingType(){
+        async getCostingType() {
             await axios
-                .get(this.URL.cost_to_cost_type +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
+                .get(
+                    this.URL.cost_to_cost_type +
+                        `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                    this.Helper.header()
+                )
+                .then((res) => {
+                    if (res.data.data.length > 0) {
                         let arr = []
-                        res.data.data.map(item => {
+                        res.data.data.map((item) => {
                             let obj = {}
-                            obj["label"] = item.name
-                            obj["value"] = item.cost_type_code
+                            obj['label'] = item.name
+                            obj['value'] = item.cost_type_code
 
                             arr.push(obj)
                         })
                         // this.dataNodeType = arr
-                        this.$store.dispatch("SET_COST_TO_COST_SETTING_COST_TYPE_CODE_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch(
+                            'SET_COST_TO_COST_SETTING_COST_TYPE_CODE_ArrData',
+                            arr.length > 0 ? arr : null
+                        )
                     } else {
                         // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
-                    
-                }).catch(err => {
+                })
+                .catch((err) => {
                     // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
 
-        async getActivityType(){
+        async getActivityType() {
             await axios
-                .get(this.URL.activity_type +
-                `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
+                .get(
+                    this.URL.activity_type +
+                        `?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1`,
+                    this.Helper.header()
+                )
+                .then((res) => {
+                    if (res.data.data.length > 0) {
                         let arr = []
-                        res.data.data.map(item => {
+                        res.data.data.map((item) => {
                             let obj = {}
-                            obj["label"] = item.name
-                            obj["value"] = item.code
+                            obj['label'] = item.name
+                            obj['value'] = item.code
 
                             arr.push(obj)
                         })
                         // this.dataNodeType = arr
-                        this.$store.dispatch("SET_COST_TO_COST_SETTING_TRACKING_TYPE_NAME_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch(
+                            'SET_COST_TO_COST_SETTING_TRACKING_TYPE_NAME_ArrData',
+                            arr.length > 0 ? arr : null
+                        )
                     } else {
                         // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
-                    
-                }).catch(err => {
+                })
+                .catch((err) => {
                     // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
-        async updateData(){
+        async updateData() {
             await axios
                 .put(
                     this.URL.cost_to_cost + `/${this.cosToCostId}?n=${this.listenNodeId}`,
-                    JSON.stringify(this.form), 
-                    this.Helper.header())
-                .then(res => {
+                    JSON.stringify(this.form),
+                    this.Helper.header()
+                )
+                .then((res) => {
                     this.handleClearForm()
                     this.closeDialog()
-                    this.$emit("refresh")
-                    this.openNotification(null, 'Update success', 'Update Costing Setting is Success')
-                }).catch(err => {
+                    this.$emit('refresh')
+                    this.openNotification(
+                        null,
+                        'Update success',
+                        'Update Costing Setting is Success'
+                    )
+                })
+                .catch((err) => {
                     this.loading = false
                     this.closeDialog()
-                    this.$emit("refresh")
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Update failed', err)
+                    this.$emit('refresh')
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Update failed',
+                        err
+                    )
                 })
         },
         async addData() {
             await axios
                 .post(
                     this.URL.cost_to_cost + `?n=${this.listenNodeId}`,
-                    JSON.stringify(this.form), 
-                    this.Helper.header())
-                .then(res => {
+                    JSON.stringify(this.form),
+                    this.Helper.header()
+                )
+                .then((res) => {
                     this.handleClearForm()
                     this.closeDialog()
-                    this.$emit("refresh")
-                    this.openNotification(null, 'Create Success', 'Create new Costing setting is success')
-                }).catch(err => {
+                    this.$emit('refresh')
+                    this.openNotification(
+                        null,
+                        'Create Success',
+                        'Create new Costing setting is success'
+                    )
+                })
+                .catch((err) => {
                     this.loading = false
                     this.closeDialog()
-                    this.$emit("refresh")
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create Costing setting failed', err)
+                    this.$emit('refresh')
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Create Costing setting failed',
+                        err
+                    )
                 })
         },
         cancel() {
             this.handleClearForm()
             this.closeDialog()
-        }
+        },
     },
     mounted() {
-        let url = this.URL.node +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
+        let url = this.URL.node + '?n=' + this.listenNodeId + '&sort_order=desc&limit=15&page=1'
         this.autoComplateUrl = url
 
         this.initForm()
