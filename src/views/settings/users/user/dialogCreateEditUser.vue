@@ -315,7 +315,10 @@ export default {
         inputFocus(obj, val, info) {
             if (obj.key === 'user_node_id' || obj.key.includes('user_additional_node_id')) {
                 this.autoComplateUrl =
-                    this.URL.node + '?n=' + this.listenNodeId + '&sort_order=desc&limit=15&page=1'
+                    this.URL.node_list +
+                    '?n=' +
+                    this.listenNodeId +
+                    '&sort_order=desc&limit=10&page=1'
                 this.input_value = 'node_id'
                 this.input_label = 'node_name'
                 this.isNestedData = false
