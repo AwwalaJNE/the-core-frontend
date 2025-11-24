@@ -380,7 +380,8 @@ export default {
             if (val !== undefined) {
                 if (
                     this.listenTypeInput.includes('password') ||
-                    this.listenTypeInput.includes('number')
+                    this.listenTypeInput.includes('number') ||
+                    this.listenTypeInput.includes('email')
                 ) {
                     this.value = val
                 } else {
