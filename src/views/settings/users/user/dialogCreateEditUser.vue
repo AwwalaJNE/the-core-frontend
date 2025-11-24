@@ -45,7 +45,7 @@
                         :data-testid="`submit-button`"
                         @click="handleSubmit"
                     >
-                        {{ btnBlue || 'Add' }}
+                        {{ btnBlue || 'Save Changes' }}
                     </vs-button>
                 </vs-col>
             </vs-row>

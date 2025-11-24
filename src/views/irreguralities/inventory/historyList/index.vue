@@ -1,9 +1,9 @@
 <template>
     <div>
-        <table-master 
-            hideColumnKey="irregularity-inventory-history" 
-            :dataTable="dataTable" 
-            :dataColumn="datacolumn" 
+        <table-master
+            hideColumnKey="irregularity-inventory-history"
+            :dataTable="dataTable"
+            :dataColumn="datacolumn"
             :tableLoading="loading"
             :pageSize="pagination.page_size"
             :page="pagination.page"
@@ -15,19 +15,18 @@
             @actionLimit="actionLimit"
             @actionPagination="actionPagination"
         />
-
     </div>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master"
-import TableMaster from "@/components/table/tableMaster.vue"
-import SelectSearchBy from "@/components/search/selectSearchBy"
-import SearchInput from "@/components/search/searchInput"
-import DateTime from "@/components/input/dateTime"
-import moment from "moment"
+import axios from 'axios'
+import master from '@/mixins/master'
+import TableMaster from '@/components/table/tableMaster.vue'
+import SelectSearchBy from '@/components/search/selectSearchBy'
+import SearchInput from '@/components/search/searchInput'
+import DateTime from '@/components/input/dateTime'
+import moment from 'moment'
 export default {
-    name:"history-list",
+    name: 'history-list',
     mixins: [master],
     props: {
         query: String,
@@ -36,50 +35,90 @@ export default {
         searchBy: String,
     },
     components: {
-        "table-master" : TableMaster,
-        "select-search-by": SelectSearchBy,
-        "search-input": SearchInput,
-        "date-time": DateTime
+        'table-master': TableMaster,
+        'select-search-by': SelectSearchBy,
+        'search-input': SearchInput,
+        'date-time': DateTime,
     },
     watch: {
-        query: function(val, old) {
-            if(val !== undefined) {
+        query: function (val, old) {
+            if (val !== undefined) {
                 this.tempSearch = val
-                if(this.tempSearch !== old) {
+                if (this.tempSearch !== old) {
                     this.pagination.page = 1
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.startDate, this.endDate, this.searchByBag, this.filterDateBy);
+                    this.getTableData(
+                        this.pagination.limit,
+                        this.pagination.page,
+                        val,
+                        this.startDate,
+                        this.endDate,
+                        this.searchByBag,
+                        this.filterDateBy
+                    )
                 }
             }
         },
-        searchDateBy: function(val, old) {
-          if(val !== undefined) {
-            this.filterDateBy = val
-            if(this.filterDateBy !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.searchByBag, val);
-            }
-          }
-        },
-        searchBy: function(val, old) {
-          if(val !== undefined) {
-            this.searchByBag = val
-            if(this.searchByBag !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, val, this.filterDateBy);
-            }
-          }
-        },
-        dateFilter: function(val, old) {
+        searchDateBy: function (val, old) {
             if (val !== undefined) {
-                this.dateRange = val;
-                this.startDate = this.dateRange[0];
-                this.endDate = this.dateRange[1];
+                this.filterDateBy = val
+                if (this.filterDateBy !== old) {
+                    this.getTableData(
+                        this.pagination.limit,
+                        this.pagination.page,
+                        this.tempSearch,
+                        this.startDate,
+                        this.endDate,
+                        this.searchByBag,
+                        val
+                    )
+                }
+            }
+        },
+        searchBy: function (val, old) {
+            if (val !== undefined) {
+                this.searchByBag = val
+                if (this.searchByBag !== old) {
+                    this.getTableData(
+                        this.pagination.limit,
+                        this.pagination.page,
+                        this.tempSearch,
+                        this.startDate,
+                        this.endDate,
+                        val,
+                        this.filterDateBy
+                    )
+                }
+            }
+        },
+        dateFilter: function (val, old) {
+            if (val !== undefined) {
+                this.dateRange = val
+                this.startDate = this.dateRange[0]
+                this.endDate = this.dateRange[1]
 
                 if (old !== null && old !== undefined) {
                     if (this.startDate !== old[0] || this.endDate !== old[1]) {
-                        this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.startDate, this.endDate, this.searchByBag, this.filterDateBy);
+                        this.getTableData(
+                            this.pagination.limit,
+                            this.pagination.page,
+                            this.tempSearch,
+                            this.startDate,
+                            this.endDate,
+                            this.searchByBag,
+                            this.filterDateBy
+                        )
                     }
                 }
             } else {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, "", "", this.searchByBag, this.filterDateBy);
+                this.getTableData(
+                    this.pagination.limit,
+                    this.pagination.page,
+                    this.tempSearch,
+                    '',
+                    '',
+                    this.searchByBag,
+                    this.filterDateBy
+                )
             }
         },
     },
@@ -88,118 +127,136 @@ export default {
             dataTable: [],
             datacolumn: [
                 {
-                    label: "Orion Number",
-                    key: "irg_sequence",
-                    width: "xs"
+                    label: 'Orion Number',
+                    key: 'irg_sequence',
+                    width: 'xs',
                 },
                 {
-                    label: "Connote Number",
-                    key: "koli_number",
-                    width: "md"
+                    label: 'Connote Number',
+                    key: 'koli_number',
+                    width: 'md',
                 },
                 {
-                    label: "Bag Number",
-                    key: "bag_number",
-                    width: "md"
+                    label: 'Bag Number',
+                    key: 'bag_number',
+                    width: 'md',
                 },
                 {
-                    label: "Status Code",
-                    key: "irregularity_status_code",
-                    width: "xs"
+                    label: 'Status Code',
+                    key: 'irregularity_status_code',
+                    width: 'xs',
                 },
                 {
-                    label: "Type",
-                    key: "irregularity_type",
-                    width: "auto"
+                    label: 'Type',
+                    key: 'irregularity_type',
+                    width: 'auto',
                 },
                 {
-                    label: "Status Description",
-                    key: "irregularity_status_description",
-                    width: "auto"
+                    label: 'Status Description',
+                    key: 'irregularity_status_description',
+                    width: 'auto',
                 },
                 {
-                    label: "Remark",
-                    key: "remark",
-                    width: "auto"
+                    label: 'Remark',
+                    key: 'remark',
+                    width: 'auto',
                 },
                 {
-                    label: "Created At",
-                    key: "created_at",
-                    width: "auto"
+                    label: 'Created At',
+                    key: 'created_at',
+                    width: 'auto',
                 },
                 {
-                    label: "Approved At",
-                    key: "approved_at",
-                    width: "auto"
-                }
+                    label: 'Approved At',
+                    key: 'approved_at',
+                    width: 'auto',
+                },
             ],
             loading: false,
             dataItem: {},
-            tempSearch: this.query ? this.query : "",
+            tempSearch: this.query ? this.query : '',
             dateRange: this.dateFilter ? this.dateFilter : [],
-            filterDateBy: this.searchDateBy ? this.searchDateBy : "",
-            searchByBag: this.searchBy ? this.searchBy : "",
+            filterDateBy: this.searchDateBy ? this.searchDateBy : '',
+            searchByBag: this.searchBy ? this.searchBy : '',
             dialogRole: false,
             pagination: {
-                limit:20,
+                limit: 20,
                 page_size: 1,
-                page: 1
+                page: 1,
             },
-            startDate: "",
-            endDate: "",
-            
+            startDate: '',
+            endDate: '',
         }
     },
     methods: {
-        async getTableData(limit,page,q, from, to, searchByBag, filterDateBy) {
+        async getTableData(limit, page, q, from, to, searchByBag, filterDateBy) {
             this.loading = true
-            let query = "";
-            let startDate = "";
-            let endDate = "";
-            if(q !== undefined) {
+            let query = ''
+            let startDate = ''
+            let endDate = ''
+            if (q !== undefined) {
                 query = q
             }
-            if(from !== undefined && to !== undefined) {
-              startDate = from
-              endDate = to
+            if (from !== undefined && to !== undefined) {
+                startDate = from
+                endDate = to
             }
 
             // TODO: CHANGE irregularity_type
             await axios
-                .get(this.URL.irregularities +
-                    `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${this.formatToWIB(from)}&end_date=${this.formatToWIB(to)}&search_by=${searchByBag}&filter_date_by=${filterDateBy}`,
-                    this.Helper.header())
-                .then(res => {
+                .get(
+                    this.URL.irregularities +
+                        `?n=${
+                            this.listenNodeId
+                        }&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${this.formatToWIB(
+                            from
+                        )}&end_date=${this.formatToWIB(
+                            to
+                        )}&search_by=${searchByBag}&filter_date_by=${filterDateBy}`,
+                    this.Helper.header()
+                )
+                .then((res) => {
                     let arr = res.data.data
 
-                    arr.map(item => {
-                        item["approved_at"] = this.formatTimezone(item?.approved_at);
-                        item["created_at"] = this.formatTimezone(item?.created_at);
-                    });
+                    arr.map((item) => {
+                        item['approved_at'] = this.formatTimezone(item?.approved_at)
+                        item['created_at'] = this.formatTimezone(item?.created_at)
+                    })
 
-                    this.dataTable = arr;
+                    this.dataTable = arr
 
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page
-                    if(res.data.data.length == 0) {
-                        if (query != "") {
-                            this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate bag data', ' data is empty or not found, please check your keyword in the input search')
+                    if (res.data.data.length == 0) {
+                        if (query != '') {
+                            this.openNotification(
+                                'danger',
+                                err.response ? err.response.data.code : '',
+                                'Failed to populate bag data',
+                                ' data is empty or not found, please check your keyword in the input search'
+                            )
                         }
                     }
-                    
+
                     this.loading = false
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate bag list', err?.response?.data?.message ?? 'something went wrong')
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Failed to populate bag list',
+                        err?.response?.data?.message ?? 'something went wrong'
+                    )
                 })
         },
-        actionDetail(val){
+        actionDetail(val) {
             let bag = val.bag_number
-            this.$router.push('/bagging-detail/'+encodeURIComponent(bag))
-            this.setRoutePageHistory(this.$route.meta, false);
+            this.$router.push('/bagging-detail/' + encodeURIComponent(bag))
+            this.setRoutePageHistory(this.$route.meta, false)
         },
-        actionLimit(val){
+        actionLimit(val) {
             this.pagination.limit = val
             this.pagination.page = 1
             this.refresh()
@@ -208,23 +265,39 @@ export default {
             this.pagination.page = val
             this.refresh()
         },
-        refresh(){
+        refresh() {
             let from = ''
             let to = ''
 
-            if(this.dateRange != null && this.dateRange.length > 0) {
-                from = moment(this.dateRange[0]).format("YYYY-MM-DD")
-                to = moment(this.dateRange[1]).format("YYYY-MM-DD")
+            if (this.dateRange != null && this.dateRange.length > 0) {
+                from = moment(this.dateRange[0]).format('YYYY-MM-DD')
+                to = moment(this.dateRange[1]).format('YYYY-MM-DD')
             }
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, from, to, this.searchByBag, this.filterDateBy)
+            this.getTableData(
+                this.pagination.limit,
+                this.pagination.page,
+                this.tempSearch,
+                from,
+                to,
+                this.searchByBag,
+                this.filterDateBy
+            )
         },
     },
     beforeDestroy() {
-        window.removeEventListener('timezone-changed', this.refresh);
+        window.removeEventListener('timezone-changed', this.refresh)
     },
     mounted() {
-        window.addEventListener('timezone-changed', this.refresh);
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.startDate, this.endDate, this.searchByBag, this.filterDateBy)
+        window.addEventListener('timezone-changed', this.refresh)
+        this.getTableData(
+            this.pagination.limit,
+            this.pagination.page,
+            this.tempSearch,
+            this.startDate,
+            this.endDate,
+            this.searchByBag,
+            this.filterDateBy
+        )
     },
 }
 </script>

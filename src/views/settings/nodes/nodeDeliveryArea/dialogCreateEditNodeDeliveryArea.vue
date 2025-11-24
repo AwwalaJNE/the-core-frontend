@@ -1,17 +1,12 @@
 <template>
-    <dialog-master 
-        width="lg"
-        :actived="listenActive" 
-        :closeDialog="cancel"
-    >
-
+    <dialog-master width="lg" :actived="listenActive" :closeDialog="cancel">
         <template v-slot:header>
-            {{listenTitle}}
+            {{ listenTitle }}
         </template>
 
         <template v-slot:content>
             <div>
-                <form-input-controller 
+                <form-input-controller
                     ref="formNodeDeliveryAreaController"
                     typeForm="node_delivery_area"
                     :dataItem="listenDataItem"
@@ -44,11 +39,11 @@
                         flat
                         transparent
                         type="submit"
-                        :active="true"  
-                        :data-testid="`submit-button`"                  
+                        :active="true"
+                        :data-testid="`submit-button`"
                         @click="handleSubmit"
                     >
-                        {{btnBlue || 'Add'}}
+                        {{ btnBlue || 'Save Changes' }}
                     </vs-button>
                 </vs-col>
             </vs-row>
@@ -56,17 +51,17 @@
     </dialog-master>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master"
-import DialogMaster from "@/components/dialog/dialogMaster"
-import FormInputController from "@/components/form/formInputController"
+import axios from 'axios'
+import master from '@/mixins/master'
+import DialogMaster from '@/components/dialog/dialogMaster'
+import FormInputController from '@/components/form/formInputController'
 
 export default {
-    name:"dialog-create-edit-node-delivery-area",
+    name: 'dialog-create-edit-node-delivery-area',
     mixins: [master],
     components: {
-        "dialog-master": DialogMaster,
-        "form-input-controller": FormInputController,    
+        'dialog-master': DialogMaster,
+        'form-input-controller': FormInputController,
     },
     props: {
         closeDialog: Function,
@@ -74,142 +69,176 @@ export default {
         title: String,
         dataItem: Object,
         btnRed: String,
-        btnBlue: String
+        btnBlue: String,
     },
     data() {
         return {
-            autoComplateUrl: "",
-            flag: "",
+            autoComplateUrl: '',
+            flag: '',
             form: {},
             node_delivery_id: '',
         }
     },
     computed: {
-        listenActive(){
+        listenActive() {
             return this.active
         },
-        listenTitle(){
+        listenTitle() {
             return this.title
         },
         listenDataItem() {
             return this.dataItem
-        }
+        },
     },
     watch: {
         dataItem: function (val) {
-            if(val !== undefined) {
+            if (val !== undefined) {
                 this.getDataDetail(val)
             }
-        }
+        },
     },
     methods: {
-        async getDataDetail(val){
+        async getDataDetail(val) {
             this.node_delivery_id = val.node_delivery_id
 
-            this.$store.dispatch("SET_NODE_DELIVERY_AREA_NODE_CODE_ValueData", val.node_code)
-            this.$store.dispatch("SET_NODE_DELIVERY_AREA_DESTINATION_CODE_ValueData", val.destination_code)
-            this.$store.dispatch("SET_NODE_DELIVERY_AREA_IS_ACTIVE_ValueData", val.is_active)
+            this.$store.dispatch('SET_NODE_DELIVERY_AREA_NODE_CODE_ValueData', val.node_code)
+            this.$store.dispatch(
+                'SET_NODE_DELIVERY_AREA_DESTINATION_CODE_ValueData',
+                val.destination_code
+            )
+            this.$store.dispatch('SET_NODE_DELIVERY_AREA_IS_ACTIVE_ValueData', val.is_active)
         },
-        formData(form){
-            form["node_code"] = form["node_code"]["node_code"] ? form["node_code"]["node_code"] : form["node_code"]
-            form["destination_code"] = form["destination_code"]["geolocation_subdistrict_tarif_code"] ? form["destination_code"]["geolocation_subdistrict_tarif_code"] : form["destination_code"]
-            form["is_active"] = form["is_active"] ? '1' : '0'
+        formData(form) {
+            form['node_code'] = form['node_code']['node_code']
+                ? form['node_code']['node_code']
+                : form['node_code']
+            form['destination_code'] = form['destination_code'][
+                'geolocation_subdistrict_tarif_code'
+            ]
+                ? form['destination_code']['geolocation_subdistrict_tarif_code']
+                : form['destination_code']
+            form['is_active'] = form['is_active'] ? '1' : '0'
             this.form = form
 
-            if(this.node_delivery_id !== undefined && this.node_delivery_id !== '') {
+            if (this.node_delivery_id !== undefined && this.node_delivery_id !== '') {
                 this.form.node_delivery_id = this.node_delivery_id
                 this.updateData()
             } else {
                 this.addData()
             }
         },
-        handleSubmit(){
+        handleSubmit() {
             this.$refs.formNodeDeliveryAreaController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
-        handleClearForm(){
+        handleClearForm() {
             this.$refs.formNodeDeliveryAreaController.handleClearForm()
             this.form = {}
-            this.node_delivery_id = ""
+            this.node_delivery_id = ''
         },
-        querySearch(queryString, cb){
-            axios.get(this.autoComplateUrl +`&s=${queryString}`, this.Helper.header())
-            .then(res => {
-                let result = res.data.data
-                let suggestions = [];
+        querySearch(queryString, cb) {
+            axios
+                .get(this.autoComplateUrl + `&s=${queryString}`, this.Helper.header())
+                .then((res) => {
+                    let result = res.data.data
+                    let suggestions = []
 
-                result.length > 0 && result.map(item => {
-                    if(item.hasOwnProperty(this.flag)) {
-                        suggestions.push({
-                            value: item[this.flag],
-                            data: item
-                        });
-                    }
+                    result.length > 0 &&
+                        result.map((item) => {
+                            if (item.hasOwnProperty(this.flag)) {
+                                suggestions.push({
+                                    value: item[this.flag],
+                                    data: item,
+                                })
+                            }
+                        })
+                    cb(suggestions)
                 })
-                cb(suggestions);
-            })
-            .catch(error => console.log("error", error));
+                .catch((error) => console.log('error', error))
         },
         inputFocus(info) {
-            let key = info.hasOwnProperty("key") ? info["key"] : ""
-            let url = ""
+            let key = info.hasOwnProperty('key') ? info['key'] : ''
+            let url = ''
             this.autoComplateUrl = url
-            switch(key) {
-                case "node_id_destination":
-                    url = this.URL.node +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
+            switch (key) {
+                case 'node_id_destination':
+                    url =
+                        this.URL.node +
+                        '?n=' +
+                        this.listenNodeId +
+                        '&sort_order=desc&limit=15&page=1'
                     this.autoComplateUrl = url
-                    this.flag = "node_name"
-                    break;
-                case "destination_code":
-                    url = this.URL.destination_code +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
+                    this.flag = 'node_name'
+                    break
+                case 'destination_code':
+                    url =
+                        this.URL.destination_code +
+                        '?n=' +
+                        this.listenNodeId +
+                        '&sort_order=desc&limit=15&page=1'
                     this.autoComplateUrl = url
-                    this.flag = "geolocation_subdistrict_tarif_code"
-                    break;
+                    this.flag = 'geolocation_subdistrict_tarif_code'
+                    break
                 default:
-                    //
+                //
             }
         },
-        async updateData(){
+        async updateData() {
             await axios
                 .put(
-                    this.URL.node_delivery_area + `/${this.node_delivery_id}?n=${this.listenNodeId}`,
-                    JSON.stringify(this.form), 
-                    this.Helper.header())
-                .then(res => {
+                    this.URL.node_delivery_area +
+                        `/${this.node_delivery_id}?n=${this.listenNodeId}`,
+                    JSON.stringify(this.form),
+                    this.Helper.header()
+                )
+                .then((res) => {
                     this.handleClearForm()
                     this.closeDialog()
-                    this.$emit("refresh")
+                    this.$emit('refresh')
                     this.openNotification(null, 'Update success', res.data.message)
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loading = false
                     this.closeDialog()
-                    this.$emit("refresh")
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Update failed', err.response.data.message)
+                    this.$emit('refresh')
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Update failed',
+                        err.response.data.message
+                    )
                 })
         },
         async addData() {
             await axios
                 .post(
                     this.URL.node_delivery_area + `?n=${this.listenNodeId}`,
-                    JSON.stringify(this.form), 
-                    this.Helper.header())
-                .then(res => {
+                    JSON.stringify(this.form),
+                    this.Helper.header()
+                )
+                .then((res) => {
                     this.handleClearForm()
                     this.closeDialog()
-                    this.$emit("refresh")
+                    this.$emit('refresh')
                     this.openNotification(null, 'Create Success', res.data.message)
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loading = false
                     this.closeDialog()
-                    this.$emit("refresh")
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create failed', err.response.data.message)
+                    this.$emit('refresh')
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Create failed',
+                        err.response.data.message
+                    )
                 })
         },
         cancel() {
             this.handleClearForm()
             this.closeDialog()
-            this.autoComplateUrl = ""
-            this.flag = ""
-        }
+            this.autoComplateUrl = ''
+            this.flag = ''
+        },
     },
     mounted() {
         this.handleSubmitShortcut(this.handleSubmit)

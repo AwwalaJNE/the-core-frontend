@@ -1,15 +1,12 @@
 <template>
-    <dialog-master 
-    :actived="listenActive" 
-    :closeDialog="cancel">
-
+    <dialog-master :actived="listenActive" :closeDialog="cancel">
         <template v-slot:header>
-            {{listenTitle}}
+            {{ listenTitle }}
         </template>
 
         <template v-slot:content>
             <div>
-                <form-input-controller 
+                <form-input-controller
                     ref="formNodeAlternateAddressController"
                     @formData="formData"
                     :dataItem="listenDataItem"
@@ -25,79 +22,76 @@
             <vs-row justify="flex-end">
                 <vs-col w="3">
                     <vs-button
-                    transparent
-                    block
-                    danger
-                    flat
-                    :active="true"
-                    :data-testid="`cancel-button`"
-                    @click="cancel"
+                        transparent
+                        block
+                        danger
+                        flat
+                        :active="true"
+                        :data-testid="`cancel-button`"
+                        @click="cancel"
                     >
                         Cancel
                     </vs-button>
                 </vs-col>
                 <vs-col w="3">
                     <vs-button
-                    transparent
-                    block
-                    flat
-                    :active="true"
-                    type="submit"
-                    :data-testid="`submit-button`"
-                    @click="handleSubmit"
+                        transparent
+                        block
+                        flat
+                        :active="true"
+                        type="submit"
+                        :data-testid="`submit-button`"
+                        @click="handleSubmit"
                     >
-                        {{btnBlue || 'Add'}}
+                        {{ btnBlue || 'Save Changes' }}
                     </vs-button>
                 </vs-col>
             </vs-row>
-                
-                
         </template>
-
     </dialog-master>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master"
-import FormInputController from "@/components/form/formInputController"
-import DialogMaster from "@/components/dialog/dialogMaster"
+import axios from 'axios'
+import master from '@/mixins/master'
+import FormInputController from '@/components/form/formInputController'
+import DialogMaster from '@/components/dialog/dialogMaster'
 export default {
-    name:"dialog-create-edit-altAddress",
+    name: 'dialog-create-edit-altAddress',
     mixins: [master],
     components: {
-        "dialog-master": DialogMaster,
-        "form-input-controller": FormInputController,   
+        'dialog-master': DialogMaster,
+        'form-input-controller': FormInputController,
     },
     props: {
-       closeDialog: Function, 
-       active: Boolean,
-       title: String,
-       dataItem: Object,
-       btnRed: String,
-       btnBlue: String
+        closeDialog: Function,
+        active: Boolean,
+        title: String,
+        dataItem: Object,
+        btnRed: String,
+        btnBlue: String,
     },
     data() {
         return {
             form: {},
             node_alternate_address_id: '',
-            autoComplateUrl: "",
-            flag: ""
+            autoComplateUrl: '',
+            flag: '',
         }
     },
     computed: {
-        listenActive(){
+        listenActive() {
             return this.active
         },
-        listenTitle(){
+        listenTitle() {
             return this.title
         },
         listenDataItem() {
             return this.dataItem
-        }
+        },
     },
     watch: {
         dataItem: function (val) {
-            if(val !== undefined) {
+            if (val !== undefined) {
                 this.node_alternate_address_id = val.node_alternate_address_id
             }
         },
@@ -107,92 +101,115 @@ export default {
                 // this.getDataCity()
                 // this.getDataDistrict()
                 // this.getDataSubDistrict()
-                let url = this.URL.geolocation_subdistrict +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
+                let url =
+                    this.URL.geolocation_subdistrict +
+                    '?n=' +
+                    this.listenNodeId +
+                    '&sort_order=desc&limit=15&page=1'
                 this.autoComplateUrl = url
                 // this.getDataTimezone()
                 // this.getDataTariffCode()
             }
-        }
+        },
     },
     methods: {
-        formData(form){
+        formData(form) {
             let obj = form
-            obj.hasOwnProperty('node_alternate_address_time_zone_id') ? 
-                obj['node_alternate_address_time_zone_id'] = obj['node_alternate_address_time_zone_id'].replace(/[&\/\\#,+()$~%._'":*?<>{}]/g, "/").toUpperCase() : 
-                obj['node_alternate_address_time_zone_id']
-            
+            obj.hasOwnProperty('node_alternate_address_time_zone_id')
+                ? (obj['node_alternate_address_time_zone_id'] = obj[
+                      'node_alternate_address_time_zone_id'
+                  ]
+                      .replace(/[&\/\\#,+()$~%._'":*?<>{}]/g, '/')
+                      .toUpperCase())
+                : obj['node_alternate_address_time_zone_id']
+
             // obj["node_alternate_address_subdistrict_id"] = obj["node_alternate_address_subdistrict_id"]["geolocation_subdistrict_id"]
             this.form = obj
-            if(this.node_alternate_address_id !== undefined && this.node_alternate_address_id !== '') {
- 
-                    this.form['node_alternate_address_subdistrict_id'] = this.form['node_alternate_address_subdistrict_id'] ? this.form['node_alternate_address_subdistrict_id']['geolocation_subdistrict_id'] : this.dataItem.node_alternate_address_subdistrict_id;
-                    this.form['node_id'] = this.form['node_id'] ? this.form['node_id']["node_id"] : this.dataItem.node_id;
-                    this.updateData()
+            if (
+                this.node_alternate_address_id !== undefined &&
+                this.node_alternate_address_id !== ''
+            ) {
+                this.form['node_alternate_address_subdistrict_id'] = this.form[
+                    'node_alternate_address_subdistrict_id'
+                ]
+                    ? this.form['node_alternate_address_subdistrict_id'][
+                          'geolocation_subdistrict_id'
+                      ]
+                    : this.dataItem.node_alternate_address_subdistrict_id
+                this.form['node_id'] = this.form['node_id']
+                    ? this.form['node_id']['node_id']
+                    : this.dataItem.node_id
+                this.updateData()
             } else {
-                    this.form["node_alternate_address_subdistrict_id"] = this.form["node_alternate_address_subdistrict_id"]["geolocation_subdistrict_id"];
-                    this.addData()
+                this.form['node_alternate_address_subdistrict_id'] =
+                    this.form['node_alternate_address_subdistrict_id']['geolocation_subdistrict_id']
+                this.addData()
             }
         },
-        handleSubmit(){
+        handleSubmit() {
             this.$refs.formNodeAlternateAddressController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
-        handleClearForm(){
+        handleClearForm() {
             this.$refs.formNodeAlternateAddressController.handleClearForm()
             this.form = {}
-            this.node_alternate_address_id = ""
+            this.node_alternate_address_id = ''
         },
-        
-        querySearch(queryString, cb){
-            
+
+        querySearch(queryString, cb) {
             // let flag = this.listenFlag
-            axios.get(this.autoComplateUrl +`&s=${queryString}`, this.Helper.header())
-            .then(res => {
-                let result = res.data.data
-                let suggestions = [];
+            axios
+                .get(this.autoComplateUrl + `&s=${queryString}`, this.Helper.header())
+                .then((res) => {
+                    let result = res.data.data
+                    let suggestions = []
 
-                result.length > 0 && result.map(item => {
-                    if(item.hasOwnProperty(this.flag)) {
-                        suggestions.push({
-                                value: item[this.flag],
-                                data: item
-                        });
-                    }
+                    result.length > 0 &&
+                        result.map((item) => {
+                            if (item.hasOwnProperty(this.flag)) {
+                                suggestions.push({
+                                    value: item[this.flag],
+                                    data: item,
+                                })
+                            }
+                        })
+
+                    cb(suggestions)
                 })
-                
-
- 
-
-                cb(suggestions);
-                })
-            .catch(error => console.log("error", error));
+                .catch((error) => console.log('error', error))
         },
         inputFocus(info) {
             // untuk trigger perubahan url autocomplete saat focus ke inputan
 
-            let key = info.hasOwnProperty("key") ? info["key"] : ""
-            let url = ""
+            let key = info.hasOwnProperty('key') ? info['key'] : ''
+            let url = ''
             this.autoComplateUrl = url
-            switch(key) {
-                case "node_id":
-                    url = this.URL.node +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
+            switch (key) {
+                case 'node_id':
+                    url =
+                        this.URL.node +
+                        '?n=' +
+                        this.listenNodeId +
+                        '&sort_order=desc&limit=15&page=1'
                     this.autoComplateUrl = url
-                    this.flag = "node_name"
-                    break;
-                case "node_alternate_address_subdistrict_id":
-                    url = this.URL.geolocation_subdistrict +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
+                    this.flag = 'node_name'
+                    break
+                case 'node_alternate_address_subdistrict_id':
+                    url =
+                        this.URL.geolocation_subdistrict +
+                        '?n=' +
+                        this.listenNodeId +
+                        '&sort_order=desc&limit=15&page=1'
                     this.autoComplateUrl = url
-                    this.flag = "geolocation_subdistrict_name"
-                    break;
+                    this.flag = 'geolocation_subdistrict_name'
+                    break
                 default:
-                    //
+                //
             }
-
-            
         },
         // async getDataProvince(){
         //     await axios
-        //         .get(this.URL.geolocation_province + 
-        //         `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
+        //         .get(this.URL.geolocation_province +
+        //         `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`,
         //         this.Helper.header())
         //         .then(res => {
         //             if(res.data.data.length > 0) {
@@ -209,15 +226,15 @@ export default {
         //             } else {
         //                 // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
         //             }
-                    
+
         //         }).catch(err => {
         //             // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
         //         })
         // },
         // async getDataCity(){
         //     await axios
-        //         .get(this.URL.geolocation_city + 
-        //         `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
+        //         .get(this.URL.geolocation_city +
+        //         `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`,
         //         this.Helper.header())
         //         .then(res => {
         //             if(res.data.data.length > 0) {
@@ -234,15 +251,15 @@ export default {
         //             } else {
         //                 // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
         //             }
-                    
+
         //         }).catch(err => {
         //             // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
         //         })
         // },
         // async getDataDistrict(){
         //     await axios
-        //         .get(this.URL.geolocation_district + 
-        //         `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
+        //         .get(this.URL.geolocation_district +
+        //         `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`,
         //         this.Helper.header())
         //         .then(res => {
         //             if(res.data.data.length > 0) {
@@ -259,40 +276,45 @@ export default {
         //             } else {
         //                 // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
         //             }
-                    
+
         //         }).catch(err => {
         //             // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
         //         })
         // },
-        async getDataSubDistrict(){
+        async getDataSubDistrict() {
             await axios
-                .get(this.URL.geolocation_subdistrict + 
-                `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
+                .get(
+                    this.URL.geolocation_subdistrict +
+                        `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`,
+                    this.Helper.header()
+                )
+                .then((res) => {
+                    if (res.data.data.length > 0) {
                         let arr = []
-                        res.data.data.map(item => {
+                        res.data.data.map((item) => {
                             let obj = {}
-                            obj["label"] = item.geolocation_subdistrict_name
-                            obj["value"] = item.geolocation_subdistrict_id
+                            obj['label'] = item.geolocation_subdistrict_name
+                            obj['value'] = item.geolocation_subdistrict_id
 
                             arr.push(obj)
                         })
 
-                        this.$store.dispatch("SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_SUBDISTRICT_ID_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch(
+                            'SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_SUBDISTRICT_ID_ArrData',
+                            arr.length > 0 ? arr : null
+                        )
                     } else {
                         // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
-                    
-                }).catch(err => {
+                })
+                .catch((err) => {
                     // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
         // async getDataTimezone(){
         //     await axios
-        //         .get(this.URL.geolocation_timezone + 
-        //         `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
+        //         .get(this.URL.geolocation_timezone +
+        //         `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`,
         //         this.Helper.header())
         //         .then(res => {
         //             if(res.data.data.length > 0) {
@@ -306,21 +328,19 @@ export default {
         //                     arr.push(obj)
         //                 })
 
- 
-
         //                 this.$store.dispatch("SET_NODE_ALTERNATE_ADDRESS_NODE_ALTERNATE_ADDRESS_TIME_ZONE_ID_ArrData", arr.length > 0 ? arr : null)
         //             } else {
         //                 // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
         //             }
-                    
+
         //         }).catch(err => {
         //             // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
         //         })
         // },
         // async getDataTariffCode(){
         //     await axios
-        //         .get(this.URL.tariff + 
-        //         `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`, 
+        //         .get(this.URL.tariff +
+        //         `?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`,
         //         this.Helper.header())
         //         .then(res => {
         //             if(res.data.data.length > 0) {
@@ -337,55 +357,68 @@ export default {
         //             } else {
         //                 // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
         //             }
-                    
+
         //         }).catch(err => {
         //             // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
         //         })
         // },
-        async updateData(){
+        async updateData() {
             await axios
                 .put(
-                    this.URL.node_alternate_address + `/${this.node_alternate_address_id}?n=${this.listenNodeId}`,
-                    JSON.stringify(this.form), 
-                    this.Helper.header())
-                .then(res => {
-
+                    this.URL.node_alternate_address +
+                        `/${this.node_alternate_address_id}?n=${this.listenNodeId}`,
+                    JSON.stringify(this.form),
+                    this.Helper.header()
+                )
+                .then((res) => {
                     this.handleClearForm()
                     this.closeDialog()
-                    this.$emit("refresh")
+                    this.$emit('refresh')
                     this.openNotification(null, 'Success', 'Update role is success')
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loading = false
                     this.handleClearForm()
                     this.closeDialog()
-                    this.$emit("refresh")
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Update role is failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.$emit('refresh')
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Update role is failed',
+                        err.response ? err.response.data.message : 'something went wrong'
+                    )
                 })
         },
         async addData() {
             await axios
                 .post(
                     this.URL.node_alternate_address + `?n=${this.listenNodeId}`,
-                    JSON.stringify(this.form), 
-                    this.Helper.header())
-                .then(res => {
-
+                    JSON.stringify(this.form),
+                    this.Helper.header()
+                )
+                .then((res) => {
                     this.handleClearForm()
                     this.closeDialog()
-                    this.$emit("refresh")
+                    this.$emit('refresh')
                     this.openNotification(null, 'Success', 'Create new role is success')
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loading = false
                     this.handleClearForm()
                     this.closeDialog()
-                    this.$emit("refresh")
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new role is failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.$emit('refresh')
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Create new role is failed',
+                        err.response ? err.response.data.message : 'something went wrong'
+                    )
                 })
         },
         cancel() {
             this.handleClearForm()
             this.closeDialog()
-        }
+        },
     },
     mounted() {
         this.handleSubmitShortcut(this.handleSubmit)

@@ -1,18 +1,18 @@
 <template>
-    <dialog-master 
+    <dialog-master
         width="lg"
-        :actived="listenActive" 
+        :actived="listenActive"
         :closeDialog="cancel"
         :loading="listenLoading"
     >
         <template v-slot:header>
-            {{listenTitle}}
+            {{ listenTitle }}
         </template>
 
         <template v-slot:content>
             <div>
                 <form-input-controller
-                    ref="formDataController" 
+                    ref="formDataController"
                     typeForm="runsheet_limit"
                     :dataItem="listenDataItem"
                     :querySearch="querySearch"
@@ -49,28 +49,28 @@
                         :data-testid="`submit-button`"
                         @click="handleSubmit"
                     >
-                        {{btnBlue || 'Add'}}
+                        {{ btnBlue || 'Save Changes' }}
                     </vs-button>
                 </vs-col>
-            </vs-row>                
+            </vs-row>
         </template>
     </dialog-master>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master";
+import axios from 'axios'
+import master from '@/mixins/master'
 
-import DialogMaster from "@/components/dialog/dialogMaster";
-import FormInputController from "@/components/form/formInputController";
-import Selector from "@/components/input/select";
+import DialogMaster from '@/components/dialog/dialogMaster'
+import FormInputController from '@/components/form/formInputController'
+import Selector from '@/components/input/select'
 
 export default {
-    name:"runsheet-limit-dialog",
+    name: 'runsheet-limit-dialog',
     mixins: [master],
     components: {
-        "dialog-master": DialogMaster,
-        "form-input-controller": FormInputController,
-        "selector": Selector   
+        'dialog-master': DialogMaster,
+        'form-input-controller': FormInputController,
+        selector: Selector,
     },
     props: {
         active: Boolean,
@@ -78,143 +78,189 @@ export default {
         btnBlue: String,
         closeDialog: Function,
         dataItem: Object,
-        title: String
+        title: String,
     },
     data() {
         return {
             form: {},
-            runsheet_limit_id: "",
+            runsheet_limit_id: '',
             autoCompleteUrl: null,
-            input_value: "",
+            input_value: '',
             loading: false,
         }
     },
     computed: {
-        listenActive(){
-            return this.active;
+        listenActive() {
+            return this.active
         },
-        listenTitle(){
-            return this.title;
+        listenTitle() {
+            return this.title
         },
         listenLoading() {
-            return this.loading;
+            return this.loading
         },
         listenDataItem() {
-            return this.dataItem;
+            return this.dataItem
         },
         listenEntity() {
-            return this.$store.getters.getInputs.runsheet_limit.reference_entity.value;
-        }
+            return this.$store.getters.getInputs.runsheet_limit.reference_entity.value
+        },
     },
     watch: {
         dataItem: function (val) {
-            if(val !== undefined) {
+            if (val !== undefined) {
                 this.getDataDetail(val)
             }
         },
         listenEntity: function (val, oldVal) {
             if (val !== undefined && this.reference_entity !== oldVal) {
-                this.autoCompleteUrl = null;
-                this.input_value = "";
+                this.autoCompleteUrl = null
+                this.input_value = ''
             }
         },
     },
     methods: {
-        async getDataDetail(val){
-            this.runsheet_limit_id = val.runsheet_limit_id;
+        async getDataDetail(val) {
+            this.runsheet_limit_id = val.runsheet_limit_id
 
-            let curr_reference_value_arr = [{
-                label: val.reference_value,
-                value: val.reference_value
-            }]
+            let curr_reference_value_arr = [
+                {
+                    label: val.reference_value,
+                    value: val.reference_value,
+                },
+            ]
 
-            this.$store.dispatch("SET_RUNSHEET_LIMIT_REFERENCE_VALUE", val.reference_value);
-            this.$store.dispatch("SET_RUNSHEET_LIMIT_REFERENCE_VALUE_ValueData", val.reference_value);
-            this.$store.dispatch("SET_RUNSHEET_LIMIT_REFERENCE_VALUE_ArrData", curr_reference_value_arr);
+            this.$store.dispatch('SET_RUNSHEET_LIMIT_REFERENCE_VALUE', val.reference_value)
+            this.$store.dispatch(
+                'SET_RUNSHEET_LIMIT_REFERENCE_VALUE_ValueData',
+                val.reference_value
+            )
+            this.$store.dispatch(
+                'SET_RUNSHEET_LIMIT_REFERENCE_VALUE_ArrData',
+                curr_reference_value_arr
+            )
         },
-        formData(form){
-            const { runsheet_limit_id, ...formWithoutId } = form;
+        formData(form) {
+            const { runsheet_limit_id, ...formWithoutId } = form
 
-            this.form = formWithoutId;
-            this.handleSubmitData();
+            this.form = formWithoutId
+            this.handleSubmitData()
         },
         onChangeCustom(type, val, obj) {
             switch (type) {
-                case "reference_entity":
-                    this.$store.dispatch("SET_RUNSHEET_LIMIT_REFERENCE_VALUE", "");
-                    break;
+                case 'reference_entity':
+                    this.$store.dispatch('SET_RUNSHEET_LIMIT_REFERENCE_VALUE', '')
+                    break
                 default:
             }
         },
-        inputFocus(obj){
-            if(obj.key == 'reference_value' && this.listenEntity){
-                switch(this.listenEntity) {
-                    case "REGION":
-                        this.autoCompleteUrl = this.URL.regional_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
-                        this.input_value = "regional_code";
-                        this.input_label = "regional_code";
-                        break;
-                    case "BRANCH":
-                        this.autoCompleteUrl = this.URL.branch_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
-                        this.input_value = "branch_code";
-                        this.input_label = "branch_code";
-                        break;
-                    case "ORIGIN":
-                        this.autoCompleteUrl = this.URL.origin_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
-                        this.input_value = "origin_code";
-                        this.input_label = "origin_code";
-                        break;
-                    case "NODE":
-                        this.autoCompleteUrl = this.URL.node_list +'?n='+ this.listenNodeId +'&sort_order=desc&limit=10&page=1';
-                        this.input_value = "node_code";
-                        this.input_label = "node_code";
-                        break;
+        inputFocus(obj) {
+            if (obj.key == 'reference_value' && this.listenEntity) {
+                switch (this.listenEntity) {
+                    case 'REGION':
+                        this.autoCompleteUrl =
+                            this.URL.regional_list +
+                            '?n=' +
+                            this.listenNodeId +
+                            '&sort_order=desc&limit=10&page=1'
+                        this.input_value = 'regional_code'
+                        this.input_label = 'regional_code'
+                        break
+                    case 'BRANCH':
+                        this.autoCompleteUrl =
+                            this.URL.branch_list +
+                            '?n=' +
+                            this.listenNodeId +
+                            '&sort_order=desc&limit=10&page=1'
+                        this.input_value = 'branch_code'
+                        this.input_label = 'branch_code'
+                        break
+                    case 'ORIGIN':
+                        this.autoCompleteUrl =
+                            this.URL.origin_list +
+                            '?n=' +
+                            this.listenNodeId +
+                            '&sort_order=desc&limit=10&page=1'
+                        this.input_value = 'origin_code'
+                        this.input_label = 'origin_code'
+                        break
+                    case 'NODE':
+                        this.autoCompleteUrl =
+                            this.URL.node_list +
+                            '?n=' +
+                            this.listenNodeId +
+                            '&sort_order=desc&limit=10&page=1'
+                        this.input_value = 'node_code'
+                        this.input_label = 'node_code'
+                        break
                     default:
                 }
             }
         },
-        querySearch(queryString, cb){
-            axios.get(this.autoCompleteUrl +`&s=${queryString}`,
-                this.Helper.header()
-            )
-            .then(res => {
-                let result = res.data.data
-                let suggestions = [];
-                result.length > 0 && result.map(item => {
-                    suggestions.push({
-                        value: item[this.input_label],
-                        data: String(item[this.input_value])
-                    });
-                });
-                cb(suggestions);
+        querySearch(queryString, cb) {
+            axios
+                .get(this.autoCompleteUrl + `&s=${queryString}`, this.Helper.header())
+                .then((res) => {
+                    let result = res.data.data
+                    let suggestions = []
+                    result.length > 0 &&
+                        result.map((item) => {
+                            suggestions.push({
+                                value: item[this.input_label],
+                                data: String(item[this.input_value]),
+                            })
+                        })
+                    cb(suggestions)
                 })
-            .catch();
+                .catch()
         },
         async handleSubmitData() {
-            this.loading = true;
+            this.loading = true
             try {
-                const res = this.runsheet_limit_id ? await axios.put(`${this.URL.runsheet_limit_setting}/${this.runsheet_limit_id}?n=${this.listenNodeId}`, this.form, this.Helper.header()) : await axios.post(`${this.URL.runsheet_limit_setting}?n=${this.listenNodeId}`, this.form, this.Helper.header());
-                this.openNotification('success', null, "Success", res?.data?.message || this.runsheet_limit_id ? "Success Update Data" : "Success Create Data");
+                const res = this.runsheet_limit_id
+                    ? await axios.put(
+                          `${this.URL.runsheet_limit_setting}/${this.runsheet_limit_id}?n=${this.listenNodeId}`,
+                          this.form,
+                          this.Helper.header()
+                      )
+                    : await axios.post(
+                          `${this.URL.runsheet_limit_setting}?n=${this.listenNodeId}`,
+                          this.form,
+                          this.Helper.header()
+                      )
+                this.openNotification(
+                    'success',
+                    null,
+                    'Success',
+                    res?.data?.message || this.runsheet_limit_id
+                        ? 'Success Update Data'
+                        : 'Success Create Data'
+                )
             } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Failed',
+                    err?.response?.data?.message || 'Something went wrong'
+                )
             } finally {
-                this.loading = false;
-                this.cancel();
-                this.$emit("handleClearInput");
-                this.$emit("refresh");
+                this.loading = false
+                this.cancel()
+                this.$emit('handleClearInput')
+                this.$emit('refresh')
             }
         },
-        handleSubmit(){
-            this.$refs.formDataController.handleSubmit();
+        handleSubmit() {
+            this.$refs.formDataController.handleSubmit()
         },
-        handleClearForm(){
-            this.$refs.formDataController.handleClearForm();
+        handleClearForm() {
+            this.$refs.formDataController.handleClearForm()
             this.form = {}
-            this.runsheet_limit_id = ""
+            this.runsheet_limit_id = ''
         },
         cancel() {
-            this.handleClearForm();
-            this.closeDialog();
+            this.handleClearForm()
+            this.closeDialog()
         },
     },
     mounted() {

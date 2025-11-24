@@ -1,15 +1,12 @@
 <template>
-    <dialog-master 
-    :actived="listenActive" 
-    :closeDialog="cancel">
-
+    <dialog-master :actived="listenActive" :closeDialog="cancel">
         <template v-slot:header>
-            {{listenTitle}}
+            {{ listenTitle }}
         </template>
 
         <template v-slot:content>
             <div>
-                <form-input-controller 
+                <form-input-controller
                     ref="formVehicleController"
                     @formData="formData"
                     :dataItem="listenDataItem"
@@ -25,78 +22,75 @@
             <vs-row justify="flex-end">
                 <vs-col w="3">
                     <vs-button
-                    transparent
-                    block
-                    danger
-                    flat
-                    :active="true"
-                    :data-testid="`cancel-button`"
-                    @click="cancel"
+                        transparent
+                        block
+                        danger
+                        flat
+                        :active="true"
+                        :data-testid="`cancel-button`"
+                        @click="cancel"
                     >
                         Cancel
                     </vs-button>
                 </vs-col>
                 <vs-col w="3">
                     <vs-button
-                    transparent
-                    block
-                    flat
-                    :active="true"
-                    type="submit"
-                    :data-testid="`submit-button`"
-                    @click="handleSubmit"
+                        transparent
+                        block
+                        flat
+                        :active="true"
+                        type="submit"
+                        :data-testid="`submit-button`"
+                        @click="handleSubmit"
                     >
-                        {{btnBlue || 'Add'}}
+                        {{ btnBlue || 'Save Changes' }}
                     </vs-button>
                 </vs-col>
             </vs-row>
-                
-                
         </template>
-
     </dialog-master>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master"
-import FormInputController from "@/components/form/formInputController"
-import DialogMaster from "@/components/dialog/dialogMaster"
+import axios from 'axios'
+import master from '@/mixins/master'
+import FormInputController from '@/components/form/formInputController'
+import DialogMaster from '@/components/dialog/dialogMaster'
 export default {
-    name:"dialog-create-edit-vehicle",
+    name: 'dialog-create-edit-vehicle',
     mixins: [master],
     components: {
-        "dialog-master": DialogMaster,
-        "form-input-controller": FormInputController,   
+        'dialog-master': DialogMaster,
+        'form-input-controller': FormInputController,
     },
     props: {
-       closeDialog: Function, 
-       active: Boolean,
-       title: String,
-       dataItem: Object,
-       btnRed: String,
-       btnBlue: String
+        closeDialog: Function,
+        active: Boolean,
+        title: String,
+        dataItem: Object,
+        btnRed: String,
+        btnBlue: String,
     },
     data() {
         return {
             form: {},
             vehicle_id: '',
-            autoComplateUrl: ""
+            autoComplateUrl: '',
         }
     },
     computed: {
-        listenActive(){
+        listenActive() {
             return this.active
         },
-        listenTitle(){
+        listenTitle() {
             return this.title
         },
         listenDataItem() {
             return this.dataItem
-        }
+        },
     },
     watch: {
         dataItem: function (val) {
-            if(val !== undefined) {
+            if (val !== undefined) {
                 this.vehicle_id = val.vehicle_id
                 this.vehicle_type_id = val.vehicle_type_id
                 this.vehicle_mode_id = val.vehicle_mode_id
@@ -106,71 +100,72 @@ export default {
             if (val == true) {
                 // this.getNode()
                 this.getVehicleMode()
-                if(this.vehicle_mode_id != null && this.vehicle_mode_id != '' && this.vehicle_mode_id != 'undefined'){
+                if (
+                    this.vehicle_mode_id != null &&
+                    this.vehicle_mode_id != '' &&
+                    this.vehicle_mode_id != 'undefined'
+                ) {
                     this.getVehicleType(this.vehicle_mode_id)
                 }
             }
-        }
+        },
     },
     methods: {
-        formData(form){
-            form["vehicle_node_id"] = form["vehicle_node_id"]["node_id"]
+        formData(form) {
+            form['vehicle_node_id'] = form['vehicle_node_id']['node_id']
             this.form = form
-            if(this.vehicle_id !== undefined && this.vehicle_id !== '') {                    
-                    this.updateData()
+            if (this.vehicle_id !== undefined && this.vehicle_id !== '') {
+                this.updateData()
             } else {
-                    this.addData()
+                this.addData()
             }
         },
-        onFormChanged(componentId, value, obj){
-            switch(componentId) {
+        onFormChanged(componentId, value, obj) {
+            switch (componentId) {
                 case 'vehicle_mode_id':
-                        this.getVehicleType(value)
-                    break;
+                    this.getVehicleType(value)
+                    break
 
-                    default:
-                        break;
+                default:
+                    break
             }
         },
-        handleSubmit(){
+        handleSubmit() {
             this.$refs.formVehicleController.handleSubmit() // trigger function submit form dari luar component formInputController
         },
-        handleClearForm(){
+        handleClearForm() {
             this.$refs.formVehicleController.handleClearForm()
             this.form = {}
-            this.vehicle_id = ""
+            this.vehicle_id = ''
         },
-        querySearch(queryString, cb){
-            
+        querySearch(queryString, cb) {
             // let flag = this.listenFlag
- 
- 
-            axios.get(this.autoComplateUrl +`&s=${queryString}`, this.Helper.header())
-            .then(res => {
-                let result = res.data.data
- 
-                let suggestions = [];
 
-                result.length > 0 && result.map(item => {
-                    if(item.hasOwnProperty('node_name')) {
-                        suggestions.push({
-                                value: item['node_name'],
-                                data: item
-                        });
-                    }
+            axios
+                .get(this.autoComplateUrl + `&s=${queryString}`, this.Helper.header())
+                .then((res) => {
+                    let result = res.data.data
+
+                    let suggestions = []
+
+                    result.length > 0 &&
+                        result.map((item) => {
+                            if (item.hasOwnProperty('node_name')) {
+                                suggestions.push({
+                                    value: item['node_name'],
+                                    data: item,
+                                })
+                            }
+                        })
+
+                    cb(suggestions)
                 })
-                
-
- 
-
-                cb(suggestions);
-                })
-            .catch(error => console.log("error", error));
+                .catch((error) => console.log('error', error))
         },
         // async getNode(){
         //     await axios
-        //         .get(this.URL.node + 
-        //         `?n=${this.listenNodeId}&sort_order=desc&limit=50&page=1`, 
+        //         .get(this.URL.node +
+        //         `?n=${this.listenNodeId}&sort_order=desc&limit=50&page=1`,
         //         this.Helper.header())
         //         .then(res => {
         //             if(res.data.data.length > 0) {
@@ -185,119 +180,139 @@ export default {
 
         //                 this.$store.dispatch("SET_VEHICLE_VEHICLE_NODE_ID_ArrData", arr.length > 0 ? arr : null)
         //             }
-                    
+
         //         }).catch(err => {
         //             // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
         //         })
         // },
-        async getVehicleMode(){
+        async getVehicleMode() {
             await axios
-                .get(this.URL.vehicle_mode + 
-                `?n=${this.listenNodeId}&limit=20`, 
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
+                .get(
+                    this.URL.vehicle_mode + `?n=${this.listenNodeId}&limit=20`,
+                    this.Helper.header()
+                )
+                .then((res) => {
+                    if (res.data.data.length > 0) {
                         let arr = []
-                        res.data.data.map(item => {
+                        res.data.data.map((item) => {
                             let obj = {}
-                            obj["label"] = item.vehicle_mode_name
-                            obj["value"] = item.vehicle_mode_id
+                            obj['label'] = item.vehicle_mode_name
+                            obj['value'] = item.vehicle_mode_id
 
                             arr.push(obj)
                         })
 
-                        this.$store.dispatch("SET_VEHICLE_VEHICLE_MODE_ID_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch(
+                            'SET_VEHICLE_VEHICLE_MODE_ID_ArrData',
+                            arr.length > 0 ? arr : null
+                        )
                     } else {
                         // this.openNotification('warn', null, 'Roles data is empty!', ' Please create a new role data')
                     }
-                    
-                }).catch(err => {
+                })
+                .catch((err) => {
                     // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
-        async getVehicleType(vehicle_mode_id = null){
-            
-            this.$store.dispatch("SET_VEHICLE_VEHICLE_TYPE_ID", "");            
-            if(this.vehicle_type_id != null && this.vehicle_type_id != '' && this.vehicle_type_id != 'undefined'){
-                this.$store.dispatch("SET_VEHICLE_VEHICLE_TYPE_ID", this.vehicle_type_id);                            
+        async getVehicleType(vehicle_mode_id = null) {
+            this.$store.dispatch('SET_VEHICLE_VEHICLE_TYPE_ID', '')
+            if (
+                this.vehicle_type_id != null &&
+                this.vehicle_type_id != '' &&
+                this.vehicle_type_id != 'undefined'
+            ) {
+                this.$store.dispatch('SET_VEHICLE_VEHICLE_TYPE_ID', this.vehicle_type_id)
             }
-            this.$store.dispatch("SET_VEHICLE_VEHICLE_TYPE_ID_ArrData", []);
+            this.$store.dispatch('SET_VEHICLE_VEHICLE_TYPE_ID_ArrData', [])
 
-            let queryString = `?n=${this.listenNodeId}&sort_order=desc&limit=20&page=1`;
+            let queryString = `?n=${this.listenNodeId}&sort_order=desc&limit=20&page=1`
 
-            if(vehicle_mode_id != null){
+            if (vehicle_mode_id != null) {
                 queryString += `&vehicle_mode_id=${vehicle_mode_id}`
             }
 
             await axios
-                .get(this.URL.vehicle_type + queryString, 
-                this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length > 0) {
+                .get(this.URL.vehicle_type + queryString, this.Helper.header())
+                .then((res) => {
+                    if (res.data.data.length > 0) {
                         let arr = []
-                        res.data.data.map(item => {
+                        res.data.data.map((item) => {
                             let obj = {}
-                            obj["label"] = item.vehicle_type_name
-                            obj["value"] = item.vehicle_type_id
+                            obj['label'] = item.vehicle_type_name
+                            obj['value'] = item.vehicle_type_id
 
                             arr.push(obj)
                         })
 
-                        this.$store.dispatch("SET_VEHICLE_VEHICLE_TYPE_ID_ArrData", arr.length > 0 ? arr : null)
+                        this.$store.dispatch(
+                            'SET_VEHICLE_VEHICLE_TYPE_ID_ArrData',
+                            arr.length > 0 ? arr : null
+                        )
                     }
-                    
-                }).catch(err => {
+                })
+                .catch((err) => {
                     // this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to collect role list', err)
                 })
         },
-        async updateData(){
+        async updateData() {
             await axios
                 .put(
                     this.URL.vehicle + `/${this.vehicle_id}?n=${this.listenNodeId}`,
-                    JSON.stringify(this.form), 
-                    this.Helper.header())
-                .then(res => {
-                    
+                    JSON.stringify(this.form),
+                    this.Helper.header()
+                )
+                .then((res) => {
                     this.handleClearForm()
                     this.closeDialog()
-                    this.$emit("refresh")
+                    this.$emit('refresh')
                     this.openNotification(null, 'Success', 'Update role is success')
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loading = false
                     this.handleClearForm()
                     this.closeDialog()
-                    this.$emit("refresh")
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Update role is failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.$emit('refresh')
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Update role is failed',
+                        err.response ? err.response.data.message : 'something went wrong'
+                    )
                 })
         },
         async addData() {
-            
             await axios
                 .post(
-                    this.URL.vehicle+`?n=${this.listenNodeId}`,
-                    JSON.stringify(this.form), 
-                    this.Helper.header())
-                .then(res => {
-                    
+                    this.URL.vehicle + `?n=${this.listenNodeId}`,
+                    JSON.stringify(this.form),
+                    this.Helper.header()
+                )
+                .then((res) => {
                     this.handleClearForm()
                     this.closeDialog()
-                    this.$emit("refresh")
+                    this.$emit('refresh')
                     this.openNotification(null, 'Success', res.data.message)
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loading = false
                     this.handleClearForm()
                     this.closeDialog()
-                    this.$emit("refresh")
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Create new role is failed', err.response ? err.response.data.message : 'something went wrong')
+                    this.$emit('refresh')
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Create new role is failed',
+                        err.response ? err.response.data.message : 'something went wrong'
+                    )
                 })
         },
         cancel() {
             this.handleClearForm()
             this.closeDialog()
-        }
+        },
     },
     mounted() {
-        let url = this.URL.node +'?n='+ this.listenNodeId +'&sort_order=desc&limit=15&page=1'
+        let url = this.URL.node + '?n=' + this.listenNodeId + '&sort_order=desc&limit=15&page=1'
         this.autoComplateUrl = url
         this.handleSubmitShortcut(this.handleSubmit)
     },

@@ -1031,7 +1031,7 @@ export default {
     },
     mounted() {
         this.listenNodeType()
-        this.customFilter()
+        // this.customFilter()
     },
     methods: {
         isActive(item) {
