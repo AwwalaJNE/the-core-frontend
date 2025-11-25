@@ -188,6 +188,11 @@ export default {
                     key: 'geolocation_subdistrict_kode_routing',
                     width: 'auto',
                 },
+                {
+                    label: 'POD Date',
+                    key: 'pod_at',
+                    width: 'auto',
+                },
             ],
             employee_id: '',
             delivery_runsheet_number: null,
