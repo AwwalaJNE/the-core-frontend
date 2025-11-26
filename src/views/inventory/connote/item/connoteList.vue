@@ -247,7 +247,7 @@ export default {
                     is_cod: item.is_cod == 1 ? 'YES' : '-',
                     is_confirmed: item.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed',
                     is_void_status: item.is_void == 1 ? 'YES' : '-',
-                    packing_kayu_type: item.packing_kayu_type ? 'Y' : '-',
+                    packing_kayu_type: item.packing_kayu_type == 1 ? 'Y' : '-',
                     status_irregularity: item.irregularity?.irregularity_status_description,
                 }))
                 this.dataTable = arr
