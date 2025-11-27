@@ -7,47 +7,47 @@
 
 <template>
     <div>
-        <table-master 
-        hideColumnKey="inventory-bag" 
-        :dataTable="dataTable" 
-        :dataColumn="datacolumn" 
-        :tableLoading="loading"
-        :pageSize="pagination.page_size"
-        :page="pagination.page"
-        :limit="pagination.limit"
-        :hasAction="false"
-        :hasLinked="['bag_number']"
-        :hasLinkedDanger="'status_irregularity_description'"
-        :actionSize="'xxs'"
-        :hasPagination="true"
-        :onRowClickCallback="updateSelected"
-        :customAction="true"
-        :customActionList="customActionList"
-        @handleEdit="actionDetail"
-        @actionLimit="actionLimit"
-        @actionUpdate="actionUpdate"
-        @actionPagination="actionPagination"
+        <table-master
+            hideColumnKey="inventory-bag"
+            :dataTable="dataTable"
+            :dataColumn="datacolumn"
+            :tableLoading="loading"
+            :pageSize="pagination.page_size"
+            :page="pagination.page"
+            :limit="pagination.limit"
+            :hasAction="false"
+            :hasLinked="['bag_number']"
+            :hasLinkedDanger="'status_irregularity_description'"
+            :actionSize="'xxs'"
+            :hasPagination="true"
+            :onRowClickCallback="updateSelected"
+            :customAction="true"
+            :customActionList="customActionList"
+            @handleEdit="actionDetail"
+            @actionLimit="actionLimit"
+            @actionUpdate="actionUpdate"
+            @actionPagination="actionPagination"
         />
 
         <dialog-trace-bag
             title="Trace Bag Activity"
             :active="dialogTraceBag"
-            :closeDialog="() => dialogTraceBag = false"
+            :closeDialog="() => (dialogTraceBag = false)"
             :bag_number="selectedBagNumber"
         />
     </div>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master"
-import TableMaster from "@/components/table/tableMaster.vue"
-import SelectSearchBy from "@/components/search/selectSearchBy"
-import SearchInput from "@/components/search/searchInput"
-import DateTime from "@/components/input/dateTime"
-import moment from "moment"
-import DialogTraceBag from "@/views/inventory/connote/bag/dialogTraceBag.vue"
+import axios from 'axios'
+import master from '@/mixins/master'
+import TableMaster from '@/components/table/tableMaster.vue'
+import SelectSearchBy from '@/components/search/selectSearchBy'
+import SearchInput from '@/components/search/searchInput'
+import DateTime from '@/components/input/dateTime'
+import moment from 'moment'
+import DialogTraceBag from '@/views/inventory/connote/bag/dialogTraceBag.vue'
 export default {
-    name:"Role-list",
+    name: 'Role-list',
     mixins: [master],
     props: {
         query: String,
@@ -66,127 +66,379 @@ export default {
         isArchive: Boolean,
     },
     components: {
-        "table-master" : TableMaster,
-        "select-search-by": SelectSearchBy,
-        "search-input": SearchInput,
-        "date-time": DateTime,
-        "dialog-trace-bag": DialogTraceBag
+        'table-master': TableMaster,
+        'select-search-by': SelectSearchBy,
+        'search-input': SearchInput,
+        'date-time': DateTime,
+        'dialog-trace-bag': DialogTraceBag,
     },
     watch: {
-        query: function(val, old) {
-            if(val !== undefined) {
-                this.tempSearch = val
-                if(this.tempSearch !== old) {
-                    this.pagination.page = 1
-                    this.getTableData(this.pagination.limit, this.pagination.page, val, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter);
-                }
-            }
-        },
-        isMasterbag: function(val, old) {
-          if(val !== undefined) {
-            this.isMasterbagFilter = val
-            if(this.isMasterbagFilter !== old) {
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, val, this.isArchiveFilter, this.bagStatusInventoryFilter);
-            }
-          }
-        },
-        isArchive: function(val, old) {
-          if(val !== undefined) {
-            this.isArchiveFilter = val
-            if(this.isArchiveFilter !== old) {
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, val, this.bagStatusInventoryFilter);
-            }
-          }
-        },
-        bagDestination: function(val, old) {
-          if(val !== undefined) {
-            this.bagFilter = val
-            if(this.bagFilter !== old) {
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, val, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter);
-            }
-          }
-        },
-        bagOrigin: function(val, old) {
-          if(val !== undefined) {
-            this.bagOriginFilter = val
-            if(this.bagOriginFilter !== old) {
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, val, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter);
-            }
-          }
-        },
-        bagRouting: function(val, old) {
-          if(val !== undefined) {
-            this.routingFilter = val
-            if(this.routingFilter !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, val, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter);
-            }
-          }
-        },
-        bagTipe: function(val, old) {
-          if(val !== undefined) {
-            this.tipeBagFilter = val
-            if(this.tipeBagFilter !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, val, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter);
-            }
-          }
-        },
-        searchDateBy: function(val, old) {
-          if(val !== undefined) {
-            this.filterDateBy = val
-            if(this.filterDateBy !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, val, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter);
-            }
-          }
-        },
-        searchBy: function(val, old) {
-          if(val !== undefined) {
-            this.searchByBag = val
-            if(this.searchByBag !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, val, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter);
-            }
-          }
-        },
-        dateFilter: function(val, old) {
+        query: function (val, old) {
             if (val !== undefined) {
-                this.tempDate = val;
-                if (this.tempDate !== old) {
-                    this.startDate = this.tempDate !== null ? this.tempDate[0] : '';
-                    this.endDate = this.tempDate !== null ? this.tempDate[1] : '';
+                this.tempSearch = val
+                if (this.tempSearch !== old) {
+                    this.pagination.page = 1
+                    this.getTableData(
+                        this.pagination.limit,
+                        this.pagination.page,
+                        val,
+                        this.bagFilter,
+                        this.bagOriginFilter,
+                        this.routingFilter,
+                        this.tipeBagFilter,
+                        this.startDate,
+                        this.endDate,
+                        this.searchByBag,
+                        this.filterDateBy,
+                        this.statusBagFilter,
+                        this.statusBagIrreg,
+                        this.bagSourceFilter,
+                        this.isMasterbagFilter,
+                        this.isArchiveFilter,
+                        this.bagStatusInventoryFilter
+                    )
                 }
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter);
             }
         },
-        bagStatus: function(val, old) {
-          if(val !== undefined) {
-            this.statusBagFilter = val
-            if(this.statusBagFilter !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, val, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter);
+        isMasterbag: function (val, old) {
+            if (val !== undefined) {
+                this.isMasterbagFilter = val
+                if (this.isMasterbagFilter !== old) {
+                    this.getTableData(
+                        this.pagination.limit,
+                        this.pagination.page,
+                        this.tempSearch,
+                        this.bagFilter,
+                        this.bagOriginFilter,
+                        this.routingFilter,
+                        this.tipeBagFilter,
+                        this.startDate,
+                        this.endDate,
+                        this.searchByBag,
+                        this.filterDateBy,
+                        this.statusBagFilter,
+                        this.statusBagIrreg,
+                        this.bagSourceFilter,
+                        val,
+                        this.isArchiveFilter,
+                        this.bagStatusInventoryFilter
+                    )
+                }
             }
-          }
         },
-        bagIrreg: function(val, old) {
-          if(val !== undefined) {
-            this.statusBagIrreg = val
-            if(this.statusBagIrreg !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, val, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter);
+        isArchive: function (val, old) {
+            if (val !== undefined) {
+                this.isArchiveFilter = val
+                if (this.isArchiveFilter !== old) {
+                    this.getTableData(
+                        this.pagination.limit,
+                        this.pagination.page,
+                        this.tempSearch,
+                        this.bagFilter,
+                        this.bagOriginFilter,
+                        this.routingFilter,
+                        this.tipeBagFilter,
+                        this.startDate,
+                        this.endDate,
+                        this.searchByBag,
+                        this.filterDateBy,
+                        this.statusBagFilter,
+                        this.statusBagIrreg,
+                        this.bagSourceFilter,
+                        this.isMasterbagFilter,
+                        val,
+                        this.bagStatusInventoryFilter
+                    )
+                }
             }
-          }
         },
-        bagSource: function(val, old) {
-          if(val !== undefined) {
-            this.bagSourceFilter = val
-            if(this.bagSourceFilter !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, val, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter);
+        bagDestination: function (val, old) {
+            if (val !== undefined) {
+                this.bagFilter = val
+                if (this.bagFilter !== old) {
+                    this.getTableData(
+                        this.pagination.limit,
+                        this.pagination.page,
+                        this.tempSearch,
+                        val,
+                        this.bagOriginFilter,
+                        this.routingFilter,
+                        this.tipeBagFilter,
+                        this.startDate,
+                        this.endDate,
+                        this.searchByBag,
+                        this.filterDateBy,
+                        this.statusBagFilter,
+                        this.statusBagIrreg,
+                        this.bagSourceFilter,
+                        this.isMasterbagFilter,
+                        this.isArchiveFilter,
+                        this.bagStatusInventoryFilter
+                    )
+                }
             }
-          }
         },
-        bagStatusInventory: function(val, old) {
-          if(val !== undefined) {
-            this.bagStatusInventoryFilter = val
-            if(this.bagStatusInventoryFilter !== old) {
-                this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, this.startDate, this.endDate, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, val);
+        bagOrigin: function (val, old) {
+            if (val !== undefined) {
+                this.bagOriginFilter = val
+                if (this.bagOriginFilter !== old) {
+                    this.getTableData(
+                        this.pagination.limit,
+                        this.pagination.page,
+                        this.tempSearch,
+                        this.bagFilter,
+                        val,
+                        this.routingFilter,
+                        this.tipeBagFilter,
+                        this.startDate,
+                        this.endDate,
+                        this.searchByBag,
+                        this.filterDateBy,
+                        this.statusBagFilter,
+                        this.statusBagIrreg,
+                        this.bagSourceFilter,
+                        this.isMasterbagFilter,
+                        this.isArchiveFilter,
+                        this.bagStatusInventoryFilter
+                    )
+                }
             }
-          }
+        },
+        bagRouting: function (val, old) {
+            if (val !== undefined) {
+                this.routingFilter = val
+                if (this.routingFilter !== old) {
+                    this.getTableData(
+                        this.pagination.limit,
+                        this.pagination.page,
+                        this.tempSearch,
+                        this.bagFilter,
+                        this.bagOriginFilter,
+                        val,
+                        this.tipeBagFilter,
+                        this.startDate,
+                        this.endDate,
+                        this.searchByBag,
+                        this.filterDateBy,
+                        this.statusBagFilter,
+                        this.statusBagIrreg,
+                        this.bagSourceFilter,
+                        this.isMasterbagFilter,
+                        this.isArchiveFilter,
+                        this.bagStatusInventoryFilter
+                    )
+                }
+            }
+        },
+        bagTipe: function (val, old) {
+            if (val !== undefined) {
+                this.tipeBagFilter = val
+                if (this.tipeBagFilter !== old) {
+                    this.getTableData(
+                        this.pagination.limit,
+                        this.pagination.page,
+                        this.tempSearch,
+                        this.bagFilter,
+                        this.bagOriginFilter,
+                        this.routingFilter,
+                        val,
+                        this.startDate,
+                        this.endDate,
+                        this.searchByBag,
+                        this.filterDateBy,
+                        this.statusBagFilter,
+                        this.statusBagIrreg,
+                        this.bagSourceFilter,
+                        this.isMasterbagFilter,
+                        this.isArchiveFilter,
+                        this.bagStatusInventoryFilter
+                    )
+                }
+            }
+        },
+        searchDateBy: function (val, old) {
+            if (val !== undefined) {
+                this.filterDateBy = val
+                if (this.filterDateBy !== old) {
+                    this.getTableData(
+                        this.pagination.limit,
+                        this.pagination.page,
+                        this.tempSearch,
+                        this.bagFilter,
+                        this.bagOriginFilter,
+                        this.routingFilter,
+                        this.tipeBagFilter,
+                        this.startDate,
+                        this.endDate,
+                        this.searchByBag,
+                        val,
+                        this.statusBagFilter,
+                        this.statusBagIrreg,
+                        this.bagSourceFilter,
+                        this.isMasterbagFilter,
+                        this.isArchiveFilter,
+                        this.bagStatusInventoryFilter
+                    )
+                }
+            }
+        },
+        searchBy: function (val, old) {
+            if (val !== undefined) {
+                this.searchByBag = val
+                if (this.searchByBag !== old) {
+                    this.getTableData(
+                        this.pagination.limit,
+                        this.pagination.page,
+                        this.tempSearch,
+                        this.bagFilter,
+                        this.bagOriginFilter,
+                        this.routingFilter,
+                        this.tipeBagFilter,
+                        this.startDate,
+                        this.endDate,
+                        val,
+                        this.filterDateBy,
+                        this.statusBagFilter,
+                        this.statusBagIrreg,
+                        this.bagSourceFilter,
+                        this.isMasterbagFilter,
+                        this.isArchiveFilter,
+                        this.bagStatusInventoryFilter
+                    )
+                }
+            }
+        },
+        dateFilter: function (val, old) {
+            if (val !== undefined) {
+                this.tempDate = val
+                if (this.tempDate !== old) {
+                    this.startDate = this.tempDate !== null ? this.tempDate[0] : ''
+                    this.endDate = this.tempDate !== null ? this.tempDate[1] : ''
+                }
+                this.getTableData(
+                    this.pagination.limit,
+                    this.pagination.page,
+                    this.tempSearch,
+                    this.bagFilter,
+                    this.bagOriginFilter,
+                    this.routingFilter,
+                    this.tipeBagFilter,
+                    this.startDate,
+                    this.endDate,
+                    this.searchByBag,
+                    this.filterDateBy,
+                    this.statusBagFilter,
+                    this.statusBagIrreg,
+                    this.bagSourceFilter,
+                    this.isMasterbagFilter,
+                    this.isArchiveFilter,
+                    this.bagStatusInventoryFilter
+                )
+            }
+        },
+        bagStatus: function (val, old) {
+            if (val !== undefined) {
+                this.statusBagFilter = val
+                if (this.statusBagFilter !== old) {
+                    this.getTableData(
+                        this.pagination.limit,
+                        this.pagination.page,
+                        this.tempSearch,
+                        this.bagFilter,
+                        this.bagOriginFilter,
+                        this.routingFilter,
+                        this.tipeBagFilter,
+                        this.startDate,
+                        this.endDate,
+                        this.searchByBag,
+                        this.filterDateBy,
+                        val,
+                        this.statusBagIrreg,
+                        this.bagSourceFilter,
+                        this.isMasterbagFilter,
+                        this.isArchiveFilter,
+                        this.bagStatusInventoryFilter
+                    )
+                }
+            }
+        },
+        bagIrreg: function (val, old) {
+            if (val !== undefined) {
+                this.statusBagIrreg = val
+                if (this.statusBagIrreg !== old) {
+                    this.getTableData(
+                        this.pagination.limit,
+                        this.pagination.page,
+                        this.tempSearch,
+                        this.bagFilter,
+                        this.bagOriginFilter,
+                        this.routingFilter,
+                        this.tipeBagFilter,
+                        this.startDate,
+                        this.endDate,
+                        this.searchByBag,
+                        this.filterDateBy,
+                        this.statusBagFilter,
+                        val,
+                        this.bagSourceFilter,
+                        this.isMasterbagFilter,
+                        this.isArchiveFilter,
+                        this.bagStatusInventoryFilter
+                    )
+                }
+            }
+        },
+        bagSource: function (val, old) {
+            if (val !== undefined) {
+                this.bagSourceFilter = val
+                if (this.bagSourceFilter !== old) {
+                    this.getTableData(
+                        this.pagination.limit,
+                        this.pagination.page,
+                        this.tempSearch,
+                        this.bagFilter,
+                        this.bagOriginFilter,
+                        this.routingFilter,
+                        this.tipeBagFilter,
+                        this.startDate,
+                        this.endDate,
+                        this.searchByBag,
+                        this.filterDateBy,
+                        this.statusBagFilter,
+                        this.statusBagIrreg,
+                        val,
+                        this.isMasterbagFilter,
+                        this.isArchiveFilter,
+                        this.bagStatusInventoryFilter
+                    )
+                }
+            }
+        },
+        bagStatusInventory: function (val, old) {
+            if (val !== undefined) {
+                this.bagStatusInventoryFilter = val
+                if (this.bagStatusInventoryFilter !== old) {
+                    this.getTableData(
+                        this.pagination.limit,
+                        this.pagination.page,
+                        this.tempSearch,
+                        this.bagFilter,
+                        this.bagOriginFilter,
+                        this.routingFilter,
+                        this.tipeBagFilter,
+                        this.startDate,
+                        this.endDate,
+                        this.searchByBag,
+                        this.filterDateBy,
+                        this.statusBagFilter,
+                        this.statusBagIrreg,
+                        this.bagSourceFilter,
+                        this.isMasterbagFilter,
+                        this.isArchiveFilter,
+                        val
+                    )
+                }
+            }
         },
     },
     data() {
@@ -195,160 +447,165 @@ export default {
             datacolumn: [],
             loading: false,
             dataItem: {},
-            tempSearch: this.query ? this.query : "",
+            tempSearch: this.query ? this.query : '',
             isMasterbagFilter: this.isMasterbag ? this.isMasterbag : null,
             isArchiveFilter: this.isArchive ? this.isArchive : null,
-            bagFilter: this.bagDestination ? this.bagDestination : "",
-            bagOriginFilter: this.bagOrigin ? this.bagOrigin : "",
-            routingFilter: this.bagRouting ? this.bagRouting : "",
-            tipeBagFilter: this.bagTipe ? this.bagTipe : "",
-            statusBagFilter: this.bagStatus ? this.bagStatus : "-",
-            statusBagIrreg: this.bagIrreg ? this.bagIrreg : "",
-            bagSourceFilter: this.bagSource ? this.bagSource : "",
-            bagStatusInventoryFilter: this.bagStatusInventory ? this.bagStatusInventory : "",
-            filterDateBy: this.searchDateBy ? this.searchDateBy : "",
-            searchByBag: this.searchBy ? this.searchBy : "",
+            bagFilter: this.bagDestination ? this.bagDestination : '',
+            bagOriginFilter: this.bagOrigin ? this.bagOrigin : '',
+            routingFilter: this.bagRouting ? this.bagRouting : '',
+            tipeBagFilter: this.bagTipe ? this.bagTipe : '',
+            statusBagFilter: this.bagStatus ? this.bagStatus : '-',
+            statusBagIrreg: this.bagIrreg ? this.bagIrreg : '',
+            bagSourceFilter: this.bagSource ? this.bagSource : '',
+            bagStatusInventoryFilter: this.bagStatusInventory ? this.bagStatusInventory : '',
+            filterDateBy: this.searchDateBy ? this.searchDateBy : '',
+            searchByBag: this.searchBy ? this.searchBy : '',
             dialogRole: false,
             pagination: {
-                limit:20,
+                limit: 20,
                 page_size: 1,
-                page: 1
+                page: 1,
             },
-            tempDate:[],
-            startDate: "",
-            endDate: "",
+            tempDate: [],
+            startDate: '',
+            endDate: '',
             dateRange: [],
             selectedRow: [],
             dialogTraceBag: false,
-            selectedBagNumber: "",
+            selectedBagNumber: '',
             customActionList: [
                 {
-                    label:'Trace Bag',
-                    key:'trace_bag',
+                    label: 'Trace Bag',
+                    key: 'trace_bag',
                     attribute: 'primary',
                 },
                 {
-                    label:'Print',
-                    key:'print',
+                    label: 'Print',
+                    key: 'print',
                     attribute: 'primary',
-                }
-            ]
+                },
+            ],
         }
     },
     methods: {
         setDatacolumn() {
             this.datacolumn = [
                 {
-                    label: "Bag #",
-                    key: "bag_number",
-                    width: "xs"
+                    label: 'Bag #',
+                    key: 'bag_number',
+                    width: 'xs',
                 },
                 {
-                    label: "Source",
-                    key: "source",
-                    width: "xxxxs"
+                    label: 'Source',
+                    key: 'source',
+                    width: 'xxxxs',
                 },
                 {
-                    label: "Bag type*",
-                    key: "tipe_bag",
-                    width: "xs"
+                    label: 'Bag type*',
+                    key: 'tipe_bag',
+                    width: 'xs',
                 },
                 {
-                    label: "Document Type",
-                    key: "document_type",
-                    width: "xs"
+                    label: 'Orion Number*',
+                    key: 'orion_number',
+                    width: 'xs',
                 },
                 {
-                    label: "Date #",
-                    key: "created_at",
-                    width: "xs"
+                    label: 'Document Type',
+                    key: 'document_type',
+                    width: 'xs',
                 },
                 {
-                    label: "Open Bag Date",
-                    key: "first_opened_bag",
-                    width: "xs"
+                    label: 'Date #',
+                    key: 'created_at',
+                    width: 'xs',
                 },
                 {
-                    label: "Received Date",
-                    key: "received_at",
-                    width: "xs"
+                    label: 'Open Bag Date',
+                    key: 'first_opened_bag',
+                    width: 'xs',
                 },
                 {
-                    label: "Created By",
-                    key: "created_by_user",
-                    width: "xs"
+                    label: 'Received Date',
+                    key: 'received_at',
+                    width: 'xs',
                 },
                 {
-                    label: "Total Bag",
-                    key: "total_bag",
-                    width: "xs",
-                    ...(this.isMasterbagFilter === "0" ? { hidden: true } : {})
+                    label: 'Created By',
+                    key: 'created_by_user',
+                    width: 'xs',
                 },
                 {
-                    label: "Total Connote",
-                    key: "total_connote",
-                    width: "xs"
+                    label: 'Total Bag',
+                    key: 'total_bag',
+                    width: 'xs',
+                    ...(this.isMasterbagFilter === '0' ? { hidden: true } : {}),
                 },
                 {
-                    label: "Cost Weight",
-                    key: "cost_weight",
-                    width: "auto"
+                    label: 'Total Connote',
+                    key: 'total_connote',
+                    width: 'xs',
                 },
                 {
-                    label: "Actual Weight",
-                    key: "bag_actual_weight",
-                    width: "auto"
+                    label: 'Cost Weight',
+                    key: 'cost_weight',
+                    width: 'auto',
                 },
                 {
-                    label: "Node Origin",
-                    key: "node_origin",
-                    width: "auto"
+                    label: 'Actual Weight',
+                    key: 'bag_actual_weight',
+                    width: 'auto',
                 },
                 {
-                    label: "Origin",
-                    key: "origin",
-                    width: "auto"
+                    label: 'Node Origin',
+                    key: 'node_origin',
+                    width: 'auto',
                 },
                 {
-                    label: "Node Destination",
-                    key: "node_destination",
-                    width: "auto"
+                    label: 'Origin',
+                    key: 'origin',
+                    width: 'auto',
                 },
                 {
-                    label: "Destination",
-                    key: "destination",
-                    width: "auto"
+                    label: 'Node Destination',
+                    key: 'node_destination',
+                    width: 'auto',
                 },
                 {
-                    label: "Consolidation",
-                    key: "is_consolidated",
-                    width: "xxxxs"
+                    label: 'Destination',
+                    key: 'destination',
+                    width: 'auto',
                 },
                 {
-                    label: "With Courier",
-                    key: "with_courier",
-                    width: "xs"
+                    label: 'Consolidation',
+                    key: 'is_consolidated',
+                    width: 'xxxxs',
                 },
                 {
-                    label: "Masterbag",
-                    key: "masterbag_parent",
-                    width: "xs"
+                    label: 'With Courier',
+                    key: 'with_courier',
+                    width: 'xs',
                 },
                 {
-                    label: "Surat Muatan",
-                    key: "surat_muatan",
-                    width: "xs"
+                    label: 'Masterbag',
+                    key: 'masterbag_parent',
+                    width: 'xs',
                 },
                 {
-                    label: "Surat Jalan",
-                    key: "surat_jalan",
-                    width: "xs"
+                    label: 'Surat Muatan',
+                    key: 'surat_muatan',
+                    width: 'xs',
                 },
                 {
-                    label: "Approved",
-                    key: "approved",
-                    type: "status",
-                    width: "xxxxs"
+                    label: 'Surat Jalan',
+                    key: 'surat_jalan',
+                    width: 'xs',
+                },
+                {
+                    label: 'Approved',
+                    key: 'approved',
+                    type: 'status',
+                    width: 'xxxxs',
                 },
                 // {
                 //     label: "Status",
@@ -357,224 +614,262 @@ export default {
                 //     tooltip_desc: "Status SM/SJ"
                 // },
                 {
-                    label: "Runsheet",
-                    key: "runsheet_count",
-                    width: "xxxxs"
+                    label: 'Runsheet',
+                    key: 'runsheet_count',
+                    width: 'xxxxs',
                 },
                 {
-                    label: "Un Runsheet",
-                    key: "un_runsheet_count",
-                    width: "xxxxs"
+                    label: 'Un Runsheet',
+                    key: 'un_runsheet_count',
+                    width: 'xxxxs',
                 },
                 {
-                    label: "Status Irregularity",
-                    key: "status_irregularity_description",
-                    width: "xxxxs",
+                    label: 'Status Irregularity',
+                    key: 'status_irregularity_description',
+                    width: 'xxxxs',
                 },
                 {
-                    label: "Status",
-                    key: "is_confirmed",
-                    width: "auto"
+                    label: 'Status',
+                    key: 'is_confirmed',
+                    width: 'auto',
                 },
             ]
         },
-        async getTableData(limit,page,q, bagDestination, bagOrigin, bagRouting, bagTipe,  from, to, searchByBag, filterDateBy, bagStatus, bagIrreg, bagSource, isMasterbag, isArchive, bagStatusInventory) {
+        async getTableData(
+            limit,
+            page,
+            q,
+            bagDestination,
+            bagOrigin,
+            bagRouting,
+            bagTipe,
+            from,
+            to,
+            searchByBag,
+            filterDateBy,
+            bagStatus,
+            bagIrreg,
+            bagSource,
+            isMasterbag,
+            isArchive,
+            bagStatusInventory
+        ) {
             this.loading = true
-            let query = "";
-            let bagDes = "";
-            let bagOri = "";
-            let bagRout= "";
-            let bagTipee= "";
-            let startDate = "";
-            let endDate = "";
-            let bagStat = "";
-            let bagIrregStatus = "";
-            let bagSourceFilter = "";
-            let bagStatusInventoryFilter = "";
-            let isMasterbagFilter = "";
-            if(q !== undefined) {
+            let query = ''
+            let bagDes = ''
+            let bagOri = ''
+            let bagRout = ''
+            let bagTipee = ''
+            let startDate = ''
+            let endDate = ''
+            let bagStat = ''
+            let bagIrregStatus = ''
+            let bagSourceFilter = ''
+            let bagStatusInventoryFilter = ''
+            let isMasterbagFilter = ''
+            if (q !== undefined) {
                 query = q
             }
-            if(from !== undefined && to !== undefined) {
-              startDate = from
-              endDate = to
+            if (from !== undefined && to !== undefined) {
+                startDate = from
+                endDate = to
 
-              startDate = this.formatToWIB(startDate)
-              endDate = this.formatToWIB(endDate)
+                startDate = this.formatToWIB(startDate)
+                endDate = this.formatToWIB(endDate)
             }
-            if(bagDestination !== undefined && bagDestination !== '-') {
-              bagDes = bagDestination
+            if (bagDestination !== undefined && bagDestination !== '-') {
+                bagDes = bagDestination
             }
-            if(bagOrigin !== undefined && bagOrigin !== '-') {
+            if (bagOrigin !== undefined && bagOrigin !== '-') {
                 bagOri = bagOrigin
             }
-            if(bagRouting !== undefined && bagRouting !== '-') {
-              bagRout = bagRouting
+            if (bagRouting !== undefined && bagRouting !== '-') {
+                bagRout = bagRouting
             }
-            if(bagTipe !== undefined && bagTipe !== '-') {
-              bagTipee = bagTipe
+            if (bagTipe !== undefined && bagTipe !== '-') {
+                bagTipee = bagTipe
             }
-            if(bagStatus !== undefined) {
+            if (bagStatus !== undefined) {
                 bagStat = bagStatus
             }
-            if(bagIrreg && bagIrreg !== '-') {
+            if (bagIrreg && bagIrreg !== '-') {
                 if (bagIrreg === '1') {
-                    bagIrregStatus = "Irregularity"
-                }
-                else {
-                    bagIrregStatus = "Not Irregularity"
+                    bagIrregStatus = 'Irregularity'
+                } else {
+                    bagIrregStatus = 'Not Irregularity'
                 }
             }
-            if(bagSource !== undefined && bagSource !== '-') {
+            if (bagSource !== undefined && bagSource !== '-') {
                 bagSourceFilter = bagSource
             }
-            if(bagStatusInventory !== undefined && bagStatusInventory !== '-') {
+            if (bagStatusInventory !== undefined && bagStatusInventory !== '-') {
                 bagStatusInventoryFilter = bagStatusInventory
             }
-            if(isMasterbag !== undefined && isMasterbag !== null) {
-                isMasterbagFilter = isMasterbag === "1" ? "1" : "0";
+            if (isMasterbag !== undefined && isMasterbag !== null) {
+                isMasterbagFilter = isMasterbag === '1' ? '1' : '0'
             }
-            let url = this.URL.bag_inventory + `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&origin_node=${bagOri}&routing=${bagRout}&tipe_bag=${bagTipee}&start_date=${startDate}&end_date=${endDate}&search_by=${searchByBag}&filter_date_by=${filterDateBy}&is_opened=${bagStat}&irregularity=${bagIrregStatus}&source=${bagSourceFilter}&is_confirmed=${bagStatusInventoryFilter}`
-            
+            let url =
+                this.URL.bag_inventory +
+                `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&destination_node=${bagDes}&origin_node=${bagOri}&routing=${bagRout}&tipe_bag=${bagTipee}&start_date=${startDate}&end_date=${endDate}&search_by=${searchByBag}&filter_date_by=${filterDateBy}&is_opened=${bagStat}&irregularity=${bagIrregStatus}&source=${bagSourceFilter}&is_confirmed=${bagStatusInventoryFilter}`
+
             if (!isArchive) {
-                url += `&is_consolidated=${isMasterbagFilter}`;
+                url += `&is_consolidated=${isMasterbagFilter}`
             } else {
-                url += `&is_consolidated=`;
+                url += `&is_consolidated=`
             }
 
             await axios
                 .get(url, this.Helper.header())
-                .then(res => {
-                    if(res.data.data.length == 0) {
-                        if (query != "") {
-                            this.loading = false;
-                            this.dataTable = [];
-                            return;
+                .then((res) => {
+                    if (res.data.data.length == 0) {
+                        if (query != '') {
+                            this.loading = false
+                            this.dataTable = []
+                            return
                         }
                     }
 
-                    res.data.data.forEach(el => {
+                    res.data.data.forEach((el) => {
+                        el['orion_number'] = el.hvo || el.hacb || el.pra_number || el.om || ''
                         el.created_at = this.formatTimezone(el.created_at)
                         el.received_at = this.formatTimezone(el.received_at)
-                        el.bag_actual_weight = el.is_pra_runsheet  === '1' ? el.cost_weight : el.actual_weight
+                        el.bag_actual_weight =
+                            el.is_pra_runsheet === '1' ? el.cost_weight : el.actual_weight
                         el.is_confirmed = el.is_confirmed == 1 ? 'Confirmed' : 'Unconfirmed'
                         el.surat_muatan = []
                         el.surat_jalan = []
-                        
+
                         if (el.sj.length > 0) {
-                            el.sj.forEach(sj => {
+                            el.sj.forEach((sj) => {
                                 el.surat_jalan.push(sj.manifest_do_number)
-                            });
-                            
+                            })
                         }
                         if (el.sm.length > 0) {
-                            el.sm.forEach(sm => {
+                            el.sm.forEach((sm) => {
                                 el.surat_muatan.push(sm.manifest_number)
                             })
                         }
 
                         // el.surat_muatan = el.surat_muatan.join(", ")
                         el.surat_muatan = el.manifest_numbers
-                        el.surat_jalan = el.surat_jalan.join(", ")
-                        el.with_courier = el.courier ? el.courier.employee_name : ""
+                        el.surat_jalan = el.surat_jalan.join(', ')
+                        el.with_courier = el.courier ? el.courier.employee_name : ''
                         el.approved = el.is_approve === 1 ? true : false
-                        el.status_irregularity_description = el.irregularity_status_description || ""
-                        if (el.status_irregularity_description === "MISSROUTE RECEIVED") {
-                            el.status_irregularity_description = "MISSROUTE RECEIVED (MR1)"
+                        el.status_irregularity_description =
+                            el.irregularity_status_description || ''
+                        if (el.status_irregularity_description === 'MISSROUTE RECEIVED') {
+                            el.status_irregularity_description = 'MISSROUTE RECEIVED (MR1)'
                         }
 
-                        if (el.irregularity_deleted_at !== null || el.irregularity_deleted_at !== undefined) {
-                            el.status_irregularity_description = ""
+                        if (
+                            el.irregularity_deleted_at !== null ||
+                            el.irregularity_deleted_at !== undefined
+                        ) {
+                            el.status_irregularity_description = ''
                         }
 
-                        let data = el.hvo || el.om || el.pra_number || el.hacb || "";
-                        el.document_type = this.getOrionDocumentType(data);
+                        let data = el.hvo || el.om || el.pra_number || el.hacb || ''
+                        el.document_type = this.getOrionDocumentType(data)
 
                         if (this.listenNodeId === parseInt(el.origin_node_id)) {
                             el.source = 'CREATE'
-                        }
-                        else {
+                        } else {
                             el.source = 'RECEIVE'
                         }
-                    });
+                    })
                     this.dataTable = res.data.data
 
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
                     this.pagination.page_size = res.data.meta.last_page
-                    if(res.data.data.length == 0) {
-                        if (query != "") {
-                            this.openNotification('warn', '', 'Failed to populate bag data', ' data is empty or not found')
+                    if (res.data.data.length == 0) {
+                        if (query != '') {
+                            this.openNotification(
+                                'warn',
+                                '',
+                                'Failed to populate bag data',
+                                ' data is empty or not found'
+                            )
                         }
                     }
-                    
+
                     this.loading = false
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate bag list', err?.response?.data?.message ?? 'something went wrong')
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Failed to populate bag list',
+                        err?.response?.data?.message ?? 'something went wrong'
+                    )
                 })
         },
-        actionDetail(val){
+        actionDetail(val) {
             let bag = encodeURIComponent(val.bag_number)
-            this.$router.push('/bagging-detail/'+bag)
-            this.setRoutePageHistory(this.$route.meta, false);
+            this.$router.push('/bagging-detail/' + bag)
+            this.setRoutePageHistory(this.$route.meta, false)
         },
-        print(val){
-            let routeData = this.$router.resolve({ 
-                name: 'printGeneral', 
-                params: { 
-                    'id': val.bag_number, 
-                    'type': 'bag',
-                    'node_id': this.listenNodeId
-                }
-            });
+        print(val) {
+            let routeData = this.$router.resolve({
+                name: 'printGeneral',
+                params: {
+                    id: val.bag_number,
+                    type: 'bag',
+                    node_id: this.listenNodeId,
+                },
+            })
 
-            const printWindow = window.open(routeData.href, '_blank', 'noopener');
-      
+            const printWindow = window.open(routeData.href, '_blank', 'noopener')
+
             if (printWindow) {
-                printWindow.onload = function() {
-                    printWindow.print();
-                    printWindow.onafterprint = () => printWindow.close();
-                };
+                printWindow.onload = function () {
+                    printWindow.print()
+                    printWindow.onafterprint = () => printWindow.close()
+                }
             }
         },
         actionUpdate(val, key) {
             switch (key) {
-                case "trace_bag":
-                    this.selectedBagNumber = val.bag_number;
-                    this.dialogTraceBag = true;
-                    break;
-                case "print":
+                case 'trace_bag':
+                    this.selectedBagNumber = val.bag_number
+                    this.dialogTraceBag = true
+                    break
+                case 'print':
                     this.print(val)
-                    break;
+                    break
                 default:
             }
         },
-        actionPrintSelected(){
+        actionPrintSelected() {
             if (this.selectedRow.length > 0) {
-                let routeData = this.$router.resolve({ 
-                    name: 'printGeneral', 
-                    params: { 
-                        'id': this.selectedRow.toString(), 
-                        'type': 'bag',
-                        'node_id': this.listenNodeId
-                    }
-                });
-                
-                const printWindow = window.open(routeData.href, '_blank', 'noopener');
-      
+                let routeData = this.$router.resolve({
+                    name: 'printGeneral',
+                    params: {
+                        id: this.selectedRow.toString(),
+                        type: 'bag',
+                        node_id: this.listenNodeId,
+                    },
+                })
+
+                const printWindow = window.open(routeData.href, '_blank', 'noopener')
+
                 if (printWindow) {
-                    printWindow.onload = function() {
-                        printWindow.print();
-                        printWindow.onafterprint = () => printWindow.close();
-                    };
+                    printWindow.onload = function () {
+                        printWindow.print()
+                        printWindow.onafterprint = () => printWindow.close()
+                    }
                 }
-            }
-            else {
-                this.openNotification('warn', null, 'Shortcut Print Gagal', 'Silakan pilih Bag terlebih dahulu')
+            } else {
+                this.openNotification(
+                    'warn',
+                    null,
+                    'Shortcut Print Gagal',
+                    'Silakan pilih Bag terlebih dahulu'
+                )
             }
         },
-        actionLimit(val){
+        actionLimit(val) {
             this.pagination.limit = val
             this.pagination.page = 1
             this.refresh()
@@ -583,28 +878,70 @@ export default {
             this.pagination.page = val
             this.refresh()
         },
-        refresh(){
-            let d = new Date();
-            let [from, to] = this.dateRange.length > 0 
-                ? [moment(this.dateRange[0]).format("YYYY-MM-DD"), moment(this.dateRange[1]).format("YYYY-MM-DD")] 
-                : ["", ""];
-            this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.tipeBagFilter, from, to, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter)
+        refresh() {
+            let d = new Date()
+            let [from, to] =
+                this.dateRange.length > 0
+                    ? [
+                          moment(this.dateRange[0]).format('YYYY-MM-DD'),
+                          moment(this.dateRange[1]).format('YYYY-MM-DD'),
+                      ]
+                    : ['', '']
+            this.getTableData(
+                this.pagination.limit,
+                this.pagination.page,
+                this.tempSearch,
+                this.bagFilter,
+                this.bagOriginFilter,
+                this.routingFilter,
+                this.tipeBagFilter,
+                from,
+                to,
+                this.searchByBag,
+                this.filterDateBy,
+                this.statusBagFilter,
+                this.statusBagIrreg,
+                this.bagSourceFilter,
+                this.isMasterbagFilter,
+                this.isArchiveFilter,
+                this.bagStatusInventoryFilter
+            )
         },
         updateSelected(_event, _item, selected) {
-            this.selectedRow = selected.filter(bag => bag.is_approve !== 0).map(bag => bag.bag_number);
+            this.selectedRow = selected
+                .filter((bag) => bag.is_approve !== 0)
+                .map((bag) => bag.bag_number)
         },
         openTraceBagDialog() {
-            this.dialogTraceBag = true;
-        }
+            this.dialogTraceBag = true
+        },
     },
     mounted() {
-        window.addEventListener('timezone-changed', this.refresh);
-        this.setDatacolumn();
-        this.getTableData(this.pagination.limit,this.pagination.page,this.tempSearch, this.bagFilter, this.bagOriginFilter, this.routingFilter, this.startDate, this.endDate, this.tipeBagFilter, this.searchByBag, this.filterDateBy, this.statusBagFilter, this.statusBagIrreg, this.bagSourceFilter, this.isMasterbagFilter, this.isArchiveFilter, this.bagStatusInventoryFilter)
+        window.addEventListener('timezone-changed', this.refresh)
+        this.setDatacolumn()
+        this.getTableData(
+            this.pagination.limit,
+            this.pagination.page,
+            this.tempSearch,
+            this.bagFilter,
+            this.bagOriginFilter,
+            this.routingFilter,
+            this.startDate,
+            this.endDate,
+            this.tipeBagFilter,
+            this.searchByBag,
+            this.filterDateBy,
+            this.statusBagFilter,
+            this.statusBagIrreg,
+            this.bagSourceFilter,
+            this.isMasterbagFilter,
+            this.isArchiveFilter,
+            this.bagStatusInventoryFilter
+        )
         this.handlePrintShortcut(this.actionPrintSelected)
     },
     beforeDestroy() {
-        window.removeEventListener('timezone-changed', this.refresh);
-    }
+        window.removeEventListener('timezone-changed', this.refresh)
+    },
 }
 </script>
