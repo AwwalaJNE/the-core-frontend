@@ -71,6 +71,7 @@ import ConnoteDetail from '@/views/inventory/connote-detail'
 import PrintBPIK from '@/views/print/printBPIK'
 import printSPPAP from '@/views/print/printSPPAP'
 import printGeneral from '@/views/print/general'
+import printGeneralDo from '@/views/print/generalDo'
 
 // === Transaction List ===
 import TransactionList from '@/views/transactionList'
@@ -268,12 +269,22 @@ const routes = [
         permission: '',
     },
     {
-        path: '/print/:id/:type/:node_id?/:employee_id?',
+        path: '/print/delivery/:id/:type/:node_id?/:employee_id?',
         name: 'printGeneral',
         component: printGeneral,
         resource_type: resourceLookup['PRINT_GENERAL'].resource_type,
         resource_code: resourceLookup['PRINT_GENERAL'].resource_code,
         resource_name: resourceLookup['PRINT_GENERAL'].resource_name,
+        isMaintenanceMode: false,
+        permission: '',
+    },
+    {
+        path: '/print/do/:id/:type/:node_id?/:sj_type?',
+        name: 'printGeneralDo',
+        component: printGeneralDo,
+        resource_type: resourceLookup['PRINT_GENERAL_DO'].resource_type,
+        resource_code: resourceLookup['PRINT_GENERAL_DO'].resource_code,
+        resource_name: resourceLookup['PRINT_GENERAL_DO'].resource_name,
         isMaintenanceMode: false,
         permission: '',
     },

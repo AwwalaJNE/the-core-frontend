@@ -537,7 +537,7 @@ export default {
             switch (key) {
                 case 'print':
                     this.manifest_do_number = val.manifest_do_number
-                    this.print()
+                    this.print(this.listenBreadcrumbCode)
                     break
                 case 'depart':
                     this.manifest_do_number = val.manifest_do_number
@@ -600,12 +600,13 @@ export default {
         },
         print() {
             let routeData = this.$router.resolve({
-                name: 'printGeneral',
+                name: 'printGeneralDo',
                 params: {
                     id: this.manifest_do_number,
                     type: 'manifest-delivery-order',
                     node_id: this.listenNodeId,
-                },
+                    sj_type: this.listenBreadcrumbCode
+                }
             })
 
             const printWindow = window.open(routeData.href, '_blank', 'noopener')
@@ -626,7 +627,7 @@ export default {
                     {},
                     this.Helper.header()
                 )
-                this.print()
+                this.print(this.listenBreadcrumbCode)
                 this.openNotification('success', null, 'Success', 'Update surat jalan success')
             } catch (err) {
                 this.openNotification(
