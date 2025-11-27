@@ -96,6 +96,7 @@ const resources = [
     { resource_code: "CORE-01-094", resource_type: "PAGE", resource_name: "CLAIM_AND_BURDEN" },
     { resource_code: "CORE-01-095", resource_type: "PAGE", resource_name: "TRACE_FLIGHT" },
     { resource_code: "CORE-01-096", resource_type: "PAGE", resource_name: "TRANSPORT_MANIFEST_VEHICLE" },
+    { resource_code: "CORE-01-097", resource_type: "PAGE", resource_name: "PRINT_GENERAL_DO" },
 ];
 
 
