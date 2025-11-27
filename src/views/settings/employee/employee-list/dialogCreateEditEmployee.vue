@@ -163,7 +163,7 @@ export default {
         setDefaultValue() {
             this.$store.dispatch('SET_EMPLOYEE_EMPLOYEE_PHONE_NUMBER', '62')
             this.$store.dispatch('SET_EMPLOYEE_EMPLOYEE_EMPLOYEMENT_STATUS', 'Fulltime')
-            this.$store.dispatch('SET_EMPLOYEE_EMPLOYEE_RUNSHEET_LIMIT_ITEM', 0)
+            this.$store.dispatch('SET_EMPLOYEE_RUNSHEET_ITEM_LIMIT', 0)
         },
         async getDataEmployeeType() {
             await axios
