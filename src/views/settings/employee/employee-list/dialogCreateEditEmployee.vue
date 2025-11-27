@@ -142,7 +142,7 @@ export default {
         querySearch(queryString, cb) {
             axios
                 .get(
-                    this.URL.node + `?n=${this.listenNodeId}&s=${queryString}`,
+                    this.URL.node_list + `?n=${this.listenNodeId}&s=${queryString}`,
                     this.Helper.header()
                 )
                 .then((res) => {
