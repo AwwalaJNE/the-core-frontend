@@ -91,6 +91,7 @@ export default {
                     value: 'P',
                 },
             ],
+            employee_phone_number: '62',
         }
     },
     computed: {
@@ -113,6 +114,7 @@ export default {
         },
         active: function (val) {
             if (val == true) {
+                this.setDefaultValue()
                 this.getDataEmployeeType()
                 this.getGender()
             }
@@ -158,6 +160,10 @@ export default {
                 .catch((error) => console.log('error', error))
         },
 
+        setDefaultValue() {
+            this.$store.dispatch('SET_EMPLOYEE_EMPLOYEE_PHONE_NUMBER', '62')
+            this.$store.dispatch('SET_EMPLOYEE_EMPLOYEE_EMPLOYEMENT_STATUS', 'Fulltime')
+        },
         async getDataEmployeeType() {
             await axios
                 .get(this.URL.employee_type + `?n=${this.listenNodeId}`, this.Helper.header())
