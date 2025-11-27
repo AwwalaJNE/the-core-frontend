@@ -163,6 +163,7 @@ export default {
         setDefaultValue() {
             this.$store.dispatch('SET_EMPLOYEE_EMPLOYEE_PHONE_NUMBER', '62')
             this.$store.dispatch('SET_EMPLOYEE_EMPLOYEE_EMPLOYEMENT_STATUS', 'Fulltime')
+            this.$store.dispatch('SET_EMPLOYEE_EMPLOYEE_RUNSHEET_LIMIT_ITEM', 0)
         },
         async getDataEmployeeType() {
             await axios
@@ -261,9 +262,6 @@ export default {
                 })
                 .catch((err) => {
                     this.loading = false
-                    this.closeDialog()
-                    this.$emit('refresh')
-                    this.handleClearForm()
                     this.openNotification(
                         'danger',
                         err.response ? err.response.data.code : '',

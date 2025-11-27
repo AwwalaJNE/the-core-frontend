@@ -1032,7 +1032,11 @@ export default {
                     // }
 
                     // filter untuk all status
-                    item.status_delivery = [...status.normal, ...status.rt, ...status.all]
+                    item.status_delivery = [
+                        ...(status?.normal ?? []),
+                        ...(status?.rt ?? []),
+                        ...(status?.all ?? []),
+                    ]
                 }
                 if (item.hasOwnProperty('remarks')) {
                     if (item['status_code'] == null) {
