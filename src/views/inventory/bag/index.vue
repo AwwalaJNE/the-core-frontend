@@ -322,7 +322,7 @@ export default {
                         item_number: this.item_number,
                         type: this.bag_type,
                         auto_open_bag: this.is_auto_open_bag,
-                        is_hub_delivery_validation: this.is_hub_delivery_validation,
+                        is_hub_delivery_validation: this.bag_type === 'pra runsheet' ? false : true,
                         destination: this.bag_type === 'pra runsheet' ? '' : 'all_routing',
                         service: this.bag_type === 'pra runsheet' ? '' : ['ALL_SERVICE'],
                         validation: '',
