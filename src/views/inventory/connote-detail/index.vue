@@ -4,27 +4,30 @@
             <vs-col xs="6" sm="6" lg="9">
                 <div class="titlePage">
                     <breadcrumb />
-                    <h2>{{title}}</h2>
+                    <h2>{{ title }}</h2>
                 </div>
             </vs-col>
             <vs-col xs="4" sm="1" lg="1" align="right">
-                <vs-button 
-                square
-                block
-                @click="actionPrint"
-                >PRINT BPIK</vs-button>
+                <vs-button square block @click="actionPrint">PRINT BPIK</vs-button>
             </vs-col>
         </vs-row>
         <section>
             <vs-row justify="space-around">
-                <vs-col vs-type="flex" vs-justify="center" vs-align="center" :w="`${navActive === 'k-PERMISSIONS'?'4':'12'}`">
+                <vs-col
+                    vs-type="flex"
+                    vs-justify="center"
+                    vs-align="center"
+                    :w="`${navActive === 'k-PERMISSIONS' ? '4' : '12'}`"
+                >
                     <div class="box view">
                         <vs-row justify="space-between">
                             <vs-col xs="6" sm="9" lg="9">
                                 <nav-item :navItem="navItemm" @activeTab="activeTab" />
                             </vs-col>
-                            <vs-col xs="12" sm="3" lg="3" >
-                                <template v-if="filterStatus.length > 1 && navActive === 'k-ACTIVITY'">
+                            <vs-col xs="12" sm="3" lg="3">
+                                <template
+                                    v-if="filterStatus.length > 1 && navActive === 'k-ACTIVITY'"
+                                >
                                     <vs-select
                                         class="m-select"
                                         filter
@@ -33,243 +36,237 @@
                                         :multiple="false"
                                         @change="updateFilterStatus"
                                     >
-                                    <template v-if="filterStatus.length > 1">
-                                        <vs-option
-                                            v-for="(item,key) in filterStatus"
-                                            :key="key"
-                                            :label="item.label"
-                                            :value="item.value">
-                                        {{item.label}}
-                                        </vs-option>
-                                    </template>
-
+                                        <template v-if="filterStatus.length > 1">
+                                            <vs-option
+                                                v-for="(item, key) in filterStatus"
+                                                :key="key"
+                                                :label="item.label"
+                                                :value="item.value"
+                                            >
+                                                {{ item.label }}
+                                            </vs-option>
+                                        </template>
                                     </vs-select>
                                 </template>
                             </vs-col>
-                            
                         </vs-row>
                         <template v-if="navActive === 'k-INFO'">
-                          <vs-row justify="space-between">
-                            <vs-col xs="12" sm="6" lg="4">
-                              <selector-origin
-                                  :title="'From'"
-                                  :valueData="originData"
-                                  :tlc="originTlc"
-                                  @updateInfo="updateInfo" />
-                            </vs-col>
+                            <vs-row justify="space-between">
+                                <vs-col xs="12" sm="6" lg="4">
+                                    <selector-origin
+                                        :title="'From'"
+                                        :valueData="originData"
+                                        :tlc="originTlc"
+                                        @updateInfo="updateInfo"
+                                    />
+                                </vs-col>
 
-                            <vs-col xs="12" sm="6" lg="4">
-                              <selector-detail
-                                  :title="'To'"
-                                  :valueData="destinationData"
-                                  :tlc="destinationTlc"
-                                  @updateInfo="updateInfo" />
-                            </vs-col>
-                            <vs-col xs="12" sm="4" lg="4">
-                              <selector-detail
-                                  :title="'Information'"
-                                  :valueData="informationData"
-                                  @updateInfo="updateInfo" />
-                            </vs-col>
-                          </vs-row>
-
+                                <vs-col xs="12" sm="6" lg="4">
+                                    <selector-detail
+                                        :title="'To'"
+                                        :valueData="destinationData"
+                                        :tlc="destinationTlc"
+                                        @updateInfo="updateInfo"
+                                    />
+                                </vs-col>
+                                <vs-col xs="12" sm="4" lg="4">
+                                    <selector-detail
+                                        :title="'Information'"
+                                        :valueData="informationData"
+                                        @updateInfo="updateInfo"
+                                    />
+                                </vs-col>
+                            </vs-row>
                         </template>
                         <template v-if="navActive === 'k-ACTIVITY'">
-                          <vs-row >
-                            <vs-col vs-align="center" xs="12" sm="3" lg="12">
-                              <select-status-inventory 
-                                ref="activityInventory" 
-                                :isMultiple="false" 
-                                :border="true" 
-                                :filterStatusBy="filterStatusBy"
-                                @updateStatusinventory="updateStatusinventory" 
-                                />
-                            </vs-col>
-                          </vs-row>
+                            <vs-row>
+                                <vs-col vs-align="center" xs="12" sm="3" lg="12">
+                                    <select-status-inventory
+                                        ref="activityInventory"
+                                        :isMultiple="false"
+                                        :border="true"
+                                        :filterStatusBy="filterStatusBy"
+                                        @updateStatusinventory="updateStatusinventory"
+                                    />
+                                </vs-col>
+                            </vs-row>
                         </template>
                         <template v-if="navActive === 'k-BAG-HISTORY'">
-                          <vs-row >
-                            <vs-col vs-align="center" xs="12" sm="3" lg="12">
-                              <select-bag-history />
-                            </vs-col>
-                          </vs-row>
+                            <vs-row>
+                                <vs-col vs-align="center" xs="12" sm="3" lg="12">
+                                    <select-bag-history />
+                                </vs-col>
+                            </vs-row>
                         </template>
                         <template v-if="navActive === 'k-CUSTOMER-VIEW'">
-                          <vs-row >
-                            <vs-col vs-align="center" xs="12" sm="3" lg="12">
-                              <connote-customer-view 
-                                :connoteNumber="connote_number"
-                                :koliNumber="koli_number"
-                              />
-                            </vs-col>
-                          </vs-row>
+                            <vs-row>
+                                <vs-col vs-align="center" xs="12" sm="3" lg="12">
+                                    <connote-customer-view
+                                        :connoteNumber="connote_number"
+                                        :koliNumber="koli_number"
+                                    />
+                                </vs-col>
+                            </vs-row>
                         </template>
                         <template v-if="navActive === 'k-CALIM-BURDEN'">
-                          <vs-row >
-                            <vs-col vs-align="center" xs="12" sm="3" lg="12">
-                                <claim-and-burden 
-                                    :connoteNumber="connote_number"
-                                    :koliNumber="koli_number"
-                                />
-                            </vs-col>
-                          </vs-row>
+                            <vs-row>
+                                <vs-col vs-align="center" xs="12" sm="3" lg="12">
+                                    <claim-and-burden
+                                        :connoteNumber="connote_number"
+                                        :koliNumber="koli_number"
+                                    />
+                                </vs-col>
+                            </vs-row>
                         </template>
                         <template v-if="navActive === 'k-RUNSHEET-HISTORY'">
-                          <vs-row >
-                            <vs-col vs-align="center" xs="12" sm="3" lg="12">
-                                <runsheet-history 
-                                    :connoteNumber="connote_number"
-                                    :koliNumber="koli_number"
-                                />
-                            </vs-col>
-                          </vs-row>
+                            <vs-row>
+                                <vs-col vs-align="center" xs="12" sm="3" lg="12">
+                                    <runsheet-history
+                                        :connoteNumber="connote_number"
+                                        :koliNumber="koli_number"
+                                    />
+                                </vs-col>
+                            </vs-row>
                         </template>
                     </div>
                 </vs-col>
-                
             </vs-row>
         </section>
-
     </div>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master"
-import NavItem from "@/components/navbar/navTab"
-import Breadcrumb from "@/components/breadcrumb/index"
-import SearchInput from "@/components/search/searchInput"
-import selectorDetailVue from "@/views/inventory/connote-detail/connote/selectorDetail"
-import SelectInventoryVue from "@/views/inventory/connote-detail/connote/selectInventoryStatus"
-import SelectBagHistory from "@/views/inventory/connote-detail/connote/selectBagHistory"
-import connoteCustomerView from "@/views/inventory/connote-detail/connote/connoteCustomerView.vue";
-import claimAndBurden from "@/views/inventory/connote-detail/connote/claimBurden.vue";
-import RunsheetHistory from "@/views/inventory/connote-detail/connote/runsheetHistory.vue";
-
+import axios from 'axios'
+import master from '@/mixins/master'
+import NavItem from '@/components/navbar/navTab'
+import Breadcrumb from '@/components/breadcrumb/index'
+import SearchInput from '@/components/search/searchInput'
+import selectorDetailVue from '@/views/inventory/connote-detail/connote/selectorDetail'
+import SelectInventoryVue from '@/views/inventory/connote-detail/connote/selectInventoryStatus'
+import SelectBagHistory from '@/views/inventory/connote-detail/connote/selectBagHistory'
+import connoteCustomerView from '@/views/inventory/connote-detail/connote/connoteCustomerView.vue'
+import claimAndBurden from '@/views/inventory/connote-detail/connote/claimBurden.vue'
+import RunsheetHistory from '@/views/inventory/connote-detail/connote/runsheetHistory.vue'
 
 export default {
-    name:"ConnoteDetail",
+    name: 'ConnoteDetail',
     mixins: [master],
     components: {
-        "nav-item": NavItem,
-        "breadcrumb": Breadcrumb,
-        "connote-customer-view": connoteCustomerView,
-        "claim-and-burden": claimAndBurden,
-        "runsheet-history": RunsheetHistory,
-        "search-input": SearchInput,
-        "selector-origin": selectorDetailVue,
-        "selector-detail": selectorDetailVue,
-        "select-status-inventory": SelectInventoryVue,
-        "select-bag-history": SelectBagHistory,
+        'nav-item': NavItem,
+        breadcrumb: Breadcrumb,
+        'connote-customer-view': connoteCustomerView,
+        'claim-and-burden': claimAndBurden,
+        'runsheet-history': RunsheetHistory,
+        'search-input': SearchInput,
+        'selector-origin': selectorDetailVue,
+        'selector-detail': selectorDetailVue,
+        'select-status-inventory': SelectInventoryVue,
+        'select-bag-history': SelectBagHistory,
     },
     data() {
         return {
             navItemm: [
                 {
-                    label: "INFO",
-                    key: "k-INFO",
-                    title: "Connote Info"
+                    label: 'INFO',
+                    key: 'k-INFO',
+                    title: 'Connote Info',
                 },
                 {
-                    label: "ACTIVITY",
-                    key: "k-ACTIVITY",
-                    title: "Connote Activity"
+                    label: 'ACTIVITY',
+                    key: 'k-ACTIVITY',
+                    title: 'Connote Activity',
                 },
                 {
-                    label: "BAG HISTORY",
-                    key: "k-BAG-HISTORY",
-                    title: "Connote's Bag History"
+                    label: 'BAG HISTORY',
+                    key: 'k-BAG-HISTORY',
+                    title: "Connote's Bag History",
                 },
                 {
-                    label: "CUSTOMER VIEW",
-                    key: "k-CUSTOMER-VIEW",
-                    title: "Connote's Customer View"
+                    label: 'CUSTOMER VIEW',
+                    key: 'k-CUSTOMER-VIEW',
+                    title: "Connote's Customer View",
                 },
                 {
-                    label: "CLAIM CHARGE",
-                    key: "k-CALIM-BURDEN",
-                    title: "Claim and Charge"
+                    label: 'CLAIM CHARGE',
+                    key: 'k-CALIM-BURDEN',
+                    title: 'Claim and Charge',
                 },
                 {
-                    label: "RUNSHEET HISTORY",
-                    key: "k-RUNSHEET-HISTORY",
-                    title: "Runsheet History"
-                }
+                    label: 'RUNSHEET HISTORY',
+                    key: 'k-RUNSHEET-HISTORY',
+                    title: 'Runsheet History',
+                },
             ],
-            navActive: "k-INFO",
+            navActive: 'k-INFO',
             dialogUser: false,
             dialogRole: false,
-            title: "Connote List",
+            title: 'Connote List',
             dataRole: [],
             loadingDataRole: false,
             loading: false,
             dataItem: {},
-            tempSearch: "",
+            tempSearch: '',
             dialogRole: false,
-            refreshInject:"",
-            originData:[],
-            destinationData:[],
-            originTlc:'',
-            destinationTlc:'',
-            informationData:[],
-            statusinventory:"",
-            koli_number:'',
-            connote_number:'',
-            filterStatusBy: "All",
+            refreshInject: '',
+            originData: [],
+            destinationData: [],
+            originTlc: '',
+            destinationTlc: '',
+            informationData: [],
+            statusinventory: '',
+            koli_number: '',
+            connote_number: '',
+            filterStatusBy: 'All',
             filterStatus: [
                 {
                     label: 'All Connote Type',
-                    value: 'All'
+                    value: 'All',
                 },
                 {
                     label: 'Connote Forward',
-                    value: 'FW'
+                    value: 'FW',
                 },
                 {
                     label: 'Connote Return',
-                    value: 'RT'
+                    value: 'RT',
                 },
                 {
                     label: 'Connote Return Failed',
-                    value: 'RF'
-                }
+                    value: 'RF',
+                },
             ],
         }
     },
     methods: {
-        updateStatusBag(key,val) {
-          this.status_bag = val;
+        updateStatusBag(key, val) {
+            this.status_bag = val
         },
-        updateStatusinventory(key,val) {
-          this.statusinventory = val;
+        updateStatusinventory(key, val) {
+            this.statusinventory = val
         },
-        updateInfo(key,val) {
-
-        },
-        refresh(){
+        updateInfo(key, val) {},
+        refresh() {
             let el = this.refreshInject
             this.$refs[el].refresh() // trigger function refresh form dari luar component list
         },
 
         activeTab(val) {
-            this.filterStatusBy = 'All';
+            this.filterStatusBy = 'All'
             this.navActive = val
-            let item = this.navItemm.filter(item => {
+            let item = this.navItemm.filter((item) => {
                 return item.key == val
             })
             this.title = item[0].title
-
-
         },
-        openDialog(){
-            switch(this.navActive) {
-                case "k-INFO":
+        openDialog() {
+            switch (this.navActive) {
+                case 'k-INFO':
                     this.dialogUser = true
-                    break;
-                case "k-ACTIVITY":
+                    break
+                case 'k-ACTIVITY':
                     this.dialogRole = true
-                    break;
+                    break
                 default:
-                    // code block
+                // code block
             }
             this.refreshInject = this.navActive
         },
@@ -279,200 +276,207 @@ export default {
         closeDialogRole() {
             this.dialogRole = false
         },
-        getParamRoute(){
-          if(this.$route.params.id){
-            this.koli_number = this.$route.params.id
-          }
+        getParamRoute() {
+            if (this.$route.params.id) {
+                this.koli_number = this.$route.params.id
+            }
         },
         async getConnote() {
             await axios
-                .get(this.URL.connote +`/${this.koli_number}?n=${this.listenNodeId}`,
-                this.Helper.header())
-                .then(res => {
-                    let response = res.data.data;
+                .get(
+                    this.URL.connote + `/${this.koli_number}?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
+                .then((res) => {
+                    let response = res.data.data
                     this.connote_number = response.connote_number
-                    let dataorigin={};
-                    let dataDestination={}; 
-                    let dataInformation={}; 
+                    let dataorigin = {}
+                    let dataDestination = {}
+                    let dataInformation = {}
                     dataorigin = [
                         {
-                            key : 'Nama',
-                            value: response.connote_shipper_name
+                            key: 'Nama',
+                            value: response.connote_shipper_name,
                         },
                         {
-                            key : 'Phone',
-                            value: response.connote_shipper_phone_number
+                            key: 'Phone',
+                            value: response.connote_shipper_phone_number,
                         },
                         {
-                            key : 'Alamat',
-                            value: response.connote_shipper_street_address
+                            key: 'Alamat',
+                            value: response.connote_shipper_street_address,
                         },
                         {
-                            key : 'Kode Pos',
+                            key: 'Kode Pos',
                             value: response.connote_shipper_zip_code,
-                            width: 6
+                            width: 6,
                         },
                         {
-                            key : 'Kode Asal',
+                            key: 'Kode Asal',
                             value: response.connote_shipper_tariff_code,
-                             width: 6
-                        }
+                            width: 6,
+                        },
                     ]
-                    this.originData = dataorigin  
-                    this.originTlc = response.connote_shipper_tlc  
-                    this.destinationTlc = response.connote_receiver_tlc  
-   
+                    this.originData = dataorigin
+                    this.originTlc = response.connote_shipper_tlc
+                    this.destinationTlc = response.connote_receiver_tlc
+
                     dataDestination = [
                         {
-                            key : 'Nama',
-                            value: response.connote_receiver_name
+                            key: 'Nama',
+                            value: response.connote_receiver_name,
                         },
                         {
-                            key : 'Phone',
-                            value: response.connote_receiver_phone_number
+                            key: 'Phone',
+                            value: response.connote_receiver_phone_number,
                         },
                         {
-                            key : 'Alamat',
-                            value: response.connote_receiver_street_address
+                            key: 'Alamat',
+                            value: response.connote_receiver_street_address,
                         },
                         {
-                            key : 'Kode Pos',
+                            key: 'Kode Pos',
                             value: response.connote_receiver_zip_code,
-                            width: 6
+                            width: 6,
                         },
                         {
-                            key : 'Kode Asal',
+                            key: 'Kode Asal',
                             value: response.connote_receiver_tariff_code,
-                            width: 6
-                        }
-                    ];
+                            width: 6,
+                        },
+                    ]
                     this.destinationData = dataDestination
-                    let special_tariff = response.special_tariff ? response.special_tariff : 0;
-                    let total =parseInt(response.amount_total_price)
-                    let packing=[
+                    let special_tariff = response.special_tariff ? response.special_tariff : 0
+                    let total = parseInt(response.amount_total_price)
+                    let packing = [
                         {
-                            key:'Packing Kayu',
-                            value:response.is_packing_kayu,
+                            key: 'Packing Kayu',
+                            value: response.is_packing_kayu,
                         },
                         {
-                            key:'Insurance Admin',
-                            value:this.moneyformat(response.amount_adm_insurance),
+                            key: 'Insurance Admin',
+                            value: this.moneyformat(response.amount_adm_insurance),
                         },
                         {
-                            key:'Insurance',
-                            value:this.moneyformat(response.amount_insurance),
+                            key: 'Insurance',
+                            value: this.moneyformat(response.amount_insurance),
                         },
                         {
-                            key:'Surcharges',
-                            value:this.moneyformat(response.amount_surcharge),
+                            key: 'Surcharges',
+                            value: this.moneyformat(response.amount_surcharge),
                         },
-                        
+
                         {
-                            key:'Subtotal',
-                            value:this.moneyformat(response.amount_tariff),
-                        },
-                        {
-                            key:'Special Tariff Discount',
-                            value:this.moneyformat(response.amount_discount),
+                            key: 'Subtotal',
+                            value: this.moneyformat(response.amount_tariff),
                         },
                         {
-                            key:'Total',
-                            value:this.moneyformat(total),
-                        }
-                    ];
+                            key: 'Special Tariff Discount',
+                            value: this.moneyformat(response.amount_discount),
+                        },
+                        {
+                            key: 'Total',
+                            value: this.moneyformat(total),
+                        },
+                    ]
                     dataInformation = [
                         {
-                            key : 'Routing Type',
-                            value: response.routing_type || "-",
-                            width: 6
+                            key: 'Routing Type',
+                            value: response.routing_type?.toUpperCase() || '-',
+                            width: 6,
                         },
                         {
-                            key : 'Deskripsi barang',
-                            value: response.description || "-",
-                            width: 6
+                            key: 'Deskripsi barang',
+                            value: response.description?.toUpperCase() || '-',
+                            width: 6,
                         },
                         {
-                            key : 'Insured Value',
-                            value: response.amount_insurance ? 'Rp '+ response.amount_insurance : 'Rp 0,00',
-                            width: 6
+                            key: 'Insured Value',
+                            value: response.amount_insurance
+                                ? 'Rp ' + response.amount_insurance
+                                : 'Rp 0,00',
+                            width: 6,
                         },
                         {
-                            key : 'kategori Barang',
-                            value: response.connote_category,
-                            width: 6
+                            key: 'kategori Barang',
+                            value: response.connote_category?.toUpperCase(),
+                            width: 6,
                         },
                         {
-                            key : 'Service',
+                            key: 'Service',
                             value: response.connote_service_code,
-                            width: 6
+                            width: 6,
                         },
                         {
-                            key : 'Remark',
-                            value: response.remarks ? response.remarks : 'N/A',
-                            width: 6
+                            key: 'Remark',
+                            value: response.remarks?.toUpperCase() || 'N/A',
+                            width: 6,
                         },
                         {
-                            key : 'Actual Weight',
+                            key: 'Actual Weight',
                             value: response.connote_actual_weight + ' Kg',
-                            width: 6
+                            width: 6,
                         },
                         {
-                            key : 'Charged Weight',
+                            key: 'Charged Weight',
                             value: response.connote_chargeable_weight + ' Kg',
-                            width: 6
+                            width: 6,
                         },
                         {
-                            key : 'Jumlah',
+                            key: 'Jumlah',
                             value: response.koli_qty + ' Pcs',
-                            width: 6
+                            width: 6,
                         },
                         {
-                            key : 'Amount COD',
-                            value: 'Rp '+ Intl.NumberFormat('en-GB').format(response.amount_cod),
-                            width: 6
+                            key: 'Amount COD',
+                            value: 'Rp ' + Intl.NumberFormat('en-GB').format(response.amount_cod),
+                            width: 6,
                         },
                         {
-                            key : 'Packing Kayu',
+                            key: 'Packing Kayu',
                             value: packing,
                         },
-                        
-                       
-                    ]  
+                    ]
                     this.informationData = dataInformation
-
-                }).catch(err => {
+                })
+                .catch((err) => {
                     this.loading = false
-                    this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed to populate list', err)
+                    this.openNotification(
+                        'danger',
+                        err.response ? err.response.data.code : '',
+                        'Failed to populate list',
+                        err
+                    )
                 })
         },
-        actionPrint(){
-            let routeData = this.$router.resolve({ 
-                name: 'printGeneral', 
-                params: { 
-                    'id': this.connote_number, 
-                    'type': 'bpik',
-                    'node_id': this.listenNodeId
-                } 
-            });
-            
-            const printWindow = window.open(routeData.href, '_blank', 'noopener');
-      
+        actionPrint() {
+            let routeData = this.$router.resolve({
+                name: 'printGeneral',
+                params: {
+                    id: this.connote_number,
+                    type: 'bpik',
+                    node_id: this.listenNodeId,
+                },
+            })
+
+            const printWindow = window.open(routeData.href, '_blank', 'noopener')
+
             if (printWindow) {
-                printWindow.onload = function() {
-                    printWindow.print();
-                    printWindow.onafterprint = () => printWindow.close();
-                };
+                printWindow.onload = function () {
+                    printWindow.print()
+                    printWindow.onafterprint = () => printWindow.close()
+                }
             }
         },
         updateFilterStatus(key) {
-            this.filterStatusBy = key;
-            this.$refs.activityInventory.refresh();
+            this.filterStatusBy = key
+            this.$refs.activityInventory.refresh()
         },
     },
-    mounted(){
-        this.getParamRoute();
-        this.getConnote();
+    mounted() {
+        this.getParamRoute()
+        this.getConnote()
         this.handlePrintShortcut(this.actionPrint)
-    }
+    },
 }
 </script>
