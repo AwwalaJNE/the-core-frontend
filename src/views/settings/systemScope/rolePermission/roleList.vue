@@ -2,20 +2,20 @@
     <div>
         <vs-row>
             <vs-col xs="12" sm="6" lg="6" v-if="searchParams.length > 1">
-                <select-search-by 
-                    :border="true" 
-                    :isMultiple="false" 
-                    :selectedValue="searchBy" 
-                    :valueData="searchParams" 
-                    @updateSearchBy="updateSearchBy" 
+                <select-search-by
+                    :border="true"
+                    :isMultiple="false"
+                    :selectedValue="searchBy"
+                    :valueData="searchParams"
+                    @updateSearchBy="updateSearchBy"
                 />
             </vs-col>
             <vs-col xs="12" sm="6" lg="6">
-                <search-input 
-                    ref="searchInput" 
-                    :placeholder="searchPlaceholder" 
+                <search-input
+                    ref="searchInput"
+                    :placeholder="searchPlaceholder"
                     :isNumeric="searchByDataType"
-                    @searchValue="searchValue" 
+                    @searchValue="searchValue"
                 />
             </vs-col>
         </vs-row>
@@ -26,7 +26,7 @@
                 </div>
                 <div class="roles">
                     <div
-                        v-for="(role) in item.role"
+                        v-for="role in item.role"
                         :key="role.app_role_id"
                         class="role"
                         :class="{ selected: selectedRoleId === role.app_role_id }"
@@ -40,23 +40,22 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
+import master from '@/mixins/master'
+import moment from 'moment'
 
-import axios from "axios";
-import master from "@/mixins/master";
-import moment from "moment";
-
-import SearchInput from "@/components/search/searchInput";
-import SelectSearchBy from "@/components/search/selectSearchBy";
+import SearchInput from '@/components/search/searchInput'
+import SelectSearchBy from '@/components/search/selectSearchBy'
 
 export default {
-    name:"role-list",
+    name: 'role-list',
     mixins: [master],
     props: {
-        getRoleInfo: Function
+        getRoleInfo: Function,
     },
     components: {
-        "search-input": SearchInput,
-        "select-search-by": SelectSearchBy
+        'search-input': SearchInput,
+        'select-search-by': SelectSearchBy,
     },
     data() {
         return {
@@ -65,44 +64,55 @@ export default {
             pagination: {
                 limit: 20,
                 page_size: 1,
-                page: 1
+                page: 1,
             },
             tempSearch: '',
-            searchPlaceholder: "Search All App Role",
-            searchBy: "ALL_APPLICATION",
+            searchPlaceholder: 'Search All App Role',
+            searchBy: 'ALL_APPLICATION',
             searchByDataType: false,
             searchParams: [
                 {
-                    label: "All App Role",
-                    value: "ALL_APPLICATION"
+                    label: 'All App Role',
+                    value: 'ALL_APPLICATION',
                 },
             ],
-            searchQuery: "",
+            searchQuery: '',
             selectedRoleId: null,
         }
     },
     methods: {
         async getApplicationList() {
-            this.loading = true;
+            this.loading = true
             try {
-                const res = await axios.get(`${this.URL.application_list}?n=${this.listenNodeId}&sort_order=desc&limit=1000&page=1&search_by=${this.listenUserApplicationName || 'ALL_APPLICATION'}`, this.Helper.header());
+                const res = await axios.get(
+                    `${this.URL.application_list}?n=${
+                        this.listenNodeId
+                    }&sort_order=desc&limit=1000&page=1&search_by=${
+                        this.listenUserApplicationName || 'ALL_APPLICATION'
+                    }`,
+                    this.Helper.header()
+                )
 
-                if(res.data.data.length > 0) {
+                if (res.data.data.length > 0) {
                     let arr = []
-                    res.data.data.map(item => {
+                    res.data.data.map((item) => {
                         let obj = {}
-                        obj["label"] = item.lov_value
-                        obj["value"] = item.lov_value
+                        obj['label'] = item.lov_value
+                        obj['value'] = item.lov_value
 
                         arr.push(obj)
                     })
 
-                    
-                    this.searchParams = [...this.searchParams, ...arr];
+                    this.searchParams = [...this.searchParams, ...arr]
                 }
             } catch (err) {
                 this.redirectError(err)
-                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Failed',
+                    err?.response?.data?.message || 'Something went wrong'
+                )
             } finally {
                 this.loading = false
                 this.refresh()
@@ -113,60 +123,73 @@ export default {
                 if (!this.refLoading && this.$el) {
                     this.refLoading = this.$vs.loading({
                         target: this.$el,
-                        type: "scale",
-                        text: "Loading...",
-                        background: "#EAEAEA",
-                    });
+                        type: 'scale',
+                        text: 'Loading...',
+                        background: '#EAEAEA',
+                    })
                 }
             } else if (this.refLoading) {
-                this.refLoading.close();
-                this.refLoading = null;
+                this.refLoading.close()
+                this.refLoading = null
             }
         },
-        refresh(){
-            this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch, this.searchBy)
+        refresh() {
+            this.getTableData(
+                this.pagination.limit,
+                this.pagination.page,
+                this.tempSearch,
+                this.searchBy
+            )
         },
         async getTableData(limit, page, q, searchBy) {
-            this.toggleLoading(true);
+            this.toggleLoading(true)
 
-            let query = q || '';
-            
+            let query = q || ''
+
             try {
-                const res = await axios.get(`${this.URL.application_role_list}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&search_by=${searchBy}`, this.Helper.header());
+                const res = await axios.get(
+                    `${this.URL.application_role_list}?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&search_by=${searchBy}`,
+                    this.Helper.header()
+                )
 
-                if(res.data.data.length > 0) {
-                    this.dataTable = res.data.data;
+                if (res.data.data.length > 0) {
+                    this.dataTable = res.data.data
                     this.pagination = {
                         page: res.data.meta.current_page,
                         limit: parseInt(res.data.meta.per_page, 10),
                         page_size: res.data.meta.last_page,
-                    };
+                    }
                 } else {
-                    this.dataTable = [];
+                    this.dataTable = []
                 }
             } catch (err) {
                 this.redirectError(err)
-                this.openNotification('danger', err?.response?.data?.code || '', 'Failed', err?.response?.data?.message || 'Something went wrong');
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Failed',
+                    err?.response?.data?.message || 'Something went wrong'
+                )
             } finally {
-                this.toggleLoading(false);
+                this.toggleLoading(false)
             }
         },
         selectRole(role, app) {
-            this.selectedRoleId = role.app_role_id;
+            this.selectedRoleId = role.app_role_id
             this.$emit('getRoleInfo', role.app_role_id, app)
         },
-        searchValue (val) {
+        searchValue(val) {
             this.tempSearch = val
-            this.refresh();
+            this.refresh()
         },
         updateSearchBy(key, val, dataType) {
-            this.searchBy = val;
-            this.searchPlaceholder = key;
-            this.searchByDataType = dataType;
+            this.searchBy = val
+            this.searchPlaceholder = key
+            this.searchByDataType = dataType
         },
     },
     mounted() {
-        this.getApplicationList();
+        this.getApplicationList()
     },
 }
 </script>
@@ -210,5 +233,4 @@ export default {
         }
     }
 }
-
 </style>
