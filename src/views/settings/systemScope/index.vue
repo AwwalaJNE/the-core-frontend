@@ -35,27 +35,21 @@
                         </vs-row>
                     </div>
                     <template v-if="navActive === 'application-role'">
-                        <transition name="slide-fade">
-                            <application-role :ref="navActive" />
-                        </transition>
+                        <application-role :ref="navActive" />
                     </template>
                     <template v-else-if="navActive === 'role-permission'">
-                        <transition name="slide-fade">
-                            <role-list :ref="navActive" @getRoleInfo="getRoleInfo" />
-                        </transition>
+                        <role-list :ref="navActive" @getRoleInfo="getRoleInfo" />
                     </template>
                 </div>
             </vs-col>
             <vs-col v-if="navActive === 'role-permission'" :w="8">
-                <transition name="slide-fade">
-                    <div class="box">
-                        <edit-list
-                            ref="role_permission"
-                            :app="listenApp"
-                            :app_role_id="listenAppRoleId"
-                        />
-                    </div>
-                </transition>
+                <div class="box">
+                    <edit-list
+                        ref="role_permission"
+                        :app="listenApp"
+                        :app_role_id="listenAppRoleId"
+                    />
+                </div>
             </vs-col>
         </section>
         <dialog-create-edit-application-role
