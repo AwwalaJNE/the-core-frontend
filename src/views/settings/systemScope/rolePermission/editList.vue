@@ -3,6 +3,7 @@
         <table-master
             hideColumnKey="setting-application-role-detail"
             ref="tableMaster"
+            :key="key"
             :dataTable="dataTable"
             :dataColumn="dataColumn"
             :tableLoading="loading"
@@ -57,26 +58,13 @@ export default {
             input_label: '',
             isAllChecked: false,
             changes_form: [],
+            key: '',
         }
     },
     watch: {
         app_role_id: function (val) {
             if (val !== undefined) {
                 this.refresh()
-            }
-        },
-        dataColumn: function (val) {
-            if (val !== undefined) {
-                this.$nextTick(() => {
-                    this.dataColumn = val
-                })
-            }
-        },
-        dataTable: function (val) {
-            if (val !== undefined) {
-                this.$nextTick(() => {
-                    this.dataTable = val
-                })
             }
         },
     },
@@ -277,7 +265,9 @@ export default {
                         selected: item.feature_scope_id ? true : false,
                     }))
                     this.dataTable = arr
-                    this.dataColumn = this.getColumnDefinition('others')
+                    this.dataColumn = JSON.parse(JSON.stringify(this.getColumnDefinition('others')))
+                    this.key = 'others'
+
                     this.pagination = {
                         page: res.data.meta.current_page,
                         limit: parseInt(res.data.meta.per_page, 10),
@@ -318,7 +308,10 @@ export default {
                         selected: item.feature_scope_id ? true : false,
                     }))
                     this.dataTable = arr
-                    this.dataColumn = this.getColumnDefinition('hide_column')
+                    this.dataColumn = JSON.parse(
+                        JSON.stringify(this.getColumnDefinition('hide_column'))
+                    )
+                    this.key = 'hide_column'
                     this.dataTableSelected = this.dataTable.filter((item) => item.selected)
                     this.isAllChecked = this.dataTable.every((item) => item.selected)
                 } else {
