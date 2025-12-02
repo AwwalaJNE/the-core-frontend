@@ -32,7 +32,6 @@
                 <vs-col xs="12" sm="6" lg="6">
                     <div class="box-v1" style="gap: 1em">
                         <template v-if="is_prealert">
-                            <h4 align="left">List of Bags</h4>
                             <vs-row style="margin-top: 2em">
                                 <vs-col xs="12" sm="12" lg="12">
                                     <vs-input
@@ -157,7 +156,7 @@
                 <vs-col xs="12" sm="6" lg="6">
                     <div class="box-v1">
                         <div class="header-remark-bar">
-                            <h4 align="left">Receiving Detail</h4>
+                            <h4 align="left">List of Items</h4>
                             <template v-if="dataTableProp.length > 0">
                                 <vs-button
                                     :data-testid="`remark-button`"
