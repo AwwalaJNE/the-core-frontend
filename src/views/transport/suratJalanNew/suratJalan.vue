@@ -245,19 +245,24 @@ export default {
                     key: 'orion_number',
                     width: 'xxxs',
                 },
-                  ...(this.listenBreadcrumbCode === 'DO'
-                ? [
-                        {
-                            label: `No RDO`,
-                            key: 'rdo',
-                            width: 'xxxs'
-                        }
-                    ]
-                : []),
+                ...(this.listenBreadcrumbCode === 'DO'
+                    ? [
+                          {
+                              label: `No RDO`,
+                              key: 'rdo',
+                              width: 'xxxs',
+                          },
+                      ]
+                    : []),
                 {
                     label: 'Document Type',
                     key: 'document_type',
                     width: 'xxxs',
+                },
+                {
+                    label: 'Created',
+                    key: 'created_at',
+                    width: 'auto',
                 },
                 {
                     label: 'Created By',
@@ -605,8 +610,8 @@ export default {
                     id: this.manifest_do_number,
                     type: 'manifest-delivery-order',
                     node_id: this.listenNodeId,
-                    sj_type: this.listenBreadcrumbCode
-                }
+                    sj_type: this.listenBreadcrumbCode,
+                },
             })
 
             const printWindow = window.open(routeData.href, '_blank', 'noopener')
