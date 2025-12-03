@@ -62,8 +62,7 @@
                         </template>
 
                         <template v-else>
-                            <h4 align="left">Scan Item</h4>
-                            <vs-row style="gap: 2em">
+                            <vs-row style="gap: 2em; margin-top: 2em">
                                 <vs-col xs="12" sm="12" lg="12">
                                     <vs-input
                                         border
