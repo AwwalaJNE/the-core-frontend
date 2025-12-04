@@ -396,14 +396,8 @@ export default {
                 item.is_missroute = item.is_missroute === true ? 1 : 0
             })
 
-            const etd_ori = val.etd
-            const eta_ori = val.eta
-
             this.etd = this.formatTimezone(val.etd)
             this.eta = this.formatTimezone(val.eta)
-
-            val.etd = this.formatTimezone(etd_ori) // NOTES: CHANGE TO CURRENT TIMEZONE
-            val.eta = this.formatTimezone(eta_ori) // NOTES: CHANGE TO CURRENT TIMEZONE
 
             this.total_weight = val.total_weight
             this.editData = val
@@ -421,8 +415,8 @@ export default {
                 node_id_destination: val.node_id_destination,
                 vehicle_id: val.vehicle_id,
                 pic_employee_id: val.pic_employee_id,
-                etd: etd_ori,
-                eta: eta_ori,
+                etd: val.etd,
+                eta: val.eta,
                 max_weight: val.max_weight,
                 manifest_lov: val.manifest_lov,
                 item_no: val.item_number,
