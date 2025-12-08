@@ -235,78 +235,42 @@ export default {
             this.setRoutePageHistory(this.$route.meta, false)
         },
         async updateNode(key, val) {
-            let node = this.datanode.filter((item) => item.value == val)
-            let form = {
-                node_id: node[0].value,
-            }
-            await axios
-                .patch(
-                    `${this.URL.user}/${this.listenActiveUser['user_id']}/node?n=${this.listenNodeId}`,
-                    form,
-                    this.Helper.header()
-                )
-                .then((res) => {
-                    this.$ls.set('node_id', node[0])
-                    this.$store.dispatch(`SET_USER_N`, node[0])
-                    this.openNotification(
-                        'success',
-                        null,
-                        'Success!',
-                        res.data.message || 'Node Updated!'
-                    )
-                    this.$router.go(0)
-                })
-                .catch((err) => {
-                    this.openNotification(
-                        'danger',
-                        err.response ? err.response.data.code : '',
-                        'Failed!',
-                        'Failed to change data node!'
-                    )
-                })
+            this.openNotification(
+                'danger',
+                null,
+                'Failed!',
+                'Failed to change data node. This feature is not available yet.'
+            )
+            // let node = this.datanode.filter((item) => item.value == val)
+            // let form = {
+            //     node_id: node[0].value,
+            // }
+            // await axios
+            //     .patch(
+            //         `${this.URL.user}/${this.listenActiveUser['user_id']}/node?n=${this.listenNodeId}`,
+            //         form,
+            //         this.Helper.header()
+            //     )
+            //     .then((res) => {
+            //         this.$ls.set('node_id', node[0])
+            //         this.$store.dispatch(`SET_USER_N`, node[0])
+            //         this.openNotification(
+            //             'success',
+            //             null,
+            //             'Success!',
+            //             res.data.message || 'Node Updated!'
+            //         )
+            //         this.$router.go(0)
+            //     })
+            //     .catch((err) => {
+            //         this.openNotification(
+            //             'danger',
+            //             err.response ? err.response.data.code : '',
+            //             'Failed!',
+            //             'Failed to change data node!'
+            //         )
+            //     })
         },
-        // async getListNode() {
-        //     await axios
-        //         .get(
-        //             `${this.URL.user}/${this.listenActiveUser['user_id']}/node?n=${this.listenNodeId}`, this.Helper.header()
-        //         )
-        //         .then((res) => {
-        //             let arr = []
-        //             let node = res.data.data
-        //                 node.length > 0 && node.map(item => {
-        //                     let obj = {}
-        //                     obj["label"] = item.node_name
-        //                     obj["value"] = String(item.node_id)
-        //                     obj["node_code"] = String(item.node_code)
-        //                     obj["is_currently_used"] = item.is_currently_used
-
-        //                     arr.push(obj)
-        //             })
-
-        //             this.datanode = arr
-        //             let current_node = this.datanode.find(node => node.is_currently_used).value
-
-        //             let n = this.$ls.get('node_id')
-        //             if(n == null) {
-        //                 this.$ls.set('node_id', this.datanode[0])
-        //                 this.$ls.set('permissions',res.data.permission)
-        //                 this.selectedNode = String(current_node)
-        //                 this.$store.dispatch(`SET_USER_N`, this.datanode[0])
-        //             } else {
-        //                 this.$ls.set('permissions',res.data.permission)
-        //                 this.$store.dispatch(`SET_USER_N`, n)
-        //                 this.selectedNode = String(n.value)
-        //             }
-        //         })
-        //         .catch((err) => {
-        //             this.openNotification(
-        //                 "danger",
-        //                 err.response ? err.response.data.code : '',
-        //                 "Failed!",
-        //                 "Failed to get list data node!"
-        //             );
-        //         });
-        // },
         async getTimezone() {
             this.loading = true
 
