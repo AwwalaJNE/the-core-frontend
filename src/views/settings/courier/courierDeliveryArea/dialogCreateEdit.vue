@@ -16,10 +16,15 @@
                     typeForm="courier_delivery_area"
                     :asynchronousSelect_url="autoCompleteUrl"
                     :dataItem="listenDataItem"
+                    :selectValue="input_value"
+                    :selectLabel="input_label"
+                    :isNestedData="isNestedData"
+                    :nestedKey="nestedKey"
                     :tableKey="tableKey"
                     :data-testid="`form`"
                     @formData="formData"
                     @onChangeCustom="onChangeCustom"
+                    @inputFocus="inputFocus"
                 />
             </div>
         </template>
@@ -85,15 +90,15 @@ export default {
             courier_id: '',
             autoCompleteUrl: null,
             input_value: '',
+            input_label: '',
             tableKey: '',
             loading: false,
+            isNestedData: false,
+            nestedKey: '',
         }
     },
     computed: {
         listenActive() {
-            if (this.active) {
-                this.getDataCourier()
-            }
             return this.active
         },
         listenTitle() {
@@ -114,12 +119,19 @@ export default {
         },
     },
     methods: {
+        inputFocus(obj, val, info) {
+            if (obj.key === 'courier_id') {
+                this.autoCompleteUrl = `${this.URL.courier_delivery}/list?n=${this.listenNodeId}`
+                this.input_value = 'employee_id'
+                this.input_label = 'employee_name'
+                this.isNestedData = false
+            }
+        },
         async getDataDetail(val) {
             this.areaType(val.area_type)
 
             this.courier_id = val.courier_id
 
-            await this.getDataCourier()
             this.$store.dispatch('SET_COURIER_DELIVERY_AREA_COURIER_ID', parseInt(val.courier_id))
             this.$store.dispatch('SET_COURIER_DELIVERY_AREA_COURIER_ID_isDisabled', true)
         },
@@ -137,46 +149,6 @@ export default {
         areaType(val) {
             this.autoCompleteUrl = `${this.URL.geolocation_search_by}?n=${this.listenNodeId}&search_by=${val}&sort_order=desc&page=1`
             this.tableKey = val
-        },
-        async getDataCourier() {
-            this.loading = true
-
-            try {
-                const res = await axios.get(
-                    `${this.URL.courier_delivery}/list?n=${this.listenNodeId}`,
-                    this.Helper.header()
-                )
-
-                if (res.data.data.length > 0) {
-                    let arr = res.data.data
-
-                    arr = arr.map((item) => ({
-                        label: item.employee_name + ' ( ' + item.employee_code + ' ) ',
-                        value: item.employee_id,
-                        item: item,
-                    }))
-
-                    this.$store.dispatch('SET_COURIER_DELIVERY_AREA_COURIER_ID_ArrData', arr)
-                } else {
-                    this.$store.dispatch('SET_COURIER_DELIVERY_AREA_COURIER_ID', '')
-                    this.$store.dispatch('SET_COURIER_DELIVERY_AREA_COURIER_ID_ArrData', [])
-                    this.openNotification(
-                        'warn',
-                        null,
-                        'Courier data is empty!',
-                        ' Please create a new courier delivery'
-                    )
-                }
-            } catch (err) {
-                this.openNotification(
-                    'danger',
-                    err?.response?.data?.code || '',
-                    'Failed',
-                    err?.response?.data?.message || 'Something went wrong'
-                )
-            } finally {
-                this.loading = false
-            }
         },
         async handleSubmitData() {
             this.loading = true
