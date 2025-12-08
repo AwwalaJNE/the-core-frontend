@@ -131,9 +131,11 @@ export default {
             this.areaType(val.area_type)
 
             this.courier_id = val.courier_id
+            // this.$store.dispatch('SET_COURIER_DELIVERY_AREA_COURIER_ID', parseInt(val.courier_id))
+            this.$store.dispatch('SET_COURIER_DELIVERY_AREA_COURIER_ID_isDisabled', true)
 
             this.$store.dispatch('SET_COURIER_DELIVERY_AREA_COURIER_ID', parseInt(val.courier_id))
-            this.$store.dispatch('SET_COURIER_DELIVERY_AREA_COURIER_ID_isDisabled', true)
+            this.$store.dispatch('SET_COURIER_DELIVERY_AREA_COURIER_ID_ArrData', [{label: val.courier_name, value: val.courier_id}])
         },
         formData(form) {
             const { id, ...formWithoutId } = form
