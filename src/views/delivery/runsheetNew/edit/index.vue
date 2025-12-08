@@ -145,7 +145,7 @@
                                                 :rules="''"
                                                 :valueData="courier_arr"
                                                 :selectedValue="selectedCourier"
-                                                :isMultiple="false"
+                                                :isSingleInput="true"
                                                 :disabled="disabledApprove"
 
                                                 :url="autoCompleteCourierUrl"
@@ -157,6 +157,7 @@
 
                                                 @updateValue="updateValueCourier"
                                                 @search="handleSearchCourier"
+                                                @inputFocus="onCourierFocus"
                                             />
                                         </div>
                                     </template>
@@ -432,6 +433,13 @@ export default {
         }, 1000)
     },
     methods: {
+        onCourierFocus() {
+            const newUrl = `${this.URL.courier_delivery}/list?n=${this.listenNodeId}`
+
+            if (this.autoCompleteCourierUrl !== newUrl) {
+                this.autoCompleteCourierUrl = newUrl
+            }
+        },
         setActive(refName) {
             if (['formInputConnote', 'formInputBag', 'formRemoveConnote'].includes(refName)) {
                 this.setActiveInput(refName, null, () => this.dialogValidateTracingActive)
@@ -579,17 +587,10 @@ export default {
                 this.setRoutePageHistory(this.$route.meta, false)
             }
         },
-        async handleSearchCourier(keyword) {
+        handleSearchCourier(keyword) {
+            // cukup simpan keyword (kalau komponen butuh)
             this.lastKeywordCourier = keyword
-
-            if (!keyword || keyword.length < 3) {
-                this.courier_arr = []
-                this.autoCompleteCourierUrl = ''
-                return
-            }
-            console.log('wkkkk')
-            this.autoCompleteCourierUrl =
-                `${this.URL.courier_delivery}/list?n=${this.listenNodeId}`
+            // JANGAN ubah autoCompleteCourierUrl di sini
         },
         updateValueBag(val) {
             this.form.bag_number = this.item_bag
@@ -897,7 +898,7 @@ export default {
                 )
             } finally {
                 this.clearInputs()
-                this.setFocus()
+                // this.setFocus()
                 this.loadingRunsheet = false
             }
         },

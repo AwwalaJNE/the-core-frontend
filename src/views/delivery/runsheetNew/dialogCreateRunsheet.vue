@@ -18,7 +18,7 @@
                     :rules="''"
                     :valueData="courier_arr"
                     :selectedValue="selectedCourier"
-                    :isMultiple="false"
+                    :isSingleInput="true"
                     :url="autoComplateUrl"
                     :selectValue="input_value"
                     :selectLabel="input_label"
