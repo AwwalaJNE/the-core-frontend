@@ -138,15 +138,25 @@
                                 <vs-col xs="12" sm="4" lg="4">
                                     <template>
                                         <div>
-                                            <selector
+                                            <asynchronous-select
                                                 ref="courier"
+                                                name="Courier"
                                                 formKey="courier"
                                                 :rules="''"
                                                 :valueData="courier_arr"
                                                 :selectedValue="selectedCourier"
                                                 :isMultiple="false"
                                                 :disabled="disabledApprove"
+
+                                                :url="autoCompleteCourierUrl"
+                                                :selectValue="input_value"
+                                                :selectLabel="input_label"
+                                                :isNestedData="isNestedData"
+                                                :nestedKey="nestedKey"
+                                                :searchKeyword="lastKeywordCourier"
+
                                                 @updateValue="updateValueCourier"
+                                                @search="handleSearchCourier"
                                             />
                                         </div>
                                     </template>
@@ -303,6 +313,7 @@ import DialogConfirmCustom from '@/views/delivery/runsheetNew/edit/dialogConfirm
 import DialogReCheckConnoteZone from '@/views/delivery/runsheetNew/edit/dialogReCheckConnoteZone'
 import DialogReCheckConnoteSla from '@/views/delivery/runsheetNew/edit/dialogReCheckConnoteSla'
 import RunsheetInformation from '@/views/delivery/runsheetNew/edit/runsheetInformation'
+import AsynchronousSelect from '@/components/input/asynchronousSelect.vue'
 
 export default {
     name: 'DeliveryRunsheetEdit',
@@ -316,6 +327,21 @@ export default {
         'dialog-recheck-connote-zone': DialogReCheckConnoteZone,
         'dialog-recheck-connote-sla': DialogReCheckConnoteSla,
         selector: Selector,
+        AsynchronousSelect,
+    },
+    beforeRouteUpdate(to, from, next) {
+        // update param lokal
+        this.employee_id = to.params.employee_id?.toString() || ''
+        this.delivery_runsheet_number =
+        to.params.delivery_runsheet_number?.toString() || ''
+
+        // reload data kurir & runsheet
+        this.getCourier()
+        if (this.delivery_runsheet_number) {
+        this.getDataDelivery()
+        }
+
+        next()
     },
     mixins: [master],
     data() {
@@ -371,6 +397,13 @@ export default {
             is_approve: '0',
             is_auto_open_bag: true,
             is_validate_courier: false,
+            selectedCourierId: '',    // untuk ID (value)
+            autoCompleteCourierUrl: '',
+            input_value: 'employee_id',   // field ID di response API
+            input_label: 'employee_name', // field NAME di response API
+            isNestedData: false,
+            nestedKey: '',
+            lastKeywordCourier: '',
         }
     },
     computed: {
@@ -389,7 +422,7 @@ export default {
         window.addEventListener('keydown', this.handleTabNavigation)
         window.addEventListener('timezone-changed', this.reload)
         this.getStatus()
-        this.getDataCourier()
+        // this.getDataCourier()
 
         this.timer = setInterval(() => {
             this.dataDelivery = this.dataDelivery.map((item) => ({
@@ -459,7 +492,8 @@ export default {
                         res.data.data.map((item) => {
                             let obj = {}
                             obj['label'] = item.employee_name + ' ( ' + item.employee_code + ' ) '
-                            obj['value'] = item.employee_id
+                            // ===> VALUE SEKARANG PAKAI NAME, BUKAN ID
+                            obj['value'] = item.employee_name
                             obj['item'] = item
 
                             arr.push(obj)
@@ -491,23 +525,28 @@ export default {
             this.loading = false
         },
         updateValueCourier(key, val, info) {
-            switch (key) {
-                case 'courier':
-                    const obj = this.courier_arr.find((item) => item.value == val)
+            if (key !== 'courier') return
 
-                    if (obj?.item) {
-                        this.selectedCourier = obj.item.employee_id || ''
-                        this.updateRunsheetCourier()
-                    }
-                    break
+            this.selectedCourierId = val
+            this.employee_id       = val
+
+            if (info) {
+                this.employee_name = info.employee_name || this.employee_name
+                this.employee_code = info.employee_code || this.employee_code
+                this.selectedCourier = info.employee_name || ''
             }
+
+            // kirim ke backend supaya runsheet pindah kurir
+            this.updateRunsheetCourier()
         },
         async updateRunsheetCourier() {
+            const courierId = this.selectedCourierId || this.employee_id
+
             if (this.delivery_runsheet_number) {
                 try {
                     const res = await axios.put(
                         `${this.URL.revamp_delivery}/${this.delivery_runsheet_number}?n=${this.listenNodeId}`,
-                        { courier_employee_id: this.selectedCourier },
+                        { courier_employee_id: courierId },
                         this.Helper.header()
                     )
                     this.openNotification(
@@ -516,14 +555,10 @@ export default {
                         'Success',
                         res?.data?.message ?? 'Sukses mengganti kurir'
                     )
-                    this.$router.push({
-                        name: 'delivery-runsheet-edit',
-                        params: {
-                            employee_id: this.selectedCourier,
-                            delivery_runsheet_number: this.delivery_runsheet_number,
-                        },
-                    })
-                    this.setRoutePageHistory(this.$route.meta, false)
+                    
+                    this.employee_id = courierId
+                    await this.getCourier()
+                    await this.getDataDelivery()
                 } catch (err) {
                     this.openNotification(
                         'danger',
@@ -531,18 +566,30 @@ export default {
                         'Failed',
                         err?.response?.data?.message ?? 'Something went wrong'
                     )
-                    this.selectedCourier = this.employee_name + '( ' + this.employee_code + ' )'
+                    this.selectedCourier = `${this.employee_name} ( ${this.employee_code} )`
                 }
             } else {
-                this.employee_id = this.selectedCourier
+                this.employee_id = courierId
                 this.$router.push({
                     name: 'delivery-runsheet-new',
                     params: {
-                        employee_id: this.selectedCourier,
+                        employee_id: this.employee_id,
                     },
                 })
                 this.setRoutePageHistory(this.$route.meta, false)
             }
+        },
+        async handleSearchCourier(keyword) {
+            this.lastKeywordCourier = keyword
+
+            if (!keyword || keyword.length < 3) {
+                this.courier_arr = []
+                this.autoCompleteCourierUrl = ''
+                return
+            }
+            console.log('wkkkk')
+            this.autoCompleteCourierUrl =
+                `${this.URL.courier_delivery}/list?n=${this.listenNodeId}`
         },
         updateValueBag(val) {
             this.form.bag_number = this.item_bag
@@ -590,8 +637,21 @@ export default {
                     const { data } = res.data
                     this.employee_code = data.employee_code
                     this.employee_name = data.employee_name
+                    this.employee_id   = data.employee_id
                     this.loadingCourier = false
-                    this.selectedCourier = data.employee_id
+
+                    // selected = NAME
+                    this.selectedCourier   = data.employee_name
+                    this.selectedCourierId = data.employee_id
+
+                    // opsi awal di dropdown
+                    this.courier_arr = [
+                        {
+                            label: `${data.employee_name} ( ${data.employee_code} )`,
+                            value: data.employee_name,
+                            item:  data,
+                        },
+                    ]
                 })
                 .catch((err) => {
                     this.loadingCourier = true
