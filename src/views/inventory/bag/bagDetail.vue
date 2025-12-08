@@ -604,6 +604,7 @@ export default {
         async getDataCourier() {
             this.loading = true
             try {
+                // kalo mau dipake lagi sesuaikan dengan courier_delivery
                 const res = await axios.get(
                     `${this.URL.courier_delivery}/list?n=${this.listenNodeId}`,
                     this.Helper.header()
