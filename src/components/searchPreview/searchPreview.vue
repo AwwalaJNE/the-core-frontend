@@ -194,41 +194,49 @@ export default {
                 this.handleHideDetail();
             }
 
-            try {
-                const res = await axios.get(this.listenUrl +`&s=${queryString}` + `${this.limit ? `&limit=${this.limit}` : ''}`, this.Helper.header());
+            // Only make API calls when 3+ characters are entered
+            if (queryString && queryString.length > 2) {
+                try {
+                    const res = await axios.get(this.listenUrl +`&s=${queryString}` + `${this.limit ? `&limit=${this.limit}` : ''}`, this.Helper.header());
 
-                this.dataColumn = [
-                    {
-                        label: this.formatLabel(this.listenTableKey),
-                        key: this.listenTableKey,
-                        width: "md"
-                    },
-                ];
-                
-                this.dataTable = Array.isArray(res.data.data) && res.data.data.length > 0
-                    ? res.data.data
-                        .filter(item => !this.cardValue.includes(item[this.listenTableKey]))
-                        .map(item => ({
-                            ...item,
-                            disabled: false,
-                            children_width: Object.fromEntries(
-                                Object.keys(item.detail?.[0] || {}).map(key => [key, "md"])
-                            ),
-                            children: item.detail?.reduce((acc, el) => {
-                                Object.entries(el).forEach(([key, value]) => {
-                                    acc[key] = acc[key] || [];
-                                    acc[key].push(value);
-                                });
-                                return acc;
-                            }, {}) || {}
-                        }))
-                    : [];
+                    this.dataColumn = [
+                        {
+                            label: this.formatLabel(this.listenTableKey),
+                            key: this.listenTableKey,
+                            width: "md"
+                        },
+                    ];
+                    
+                    this.dataTable = Array.isArray(res.data.data) && res.data.data.length > 0
+                        ? res.data.data
+                            .filter(item => !this.cardValue.includes(item[this.listenTableKey]))
+                            .map(item => ({
+                                ...item,
+                                disabled: false,
+                                children_width: Object.fromEntries(
+                                    Object.keys(item.detail?.[0] || {}).map(key => [key, "md"])
+                                ),
+                                children: item.detail?.reduce((acc, el) => {
+                                    Object.entries(el).forEach(([key, value]) => {
+                                        acc[key] = acc[key] || [];
+                                        acc[key].push(value);
+                                    });
+                                    return acc;
+                                }, {}) || {}
+                            }))
+                        : [];
 
 
-                // this.openNotification('success', null, "Success", res?.data?.message || this.courier_id ? "Success Update Data" : "Success Create Data");
-            } catch (err) {
-                this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
-            } finally {
+                    // this.openNotification('success', null, "Success", res?.data?.message || this.courier_id ? "Success Update Data" : "Success Create Data");
+                } catch (err) {
+                    this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
+                } finally {
+                    this.loading = false;
+                }
+            } else {
+                // Clear results when less than 3 characters
+                this.dataTable = [];
+                this.dataColumn = [];
                 this.loading = false;
             }
         },
