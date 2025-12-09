@@ -52,25 +52,43 @@ jobs:
 
       - name: Generate release notes from commits
         id: generate_release_notes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           latest_tag="${{ env.LATEST_TAG }}"
           new_version="${{ env.NEW_VERSION_TAG }}"
-          repo_url="https://github.com/${{ github.repository }}"
-          
+          repo="${{ github.repository }}"
+          repo_url="https://github.com/$repo"
+
+          # Get commit SHAs
           if [ "$latest_tag" = "0.1.0" ]; then
-            # If no previous tag exists, use all commits
-            commits=$(git log --format="- %s by @%an in %h" | sed '/^$/d')
+            # No previous tag -> use all commits
+            commit_shas=$(git log --format="%H")
           else
-            # Get commits since the latest tag
-            commits=$(git log $latest_tag..HEAD --format="- %s by @%an in %h" | sed '/^$/d')
+            # Commits since latest tag
+            commit_shas=$(git log "$latest_tag"..HEAD --format="%H")
           fi
-          
-          # Extract version numbers for changelog link (remove any extra dots)
+
+          commits=""
+          for sha in $commit_shas; do
+            msg=$(git show -s --format="%s" "$sha")
+            short_sha=$(git rev-parse --short "$sha")
+
+            # Get GitHub username from API
+            login=$(curl -s \
+              -H "Authorization: Bearer $GITHUB_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/$repo/commits/$sha" \
+              | jq -r '.author.login // .commit.author.name')
+
+            commits+="- $msg by @$login in $short_sha"$'\n'
+          done
+
+          # Extract version numbers for changelog link
           latest_version="${latest_tag#v}"
           latest_version="${latest_version#.}"
           new_version_number="${new_version#v}"
-          
-          # Write to GITHUB_ENV with proper multiline handling
+
           {
             echo "RELEASE_BODY<<EOF"
             echo "## What's Changed"
