@@ -16,6 +16,7 @@
                         :steps="steps"
                         :step-validators="[validateTypeSection, validateBagSection]"
                         @invalid-step="handleInvalidStep"
+                        @valid-step="handleValidStep"
                         @cancel="cancel"
                         @submit="handleSubmit"
                     >
@@ -235,6 +236,10 @@ export default {
                 this.openNotification('danger', '', 'Failed', 'Wajib memilih tipe surat jalan')
             else if (stepIndex === 1)
                 this.openNotification('danger', '', 'Failed', 'No items have been validated')
+        },
+        handleValidStep(stepIndex) {
+            if (stepIndex === 0) this.setActiveInput('scanItemNumber')
+            else if (stepIndex === 1) return
         },
         updateValue(key, val) {
             switch (key) {
