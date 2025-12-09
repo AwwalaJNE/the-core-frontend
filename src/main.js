@@ -30,50 +30,23 @@ import Storage from 'vue-ls'
 import axios from 'axios'
 
 // -------------------- Axios Interceptor --------------------
-// ✅ Make sure every request always has the latest token
-axios.interceptors.request.use(
-    (config) => {
-        const token = JSON.parse(localStorage.getItem('vuejs__tokenBearer') || '{}').value
-        if (token) config.headers.Authorization = `Bearer ${token}`
-        return config
-    },
-    (error) => Promise.reject(error)
-)
-
-// ✅ Handle unauthorized responses gracefully
 axios.interceptors.response.use(
     (response) => response,
-    async (error) => {
+    (error) => {
         if (error.response) {
             const status = error.response.status
             const data = error.response.data
 
-            const isUnauth =
+            if (
                 status === 401 ||
-                data?.reason?.toLowerCase?.().includes('unauthenticated') ||
-                data?.type === 'AuthenticationException'
-
-            if (isUnauth) {
-                // 🔁 Add a short delay + retry once in case of concurrent/race 401
-                if (!error.config._retry) {
-                    error.config._retry = true
-                    await new Promise((resolve) => setTimeout(resolve, 200))
-
-                    const token = JSON.parse(
-                        localStorage.getItem('vuejs__tokenBearer') || '{}'
-                    ).value
-                    if (token) {
-                        error.config.headers.Authorization = `Bearer ${token}`
-                        return axios(error.config) // retry once
-                    }
-                }
-
-                // ❌ If still failing after retry, then clear session
+                (data && data.reason && data.reason.toLowerCase().includes('unauthenticated')) ||
+                (data && data.type === 'AuthenticationException')
+            ) {
                 localStorage.clear()
                 router.push('/login')
+                return Promise.reject(error)
             }
         }
-
         return Promise.reject(error)
     }
 )
