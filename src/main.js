@@ -30,95 +30,27 @@ import Storage from 'vue-ls'
 import axios from 'axios'
 
 // -------------------- Axios Interceptor --------------------
-let isRefreshing = false
-let failedQueue = []
-
-const processQueue = (error, token = null) => {
-    failedQueue.forEach((prom) => {
-        if (error) {
-            prom.reject(error)
-        } else {
-            prom.resolve(token)
-        }
-    })
-    failedQueue = []
-}
-
 axios.interceptors.response.use(
     (response) => response,
-    async (error) => {
-        const originalRequest = error.config
-        const { response } = error
+    (error) => {
+        if (error.response) {
+            const status = error.response.status
+            const data = error.response.data
 
-        if (response) {
-            const status = response.status
-            const data = response.data
-
-            const isUnauth =
+            if (
                 status === 401 ||
-                data?.reason?.toLowerCase().includes('unauthenticated') ||
-                data?.type === 'AuthenticationException'
-
-            if (isUnauth) {
-                // prevent infinite loop
-                if (originalRequest._retry) {
-                    localStorage.clear()
-                    router.push('/login')
-                    return Promise.reject(error)
-                }
-
-                // 🔄 refresh token logic
-                if (!isRefreshing) {
-                    isRefreshing = true
-                    originalRequest._retry = true
-
-                    try {
-                        const refreshToken = localStorage.getItem('refresh_token')
-                        if (!refreshToken) throw new Error('No refresh token')
-
-                        // call your refresh endpoint
-                        const res = await axios.post('/api/refresh', {
-                            refresh_token: refreshToken,
-                        })
-
-                        const newToken = res.data?.access_token
-                        if (!newToken) throw new Error('Failed to refresh token')
-
-                        // update storage + axios header
-                        localStorage.setItem('access_token', newToken)
-                        axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`
-
-                        processQueue(null, newToken)
-                        isRefreshing = false
-
-                        // retry original request
-                        originalRequest.headers['Authorization'] = `Bearer ${newToken}`
-                        return axios(originalRequest)
-                    } catch (err) {
-                        processQueue(err, null)
-                        isRefreshing = false
-                        localStorage.clear()
-                        router.push('/login')
-                        return Promise.reject(err)
-                    }
-                }
-
-                // 🕒 wait for token refresh to finish
-                return new Promise((resolve, reject) => {
-                    failedQueue.push({
-                        resolve: (token) => {
-                            originalRequest.headers['Authorization'] = `Bearer ${token}`
-                            resolve(axios(originalRequest))
-                        },
-                        reject: (err) => reject(err),
-                    })
-                })
+                (data && data.reason && data.reason.toLowerCase().includes('unauthenticated')) ||
+                (data && data.type === 'AuthenticationException')
+            ) {
+                localStorage.clear()
+                router.push('/login')
+                return Promise.reject(error)
             }
         }
-
         return Promise.reject(error)
     }
 )
+
 // -------------------- Element UI --------------------
 locale.use(lang)
 Vue.use(Upload)
