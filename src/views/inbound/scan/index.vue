@@ -195,7 +195,7 @@
                     <div class="box-v1">
                         <div class="header-remark-bar">
                             <h4 align="left">Misrouted Bag</h4>
-                            <template v-if="misrouteLength">
+                            <template v-if="listenMisrouteLength">
                                 <div style="display: flex">
                                     <vs-button
                                         :data-testid="`surat-jalan-button`"
@@ -305,6 +305,9 @@ export default {
                     this.closeLoading()
                 }
             }
+        },
+        listenMisrouteLength() {
+            return this.misrouteLength
         },
     },
     data() {
