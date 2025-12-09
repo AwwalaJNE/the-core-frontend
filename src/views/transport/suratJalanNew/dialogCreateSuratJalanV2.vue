@@ -396,8 +396,8 @@ export default {
                 item.is_missroute = item.is_missroute === true ? 1 : 0
             })
 
-            this.etd = this.formatTimezone(val.etd)
-            this.eta = this.formatTimezone(val.eta)
+            this.etd = val.etd
+            this.eta = val.eta
 
             this.total_weight = val.total_weight
             this.editData = val
