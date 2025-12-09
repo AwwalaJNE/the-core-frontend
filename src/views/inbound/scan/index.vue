@@ -204,7 +204,7 @@
                                         <i class="bx bx-plus"></i> Surat Jalan
                                     </vs-button>
                                     <vs-button
-                                        :data-testid="`surat-muaatn-button`"
+                                        :data-testid="`surat-muatan-button`"
                                         @click="openDialog('surat_muatan')"
                                     >
                                         <i class="bx bx-plus"></i> Surat Muatan
