@@ -154,6 +154,7 @@
                                                 :isNestedData="isNestedData"
                                                 :nestedKey="nestedKey"
                                                 :searchKeyword="lastKeywordCourier"
+                                                :labelFormatter="formatEmployeeLabel"
 
                                                 @updateValue="updateValueCourier"
                                                 @search="handleSearchCourier"
@@ -433,6 +434,11 @@ export default {
         }, 1000)
     },
     methods: {
+        formatEmployeeLabel(item) {
+            const employeeName = item.employee_name || '';
+            const employeeCode = item.employee_code || '';
+            return employeeCode ? `${employeeName} (${employeeCode})` : employeeName;
+        },
         onCourierFocus() {
             const newUrl = `${this.URL.courier_delivery}/list?n=${this.listenNodeId}`
 
@@ -499,9 +505,10 @@ export default {
                         let arr = []
                         res.data.data.map((item) => {
                             let obj = {}
-                            obj['label'] = item.employee_name + ' ( ' + item.employee_code + ' ) '
-                            // ===> VALUE SEKARANG PAKAI NAME, BUKAN ID
-                            obj['value'] = item.employee_name
+                            const formattedLabel = this.formatEmployeeLabel(item)
+                            obj['label'] = formattedLabel
+                            // ===> VALUE SEKARANG PAKAI FORMATTED LABEL
+                            obj['value'] = formattedLabel
                             obj['item'] = item
 
                             arr.push(obj)
@@ -535,13 +542,14 @@ export default {
         updateValueCourier(key, val, info) {
             if (key !== 'courier') return
 
-            this.selectedCourierId = val
-            this.employee_id       = val
+            // Since val is now the formatted label, we need to get employee_id from info
+            this.selectedCourierId = info?.employee_id || val
+            this.employee_id = info?.employee_id || val
 
             if (info) {
                 this.employee_name = info.employee_name || this.employee_name
                 this.employee_code = info.employee_code || this.employee_code
-                this.selectedCourier = info.employee_name || ''
+                this.selectedCourier = val || ''  // val is now the formatted label
             }
 
             // kirim ke backend supaya runsheet pindah kurir
@@ -574,7 +582,10 @@ export default {
                         'Failed',
                         err?.response?.data?.message ?? 'Something went wrong'
                     )
-                    this.selectedCourier = `${this.employee_name} ( ${this.employee_code} )`
+                    this.selectedCourier = this.formatEmployeeLabel({
+                        employee_name: this.employee_name,
+                        employee_code: this.employee_code
+                    })
                 }
             } else {
                 this.employee_id = courierId
@@ -641,15 +652,16 @@ export default {
                     this.employee_id   = data.employee_id
                     this.loadingCourier = false
 
-                    // selected = NAME
-                    this.selectedCourier   = data.employee_name
+                    // selected = FORMATTED LABEL
+                    const formattedLabel = this.formatEmployeeLabel(data)
+                    this.selectedCourier   = formattedLabel
                     this.selectedCourierId = data.employee_id
 
                     // opsi awal di dropdown
                     this.courier_arr = [
                         {
-                            label: `${data.employee_name} ( ${data.employee_code} )`,
-                            value: data.employee_name,
+                            label: formattedLabel,
+                            value: formattedLabel,
                             item:  data,
                         },
                     ]

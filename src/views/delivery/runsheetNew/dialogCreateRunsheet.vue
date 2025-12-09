@@ -22,6 +22,7 @@
                     :url="autoComplateUrl"
                     :selectValue="input_value"
                     :selectLabel="input_label"
+                    :labelFormatter="formatEmployeeLabel"
                     :isNestedData="isNestedData"
                     :nestedKey="nestedKey"
                     :searchKeyword="lastKeyword"
@@ -168,6 +169,12 @@ export default {
                 this.isNestedData = false
                 this.nestedKey = ''
             }
+        },
+
+        formatEmployeeLabel(item) {
+            const employeeName = item.employee_name || '';
+            const employeeCode = item.employee_code || '';
+            return employeeCode ? `${employeeName} (${employeeCode})` : employeeName;
         },
 
         handleSearchKeyword(keyword) {

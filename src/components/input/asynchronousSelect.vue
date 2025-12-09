@@ -66,7 +66,8 @@ export default {
         disabled: Boolean,
         isSingleInput: Boolean,
         isNestedData: Boolean,
-        nestedKey: String
+        nestedKey: String,
+        labelFormatter: Function
     },
     components: {
         "inputan": Inputan
@@ -152,9 +153,10 @@ export default {
                 } else {
                     result.length > 0 && result.map(item => {
                         if (this.selectLabel && this.selectValue){
+                            const label = this.labelFormatter ? this.labelFormatter(item) : item[this.selectLabel];
                             suggestions.push({
                                 value: item[this.selectValue],
-                                label: item[this.selectLabel],
+                                label: label,
                                 data: item
                             });
                         } else if(item.hasOwnProperty('node_name')) {
