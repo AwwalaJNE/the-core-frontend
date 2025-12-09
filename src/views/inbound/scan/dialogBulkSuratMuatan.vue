@@ -288,10 +288,6 @@ export default {
                 this.dataTable = val
             }
         },
-        active: async function (val) {
-            if (val !== undefined) {
-            }
-        },
     },
     data() {
         return {
@@ -394,12 +390,14 @@ export default {
         },
         resetForm() {
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_MANIFEST_NUMBER', '')
+            this.$store.dispatch('SET_SURAT_MUATAN_BULK_MAX_WEIGHT', '')
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION', '')
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION_ValueData', {})
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_ETD', '')
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_ETA', '')
 
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_MANIFEST_NUMBER_isDisabled', false)
+            this.$store.dispatch('SET_SURAT_MUATAN_BULK_MAX_WEIGHT_isDisabled', false)
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_NODE_ID_ORIGIN_isDisabled', false)
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION_isDisabled', false)
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_ETD_isDisabled', false)
@@ -439,7 +437,7 @@ export default {
         },
         handleValidStep(stepIndex) {
             if (stepIndex === 0) this.setDefaultData()
-            else if (stepIndex === 1) return
+            else if (stepIndex === 1) return this.setActiveInput('scanItemNumber')
             else if (stepIndex === 2) return
         },
         updateValue(key, val) {
