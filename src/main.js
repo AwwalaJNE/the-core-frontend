@@ -30,23 +30,73 @@ import Storage from 'vue-ls'
 import axios from 'axios'
 
 // -------------------- Axios Interceptor --------------------
+let isRefreshing = false
+let failedQueue = []
+
+const processQueue = (error, token = null) => {
+    failedQueue.forEach((prom) => {
+        if (error) prom.reject(error)
+        else prom.resolve(token)
+    })
+    failedQueue = []
+}
+
+axios.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('access_token')
+        if (token) config.headers.Authorization = `Bearer ${token}`
+        return config
+    },
+    (error) => Promise.reject(error)
+)
+
 axios.interceptors.response.use(
     (response) => response,
-    (error) => {
-        if (error.response) {
-            const status = error.response.status
-            const data = error.response.data
+    async (error) => {
+        const originalRequest = error.config
+        const status = error.response ? error.response.status : null
+        const data = error.response ? error.response.data : {}
 
-            if (
-                status === 401 ||
-                (data && data.reason && data.reason.toLowerCase().includes('unauthenticated')) ||
-                (data && data.type === 'AuthenticationException')
-            ) {
+        const isUnauth =
+            status === 401 ||
+            data?.reason?.toLowerCase?.().includes('unauthenticated') ||
+            data?.type === 'AuthenticationException'
+
+        if (isUnauth && !originalRequest._retry) {
+            originalRequest._retry = true
+
+            // 🔁 If multiple 401 happen simultaneously
+            if (isRefreshing) {
+                return new Promise((resolve, reject) => {
+                    failedQueue.push({ resolve, reject })
+                })
+                    .then((token) => {
+                        if (token) originalRequest.headers.Authorization = `Bearer ${token}`
+                        return axios(originalRequest)
+                    })
+                    .catch(Promise.reject)
+            }
+
+            isRefreshing = true
+
+            try {
+                // Simulate refreshing or reloading token from storage
+                const newToken = localStorage.getItem('vuejs__tokenBearer')
+                if (!newToken) throw new Error('No token found')
+
+                axios.defaults.headers.Authorization = `Bearer ${newToken}`
+                processQueue(null, newToken)
+                return axios(originalRequest)
+            } catch (err) {
+                processQueue(err, null)
                 localStorage.clear()
                 router.push('/login')
-                return Promise.reject(error)
+                return Promise.reject(err)
+            } finally {
+                isRefreshing = false
             }
         }
+
         return Promise.reject(error)
     }
 )
