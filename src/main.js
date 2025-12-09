@@ -43,7 +43,7 @@ const processQueue = (error, token = null) => {
 
 axios.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('access_token')
+        const token = JSON.parse(localStorage.getItem('vuejs__tokenBearer') || '{}').value
         if (token) config.headers.Authorization = `Bearer ${token}`
         return config
     },
@@ -81,7 +81,9 @@ axios.interceptors.response.use(
 
             try {
                 // Simulate refreshing or reloading token from storage
-                const newToken = localStorage.getItem('vuejs__tokenBearer')
+                const newToken = JSON.parse(
+                    localStorage.getItem('vuejs__tokenBearer') || '{}'
+                ).value
                 if (!newToken) throw new Error('No token found')
 
                 axios.defaults.headers.Authorization = `Bearer ${newToken}`
