@@ -195,7 +195,7 @@
                     <div class="box-v1">
                         <div class="header-remark-bar">
                             <h4 align="left">Misrouted Bag</h4>
-                            <template v-if="listenMisrouteLength">
+                            <template v-if="misrouteLength">
                                 <div style="display: flex">
                                     <vs-button
                                         :data-testid="`surat-jalan-button`"
@@ -204,7 +204,7 @@
                                         <i class="bx bx-plus"></i> Surat Jalan
                                     </vs-button>
                                     <vs-button
-                                        :data-testid="`surat-muaatn-button`"
+                                        :data-testid="`surat-muatan-button`"
                                         @click="openDialog('surat_muatan')"
                                     >
                                         <i class="bx bx-plus"></i> Surat Muatan
@@ -305,9 +305,6 @@ export default {
                     this.closeLoading()
                 }
             }
-        },
-        listenMisrouteLength() {
-            return this.misrouteLength
         },
     },
     data() {

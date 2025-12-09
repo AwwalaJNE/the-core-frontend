@@ -30,17 +30,7 @@ import Storage from 'vue-ls'
 import axios from 'axios'
 
 // -------------------- Axios Interceptor --------------------
-let isRefreshing = false
-let failedQueue = []
-
-const processQueue = (error, token = null) => {
-    failedQueue.forEach((prom) => {
-        if (error) prom.reject(error)
-        else prom.resolve(token)
-    })
-    failedQueue = []
-}
-
+// ✅ Make sure every request always has the latest token
 axios.interceptors.request.use(
     (config) => {
         const token = JSON.parse(localStorage.getItem('vuejs__tokenBearer') || '{}').value
@@ -50,52 +40,37 @@ axios.interceptors.request.use(
     (error) => Promise.reject(error)
 )
 
+// ✅ Handle unauthorized responses gracefully
 axios.interceptors.response.use(
     (response) => response,
     async (error) => {
-        const originalRequest = error.config
-        const status = error.response ? error.response.status : null
-        const data = error.response ? error.response.data : {}
+        if (error.response) {
+            const status = error.response.status
+            const data = error.response.data
 
-        const isUnauth =
-            status === 401 ||
-            data?.reason?.toLowerCase?.().includes('unauthenticated') ||
-            data?.type === 'AuthenticationException'
+            const isUnauth =
+                status === 401 ||
+                data?.reason?.toLowerCase?.().includes('unauthenticated') ||
+                data?.type === 'AuthenticationException'
 
-        if (isUnauth && !originalRequest._retry) {
-            originalRequest._retry = true
+            if (isUnauth) {
+                // 🔁 Add a short delay + retry once in case of concurrent/race 401
+                if (!error.config._retry) {
+                    error.config._retry = true
+                    await new Promise((resolve) => setTimeout(resolve, 200))
 
-            // 🔁 If multiple 401 happen simultaneously
-            if (isRefreshing) {
-                return new Promise((resolve, reject) => {
-                    failedQueue.push({ resolve, reject })
-                })
-                    .then((token) => {
-                        if (token) originalRequest.headers.Authorization = `Bearer ${token}`
-                        return axios(originalRequest)
-                    })
-                    .catch(Promise.reject)
-            }
+                    const token = JSON.parse(
+                        localStorage.getItem('vuejs__tokenBearer') || '{}'
+                    ).value
+                    if (token) {
+                        error.config.headers.Authorization = `Bearer ${token}`
+                        return axios(error.config) // retry once
+                    }
+                }
 
-            isRefreshing = true
-
-            try {
-                // Simulate refreshing or reloading token from storage
-                const newToken = JSON.parse(
-                    localStorage.getItem('vuejs__tokenBearer') || '{}'
-                ).value
-                if (!newToken) throw new Error('No token found')
-
-                axios.defaults.headers.Authorization = `Bearer ${newToken}`
-                processQueue(null, newToken)
-                return axios(originalRequest)
-            } catch (err) {
-                processQueue(err, null)
+                // ❌ If still failing after retry, then clear session
                 localStorage.clear()
                 router.push('/login')
-                return Promise.reject(err)
-            } finally {
-                isRefreshing = false
             }
         }
 
