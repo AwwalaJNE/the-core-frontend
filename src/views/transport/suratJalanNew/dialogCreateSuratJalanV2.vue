@@ -7,7 +7,7 @@
             :closeDialog="cancel"
         >
             <template v-slot:header>
-                <template v-if="Object.keys(editData).length === 0">
+                <template v-if="Object.keys(editData).length === 0 && !listenIsPreview">
                     <div v-copy="listenTitle">
                         {{ listenTitle }}
                     </div>
@@ -43,7 +43,7 @@
             </template>
 
             <template v-slot:content>
-                <template v-if="Object.keys(editData).length === 0">
+                <template v-if="Object.keys(editData).length === 0 && !listenIsPreview">
                     <vs-col xs="12" sm="6" lg="6">
                         <input-general
                             :name="getScanLabel"
@@ -80,6 +80,7 @@
 
                         <!-- Form Utama -->
                         <form-input-controller
+                            v-if="listenIsPreview ? !loading : true"
                             ref="formSuratJalan"
                             typeForm="surat_jalan"
                             :dataItem="editData"
@@ -179,6 +180,9 @@ export default {
         refresh: Function,
         sj_type: String,
         title: String,
+
+        sj_number: String,
+        isPreview: Boolean,
     },
     data() {
         return {
@@ -328,6 +332,9 @@ export default {
                     return 'Scan Item'
             }
         },
+        listenIsPreview() {
+            return this.isPreview
+        },
     },
     watch: {
         dataItem: function (val) {
@@ -335,8 +342,12 @@ export default {
                 this.getEditData(val)
             }
         },
-        active: function (val) {
+        active: async function (val) {
             if (val == true) {
+                if (this.listenIsPreview) {
+                    await this.getEditDataByApi()
+                }
+
                 this.$nextTick(() => {
                     this.setActiveInput('scanBag', 'formSuratJalan', () => this.dialogTraceBag)
                 })
@@ -361,6 +372,92 @@ export default {
     },
     methods: {
         getEditData(val) {
+            this.manifest_do_number = val.manifest_do_number
+            this.dataTable = val.detail
+            this.is_penerusan = val.is_penerusan === '1'
+
+            this.isDestinationEnabled = val.node_id_destination === null
+
+            this.isDisabled =
+                val.status !== 'UNAPPROVED' || val.is_orion === '1' || val.is_approve === 1
+            this.isDisabledPrint = val.status === 'CANCELED'
+            this.isDisabledApprove = val.status !== 'UNAPPROVED' || val.is_orion === '1'
+
+            this.is_approve = val.is_approve
+
+            this.dataTable.forEach((item) => {
+                item.destination =
+                    item.bag?.destination?.node_tariff_code ||
+                    item.koli?.connote?.connote_receiver_tariff_code ||
+                    item.manifest?.destination?.node_tariff_code ||
+                    ''
+                item.node_code_destination =
+                    item?.bag?.destination?.node_code ||
+                    item?.manifest?.destination?.branch_code ||
+                    ''
+                item.node_name_destination = item?.bag?.destination?.node_name || ''
+                item.status_trip =
+                    (item?.bag?.status_trip || '') + ' ' + (item?.bag?.current_node_name || '')
+
+                if (val.status !== 'UNAPPROVED' || val.is_approve === 1) {
+                    item.button_status = { remove: false }
+                }
+
+                item.received_status = item.received_at ? 1 : 0
+                item.is_missroute = item.is_missroute === true ? 1 : 0
+            })
+
+            this.etd = val.etd
+            this.eta = val.eta
+
+            this.total_weight = val.total_weight
+            this.editData = val
+            this.editData.destination_id = val.node_id_destination
+            this.destination_name_code =
+                val?.destination?.node_name + ' (' + val?.destination?.node_code + ')' ||
+                val.node_id_destination
+
+            // this.getDestination(val.node_id_destination)
+
+            this.no_moda_angkutan_id = val.no_moda_angkutan_id || null
+
+            this.master_form = {
+                node_id_origin: val.node_id_origin,
+                node_id_destination: val.node_id_destination,
+                vehicle_id: val.vehicle_id,
+                pic_employee_id: val.pic_employee_id,
+                etd: this.formatToWIB(val.etd),
+                eta: this.formatToWIB(val.eta),
+                max_weight: val.max_weight,
+                manifest_lov: val.manifest_lov,
+                item_no: val.item_number,
+                is_penerusan: val.is_penerusan,
+            }
+        },
+        async getEditDataByApi() {
+            this.loading = true
+            try {
+                const res = await axios.get(
+                    `${this.URL.revamp_surat_jalan_v3}/${this.sj_number}?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
+
+                let data = res.data.data
+                if (data) {
+                    this.getDataPreview(data)
+                }
+            } catch (err) {
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
+            } finally {
+                this.loading = false
+            }
+        },
+        getDataPreview(val) {
             this.manifest_do_number = val.manifest_do_number
             this.dataTable = val.detail
             this.is_penerusan = val.is_penerusan === '1'
