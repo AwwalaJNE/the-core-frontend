@@ -1,148 +1,107 @@
 <template>
-    <dialog-master
-        :actived="listenActive"
-        :loading="listenLoading"
-        :closeDialog="cancel2"
-        width="lg"
-    >
-        <template v-slot:header>
-            {{ listenTitle }}
-        </template>
+    <div>
+        <dialog-master
+            :actived="listenActive"
+            :loading="listenLoading"
+            :closeDialog="cancel2"
+            width="lg"
+        >
+            <template v-slot:header>
+                {{ listenTitle }}
+            </template>
 
-        <template v-slot:content>
-            <vs-row>
-                <vs-col w="12">
-                    <progress-stepper
-                        :steps="steps"
-                        :step-validators="[
-                            validateTypeSection,
-                            validateSuratMuatanForm,
-                            validateBagSection,
-                        ]"
-                        @invalid-step="handleInvalidStep"
-                        @valid-step="handleValidStep"
-                        @cancel="cancel2"
-                        @submit="handleSubmit"
-                    >
-                        <template #step-0>
-                            <div class="text-left">
-                                <h2>Choose Type</h2>
-                                <p>
-                                    Please select your surat muatan type, bear in mind that each
-                                    type has its own purpose
-                                </p>
-                            </div>
-
-                            <div class="surat-muatan-container">
-                                <div
-                                    v-for="(item, index) in suratMuatanTypeArray"
-                                    :key="index"
-                                    :class="[
-                                        'surat-muatan-box',
-                                        { active: sm_type.value === item.value },
-                                    ]"
-                                    :data-testid="`bag-${item.label}`"
-                                    @click="selectTipeSuratMuatan(item)"
-                                >
-                                    <i
-                                        v-if="sm_type.value === item.value"
-                                        class="bx bx-check check-icon"
-                                    ></i>
-                                    <i :class="item.icon" class="bag-icon"></i>
-                                    <div class="bag-label">{{ item.label }}</div>
+            <template v-slot:content>
+                <vs-row>
+                    <vs-col w="12">
+                        <progress-stepper
+                            :steps="steps"
+                            :step-validators="[
+                                validateTypeSection,
+                                validateSuratMuatanForm,
+                                validateBagSection,
+                            ]"
+                            @invalid-step="handleInvalidStep"
+                            @valid-step="handleValidStep"
+                            @cancel="cancel2"
+                            @submit="handleSubmit"
+                        >
+                            <template #step-0>
+                                <div class="text-left">
+                                    <h2>Choose Type</h2>
+                                    <p>
+                                        Please select your surat muatan type, bear in mind that each
+                                        type has its own purpose
+                                    </p>
                                 </div>
-                            </div>
-                        </template>
-                        <template #step-1>
-                            <div class="text-left">
-                                <h2>Fill Mandatory Attributes</h2>
-                                <p>
-                                    Please fill up the forms, additionally you can choose from
-                                    available stock and add some vehicles
-                                </p>
-                            </div>
 
-                            <div>
-                                <vs-row
-                                    align="center"
-                                    justify="end"
-                                    style="position: absolute; margin-top: 0.5em"
-                                >
-                                    <vs-col w="2">
-                                        <vs-button
-                                            flat
-                                            block
-                                            :active="true"
-                                            :data-testid="`create-button-sm-stock`"
-                                            @click="openDialog('sm_stock')"
-                                        >
-                                            Stock
-                                        </vs-button>
-                                    </vs-col>
-                                </vs-row>
-                                <form-input-controller
-                                    ref="formSuratMuatanBulkController"
-                                    typeForm="surat_muatan_bulk"
-                                    :querySearch="querySearch"
-                                    @formData="formData"
-                                    @inputFocus="inputFocus"
-                                    @handleIconClick="openDialog('search_sm_stock')"
-                                />
-                                <vs-row align="center" style="margin-top: 1em">
-                                    <template v-if="vehicle.length === 0">
-                                        <vs-col w="6">
+                                <div class="surat-muatan-container">
+                                    <div
+                                        v-for="(item, index) in suratMuatanTypeArray"
+                                        :key="index"
+                                        :class="[
+                                            'surat-muatan-box',
+                                            { active: sm_type.value === item.value },
+                                        ]"
+                                        :data-testid="`bag-${item.label}`"
+                                        @click="selectTipeSuratMuatan(item)"
+                                    >
+                                        <i
+                                            v-if="sm_type.value === item.value"
+                                            class="bx bx-check check-icon"
+                                        ></i>
+                                        <i :class="item.icon" class="bag-icon"></i>
+                                        <div class="bag-label">{{ item.label }}</div>
+                                    </div>
+                                </div>
+                            </template>
+                            <template #step-1>
+                                <div class="text-left">
+                                    <h2>Fill Mandatory Attributes</h2>
+                                    <p>
+                                        Please fill up the forms, additionally you can choose from
+                                        available stock and add some vehicles
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <vs-row
+                                        align="center"
+                                        justify="end"
+                                        style="position: absolute; margin-top: 0.5em"
+                                    >
+                                        <vs-col w="2">
                                             <vs-button
-                                                shadow
-                                                :active="false"
-                                                :data-testid="`add-vehicle-button`"
-                                                @click="openDialog('manifest_vehicle')"
+                                                flat
+                                                block
+                                                :active="true"
+                                                :data-testid="`create-button-sm-stock`"
+                                                @click="openDialog('sm_stock')"
                                             >
-                                                <i class="bx bx-plus"></i> Vehicle
+                                                Stock
                                             </vs-button>
                                         </vs-col>
-                                        <vs-col w="6" justify="end">
-                                            <div
-                                                class="container-clear-item"
-                                                :data-testid="`reset-button`"
-                                                @click="
-                                                    handleClearForm()
-                                                    resetForm()
-                                                "
-                                            >
-                                                Reset Inputs
-                                            </div>
-                                        </vs-col>
-                                    </template>
-                                    <template v-else>
-                                        <vs-row align="center" justify="space-between">
-                                            <h3 class="title">List Vehicle</h3>
-                                            <vs-button
-                                                shadow
-                                                :active="false"
-                                                :disabled="isDisabled"
-                                                :data-testid="`more-vehicle-button`"
-                                                @click="openDialog('manifest_vehicle')"
-                                                style="min-width: 120px"
-                                            >
-                                                <i class="bx bx-plus"></i> More Vehicle
-                                            </vs-button>
-                                        </vs-row>
-
-                                        <vs-row>
-                                            <vs-col w="12">
-                                                <radio-with-card
-                                                    :name="'manifest_vehicle'"
-                                                    :value-data="vehicle"
-                                                    :selected-value="listenSelectedManifestVehicle"
-                                                    :isRemoveButton="true"
-                                                    @updateValue="chooseRow"
-                                                    @removeRow="removeRow"
-                                                />
+                                    </vs-row>
+                                    <form-input-controller
+                                        ref="formSuratMuatanBulkController"
+                                        typeForm="surat_muatan_bulk"
+                                        :querySearch="querySearch"
+                                        @formData="formData"
+                                        @inputFocus="inputFocus"
+                                        @handleIconClick="openDialog('search_sm_stock')"
+                                    />
+                                    <vs-row align="center" style="margin-top: 1em">
+                                        <template v-if="vehicle.length === 0">
+                                            <vs-col w="6">
+                                                <vs-button
+                                                    shadow
+                                                    :active="false"
+                                                    :data-testid="`add-vehicle-button`"
+                                                    @click="openDialog('manifest_vehicle')"
+                                                >
+                                                    <i class="bx bx-plus"></i> Vehicle
+                                                </vs-button>
                                             </vs-col>
-                                        </vs-row>
-
-                                        <vs-row align="center">
-                                            <vs-col w="12" justify="end">
+                                            <vs-col w="6" justify="end">
                                                 <div
                                                     class="container-clear-item"
                                                     :data-testid="`reset-button`"
@@ -154,82 +113,135 @@
                                                     Reset Inputs
                                                 </div>
                                             </vs-col>
-                                        </vs-row>
-                                    </template>
-                                </vs-row>
-                            </div>
-                        </template>
-                        <template #step-2>
-                            <div class="text-left">
-                                <h2>Validate Each Item</h2>
-                                <p>Please scan each master bag / bag number here</p>
-                            </div>
-
-                            <vs-row style="gap: 1em">
-                                <vs-col xs="12" sm="6" lg="6">
-                                    <input-general
-                                        name=""
-                                        rules=""
-                                        formKey="scanItemNumber"
-                                        ref="scanItemNumber"
-                                        :valueData="item_number"
-                                        :typeInput="`text`"
-                                        :enter_to_update="true"
-                                        :hasBarcode="true"
-                                        @click-icon="handleIconClick"
-                                        @updateValue="updateValue"
-                                        @enterUpdate="validateScanItem"
-                                    >
-                                        <template #icon>
-                                            <i class="bx bx-barcode-reader"></i>
                                         </template>
-                                    </input-general>
-                                </vs-col>
+                                        <template v-else>
+                                            <vs-row align="center" justify="space-between">
+                                                <h3 class="title">List Vehicle</h3>
+                                                <vs-button
+                                                    shadow
+                                                    :active="false"
+                                                    :disabled="isDisabled"
+                                                    :data-testid="`more-vehicle-button`"
+                                                    @click="openDialog('manifest_vehicle')"
+                                                    style="min-width: 120px"
+                                                >
+                                                    <i class="bx bx-plus"></i> More Vehicle
+                                                </vs-button>
+                                            </vs-row>
 
-                                <vs-col w="12">
-                                    <table-master
-                                        hideColumnKey="validate-surat-muatan-bulk"
-                                        :dataTable="dataTable"
-                                        :dataColumn="dataColumn"
-                                        :tableLoading="listenLoading"
-                                        :hasAction="false"
-                                        :hasPagination="false"
-                                    />
-                                </vs-col>
-                            </vs-row>
-                        </template>
-                    </progress-stepper>
-                </vs-col>
-            </vs-row>
-            <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
-            <dialog-create-edit-stock
-                title="Create Surat Muatan Stock"
-                source="sm_create"
-                :active="dialogStockActive"
-                :closeDialog="() => closeDialog2('sm_stock')"
-                :vehicleMode="parseInt(sm_type.value)"
-                @handleCreateManifestStock="handleCreateManifestStock"
-            />
+                                            <vs-row>
+                                                <vs-col w="12">
+                                                    <radio-with-card
+                                                        :name="'manifest_vehicle'"
+                                                        :value-data="vehicle"
+                                                        :selected-value="
+                                                            listenSelectedManifestVehicle
+                                                        "
+                                                        :isRemoveButton="true"
+                                                        @updateValue="chooseRow"
+                                                        @removeRow="removeRow"
+                                                    />
+                                                </vs-col>
+                                            </vs-row>
 
-            <dialog-select-manifest-stock
-                title="Pilih Stock"
-                :active="dialogSearchStockActive"
-                :close="() => closeDialog2('search_sm_stock')"
-                :mode="parseInt(sm_type.value)"
-                @selectManifest="handleSelectManifest"
-            />
+                                            <vs-row align="center">
+                                                <vs-col w="12" justify="end">
+                                                    <div
+                                                        class="container-clear-item"
+                                                        :data-testid="`reset-button`"
+                                                        @click="
+                                                            handleClearForm()
+                                                            resetForm()
+                                                        "
+                                                    >
+                                                        Reset Inputs
+                                                    </div>
+                                                </vs-col>
+                                            </vs-row>
+                                        </template>
+                                    </vs-row>
+                                </div>
+                            </template>
+                            <template #step-2>
+                                <div class="text-left">
+                                    <h2>Validate Each Item</h2>
+                                    <p>Please scan each master bag / bag number here</p>
+                                </div>
 
-            <dialog-manage-vehicle-manifest
-                title="Manifest Vehicle"
-                :manifest_number="manifest_number"
-                :manifest_method="parseInt(sm_type.value)"
-                :active="dialogManifestVehicleActive"
-                :closeDialog="() => closeDialog2('manifest_vehicle')"
-                :submitType="'prefill'"
-                @updateVehicleValue="updateVehicleValue"
-            />
-        </template>
-    </dialog-master>
+                                <vs-row style="gap: 1em">
+                                    <vs-col xs="12" sm="6" lg="6">
+                                        <input-general
+                                            name=""
+                                            rules=""
+                                            formKey="scanItemNumber"
+                                            ref="scanItemNumber"
+                                            :valueData="item_number"
+                                            :typeInput="`text`"
+                                            :enter_to_update="true"
+                                            :hasBarcode="true"
+                                            @click-icon="handleIconClick"
+                                            @updateValue="updateValue"
+                                            @enterUpdate="validateScanItem"
+                                        >
+                                            <template #icon>
+                                                <i class="bx bx-barcode-reader"></i>
+                                            </template>
+                                        </input-general>
+                                    </vs-col>
+
+                                    <vs-col w="12">
+                                        <table-master
+                                            hideColumnKey="validate-surat-muatan-bulk"
+                                            :dataTable="dataTable"
+                                            :dataColumn="dataColumn"
+                                            :tableLoading="listenLoading"
+                                            :hasAction="false"
+                                            :hasPagination="false"
+                                        />
+                                    </vs-col>
+                                </vs-row>
+                            </template>
+                        </progress-stepper>
+                    </vs-col>
+                </vs-row>
+                <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
+                <dialog-create-edit-stock
+                    title="Create Surat Muatan Stock"
+                    source="sm_create"
+                    :active="dialogStockActive"
+                    :closeDialog="() => closeDialog2('sm_stock')"
+                    :vehicleMode="parseInt(sm_type.value)"
+                    @handleCreateManifestStock="handleCreateManifestStock"
+                />
+
+                <dialog-manage-vehicle-manifest
+                    title="Manifest Vehicle"
+                    :manifest_number="manifest_number"
+                    :manifest_method="parseInt(sm_type.value)"
+                    :active="dialogManifestVehicleActive"
+                    :closeDialog="() => closeDialog2('manifest_vehicle')"
+                    :submitType="'prefill'"
+                    @updateVehicleValue="updateVehicleValue"
+                />
+
+                <dialog-select-manifest-stock
+                    title="Pilih Stock"
+                    :active="dialogSearchStockActive"
+                    :close="() => closeDialog2('search_sm_stock')"
+                    :mode="parseInt(sm_type.value)"
+                    @selectManifest="handleSelectManifest"
+                />
+            </template>
+        </dialog-master>
+
+        <dialogCreateManifest
+            title="Manifest Info"
+            :active="dialogViewSuratMuatan"
+            :closeDialog="closeSuratMuatan"
+            :isPreview="true"
+            :sm_number="sm_number"
+        />
+    </div>
 </template>
 <script>
 import axios from 'axios'
@@ -246,6 +258,7 @@ import TableMaster from '@/components/table/tableMaster'
 import DialogCreateEditStock from '@/views/settings/suratMuatan/stock/dialogCreateEdit'
 import DialogManageVehicleManifest from '@/views/transport/manifestVehicle/dialogCreateManage'
 import DialogSelectManifestStock from '@/views/transport/manifestNew/dialogSelectManifestStock'
+import DialogCreateManifest from '@/views/transport/manifestNew/dialogCreateEditManifest'
 
 export default {
     name: 'Inbound-Dialog-Bulk-Surat-Muatan',
@@ -261,6 +274,7 @@ export default {
         'progress-stepper': ProgressStepper,
         'radio-with-card': RadioWithCard,
         'table-master': TableMaster,
+        dialogCreateManifest: DialogCreateManifest,
     },
     props: {
         active: Boolean,
@@ -369,6 +383,9 @@ export default {
             dialogSearchStockActive: false,
 
             selected_manifest_vehicle: '',
+
+            dialogViewSuratMuatan: false,
+            sm_number: '',
         }
     },
     methods: {
@@ -397,7 +414,6 @@ export default {
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_ETA', '')
 
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_MANIFEST_NUMBER_isDisabled', false)
-            this.$store.dispatch('SET_SURAT_MUATAN_BULK_MAX_WEIGHT_isDisabled', false)
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_NODE_ID_ORIGIN_isDisabled', false)
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION_isDisabled', false)
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_ETD_isDisabled', false)
@@ -408,8 +424,14 @@ export default {
         },
         cancel2() {
             this.sm_type = ''
-            this.handleClearForm
+            this.resetForm()
+            this.handleClearForm()
             this.cancel()
+        },
+        cancel3() {
+            this.sm_type = ''
+            this.resetForm()
+            this.handleClearForm()
         },
         validateTypeSection() {
             return this.sm_type.value
@@ -492,7 +514,8 @@ export default {
 
                 this.openNotification('success', null, 'Success', 'Create surat muatan success')
                 done(true)
-                this.cancel2()
+                this.cancel3()
+                this.openSuratMuatan(res.data.data)
             } catch (err) {
                 this.openNotification(
                     'danger',
@@ -828,6 +851,14 @@ export default {
                 this.listenCurrentNode.branch_name
             )
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_MANIFEST_PREFIX', this.sm_type.prefix)
+        },
+        openSuratMuatan(val) {
+            this.dialogViewSuratMuatan = true
+            this.sm_number = val?.manifest_number
+        },
+        closeSuratMuatan() {
+            this.dialogViewSuratMuatan = false
+            this.cancel()
         },
     },
     mounted() {
