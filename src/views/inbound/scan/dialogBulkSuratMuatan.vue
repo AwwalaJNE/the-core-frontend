@@ -397,7 +397,6 @@ export default {
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_ETA', '')
 
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_MANIFEST_NUMBER_isDisabled', false)
-            this.$store.dispatch('SET_SURAT_MUATAN_BULK_MAX_WEIGHT_isDisabled', false)
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_NODE_ID_ORIGIN_isDisabled', false)
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_NODE_ID_DESTINATION_isDisabled', false)
             this.$store.dispatch('SET_SURAT_MUATAN_BULK_ETD_isDisabled', false)
@@ -408,7 +407,8 @@ export default {
         },
         cancel2() {
             this.sm_type = ''
-            this.handleClearForm
+            this.resetForm()
+            this.handleClearForm()
             this.cancel()
         },
         validateTypeSection() {
