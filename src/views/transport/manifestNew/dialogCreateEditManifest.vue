@@ -710,9 +710,28 @@ export default {
             }
         },
         getDataPreview(val) {
+            this.manifest_number = this.listenSMNumber
+
             this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_PREFIX_visible', false)
             this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_PREFIX_width', 0)
             this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_NUMBER_width', 6)
+
+            this.master_form = {
+                manifest_number: val.manifest_number,
+                max_weight: val.max_weight,
+                manifest_method_id: val.manifest_method_id,
+                flight_number: val.flight_number,
+                flight_schedule: val.flight_schedule,
+                node_id_origin: this.listenNodeId,
+                node_id_destination: val.destination.node_id,
+                vehicle_mode_id: val.vehicle_mode_id,
+                vehicle_type_id: val.vehicle_type_id,
+                vehicle_id: val.vehicle_id,
+                pic_employee_id: val.pic_employee_id,
+                etd: val.etd,
+                eta: val.eta,
+                auto_depart: val.auto_depart,
+            }
 
             this.manifest_method_id = parseInt(val.manifest_method_id)
             val.manifest_method_id = parseInt(val.manifest_method_id)
