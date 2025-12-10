@@ -61,10 +61,10 @@
                 <div>
                     <!-- Form Section -->
                     <form-input-controller
-                        v-if="!listenIsReadOnly || !loadingSuratMuatan"
+                        v-if="(!listenIsReadOnly || !listenIsPreview) && !loadingSuratMuatan"
                         ref="formSuratMuatanController"
                         typeForm="surat_muatan"
-                        :dataItem="listenIsReadOnly ? listenGetByApi : editData"
+                        :dataItem="listenIsReadOnly || listenIsPreview ? listenGetByApi : editData"
                         :isDisabled="isDisabled"
                         :itterateUrlAutoComplete="listenItterateUrlAutoComplete"
                         :itterateFlagAutoComplete="listenItterateFlagAutoComplete"
@@ -159,7 +159,7 @@
 
                     <!-- Input Bag Section -->
                     <div class="mt-2 mb-2">
-                        <vs-row align="center" v-if="!listenIsReadOnly">
+                        <vs-row align="center" v-if="!listenIsReadOnly || !listenIsPreview">
                             <vs-col xs="6" sm="3" lg="3">
                                 <vs-input
                                     border
@@ -302,6 +302,7 @@ export default {
         dataItem: Object,
         refresh: Function,
         isReadOnly: Boolean,
+        isPreview: Boolean,
         title: String,
         sm_number: String,
     },
@@ -453,6 +454,9 @@ export default {
         listenIsReadOnly() {
             return this.isReadOnly
         },
+        listenIsPreview() {
+            return this.isPreview
+        },
         listenSMNumber() {
             return this.sm_number
         },
@@ -474,14 +478,17 @@ export default {
         },
         dataByApi: function (val) {
             if (val !== undefined) {
-                if (this.listenIsReadOnly) {
-                    this.isDisabled = true
+                this.isDisabled = this.listenIsReadOnly ? true : false
+
+                if (this.listenIsPreview) {
+                    this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_METHOD_ID_isDisabled', true)
+                    this.$store.dispatch('SET_SURAT_MUATAN_MANIFEST_NUMBER_isDisabled', true)
                 }
             }
         },
         active: async function (val) {
             if (val == true) {
-                if (this.listenIsReadOnly) {
+                if (this.listenIsReadOnly || this.listenIsPreview) {
                     await this.getEditDataByApi()
                 }
 
@@ -1216,7 +1223,6 @@ export default {
             }
         },
         async getAndApplySmStock() {
-            console.log('this.manifest_number', this.manifest_number)
             this.loading = true
             try {
                 const res = await axios.get(
