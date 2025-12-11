@@ -80,7 +80,7 @@
 
                         <!-- Form Utama -->
                         <form-input-controller
-                            v-if="listenIsPreview ? !loading : true"
+                            v-if="!loading"
                             ref="formSuratJalan"
                             typeForm="surat_jalan"
                             :dataItem="editData"
@@ -261,13 +261,9 @@ export default {
                 },
             ],
             item_number: '',
-            vehicle_max_weight: 0,
-            no_moda_angkutan_id: null,
             etd: null,
             eta: null,
-            estimated_time_in_hour: null,
             manifest_lov: '',
-            destinationUnlock: '',
             manifest_lov_list: [
                 {
                     label: 'Multi Destination',
@@ -283,7 +279,6 @@ export default {
             isDisabled: false,
             isDisabledPrint: false,
             isDisabledApprove: false,
-            isDestinationEnabled: false,
             is_approve: 0,
             item_remove: '',
             total_weight: 0,
@@ -293,7 +288,6 @@ export default {
                 page_size: 1,
                 page: 1,
             },
-            destination_name_code: '',
             is_missroute: false,
             dialogTraceBag: false,
             selectedBagNumber: '',
@@ -357,7 +351,6 @@ export default {
             if (val) {
                 this.getDestination2()
                 this.getNoModeAngkutan()
-                // this.getLov();
                 this.getDriver()
             }
         },
@@ -375,8 +368,6 @@ export default {
             this.manifest_do_number = val.manifest_do_number
             this.dataTable = val.detail
             this.is_penerusan = val.is_penerusan === '1'
-
-            this.isDestinationEnabled = val.node_id_destination === null
 
             this.isDisabled =
                 val.status !== 'UNAPPROVED' || val.is_orion === '1' || val.is_approve === 1
@@ -410,16 +401,8 @@ export default {
             this.etd = val.etd
             this.eta = val.eta
 
-            this.total_weight = val.total_weight
             this.editData = val
             this.editData.destination_id = val.node_id_destination
-            this.destination_name_code =
-                val?.destination?.node_name + ' (' + val?.destination?.node_code + ')' ||
-                val.node_id_destination
-
-            // this.getDestination(val.node_id_destination)
-
-            this.no_moda_angkutan_id = val.no_moda_angkutan_id || null
 
             this.master_form = {
                 node_id_origin: val.node_id_origin,
@@ -462,8 +445,6 @@ export default {
             this.dataTable = val.detail
             this.is_penerusan = val.is_penerusan === '1'
 
-            this.isDestinationEnabled = val.node_id_destination === null
-
             this.isDisabled =
                 val.status !== 'UNAPPROVED' || val.is_orion === '1' || val.is_approve === 1
             this.isDisabledPrint = val.status === 'CANCELED'
@@ -496,16 +477,14 @@ export default {
             this.etd = val.etd
             this.eta = val.eta
 
-            this.total_weight = val.total_weight
-            this.editData = val
-            this.editData.destination_id = val.node_id_destination
-            this.destination_name_code =
-                val?.destination?.node_name + ' (' + val?.destination?.node_code + ')' ||
-                val.node_id_destination
-
-            // this.getDestination(val.node_id_destination)
-
-            this.no_moda_angkutan_id = val.no_moda_angkutan_id || null
+            this.$store.dispatch(
+                'SET_SURAT_JALAN_DESTINATION_ID',
+                parseInt(val.node_id_destination)
+            )
+            this.$store.dispatch('SET_SURAT_JALAN_ETD', val.etd)
+            this.$store.dispatch('SET_SURAT_JALAN_ETA', val.eta)
+            this.$store.dispatch('SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID', parseInt(val?.vehicle_id))
+            this.$store.dispatch('SET_SURAT_JALAN_DRIVER_ID', parseInt(val?.pic_employee_id))
 
             this.master_form = {
                 node_id_origin: val.node_id_origin,
@@ -520,18 +499,6 @@ export default {
                 is_penerusan: val.is_penerusan,
             }
         },
-        // JANGAN DIHAPUS TAKUT NANTI DIPAKE LAGI
-        // getDestination(node_id_destination) {
-        //     let item_destination = {
-        //         label: this.destination_name_code,
-        //         value: node_id_destination
-        //     }
-
-        //     this.$store.dispatch("SET_SURAT_JALAN_DESTINATION_ID_ArrData", [{
-        //         ...item_destination,
-        //         item: item_destination
-        //     }]);
-        // },
         onChangeCustom(type, val, obj) {
             const updateMasterForm = (key, value) => {
                 if (this.manifest_do_number && this.master_form?.[key] !== value) {
@@ -542,25 +509,10 @@ export default {
 
             switch (type) {
                 case 'destination_id':
-                    // TODO: RECHECK LATER SINCE CURRENTLY WE USE H+1 FOR ETA
-                    // if (typeof obj === 'object') {
-                    //     const { item, value } = obj
-                    //     if (item?.estimated_time_in_hour) {
-                    //         this.estimated_time_in_hour = item.estimated_time_in_hour
-                    //         this.handleEta(this.etd, this.estimated_time_in_hour)
-                    //     }
-                    //     this.destinationUnlock = value
-                    // }
                     updateMasterForm('node_id_destination', val)
                     break
 
                 case 'no_moda_angkutan_id':
-                    if (typeof obj === 'object' && obj.item) {
-                        const { vehicle_max_weight, vehicle_type_id } = obj.item
-                        this.vehicle_max_weight = vehicle_max_weight
-                        this.vehicle_type_id = vehicle_type_id
-                    }
-                    this.no_moda_angkutan_id = val
                     updateMasterForm('vehicle_id', val)
                     break
 
@@ -590,14 +542,6 @@ export default {
 
                 default:
                     break
-            }
-        },
-        handleEta(dateTime, amount) {
-            if (dateTime && amount) {
-                this.$store.dispatch(
-                    'SET_SURAT_JALAN_ETA',
-                    moment(dateTime).add(amount, 'hours').format('YYYY-MM-DD HH:mm:ss')
-                )
             }
         },
         updateValue(key, val) {
@@ -657,7 +601,6 @@ export default {
                 let data = res.data.data
                 if (data) {
                     this.manifest_do_number = data.manifest_do_number
-                    this.total_weight = data.total_weight
                     this.etd = this.formatTimezone(data.etd)
                     this.eta = this.formatTimezone(data.eta)
 
@@ -673,10 +616,6 @@ export default {
                         item_no: data.item_number,
                         is_penerusan: data.is_penerusan,
                     }
-                    this.destination_name_code =
-                        data?.destination?.node_name + ' (' + data?.destination?.node_code + ')' ||
-                        data.node_id_destination
-                    // this.getDestination(data.node_id_destination)
                     this.editData = {
                         destination_id: data.node_id_destination,
                         node_id_origin: data.node_id_origin,
@@ -687,7 +626,6 @@ export default {
                         item_no: data.item_number,
                         is_penerusan: data.is_penerusan,
                     }
-                    this.isDestinationEnabled = data.node_id_destination === null
                     await this.getSuratJalanDetail()
                 }
 
@@ -715,7 +653,6 @@ export default {
 
                 if (res.data.data) {
                     this.manifest_do_number = res.data.data.manifest_do_number
-                    this.total_weight = res.data.data.total_weight
                     await this.getSuratJalanDetail()
                 }
 
@@ -845,16 +782,12 @@ export default {
             this.isDisabledPrint = false
             this.isDisabledApprove = false
             this.is_approve = 0
-            this.vehicle_max_weight = 0
-            this.no_moda_angkutan_id = null
             this.etd = null
             this.eta = null
-            this.estimated_time_in_hour = null
             this.manifest_lov = ''
             this.form = {}
             this.master_form = {}
             this.editData = {}
-            this.destination_name_code = ''
         },
         cancel() {
             this.$refs?.formSuratJalan?.handleClearForm()
@@ -863,18 +796,6 @@ export default {
             this.dataTable = []
             this.closeDialog()
             this.is_penerusan = true
-        },
-        getLov() {
-            const arr = this.manifest_lov_list.map((item) => ({
-                label: item.label,
-                value: item.value,
-            }))
-
-            this.$store.dispatch('SET_SURAT_JALAN_MANIFEST_LOV_ArrData', arr.length ? arr : null)
-
-            if (this.dataItem?.manifest_lov) {
-                this.manifest_lov = this.dataItem.manifest_lov
-            }
         },
         async getDestination2() {
             await axios
