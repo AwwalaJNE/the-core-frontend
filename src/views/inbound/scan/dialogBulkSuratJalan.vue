@@ -99,7 +99,7 @@
             </template>
         </dialog-master>
         <dialogCreateSuratJalanV2
-            title="Manifest Delivery Order Info"
+            title="Penerusan Info"
             :breadcrumb="sj_type.label"
             :active="dialogViewSuratJalan"
             :closeDialog="closeSuratJalan"
