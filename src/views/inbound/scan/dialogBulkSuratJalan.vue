@@ -325,12 +325,11 @@ export default {
                 done(false)
             } finally {
                 this.loading = false
-                this.openSuratJalan()
             }
         },
         openSuratJalan(val) {
             this.dialogViewSuratJalan = true
-            this.sj_number = val?.manifest_do_number
+            this.sj_number = val?.manifest_do?.manifest_do_number
         },
         closeSuratJalan() {
             this.dialogViewSuratJalan = false

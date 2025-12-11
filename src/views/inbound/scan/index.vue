@@ -210,18 +210,6 @@
                                         <i class="bx bx-plus"></i> Surat Muatan
                                     </vs-button>
                                 </div>
-                                <dialog-bulk-surat-jalan
-                                    title="Create Surat Jalan"
-                                    :active="dialogSuratJalan"
-                                    :dataItem="selectedData"
-                                    @closeDialog="() => closeDialog('surat_jalan')"
-                                />
-                                <dialog-bulk-surat-muatan
-                                    title="Create Surat Muatan"
-                                    :active="dialogSuratMuatan"
-                                    :dataItem="selectedData"
-                                    @closeDialog="() => closeDialog('surat_muatan')"
-                                />
                             </template>
                         </div>
                         <div class="nav-box">
@@ -246,6 +234,19 @@
                 <i class="bx bxs-chevron-left"> </i> BACK
             </vs-button>
         </section>
+
+        <dialog-bulk-surat-jalan
+            title="Create Surat Jalan"
+            :active="dialogSuratJalan"
+            :dataItem="selectedData"
+            @closeDialog="() => closeDialog('surat_jalan')"
+        />
+        <dialog-bulk-surat-muatan
+            title="Create Surat Muatan"
+            :active="dialogSuratMuatan"
+            :dataItem="selectedData"
+            @closeDialog="() => closeDialog('surat_muatan')"
+        />
 
         <camera-scanner
             ref="cameraScanner"
