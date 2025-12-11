@@ -858,7 +858,7 @@ export default {
         },
         cancel() {
             if (Object.keys(this.editData).length !== 0) {
-                this.$refs.formSuratJalan.handleClearForm()
+                this.$refs?.formSuratJalan?.handleClearForm()
             }
             this.loading = false
             this.handleClearForm()
