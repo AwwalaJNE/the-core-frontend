@@ -201,7 +201,7 @@
                                         :data-testid="`surat-jalan-button`"
                                         @click="openDialog('surat_jalan')"
                                     >
-                                        <i class="bx bx-plus"></i> Surat Jalan
+                                        <i class="bx bx-plus"></i> Penerusan
                                     </vs-button>
                                     <vs-button
                                         :data-testid="`surat-muatan-button`"
@@ -236,7 +236,7 @@
         </section>
 
         <dialog-bulk-surat-jalan
-            title="Create Surat Jalan"
+            title="Create Penerusan"
             :active="dialogSuratJalan"
             :dataItem="selectedData"
             @closeDialog="() => closeDialog('surat_jalan')"
