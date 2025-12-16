@@ -455,5 +455,5 @@ export default {
     validation_item: api + 'validation/item',
 
     // Summary Inventory Connote
-    summary_inventory_connote: api + 'summary/inventory-connote',
+    summary_inventory_item: api + 'summary/inventory-item',
 }

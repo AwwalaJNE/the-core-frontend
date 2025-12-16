@@ -765,7 +765,7 @@ export default {
             Object.assign(params, NAV_FILTERS[this.navActive]?.() || {})
 
             try {
-                const res = await axios.get(`${this.URL.summary_inventory_connote}`, {
+                const res = await axios.get(`${this.URL.summary_inventory_item}`, {
                     params,
                     ...this.Helper.header(),
                 })
