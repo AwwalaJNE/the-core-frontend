@@ -2,7 +2,11 @@
     <div>
         <section class="users">
             <vs-row justify="space-between">
-                <summary-card :dataLabel="summaryCardArr" :dataValue="summaryCardData" />
+                <summary-card
+                    :dataLabel="summaryCardArr"
+                    :dataValue="summaryCardData"
+                    :loading="loading"
+                />
             </vs-row>
             <vs-row justify="space-around">
                 <vs-col
@@ -690,6 +694,7 @@ export default {
             })
             this.title = item[0].title
             this.refreshInject = this.navActive
+            this.getSummaryData()
         },
         actionLimit(val) {
             this.pagination.limit = val
