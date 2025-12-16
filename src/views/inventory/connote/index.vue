@@ -1,6 +1,9 @@
 <template>
     <div>
         <section class="users">
+            <vs-row justify="space-between">
+                <summary-card :dataLabel="summaryCardArr" :dataValue="summaryCardData" />
+            </vs-row>
             <vs-row justify="space-around">
                 <vs-col
                     vs-type="flex"
@@ -265,7 +268,11 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
+
 import master from '@/mixins/master'
+
+import SummaryCard from '@/components/card/summaryCard'
 import TableMaster from '@/components/table/tableMaster.vue'
 import NavItem from '@/components/navbar/navTab'
 import Breadcrumb from '@/components/breadcrumb/index'
@@ -292,6 +299,7 @@ export default {
         selector: Selector,
         'select-search-by': SelectSearchBy,
         'date-time': DateTime,
+        'summary-card': SummaryCard,
     },
     data() {
         return {
@@ -577,6 +585,28 @@ export default {
 
             tempDate: [],
             // ==== END FILTER ARCHIVE TAB
+
+            // ==== START SUMMARY CARD
+            summaryCardData: {},
+            summaryCardArr: [
+                {
+                    label: 'Connote',
+                    key: 'summary_connote',
+                    width: 4,
+                },
+                {
+                    label: 'Unrunsheet',
+                    key: 'summary_unrunsheet',
+                    width: 4,
+                },
+                {
+                    label: 'Need Redelivery',
+                    key: 'summary_need_redelivery',
+                    width: 4,
+                },
+            ],
+
+            // ==== END SUMMARY CARD
         }
     },
     methods: {
@@ -673,6 +703,37 @@ export default {
                 this.$refs.searchInput.clear()
             })
         },
+
+        async getSummaryData() {
+            this.loading = true
+
+            try {
+                const res = await axios.get(
+                    `${this.URL.summary_inventory_connote}?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
+
+                let data = res.data.data
+
+                this.summaryCardData = {
+                    summary_connote: data?.summary_connote || '0',
+                    summary_unrunsheet: data?.summary_unrunsheet || '0',
+                    summary_need_redelivery: data?.summary_need_redelivery || '0',
+                }
+            } catch (err) {
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Failed',
+                    err?.response?.data?.message || 'Something went wrong'
+                )
+            } finally {
+                this.loading = false
+            }
+        },
+    },
+    mounted() {
+        this.getSummaryData()
     },
 }
 </script>
