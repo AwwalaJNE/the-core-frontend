@@ -12,7 +12,7 @@
                         {{ formatValue(item.key) }}
                     </p>
                     <p class="label" v-copy="item.label">
-                        {{ item.label }}
+                        {{ item.label?.toUpperCase() }}
                     </p>
                 </template>
             </div>

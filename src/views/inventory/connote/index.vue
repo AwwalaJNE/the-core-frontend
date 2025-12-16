@@ -153,6 +153,7 @@
                                     :queryBag="selectedStatusBagConnote"
                                     :querySearch="searchByConnote"
                                     :queryDate="filterDateByConnote"
+                                    @getSummaryData="getSummaryData"
                                 />
                             </transition>
                         </template>
@@ -214,6 +215,7 @@
                                     :querySearch="searchBy"
                                     :queryDate="filterDateBy"
                                     :hasStatusDelivery="'0'"
+                                    @getSummaryData="getSummaryData"
                                 />
                             </transition>
                         </template>
@@ -262,6 +264,7 @@
                                     :queryDate="filterDateByArchive"
                                     :hasStatusDelivery="'1'"
                                     :statusDelivery="selectedStatusDelivery"
+                                    @getSummaryData="getSummaryData"
                                 />
                             </transition>
                         </template>
@@ -273,6 +276,7 @@
 </template>
 <script>
 import axios from 'axios'
+import moment from 'moment'
 
 import master from '@/mixins/master'
 
@@ -694,7 +698,6 @@ export default {
             })
             this.title = item[0].title
             this.refreshInject = this.navActive
-            this.getSummaryData()
         },
         actionLimit(val) {
             this.pagination.limit = val
@@ -712,11 +715,60 @@ export default {
         async getSummaryData() {
             this.loading = true
 
+            const params = {
+                n: this.listenNodeId,
+                sort_order: 'desc',
+                s: this.tempSearch || '',
+            }
+
+            const NAV_FILTERS = {
+                'k-CONNOTE': () => ({
+                    is_on_bag: this.selectedStatusBagConnote || '',
+                    is_confirmed: this.selectedStatusInventoryConnote || '',
+                    start_date: this.tempDateConnote?.[0]
+                        ? moment(this.tempDateConnote[0]).format('YYYY-MM-DD')
+                        : '',
+                    end_date: this.tempDateConnote?.[1]
+                        ? moment(this.tempDateConnote[1]).format('YYYY-MM-DD')
+                        : '',
+                    search_by: this.searchByConnote || '',
+                    filter_date_by: this.filterDateByConnote || '',
+                }),
+
+                'k-KOLI': () => ({
+                    is_on_bag: this.selectedStatusBag || '',
+                    start_date: this.tempDate?.[0]
+                        ? moment(this.tempDate[0]).format('YYYY-MM-DD')
+                        : '',
+                    end_date: this.tempDate?.[1]
+                        ? moment(this.tempDate[1]).format('YYYY-MM-DD')
+                        : '',
+                    search_by: this.searchBy || '',
+                    filter_date_by: this.filterDateBy || '',
+                    has_status_delivery: '0',
+                }),
+
+                'k-ARCHIVE': () => ({
+                    is_on_bag: this.selectedStatusBag || '',
+                    start_date: this.tempDateArchive?.[0]
+                        ? moment(this.tempDateArchive[0]).format('YYYY-MM-DD')
+                        : '',
+                    end_date: this.tempDateArchive?.[1]
+                        ? moment(this.tempDateArchive[1]).format('YYYY-MM-DD')
+                        : '',
+                    search_by: this.searchByArchive || '',
+                    filter_date_by: this.filterDateByArchive || '',
+                    has_status_delivery: '1',
+                    status_delivery: 'ALL',
+                }),
+            }
+            Object.assign(params, NAV_FILTERS[this.navActive]?.() || {})
+
             try {
-                const res = await axios.get(
-                    `${this.URL.summary_inventory_connote}?n=${this.listenNodeId}`,
-                    this.Helper.header()
-                )
+                const res = await axios.get(`${this.URL.summary_inventory_connote}`, {
+                    params,
+                    ...this.Helper.header(),
+                })
 
                 let data = res.data.data
 
@@ -736,9 +788,6 @@ export default {
                 this.loading = false
             }
         },
-    },
-    mounted() {
-        this.getSummaryData()
     },
 }
 </script>
