@@ -404,6 +404,7 @@ export default {
                 manifest_lov: val.manifest_lov,
                 item_no: val.item_number,
                 is_penerusan: val.is_penerusan,
+                auto_depart: val.auto_depart,
             }
         },
         async getEditDataByApi() {
@@ -494,6 +495,7 @@ export default {
                 manifest_lov: val.manifest_lov,
                 item_no: val.item_number,
                 is_penerusan: val.is_penerusan,
+                auto_depart: val.auto_depart,
             }
         },
         onChangeCustom(type, val, obj) {
@@ -505,6 +507,9 @@ export default {
             }
 
             switch (type) {
+                case 'auto_depart':
+                    updateMasterForm('auto_depart', val ? '1' : '0')
+                    break
                 case 'destination_id':
                     updateMasterForm('node_id_destination', val)
                     break
@@ -613,6 +618,7 @@ export default {
                         manifest_lov: data.manifest_lov,
                         item_no: data.item_number,
                         is_penerusan: data.is_penerusan,
+                        auto_depart: data.auto_depart,
                     }
                     this.editData = {
                         manifest_do_number: data.manifest_do_number,
