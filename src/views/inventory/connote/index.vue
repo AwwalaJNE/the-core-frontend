@@ -3,6 +3,7 @@
         <section class="users">
             <vs-row justify="space-between">
                 <summary-card
+                    v-if="hasPermission('read-inventory-metric')"
                     :dataLabel="summaryCardArr"
                     :dataValue="summaryCardData"
                     :loading="loading"
@@ -713,6 +714,8 @@ export default {
         },
 
         async getSummaryData() {
+            if (!this.hasPermission('read-inventory-metric')) return
+
             this.loading = true
 
             const params = {
