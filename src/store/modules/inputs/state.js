@@ -4600,6 +4600,28 @@ export default {
         },
     },
     surat_jalan: {
+        auto_depart: {
+            label: 'Auto Depart',
+            key: 'auto_depart',
+            rule: '',
+            typeInput: 'Boolean',
+            typeData: 'Boolean',
+            valueData: true,
+            value: true,
+            isDisabled: false,
+            width: '12',
+        },
+        manifest_do_number: {
+            label: 'No Surat',
+            key: 'manifest_do_number',
+            rule: 'required',
+            typeInput: 'text',
+            typeData: 'String',
+            width: '12',
+            valueData: null,
+            value: '',
+            isDisabled: true,
+        },
         destination_id: {
             label: 'Destination',
             key: 'destination_id',

@@ -2201,6 +2201,23 @@ export default {
     /* End Suart Muatan */
 
     /* SURAT JALAN */
+    SET_SURAT_JALAN_AUTO_DEPART({ commit }, payload) {
+        commit('SET_SURAT_JALAN_AUTO_DEPART', payload)
+    },
+    SET_SURAT_JALAN_AUTO_DEPART_ValueData({ commit }, payload) {
+        commit('SET_SURAT_JALAN_AUTO_DEPART_ValueData', payload)
+    },
+
+    SET_SURAT_JALAN_MANIFEST_DO_NUMBER({ commit }, payload) {
+        commit('SET_SURAT_JALAN_MANIFEST_DO_NUMBER', payload)
+    },
+    SET_SURAT_JALAN_MANIFEST_DO_NUMBER_ValueData({ commit }, payload) {
+        commit('SET_SURAT_JALAN_MANIFEST_DO_NUMBER_ValueData', payload)
+    },
+    SET_SURAT_JALAN_MANIFEST_DO_NUMBER_label({ commit }, payload) {
+        commit('SET_SURAT_JALAN_MANIFEST_DO_NUMBER_label', payload)
+    },
+
     SET_SURAT_JALAN_DESTINATION_ID({ commit }, payload) {
         commit('SET_SURAT_JALAN_DESTINATION_ID', payload)
     },
