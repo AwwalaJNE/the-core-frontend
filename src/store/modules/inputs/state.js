@@ -4601,7 +4601,7 @@ export default {
     },
     surat_jalan: {
         auto_depart: {
-            label: 'Auto Depart',
+            label: 'Auto Depart | Auto Depart',
             key: 'auto_depart',
             rule: '',
             typeInput: 'Boolean',
