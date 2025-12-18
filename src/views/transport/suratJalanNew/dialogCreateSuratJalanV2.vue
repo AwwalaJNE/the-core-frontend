@@ -467,6 +467,7 @@ export default {
             this.etd = val.etd
             this.eta = val.eta
 
+            this.$store.dispatch('SET_SURAT_JALAN_AUTO_DEPART', val?.auto_depart === 1 ? 1 : 0)
             this.$store.dispatch('SET_SURAT_JALAN_MANIFEST_DO_NUMBER', val.manifest_do_number)
             this.$store.dispatch(
                 'SET_SURAT_JALAN_DESTINATION_ID',
@@ -630,6 +631,7 @@ export default {
                         manifest_lov: data.manifest_lov,
                         item_no: data.item_number,
                         is_penerusan: data.is_penerusan,
+                        auto_depart: data?.auto_depart === 1 ? 1 : 0,
                     }
                     await this.getSuratJalanDetail()
                 }
