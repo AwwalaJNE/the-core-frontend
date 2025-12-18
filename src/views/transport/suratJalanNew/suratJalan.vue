@@ -456,55 +456,33 @@ export default {
                                 ? `${item.status} <span class="status-tooltip" title="Terdapat Bag masih dalam proses transit."><i class="bx bxs-truck" style="font-size: 0.8rem; vertical-align: middle; border: 1px solid; border-radius: 50%; padding: 3px;"></i></span>`
                                 : item.status
 
-                        if (item.hasOwnProperty('status') && item['status'] !== null) {
-                            let str = item['status'].toLowerCase()
-                            if (item.is_approve === 1) {
-                                if (str.includes('approved')) {
-                                    buttonStatus = {
-                                        print: false,
-                                        depart: true,
-                                        cancel: true,
-                                    }
-                                } else if (str.includes('receive')) {
-                                    buttonStatus = {
-                                        print: true,
-                                        depart: false,
-                                        cancel: false,
-                                    }
-                                } else if (str.includes('cancel')) {
-                                    buttonStatus = {
-                                        print: false,
-                                        depart: false,
-                                        cancel: false,
-                                    }
-                                }
-                            } else {
-                                if (str.includes('approved')) {
-                                    buttonStatus = {
-                                        print: false,
-                                        depart: false,
-                                        cancel: true,
-                                    }
-                                } else if (str.includes('receive')) {
-                                    buttonStatus = {
-                                        print: true,
-                                        depart: false,
-                                        cancel: false,
-                                    }
-                                } else if (str.includes('cancel')) {
-                                    buttonStatus = {
-                                        print: false,
-                                        depart: false,
-                                        cancel: false,
-                                    }
-                                }
+                        if (item?.status != null) {
+                            const str = item.status.toLowerCase()
+
+                            let buttonStatus = {
+                                print: false,
+                                depart: false,
+                                cancel: false,
                             }
 
-                            item['button_status'] = buttonStatus
+                            if (str.includes('receive')) {
+                                buttonStatus.print = true
+                            }
+
+                            if (str.includes('approved')) {
+                                buttonStatus.cancel = true
+                                buttonStatus.depart = item.is_approve === 1
+                            }
+
+                            if (item.auto_depart === '1' && item.is_approve === 1) {
+                                buttonStatus.depart = false
+                            }
+
+                            item.button_status = buttonStatus
                         }
 
-                        if (item.is_orion == '1') {
-                            item['button_status'] = {
+                        if (item.is_orion === '1') {
+                            item.button_status = {
                                 print: true,
                                 depart: false,
                                 cancel: false,

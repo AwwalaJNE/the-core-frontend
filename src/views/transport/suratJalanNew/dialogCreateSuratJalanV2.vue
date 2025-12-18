@@ -68,19 +68,8 @@
                     <div>
                         <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
 
-                        <div class="nomor-sj" v-if="manifest_do_number">
-                            <input-general
-                                :name="`No ${listenBreadcrumbTitle}`"
-                                :formKey="listenSjType"
-                                :valueData="manifest_do_number"
-                                :typeInput="`text`"
-                                :disabled="true"
-                            />
-                        </div>
-
-                        <!-- Form Utama -->
                         <form-input-controller
-                            v-if="!loading"
+                            v-show="showFormSuratJalan"
                             ref="formSuratJalan"
                             typeForm="surat_jalan"
                             :dataItem="editData"
@@ -303,9 +292,6 @@ export default {
         listenTitle() {
             return this.title
         },
-        listenDisableSwitch() {
-            return this.manifest_do_number ? true : false
-        },
         listenBreadcrumbTitle() {
             return this.breadcrumb
         },
@@ -328,6 +314,9 @@ export default {
         },
         listenIsPreview() {
             return this.isPreview
+        },
+        showFormSuratJalan() {
+            return !this.loading && (!!this.manifest_do_number || !!this.sj_number)
         },
     },
     watch: {
@@ -415,6 +404,7 @@ export default {
                 manifest_lov: val.manifest_lov,
                 item_no: val.item_number,
                 is_penerusan: val.is_penerusan,
+                auto_depart: val.auto_depart,
             }
         },
         async getEditDataByApi() {
@@ -477,16 +467,24 @@ export default {
             this.etd = val.etd
             this.eta = val.eta
 
+            this.$store.dispatch('SET_SURAT_JALAN_MANIFEST_DO_NUMBER', val.manifest_do_number)
             this.$store.dispatch(
                 'SET_SURAT_JALAN_DESTINATION_ID',
                 parseInt(val.node_id_destination)
             )
             this.$store.dispatch('SET_SURAT_JALAN_ETD', val.etd)
             this.$store.dispatch('SET_SURAT_JALAN_ETA', val.eta)
-            this.$store.dispatch('SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID', parseInt(val?.vehicle_id))
-            this.$store.dispatch('SET_SURAT_JALAN_DRIVER_ID', parseInt(val?.pic_employee_id))
+            this.$store.dispatch(
+                'SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID',
+                parseInt(val?.vehicle_id) || null
+            )
+            this.$store.dispatch(
+                'SET_SURAT_JALAN_DRIVER_ID',
+                parseInt(val?.pic_employee_id) || null
+            )
 
             this.master_form = {
+                manifest_do_number: val.manifest_do_number,
                 node_id_origin: val.node_id_origin,
                 node_id_destination: val.node_id_destination,
                 vehicle_id: val.vehicle_id,
@@ -497,6 +495,7 @@ export default {
                 manifest_lov: val.manifest_lov,
                 item_no: val.item_number,
                 is_penerusan: val.is_penerusan,
+                auto_depart: val.auto_depart,
             }
         },
         onChangeCustom(type, val, obj) {
@@ -508,6 +507,9 @@ export default {
             }
 
             switch (type) {
+                case 'auto_depart':
+                    updateMasterForm('auto_depart', val ? '1' : '0')
+                    break
                 case 'destination_id':
                     updateMasterForm('node_id_destination', val)
                     break
@@ -605,6 +607,7 @@ export default {
                     this.eta = this.formatTimezone(data.eta)
 
                     this.master_form = {
+                        manifest_do_number: data.manifest_do_number,
                         node_id_origin: data.node_id_origin,
                         node_id_destination: data.node_id_destination,
                         vehicle_id: data.vehicle_id || null,
@@ -615,8 +618,10 @@ export default {
                         manifest_lov: data.manifest_lov,
                         item_no: data.item_number,
                         is_penerusan: data.is_penerusan,
+                        auto_depart: data.auto_depart,
                     }
                     this.editData = {
+                        manifest_do_number: data.manifest_do_number,
                         destination_id: data.node_id_destination,
                         node_id_origin: data.node_id_origin,
                         node_id_destination: data.node_id_destination,
@@ -910,6 +915,11 @@ export default {
             this.dialogTraceBag = true
         },
         setDatacolumn() {
+            this.$store.dispatch(
+                'SET_SURAT_JALAN_MANIFEST_DO_NUMBER_label',
+                'No ' + this.breadcrumb
+            )
+
             this.datacolumn = [
                 {
                     label: 'Item Number',
@@ -975,38 +985,3 @@ export default {
     },
 }
 </script>
-<style>
-.nomor-sj {
-    width: inherit;
-}
-</style>
-<style scoped>
-.title-helper {
-    width: 60%;
-    align-content: center;
-}
-
-.button-helper {
-    display: flex;
-    justify-content: flex-end;
-}
-
-button {
-    width: 6em;
-}
-.destination-container {
-    display: flex;
-    align-items: center;
-    gap: 8px; /* Beri jarak antara label dan switch */
-}
-
-.destination-label {
-    font-size: 12px; /* Sesuaikan ukuran label */
-    font-weight: 450;
-    margin-left: 10px;
-}
-
-.custom-switch {
-    transform: scale(0.8); /* Mengecilkan ukuran switch */
-}
-</style>

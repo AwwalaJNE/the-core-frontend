@@ -2370,6 +2370,23 @@ export default {
     /* End Surat Muatan */
 
     /* SURAT JALAN */
+    SET_SURAT_JALAN_AUTO_DEPART(state, payload) {
+        state.surat_jalan.auto_depart.value = payload
+    },
+    SET_SURAT_JALAN_AUTO_DEPART_ValueData(state, payload) {
+        state.surat_jalan.auto_depart.valueData = payload
+    },
+
+    SET_SURAT_JALAN_MANIFEST_DO_NUMBER(state, payload) {
+        state.surat_jalan.manifest_do_number.value = payload
+    },
+    SET_SURAT_JALAN_MANIFEST_DO_NUMBER_ValueData(state, payload) {
+        state.surat_jalan.manifest_do_number.valueData = payload
+    },
+    SET_SURAT_JALAN_MANIFEST_DO_NUMBER_label(state, payload) {
+        state.surat_jalan.manifest_do_number.label = payload
+    },
+
     SET_SURAT_JALAN_DESTINATION_ID(state, payload) {
         state.surat_jalan.destination_id.value = payload
     },
