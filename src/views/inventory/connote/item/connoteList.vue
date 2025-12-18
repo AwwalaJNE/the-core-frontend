@@ -267,6 +267,7 @@ export default {
         },
         refresh() {
             this.getTableData()
+            this.$emit('getSummaryData')
         },
         actionLimit(val) {
             this.pagination.limit = val

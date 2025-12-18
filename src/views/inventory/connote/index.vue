@@ -1,6 +1,14 @@
 <template>
     <div>
         <section class="users">
+            <vs-row justify="space-between">
+                <summary-card
+                    v-if="hasPermission('read-inventory-metric')"
+                    :dataLabel="summaryCardArr"
+                    :dataValue="summaryCardData"
+                    :loading="loading"
+                />
+            </vs-row>
             <vs-row justify="space-around">
                 <vs-col
                     vs-type="flex"
@@ -146,6 +154,7 @@
                                     :queryBag="selectedStatusBagConnote"
                                     :querySearch="searchByConnote"
                                     :queryDate="filterDateByConnote"
+                                    @getSummaryData="getSummaryData"
                                 />
                             </transition>
                         </template>
@@ -207,6 +216,7 @@
                                     :querySearch="searchBy"
                                     :queryDate="filterDateBy"
                                     :hasStatusDelivery="'0'"
+                                    @getSummaryData="getSummaryData"
                                 />
                             </transition>
                         </template>
@@ -255,6 +265,7 @@
                                     :queryDate="filterDateByArchive"
                                     :hasStatusDelivery="'1'"
                                     :statusDelivery="selectedStatusDelivery"
+                                    @getSummaryData="getSummaryData"
                                 />
                             </transition>
                         </template>
@@ -265,7 +276,12 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
+import moment from 'moment'
+
 import master from '@/mixins/master'
+
+import SummaryCard from '@/components/card/summaryCard'
 import TableMaster from '@/components/table/tableMaster.vue'
 import NavItem from '@/components/navbar/navTab'
 import Breadcrumb from '@/components/breadcrumb/index'
@@ -292,6 +308,7 @@ export default {
         selector: Selector,
         'select-search-by': SelectSearchBy,
         'date-time': DateTime,
+        'summary-card': SummaryCard,
     },
     data() {
         return {
@@ -577,6 +594,28 @@ export default {
 
             tempDate: [],
             // ==== END FILTER ARCHIVE TAB
+
+            // ==== START SUMMARY CARD
+            summaryCardData: {},
+            summaryCardArr: [
+                {
+                    label: 'Connote',
+                    key: 'summary_connote',
+                    width: 4,
+                },
+                {
+                    label: 'Unrunsheet',
+                    key: 'summary_unrunsheet',
+                    width: 4,
+                },
+                {
+                    label: 'Need Redelivery',
+                    key: 'summary_need_redelivery',
+                    width: 4,
+                },
+            ],
+
+            // ==== END SUMMARY CARD
         }
     },
     methods: {
@@ -672,6 +711,87 @@ export default {
                 this.refresh()
                 this.$refs.searchInput.clear()
             })
+        },
+
+        async getSummaryData() {
+            if (!this.hasPermission('read-inventory-metric')) return
+
+            this.loading = true
+
+            const params = {
+                n: this.listenNodeId,
+                sort_order: 'desc',
+                s: this.tempSearch || '',
+            }
+
+            const NAV_FILTERS = {
+                'k-CONNOTE': () => ({
+                    is_on_bag: this.selectedStatusBagConnote || '',
+                    is_confirmed: this.selectedStatusInventoryConnote || '',
+                    start_date: this.tempDateConnote?.[0]
+                        ? moment(this.tempDateConnote[0]).format('YYYY-MM-DD')
+                        : '',
+                    end_date: this.tempDateConnote?.[1]
+                        ? moment(this.tempDateConnote[1]).format('YYYY-MM-DD')
+                        : '',
+                    search_by: this.searchByConnote || '',
+                    filter_date_by: this.filterDateByConnote || '',
+                }),
+
+                'k-KOLI': () => ({
+                    is_on_bag: this.selectedStatusBag || '',
+                    is_confirmed: this.selectedStatusInventory || '',
+                    start_date: this.tempDate?.[0]
+                        ? moment(this.tempDate[0]).format('YYYY-MM-DD')
+                        : '',
+                    end_date: this.tempDate?.[1]
+                        ? moment(this.tempDate[1]).format('YYYY-MM-DD')
+                        : '',
+                    search_by: this.searchBy || '',
+                    filter_date_by: this.filterDateBy || '',
+                    has_status_delivery: '0',
+                }),
+
+                'k-ARCHIVE': () => ({
+                    is_on_bag: this.selectedStatusBag || '',
+                    is_confirmed: this.selectedStatusInventory || '',
+                    start_date: this.tempDateArchive?.[0]
+                        ? moment(this.tempDateArchive[0]).format('YYYY-MM-DD')
+                        : '',
+                    end_date: this.tempDateArchive?.[1]
+                        ? moment(this.tempDateArchive[1]).format('YYYY-MM-DD')
+                        : '',
+                    search_by: this.searchByArchive || '',
+                    filter_date_by: this.filterDateByArchive || '',
+                    has_status_delivery: '1',
+                    status_delivery: 'ALL',
+                }),
+            }
+            Object.assign(params, NAV_FILTERS[this.navActive]?.() || {})
+
+            try {
+                const res = await axios.get(`${this.URL.summary_inventory_item}`, {
+                    params,
+                    ...this.Helper.header(),
+                })
+
+                let data = res.data.data
+
+                this.summaryCardData = {
+                    summary_connote: data?.summary_connote || '0',
+                    summary_unrunsheet: data?.summary_unrunsheet || '0',
+                    summary_need_redelivery: data?.summary_need_redelivery || '0',
+                }
+            } catch (err) {
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Failed',
+                    err?.response?.data?.message || 'Something went wrong'
+                )
+            } finally {
+                this.loading = false
+            }
         },
     },
 }
