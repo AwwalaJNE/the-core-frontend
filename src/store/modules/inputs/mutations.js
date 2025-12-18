@@ -2371,10 +2371,11 @@ export default {
 
     /* SURAT JALAN */
     SET_SURAT_JALAN_AUTO_DEPART(state, payload) {
-        state.surat_jalan.auto_depart.value = payload
+        state.surat_jalan.auto_depart.value = Boolean(Number(payload))
     },
+
     SET_SURAT_JALAN_AUTO_DEPART_ValueData(state, payload) {
-        state.surat_jalan.auto_depart.valueData = payload
+        state.surat_jalan.auto_depart.valueData = Boolean(Number(payload))
     },
 
     SET_SURAT_JALAN_MANIFEST_DO_NUMBER(state, payload) {
