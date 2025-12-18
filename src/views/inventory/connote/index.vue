@@ -753,8 +753,8 @@ export default {
                 }),
 
                 'k-ARCHIVE': () => ({
-                    is_on_bag: this.selectedStatusBag || '',
-                    is_confirmed: this.selectedStatusInventory || '',
+                    is_on_bag: '',
+                    is_confirmed: '',
                     start_date: this.tempDateArchive?.[0]
                         ? moment(this.tempDateArchive[0]).format('YYYY-MM-DD')
                         : '',
@@ -764,7 +764,7 @@ export default {
                     search_by: this.searchByArchive || '',
                     filter_date_by: this.filterDateByArchive || '',
                     has_status_delivery: '1',
-                    status_delivery: 'ALL',
+                    status_delivery: this.selectedStatusDelivery,
                 }),
             }
             Object.assign(params, NAV_FILTERS[this.navActive]?.() || {})
