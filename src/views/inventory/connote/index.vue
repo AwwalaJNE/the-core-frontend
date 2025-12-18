@@ -740,6 +740,7 @@ export default {
 
                 'k-KOLI': () => ({
                     is_on_bag: this.selectedStatusBag || '',
+                    is_confirmed: this.selectedStatusInventory || '',
                     start_date: this.tempDate?.[0]
                         ? moment(this.tempDate[0]).format('YYYY-MM-DD')
                         : '',
@@ -753,6 +754,7 @@ export default {
 
                 'k-ARCHIVE': () => ({
                     is_on_bag: this.selectedStatusBag || '',
+                    is_confirmed: this.selectedStatusInventory || '',
                     start_date: this.tempDateArchive?.[0]
                         ? moment(this.tempDateArchive[0]).format('YYYY-MM-DD')
                         : '',
