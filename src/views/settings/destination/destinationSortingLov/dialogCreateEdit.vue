@@ -18,7 +18,7 @@
                     :querySearch="querySearch"
                     :asynchronousSelect_url="listenAsyncUrl"
                     :limitExist="true"
-                    :selectLabel="'node_code'"
+                    :selectLabel="'node_name'"
                     :selectValue="'node_code'"
                     :data-testid="`form`"
                     @formData="formData"
@@ -204,7 +204,7 @@ export default {
                             this.listenNodeId +
                             '&sort_order=desc&limit=10&page=1'
                         this.input_value = 'node_code'
-                        this.input_label = 'node_code'
+                        this.input_label = 'node_name'
                         break
                     default:
                 }
