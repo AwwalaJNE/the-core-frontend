@@ -4,19 +4,19 @@
             <vs-col xs="6" sm="4" lg="4">
                 <div class="titlePage">
                     <breadcrumb />
-                    <h2>{{title}}</h2>
+                    <h2>{{ title }}</h2>
                 </div>
             </vs-col>
             <vs-col xs="6" sm="3" lg="3">
-                <div style="position:relative;display:flex;justify-content: flex-end;">
-                    <div style="width: 100px;padding-right: 5px;">
+                <div style="position: relative; display: flex; justify-content: flex-end">
+                    <div style="width: 100px; padding-right: 5px">
                         <vs-button
                             flat
                             block
                             :active="true"
                             :data-testid="`create-button-${navActive}`"
                             @click="openDialog"
-                        > 
+                        >
                             <i class="bx bx-plus"></i> New
                         </vs-button>
                     </div>
@@ -38,17 +38,17 @@
                                             key="searchByDestinationZipCode"
                                             :border="true"
                                             :isMultiple="false"
-                                            :selectedValue="searchByDestinationZipCode" 
-                                            :valueData="searchParamsDestinationZipCode" 
-                                            @updateSearchBy="updateSearchBy" 
+                                            :selectedValue="searchByDestinationZipCode"
+                                            :valueData="searchParamsDestinationZipCode"
+                                            @updateSearchBy="updateSearchBy"
                                         />
                                     </vs-col>
                                     <vs-col vs-align="center" w="6">
-                                        <search-input 
+                                        <search-input
                                             class="search-input"
                                             key="searchInput"
-                                            ref="searchInput"  
-                                            :placeholder="searchPlaceholderDestinationZipCode" 
+                                            ref="searchInput"
+                                            :placeholder="searchPlaceholderDestinationZipCode"
                                             @searchValue="searchValue"
                                         />
                                     </vs-col>
@@ -61,17 +61,17 @@
                                             key="searchByDestinationSortingLov"
                                             :border="true"
                                             :isMultiple="false"
-                                            :selectedValue="searchByDestinationSortingLov" 
-                                            :valueData="searchParamsDestinationSortingLov" 
-                                            @updateSearchBy="updateSearchBy" 
+                                            :selectedValue="searchByDestinationSortingLov"
+                                            :valueData="searchParamsDestinationSortingLov"
+                                            @updateSearchBy="updateSearchBy"
                                         />
                                     </vs-col>
                                     <vs-col vs-align="center" w="6">
-                                        <search-input 
+                                        <search-input
                                             class="search-input"
                                             key="searchInput"
-                                            ref="searchInput"  
-                                            :placeholder="searchPlaceholderDestinationSortingLov" 
+                                            ref="searchInput"
+                                            :placeholder="searchPlaceholderDestinationSortingLov"
                                             @searchValue="searchValue"
                                         />
                                     </vs-col>
@@ -81,28 +81,24 @@
                     </vs-row>
                 </div>
                 <template v-if="navActive === 'DestinationZipCode'">
-                    <transition name="slide-fade">
-                        <destination-zip-code
-                            :ref="navActive" 
-                            :query="tempSearch" 
-                            :searchBy="searchByDestinationZipCode"
-                        />
-                    </transition>
+                    <destination-zip-code
+                        :ref="navActive"
+                        :query="tempSearch"
+                        :searchBy="searchByDestinationZipCode"
+                    />
                 </template>
                 <template v-else-if="navActive === 'DestinationSortingLov'">
-                    <transition name="slide-fade">
-                        <destination-sorting-lov
-                            :ref="navActive" 
-                            :query="tempSearch" 
-                            :searchBy="searchByDestinationSortingLov"
-                        />
-                    </transition>
+                    <destination-sorting-lov
+                        :ref="navActive"
+                        :query="tempSearch"
+                        :searchBy="searchByDestinationSortingLov"
+                    />
                 </template>
             </div>
         </section>
         <dialog-create-edit-zip-code
             title="Create Destination Zip Code Mapping"
-            :active="dialogActiveDestinationZipCode" 
+            :active="dialogActiveDestinationZipCode"
             :closeDialog="closeDialog"
             @refresh="refresh"
         />
@@ -115,100 +111,99 @@
     </div>
 </template>
 <script>
+import Breadcrumb from '@/components/breadcrumb/index'
+import NavItem from '@/components/navbar/navTab'
+import SearchInput from '@/components/search/searchInput'
+import SelectSearchBy from '@/components/search/selectSearchBy'
 
-import Breadcrumb from "@/components/breadcrumb/index";
-import NavItem from "@/components/navbar/navTab";
-import SearchInput from "@/components/search/searchInput";
-import SelectSearchBy from "@/components/search/selectSearchBy";
-
-import DialogCreateEditZipCode from "@/views/settings/destination/destinationZipCode/dialogCreateEdit";
-import DialogCreateEditSortingLov from "@/views/settings/destination/destinationSortingLov/dialogCreateEdit";
-import ZipCodeTable from "@/views/settings/destination/destinationZipCode/index";
-import SortingLovTable from "@/views/settings/destination/destinationSortingLov/index";
+import DialogCreateEditZipCode from '@/views/settings/destination/destinationZipCode/dialogCreateEdit'
+import DialogCreateEditSortingLov from '@/views/settings/destination/destinationSortingLov/dialogCreateEdit'
+import ZipCodeTable from '@/views/settings/destination/destinationZipCode/index'
+import SortingLovTable from '@/views/settings/destination/destinationSortingLov/index'
 
 export default {
-    name:"destination-zip-code-index",
+    name: 'destination-zip-code-index',
     components: {
-        "nav-item": NavItem,
-        "breadcrumb": Breadcrumb,
-        "search-input": SearchInput,
-        "destination-zip-code": ZipCodeTable,
-        "dialog-create-edit-zip-code": DialogCreateEditZipCode,
-        "destination-sorting-lov": SortingLovTable,
-        "dialog-create-edit-sorting-lov": DialogCreateEditSortingLov,
-        "select-search-by": SelectSearchBy,
+        'nav-item': NavItem,
+        breadcrumb: Breadcrumb,
+        'search-input': SearchInput,
+        'destination-zip-code': ZipCodeTable,
+        'dialog-create-edit-zip-code': DialogCreateEditZipCode,
+        'destination-sorting-lov': SortingLovTable,
+        'dialog-create-edit-sorting-lov': DialogCreateEditSortingLov,
+        'select-search-by': SelectSearchBy,
     },
     data() {
         return {
             navItemm: [
                 {
-                    label: "Destination Zip Code",
-                    key: "DestinationZipCode",
-                    title: "Destination Zip Code"
+                    label: 'Destination Zip Code',
+                    key: 'DestinationZipCode',
+                    title: 'Destination Zip Code',
                 },
                 {
-                    label: "Destination Sorting LOV",
-                    key: "DestinationSortingLov",
-                    title: "Destination Sorting LOV"
+                    label: 'Destination Sorting LOV',
+                    key: 'DestinationSortingLov',
+                    title: 'Destination Sorting LOV',
                 },
             ],
-            title:"Destination Zip Code",
-            navActive: "DestinationZipCode",
-            tempSearch: "",
+            title: 'Destination Zip Code',
+            navActive: 'DestinationZipCode',
+            tempSearch: '',
             dialogActiveDestinationZipCode: false,
-            searchPlaceholderDestinationZipCode: "Search Reference Value",
-            searchByDestinationZipCode: "reference_value",
+            searchPlaceholderDestinationZipCode: 'Search Reference Value',
+            searchByDestinationZipCode: 'reference_value',
             searchParamsDestinationZipCode: [
                 {
-                    label: "Reference Value",
-                    value: "reference_value"
+                    label: 'Reference Value',
+                    value: 'reference_value',
                 },
                 {
-                    label: "Reference Entity",
-                    value: "reference_entity"
+                    label: 'Reference Entity',
+                    value: 'reference_entity',
                 },
                 {
-                    label: "Zip Code",
-                    value: "zip_code"
-                }
+                    label: 'Zip Code',
+                    value: 'zip_code',
+                },
             ],
             dialogActiveDestinationSortingLov: false,
-            searchPlaceholderDestinationSortingLov: "Search Reference Value",
-            searchByDestinationSortingLov: "reference_to",
+            searchPlaceholderDestinationSortingLov: 'Search Reference Value',
+            searchByDestinationSortingLov: 'reference_to',
             searchParamsDestinationSortingLov: [
                 {
-                    label: "Reference To",
-                    value: "reference_to"
+                    label: 'Reference To',
+                    value: 'reference_to',
                 },
                 {
-                    label: "Reference Entity",
-                    value: "reference_entity"
+                    label: 'Reference Entity',
+                    value: 'reference_entity',
                 },
                 {
-                    label: "Reference Value",
-                    value: "reference_value"
+                    label: 'Reference Value',
+                    value: 'reference_value',
                 },
                 {
-                    label: "Item Type",
-                    value: "item_type"
+                    label: 'Item Type',
+                    value: 'item_type',
                 },
                 {
-                    label: "Destination Node Code",
-                    value: "destination_node_code"
+                    label: 'Destination Node Code',
+                    value: 'destination_node_code',
                 },
                 {
-                    label: "Created By",
-                    value: "created_by",
+                    label: 'Created By',
+                    value: 'created_by',
                 },
-            ]
+            ],
         }
     },
     methods: {
-        refresh(){
+        refresh() {
             let el = this.refreshInject
             this.$refs[el].refresh()
         },
-        searchValue (val) {
+        searchValue(val) {
             this.tempSearch = val
         },
         clearSearch() {
@@ -218,46 +213,46 @@ export default {
             this.navActive = val
             this.clearSearch()
 
-            let item = this.navItemm.filter(item => {
+            let item = this.navItemm.filter((item) => {
                 return item.key == val
             })
             this.title = item[0].title
         },
-        openDialog(){
-            switch(this.navActive) {
-                case "DestinationZipCode":
+        openDialog() {
+            switch (this.navActive) {
+                case 'DestinationZipCode':
                     this.dialogActiveDestinationZipCode = true
-                    break;
-                case "DestinationSortingLov":
+                    break
+                case 'DestinationSortingLov':
                     this.dialogActiveDestinationSortingLov = true
-                    break;
+                    break
                 default:
             }
             this.refreshInject = this.navActive
         },
         closeDialog() {
-            switch(this.navActive) {
-                case "DestinationZipCode":
+            switch (this.navActive) {
+                case 'DestinationZipCode':
                     this.dialogActiveDestinationZipCode = false
-                    break;
-                case "DestinationSortingLov":
+                    break
+                case 'DestinationSortingLov':
                     this.dialogActiveDestinationSortingLov = false
-                    break;
+                    break
                 default:
             }
         },
         updateSearchBy(key, val) {
-            switch(this.navActive) {
-                case "DestinationZipCode":
-                    this.searchByDestinationZipCode = val;
-                    this.searchPlaceholderDestinationZipCode = key;
+            switch (this.navActive) {
+                case 'DestinationZipCode':
+                    this.searchByDestinationZipCode = val
+                    this.searchPlaceholderDestinationZipCode = key
                     this.clearSearch()
-                    break;
-                case "DestinationSortingLov":
-                    this.searchByDestinationSortingLov = val;
-                    this.searchPlaceholderDestinationSortingLov = key;
+                    break
+                case 'DestinationSortingLov':
+                    this.searchByDestinationSortingLov = val
+                    this.searchPlaceholderDestinationSortingLov = key
                     this.clearSearch()
-                    break;
+                    break
                 default:
             }
         },
