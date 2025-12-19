@@ -700,7 +700,9 @@ export default {
                         item_number: this.item_number.replace(/\s+/g, ''),
                         is_pra_runsheet: this.is_pra_runsheet,
                         auto_open_bag: this.is_auto_open_bag,
-                        is_hub_delivery_validation: this.is_pra_runsheet ? false : true,
+                        is_hub_delivery_validation: this.is_pra_runsheet
+                            ? false
+                            : this.is_hub_delivery_validation,
                     },
                     this.Helper.header()
                 )
