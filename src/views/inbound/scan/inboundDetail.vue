@@ -1,6 +1,7 @@
 <template>
     <div>
         <table-master
+            :key="tableKey"
             hideColumnKey="receiving-detail-info"
             :dataTable="dataTableProp"
             :dataColumn="datacolumn"
@@ -56,7 +57,64 @@ export default {
     data() {
         return {
             dataTable: [],
-            datacolumn: [
+            customActionList: [
+                {
+                    label: 'Entry Status',
+                    key: 'entry_status',
+                    attribute: '',
+                },
+            ],
+            dialogEditReceivingLogActive: false,
+            inboundDetail: null,
+        }
+    },
+    computed: {
+        tableKey() {
+            return `${this.getDynamicColumnKey}-${this.getDynamicColumnLabel}`
+        },
+
+        getDynamicColumnLabel() {
+            if (this.dataTableProp && this.dataTableProp.length > 0) {
+                const firstItem = this.dataTableProp[0]
+                const tipeBag = firstItem.bag?.tipe_bag
+
+                switch (tipeBag) {
+                    case 'OM':
+                        return 'TM'
+                    case 'HACB':
+                        return 'RCVB'
+                    case 'HVO':
+                    case 'DO':
+                        return 'HVI'
+                    default:
+                        return 'HVI' // default fallback
+                }
+            }
+            return 'HVI' // default ketika belum ada data
+        },
+
+        getDynamicColumnKey() {
+            if (this.dataTableProp && this.dataTableProp.length > 0) {
+                const firstItem = this.dataTableProp[0]
+                const tipeBag = firstItem.bag?.tipe_bag
+
+                switch (tipeBag) {
+                    case 'OM':
+                        return 'tm'
+                    case 'HACB':
+                        return 'rcvb'
+                    case 'HVO':
+                    case 'DO':
+                        return 'hvi'
+                    default:
+                        return 'bag_number' // default fallback
+                }
+            }
+            return 'bag_number' // default ketika belum ada data
+        },
+
+        datacolumn() {
+            return [
                 {
                     label: 'Item Number',
                     key: 'item_number',
@@ -73,8 +131,9 @@ export default {
                     width: 'sm',
                 },
                 {
-                    label: 'HVI',
-                    key: 'hvi',
+                    // 🧠 kolom dinamis
+                    label: this.getDynamicColumnLabel,
+                    key: this.getDynamicColumnKey,
                     width: 'sm',
                 },
                 {
@@ -89,17 +148,12 @@ export default {
                     width: 'sm',
                     is_missroute: 'is_missroute',
                 },
-            ],
-            customActionList: [
-                {
-                    label: 'Entry Status',
-                    key: 'entry_status',
-                    attribute: '',
-                },
-            ],
-            dialogEditReceivingLogActive: false,
-            inboundDetail: null,
-        }
+            ]
+        },
+
+        listenLoading() {
+            return this.loading
+        },
     },
     methods: {
         entryReceivingLog(val) {
@@ -116,11 +170,6 @@ export default {
             this.$emit('refresh')
 
             this.$emit('autoFocusInput', this.dialogEditReceivingLogActive)
-        },
-    },
-    computed: {
-        listenLoading() {
-            return this.loading
         },
     },
 }
