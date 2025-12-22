@@ -13,8 +13,8 @@
 <template>
     <inputan :name="name" :rules="rules">
         <template v-slot:inputan>
-            <div style="text-align:left;" class="el-select-async">
-                <span class="c-label">{{name}}</span>
+            <div style="text-align: left" class="el-select-async">
+                <span class="c-label">{{ name }}</span>
                 <el-select
                     v-model="value"
                     :multiple="!listenIsSingleInput"
@@ -28,27 +28,28 @@
                     :disabled="listenIsDisabled"
                     :data-testid="`select-${formKey}`"
                 >
-                        <template v-if="options.length > 0">
-                            <el-option
+                    <template v-if="options.length > 0">
+                        <el-option
                             v-for="item in options"
                             :key="item.value"
                             :label="item.label"
-                            :value="item.value">
-                            </el-option>
-                        </template>
+                            :value="item.value"
+                        >
+                        </el-option>
+                    </template>
                 </el-select>
             </div>
         </template>
     </inputan>
 </template>
 <script>
-import axios from "axios";
-import master from "@/mixins/master"
-import Inputan from "@/components/input/inputan"
+import axios from 'axios'
+import master from '@/mixins/master'
+import Inputan from '@/components/input/inputan'
 import _ from 'lodash'
 
 export default {
-    name: "asynchronous-select",
+    name: 'asynchronous-select',
     mixins: [master],
     props: {
         name: String,
@@ -67,13 +68,17 @@ export default {
         isSingleInput: Boolean,
         isNestedData: Boolean,
         nestedKey: String,
-        labelFormatter: Function
+        labelFormatter: Function,
+        minSearchLength: {
+            type: Number,
+            default: 2,
+        },
     },
     components: {
-        "inputan": Inputan
+        inputan: Inputan,
     },
     computed: {
-        listenFormKey(){
+        listenFormKey() {
             return this.formKey
         },
         listenTypeInput() {
@@ -88,15 +93,18 @@ export default {
         listenIsSingleInput() {
             return this.isSingleInput ? this.isSingleInput : false
         },
+        listenMinSearchLength() {
+            return this.minSearchLength
+        },
     },
     data() {
         return {
             value: this.selectedValue ?? null,
-            options: this.valueData ?? [{"label": null, "value": null}],
+            options: this.valueData ?? [{ label: null, value: null }],
             loading: false,
             query: '',
             limit: 10,
-            debouncedAsynchronousSelect: null
+            debouncedAsynchronousSelect: null,
         }
     },
     created() {
@@ -113,7 +121,7 @@ export default {
             if (val !== old) {
                 this.asynchronousSelect(this.query)
             }
-        }
+        },
         // valueData: function(val) {
         //     if (val != undefined) {
         //         this.options = val
@@ -123,7 +131,7 @@ export default {
     methods: {
         asynchronousSelect(queryString) {
             this.query = queryString
-            if (queryString && queryString.length > 2) {
+            if (queryString && queryString.length > this.listenMinSearchLength) {
                 this.loading = true
                 this.debouncedAsynchronousSelect(queryString)
             } else {
@@ -131,76 +139,85 @@ export default {
             }
         },
         asynchronousSelectImpl(queryString) {
-            queryString != '' && axios.get(this.listenUrl +`&s=${queryString}` + `${this.limit ? `&limit=${this.limit}` : ''}`, this.Helper.header())
-            .then(res => {
-                let result = res.data.data
-                let suggestions = [];
+            queryString != '' &&
+                axios
+                    .get(
+                        this.listenUrl +
+                            `&s=${queryString}` +
+                            `${this.limit ? `&limit=${this.limit}` : ''}`,
+                        this.Helper.header()
+                    )
+                    .then((res) => {
+                        let result = res.data.data
+                        let suggestions = []
 
-                if (this.isNestedData) {
-                    result.length > 0 && result[0][this.nestedKey].map(item => {
-                        if (this.selectLabel && this.selectValue){
-                            suggestions.push({
-                                value: item[this.selectValue],
-                                label: item[this.selectLabel],
-                                data: item
-                            });
+                        if (this.isNestedData) {
+                            result.length > 0 &&
+                                result[0][this.nestedKey].map((item) => {
+                                    if (this.selectLabel && this.selectValue) {
+                                        suggestions.push({
+                                            value: item[this.selectValue],
+                                            label: item[this.selectLabel],
+                                            data: item,
+                                        })
+                                    }
+                                })
+
+                            this.options = suggestions
+                            // this.$store.dispatch("SET_COST_TO_COST_REPORT_CONTOHMULTIPLESELECTASYNC_ArrData", suggestions.length > 0 ? suggestions : [{"label": null, "value": null, "data": {}}])
+                            this.loading = false
+                        } else {
+                            result.length > 0 &&
+                                result.map((item) => {
+                                    if (this.selectLabel && this.selectValue) {
+                                        const label = this.labelFormatter
+                                            ? this.labelFormatter(item)
+                                            : item[this.selectLabel]
+                                        suggestions.push({
+                                            value: item[this.selectValue],
+                                            label: label,
+                                            data: item,
+                                        })
+                                    } else if (item.hasOwnProperty('node_name')) {
+                                        suggestions.push({
+                                            value: item['node_id'],
+                                            label: item['node_name'],
+                                            data: item,
+                                        })
+                                    } else if (item.hasOwnProperty('user_name')) {
+                                        suggestions.push({
+                                            value: item['user_id'],
+                                            label: item['user_name'],
+                                            data: item,
+                                        })
+                                    } else if (typeof item === 'string') {
+                                        suggestions.push({
+                                            value: item,
+                                            label: item,
+                                            data: item,
+                                        })
+                                    }
+                                })
+
+                            this.options = suggestions
+                            // this.$store.dispatch("SET_COST_TO_COST_REPORT_CONTOHMULTIPLESELECTASYNC_ArrData", suggestions.length > 0 ? suggestions : [{"label": null, "value": null, "data": {}}])
+                            this.loading = false
                         }
                     })
-                    
-                    this.options = suggestions
-                    // this.$store.dispatch("SET_COST_TO_COST_REPORT_CONTOHMULTIPLESELECTASYNC_ArrData", suggestions.length > 0 ? suggestions : [{"label": null, "value": null, "data": {}}])
-                    this.loading = false
-                } else {
-                    result.length > 0 && result.map(item => {
-                        if (this.selectLabel && this.selectValue){
-                            const label = this.labelFormatter ? this.labelFormatter(item) : item[this.selectLabel];
-                            suggestions.push({
-                                value: item[this.selectValue],
-                                label: label,
-                                data: item
-                            });
-                        } else if(item.hasOwnProperty('node_name')) {
-                            suggestions.push({
-                                value: item['node_id'],
-                                label: item['node_name'],
-                                data: item
-                            });
-                        } else if(item.hasOwnProperty('user_name')) {
-                            suggestions.push({
-                                value: item['user_id'],
-                                label: item['user_name'],
-                                data: item
-                            });
-                        } else if (typeof item === 'string') {
-                            suggestions.push({
-                                value: item,
-                                label: item,
-                                data: item
-                            });
-                        }
+                    .catch((error) => {
+                        this.loading = false
                     })
-                    
-                    this.options = suggestions
-                    // this.$store.dispatch("SET_COST_TO_COST_REPORT_CONTOHMULTIPLESELECTASYNC_ArrData", suggestions.length > 0 ? suggestions : [{"label": null, "value": null, "data": {}}])
-                    this.loading = false
-                }
-                
-            })
-            .catch(error => {
-                this.loading = false
-            });
         },
         updateOption(arr) {
-
-           this.options = arr && arr.length > 0 ? arr : [{"label": null, "value": null}] 
+            this.options = arr && arr.length > 0 ? arr : [{ label: null, value: null }]
         },
-        inputFocus(){
+        inputFocus() {
             let info = {}
-            info["key"] = this.listenFormKey
-            info["typeInput"] = this.listenTypeInput
-            info["data"] = this.value
+            info['key'] = this.listenFormKey
+            info['typeInput'] = this.listenTypeInput
+            info['data'] = this.value
 
-            this.$emit("inputFocus", info)
+            this.$emit('inputFocus', info)
 
             this.options = []
         },
@@ -212,20 +229,20 @@ export default {
             info['status'] = status
             // info['data'] = item.data
 
-
-
-            this.$emit("updateValue", this.listenFormKey, item, info, this.dataObj)
-        }
+            this.$emit('updateValue', this.listenFormKey, item, info, this.dataObj)
+        },
     },
     mounted() {
         if (this.limitExist) {
-            const masonry = document.querySelector('.el-select-async .el-select-dropdown__wrap.el-scrollbar__wrap');
-            masonry.addEventListener('scroll', e => {
+            const masonry = document.querySelector(
+                '.el-select-async .el-select-dropdown__wrap.el-scrollbar__wrap'
+            )
+            masonry.addEventListener('scroll', (e) => {
                 if (masonry.scrollHeight - (masonry.scrollTop + masonry.clientHeight) < 1) {
-                    this.limit += 10;
+                    this.limit += 10
                 }
-            });
+            })
         }
-    }
+    },
 }
 </script>

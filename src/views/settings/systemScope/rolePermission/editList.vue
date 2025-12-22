@@ -384,6 +384,7 @@ export default {
                             autoCompleteUrl: '',
                             selectLabel: '',
                             selectValue: '',
+                            minSearchLength: 0,
                         },
                         width: 'auto',
                     },
