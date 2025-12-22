@@ -69,6 +69,10 @@ export default {
         isNestedData: Boolean,
         nestedKey: String,
         labelFormatter: Function,
+        minSearchLength: {
+            type: Number,
+            default: 2,
+        },
     },
     components: {
         inputan: Inputan,
@@ -88,6 +92,9 @@ export default {
         },
         listenIsSingleInput() {
             return this.isSingleInput ? this.isSingleInput : false
+        },
+        listenMinSearchLength() {
+            return this.minSearchLength
         },
     },
     data() {
@@ -124,7 +131,7 @@ export default {
     methods: {
         asynchronousSelect(queryString) {
             this.query = queryString
-            if (queryString && queryString.length > 2) {
+            if (queryString && queryString.length > this.listenMinSearchLength) {
                 this.loading = true
                 this.debouncedAsynchronousSelect(queryString)
             } else {
