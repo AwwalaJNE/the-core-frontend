@@ -157,11 +157,10 @@ export default {
         refresh() {
             if (!this.app_role_id) return
 
-            if (
-                this.app.toLowerCase() === 'core data table' ||
-                this.app.toLowerCase() === 'dashboard reporting data table'
-            ) {
-                this.getTableData2(this.pagination.limit, this.pagination.page, this.tempSearch)
+            if (this.app.toLowerCase().includes('data table')) {
+                this.getTableData2()
+            } else if (this.app.toLowerCase().includes('metric')) {
+                this.getTableData3()
             } else {
                 this.getTableData(this.pagination.limit, this.pagination.page, this.tempSearch)
             }
@@ -200,6 +199,11 @@ export default {
                     value: 'reference_value',
                     label: 'reference_value',
                 },
+                HIDDEN_METRIC: {
+                    url: this.URL.column_list,
+                    value: 'reference_value',
+                    label: 'reference_value',
+                },
             }
             return referenceMap[entity] || null
         },
@@ -209,7 +213,7 @@ export default {
                 this.input_value = ''
                 this.input_label = ''
             } else {
-                if (entity === 'HIDDEN_COLUMN') {
+                if (entity === 'HIDDEN_COLUMN' || entity === 'HIDDEN_METRIC') {
                     this.autoCompleteUrl = `${reference.url}?n=${this.listenNodeId}&feature=${val.feature_code}`
                     this.input_value = reference.value
                     this.input_label = reference.label
@@ -247,39 +251,41 @@ export default {
             changesMap.set(dataObj.feature_permission_id, { ...dataObj, selected: true })
             this.changes_form = Array.from(changesMap.values())
         },
-        async getTableData(limit, page, q) {
+        async loadDataTable({ url, columnKey, usePagination = false, limit, page, q }) {
             this.loading = true
 
-            let query = q || ''
+            const query = q || ''
 
             try {
-                const res = await axios.get(
-                    `${this.URL.application_role}/${this.app_role_id}/permission?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}`,
-                    this.Helper.header()
-                )
+                const res = await axios.get(url, this.Helper.header())
 
-                if (res.data.data.length > 0) {
-                    let arr = res.data.data
-                    arr = arr.map((item) => ({
-                        ...item,
-                        selected: item.feature_scope_id ? true : false,
-                    }))
-                    this.dataTable = arr
-                    this.dataColumn = JSON.parse(JSON.stringify(this.getColumnDefinition('others')))
-                    this.key = 'others'
+                const data = res.data?.data || []
 
+                if (!data.length) {
+                    this.dataTable = []
+                    return
+                }
+
+                this.dataTable = data.map((item) => ({
+                    ...item,
+                    selected: !!item.feature_scope_id,
+                }))
+
+                this.dataColumn = JSON.parse(JSON.stringify(this.getColumnDefinition(columnKey)))
+                this.key = columnKey
+
+                if (usePagination && res.data.meta) {
                     this.pagination = {
                         page: res.data.meta.current_page,
-                        limit: parseInt(res.data.meta.per_page, 10),
+                        limit: Number(res.data.meta.per_page),
                         page_size: res.data.meta.last_page,
                     }
-                    this.dataTableSelected = this.dataTable.filter((item) => item.selected)
-                    this.isAllChecked = this.dataTable.every((item) => item.selected)
-                } else {
-                    this.dataTable = []
                 }
+
+                this.dataTableSelected = this.dataTable.filter((i) => i.selected)
+                this.isAllChecked = this.dataTable.every((i) => i.selected)
             } catch (err) {
-                this.redirectError(err)
+                this.redirectError?.(err)
                 this.openNotification(
                     'danger',
                     err?.response?.data?.code || '',
@@ -290,67 +296,63 @@ export default {
                 this.loading = false
             }
         },
-        async getTableData2(limit, page, q) {
-            this.loading = true
-
-            let query = q || ''
-
-            try {
-                const res = await axios.get(
-                    `${this.URL.feature_list}/${this.app_role_id}?n=${this.listenNodeId}&sort_order=desc`,
-                    this.Helper.header()
-                )
-
-                if (res.data.data.length > 0) {
-                    let arr = res.data.data
-                    arr = arr.map((item) => ({
-                        ...item,
-                        selected: item.feature_scope_id ? true : false,
-                    }))
-                    this.dataTable = arr
-                    this.dataColumn = JSON.parse(
-                        JSON.stringify(this.getColumnDefinition('hide_column'))
-                    )
-                    this.key = 'hide_column'
-                    this.dataTableSelected = this.dataTable.filter((item) => item.selected)
-                    this.isAllChecked = this.dataTable.every((item) => item.selected)
-                } else {
-                    this.dataTable = []
-                }
-            } catch (err) {
-                // this.redirectError(err)
-                this.openNotification(
-                    'danger',
-                    err?.response?.data?.code || '',
-                    'Failed',
-                    err?.response?.data?.message || 'Something went wrong'
-                )
-            } finally {
-                this.loading = false
-            }
+        getTableData(limit, page, q) {
+            return this.loadDataTable({
+                url: `${this.URL.application_role}/${this.app_role_id}/permission?n=${
+                    this.listenNodeId
+                }&sort_order=desc&limit=${limit}&page=${page}&s=${q || ''}`,
+                columnKey: 'others',
+                usePagination: true,
+                limit,
+                page,
+                q,
+            })
         },
+
+        getTableData2() {
+            return this.loadDataTable({
+                url: `${this.URL.feature_list}/${this.app_role_id}?n=${this.listenNodeId}&sort_order=desc`,
+                columnKey: 'hide_column',
+            })
+        },
+
+        getTableData3() {
+            return this.loadDataTable({
+                url: `${this.URL.feature_list}/${this.app_role_id}?n=${this.listenNodeId}&sort_order=desc`,
+                columnKey: 'metric',
+            })
+        },
+
         getColumnDefinition(typeInputDetail) {
-            const referenceEntities =
-                typeInputDetail === 'others'
-                    ? [
-                          { label: 'REGION', value: 'REGION' },
-                          { label: 'BRANCH', value: 'BRANCH' },
-                          { label: 'ORIGIN', value: 'ORIGIN' },
-                          { label: 'NODE', value: 'NODE' },
-                          { label: 'USER', value: 'USER' },
-                          { label: 'EMPLOYEE', value: 'EMPLOYEE' },
-                          { label: 'CUSTOMER', value: 'CUSTOMER' },
-                          { label: 'SUBDISTRICT', value: 'SUBDISTRICT' },
-                          { label: 'DELIVERY ZONE', value: 'DELIVERY_ZONE' },
-                          { label: 'ZIP_CODE', value: 'ZIP_CODE' },
-                          { label: 'SERVICE', value: 'SERVICE' },
-                      ]
-                    : [{ label: 'HIDDEN_COLUMN', value: 'HIDDEN_COLUMN' }]
+            let referenceEntities
+            switch (typeInputDetail) {
+                case 'others':
+                    referenceEntities = [
+                        { label: 'REGION', value: 'REGION' },
+                        { label: 'BRANCH', value: 'BRANCH' },
+                        { label: 'ORIGIN', value: 'ORIGIN' },
+                        { label: 'NODE', value: 'NODE' },
+                        { label: 'USER', value: 'USER' },
+                        { label: 'EMPLOYEE', value: 'EMPLOYEE' },
+                        { label: 'CUSTOMER', value: 'CUSTOMER' },
+                        { label: 'SUBDISTRICT', value: 'SUBDISTRICT' },
+                        { label: 'DELIVERY ZONE', value: 'DELIVERY_ZONE' },
+                        { label: 'ZIP_CODE', value: 'ZIP_CODE' },
+                        { label: 'SERVICE', value: 'SERVICE' },
+                    ]
+                    break
+
+                case 'data_table':
+                    referenceEntities = [{ label: 'HIDDEN_COLUMN', value: 'HIDDEN_COLUMN' }]
+                    break
+                case 'metric':
+                    referenceEntities = [{ label: 'HIDDEN_METRIC', value: 'HIDDEN_METRIC' }]
+                    break
+            }
 
             if (
                 this.app.toLowerCase().includes('dashboard') ||
-                this.app.toLowerCase() === 'core data table' ||
-                this.app.toLowerCase() === 'dashboard reporting data table'
+                this.app.toLowerCase().includes('data table')
             ) {
                 return [
                     {
