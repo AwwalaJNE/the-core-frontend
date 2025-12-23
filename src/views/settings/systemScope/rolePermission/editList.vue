@@ -312,7 +312,7 @@ export default {
         getTableData2() {
             return this.loadDataTable({
                 url: `${this.URL.feature_list}/${this.app_role_id}?n=${this.listenNodeId}&sort_order=desc`,
-                columnKey: 'hide_column',
+                columnKey: 'data_table',
             })
         },
 
