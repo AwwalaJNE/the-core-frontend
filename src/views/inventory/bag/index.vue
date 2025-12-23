@@ -12,23 +12,37 @@
                     </div>
 
                     <div class="bag-container">
-                        <div
-                            v-for="(item, index) in bagTypeArray"
-                            :key="index"
-                            :class="[
-                                'bag-box',
-                                {
-                                    active: bag_type === item.value,
-                                    disabled: !hasPermission(item.permission),
-                                },
-                            ]"
-                            :data-testid="`bag-${item.label}`"
-                            @click="hasPermission(item.permission) && selectTipeBag(item)"
-                        >
-                            <i v-if="bag_type === item.value" class="bx bx-check check-icon"></i>
-                            <i :class="item.icon" class="bag-icon"></i>
-                            <div class="bag-label">{{ item.label }}</div>
-                        </div>
+                        <template v-for="(item, index) in bagTypeArray">
+                            <div
+                                v-if="hasPermission(item.permission)"
+                                :key="`allowed-${index}`"
+                                class="bag-box"
+                                :class="{ active: bag_type === item.value }"
+                                :data-testid="`bag-${item.label}`"
+                                @click="selectTipeBag(item)"
+                            >
+                                <i
+                                    v-if="bag_type === item.value"
+                                    class="bx bx-check check-icon"
+                                ></i>
+                                <i :class="item.icon" class="bag-icon"></i>
+                                <div class="bag-label">{{ item.label }}</div>
+                            </div>
+
+                            <vs-tooltip
+                                v-else
+                                :key="`denied-${index}`"
+                                class="bag-box disabled"
+                                :data-testid="`bag-${item.label}`"
+                            >
+                                <i :class="item.icon" class="bag-icon"></i>
+                                <div class="bag-label">{{ item.label }}</div>
+
+                                <template #tooltip>
+                                    you don't have {{ item.permission }} permission
+                                </template>
+                            </vs-tooltip>
+                        </template>
                     </div>
                 </div>
             </vs-col>
@@ -457,7 +471,6 @@ export default {
         }
 
         &.disabled {
-            pointer-events: none;
             opacity: 0.4;
             cursor: not-allowed;
         }
