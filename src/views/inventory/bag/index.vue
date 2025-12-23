@@ -15,9 +15,15 @@
                         <div
                             v-for="(item, index) in bagTypeArray"
                             :key="index"
-                            :class="['bag-box', { active: bag_type === item.value }]"
+                            :class="[
+                                'bag-box',
+                                {
+                                    active: bag_type === item.value,
+                                    disabled: !hasPermission(item.permission),
+                                },
+                            ]"
                             :data-testid="`bag-${item.label}`"
-                            @click="selectTipeBag(item)"
+                            @click="hasPermission(item.permission) && selectTipeBag(item)"
                         >
                             <i v-if="bag_type === item.value" class="bx bx-check check-icon"></i>
                             <i :class="item.icon" class="bag-icon"></i>
@@ -169,6 +175,7 @@ export default {
                     icon: 'bx bx-archive',
                     enableItem: 'Connote',
                     enableItemPlaceholder: 'Insert Connote Number',
+                    permission: 'create-bag-regular',
                 },
                 {
                     label: 'MASTERBAG',
@@ -176,6 +183,7 @@ export default {
                     icon: 'bx bx-archive',
                     enableItem: 'Bag',
                     enableItemPlaceholder: 'Insert Bag Number',
+                    permission: 'create-bag-masterbag',
                 },
                 {
                     label: 'PRA RUNSHEET',
@@ -183,6 +191,7 @@ export default {
                     icon: 'bx bx-archive',
                     enableItem: 'Connote',
                     enableItemPlaceholder: 'Insert Connote Number',
+                    permission: 'create-bag-pra-runsheet',
                 },
                 {
                     label: 'HVO',
@@ -190,6 +199,7 @@ export default {
                     icon: 'bx bx-archive',
                     enableItem: 'Connote',
                     enableItemPlaceholder: 'Insert Connote Number',
+                    permission: 'create-bag-hvo',
                 },
                 {
                     label: 'HACB',
@@ -197,6 +207,7 @@ export default {
                     icon: 'bx bx-archive',
                     enableItem: 'Connote',
                     enableItemPlaceholder: 'Insert Connote Number',
+                    permission: 'create-bag-hacb',
                 },
                 {
                     label: 'OM',
@@ -204,6 +215,7 @@ export default {
                     icon: 'bx bx-archive',
                     enableItem: 'Connote',
                     enableItemPlaceholder: 'Insert Connote Number',
+                    permission: 'create-bag-om',
                 },
             ],
             is_auto_open_bag: true,
@@ -442,6 +454,12 @@ export default {
             i {
                 color: $coreBlue;
             }
+        }
+
+        &.disabled {
+            pointer-events: none;
+            opacity: 0.4;
+            cursor: not-allowed;
         }
     }
 
