@@ -107,10 +107,10 @@ export default {
                     case 'DO':
                         return 'hvi'
                     default:
-                        return 'bag_number' // default fallback
+                        return 'hvi' // default fallback
                 }
             }
-            return 'bag_number' // default ketika belum ada data
+            return 'hvi' // default ketika belum ada data
         },
 
         datacolumn() {
