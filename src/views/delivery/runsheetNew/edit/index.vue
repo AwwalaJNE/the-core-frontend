@@ -147,7 +147,6 @@
                                                 :selectedValue="selectedCourier"
                                                 :isSingleInput="true"
                                                 :disabled="disabledApprove"
-
                                                 :url="autoCompleteCourierUrl"
                                                 :selectValue="input_value"
                                                 :selectLabel="input_label"
@@ -155,7 +154,6 @@
                                                 :nestedKey="nestedKey"
                                                 :searchKeyword="lastKeywordCourier"
                                                 :labelFormatter="formatEmployeeLabel"
-
                                                 @updateValue="updateValueCourier"
                                                 @search="handleSearchCourier"
                                                 @inputFocus="onCourierFocus"
@@ -334,13 +332,12 @@ export default {
     beforeRouteUpdate(to, from, next) {
         // update param lokal
         this.employee_id = to.params.employee_id?.toString() || ''
-        this.delivery_runsheet_number =
-        to.params.delivery_runsheet_number?.toString() || ''
+        this.delivery_runsheet_number = to.params.delivery_runsheet_number?.toString() || ''
 
         // reload data kurir & runsheet
         this.getCourier()
         if (this.delivery_runsheet_number) {
-        this.getDataDelivery()
+            this.getDataDelivery()
         }
 
         next()
@@ -399,9 +396,9 @@ export default {
             is_approve: '0',
             is_auto_open_bag: true,
             is_validate_courier: false,
-            selectedCourierId: '',    // untuk ID (value)
+            selectedCourierId: '', // untuk ID (value)
             autoCompleteCourierUrl: '',
-            input_value: 'employee_id',   // field ID di response API
+            input_value: 'employee_id', // field ID di response API
             input_label: 'employee_name', // field NAME di response API
             isNestedData: false,
             nestedKey: '',
@@ -435,9 +432,9 @@ export default {
     },
     methods: {
         formatEmployeeLabel(item) {
-            const employeeName = item.employee_name || '';
-            const employeeCode = item.employee_code || '';
-            return employeeCode ? `${employeeName} (${employeeCode})` : employeeName;
+            const employeeName = item.employee_name || ''
+            const employeeCode = item.employee_code || ''
+            return employeeCode ? `${employeeName} (${employeeCode})` : employeeName
         },
         onCourierFocus() {
             const newUrl = `${this.URL.courier_delivery}/list?n=${this.listenNodeId}`
@@ -549,7 +546,7 @@ export default {
             if (info) {
                 this.employee_name = info.employee_name || this.employee_name
                 this.employee_code = info.employee_code || this.employee_code
-                this.selectedCourier = val || ''  // val is now the formatted label
+                this.selectedCourier = val || '' // val is now the formatted label
             }
 
             // kirim ke backend supaya runsheet pindah kurir
@@ -571,7 +568,7 @@ export default {
                         'Success',
                         res?.data?.message ?? 'Sukses mengganti kurir'
                     )
-                    
+
                     this.employee_id = courierId
                     await this.getCourier()
                     await this.getDataDelivery()
@@ -584,7 +581,7 @@ export default {
                     )
                     this.selectedCourier = this.formatEmployeeLabel({
                         employee_name: this.employee_name,
-                        employee_code: this.employee_code
+                        employee_code: this.employee_code,
                     })
                 }
             } else {
@@ -649,12 +646,12 @@ export default {
                     const { data } = res.data
                     this.employee_code = data.employee_code
                     this.employee_name = data.employee_name
-                    this.employee_id   = data.employee_id
+                    this.employee_id = data.employee_id
                     this.loadingCourier = false
 
                     // selected = FORMATTED LABEL
                     const formattedLabel = this.formatEmployeeLabel(data)
-                    this.selectedCourier   = formattedLabel
+                    this.selectedCourier = formattedLabel
                     this.selectedCourierId = data.employee_id
 
                     // opsi awal di dropdown
@@ -662,7 +659,7 @@ export default {
                         {
                             label: formattedLabel,
                             value: formattedLabel,
-                            item:  data,
+                            item: data,
                         },
                     ]
                 })
@@ -1138,7 +1135,11 @@ export default {
                 }
 
                 item.isDisabled = item.is_delivered === 1
-                if (item.is_delivered == 1 || item.is_pod_orion == 1) {
+                if (
+                    item.is_delivered == 1 ||
+                    item.is_pod_orion == 1 ||
+                    this.hasPermission('disable-pod')
+                ) {
                     this.disableDeliveredPOD(item)
                 }
                 item.employee_name = data.employee_name
