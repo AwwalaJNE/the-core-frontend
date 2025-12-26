@@ -238,8 +238,7 @@ export default {
     },
     mounted() {
         this.getParamRoute()
-        this.getHRSStatus()
-        this.getPODOrion()
+        this.disablePODForm()
     },
     methods: {
         getWarningIcon(item) {
@@ -346,17 +345,13 @@ export default {
                 this.employee_id = this.$route.params.employee_id
             }
         },
-        getHRSStatus() {
+        disablePODForm() {
             for (let data of this.dataDelivery) {
-                if (data?.is_hrs === '1') {
+                if (this.hasPermission('disable-pod')) {
                     this.$set(data, 'is_disabled_input_status', true)
                     this.$set(data, 'is_disabled_input_remarks', true)
                     this.$set(data, 'is_disabled_input_reveiver', true)
                 }
-            }
-        },
-        getPODOrion() {
-            for (let data of this.dataDelivery) {
                 if (data?.is_hrs === '1') {
                     this.$set(data, 'is_disabled_input_status', true)
                     this.$set(data, 'is_disabled_input_remarks', true)
