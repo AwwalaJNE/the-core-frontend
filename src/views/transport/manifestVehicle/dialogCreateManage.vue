@@ -826,7 +826,7 @@ export default {
             try {
                 const res = await axios.get(
                     `${this.URL.search_flight}/${this.flightNumber}`,
-                    this.Helper.headerFlight()
+                    this.Helper.header()
                 )
 
                 let data = res.data.data

@@ -1,5 +1,3 @@
-const api_flight_token = import.meta.env.VITE_APP_API_FLIGHT_TOKEN
-
 export default {
     header() {
         return {
@@ -30,13 +28,6 @@ export default {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
-            },
-        }
-    },
-    headerFlight() {
-        return {
-            headers: {
-                'X-API-Token': api_flight_token,
             },
         }
     },
