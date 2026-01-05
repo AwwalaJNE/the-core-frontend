@@ -165,7 +165,7 @@ export default {
         async getCoordinates() {
             try {
                 const res = await axios.get(
-                    `${this.URL.reverse_geocode}?n=${this.listenNodeId}&lat=${this.latitude}&long=${this.longitude}`,
+                    `${this.URL.reverse_geocode}?n=${this.listenNodeId}&lat=${this.latitude}&lon=${this.longitude}`,
                     this.Helper.header()
                 )
 
