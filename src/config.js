@@ -21,7 +21,6 @@ export default {
 
     // Maps
     maps: api + 'maps',
-    geocode: api + 'maps/geocode',
     reverse_geocode: api + 'maps/reverse-geocode',
 
     // geolocation

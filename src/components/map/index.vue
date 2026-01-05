@@ -2,20 +2,6 @@
     <vs-row justify="center">
         <vs-col xs="12" sm="12" lg="12">
             <div class="map_picker">
-                <div class="query_map">
-                    <!-- Search desired location (currently disabled) -->
-                    <!--
-                    <el-autocomplete
-                        class="inline-input"
-                        v-model="locationName"
-                        :fetch-suggestions="querySearch"
-                        placeholder="Please Input"
-                        :trigger-on-focus="false"
-                        @select="handleSelect"
-                    />
-                    -->
-                </div>
-
                 <div
                     ref="map_general"
                     id="map_general"
@@ -44,21 +30,16 @@ export default {
     mixins: [master],
 
     props: {
-        title: String,
         lat: Number,
         lon: Number,
         fullAddress: String,
         parameterMap: String,
-        dataAddress: String,
-        dataLtnLng: String,
-        summonMap: Boolean,
     },
 
     data() {
         return {
-            map: {},
-            marker: {},
-            center: {},
+            map: null,
+            marker: null,
             zoom: 14,
             latitude: this.lat,
             longitude: this.lon,
@@ -69,97 +50,54 @@ export default {
     watch: {
         lat(val) {
             this.latitude = val
-            this.getLocation()
+            this.setMarker()
         },
         lon(val) {
             this.longitude = val
-            this.getLocation()
+            this.setMarker()
         },
         fullAddress(val) {
             this.locationName = val
-            this.getLocation()
         },
-        summonMap(val) {},
     },
 
     methods: {
         setMarker() {
             let curLocation = [this.latitude, this.longitude]
 
-            if (curLocation[0] === 0 && curLocation[1] === 0) {
+            if (!curLocation[0] && !curLocation[1]) {
                 curLocation = [-6.21462, 106.84513]
             }
 
-            this.$refs.map_general.innerHTML =
-                "<div id='map' style='width: 100%; height: 100%;'></div>"
+            this.$refs.map_general.innerHTML = "<div id='map' style='width:100%;height:100%'></div>"
 
             const container = L.DomUtil.get('map')
             if (container) container._leaflet_id = null
 
-            const map = new L.Map('map').setView(curLocation, this.zoom)
+            const map = L.map('map').setView(curLocation, this.zoom)
 
             L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                attribution:
-                    '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>',
             }).addTo(map)
 
             map.attributionControl.setPrefix(false)
 
-            const marker = new L.marker(curLocation, {
-                draggable: 'true',
-            })
+            const marker = L.marker(curLocation, { draggable: true })
 
             marker.on('dragend', () => {
-                const position = marker.getLatLng()
+                const { lat, lng } = marker.getLatLng()
 
-                marker.setLatLng(position, { draggable: 'true' }).bindPopup(position).update()
-
-                this.latitude = position.lat
-                this.longitude = position.lng
+                this.latitude = lat
+                this.longitude = lng
 
                 this.getCoordinates()
                 this.emitThem()
             })
 
-            map.addLayer(marker)
+            marker.addTo(map)
 
-            this.marker = marker
             this.map = map
-        },
-
-        async querySearch(queryString, cb) {
-            if (!queryString) {
-                cb([])
-                return
-            }
-
-            try {
-                const res = await axios.get(
-                    `${this.URL.geocode}?n=${this.listenNodeId}&s=${queryString}`,
-                    this.Helper.header()
-                )
-
-                const items = res?.data?.items ?? []
-
-                cb(
-                    items.map((item) => ({
-                        value: item.address.label,
-                        data: item,
-                    }))
-                )
-            } catch (error) {
-                console.error('Geocode error:', error)
-                cb([])
-            }
-        },
-
-        getLocation() {
-            navigator.geolocation.getCurrentPosition(() => {
-                this.center = {
-                    lat: parseFloat(this.lat),
-                    lng: parseFloat(this.lng),
-                }
-            })
+            this.marker = marker
         },
 
         async getCoordinates() {
@@ -169,27 +107,10 @@ export default {
                     this.Helper.header()
                 )
 
-                const feature = res?.data?.features?.[0]
-                this.locationName = feature?.properties?.name || ''
+                this.locationName = res?.data?.features?.[0]?.properties?.name || ''
             } catch (error) {
-                console.error('error', error)
+                console.error(error)
             }
-        },
-
-        handleSelect(item) {
-            const selected = item.data
-            const marker = {
-                lat: selected.position.lat,
-                lng: selected.position.lng,
-            }
-
-            this.latitude = marker.lat
-            this.longitude = marker.lng
-            this.locationName = selected.address.label
-            this.center = marker
-
-            this.marker.setLatLng([marker.lat, marker.lng])
-            this.map.panTo([marker.lat, marker.lng], this.zoom)
         },
 
         emitThem() {
@@ -207,28 +128,17 @@ export default {
         setTimeout(() => {
             this.latitude = this.lat
             this.longitude = this.lon
-
             this.getCoordinates()
-
-            this.$nextTick(() => {
-                this.setMarker()
-            })
+            this.$nextTick(this.setMarker)
         }, 400)
     },
 }
 </script>
 
 <style lang="scss">
-.query_map {
-    position: relative;
-    width: 100%;
-    text-align: left;
-    font-size: 0.75rem;
-}
-
 .map_picker {
     position: relative;
-    widows: 100%;
+    width: 100%;
     margin: 0 auto 1em;
 }
 </style>
