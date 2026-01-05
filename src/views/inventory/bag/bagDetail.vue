@@ -715,11 +715,7 @@ export default {
                     ? err.response.data.message
                     : 'something went wrong'
 
-                if (errorCode === 'CORE-1135') {
-                    this.openNotificationCenter('danger', errorCode, 'FAILED', errorMessage)
-                } else {
-                    this.openNotification('danger', errorCode, 'FAILED', errorMessage)
-                }
+                this.openNotification('danger', errorCode, 'FAILED', errorMessage)
             } finally {
                 this.loading = false
                 this.handleClearForm()

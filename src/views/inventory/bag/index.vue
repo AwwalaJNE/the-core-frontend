@@ -382,11 +382,7 @@ export default {
                 const errorCode = err?.response?.data?.code ?? ''
                 const errorMessage = err?.response?.data?.message ?? 'Something went wrong'
 
-                if (errorCode === 'CORE-1135') {
-                    this.openNotificationCenter('danger', errorCode, 'Failed', errorMessage)
-                } else {
-                    this.openNotification('danger', errorCode, 'Failed', errorMessage)
-                }
+                this.openNotification('danger', errorCode, 'Failed', errorMessage)
             } finally {
                 this.stopLoading()
                 this.handleClearForm()
