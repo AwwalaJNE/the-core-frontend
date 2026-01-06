@@ -235,11 +235,11 @@ export default {
                     key: 'total_outstanding',
                     width: 'xxxs',
                 },
-                {
-                    label: 'Total Bag',
-                    key: 'total_item',
-                    width: 'xxxs',
-                },
+                // {
+                //     label: 'Total Bag',
+                //     key: 'total_item',
+                //     width: 'xxxs',
+                // },
                 {
                     label: 'Orion Number',
                     key: 'orion_number',
