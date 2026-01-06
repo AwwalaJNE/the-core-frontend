@@ -404,6 +404,7 @@ export default {
                         }
                         item['rdo'] = item['manifest_delivery_order']?.rdo || ''
                         total = Number(total) + Number(item.transaction_amount)
+                        item['formatted_node_origin'] = item['inbound_node_code_origin'] + ' - ' + item['inbound_node_name_origin']
                     })
                     this.pagination.page = res.data.meta.current_page
                     this.pagination.limit = parseInt(res.data.meta.per_page)
@@ -538,7 +539,7 @@ export default {
                 },
                 {
                     label: 'Node Origin',
-                    key: 'inbound_node_name_origin',
+                    key: 'formatted_node_origin',
                     width: 'md',
                 },
                 // {
