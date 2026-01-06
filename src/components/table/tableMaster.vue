@@ -688,6 +688,7 @@
                                                                 column.multipleSelector.selectValue
                                                             "
                                                             :dataObj="item"
+                                                            :minSearchLength="column.multipleSelector.minSearchLength"
                                                             @inputFocus="
                                                                 inputFocus(
                                                                     filterIndex,

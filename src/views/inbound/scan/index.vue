@@ -32,7 +32,6 @@
                 <vs-col xs="12" sm="6" lg="6">
                     <div class="box-v1" style="gap: 1em">
                         <template v-if="is_prealert">
-                            <h4 align="left">List of Bags</h4>
                             <vs-row style="margin-top: 2em">
                                 <vs-col xs="12" sm="12" lg="12">
                                     <vs-input
@@ -63,8 +62,7 @@
                         </template>
 
                         <template v-else>
-                            <h4 align="left">Scan Item</h4>
-                            <vs-row style="gap: 2em">
+                            <vs-row style="gap: 2em; margin-top: 2em">
                                 <vs-col xs="12" sm="12" lg="12">
                                     <vs-input
                                         border
@@ -157,7 +155,7 @@
                 <vs-col xs="12" sm="6" lg="6">
                     <div class="box-v1">
                         <div class="header-remark-bar">
-                            <h4 align="left">Receiving Detail</h4>
+                            <h4 align="left">List of Items</h4>
                             <template v-if="dataTableProp.length > 0">
                                 <vs-button
                                     :data-testid="`remark-button`"
@@ -203,27 +201,15 @@
                                         :data-testid="`surat-jalan-button`"
                                         @click="openDialog('surat_jalan')"
                                     >
-                                        <i class="bx bx-plus"></i> Surat Jalan
+                                        <i class="bx bx-plus"></i> Penerusan
                                     </vs-button>
                                     <vs-button
-                                        :data-testid="`surat-muaatn-button`"
+                                        :data-testid="`surat-muatan-button`"
                                         @click="openDialog('surat_muatan')"
                                     >
                                         <i class="bx bx-plus"></i> Surat Muatan
                                     </vs-button>
                                 </div>
-                                <dialog-bulk-surat-jalan
-                                    title="Create Surat Jalan"
-                                    :active="dialogSuratJalan"
-                                    :dataItem="selectedData"
-                                    @closeDialog="() => closeDialog('surat_jalan')"
-                                />
-                                <dialog-bulk-surat-muatan
-                                    title="Create Surat Muatan"
-                                    :active="dialogSuratMuatan"
-                                    :dataItem="selectedData"
-                                    @closeDialog="() => closeDialog('surat_muatan')"
-                                />
                             </template>
                         </div>
                         <div class="nav-box">
@@ -248,6 +234,19 @@
                 <i class="bx bxs-chevron-left"> </i> BACK
             </vs-button>
         </section>
+
+        <dialog-bulk-surat-jalan
+            title="Create Penerusan"
+            :active="dialogSuratJalan"
+            :dataItem="selectedData"
+            @closeDialog="() => closeDialog('surat_jalan')"
+        />
+        <dialog-bulk-surat-muatan
+            title="Create Surat Muatan"
+            :active="dialogSuratMuatan"
+            :dataItem="selectedData"
+            @closeDialog="() => closeDialog('surat_muatan')"
+        />
 
         <camera-scanner
             ref="cameraScanner"

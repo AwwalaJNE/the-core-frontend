@@ -465,12 +465,12 @@ export default {
                         dataInformation = [
                             {
                                 key: 'Routing Type',
-                                value: response.routing_type || '-',
+                                value: response.routing_type?.toUpperCase() || '-',
                                 width: 6,
                             },
                             {
                                 key: 'Deskripsi barang',
-                                value: response.description || '-',
+                                value: response.description?.toUpperCase() || '-',
                                 width: 6,
                             },
                             {
@@ -482,7 +482,7 @@ export default {
                             },
                             {
                                 key: 'kategori Barang',
-                                value: response.connote_category,
+                                value: response.connote_category?.toUpperCase(),
                                 width: 6,
                             },
                             {
@@ -492,7 +492,7 @@ export default {
                             },
                             {
                                 key: 'Remark',
-                                value: response.remarks ? response.remarks : 'N/A',
+                                value: response.remarks?.toUpperCase() || 'N/A',
                                 width: 6,
                             },
                             {

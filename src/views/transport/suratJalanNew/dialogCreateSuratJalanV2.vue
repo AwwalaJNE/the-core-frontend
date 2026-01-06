@@ -7,7 +7,7 @@
             :closeDialog="cancel"
         >
             <template v-slot:header>
-                <template v-if="Object.keys(editData).length === 0">
+                <template v-if="Object.keys(editData).length === 0 && !listenIsPreview">
                     <div v-copy="listenTitle">
                         {{ listenTitle }}
                     </div>
@@ -43,7 +43,7 @@
             </template>
 
             <template v-slot:content>
-                <template v-if="Object.keys(editData).length === 0">
+                <template v-if="Object.keys(editData).length === 0 && !listenIsPreview">
                     <vs-col xs="12" sm="6" lg="6">
                         <input-general
                             :name="getScanLabel"
@@ -68,18 +68,8 @@
                     <div>
                         <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
 
-                        <div class="nomor-sj" v-if="manifest_do_number">
-                            <input-general
-                                :name="`No ${listenBreadcrumbTitle}`"
-                                :formKey="listenSjType"
-                                :valueData="manifest_do_number"
-                                :typeInput="`text`"
-                                :disabled="true"
-                            />
-                        </div>
-
-                        <!-- Form Utama -->
                         <form-input-controller
+                            v-show="showFormSuratJalan"
                             ref="formSuratJalan"
                             typeForm="surat_jalan"
                             :dataItem="editData"
@@ -179,6 +169,9 @@ export default {
         refresh: Function,
         sj_type: String,
         title: String,
+
+        sj_number: String,
+        isPreview: Boolean,
     },
     data() {
         return {
@@ -257,13 +250,9 @@ export default {
                 },
             ],
             item_number: '',
-            vehicle_max_weight: 0,
-            no_moda_angkutan_id: null,
             etd: null,
             eta: null,
-            estimated_time_in_hour: null,
             manifest_lov: '',
-            destinationUnlock: '',
             manifest_lov_list: [
                 {
                     label: 'Multi Destination',
@@ -279,7 +268,6 @@ export default {
             isDisabled: false,
             isDisabledPrint: false,
             isDisabledApprove: false,
-            isDestinationEnabled: false,
             is_approve: 0,
             item_remove: '',
             total_weight: 0,
@@ -289,7 +277,6 @@ export default {
                 page_size: 1,
                 page: 1,
             },
-            destination_name_code: '',
             is_missroute: false,
             dialogTraceBag: false,
             selectedBagNumber: '',
@@ -304,9 +291,6 @@ export default {
         },
         listenTitle() {
             return this.title
-        },
-        listenDisableSwitch() {
-            return this.manifest_do_number ? true : false
         },
         listenBreadcrumbTitle() {
             return this.breadcrumb
@@ -328,6 +312,12 @@ export default {
                     return 'Scan Item'
             }
         },
+        listenIsPreview() {
+            return this.isPreview
+        },
+        showFormSuratJalan() {
+            return !this.loading && (!!this.manifest_do_number || !!this.sj_number)
+        },
     },
     watch: {
         dataItem: function (val) {
@@ -335,8 +325,12 @@ export default {
                 this.getEditData(val)
             }
         },
-        active: function (val) {
+        active: async function (val) {
             if (val == true) {
+                if (this.listenIsPreview) {
+                    await this.getEditDataByApi()
+                }
+
                 this.$nextTick(() => {
                     this.setActiveInput('scanBag', 'formSuratJalan', () => this.dialogTraceBag)
                 })
@@ -346,7 +340,6 @@ export default {
             if (val) {
                 this.getDestination2()
                 this.getNoModeAngkutan()
-                // this.getLov();
                 this.getDriver()
             }
         },
@@ -364,8 +357,6 @@ export default {
             this.manifest_do_number = val.manifest_do_number
             this.dataTable = val.detail
             this.is_penerusan = val.is_penerusan === '1'
-
-            this.isDestinationEnabled = val.node_id_destination === null
 
             this.isDisabled =
                 val.status !== 'UNAPPROVED' || val.is_orion === '1' || val.is_approve === 1
@@ -396,51 +387,118 @@ export default {
                 item.is_missroute = item.is_missroute === true ? 1 : 0
             })
 
-            const etd_ori = val.etd
-            const eta_ori = val.eta
+            this.etd = val.etd
+            this.eta = val.eta
 
-            this.etd = this.formatTimezone(val.etd)
-            this.eta = this.formatTimezone(val.eta)
-
-            val.etd = this.formatTimezone(etd_ori) // NOTES: CHANGE TO CURRENT TIMEZONE
-            val.eta = this.formatTimezone(eta_ori) // NOTES: CHANGE TO CURRENT TIMEZONE
-
-            this.total_weight = val.total_weight
             this.editData = val
             this.editData.destination_id = val.node_id_destination
-            this.destination_name_code =
-                val?.destination?.node_name + ' (' + val?.destination?.node_code + ')' ||
-                val.node_id_destination
-
-            // this.getDestination(val.node_id_destination)
-
-            this.no_moda_angkutan_id = val.no_moda_angkutan_id || null
 
             this.master_form = {
                 node_id_origin: val.node_id_origin,
                 node_id_destination: val.node_id_destination,
                 vehicle_id: val.vehicle_id,
                 pic_employee_id: val.pic_employee_id,
-                etd: etd_ori,
-                eta: eta_ori,
+                etd: this.formatToWIB(val.etd),
+                eta: this.formatToWIB(val.eta),
                 max_weight: val.max_weight,
                 manifest_lov: val.manifest_lov,
                 item_no: val.item_number,
                 is_penerusan: val.is_penerusan,
+                auto_depart: val?.auto_depart === 1 ? 1 : 0,
             }
         },
-        // JANGAN DIHAPUS TAKUT NANTI DIPAKE LAGI
-        // getDestination(node_id_destination) {
-        //     let item_destination = {
-        //         label: this.destination_name_code,
-        //         value: node_id_destination
-        //     }
+        async getEditDataByApi() {
+            this.loading = true
+            try {
+                const res = await axios.get(
+                    `${this.URL.revamp_surat_jalan_v3}/${this.sj_number}?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
 
-        //     this.$store.dispatch("SET_SURAT_JALAN_DESTINATION_ID_ArrData", [{
-        //         ...item_destination,
-        //         item: item_destination
-        //     }]);
-        // },
+                let data = res.data.data
+                if (data) {
+                    this.getDataPreview(data)
+                }
+            } catch (err) {
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
+            } finally {
+                this.loading = false
+            }
+        },
+        getDataPreview(val) {
+            this.manifest_do_number = val.manifest_do_number
+            this.dataTable = val.detail
+            this.is_penerusan = val.is_penerusan === '1'
+
+            this.isDisabled =
+                val.status !== 'UNAPPROVED' || val.is_orion === '1' || val.is_approve === 1
+            this.isDisabledPrint = val.status === 'CANCELED'
+            this.isDisabledApprove = val.status !== 'UNAPPROVED' || val.is_orion === '1'
+
+            this.is_approve = val.is_approve
+
+            this.dataTable.forEach((item) => {
+                item.destination =
+                    item.bag?.destination?.node_tariff_code ||
+                    item.koli?.connote?.connote_receiver_tariff_code ||
+                    item.manifest?.destination?.node_tariff_code ||
+                    ''
+                item.node_code_destination =
+                    item?.bag?.destination?.node_code ||
+                    item?.manifest?.destination?.branch_code ||
+                    ''
+                item.node_name_destination = item?.bag?.destination?.node_name || ''
+                item.status_trip =
+                    (item?.bag?.status_trip || '') + ' ' + (item?.bag?.current_node_name || '')
+
+                if (val.status !== 'UNAPPROVED' || val.is_approve === 1) {
+                    item.button_status = { remove: false }
+                }
+
+                item.received_status = item.received_at ? 1 : 0
+                item.is_missroute = item.is_missroute === true ? 1 : 0
+            })
+
+            this.etd = val.etd
+            this.eta = val.eta
+
+            this.$store.dispatch('SET_SURAT_JALAN_AUTO_DEPART', val?.auto_depart === 1 ? 1 : 0)
+            this.$store.dispatch('SET_SURAT_JALAN_MANIFEST_DO_NUMBER', val.manifest_do_number)
+            this.$store.dispatch(
+                'SET_SURAT_JALAN_DESTINATION_ID',
+                parseInt(val.node_id_destination)
+            )
+            this.$store.dispatch('SET_SURAT_JALAN_ETD', val.etd)
+            this.$store.dispatch('SET_SURAT_JALAN_ETA', val.eta)
+            this.$store.dispatch(
+                'SET_SURAT_JALAN_NO_MODA_ANGKUTAN_ID',
+                parseInt(val?.vehicle_id) || null
+            )
+            this.$store.dispatch(
+                'SET_SURAT_JALAN_DRIVER_ID',
+                parseInt(val?.pic_employee_id) || null
+            )
+
+            this.master_form = {
+                manifest_do_number: val.manifest_do_number,
+                node_id_origin: val.node_id_origin,
+                node_id_destination: val.node_id_destination,
+                vehicle_id: val.vehicle_id,
+                pic_employee_id: val.pic_employee_id,
+                etd: this.formatToWIB(val.etd),
+                eta: this.formatToWIB(val.eta),
+                max_weight: val.max_weight,
+                manifest_lov: val.manifest_lov,
+                item_no: val.item_number,
+                is_penerusan: val.is_penerusan,
+                auto_depart: val?.auto_depart === 1 ? 1 : 0,
+            }
+        },
         onChangeCustom(type, val, obj) {
             const updateMasterForm = (key, value) => {
                 if (this.manifest_do_number && this.master_form?.[key] !== value) {
@@ -450,26 +508,14 @@ export default {
             }
 
             switch (type) {
+                case 'auto_depart':
+                    updateMasterForm('auto_depart', val ? 1 : 0)
+                    break
                 case 'destination_id':
-                    // TODO: RECHECK LATER SINCE CURRENTLY WE USE H+1 FOR ETA
-                    // if (typeof obj === 'object') {
-                    //     const { item, value } = obj
-                    //     if (item?.estimated_time_in_hour) {
-                    //         this.estimated_time_in_hour = item.estimated_time_in_hour
-                    //         this.handleEta(this.etd, this.estimated_time_in_hour)
-                    //     }
-                    //     this.destinationUnlock = value
-                    // }
                     updateMasterForm('node_id_destination', val)
                     break
 
                 case 'no_moda_angkutan_id':
-                    if (typeof obj === 'object' && obj.item) {
-                        const { vehicle_max_weight, vehicle_type_id } = obj.item
-                        this.vehicle_max_weight = vehicle_max_weight
-                        this.vehicle_type_id = vehicle_type_id
-                    }
-                    this.no_moda_angkutan_id = val
                     updateMasterForm('vehicle_id', val)
                     break
 
@@ -499,14 +545,6 @@ export default {
 
                 default:
                     break
-            }
-        },
-        handleEta(dateTime, amount) {
-            if (dateTime && amount) {
-                this.$store.dispatch(
-                    'SET_SURAT_JALAN_ETA',
-                    moment(dateTime).add(amount, 'hours').format('YYYY-MM-DD HH:mm:ss')
-                )
             }
         },
         updateValue(key, val) {
@@ -566,11 +604,11 @@ export default {
                 let data = res.data.data
                 if (data) {
                     this.manifest_do_number = data.manifest_do_number
-                    this.total_weight = data.total_weight
                     this.etd = this.formatTimezone(data.etd)
                     this.eta = this.formatTimezone(data.eta)
 
                     this.master_form = {
+                        manifest_do_number: data.manifest_do_number,
                         node_id_origin: data.node_id_origin,
                         node_id_destination: data.node_id_destination,
                         vehicle_id: data.vehicle_id || null,
@@ -581,12 +619,10 @@ export default {
                         manifest_lov: data.manifest_lov,
                         item_no: data.item_number,
                         is_penerusan: data.is_penerusan,
+                        auto_depart: data?.auto_depart === 1 ? 1 : 0,
                     }
-                    this.destination_name_code =
-                        data?.destination?.node_name + ' (' + data?.destination?.node_code + ')' ||
-                        data.node_id_destination
-                    // this.getDestination(data.node_id_destination)
                     this.editData = {
+                        manifest_do_number: data.manifest_do_number,
                         destination_id: data.node_id_destination,
                         node_id_origin: data.node_id_origin,
                         node_id_destination: data.node_id_destination,
@@ -595,8 +631,8 @@ export default {
                         manifest_lov: data.manifest_lov,
                         item_no: data.item_number,
                         is_penerusan: data.is_penerusan,
+                        auto_depart: data?.auto_depart === 1 ? 1 : 0,
                     }
-                    this.isDestinationEnabled = data.node_id_destination === null
                     await this.getSuratJalanDetail()
                 }
 
@@ -624,7 +660,6 @@ export default {
 
                 if (res.data.data) {
                     this.manifest_do_number = res.data.data.manifest_do_number
-                    this.total_weight = res.data.data.total_weight
                     await this.getSuratJalanDetail()
                 }
 
@@ -754,38 +789,20 @@ export default {
             this.isDisabledPrint = false
             this.isDisabledApprove = false
             this.is_approve = 0
-            this.vehicle_max_weight = 0
-            this.no_moda_angkutan_id = null
             this.etd = null
             this.eta = null
-            this.estimated_time_in_hour = null
             this.manifest_lov = ''
             this.form = {}
             this.master_form = {}
             this.editData = {}
-            this.destination_name_code = ''
         },
         cancel() {
-            if (Object.keys(this.editData).length !== 0) {
-                this.$refs.formSuratJalan.handleClearForm()
-            }
+            this.$refs?.formSuratJalan?.handleClearForm()
             this.loading = false
             this.handleClearForm()
             this.dataTable = []
             this.closeDialog()
             this.is_penerusan = true
-        },
-        getLov() {
-            const arr = this.manifest_lov_list.map((item) => ({
-                label: item.label,
-                value: item.value,
-            }))
-
-            this.$store.dispatch('SET_SURAT_JALAN_MANIFEST_LOV_ArrData', arr.length ? arr : null)
-
-            if (this.dataItem?.manifest_lov) {
-                this.manifest_lov = this.dataItem.manifest_lov
-            }
         },
         async getDestination2() {
             await axios
@@ -900,6 +917,11 @@ export default {
             this.dialogTraceBag = true
         },
         setDatacolumn() {
+            this.$store.dispatch(
+                'SET_SURAT_JALAN_MANIFEST_DO_NUMBER_label',
+                'No ' + this.breadcrumb
+            )
+
             this.datacolumn = [
                 {
                     label: 'Item Number',
@@ -965,38 +987,3 @@ export default {
     },
 }
 </script>
-<style>
-.nomor-sj {
-    width: inherit;
-}
-</style>
-<style scoped>
-.title-helper {
-    width: 60%;
-    align-content: center;
-}
-
-.button-helper {
-    display: flex;
-    justify-content: flex-end;
-}
-
-button {
-    width: 6em;
-}
-.destination-container {
-    display: flex;
-    align-items: center;
-    gap: 8px; /* Beri jarak antara label dan switch */
-}
-
-.destination-label {
-    font-size: 12px; /* Sesuaikan ukuran label */
-    font-weight: 450;
-    margin-left: 10px;
-}
-
-.custom-switch {
-    transform: scale(0.8); /* Mengecilkan ukuran switch */
-}
-</style>

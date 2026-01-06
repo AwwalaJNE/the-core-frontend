@@ -65,6 +65,15 @@ export default {
         'table-master': TableMaster,
         selector: Selector,
     },
+    watch: {
+        dataTable: {
+            handler(newVal) {
+                this.$emit('misroute-length-changed', newVal.length)
+            },
+            deep: true,
+            immediate: true,
+        },
+    },
     data() {
         return {
             changes_form: [],

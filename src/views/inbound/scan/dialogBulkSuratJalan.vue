@@ -1,98 +1,113 @@
 <template>
-    <dialog-master
-        :actived="listenActive"
-        :loading="listenLoading"
-        :closeDialog="cancel"
-        width="lg"
-    >
-        <template v-slot:header>
-            {{ listenTitle }}
-        </template>
+    <div>
+        <dialog-master
+            :actived="listenActive"
+            :loading="listenLoading"
+            :closeDialog="cancel"
+            width="lg"
+        >
+            <template v-slot:header>
+                {{ listenTitle }}
+            </template>
 
-        <template v-slot:content>
-            <vs-row>
-                <vs-col w="12">
-                    <progress-stepper
-                        :steps="steps"
-                        :step-validators="[validateTypeSection, validateBagSection]"
-                        @invalid-step="handleInvalidStep"
-                        @cancel="cancel"
-                        @submit="handleSubmit"
-                    >
-                        <template #step-0>
-                            <div class="text-left">
-                                <h2>Choose Type</h2>
-                                <p>
-                                    Please select your surat jalan type, bear in mind that each type
-                                    has its own purpose
-                                </p>
-                            </div>
-
-                            <div class="surat-jalan-container">
-                                <div
-                                    v-for="(item, index) in suratJalanTypeArray"
-                                    :key="index"
-                                    :class="[
-                                        'surat-jalan-box',
-                                        { active: sj_type.value === item.value },
-                                    ]"
-                                    :data-testid="`bag-${item.label}`"
-                                    @click="selectTipeSuratJalan(item)"
-                                >
-                                    <i
-                                        v-if="sj_type.value === item.value"
-                                        class="bx bx-check check-icon"
-                                    ></i>
-                                    <i :class="item.icon" class="bag-icon"></i>
-                                    <div class="bag-label">{{ item.label }}</div>
+            <template v-slot:content>
+                <vs-row>
+                    <vs-col w="12">
+                        <progress-stepper
+                            :steps="steps"
+                            :step-validators="[validateTypeSection, validateBagSection]"
+                            @invalid-step="handleInvalidStep"
+                            @valid-step="handleValidStep"
+                            @cancel="cancel"
+                            @submit="handleSubmit"
+                        >
+                            <template #step-0>
+                                <div class="text-left">
+                                    <h2>Choose Type</h2>
+                                    <p>
+                                        Please select your surat jalan type, bear in mind that each
+                                        type has its own purpose
+                                    </p>
                                 </div>
-                            </div>
-                        </template>
-                        <template #step-1>
-                            <div class="text-left">
-                                <h2>Validate Each Item</h2>
-                                <p>Please {{ sj_type.enableItemPlaceholder.toLowerCase() }} here</p>
-                            </div>
 
-                            <vs-row style="gap: 1em">
-                                <vs-col xs="12" sm="6" lg="6">
-                                    <input-general
-                                        name=""
-                                        rules=""
-                                        formKey="scanItemNumber"
-                                        ref="scanItemNumber"
-                                        :valueData="item_number"
-                                        :typeInput="`text`"
-                                        :enter_to_update="true"
-                                        :hasBarcode="true"
-                                        @click-icon="handleIconClick"
-                                        @updateValue="updateValue"
-                                        @enterUpdate="validateScanItem"
+                                <div class="surat-jalan-container">
+                                    <div
+                                        v-for="(item, index) in suratJalanTypeArray"
+                                        :key="index"
+                                        :class="[
+                                            'surat-jalan-box',
+                                            { active: sj_type.value === item.value },
+                                        ]"
+                                        :data-testid="`bag-${item.label}`"
+                                        @click="selectTipeSuratJalan(item)"
                                     >
-                                        <template #icon>
-                                            <i class="bx bx-barcode-reader"></i>
-                                        </template>
-                                    </input-general>
-                                </vs-col>
+                                        <i
+                                            v-if="sj_type.value === item.value"
+                                            class="bx bx-check check-icon"
+                                        ></i>
+                                        <i :class="item.icon" class="bag-icon"></i>
+                                        <div class="bag-label">{{ item.label }}</div>
+                                    </div>
+                                </div>
+                            </template>
+                            <template #step-1>
+                                <div class="text-left">
+                                    <h2>Validate Each Item</h2>
+                                    <p>
+                                        Please
+                                        {{ sj_type.enableItemPlaceholder.toLowerCase() }} here
+                                    </p>
+                                </div>
 
-                                <vs-col w="12">
-                                    <table-master
-                                        hideColumnKey="validate-surat-jalan-bulk"
-                                        :dataTable="dataTable"
-                                        :dataColumn="dataColumn"
-                                        :tableLoading="listenLoading"
-                                        :hasAction="false"
-                                        :hasPagination="false"
-                                    />
-                                </vs-col>
-                            </vs-row>
-                        </template>
-                    </progress-stepper>
-                </vs-col>
-            </vs-row>
-            <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
-        </template>
-    </dialog-master>
+                                <vs-row style="gap: 1em">
+                                    <vs-col xs="12" sm="6" lg="6">
+                                        <input-general
+                                            name=""
+                                            rules=""
+                                            formKey="scanItemNumber"
+                                            ref="scanItemNumber"
+                                            :valueData="item_number"
+                                            :typeInput="`text`"
+                                            :enter_to_update="true"
+                                            :hasBarcode="true"
+                                            @click-icon="handleIconClick"
+                                            @updateValue="updateValue"
+                                            @enterUpdate="validateScanItem"
+                                        >
+                                            <template #icon>
+                                                <i class="bx bx-barcode-reader"></i>
+                                            </template>
+                                        </input-general>
+                                    </vs-col>
+
+                                    <vs-col w="12">
+                                        <table-master
+                                            hideColumnKey="validate-surat-jalan-bulk"
+                                            :dataTable="dataTable"
+                                            :dataColumn="dataColumn"
+                                            :tableLoading="listenLoading"
+                                            :hasAction="false"
+                                            :hasPagination="false"
+                                        />
+                                    </vs-col>
+                                </vs-row>
+                            </template>
+                        </progress-stepper>
+                    </vs-col>
+                </vs-row>
+                <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
+            </template>
+        </dialog-master>
+        <dialogCreateSuratJalanV2
+            title="Penerusan Info"
+            :breadcrumb="sj_type.label"
+            :active="dialogViewSuratJalan"
+            :closeDialog="closeSuratJalan"
+            :sj_type="sj_type.value"
+            :isPreview="true"
+            :sj_number="sj_number"
+        />
+    </div>
 </template>
 <script>
 import axios from 'axios'
@@ -104,6 +119,8 @@ import InputGeneral from '@/components/input/general'
 import ProgressStepper from '@/components/progress/progressStepper'
 import TableMaster from '@/components/table/tableMaster'
 
+import DialogCreateSuratJalanV2 from '@/views/transport/suratJalanNew/dialogCreateSuratJalanV2'
+
 export default {
     name: 'Inbound-Dialog-Bulk-Surat-Jalan',
     mixins: [master],
@@ -113,6 +130,7 @@ export default {
         'input-general': InputGeneral,
         'progress-stepper': ProgressStepper,
         'table-master': TableMaster,
+        dialogCreateSuratJalanV2: DialogCreateSuratJalanV2,
     },
     props: {
         active: Boolean,
@@ -207,6 +225,9 @@ export default {
 
             item_number: '',
             list_item_no: [],
+
+            dialogViewSuratJalan: false,
+            sj_number: '',
         }
     },
     methods: {
@@ -235,6 +256,10 @@ export default {
                 this.openNotification('danger', '', 'Failed', 'Wajib memilih tipe surat jalan')
             else if (stepIndex === 1)
                 this.openNotification('danger', '', 'Failed', 'No items have been validated')
+        },
+        handleValidStep(stepIndex) {
+            if (stepIndex === 0) this.setActiveInput('scanItemNumber')
+            else if (stepIndex === 1) return
         },
         updateValue(key, val) {
             switch (key) {
@@ -288,7 +313,8 @@ export default {
 
                 this.openNotification('success', null, 'Success', 'Create surat jalan success')
                 done(true)
-                this.cancel()
+                this.handleClearForm()
+                this.openSuratJalan(res.data.data)
             } catch (err) {
                 this.openNotification(
                     'danger',
@@ -300,6 +326,14 @@ export default {
             } finally {
                 this.loading = false
             }
+        },
+        openSuratJalan(val) {
+            this.dialogViewSuratJalan = true
+            this.sj_number = val?.manifest_do?.manifest_do_number
+        },
+        closeSuratJalan() {
+            this.dialogViewSuratJalan = false
+            this.cancel()
         },
     },
     mounted() {

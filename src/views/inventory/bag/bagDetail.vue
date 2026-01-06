@@ -604,6 +604,7 @@ export default {
         async getDataCourier() {
             this.loading = true
             try {
+                // kalo mau dipake lagi sesuaikan dengan courier_delivery
                 const res = await axios.get(
                     `${this.URL.courier_delivery}/list?n=${this.listenNodeId}`,
                     this.Helper.header()
@@ -699,7 +700,9 @@ export default {
                         item_number: this.item_number.replace(/\s+/g, ''),
                         is_pra_runsheet: this.is_pra_runsheet,
                         auto_open_bag: this.is_auto_open_bag,
-                        is_hub_delivery_validation: this.is_hub_delivery_validation || false,
+                        is_hub_delivery_validation: this.is_pra_runsheet
+                            ? false
+                            : this.is_hub_delivery_validation,
                     },
                     this.Helper.header()
                 )

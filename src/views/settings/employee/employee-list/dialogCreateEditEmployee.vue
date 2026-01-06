@@ -91,6 +91,7 @@ export default {
                     value: 'P',
                 },
             ],
+            employee_phone_number: '62',
         }
     },
     computed: {
@@ -113,6 +114,7 @@ export default {
         },
         active: function (val) {
             if (val == true) {
+                this.setDefaultValue()
                 this.getDataEmployeeType()
                 this.getGender()
             }
@@ -140,7 +142,7 @@ export default {
         querySearch(queryString, cb) {
             axios
                 .get(
-                    this.URL.node + `?n=${this.listenNodeId}&s=${queryString}`,
+                    this.URL.node_list + `?n=${this.listenNodeId}&s=${queryString}`,
                     this.Helper.header()
                 )
                 .then((res) => {
@@ -158,6 +160,11 @@ export default {
                 .catch((error) => console.log('error', error))
         },
 
+        setDefaultValue() {
+            this.$store.dispatch('SET_EMPLOYEE_EMPLOYEE_PHONE_NUMBER', '62')
+            this.$store.dispatch('SET_EMPLOYEE_EMPLOYEE_EMPLOYEMENT_STATUS', 'Fulltime')
+            this.$store.dispatch('SET_EMPLOYEE_RUNSHEET_ITEM_LIMIT', 0)
+        },
         async getDataEmployeeType() {
             await axios
                 .get(this.URL.employee_type + `?n=${this.listenNodeId}`, this.Helper.header())
@@ -255,9 +262,6 @@ export default {
                 })
                 .catch((err) => {
                     this.loading = false
-                    this.closeDialog()
-                    this.$emit('refresh')
-                    this.handleClearForm()
                     this.openNotification(
                         'danger',
                         err.response ? err.response.data.code : '',

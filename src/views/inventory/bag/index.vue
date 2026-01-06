@@ -12,17 +12,37 @@
                     </div>
 
                     <div class="bag-container">
-                        <div
-                            v-for="(item, index) in bagTypeArray"
-                            :key="index"
-                            :class="['bag-box', { active: bag_type === item.value }]"
-                            :data-testid="`bag-${item.label}`"
-                            @click="selectTipeBag(item)"
-                        >
-                            <i v-if="bag_type === item.value" class="bx bx-check check-icon"></i>
-                            <i :class="item.icon" class="bag-icon"></i>
-                            <div class="bag-label">{{ item.label }}</div>
-                        </div>
+                        <template v-for="(item, index) in bagTypeArray">
+                            <div
+                                v-if="hasPermission(item.permission)"
+                                :key="`allowed-${index}`"
+                                class="bag-box"
+                                :class="{ active: bag_type === item.value }"
+                                :data-testid="`bag-${item.label}`"
+                                @click="selectTipeBag(item)"
+                            >
+                                <i
+                                    v-if="bag_type === item.value"
+                                    class="bx bx-check check-icon"
+                                ></i>
+                                <i :class="item.icon" class="bag-icon"></i>
+                                <div class="bag-label">{{ item.label }}</div>
+                            </div>
+
+                            <vs-tooltip
+                                v-else
+                                :key="`denied-${index}`"
+                                class="bag-box disabled"
+                                :data-testid="`bag-${item.label}`"
+                            >
+                                <i :class="item.icon" class="bag-icon"></i>
+                                <div class="bag-label">{{ item.label }}</div>
+
+                                <template #tooltip>
+                                    you don't have {{ item.permission }} permission
+                                </template>
+                            </vs-tooltip>
+                        </template>
                     </div>
                 </div>
             </vs-col>
@@ -169,6 +189,7 @@ export default {
                     icon: 'bx bx-archive',
                     enableItem: 'Connote',
                     enableItemPlaceholder: 'Insert Connote Number',
+                    permission: 'create-bag-regular',
                 },
                 {
                     label: 'MASTERBAG',
@@ -176,6 +197,7 @@ export default {
                     icon: 'bx bx-archive',
                     enableItem: 'Bag',
                     enableItemPlaceholder: 'Insert Bag Number',
+                    permission: 'create-bag-masterbag',
                 },
                 {
                     label: 'PRA RUNSHEET',
@@ -183,6 +205,7 @@ export default {
                     icon: 'bx bx-archive',
                     enableItem: 'Connote',
                     enableItemPlaceholder: 'Insert Connote Number',
+                    permission: 'create-bag-pra-runsheet',
                 },
                 {
                     label: 'HVO',
@@ -190,6 +213,7 @@ export default {
                     icon: 'bx bx-archive',
                     enableItem: 'Connote',
                     enableItemPlaceholder: 'Insert Connote Number',
+                    permission: 'create-bag-hvo',
                 },
                 {
                     label: 'HACB',
@@ -197,6 +221,7 @@ export default {
                     icon: 'bx bx-archive',
                     enableItem: 'Connote',
                     enableItemPlaceholder: 'Insert Connote Number',
+                    permission: 'create-bag-hacb',
                 },
                 {
                     label: 'OM',
@@ -204,6 +229,7 @@ export default {
                     icon: 'bx bx-archive',
                     enableItem: 'Connote',
                     enableItemPlaceholder: 'Insert Connote Number',
+                    permission: 'create-bag-om',
                 },
             ],
             is_auto_open_bag: true,
@@ -322,7 +348,7 @@ export default {
                         item_number: this.item_number,
                         type: this.bag_type,
                         auto_open_bag: this.is_auto_open_bag,
-                        is_hub_delivery_validation: this.is_hub_delivery_validation,
+                        is_hub_delivery_validation: false,
                         destination: this.bag_type === 'pra runsheet' ? '' : 'all_routing',
                         service: this.bag_type === 'pra runsheet' ? '' : ['ALL_SERVICE'],
                         validation: '',
@@ -442,6 +468,11 @@ export default {
             i {
                 color: $coreBlue;
             }
+        }
+
+        &.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
         }
     }
 

@@ -11,16 +11,25 @@
 
         <template v-slot:content>
             <div>
-                <selector
+                <asynchronous-select
                     ref="courier"
                     name="Courier"
                     formKey="courier"
                     :rules="''"
                     :valueData="courier_arr"
-                    :selectedValue="''"
-                    :isMultiple="false"
+                    :selectedValue="selectedCourier"
+                    :isSingleInput="true"
+                    :url="autoComplateUrl"
+                    :selectValue="input_value"
+                    :selectLabel="input_label"
+                    :labelFormatter="formatEmployeeLabel"
+                    :isNestedData="isNestedData"
+                    :nestedKey="nestedKey"
+                    :searchKeyword="lastKeyword"
                     :data-testid="`select-courier`"
                     @updateValue="updateValue"
+                    @inputFocus="inputFocus"
+                    @search="handleSearchKeyword"
                 />
             </div>
         </template>
@@ -57,13 +66,14 @@
         </template>
     </dialog-master>
 </template>
+
 <script>
-import axios from 'axios'
 import master from '@/mixins/master'
 
 import DialogMaster from '@/components/dialog/dialogMaster'
 import FormInputController from '@/components/form/formInputController'
 import Selector from '@/components/input/select'
+import AsynchronousSelect from '../../../components/input/asynchronousSelect.vue'
 
 export default {
     name: 'dialog-create-runsheet',
@@ -72,6 +82,7 @@ export default {
         'dialog-master': DialogMaster,
         'form-input-controller': FormInputController,
         selector: Selector,
+        AsynchronousSelect,
     },
     props: {
         active: Boolean,
@@ -85,7 +96,14 @@ export default {
         return {
             loading: false,
             employee_id: '',
+            autoComplateUrl: null,
             courier_arr: [],
+            input_value: 'employee_id',
+            input_label: 'employee_name',
+            isNestedData: false,
+            nestedKey: '',
+            selectedCourier: null, // optional, boleh dihapus kalau sudah tidak dipakai
+            lastKeyword: '',
         }
     },
     computed: {
@@ -99,87 +117,73 @@ export default {
             return this.loading
         },
     },
-    watch: {
-        active: function (val) {
-            if (val == true) {
-                this.getDataCourier()
-            }
-        },
-    },
     methods: {
-        handleSubmit() {
+         handleSubmit() {
             if (this.employee_id) {
-                this.$router.push({
-                    name: 'delivery-runsheet-new',
-                    params: {
-                        employee_id: this.employee_id,
-                    },
-                })
-                this.setRoutePageHistory(this.$route.meta, false)
+            this.$router.push({
+                name: 'delivery-runsheet-new',
+                params: {
+                employee_id: this.employee_id,
+                },
+            })
+            this.setRoutePageHistory(this.$route.meta, false)
             } else {
-                this.openNotification('warning', null, 'Warning', 'Courier not choosen yet')
+            this.openNotification(
+                'warning',
+                null,
+                'Warning',
+                'Courier not choosen yet'
+            )
             }
         },
-        updateValue(key, val, info) {
-            switch (key) {
-                case 'courier':
-                    let obj = this.courier_arr.filter((item) => item.value == val)[0]
+        updateValue(key, val /*, info, dataObj */) {
+            if (key !== 'courier') return
 
-                    if (Object.keys(obj).length > 0) {
-                        if (obj.hasOwnProperty('item')) {
-                            this.employee_id = obj.item.employee_id || ''
-                        }
-                    }
-                    break
+            // Kalau someday val = array (multi) → ambil terakhir saja
+            let selected = Array.isArray(val) ? val[val.length - 1] : val
+
+            // Kalau komponenmu nanti diubah emit object { value, label, data }
+            if (selected && typeof selected === 'object') {
+            this.employee_id =
+                selected.employee_id ??
+                selected.data?.employee_id ??
+                selected.value ??
+                ''
+            } else {
+            // sekarang paling besar kemungkinan: selected = employee_id (string/number)
+            this.employee_id = selected || ''
             }
         },
-        async getDataCourier() {
-            this.loading = true
 
-            await axios
-                .get(
-                    this.URL.courier_delivery + `/list?n=${this.listenNodeId}`,
-                    this.Helper.header()
-                )
-                .then((res) => {
-                    if (res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map((item) => {
-                            let obj = {}
-                            obj['label'] = item.employee_name + ' ( ' + item.employee_code + ' ) '
-                            obj['value'] = item.employee_id
-                            obj['item'] = item
+        inputFocus(obj, val, info) {
+            if (obj.key === 'courier') {
+                const newUrl =
+                    this.URL.courier_delivery + `/list?n=${this.listenNodeId}`
 
-                            arr.push(obj)
-                        })
+                if (this.autoComplateUrl !== newUrl) {
+                    this.autoComplateUrl = newUrl
+                }
 
-                        if (arr.length == 0) {
-                            arr = [{ label: null, value: null }]
-                        }
+                this.input_value = 'employee_id'
+                this.input_label = 'employee_name'
+                this.isNestedData = false
+                this.nestedKey = ''
+            }
+        },
 
-                        this.courier_arr = arr
-                    } else {
-                        this.openNotification(
-                            'warn',
-                            null,
-                            'Delivery courier data is empty!',
-                            ' Please create a new courier delivery'
-                        )
-                    }
-                })
-                .catch((err) => {
-                    this.openNotification(
-                        'danger',
-                        err.response ? err.response.data.code : '',
-                        'Failed to populate delivery courier list',
-                        err.response ? err.response.data.message : 'something went wrong'
-                    )
-                })
+        formatEmployeeLabel(item) {
+            const employeeName = item.employee_name || '';
+            const employeeCode = item.employee_code || '';
+            return employeeCode ? `${employeeName} (${employeeCode})` : employeeName;
+        },
 
-            this.loading = false
+        handleSearchKeyword(keyword) {
+            this.lastKeyword = keyword || ''
         },
         handleClearForm() {
-            this.employee = ''
+            this.employee_id = ''
+            this.selectedCourier = null
+            this.lastKeyword = ''
         },
         cancel() {
             this.handleClearForm()

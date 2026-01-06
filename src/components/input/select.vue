@@ -86,10 +86,7 @@
                                 v-for="(item, key) in DataArr"
                                 :key="key"
                                 :value="item.value"
-                                :label="
-                                    !item.hasOwnProperty('formattedLabel') &&
-                                    (item.code || item.label)
-                                "
+                                :label="item.formattedLabel ? item.formattedLabel.join(' ') : (item.code || item.label || '')"
                             >
                                 <template v-if="item.hasOwnProperty('formattedLabel')">
                                     <span v-for="(line, index) in item.formattedLabel" :key="index">
