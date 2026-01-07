@@ -185,13 +185,22 @@ export default {
                     key: 'item_number',
                     width: 'sm',
                 },
+                ...(this.sj_type === 'DO' 
+                    ? [
+                        {
+                            label: 'HVO',
+                            key: 'hvo',
+                            width: 'sm',
+                        },
+                    ] 
+                : []),
                 ...(this.listenBreadcrumbTitle === 'Delivery Order'
                     ? [
-                          {
-                              label: 'HVI',
-                              key: 'hvi',
-                              width: 'sm',
-                          },
+                        {
+                            label: 'HVI',
+                            key: 'hvi',
+                            width: 'sm',
+                        },
                       ]
                     : []),
                 {
@@ -928,13 +937,22 @@ export default {
                     key: 'item_number',
                     width: 'sm',
                 },
+                ...(this.sj_type === 'DO' 
+                    ? [
+                        {
+                            label: 'HVO',
+                            key: 'hvo',
+                            width: 'sm',
+                        },
+                    ] 
+                    : []),
                 ...(this.listenBreadcrumbTitle === 'Delivery Order'
                     ? [
-                          {
-                              label: 'HVI',
-                              key: 'hvi',
-                              width: 'sm',
-                          },
+                        {
+                            label: 'HVI',
+                            key: 'hvi',
+                            width: 'sm',
+                        },
                       ]
                     : []),
                 {

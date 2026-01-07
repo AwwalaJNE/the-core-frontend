@@ -1,7 +1,7 @@
 <template>
     <div>
         <table-master
-            :key="tableKey"
+            :key="`${tableKey}-${documentType}`"
             hideColumnKey="receiving-detail-info"
             :dataTable="dataTableProp"
             :dataColumn="datacolumn"
@@ -49,6 +49,7 @@ export default {
         inboundNumber: String,
         is_prealert: Boolean,
         autoFocusInput: Function,
+        documentType: String,
     },
     components: {
         'table-master': TableMaster,
@@ -114,7 +115,7 @@ export default {
         },
 
         datacolumn() {
-            return [
+            const columns = [
                 {
                     label: 'Item Number',
                     key: 'item_number',
@@ -130,25 +131,40 @@ export default {
                     key: 'item_type',
                     width: 'sm',
                 },
-                {
-                    // 🧠 kolom dinamis
-                    label: this.getDynamicColumnLabel,
-                    key: this.getDynamicColumnKey,
+            ];
+
+            // Conditionally add HVO column before the dynamic column if documentType is 'DO'
+            if (this.documentType === 'DO') {
+                columns.push({
+                    label: 'HVO',
+                    key: 'hvo',
                     width: 'sm',
-                },
-                {
-                    label: 'Irregularity Status',
-                    key: 'irregularity_status',
-                    width: 'sm',
-                },
-                {
-                    label: 'Status receiving',
-                    key: 'is_received',
-                    type: 'status',
-                    width: 'sm',
-                    is_missroute: 'is_missroute',
-                },
-            ]
+                });
+            }
+
+            // Add the dynamic column (which could be HVI, TM, RCVB, etc.)
+            columns.push({
+                // 🧠 kolom dinamis
+                label: this.getDynamicColumnLabel,
+                key: this.getDynamicColumnKey,
+                width: 'sm',
+            });
+
+            columns.push({
+                label: 'Irregularity Status',
+                key: 'irregularity_status',
+                width: 'sm',
+            });
+
+            columns.push({
+                label: 'Status receiving',
+                key: 'is_received',
+                type: 'status',
+                width: 'sm',
+                is_missroute: 'is_missroute',
+            });
+
+            return columns;
         },
 
         listenLoading() {

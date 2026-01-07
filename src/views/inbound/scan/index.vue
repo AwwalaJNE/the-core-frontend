@@ -184,6 +184,7 @@
                                     :actionPagination="actionPagination"
                                     :receivingLogs="receivingLogs"
                                     :inboundNumber="inboundNumber"
+                                    :documentType="documentType"
                                     @autoFocusInput="autoFocusInput"
                                     @refresh="refresh"
                                 />
@@ -331,6 +332,7 @@ export default {
             },
             receivingLogs: [],
             inboundNumber: '',
+            documentType: '',
             processing: false,
             showDialog: false,
             is_missroute: false,
@@ -516,6 +518,7 @@ export default {
                     let arr = [res.data.data]
                     this.receivingLogs = res.data.data.receiving_log
                     this.inboundNumber = res.data.data.inbound_number
+                    this.documentType = res.data.data.document_type
                     if (
                         res.data.data.inbound_type === 'RECEIVING CONNOTE' ||
                         res.data.data.inbound_type === 'RECEIVING BAG'
