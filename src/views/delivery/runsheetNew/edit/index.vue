@@ -64,6 +64,7 @@
                             autofocus
                             :disabled="disabledApprove || isSubmitting"
                             :data-testid="'input-formInputConnote'"
+                            @click-icon="$refs.cameraScanner.open('formInputConnote')"
                             @keydown.enter="updateValue"
                         >
                             <template #icon>
@@ -124,38 +125,29 @@
                 <vs-col lg="12" sm="12" xs="12">
                     <div class="box information" style="padding-top: 1px !important">
                         <vs-row justify="space between" align="center" style="margin-top: 1rem">
-                            <vs-col xs="12" sm="5" lg="7">
-                                <p align="left">
-                                    <b>Courier</b>
-                                </p>
-                                <vs-col xs="12" sm="4" lg="4">
-                                    <template>
-                                        <div>
-                                            <asynchronous-select
-                                                ref="courier"
-                                                name="Courier"
-                                                formKey="courier"
-                                                :rules="''"
-                                                :valueData="courier_arr"
-                                                :selectedValue="selectedCourier"
-                                                :isSingleInput="true"
-                                                :disabled="disabledApprove"
-                                                :url="autoCompleteCourierUrl"
-                                                :selectValue="input_value"
-                                                :selectLabel="input_label"
-                                                :isNestedData="isNestedData"
-                                                :nestedKey="nestedKey"
-                                                :searchKeyword="lastKeywordCourier"
-                                                :labelFormatter="formatEmployeeLabel"
-                                                @updateValue="updateValueCourier"
-                                                @search="handleSearchCourier"
-                                                @inputFocus="onCourierFocus"
-                                            />
-                                        </div>
-                                    </template>
-                                </vs-col>
+                            <vs-col xs="12" sm="4" lg="2">
+                                <asynchronous-select
+                                    ref="courier"
+                                    name="Courier"
+                                    formKey="courier"
+                                    :rules="''"
+                                    :valueData="courier_arr"
+                                    :selectedValue="selectedCourier"
+                                    :isSingleInput="true"
+                                    :disabled="disabledApprove"
+                                    :url="autoCompleteCourierUrl"
+                                    :selectValue="input_value"
+                                    :selectLabel="input_label"
+                                    :isNestedData="isNestedData"
+                                    :nestedKey="nestedKey"
+                                    :searchKeyword="lastKeywordCourier"
+                                    :labelFormatter="formatEmployeeLabel"
+                                    @updateValue="updateValueCourier"
+                                    @search="handleSearchCourier"
+                                    @inputFocus="onCourierFocus"
+                                />
                             </vs-col>
-                            <vs-col xs="12" sm="7" lg="5">
+                            <vs-col xs="12" sm="8" lg="10">
                                 <vs-row justify="end">
                                     <template v-if="dataDelivery.length > 0">
                                         <vs-button
