@@ -376,6 +376,8 @@
                                                                         : false
                                                                 "
                                                                 autocomplete="off"
+                                                                :hiddenTitle="true"
+                                                                :placeholder="column.label"
                                                                 @updateValue="updateValue"
                                                                 @inputFocus="onfocuslah"
                                                             />
@@ -446,6 +448,8 @@
                                                                           ]
                                                                         : false
                                                                 "
+                                                                :hiddenTitle="true"
+                                                                :placeholder="column.label"
                                                                 autocomplete="off"
                                                                 @updateValue="updateValue"
                                                             />
@@ -486,6 +490,8 @@
                                                                     ? item[column.disabled_input]
                                                                     : false
                                                             "
+                                                            :hiddenTitle="true"
+                                                            :placeholder="column.label"
                                                             @updateValue="updateValue"
                                                         />
                                                     </div>
@@ -498,31 +504,30 @@
                                                 column.typeInput.toLowerCase() === 'text'
                                             "
                                         >
-                                            <div style="margin-top: 20px">
-                                                <input-general
-                                                    :name="column.label"
-                                                    :rules="''"
-                                                    :formKey="`${column.key}|${
-                                                        item[listenColumn[0].key]
-                                                    }`"
-                                                    :valueData="`${
-                                                        item[column.key] ? item[column.key] : ''
-                                                    }`"
-                                                    :typeInput="
-                                                        'text' +
-                                                        `|${
-                                                            column.hasOwnProperty('disabled_input')
-                                                                ? item[column.disabled_input] ==
-                                                                  true
-                                                                    ? 'disabled'
-                                                                    : ''
+                                            <input-general
+                                                :name="column.label"
+                                                :rules="''"
+                                                :formKey="`${column.key}|${
+                                                    item[listenColumn[0].key]
+                                                }`"
+                                                :valueData="`${
+                                                    item[column.key] ? item[column.key] : ''
+                                                }`"
+                                                :typeInput="
+                                                    'text' +
+                                                    `|${
+                                                        column.hasOwnProperty('disabled_input')
+                                                            ? item[column.disabled_input] == true
+                                                                ? 'disabled'
                                                                 : ''
-                                                        }`
-                                                    "
-                                                    :dataObj="item"
-                                                    @updateValue="updateValue"
-                                                />
-                                            </div>
+                                                            : ''
+                                                    }`
+                                                "
+                                                :dataObj="item"
+                                                :hiddenTitle="true"
+                                                :placeholder="column.label"
+                                                @updateValue="updateValue"
+                                            />
                                         </template>
                                         <template
                                             v-else-if="
@@ -530,31 +535,30 @@
                                                 column.typeInput.toLowerCase() === 'textsubmit'
                                             "
                                         >
-                                            <div style="margin-top: 20px">
-                                                <input-general
-                                                    :name="column.label + '*'"
-                                                    :rules="''"
-                                                    :formKey="`${column.key}|${
-                                                        item[listenColumn[0].key]
-                                                    }`"
-                                                    :valueData="`${
-                                                        item[column.key] ? item[column.key] : ''
-                                                    }`"
-                                                    :typeInput="
-                                                        'text' +
-                                                        `|${
-                                                            column.hasOwnProperty('disabled_input')
-                                                                ? item[column.disabled_input] ==
-                                                                  true
-                                                                    ? 'disabled'
-                                                                    : ''
+                                            <input-general
+                                                :name="column.label + '*'"
+                                                :rules="''"
+                                                :formKey="`${column.key}|${
+                                                    item[listenColumn[0].key]
+                                                }`"
+                                                :valueData="`${
+                                                    item[column.key] ? item[column.key] : ''
+                                                }`"
+                                                :typeInput="
+                                                    'text' +
+                                                    `|${
+                                                        column.hasOwnProperty('disabled_input')
+                                                            ? item[column.disabled_input] == true
+                                                                ? 'disabled'
                                                                 : ''
-                                                        }`
-                                                    "
-                                                    :dataObj="item"
-                                                    @updateValue="updateValue"
-                                                />
-                                            </div>
+                                                            : ''
+                                                    }`
+                                                "
+                                                :dataObj="item"
+                                                :hiddenTitle="true"
+                                                :placeholder="column.label"
+                                                @updateValue="updateValue"
+                                            />
                                         </template>
                                         <template
                                             v-else-if="
@@ -688,7 +692,10 @@
                                                                 column.multipleSelector.selectValue
                                                             "
                                                             :dataObj="item"
-                                                            :minSearchLength="column.multipleSelector.minSearchLength"
+                                                            :minSearchLength="
+                                                                column.multipleSelector
+                                                                    .minSearchLength
+                                                            "
                                                             @inputFocus="
                                                                 inputFocus(
                                                                     filterIndex,

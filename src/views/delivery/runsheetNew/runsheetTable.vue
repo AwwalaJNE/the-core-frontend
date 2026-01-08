@@ -9,7 +9,7 @@
             :page="pagination.page"
             :limit="pagination.limit"
             :hasAction="false"
-            :hasLinkedChild="['Runsheet #']"
+            :hasLinkedChild="['Id']"
             :hasPagination="true"
             :expandable="true"
             :hasChildStatus="true"

@@ -969,7 +969,6 @@ export default {
                 )
             } finally {
                 this.clearInputs()
-                this.setFocusRemove()
                 this.loadingRunsheet = false
             }
         },
@@ -1014,7 +1013,6 @@ export default {
                     err?.response?.data?.message ?? 'Something went wrong'
                 )
             } finally {
-                this.setFocusRemove()
                 this.loadingRunsheet = false
             }
         },
