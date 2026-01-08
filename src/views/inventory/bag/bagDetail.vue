@@ -692,6 +692,8 @@ export default {
             this.weight = ''
         },
         async addBagDetail() {
+            if (!this.item_number) return
+
             this.loading = true
             try {
                 const res = await axios.post(
