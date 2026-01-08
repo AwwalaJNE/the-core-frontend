@@ -132,7 +132,10 @@ export default {
         isMultiple: Boolean,
         isMultipleTag: Boolean,
         border: Boolean,
-        placeholder: String,
+        placeholder: {
+            type: String,
+            default: '',
+        },
         tabindex: [Number, String],
         disabled: Boolean,
         hiddenTitle: Boolean,
