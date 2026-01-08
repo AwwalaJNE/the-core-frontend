@@ -42,6 +42,8 @@
                                 :data-testid="'input-formInputBag'"
                                 @keydown.enter="updateValueBag"
                                 @click-icon="$refs.cameraScanner.open('formInputBag')"
+                                @focus="activeInput = 'formInputBag'"
+                                @click="setActive('formInputBag')"
                             >
                                 <template #icon>
                                     <i class="bx bx-barcode-reader" />
@@ -64,8 +66,10 @@
                             autofocus
                             :disabled="disabledApprove || isSubmitting"
                             :data-testid="'input-formInputConnote'"
-                            @click-icon="$refs.cameraScanner.open('formInputConnote')"
                             @keydown.enter="updateValue"
+                            @click-icon="$refs.cameraScanner.open('formInputConnote')"
+                            @focus="activeInput = 'formInputConnote'"
+                            @click="setActive('formInputConnote')"
                         >
                             <template #icon>
                                 <i class="bx bx-barcode-reader" />
@@ -87,6 +91,8 @@
                             :data-testid="'input-formRemoveConnote'"
                             @keydown.enter="removeValue"
                             @click-icon="$refs.cameraScanner.open('formRemoveConnote')"
+                            @focus="activeInput = 'formRemoveConnote'"
+                            @click="setActive('formRemoveConnote')"
                         >
                             <template #icon>
                                 <i class="bx bx-barcode-reader" />
@@ -431,47 +437,41 @@ export default {
             }
         },
         setActive(refName) {
-            if (['formInputConnote', 'formInputBag', 'formRemoveConnote'].includes(refName)) {
-                this.setActiveInput(refName, null, () => this.dialogValidateTracingActive)
-            }
+            const validRefs = ['formInputConnote', 'formInputBag', 'formRemoveConnote']
+
+            if (!validRefs.includes(refName)) return
+
+            this.setActiveInput(refName, null, () => this.dialogValidateTracingActive)
         },
 
         handleTabNavigation(e) {
             if (e.key !== 'Tab') return
 
-            const activeElement = document.activeElement
+            e.preventDefault() // block default tab behavior
+
             const refs = this.allowedRefs.map((ref) => this.$refs[ref]).filter(Boolean)
 
-            const activeRefIndex = refs.findIndex((ref) => {
-                const inputEl = ref?.$el?.querySelector('input')
-                return inputEl === activeElement
-            })
+            const activeIndex = refs.findIndex(
+                (ref) => this.getInputEl(ref) === document.activeElement
+            )
 
-            e.preventDefault() // blok tab default
+            const nextIndex = activeIndex === -1 ? 0 : (activeIndex + 1) % refs.length
 
-            // jika belum ada yang aktif, arahkan ke input pertama
-            if (activeRefIndex === -1) {
-                this.focusRef(this.allowedRefs[0])
-                return
-            }
-
-            // tentukan ref berikutnya
-            const nextIndex = (activeRefIndex + 1) % refs.length
             this.focusRef(this.allowedRefs[nextIndex])
         },
 
         focusRef(refName) {
             const ref = this.$refs[refName]
-            if (!ref) return
+            const inputEl = this.getInputEl(ref)
 
-            // ambil elemen input asli dari dalam vs-input
-            const el = ref.$el?.querySelector('input')
-            if (el && typeof el.focus === 'function') {
-                el.focus()
-            }
+            if (!inputEl) return
 
-            // set status aktif kamu
+            inputEl.focus()
             this.setActive(refName)
+        },
+
+        getInputEl(ref) {
+            return ref?.$el?.querySelector('input')
         },
         reload() {
             this.getDataDelivery()
@@ -590,10 +590,9 @@ export default {
         updateValueBag(val) {
             if (!this.item_bag) return
 
-            this.form.bag_number = this.item_bag
-            this.form.courier_employee_id = this.employee_id
-            this.item_no = null
             this.form.koli_number = null
+            this.form.courier_employee_id = this.employee_id
+            this.form.bag_number = this.item_bag
             this.form.auto_open_bag = this.is_auto_open_bag
             document.activeElement.blur()
             this.validateBagPraRunsheet(val)
@@ -689,14 +688,15 @@ export default {
                 // Call the next function after success
                 this.validateCourier(val)
             } catch (err) {
-                this.openNotification(
+                await this.openNotification(
                     'danger',
                     err.response?.data?.status || '',
                     err.response?.data?.message || 'Something went wrong'
                 )
-                this.clearInputs()
+                this.setActive('formInputBag')
             } finally {
                 this.isSubmitting = false
+                this.clearInputs()
             }
         },
         async validateCourier(val) {
@@ -782,15 +782,17 @@ export default {
 
                 this.checkItemSla('KOLI')
             } catch (err) {
-                this.openNotification(
+                await this.openNotification(
                     'danger',
                     err.response ? err.response.data.code : '',
                     err.response?.data?.status,
                     err.response?.data?.message
                 )
                 this.clearInputs()
+                this.setActive('formInputConnote')
             } finally {
                 this.isSubmitting = false
+                
             }
         },
         async checkItemSla(type) {
@@ -1015,15 +1017,19 @@ export default {
                     this.clearInputs()
                 }
             } catch (err) {
-                this.openNotification(
+                this.loadingRunsheet = false
+                await this.openNotification(
                     'danger',
                     err?.response?.data?.code ?? '',
                     'Failed',
                     err?.response?.data?.message ?? 'Something went wrong'
                 )
+                this.setActive('formRemoveConnote')
             } finally {
+                this.clearInputs()
                 this.loadingRunsheet = false
                 this.isSubmitting = false
+                
             }
         },
         async getStatus() {
