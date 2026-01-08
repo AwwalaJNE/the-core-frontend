@@ -212,7 +212,7 @@ export default {
                         let total_undelivery_received = []
                         item['children_width'] = {
                             Priority: 'auto',
-                            'Runsheet #': 'md',
+                            Id: 'md',
                             'DRI Number': 'sm',
                             'HRS Number': 'sm',
                             'Total Koli': 'auto',
@@ -243,7 +243,7 @@ export default {
                             total_undelivery_received.push(el.total_undelivery_received)
                         })
                         children['Priority'] = has_undelivered_connote
-                        children['Runsheet #'] = delivery_runsheet_number
+                        children['Id'] = delivery_runsheet_number
                         children['DRI Number'] = dri
                         children['HRS Number'] = hrs
                         children['Total Koli'] = total_koli
