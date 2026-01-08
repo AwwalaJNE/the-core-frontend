@@ -110,7 +110,7 @@
                                     :valueData="item_number"
                                     :hasBarcode="true"
                                     :enter_to_update="true"
-                                    :disabled="dialogActiveManualDestination"
+                                    :disabled="dialogActiveManualDestination || isSubmitting"
                                     @click-icon="handleIconClick"
                                     @updateValue="updateValue"
                                     @enterUpdate="validateItem"
@@ -237,6 +237,8 @@ export default {
             refloading: null,
 
             item_number: '',
+            isSubmitting: false,
+
             dialogActiveManualDestination: false,
 
             destination: 'HUB_DELIVERY',
@@ -255,6 +257,13 @@ export default {
                 },
             ],
         }
+    },
+    watch: {
+        isSubmitting(newValue) {
+            if (!newValue) {
+                this.setActiveInput('scanItem')
+            }
+        },
     },
     methods: {
         handleIconClick() {
@@ -296,6 +305,11 @@ export default {
             }
         },
         async validateItem() {
+            if (this.isSubmitting) return
+            if (!this.item_number) return
+
+            this.isSubmitting = true
+
             try {
                 const res = await axios.post(
                     `${this.URL.validation_item}?n=${this.listenNodeId}`,
@@ -307,14 +321,22 @@ export default {
 
                 this.processItem()
 
-                this.openNotification('success', null, 'Success', res?.data?.message || 'Success')
+                await this.openNotification(
+                    'success',
+                    null,
+                    'Success',
+                    res?.data?.message || 'Success'
+                )
             } catch (err) {
-                this.openNotification(
+                await this.openNotification(
                     'danger',
                     err?.response?.data?.code || '',
                     'Failed',
                     err?.response?.data?.message || 'Something went wrong'
                 )
+            } finally {
+                this.handleClearForm()
+                this.isSubmitting = false
             }
         },
         async processSorting() {

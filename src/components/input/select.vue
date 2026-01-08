@@ -18,7 +18,7 @@
                             multiple
                             :collapse-tags="listenIsCollapseTags"
                             class="m-select"
-                            :placeholder="placeholder"
+                            :placeholder="'Select ' + placeholder"
                             :disabled="listenIsDisabled"
                             :loading="loadingActive"
                             @change="updateValue"
@@ -47,7 +47,7 @@
                             :reserve-keyword="false"
                             :disabled="listenIsDisabled"
                             class="m-select"
-                            :placeholder="placeholder"
+                            :placeholder="'Select ' + placeholder"
                             :loading="loadingActive"
                             :is-Multiple-Tag="listenIsMultipleTags"
                             @change="updateValue"
@@ -72,7 +72,7 @@
                             :allow-create="listenAllowCreate"
                             filterable
                             class="m-select"
-                            :placeholder="placeholder"
+                            :placeholder="'Select ' + placeholder"
                             :disabled="listenIsDisabled"
                             @change="updateValue"
                             @focus="inputFocus"
@@ -86,7 +86,11 @@
                                 v-for="(item, key) in DataArr"
                                 :key="key"
                                 :value="item.value"
-                                :label="item.formattedLabel ? item.formattedLabel.join(' ') : (item.code || item.label || '')"
+                                :label="
+                                    item.formattedLabel
+                                        ? item.formattedLabel.join(' ')
+                                        : item.code || item.label || ''
+                                "
                             >
                                 <template v-if="item.hasOwnProperty('formattedLabel')">
                                     <span v-for="(line, index) in item.formattedLabel" :key="index">
@@ -114,7 +118,10 @@ export default {
         inputan: Inputan,
     },
     props: {
-        name: String,
+        name: {
+            type: String,
+            default: '',
+        },
         rules: String,
         valueData: Array,
         dataObj: [Object, String, Array],

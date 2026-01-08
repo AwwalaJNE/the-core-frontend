@@ -11,7 +11,7 @@
         <vs-row align="self-end" style="margin-top: 1rem">
             <template>
                 <vs-col xs="12" sm="3" lg="3">
-                    <vs-row class="mb-2" style="gap: 1rem">
+                    <vs-row class="mb-2" style="gap: 1rem" v-if="!disabledApprove">
                         <vs-checkbox
                             v-model="is_auto_open_bag"
                             @change="handleAutoOpenBag"
@@ -38,7 +38,7 @@
                                 label-placeholder="Scan Bag Pra Runsheet Here"
                                 icon-after
                                 v-uppercase
-                                :disabled="disabledApprove"
+                                :disabled="disabledApprove || isSubmitting"
                                 :data-testid="'input-formInputBag'"
                                 @keydown.enter="updateValueBag"
                                 @click-icon="$refs.cameraScanner.open('formInputBag')"
@@ -64,7 +64,7 @@
                             icon-after
                             v-uppercase
                             autofocus
-                            :disabled="disabledApprove"
+                            :disabled="disabledApprove || isSubmitting"
                             :data-testid="'input-formInputConnote'"
                             @keydown.enter="updateValue"
                             @click-icon="$refs.cameraScanner.open('formInputConnote')"
@@ -87,7 +87,7 @@
                             label-placeholder="Remove Connote Here"
                             icon-after
                             v-uppercase
-                            :disabled="disabledApprove"
+                            :disabled="disabledApprove || isSubmitting"
                             :data-testid="'input-formRemoveConnote'"
                             @keydown.enter="removeValue"
                             @click-icon="$refs.cameraScanner.open('formRemoveConnote')"
@@ -131,38 +131,29 @@
                 <vs-col lg="12" sm="12" xs="12">
                     <div class="box information" style="padding-top: 1px !important">
                         <vs-row justify="space between" align="center" style="margin-top: 1rem">
-                            <vs-col xs="12" sm="5" lg="7">
-                                <p align="left">
-                                    <b>Courier</b>
-                                </p>
-                                <vs-col xs="12" sm="4" lg="4">
-                                    <template>
-                                        <div>
-                                            <asynchronous-select
-                                                ref="courier"
-                                                name="Courier"
-                                                formKey="courier"
-                                                :rules="''"
-                                                :valueData="courier_arr"
-                                                :selectedValue="selectedCourier"
-                                                :isSingleInput="true"
-                                                :disabled="disabledApprove"
-                                                :url="autoCompleteCourierUrl"
-                                                :selectValue="input_value"
-                                                :selectLabel="input_label"
-                                                :isNestedData="isNestedData"
-                                                :nestedKey="nestedKey"
-                                                :searchKeyword="lastKeywordCourier"
-                                                :labelFormatter="formatEmployeeLabel"
-                                                @updateValue="updateValueCourier"
-                                                @search="handleSearchCourier"
-                                                @inputFocus="onCourierFocus"
-                                            />
-                                        </div>
-                                    </template>
-                                </vs-col>
+                            <vs-col xs="12" sm="4" lg="2">
+                                <asynchronous-select
+                                    ref="courier"
+                                    name="Courier"
+                                    formKey="courier"
+                                    :rules="''"
+                                    :valueData="courier_arr"
+                                    :selectedValue="selectedCourier"
+                                    :isSingleInput="true"
+                                    :disabled="disabledApprove"
+                                    :url="autoCompleteCourierUrl"
+                                    :selectValue="input_value"
+                                    :selectLabel="input_label"
+                                    :isNestedData="isNestedData"
+                                    :nestedKey="nestedKey"
+                                    :searchKeyword="lastKeywordCourier"
+                                    :labelFormatter="formatEmployeeLabel"
+                                    @updateValue="updateValueCourier"
+                                    @search="handleSearchCourier"
+                                    @inputFocus="onCourierFocus"
+                                />
                             </vs-col>
-                            <vs-col xs="12" sm="7" lg="5">
+                            <vs-col xs="12" sm="8" lg="10">
                                 <vs-row justify="end">
                                     <template v-if="dataDelivery.length > 0">
                                         <vs-button
@@ -403,6 +394,8 @@ export default {
             isNestedData: false,
             nestedKey: '',
             lastKeywordCourier: '',
+
+            isSubmitting: false,
         }
     },
     computed: {
@@ -416,11 +409,13 @@ export default {
     beforeUnmount() {
         window.removeEventListener('keydown', this.handleTabNavigation)
     },
-    mounted() {
+    async mounted() {
+        this.setActive('formInputConnote')
+
         this.allowedRefs = ['formInputBag', 'formInputConnote', 'formRemoveConnote']
         window.addEventListener('keydown', this.handleTabNavigation)
         window.addEventListener('timezone-changed', this.reload)
-        this.getStatus()
+        await this.getStatus()
         // this.getDataCourier()
 
         this.timer = setInterval(() => {
@@ -444,47 +439,41 @@ export default {
             }
         },
         setActive(refName) {
-            if (['formInputConnote', 'formInputBag', 'formRemoveConnote'].includes(refName)) {
-                this.setActiveInput(refName, null, () => this.dialogValidateTracingActive)
-            }
+            const validRefs = ['formInputConnote', 'formInputBag', 'formRemoveConnote']
+
+            if (!validRefs.includes(refName)) return
+
+            this.setActiveInput(refName, null, () => this.dialogValidateTracingActive)
         },
 
         handleTabNavigation(e) {
             if (e.key !== 'Tab') return
 
-            const activeElement = document.activeElement
+            e.preventDefault() // block default tab behavior
+
             const refs = this.allowedRefs.map((ref) => this.$refs[ref]).filter(Boolean)
 
-            const activeRefIndex = refs.findIndex((ref) => {
-                const inputEl = ref?.$el?.querySelector('input')
-                return inputEl === activeElement
-            })
+            const activeIndex = refs.findIndex(
+                (ref) => this.getInputEl(ref) === document.activeElement
+            )
 
-            e.preventDefault() // blok tab default
+            const nextIndex = activeIndex === -1 ? 0 : (activeIndex + 1) % refs.length
 
-            // jika belum ada yang aktif, arahkan ke input pertama
-            if (activeRefIndex === -1) {
-                this.focusRef(this.allowedRefs[0])
-                return
-            }
-
-            // tentukan ref berikutnya
-            const nextIndex = (activeRefIndex + 1) % refs.length
             this.focusRef(this.allowedRefs[nextIndex])
         },
 
         focusRef(refName) {
             const ref = this.$refs[refName]
-            if (!ref) return
+            const inputEl = this.getInputEl(ref)
 
-            // ambil elemen input asli dari dalam vs-input
-            const el = ref.$el?.querySelector('input')
-            if (el && typeof el.focus === 'function') {
-                el.focus()
-            }
+            if (!inputEl) return
 
-            // set status aktif kamu
+            inputEl.focus()
             this.setActive(refName)
+        },
+
+        getInputEl(ref) {
+            return ref?.$el?.querySelector('input')
         },
         reload() {
             this.getDataDelivery()
@@ -601,23 +590,29 @@ export default {
             // JANGAN ubah autoCompleteCourierUrl di sini
         },
         updateValueBag(val) {
-            this.form.bag_number = this.item_bag
-            this.form.courier_employee_id = this.employee_id
-            this.item_no = null
+            if (!this.item_bag) return
+
             this.form.koli_number = null
+            this.form.courier_employee_id = this.employee_id
+            this.form.bag_number = this.item_bag
             this.form.auto_open_bag = this.is_auto_open_bag
             document.activeElement.blur()
             this.validateBagPraRunsheet(val)
         },
         updateValue() {
+            if (!this.item_no) return
+
             this.form.koli_number = this.item_no
             this.form.courier_employee_id = this.employee_id
             this.form.bag_number = null
             this.form.auto_open_bag = this.is_auto_open_bag
             document.activeElement.blur()
             this.scanConnote()
+            this.setActive('formInputConnote')
         },
         removeValue() {
+            if (!this.item_no_remove) return
+
             this.form.koli_number = this.item_no_remove
             this.form.courier_employee_id = this.employee_id
             this.form.bag_number = null
@@ -674,30 +669,46 @@ export default {
                 })
         },
         async validateBagPraRunsheet(val) {
-            let valForm = {
+            if (this.isSubmitting) return
+
+            this.isSubmitting = true
+
+            const loading = this.$vs.loading({
+                type: 'scale',
+                text: 'Checking credentials...',
+                background: '#EAEAEA',
+            })
+
+            const valForm = {
                 item_number: this.item_bag,
                 delivery_runsheet_number: this.delivery_runsheet_number,
                 courier_id: this.employee_id,
                 auto_open_bag: this.is_auto_open_bag,
                 validate_courier: this.is_validate_courier,
             }
-            await axios
-                .post(
-                    this.URL.validation + `/create-runsheet-pra?n=${this.listenNodeId}`,
+
+            try {
+                const res = await axios.post(
+                    `${this.URL.validation}/create-runsheet-pra?n=${this.listenNodeId}`,
                     valForm,
                     this.Helper.header()
                 )
-                .then((res) => {
-                    this.validateCourier(val)
-                })
-                .catch((err) => {
-                    this.openNotification(
-                        'danger',
-                        err.response.data.status,
-                        err.response.data.message
-                    )
-                    this.clearInputs()
-                })
+
+                // Call the next function after success
+                this.validateCourier(val)
+            } catch (err) {
+                loading.close()
+                await this.openNotification(
+                    'danger',
+                    err.response?.data?.status || '',
+                    err.response?.data?.message || 'Something went wrong'
+                )
+                this.setActive('formInputBag')
+            } finally {
+                loading.close()
+                this.isSubmitting = false
+                this.clearInputs()
+            }
         },
         async validateCourier(val) {
             await axios
@@ -748,6 +759,16 @@ export default {
             }
         },
         async scanConnote(postData) {
+            if (this.isSubmitting) return
+
+            this.isSubmitting = true
+
+            const loading = this.$vs.loading({
+                type: 'scale',
+                text: 'Checking credentials...',
+                background: '#EAEAEA',
+            })
+
             let valForm = {}
             if (postData) {
                 this.form = postData
@@ -769,24 +790,28 @@ export default {
             }
 
             // NOTES TODO: Change this to addConnoteToRunsheet if backend validation's ready
-            await axios
-                .post(
+            try {
+                const res = await axios.post(
                     `${this.URL.validation}/create-runsheet?n=${this.listenNodeId}`,
                     valForm,
                     this.Helper.header()
                 )
-                .then((res) => {
-                    this.checkItemSla('KOLI')
-                })
-                .catch((err) => {
-                    this.openNotification(
-                        'danger',
-                        err.response ? err.response.data.code : '',
-                        err.response.data.status,
-                        err.response.data.message
-                    )
-                    this.clearInputs()
-                })
+
+                this.checkItemSla('KOLI')
+            } catch (err) {
+                loading.close()
+                await this.openNotification(
+                    'danger',
+                    err.response ? err.response.data.code : '',
+                    err.response?.data?.status,
+                    err.response?.data?.message
+                )
+                this.clearInputs()
+                this.setActive('formInputConnote')
+            } finally {
+                loading.close()
+                this.isSubmitting = false
+            }
         },
         async checkItemSla(type) {
             this.type = type
@@ -909,6 +934,7 @@ export default {
                 this.clearInputs()
                 // this.setFocus()
                 this.loadingRunsheet = false
+                this.setActive('formInputConnote')
             }
         },
         async addBagPraRunsheetToRunsheet(form) {
@@ -969,11 +995,20 @@ export default {
                 )
             } finally {
                 this.clearInputs()
-                this.setFocusRemove()
                 this.loadingRunsheet = false
             }
         },
         async removeConnote() {
+            if (this.isSubmitting) return
+
+            this.isSubmitting = true
+
+            const loading = this.$vs.loading({
+                type: 'scale',
+                text: 'Checking credentials...',
+                background: '#EAEAEA',
+            })
+
             this.loadingRunsheet = true
             try {
                 const res = await axios.delete(
@@ -1007,84 +1042,102 @@ export default {
                     this.clearInputs()
                 }
             } catch (err) {
-                this.openNotification(
+                this.loadingRunsheet = false
+                loading.close()
+                await this.openNotification(
                     'danger',
                     err?.response?.data?.code ?? '',
                     'Failed',
                     err?.response?.data?.message ?? 'Something went wrong'
                 )
+                this.setActive('formRemoveConnote')
             } finally {
-                this.setFocusRemove()
+                loading.close()
+                this.clearInputs()
                 this.loadingRunsheet = false
+                this.isSubmitting = false
+                this.setActive('formRemoveConnote')
             }
         },
         async getStatus() {
-            await axios
-                .get(
-                    // filter untuk semua type
+            const loading = this.$vs.loading({
+                type: 'scale',
+                text: 'Checking credentials...',
+                background: '#EAEAEA',
+            })
+
+            try {
+                const res = await axios.get(
                     `${this.URL.status}?status_type=DELIVERY&n=${this.listenNodeId}&limit=-1`,
                     this.Helper.header()
                 )
-                .then((res) => {
-                    const statusObj = {}
-                    this.arrStatus = res.data.data.map((item) => {
-                        const obj = {}
-                        obj.label = `${item.status_description}(${item.status_code})`
-                        if (obj.label.length > 60) {
-                            obj.formattedLabel = this.splitText(obj.label, 60)
-                        }
-                        obj.value = item.status_code
-                        obj.data = item
 
-                        if (
-                            item.hasOwnProperty('status_condition') &&
-                            item.status_condition !== null
-                        ) {
-                            if (statusObj.hasOwnProperty(item.status_condition.toLowerCase())) {
-                                statusObj[item.status_condition.toLowerCase()].push(obj)
-                            } else {
-                                statusObj[item.status_condition.toLowerCase()] = [obj]
-                            }
-                        }
+                const statusObj = {}
 
-                        return obj
-                    })
-                    this.statusObj = statusObj
-                    this.getParamRoute()
+                this.arrStatus = res.data.data.map((item) => {
+                    const label = `${item.status_description}(${item.status_code})`
+
+                    const obj = {
+                        label,
+                        formattedLabel: label.length > 60 ? this.splitText(label, 60) : undefined,
+                        value: item.status_code,
+                        data: item,
+                    }
+
+                    const condition = item.status_condition?.toLowerCase()
+                    if (condition) {
+                        if (!statusObj[condition]) {
+                            statusObj[condition] = []
+                        }
+                        statusObj[condition].push(obj)
+                    }
+
+                    return obj
                 })
-                .catch((err) => {
-                    this.openNotification(
-                        'danger',
-                        err?.response?.data?.code ?? '',
-                        'Failed to populate status',
-                        err?.response?.data?.message ?? 'something went wrong'
-                    )
-                })
+
+                this.statusObj = statusObj
+                this.getParamRoute()
+            } catch (err) {
+                loading.close()
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed to populate status',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
+            } finally {
+                loading.close()
+            }
         },
         async getDataDelivery() {
             this.loadingRunsheet = true
-            await axios
-                .get(
+
+            try {
+                const res = await axios.get(
                     `${this.URL.employee}/${this.employee_id}/delivery?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}`,
                     this.Helper.header()
                 )
-                .then((res) => {
-                    this.dataDelivery = this.processDataDelivery(res.data.data)
 
-                    this.dataDeliverySummary = res.data.summary
-                    this.delivery_runsheet_number =
-                        res.data.summary.delivery_runsheet_number.toString()
-                    this.loadingRunsheet = false
-                })
-                .catch((err) => {
-                    this.loadingRunsheet = false
-                    this.openNotification(
-                        'danger',
-                        err?.response?.data?.code ?? '',
-                        'Failed to populate status',
-                        err?.response?.data?.message ?? 'something went wrong'
-                    )
-                })
+                const { data, summary } = res.data
+
+                this.dataDelivery = this.processDataDelivery(data)
+                this.dataDeliverySummary = summary
+                this.delivery_runsheet_number = summary?.delivery_runsheet_number?.toString() ?? ''
+
+                if (!data?.delivery || data?.delivery.length === 0) {
+                    this.clearInputs()
+                    this.$router.push('/delivery/runsheet')
+                }
+            } catch (err) {
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed to populate status',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
+            } finally {
+                this.loadingRunsheet = false
+            }
         },
         processDataDelivery(data) {
             const status = this.statusObj || {}

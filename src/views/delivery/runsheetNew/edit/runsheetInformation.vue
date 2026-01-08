@@ -135,7 +135,6 @@ export default {
                     selectedValue: 'status_code',
                     disabled_input: 'is_disabled_input_status',
                     width: 'md',
-                    columnCaption: true,
                 },
 
                 {
@@ -170,7 +169,7 @@ export default {
                     width: 'auto',
                 },
                 {
-                    label: 'Elapsed',
+                    label: 'History Runsheet',
                     key: 'days_elapsed',
                     type: 'inputan',
                     typeInput: 'button_text',

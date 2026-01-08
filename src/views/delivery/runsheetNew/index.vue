@@ -143,10 +143,10 @@ export default {
             node_destination: '',
             searchBy: 'delivery_runsheet_number',
             filterDateBy: 'create',
-            searchPlaceholder: 'Search Runsheet Number',
+            searchPlaceholder: 'Search Id',
             searchParams: [
                 {
-                    label: 'Runsheet Number',
+                    label: 'Id',
                     value: 'delivery_runsheet_number',
                 },
                 {

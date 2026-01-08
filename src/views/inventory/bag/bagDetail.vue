@@ -82,7 +82,7 @@
             </div>
         </vs-row>
 
-        <template v-if="!disabledApprove && !loading && !is_masterbag">
+        <template v-if="!disabledApprove && !is_masterbag">
             <vs-row class="mb-2 mt-2" align="center">
                 <vs-checkbox
                     v-model="is_auto_open_bag"
@@ -134,21 +134,21 @@
         <section class="bagging">
             <vs-row justify="space-between">
                 <vs-col xs="12" sm="4" lg="4">
-                    <template v-if="!disabledApprove && !loading">
+                    <template v-if="!disabledApprove">
                         <div v-if="!is_masterbag" class="center in-get-bag">
                             <vs-input
                                 border
                                 type="text"
                                 v-model="item_number"
                                 label-placeholder="Masukkan Koli/Connote"
-                                v-on:keyup.enter="addBagDetail"
+                                v-on:keyup.enter="!isSubmitting && addBagDetail()"
                                 icon-after
                                 v-uppercase
                                 ref="formInputBaggingKoli"
                                 @click-icon="$refs.cameraScanner.open('formInputBaggingKoli')"
                                 v-bind:data-kt="'scan_input'"
                                 :data-testid="`input-item_number`"
-                                :disabled="dialogActive"
+                                :disabled="dialogActive || isSubmitting"
                                 @input="sanitizeAlphanumeric('item_number')"
                             >
                                 <template #icon>
@@ -181,7 +181,7 @@
                 </vs-col>
             </vs-row>
 
-            <vs-row style="margin-top: 1em" v-if="!is_pra_runsheet && !loading">
+            <vs-row style="margin-top: 1em" v-if="!is_pra_runsheet">
                 <vs-col xs="12" sm="6" lg="2">
                     <selector
                         ref="routing"
@@ -493,6 +493,8 @@ export default {
 
             autoCompleteUrl: '',
             dialogActive: false,
+
+            isSubmitting: false,
         }
     },
     watch: {
@@ -660,6 +662,8 @@ export default {
             }
         },
         async updateBag() {
+            if (!this.weight || !this.actual_weight) return
+
             this.loading = true
             try {
                 const res = await axios.put(
@@ -692,6 +696,11 @@ export default {
             this.weight = ''
         },
         async addBagDetail() {
+            if (this.isSubmitting) return
+            if (!this.item_number) return
+
+            this.isSubmitting = true
+
             this.loading = true
             try {
                 const res = await axios.post(
@@ -707,7 +716,7 @@ export default {
                     this.Helper.header()
                 )
 
-                this.openNotification('success', null, 'Success', 'Add Bagging is success')
+                await this.openNotification('success', null, 'Success', 'Add Bagging is success')
                 this.refresh()
             } catch (err) {
                 const errorCode = err.response ? err.response.data.code : ''
@@ -715,14 +724,11 @@ export default {
                     ? err.response.data.message
                     : 'something went wrong'
 
-                if (errorCode === 'CORE-1135') {
-                    this.openNotificationCenter('danger', errorCode, 'FAILED', errorMessage)
-                } else {
-                    this.openNotification('danger', errorCode, 'FAILED', errorMessage)
-                }
+                await this.openNotification('danger', errorCode, 'FAILED', errorMessage)
             } finally {
                 this.loading = false
                 this.handleClearForm()
+                this.isSubmitting = false
             }
         },
         print() {

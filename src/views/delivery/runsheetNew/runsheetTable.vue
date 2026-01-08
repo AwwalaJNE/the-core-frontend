@@ -9,7 +9,7 @@
             :page="pagination.page"
             :limit="pagination.limit"
             :hasAction="false"
-            :hasLinkedChild="['Runsheet #']"
+            :hasLinkedChild="['Id']"
             :hasPagination="true"
             :expandable="true"
             :hasChildStatus="true"
@@ -210,19 +210,17 @@ export default {
                         let total_delivered = []
                         let total_undelivered = []
                         let total_undelivery_received = []
-                        item['children_width'] = {
-                            Priority: 'auto',
-                            'Runsheet #': 'md',
-                            'DRI Number': 'sm',
-                            'HRS Number': 'sm',
-                            'Total Koli': 'auto',
-                            Open: 'xxxs',
-                            Status: 'xxxs',
-                            Delivered: 'xxxs',
-                            Undelivered: 'xxxs',
-                            'Undelivered Received': 'xs',
-                            HRS: 'xxxxs',
-                        }
+                        let is_approve = []
+
+                        item['total_runsheet'] = item['total_runsheet'] || '0'
+                        item['total_hrs'] = item['total_hrs'] || '0'
+                        item['total_connote'] = item['total_connote'] || '0'
+                        item['total_open'] = item['total_open'] || '0'
+                        item['total_delivered'] = item['total_delivered'] || '0'
+                        item['total_undelivered'] = item['total_undelivered'] || '0'
+                        item['total_undelivery_received'] =
+                            item['total_undelivered_received'] || '0'
+
                         item['children_hide_label'] = ['Priority']
                         item['children_type'] = {
                             Priority: 'icon-warning',
@@ -231,6 +229,7 @@ export default {
                             Priority: 'Contains Undelivered Koli',
                         }
                         item.delivery.map((el) => {
+                            is_approve.push(el.is_approve ? true : false)
                             has_undelivered_connote.push(el.has_undelivered_connote)
                             delivery_runsheet_number.push(el.delivery_runsheet_number)
                             dri.push(el.dri ?? '-')
@@ -243,7 +242,8 @@ export default {
                             total_undelivery_received.push(el.total_undelivery_received)
                         })
                         children['Priority'] = has_undelivered_connote
-                        children['Runsheet #'] = delivery_runsheet_number
+                        children['Is Approve'] = is_approve
+                        children['Id'] = delivery_runsheet_number
                         children['DRI Number'] = dri
                         children['HRS Number'] = hrs
                         children['Total Koli'] = total_koli
