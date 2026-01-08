@@ -10,7 +10,7 @@
                         @formData="formData"
                         getters="getAuth"
                         typeForm="login"
-                        :disabled="isSubmitting"
+                        :isDisabled="isSubmitting"
                         :submitByEnter="!isSubmitting"
                     />
                 </div>
