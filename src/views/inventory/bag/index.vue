@@ -237,6 +237,8 @@ export default {
             refloading: null,
 
             item_number: '',
+            is_item_number_submitting: false,
+
             dialogActiveManualDestination: false,
 
             destination: 'HUB_DELIVERY',
@@ -296,6 +298,11 @@ export default {
             }
         },
         async validateItem() {
+            if (this.is_item_number_submitting) return
+            if (!this.item_number) return
+
+            this.is_item_number_submitting = true
+
             try {
                 const res = await axios.post(
                     `${this.URL.validation_item}?n=${this.listenNodeId}`,
@@ -307,14 +314,22 @@ export default {
 
                 this.processItem()
 
-                this.openNotification('success', null, 'Success', res?.data?.message || 'Success')
+                await this.openNotification(
+                    'success',
+                    null,
+                    'Success',
+                    res?.data?.message || 'Success'
+                )
             } catch (err) {
-                this.openNotification(
+                await this.openNotification(
                     'danger',
                     err?.response?.data?.code || '',
                     'Failed',
                     err?.response?.data?.message || 'Something went wrong'
                 )
+            } finally {
+                this.handleClearForm()
+                this.is_item_number_submitting = false
             }
         },
         async processSorting() {
