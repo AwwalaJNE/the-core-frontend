@@ -170,7 +170,7 @@ export default {
                     width: 'auto',
                 },
                 {
-                    label: 'Elapsed',
+                    label: 'History Runsheet',
                     key: 'days_elapsed',
                     type: 'inputan',
                     typeInput: 'button_text',
