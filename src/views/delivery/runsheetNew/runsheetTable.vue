@@ -210,6 +210,16 @@ export default {
                         let total_delivered = []
                         let total_undelivered = []
                         let total_undelivery_received = []
+
+                        item['total_runsheet'] = item['total_runsheet'] || '0'
+                        item['total_hrs'] = item['total_hrs'] || '0'
+                        item['total_connote'] = item['total_connote'] || '0'
+                        item['total_open'] = item['total_open'] || '0'
+                        item['total_delivered'] = item['total_delivered'] || '0'
+                        item['total_undelivered'] = item['total_undelivered'] || '0'
+                        item['total_undelivery_received'] =
+                            item['total_undelivered_received'] || '0'
+
                         item['children_width'] = {
                             Priority: 'auto',
                             Id: 'md',
