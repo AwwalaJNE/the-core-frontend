@@ -110,7 +110,7 @@
                                     :valueData="item_number"
                                     :hasBarcode="true"
                                     :enter_to_update="true"
-                                    :disabled="dialogActiveManualDestination"
+                                    :disabled="dialogActiveManualDestination || isSubmitting"
                                     @click-icon="handleIconClick"
                                     @updateValue="updateValue"
                                     @enterUpdate="validateItem"
@@ -237,7 +237,7 @@ export default {
             refloading: null,
 
             item_number: '',
-            is_item_number_submitting: false,
+            isSubmitting: false,
 
             dialogActiveManualDestination: false,
 
@@ -257,6 +257,13 @@ export default {
                 },
             ],
         }
+    },
+    watch: {
+        isSubmitting(newValue) {
+            if (!newValue) {
+                this.setActiveInput('scanItem')
+            }
+        },
     },
     methods: {
         handleIconClick() {
@@ -298,10 +305,10 @@ export default {
             }
         },
         async validateItem() {
-            if (this.is_item_number_submitting) return
+            if (this.isSubmitting) return
             if (!this.item_number) return
 
-            this.is_item_number_submitting = true
+            this.isSubmitting = true
 
             try {
                 const res = await axios.post(
@@ -329,7 +336,7 @@ export default {
                 )
             } finally {
                 this.handleClearForm()
-                this.is_item_number_submitting = false
+                this.isSubmitting = false
             }
         },
         async processSorting() {
