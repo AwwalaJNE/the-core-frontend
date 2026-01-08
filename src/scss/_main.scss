@@ -247,8 +247,15 @@ ul {
     max-width: 187px !important;
 }
 
-.vs-icon-check span .line1 {
-    width: 6px;
+/* short stroke */
+.vs-checkbox-mask .line1 {
+    left: -3px;
+    top: 12px;
+}
+
+/* long stroke */
+.vs-checkbox-mask .line2 {
+    left: 6px;
 }
 
 .vs-table {
