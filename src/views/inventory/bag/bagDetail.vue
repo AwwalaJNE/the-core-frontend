@@ -660,6 +660,8 @@ export default {
             }
         },
         async updateBag() {
+            if (!this.weight || !this.actual_weight) return
+
             this.loading = true
             try {
                 const res = await axios.put(
