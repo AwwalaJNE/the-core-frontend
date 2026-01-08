@@ -10,7 +10,8 @@
                         @formData="formData"
                         getters="getAuth"
                         typeForm="login"
-                        :submitByEnter="true"
+                        :disabled="isSubmitting"
+                        :submitByEnter="!isSubmitting"
                     />
                 </div>
 
@@ -48,24 +49,26 @@ export default {
         return {
             form: {},
             ipAddress: null,
+            isSubmitting: false,
         }
     },
     methods: {
         handleSubmit() {
-            this.$refs.formLoginController.handleSubmit() // trigger function submit form dari luar component formInputController
+            if (this.isSubmitting) return
+            this.$refs.formLoginController.handleSubmit()
         },
         async formData(form) {
-            try {
-                this.form.password = form.password
-                this.form.user_login = form.user_login
-            } catch (error) {
-                console.error('Error fetching IP address:', error)
-            } finally {
-                this.login()
-            }
+            this.form.password = form.password
+            this.form.user_login = form.user_login
+
+            await this.login()
         },
 
         async login() {
+            if (this.isSubmitting) return
+
+            this.isSubmitting = true
+
             const loading = this.$vs.loading({
                 type: 'scale',
                 text: 'Checking credentials...',
@@ -109,7 +112,8 @@ export default {
                             throw new Error('Failed to fetch user details')
                         }
                     } catch (errDetail) {
-                        this.openNotification(
+                        loading.close()
+                        await this.openNotification(
                             'danger',
                             errDetail.response?.data?.code || '',
                             'Failed',
@@ -120,12 +124,13 @@ export default {
                     throw new Error('Invalid login response')
                 }
             } catch (err) {
+                loading.close()
                 const errorMessage =
                     err.response && err.response.data && err.response.data.message
                         ? err.response.data.message
                         : 'Something went wrong'
 
-                this.openNotification(
+                await this.openNotification(
                     'danger',
                     err.response ? err.response.data.code : '',
                     'Login Gagal !',
@@ -133,33 +138,14 @@ export default {
                 )
             } finally {
                 loading.close()
+                this.isSubmitting = false
             }
         },
-        //     logout() {
-        //   localStorage.clear();
-        //   // this.$router.push("/login"); push di hide supaya semua vuex dan cache bersih
-        //   window.location.href = "/login";
-        // },
-        async getNode() {},
     },
 }
 </script>
 <style lang="scss">
 body {
     background: #eaeaea;
-}
-
-.login-box {
-    width: 100px;
-    height: 100px;
-    background-color: red;
-
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-
-    margin: auto;
 }
 </style>
