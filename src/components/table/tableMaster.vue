@@ -1990,12 +1990,12 @@
 
         <vs-row class="mt-2" justify="space-between" align="center" v-if="dataTable.length > 0">
             <template v-if="hasPagination == true">
-                <vs-col w="2">
+                <vs-col w="2" v-if="false">
                     <vs-button @click="handleExportCSV" :data-testid="`export-button`">
                         Export
                     </vs-button>
                 </vs-col>
-                <vs-col w="10">
+                <vs-col w="12">
                     <pagination-master
                         :page="pagination.page"
                         :limit="pagination.limit"
