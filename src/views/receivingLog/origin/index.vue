@@ -139,7 +139,7 @@ export default {
                     ...data
                         .filter(item => item.status_type?.toLowerCase() === 'irregularity')
                         .map(item => ({
-                            label: item.status_description,
+                            label: item.status_code + ' - ' + item.status_description,
                             value: item.status_code,
                             item,
                         })),
