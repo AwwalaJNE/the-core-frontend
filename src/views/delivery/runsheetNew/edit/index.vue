@@ -38,12 +38,10 @@
                                 label-placeholder="Scan Bag Pra Runsheet Here"
                                 icon-after
                                 v-uppercase
-                                :disabled="disabledApprove"
+                                :disabled="disabledApprove || isSubmitting"
                                 :data-testid="'input-formInputBag'"
                                 @keydown.enter="updateValueBag"
                                 @click-icon="$refs.cameraScanner.open('formInputBag')"
-                                @focus="activeInput = 'formInputBag'"
-                                @click="setActive('formInputBag')"
                             >
                                 <template #icon>
                                     <i class="bx bx-barcode-reader" />
@@ -64,12 +62,9 @@
                             icon-after
                             v-uppercase
                             autofocus
-                            :disabled="disabledApprove"
+                            :disabled="disabledApprove || isSubmitting"
                             :data-testid="'input-formInputConnote'"
                             @keydown.enter="updateValue"
-                            @click-icon="$refs.cameraScanner.open('formInputConnote')"
-                            @focus="activeInput = 'formInputConnote'"
-                            @click="setActive('formInputConnote')"
                         >
                             <template #icon>
                                 <i class="bx bx-barcode-reader" />
@@ -87,12 +82,10 @@
                             label-placeholder="Remove Connote Here"
                             icon-after
                             v-uppercase
-                            :disabled="disabledApprove"
+                            :disabled="disabledApprove || isSubmitting"
                             :data-testid="'input-formRemoveConnote'"
                             @keydown.enter="removeValue"
                             @click-icon="$refs.cameraScanner.open('formRemoveConnote')"
-                            @focus="activeInput = 'formRemoveConnote'"
-                            @click="setActive('formRemoveConnote')"
                         >
                             <template #icon>
                                 <i class="bx bx-barcode-reader" />
@@ -403,6 +396,8 @@ export default {
             isNestedData: false,
             nestedKey: '',
             lastKeywordCourier: '',
+
+            isSubmitting: false,
         }
     },
     computed: {
@@ -601,6 +596,8 @@ export default {
             // JANGAN ubah autoCompleteCourierUrl di sini
         },
         updateValueBag(val) {
+            if (!this.item_bag) return
+
             this.form.bag_number = this.item_bag
             this.form.courier_employee_id = this.employee_id
             this.item_no = null
@@ -610,6 +607,8 @@ export default {
             this.validateBagPraRunsheet(val)
         },
         updateValue() {
+            if (!this.item_no) return
+
             this.form.koli_number = this.item_no
             this.form.courier_employee_id = this.employee_id
             this.form.bag_number = null
@@ -618,6 +617,8 @@ export default {
             this.scanConnote()
         },
         removeValue() {
+            if (!this.item_no_remove) return
+
             this.form.koli_number = this.item_no_remove
             this.form.courier_employee_id = this.employee_id
             this.form.bag_number = null
@@ -674,30 +675,37 @@ export default {
                 })
         },
         async validateBagPraRunsheet(val) {
-            let valForm = {
+            if (this.isSubmitting) return
+
+            this.isSubmitting = true
+
+            const valForm = {
                 item_number: this.item_bag,
                 delivery_runsheet_number: this.delivery_runsheet_number,
                 courier_id: this.employee_id,
                 auto_open_bag: this.is_auto_open_bag,
                 validate_courier: this.is_validate_courier,
             }
-            await axios
-                .post(
-                    this.URL.validation + `/create-runsheet-pra?n=${this.listenNodeId}`,
+
+            try {
+                const res = await axios.post(
+                    `${this.URL.validation}/create-runsheet-pra?n=${this.listenNodeId}`,
                     valForm,
                     this.Helper.header()
                 )
-                .then((res) => {
-                    this.validateCourier(val)
-                })
-                .catch((err) => {
-                    this.openNotification(
-                        'danger',
-                        err.response.data.status,
-                        err.response.data.message
-                    )
-                    this.clearInputs()
-                })
+
+                // Call the next function after success
+                this.validateCourier(val)
+            } catch (err) {
+                this.openNotification(
+                    'danger',
+                    err.response?.data?.status || '',
+                    err.response?.data?.message || 'Something went wrong'
+                )
+                this.clearInputs()
+            } finally {
+                this.isSubmitting = false
+            }
         },
         async validateCourier(val) {
             await axios
@@ -748,6 +756,10 @@ export default {
             }
         },
         async scanConnote(postData) {
+            if (this.isSubmitting) return
+
+            this.isSubmitting = true
+
             let valForm = {}
             if (postData) {
                 this.form = postData
@@ -769,24 +781,25 @@ export default {
             }
 
             // NOTES TODO: Change this to addConnoteToRunsheet if backend validation's ready
-            await axios
-                .post(
+            try {
+                const res = await axios.post(
                     `${this.URL.validation}/create-runsheet?n=${this.listenNodeId}`,
                     valForm,
                     this.Helper.header()
                 )
-                .then((res) => {
-                    this.checkItemSla('KOLI')
-                })
-                .catch((err) => {
-                    this.openNotification(
-                        'danger',
-                        err.response ? err.response.data.code : '',
-                        err.response.data.status,
-                        err.response.data.message
-                    )
-                    this.clearInputs()
-                })
+
+                this.checkItemSla('KOLI')
+            } catch (err) {
+                this.openNotification(
+                    'danger',
+                    err.response ? err.response.data.code : '',
+                    err.response?.data?.status,
+                    err.response?.data?.message
+                )
+                this.clearInputs()
+            } finally {
+                this.isSubmitting = false
+            }
         },
         async checkItemSla(type) {
             this.type = type
@@ -973,6 +986,10 @@ export default {
             }
         },
         async removeConnote() {
+            if (this.isSubmitting) return
+
+            this.isSubmitting = true
+
             this.loadingRunsheet = true
             try {
                 const res = await axios.delete(
@@ -1014,6 +1031,7 @@ export default {
                 )
             } finally {
                 this.loadingRunsheet = false
+                this.isSubmitting = false
             }
         },
         async getStatus() {
