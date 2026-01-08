@@ -135,7 +135,6 @@ export default {
                     selectedValue: 'status_code',
                     disabled_input: 'is_disabled_input_status',
                     width: 'md',
-                    columnCaption: true,
                 },
 
                 {

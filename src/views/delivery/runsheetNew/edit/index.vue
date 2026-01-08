@@ -11,7 +11,7 @@
         <vs-row align="self-end" style="margin-top: 1rem">
             <template>
                 <vs-col xs="12" sm="3" lg="3">
-                    <vs-row class="mb-2" style="gap: 1rem">
+                    <vs-row class="mb-2" style="gap: 1rem" v-if="!disabledApprove">
                         <vs-checkbox
                             v-model="is_auto_open_bag"
                             @change="handleAutoOpenBag"
