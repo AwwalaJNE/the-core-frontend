@@ -328,6 +328,7 @@ export default {
                     res?.data?.message || 'Success'
                 )
             } catch (err) {
+                this.handleClearForm()
                 await this.openNotification(
                     'danger',
                     err?.response?.data?.code || '',
@@ -335,7 +336,6 @@ export default {
                     err?.response?.data?.message || 'Something went wrong'
                 )
             } finally {
-                this.handleClearForm()
                 this.isSubmitting = false
             }
         },
@@ -358,6 +358,7 @@ export default {
             } catch (err) {
                 this.openDialog()
             } finally {
+                this.isSubmitting = false
                 this.stopLoading()
             }
         },
@@ -410,6 +411,7 @@ export default {
                     this.openNotification('danger', errorCode, 'Failed', errorMessage)
                 }
             } finally {
+                this.isSubmitting = false
                 this.stopLoading()
                 this.handleClearForm()
             }
