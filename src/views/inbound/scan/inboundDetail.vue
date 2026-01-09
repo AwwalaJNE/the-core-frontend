@@ -4,29 +4,39 @@
             :key="tableKey"
             hideColumnKey="receiving-detail-info"
             :dataTable="dataTableProp"
-            :dataColumn="datacolumn"
-            :tableLoading="listenLoading"
+            :dataColumn="dataColumn"
+            :tableLoading="loading"
             :hasAction="false"
             :hasPagination="true"
             :pageSize="pageSize"
             :page="page"
             :limit="limit"
-            @actionLimit="actionLimit"
-            @actionPagination="actionPagination"
             :customAction="true"
             :customActionList="customActionList"
-            @actionUpdate="entryReceivingLog"
             :isIconButton="true"
+            :hasLinked="hasLinkedColumns"
+            @actionLimit="$emit('actionLimit', $event)"
+            @actionPagination="$emit('actionPagination', $event)"
+            @actionUpdate="openDialogReceivingLog"
+            @handleEdit="openDialogTraceBagDetail"
         />
 
         <dialog-create-receiving-log
-            ref="dialogEditReceivingLog"
-            :active="dialogEditReceivingLogActive"
-            :inboundDetail="inboundDetail"
-            @closeDialog="closeDialog"
-            btnBlue="Edit"
+            ref="dialogReceivingLog"
             title="Edit Receiving Log"
+            btnBlue="Edit"
+            :active="isReceivingLogOpen"
+            :inboundDetail="inboundDetail"
             :receivingLogs="receivingLogs"
+            @closeDialog="closeDialogReceivingLog"
+        />
+
+        <dialog-trace-bag-detail
+            ref="dialogTraceBagDetail"
+            title="Bag Detail"
+            :active="isTraceBagDetailOpen"
+            :item_number="item_number"
+            @closeDialog="closeDialogTraceBagDetail"
         />
     </div>
 </template>
@@ -34,86 +44,64 @@
 import master from '@/mixins/master'
 import TableMaster from '@/components/table/tableMaster.vue'
 import DialogCreateReceivingLog from '../../inboundAirport/scan/dialogCreateReceivingLog.vue'
+import DialogTraceBagDetail from '@/views/inbound/scan/dialogTraceBagDetail.vue'
+
+const BAG_TYPE_MAP = {
+    OM: { label: 'TM', key: 'tm' },
+    HACB: { label: 'RCVB', key: 'rcvb' },
+    HVO: { label: 'HVI', key: 'hvi' },
+    DO: { label: 'HVI', key: 'hvi' },
+}
+
+const DEFAULT_BAG = { label: 'HVI', key: 'hvi' }
+
 export default {
-    name: 'Inbound-Detail',
+    name: 'InboundDetail',
     mixins: [master],
+    components: {
+        TableMaster,
+        DialogCreateReceivingLog,
+        DialogTraceBagDetail,
+    },
     props: {
-        dataTableProp: Array,
+        dataTableProp: {
+            type: Array,
+            default: () => [],
+        },
         loading: Boolean,
         pageSize: Number,
         page: Number,
         limit: Number,
-        actionLimit: Function,
-        actionPagination: Function,
         receivingLogs: Array,
         inboundNumber: String,
         is_prealert: Boolean,
-        autoFocusInput: Function,
-    },
-    components: {
-        'table-master': TableMaster,
-        'dialog-create-receiving-log': DialogCreateReceivingLog,
     },
     data() {
         return {
-            dataTable: [],
-            customActionList: [
+            isReceivingLogOpen: false,
+            isTraceBagDetailOpen: false,
+            inboundDetail: null,
+            item_number: '',
+            customActionList: Object.freeze([
                 {
                     label: 'Entry Status',
                     key: 'entry_status',
-                    attribute: '',
                 },
-            ],
-            dialogEditReceivingLogActive: false,
-            inboundDetail: null,
+            ]),
         }
     },
+
     computed: {
+        bagType() {
+            const tipeBag = this.dataTableProp?.[0]?.bag?.tipe_bag
+            return BAG_TYPE_MAP[tipeBag] || DEFAULT_BAG
+        },
+
         tableKey() {
-            return `${this.getDynamicColumnKey}-${this.getDynamicColumnLabel}`
+            return `${this.bagType.key}-${this.bagType.label}`
         },
 
-        getDynamicColumnLabel() {
-            if (this.dataTableProp && this.dataTableProp.length > 0) {
-                const firstItem = this.dataTableProp[0]
-                const tipeBag = firstItem.bag?.tipe_bag
-
-                switch (tipeBag) {
-                    case 'OM':
-                        return 'TM'
-                    case 'HACB':
-                        return 'RCVB'
-                    case 'HVO':
-                    case 'DO':
-                        return 'HVI'
-                    default:
-                        return 'HVI' // default fallback
-                }
-            }
-            return 'HVI' // default ketika belum ada data
-        },
-
-        getDynamicColumnKey() {
-            if (this.dataTableProp && this.dataTableProp.length > 0) {
-                const firstItem = this.dataTableProp[0]
-                const tipeBag = firstItem.bag?.tipe_bag
-
-                switch (tipeBag) {
-                    case 'OM':
-                        return 'tm'
-                    case 'HACB':
-                        return 'rcvb'
-                    case 'HVO':
-                    case 'DO':
-                        return 'hvi'
-                    default:
-                        return 'hvi' // default fallback
-                }
-            }
-            return 'hvi' // default ketika belum ada data
-        },
-
-        datacolumn() {
+        dataColumn() {
             return [
                 {
                     label: 'Item Number',
@@ -130,10 +118,10 @@ export default {
                     key: 'item_type',
                     width: 'sm',
                 },
+
                 {
-                    // 🧠 kolom dinamis
-                    label: this.getDynamicColumnLabel,
-                    key: this.getDynamicColumnKey,
+                    label: this.bagType.label,
+                    key: this.bagType.key,
                     width: 'sm',
                 },
                 {
@@ -151,25 +139,48 @@ export default {
             ]
         },
 
-        listenLoading() {
-            return this.loading
+        hasLinkedColumns() {
+            const hasBagItem = this.dataTableProp.some(
+                (row) => row.item_type === 'BAG' || row.item_type === 'MASTERBAG'
+            )
+
+            return hasBagItem ? ['item_number'] : []
         },
     },
-    methods: {
-        entryReceivingLog(val) {
-            this.dialogEditReceivingLogActive = true
-            this.inboundDetail = val
-            this.inboundDetail.inbound_number = this.inboundNumber
 
-            this.$emit('autoFocusInput', this.dialogEditReceivingLogActive)
+    methods: {
+        openDialogBase(dialogKey) {
+            this[dialogKey] = true
+            this.$emit('autoFocusInput', false)
         },
 
-        closeDialog() {
-            this.dialogEditReceivingLogActive = false
-            this.inboundDetail = null
-            this.$emit('refresh')
+        openDialogReceivingLog(row) {
+            this.inboundDetail = {
+                ...row,
+                inbound_number: this.inboundNumber,
+            }
+            this.openDialogBase('isReceivingLogOpen')
+        },
 
-            this.$emit('autoFocusInput', this.dialogEditReceivingLogActive)
+        openDialogTraceBagDetail(row) {
+            this.item_number = row.item_number
+            this.openDialogBase('isTraceBagDetailOpen')
+        },
+
+        closeDialogBase(dialogKey) {
+            this[dialogKey] = false
+            this.$emit('refresh')
+            this.$emit('autoFocusInput', true)
+        },
+
+        closeDialogReceivingLog() {
+            this.inboundDetail = null
+            this.closeDialogBase('isReceivingLogOpen')
+        },
+
+        closeDialogTraceBagDetail() {
+            this.item_number = ''
+            this.closeDialogBase('isTraceBagDetailOpen')
         },
     },
 }
