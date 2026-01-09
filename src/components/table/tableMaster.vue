@@ -132,6 +132,11 @@
             </template>
             <template #thead>
                 <vs-tr>
+                    <template v-if="listenExpandable">
+                        <vs-th>
+                            <i class="bx bx-chevron-right arrow" style="visibility: hidden"></i>
+                        </vs-th>
+                    </template>
                     <template v-if="listenIsMultipleSelect">
                         <vs-th>
                             <vs-checkbox
@@ -216,6 +221,12 @@
                         :is-selected="!!selected.includes(item)"
                         @click="onRowClick($event, item)"
                     >
+                        <template v-if="listenExpandable">
+                            <vs-td class="expand-icon">
+                                <i class="bx bx-chevron-right arrow"></i>
+                            </vs-td>
+                        </template>
+
                         <template v-if="isActionFirst == true">
                             <vs-td class="action">
                                 <vs-row justify="center" class="btn_action">
@@ -2896,5 +2907,13 @@ span.text-danger {
 .columns-label {
     font-weight: bold;
     color: #333;
+}
+.arrow {
+    display: inline-block;
+    transition: transform 0.2s ease;
+}
+
+.vs-table__tr.isExpand .arrow {
+    transform: rotate(90deg);
 }
 </style>
