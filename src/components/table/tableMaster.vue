@@ -1469,28 +1469,14 @@
                             </vs-td>
                         </template>
                         <template v-if="runsheetProofAction == true">
-                            <vs-td class="action">
-                                <vs-row justify="center" class="btn_action">
+                            <vs-td>
+                                <vs-row justify="center">
                                     <i
                                         class="bx bxs-show"
                                         style="font-size: 36px"
                                         @click="actionRunsheetProofAction(item)"
                                     >
                                     </i>
-                                    <!-- <vs-button
-                      block
-                      :disabled="
-                        item.hasOwnProperty('isDisabled') &&
-                          item.isDisabled == true
-                      "
-                      size="small"
-                      flat
-                      warn
-                      :active="true"
-                      @click="actionConfirmed(item)"
-                    >
-                      <span>Confirmed</span>
-                    </vs-button> -->
                                 </vs-row>
                             </vs-td>
                         </template>
