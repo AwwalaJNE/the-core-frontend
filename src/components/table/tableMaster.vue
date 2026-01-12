@@ -222,8 +222,10 @@
                         @click="onRowClick($event, item)"
                     >
                         <template v-if="listenExpandable">
-                            <vs-td class="expand-icon">
-                                <i class="bx bx-chevron-right arrow"></i>
+                            <vs-td>
+                                <span class="expand-icon">
+                                    <i class="bx bx-chevron-right arrow"></i>
+                                </span>
                             </vs-td>
                         </template>
 
@@ -2947,12 +2949,27 @@ span.text-danger {
     font-weight: bold;
     color: #333;
 }
-.arrow {
+
+.expand-icon {
+    width: 32px;
+    height: 32px;
+    background-color: #e3f2fd;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #1976d2;
+    cursor: pointer;
+}
+
+/* arrow animation */
+.expand-icon .arrow {
     display: inline-block;
     transition: transform 0.2s ease;
 }
 
-.vs-table__tr.isExpand .arrow {
+/* rotate when expanded */
+.vs-table__tr.isExpand .expand-icon .arrow {
     transform: rotate(90deg);
 }
 </style>
