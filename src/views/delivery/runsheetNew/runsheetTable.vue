@@ -229,7 +229,7 @@ export default {
                             Priority: 'Contains Undelivered Koli',
                         }
                         item.delivery.map((el) => {
-                            is_approve.push(el.is_approve ? true : false)
+                            is_approve.push(el.is_approve === '1' ? true : false)
                             has_undelivered_connote.push(el.has_undelivered_connote)
                             delivery_runsheet_number.push(el.delivery_runsheet_number)
                             dri.push(el.dri ?? '-')
