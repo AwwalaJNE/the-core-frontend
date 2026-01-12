@@ -843,6 +843,8 @@ export default {
                     'Failed',
                     err?.response?.data?.message ?? 'Something went wrong'
                 )
+                this.clearInputs()
+                this.setActive('formInputConnote')
             }
         },
         async checkZoneDelivery() {
@@ -872,6 +874,9 @@ export default {
                         'Failed',
                         err?.response?.data?.message ?? 'Something went wrong'
                     )
+
+                    this.clearInputs()
+                    this.setActive('formInputConnote')
                 }
             }
         },
@@ -1440,6 +1445,7 @@ export default {
             delete this.form.delivery_runsheet_number
             this.openDialogReCheckConnoteZone = false
             this.openDialogReCheckConnoteSla = false
+            this.isSubmitting = false
         },
         splitText(text, maxLineLength) {
             const words = text.split(' ')
