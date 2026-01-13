@@ -524,58 +524,72 @@ export default {
         },
 
         processDataDelivery(data) {
-            const status = this.statusObj ?? {}
-            const delivery = data?.delivery ?? []
+            const status = this.statusObj || {}
+            const delivery = data.delivery ? data.delivery : []
 
-            return delivery.map((item) => {
-                const isApprove = item.is_approve === '1'
-                const isDelivered =
-                    item.is_delivered === 1 ||
-                    item.is_pod_orion === 1 ||
-                    this.hasPermission('disable-pod')
+            delivery.map((item) => {
+                item.status_delivery = []
+                item.is_disabled_input = false
 
-                // build status_delivery
-                const status_delivery = item.koli_number
-                    ? [...(status.normal ?? []), ...(status.rt ?? []), ...(status.all ?? [])]
-                    : []
+                if (item.hasOwnProperty('koli_number')) {
+                    // if (item.koli_number.toLowerCase().includes("rt")) {
+                    //     item.status_delivery = [...status.rt, ...status.all];
+                    // } else {
+                    //     item.status_delivery = [...status.normal, ...status.all];
+                    // }
 
-                // update global flags once (safe)
+                    // filter untuk all status
+                    item.status_delivery = [
+                        ...(status?.normal ?? []),
+                        ...(status?.rt ?? []),
+                        ...(status?.all ?? []),
+                    ]
+                }
+                if (item.hasOwnProperty('remarks')) {
+                    if (item['status_code'] == null) {
+                        item['is_disabled_input_remarks'] =
+                            item['remarks'] !== null || item['remarks'] !== '' ? true : false
+                    }
+                }
+                if (item.hasOwnProperty('receiver_name')) {
+                    if (item['status_code'] == null) {
+                        item['is_disabled_input_reveiver'] =
+                            item['receiver_name'] !== null || item['receiver_name'] !== ''
+                                ? true
+                                : false
+                    }
+                }
+
                 this.is_approve = item.is_approve
-                this.disabledApprove = isApprove
-                if (item.is_hrs) this.hrsStatus = true
+                if (item.is_approve === '1') {
+                    this.disabledApprove = true
+                } else {
+                    item['is_disabled_input_status'] = true
+                }
 
-                if (isDelivered) {
+                if (item.is_hrs) {
+                    this.hrsStatus = true
+                }
+
+                item.isDisabled = item.is_delivered === 1
+                if (
+                    item.is_delivered == 1 ||
+                    item.is_pod_orion == 1 ||
+                    this.hasPermission('disable-pod')
+                ) {
                     this.disableDeliveredPOD(item)
                 }
+                item.employee_name = data.employee_name
+                item.employee_code = data.employee_code
+                item.warning_koli_record_id = item?.warning_koli_record_id
+                item.created_at = this.formatTimezone(item?.created_at)
 
-                return {
-                    ...item,
-
-                    // TODO: RECHECK LATER
-                    // sla_connote_formatted: this.formatSlaTime(
-                    //     item.sla_date,
-                    //     item.end_date,
-                    //     this.now
-                    // ),
-
-                    status_delivery,
-                    is_disabled_input: false,
-                    is_disabled_input_status: !isApprove,
-
-                    is_disabled_input_remarks: item.status_code == null && !!item.remarks,
-
-                    is_disabled_input_reveiver: item.status_code == null && !!item.receiver_name,
-
-                    isDisabled: item.is_delivered === 1,
-
-                    created_at: this.formatTimezone(item?.created_at),
-
-                    days_elapsed:
-                        item?.days_elapsed != null
-                            ? this.formatElapsedDay(item.days_elapsed)
-                            : item.days_elapsed,
+                if (item?.days_elapsed != null) {
+                    item.days_elapsed = this.formatElapsedDay(item.days_elapsed)
                 }
             })
+
+            return delivery
         },
 
         /* ======================================================
