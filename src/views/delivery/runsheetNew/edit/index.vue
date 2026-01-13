@@ -402,6 +402,9 @@ export default {
 
             const tasks = []
 
+            if (this.isSubmitting) return
+            this.isSubmitting = true
+
             if (this.employee_id) {
                 tasks.push(this.getCourier())
             }
@@ -411,6 +414,8 @@ export default {
             }
 
             await Promise.all(tasks)
+
+            this.isSubmitting = false
 
             this.setActiveInput('formInputConnote')
         },
