@@ -198,7 +198,7 @@
                         </vs-col>
                     </vs-row>
 
-                    <div class="nav-box" v-if="arrStatus && hasDelivery">
+                    <div class="nav-box" v-if="arrStatus">
                         <RunsheetInformation
                             ref="runsheetInformation"
                             :arrStatus="arrStatus"
