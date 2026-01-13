@@ -2634,7 +2634,7 @@ export default {
     display: inline-grid;
 }
 .do-not-wrap {
-    white-space: pre-line !important;
+    white-space: pre !important;
 }
 
 .vs-table {
