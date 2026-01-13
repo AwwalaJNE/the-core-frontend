@@ -298,7 +298,7 @@ export default {
         listenLoading() {
             return (
                 this.loadingStatus ||
-                this.loadingRunsheet ||
+                // this.loadingRunsheet ||
                 this.loadingApprove ||
                 this.loadingConfirm ||
                 this.loadingConfirmUnpproveRunsheet ||
@@ -505,14 +505,19 @@ export default {
                     this.back()
                 }
             } catch (err) {
+                this.loadingRunsheet = false
+
                 await this.openNotification(
                     'danger',
                     err?.response?.data?.code ?? '',
                     'Failed to load delivery data',
                     err?.response?.data?.message ?? 'Something went wrong'
                 )
+
+                this.clearInputs()
             } finally {
                 this.loadingRunsheet = false
+                this.clearInputs()
             }
         },
 
@@ -754,6 +759,7 @@ export default {
         async scanConnote() {
             if (this.isSubmitting) return
             this.isSubmitting = true
+            this.loadingRunsheet = true
 
             const payload = {
                 item_number: this.form.koli_number,
@@ -771,15 +777,17 @@ export default {
                 )
                 this.checkItemSla('KOLI')
             } catch (err) {
+                this.loadingRunsheet = false
+
                 await this.openNotification(
                     'danger',
                     '',
                     'Failed',
                     err?.response?.data?.message ?? 'Something went wrong'
                 )
-            } finally {
-                this.isSubmitting = false
+
                 this.clearInputs()
+            } finally {
                 this.setActiveInput('formInputConnote')
             }
         },
@@ -787,6 +795,8 @@ export default {
         async validateBagPraRunsheet() {
             if (this.isSubmitting) return
             this.isSubmitting = true
+
+            this.loadingRunsheet = true
 
             try {
                 await axios.post(
@@ -802,14 +812,17 @@ export default {
                 )
                 this.validateCourier()
             } catch (err) {
+                this.loadingRunsheet = false
+
                 await this.openNotification(
                     'danger',
                     '',
                     'Failed',
                     err?.response?.data?.message ?? 'Something went wrong'
                 )
+
+                this.clearInputs()
             } finally {
-                this.isSubmitting = false
                 this.clearInputs()
                 this.setActiveInput('formInputBag')
             }
@@ -847,8 +860,19 @@ export default {
 
                 const safe = data.every((i) => i.status === 'SAFE')
                 safe ? this.checkZoneDelivery(type) : (this.openDialogReCheckConnoteSla = true)
-            } catch {
-                await this.openNotification('danger', '', 'Failed', 'Check SLA failed')
+            } catch (err) {
+                this.loadingRunsheet = false
+
+                await this.openNotification(
+                    'danger',
+                    '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
+
+                this.clearInputs()
+            } finally {
+                this.setActiveInput(type === 'KOLI' ? 'formInputConnote' : 'formInputBag')
             }
         },
 
@@ -864,12 +888,18 @@ export default {
                     ? this.addBagPraRunsheetToRunsheet(this.form)
                     : this.addConnoteToRunsheet(this.form)
             } catch (err) {
+                this.loadingRunsheet = false
+
                 await this.openNotification(
                     'danger',
                     '',
                     'Failed',
                     err?.response?.data?.message ?? 'Something went wrong'
                 )
+
+                this.clearInputs()
+            } finally {
+                this.setActiveInput(type === 'KOLI' ? 'formInputConnote' : 'formInputBag')
             }
         },
 
@@ -877,8 +907,6 @@ export default {
          * RUNSHEET CRUD
          * ====================================================== */
         async submitRunsheet({ form, baseUrl, activeForm = 'formInputConnote' }) {
-            this.loadingRunsheet = true
-
             try {
                 const isCreate = !this.delivery_runsheet_number
                 const url = isCreate
@@ -896,18 +924,23 @@ export default {
 
                 this.openNotification('success', null, 'Success', 'Success')
             } catch (err) {
-                this.openNotification(
+                this.loadingRunsheet = false
+
+                await this.openNotification(
                     'danger',
-                    err?.response?.data?.code ?? '',
+                    '',
                     'Failed',
                     err?.response?.data?.message ?? 'Something went wrong'
                 )
+
+                this.clearInputs()
             } finally {
-                this.clearAll()
                 this.loadingRunsheet = false
-                this.setActive?.(activeForm)
+                this.clearAll()
+                this.setActiveInput(activeForm)
             }
         },
+
         addConnoteToRunsheet(form) {
             return this.submitRunsheet({
                 form,
@@ -948,16 +981,19 @@ export default {
 
                 this.openNotification('success', null, 'Success', message ?? 'Remove item success')
             } catch (err) {
+                this.loadingRunsheet = false
                 await this.openNotification(
                     'danger',
                     err?.response?.data?.code ?? '',
                     'Failed',
-                    err?.response?.data?.message ?? 'Something went wrong'
+                    (err?.response?.data?.type !== 'NotFoundHttpException'
+                        ? err?.response?.data?.message
+                        : 'Tidak dapat menemukan runsheet atau detail delivery yang diminta. \nPastikan runsheet sudah dibuat atau item yang dimasukkan valid.') ??
+                        'Something went wrong'
                 )
             } finally {
-                this.clearInputs()
                 this.loadingRunsheet = false
-                this.isSubmitting = false
+                this.clearAll()
                 this.setActiveInput('formRemoveConnote')
             }
         },
@@ -966,6 +1002,7 @@ export default {
          * UPDATE CHECKBOX
          * ====================================================== */
         updateSelected(arr) {
+            this.loadingRunsheet = false
             this.selectedUpdateItems = arr
             this.disabledConfirm = !(arr.length > 0 && this.disabledApprove)
         },
