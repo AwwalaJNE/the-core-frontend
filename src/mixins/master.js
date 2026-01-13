@@ -169,22 +169,26 @@ const Master = {
         },
 
         handleTabNavigation(event, currentInputRef, inputOrder) {
-            if (event.key === 'Tab') {
-                event.preventDefault()
+            if (event.key !== 'Tab') return
 
-                if (!inputOrder || !inputOrder.length) return
+            event.preventDefault()
+            if (!inputOrder || !inputOrder.length) return
 
-                const currentIndex = inputOrder.indexOf(currentInputRef)
-                if (currentIndex === -1) return
+            const currentIndex = inputOrder.indexOf(currentInputRef)
+            if (currentIndex === -1) return
 
-                const nextIndex = (currentIndex + 1) % inputOrder.length
-                const nextRef = inputOrder[nextIndex]
+            const isShift = event.shiftKey
 
-                if (this.$refs[nextRef]) {
-                    const nextInput = this.$refs[nextRef].$el.querySelector('input')
-                    if (nextInput) nextInput.focus()
-                }
-            }
+            const nextIndex = isShift
+                ? (currentIndex - 1 + inputOrder.length) % inputOrder.length // Shift + Tab (prev)
+                : (currentIndex + 1) % inputOrder.length // Tab (next)
+
+            const nextRef = inputOrder[nextIndex]
+
+            const ref = this.$refs[nextRef]
+            const nextInput = ref?.$el?.querySelector('input')
+
+            if (nextInput) nextInput.focus()
         },
 
         moneyformat(number) {
@@ -866,19 +870,15 @@ const Master = {
         formatSlaTime(slaDate, endDate) {
             if (!slaDate) return '-'
 
-            // Normalize format (replace space for ISO compatibility)
-            const start = new Date(slaDate.replace(' ', 'T'))
-            const end = endDate ? new Date(endDate.replace(' ', 'T')) : new Date()
+            const slaTime = new Date(slaDate.replace(' ', 'T'))
+            const actualTime = endDate ? new Date(endDate.replace(' ', 'T')) : new Date()
 
-            // Validate dates
-            if (isNaN(start.getTime()) || isNaN(end.getTime())) return '-'
+            if (isNaN(slaTime.getTime()) || isNaN(actualTime.getTime())) return '-'
 
-            // Calculate difference
-            const diff = end - start
-            const isOverdue = diff > 0
-            const absDiff = Math.abs(diff)
+            const diffMs = actualTime - slaTime
+            const isOverdue = diffMs > 0
+            const absDiff = Math.abs(diffMs)
 
-            // Break down into days, hours, minutes, seconds
             const days = Math.floor(absDiff / (1000 * 60 * 60 * 24))
             const hours = Math.floor((absDiff / (1000 * 60 * 60)) % 24)
             const minutes = Math.floor((absDiff / (1000 * 60)) % 60)
@@ -887,11 +887,10 @@ const Master = {
             const timeString = `${days} day(s) ${hours} hour(s) ${minutes} minute(s) ${seconds} second(s)`
 
             if (endDate) {
-                const completedText = `Completed at ${this.formatTimezone(end.toLocaleString())}`
-                if (isOverdue) {
-                    return `${completedText}\nOverdue: ${timeString}`
-                }
-                return completedText
+                const completedText = `Completed at ${this.formatTimezone(
+                    actualTime.toLocaleString()
+                )}`
+                return isOverdue ? `${completedText}\n Overdue: ${timeString}` : completedText
             }
 
             return isOverdue ? `Overdue: ${timeString}` : `Remaining: ${timeString}`

@@ -222,8 +222,10 @@
                         @click="onRowClick($event, item)"
                     >
                         <template v-if="listenExpandable">
-                            <vs-td class="expand-icon">
-                                <i class="bx bx-chevron-right arrow"></i>
+                            <vs-td>
+                                <span class="expand-icon">
+                                    <i class="bx bx-chevron-right arrow"></i>
+                                </span>
                             </vs-td>
                         </template>
 
@@ -284,7 +286,7 @@
                                 <template
                                     v-if="
                                         column.type !== undefined &&
-                                        column.type.toLowerCase() === 'text'
+                                        String(column.type ?? '').toLowerCase() === 'text'
                                     "
                                 >
                                     <vs-td :key="key" :class="column.width ? column.width : ''">
@@ -315,14 +317,18 @@
                                 <template
                                     v-else-if="
                                         column.type !== undefined &&
-                                        column.type.toLowerCase().includes('boolean')
+                                        String(column.type ?? '')
+                                            .toLowerCase()
+                                            .includes('boolean')
                                     "
                                 >
                                     <vs-td :key="key" :class="column.width ? column.width : ''">
                                         <checkbox
                                             :isChecked="item[column.key]"
                                             :isDisabled="
-                                                column.type.toLowerCase().includes('disabled')
+                                                String(column.type ?? '')
+                                                    .toLowerCase()
+                                                    .includes('disabled')
                                             "
                                             :formKey="`${column.key}|${item[listenColumn[0].key]}`"
                                             :dataObj="item"
@@ -333,7 +339,9 @@
                                 <template
                                     v-else-if="
                                         column.type !== undefined &&
-                                        column.type.toLowerCase().includes('inputan')
+                                        String(column.type ?? '')
+                                            .toLowerCase()
+                                            .includes('inputan')
                                     "
                                 >
                                     <vs-td
@@ -348,7 +356,8 @@
                                         <template
                                             v-if="
                                                 column.typeInput !== undefined &&
-                                                column.typeInput.toLowerCase() === 'select'
+                                                String(column.typeInput ?? '').toLowerCase() ===
+                                                    'select'
                                             "
                                         >
                                             <template v-if="column.hasOwnProperty('injectedData')">
@@ -512,7 +521,8 @@
                                         <template
                                             v-else-if="
                                                 column.typeInput !== undefined &&
-                                                column.typeInput.toLowerCase() === 'text'
+                                                String(column.typeInput ?? '').toLowerCase() ===
+                                                    'text'
                                             "
                                         >
                                             <input-general
@@ -543,7 +553,8 @@
                                         <template
                                             v-else-if="
                                                 column.typeInput !== undefined &&
-                                                column.typeInput.toLowerCase() === 'textsubmit'
+                                                String(column.typeInput ?? '').toLowerCase() ===
+                                                    'textsubmit'
                                             "
                                         >
                                             <input-general
@@ -574,7 +585,7 @@
                                         <template
                                             v-else-if="
                                                 column.typeInput !== undefined &&
-                                                column.typeInput
+                                                String(column.typeInput ?? '')
                                                     .toLowerCase()
                                                     .includes('autocomplete')
                                             "
@@ -598,7 +609,9 @@
                                         <template
                                             v-else-if="
                                                 column.typeInput !== undefined &&
-                                                column.typeInput.toLowerCase().includes('icon')
+                                                String(column.typeInput ?? '')
+                                                    .toLowerCase()
+                                                    .includes('icon')
                                             "
                                         >
                                             <template v-if="item[column.key]">
@@ -624,7 +637,7 @@
                                         <template
                                             v-else-if="
                                                 column.typeInput !== undefined &&
-                                                column.typeInput
+                                                String(column.typeInput ?? '')
                                                     .toLowerCase()
                                                     .includes('button_text')
                                             "
@@ -640,7 +653,8 @@
                                         <template
                                             v-if="
                                                 column.typeInput !== undefined &&
-                                                column.typeInput.toLowerCase() === 'multi-select-by'
+                                                String(column.typeInput ?? '').toLowerCase() ===
+                                                    'multi-select-by'
                                             "
                                         >
                                             <template v-if="!item.filter">
@@ -737,10 +751,12 @@
                                                 </vs-row>
                                                 <vs-row
                                                     v-if="
-                                                        column.typeInputDetail.toLowerCase() ===
-                                                            'others' ||
-                                                        (column.typeInputDetail.toLowerCase() ===
-                                                            'hide_column' &&
+                                                        String(
+                                                            column.typeInputDetail ?? ''
+                                                        ).toLowerCase() === 'others' ||
+                                                        (String(
+                                                            column.typeInputDetail ?? ''
+                                                        ).toLowerCase() === 'hide_column' &&
                                                             item.filter.length === 0)
                                                     "
                                                 >
@@ -760,7 +776,7 @@
                                 <template
                                     v-else-if="
                                         column.type !== undefined &&
-                                        column.type.toLowerCase() === 'status'
+                                        String(column.type ?? '').toLowerCase() === 'status'
                                     "
                                 >
                                     <vs-td :key="key" :class="column.width ? column.width : ''">
@@ -878,7 +894,9 @@
                                                 hasLinked !== undefined &&
                                                 hasLinked.length > 0 &&
                                                 column.key !== undefined &&
-                                                hasLinked.includes(column.key.toLowerCase())
+                                                hasLinked.includes(
+                                                    String(column.key ?? '').toLowerCase()
+                                                )
                                             "
                                         >
                                             <template
@@ -929,7 +947,9 @@
                                                 hasLinked2 !== undefined &&
                                                 hasLinked2.length > 0 &&
                                                 column.key !== undefined &&
-                                                hasLinked2.includes(column.key.toLowerCase())
+                                                hasLinked2.includes(
+                                                    String(column.key ?? '').toLowerCase()
+                                                )
                                             "
                                         >
                                             <span
@@ -946,7 +966,9 @@
                                                 hasLinked3 !== undefined &&
                                                 hasLinked3.length > 0 &&
                                                 column.key !== undefined &&
-                                                hasLinked3.includes(column.key.toLowerCase()) &&
+                                                hasLinked3.includes(
+                                                    String(column.key ?? '').toLowerCase()
+                                                ) &&
                                                 (!item.hasOwnProperty('is_kurir_user') ||
                                                     !item.is_kurir_user)
                                             "
@@ -965,7 +987,9 @@
                                                 hasLinked4 !== undefined &&
                                                 hasLinked4.length > 0 &&
                                                 column.key !== undefined &&
-                                                hasLinked4.includes(column.key.toLowerCase())
+                                                hasLinked4.includes(
+                                                    String(column.key ?? '').toLowerCase()
+                                                )
                                             "
                                         >
                                             <img
@@ -983,7 +1007,9 @@
                                                 hasLinkedCustom !== undefined &&
                                                 hasLinkedCustom.length > 0 &&
                                                 column.key !== undefined &&
-                                                hasLinkedCustom.includes(column.key.toLowerCase())
+                                                hasLinkedCustom.includes(
+                                                    String(column.key ?? '').toLowerCase()
+                                                )
                                             "
                                         >
                                             <span
@@ -1148,10 +1174,14 @@
                                                             ? item.isDisabled == true
                                                             : item.hasOwnProperty('button_status')
                                                             ? item['button_status'].hasOwnProperty([
-                                                                  actionItem.key.toLowerCase(),
+                                                                  String(
+                                                                      actionItem.key ?? ''
+                                                                  ).toLowerCase(),
                                                               ])
                                                                 ? item['button_status'][
-                                                                      actionItem.key.toLowerCase()
+                                                                      String(
+                                                                          actionItem.key ?? ''
+                                                                      ).toLowerCase()
                                                                   ] == false
                                                                     ? true
                                                                     : false
@@ -1159,7 +1189,7 @@
                                                             : false
                                                     "
                                                     :danger="
-                                                        actionItem.attribute
+                                                        String(actionItem.attribute ?? '')
                                                             .toLowerCase()
                                                             .includes('danger')
                                                             ? true
@@ -1167,17 +1197,21 @@
                                                                   'button_danger'
                                                               ) &&
                                                               item['button_danger'].hasOwnProperty([
-                                                                  actionItem.key.toLowerCase(),
+                                                                  String(
+                                                                      actionItem.key ?? ''
+                                                                  ).toLowerCase(),
                                                               ])
                                                             ? item['button_danger'][
-                                                                  actionItem.key.toLowerCase()
+                                                                  String(
+                                                                      actionItem.key ?? ''
+                                                                  ).toLowerCase()
                                                               ] == false
                                                                 ? true
                                                                 : false
                                                             : false
                                                     "
                                                     :warn="
-                                                        actionItem.attribute
+                                                        String(actionItem.attribute ?? '')
                                                             .toLowerCase()
                                                             .includes('warn')
                                                             ? true
@@ -1189,7 +1223,9 @@
                                                     <span v-if="!isIconButton">{{
                                                         (item.hasOwnProperty('button_label') &&
                                                             item['button_label'][
-                                                                actionItem.key.toLowerCase()
+                                                                String(
+                                                                    actionItem.key ?? ''
+                                                                ).toLowerCase()
                                                             ]) ||
                                                         actionItem.label
                                                     }}</span>
@@ -1433,28 +1469,14 @@
                             </vs-td>
                         </template>
                         <template v-if="runsheetProofAction == true">
-                            <vs-td class="action">
-                                <vs-row justify="center" class="btn_action">
+                            <vs-td>
+                                <vs-row justify="center">
                                     <i
                                         class="bx bxs-show"
                                         style="font-size: 36px"
                                         @click="actionRunsheetProofAction(item)"
                                     >
                                     </i>
-                                    <!-- <vs-button
-                      block
-                      :disabled="
-                        item.hasOwnProperty('isDisabled') &&
-                          item.isDisabled == true
-                      "
-                      size="small"
-                      flat
-                      warn
-                      :active="true"
-                      @click="actionConfirmed(item)"
-                    >
-                      <span>Confirmed</span>
-                    </vs-button> -->
                                 </vs-row>
                             </vs-td>
                         </template>
@@ -2239,7 +2261,11 @@ export default {
         validColumn() {
             return this.dataColumn
                 .filter((col) => !this.listenHideColumn.includes(col.key))
-                .filter((col) => col.label.toLowerCase().includes(this.columnSearch.toLowerCase()))
+                .filter((col) =>
+                    String(col?.label ?? '')
+                        .toLowerCase()
+                        .includes(String(this.columnSearch ?? '').toLowerCase())
+                )
         },
         listenColumn() {
             return this.dataColumn.filter((col) => this.visibleKeys.includes(col.key))
@@ -2568,8 +2594,9 @@ export default {
             }
         },
         getStatusColor(status) {
-            if (!status) return 'gray'
-            switch (status.toLowerCase()) {
+            const normalized = String(status ?? '').toLowerCase()
+
+            switch (normalized) {
                 case 'safe':
                     return 'rgb(21, 224, 21)'
                 case 'warning':
@@ -2607,7 +2634,7 @@ export default {
     display: inline-grid;
 }
 .do-not-wrap {
-    white-space: pre-line !important;
+    white-space: pre !important;
 }
 
 .vs-table {
@@ -2908,12 +2935,27 @@ span.text-danger {
     font-weight: bold;
     color: #333;
 }
-.arrow {
+
+.expand-icon {
+    width: 32px;
+    height: 32px;
+    background-color: #e3f2fd;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #1976d2;
+    cursor: pointer;
+}
+
+/* arrow animation */
+.expand-icon .arrow {
     display: inline-block;
     transition: transform 0.2s ease;
 }
 
-.vs-table__tr.isExpand .arrow {
+/* rotate when expanded */
+.vs-table__tr.isExpand .expand-icon .arrow {
     transform: rotate(90deg);
 }
 </style>
