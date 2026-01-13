@@ -1,257 +1,229 @@
 <template>
     <div>
-        <vs-row justify="space-between">
-            <vs-col xs="12" sm="12" lg="12">
+        <vs-loading :active="listenLoading" text="Loading..." />
+        <vs-row>
+            <vs-col>
                 <div class="titlePage">
                     <breadcrumb />
                     <h2 v-copy="title">{{ title }}</h2>
                 </div>
             </vs-col>
         </vs-row>
+
         <vs-row align="self-end" style="margin-top: 1rem">
-            <template>
-                <vs-col xs="12" sm="3" lg="3">
-                    <vs-row class="mb-2" style="gap: 1rem" v-if="!disabledApprove">
-                        <vs-checkbox
-                            v-model="is_auto_open_bag"
-                            @change="handleAutoOpenBag"
-                            :data-testid="'checkbox-auto_open_bag'"
-                        >
-                            Auto Open Bag
-                        </vs-checkbox>
-                        <vs-checkbox
-                            v-model="is_validate_courier"
-                            @change="handleValidateCourier"
-                            :data-testid="'checkbox-validate_courier'"
-                        >
-                            Validate Courier
-                        </vs-checkbox>
-                    </vs-row>
-
-                    <vs-row>
-                        <div class="center" style="width: 100%">
-                            <vs-input
-                                ref="formInputBag"
-                                v-model="item_bag"
-                                border
-                                type="text"
-                                label-placeholder="Scan Bag Pra Runsheet Here"
-                                icon-after
-                                v-uppercase
-                                :disabled="disabledApprove || isSubmitting"
-                                :data-testid="'input-formInputBag'"
-                                @keydown.enter="updateValueBag"
-                                @click-icon="$refs.cameraScanner.open('formInputBag')"
-                                @focus="activeInput = 'formInputBag'"
-                                @click="setActive('formInputBag')"
-                            >
-                                <template #icon>
-                                    <i class="bx bx-barcode-reader" />
-                                </template>
-                            </vs-input>
-                        </div>
-                    </vs-row>
-                </vs-col>
-
-                <vs-col xs="12" sm="3" lg="3">
-                    <div class="center">
-                        <vs-input
-                            ref="formInputConnote"
-                            v-model="item_no"
-                            border
-                            type="text"
-                            label-placeholder="Scan Connote Here"
-                            icon-after
-                            v-uppercase
-                            autofocus
-                            :disabled="disabledApprove || isSubmitting"
-                            :data-testid="'input-formInputConnote'"
-                            @keydown.enter="updateValue"
-                            @click-icon="$refs.cameraScanner.open('formInputConnote')"
-                            @focus="activeInput = 'formInputConnote'"
-                            @click="setActive('formInputConnote')"
-                        >
-                            <template #icon>
-                                <i class="bx bx-barcode-reader" />
-                            </template>
-                        </vs-input>
-                    </div>
-                </vs-col>
-                <vs-col xs="12" sm="3" lg="3">
-                    <div class="center">
-                        <vs-input
-                            ref="formRemoveConnote"
-                            v-model="item_no_remove"
-                            border
-                            type="text"
-                            label-placeholder="Remove Connote Here"
-                            icon-after
-                            v-uppercase
-                            :disabled="disabledApprove || isSubmitting"
-                            :data-testid="'input-formRemoveConnote'"
-                            @keydown.enter="removeValue"
-                            @click-icon="$refs.cameraScanner.open('formRemoveConnote')"
-                            @focus="activeInput = 'formRemoveConnote'"
-                            @click="setActive('formRemoveConnote')"
-                        >
-                            <template #icon>
-                                <i class="bx bx-barcode-reader" />
-                            </template>
-                        </vs-input>
-                    </div>
-                </vs-col>
-            </template>
             <vs-col xs="12" sm="3" lg="3">
-                <template v-if="dataDelivery.length > 0">
-                    <div class="left">
-                        <ul style="float: left; text-align: left; padding: 0">
-                            <li>
-                                User :
-                                {{
-                                    listenActiveUser
-                                        ? `${listenActiveUser.user_login} (${listenActiveUser.user_id})`
-                                        : ''
-                                }}
-                            </li>
-                            <li>
-                                Total :
-                                {{ dataDelivery.length + ' Connotes' }}
-                            </li>
-                            <li>
-                                Expectations COD :
-                                {{ moneyformat(dataDeliverySummary.amount_cod) }}
-                            </li>
-                        </ul>
-                    </div>
-                </template>
+                <vs-row v-if="!disabledApprove" class="mb-2" style="gap: 1rem">
+                    <vs-checkbox
+                        v-model="is_auto_open_bag"
+                        @change="handleAutoOpenBag"
+                        data-testid="checkbox-auto_open_bag"
+                    >
+                        Auto Open Bag
+                    </vs-checkbox>
+
+                    <vs-checkbox
+                        v-model="is_validate_courier"
+                        @change="handleValidateCourier"
+                        data-testid="checkbox-validate_courier"
+                    >
+                        Validate Courier
+                    </vs-checkbox>
+                </vs-row>
+
+                <div class="center">
+                    <vs-input
+                        ref="formInputBag"
+                        v-model="item_bag"
+                        border
+                        icon-after
+                        v-uppercase
+                        label-placeholder="Scan Bag Pra Runsheet Here"
+                        :disabled="disabledApprove || isSubmitting"
+                        data-testid="input-formInputBag"
+                        @keydown.enter="updateValue('formInputBag')"
+                        @click="setActiveInput('formInputBag')"
+                        @click-icon="$refs.cameraScanner.open('formInputBag')"
+                        @keydown.native="
+                            handleTabNavigation($event, 'formInputBag', [
+                                'formInputBag',
+                                'formInputConnote',
+                                'formRemoveConnote',
+                            ])
+                        "
+                    >
+                        <template #icon>
+                            <i class="bx bx-barcode-reader" />
+                        </template>
+                    </vs-input>
+                </div>
+            </vs-col>
+
+            <vs-col xs="12" sm="3" lg="3">
+                <div class="center">
+                    <vs-input
+                        ref="formInputConnote"
+                        v-model="item_no"
+                        border
+                        icon-after
+                        v-uppercase
+                        autofocus
+                        label-placeholder="Scan Connote Here"
+                        :disabled="disabledApprove || isSubmitting"
+                        data-testid="input-formInputConnote"
+                        @keydown.enter="updateValue('formInputConnote')"
+                        @click="setActiveInput('formInputConnote')"
+                        @click-icon="$refs.cameraScanner.open('formInputConnote')"
+                        @keydown.native="
+                            handleTabNavigation($event, 'formInputConnote', [
+                                'formInputBag',
+                                'formInputConnote',
+                                'formRemoveConnote',
+                            ])
+                        "
+                    >
+                        <template #icon>
+                            <i class="bx bx-barcode-reader" />
+                        </template>
+                    </vs-input>
+                </div>
+            </vs-col>
+
+            <vs-col xs="12" sm="3" lg="3">
+                <div class="center">
+                    <vs-input
+                        ref="formRemoveConnote"
+                        v-model="item_no_remove"
+                        border
+                        icon-after
+                        v-uppercase
+                        label-placeholder="Remove Connote Here"
+                        :disabled="disabledApprove || isSubmitting"
+                        data-testid="input-formRemoveConnote"
+                        @keydown.enter="updateValue('formRemoveConnote')"
+                        @click="setActiveInput('formRemoveConnote')"
+                        @click-icon="$refs.cameraScanner.open('formRemoveConnote')"
+                        @keydown.native="
+                            handleTabNavigation($event, 'formRemoveConnote', [
+                                'formInputBag',
+                                'formInputConnote',
+                                'formRemoveConnote',
+                            ])
+                        "
+                    >
+                        <template #icon>
+                            <i class="bx bx-barcode-reader" />
+                        </template>
+                    </vs-input>
+                </div>
+            </vs-col>
+
+            <vs-col xs="12" sm="3" lg="3" v-if="dataDelivery.length">
+                <ul class="left summary-list">
+                    <li>User : {{ activeUserLabel }}</li>
+                    <li>Total : {{ dataDelivery.length }} Connotes</li>
+                    <li>Expectations COD : {{ moneyformat(dataDeliverySummary.amount_cod) }}</li>
+                </ul>
             </vs-col>
         </vs-row>
-        <section>
-            <vs-row>
-                <vs-col lg="12" sm="12" xs="12">
-                    <div class="box information" style="padding-top: 1px !important">
-                        <vs-row justify="space between" align="center" style="margin-top: 1rem">
-                            <vs-col xs="12" sm="4" lg="2">
-                                <asynchronous-select
-                                    ref="courier"
-                                    name="Courier"
-                                    formKey="courier"
-                                    :rules="''"
-                                    :valueData="courier_arr"
-                                    :selectedValue="selectedCourier"
-                                    :isSingleInput="true"
-                                    :disabled="disabledApprove"
-                                    :url="autoCompleteCourierUrl"
-                                    :selectValue="input_value"
-                                    :selectLabel="input_label"
-                                    :isNestedData="isNestedData"
-                                    :nestedKey="nestedKey"
-                                    :searchKeyword="lastKeywordCourier"
-                                    :labelFormatter="formatEmployeeLabel"
-                                    @updateValue="updateValueCourier"
-                                    @search="handleSearchCourier"
-                                    @inputFocus="onCourierFocus"
-                                />
-                            </vs-col>
-                            <vs-col xs="12" sm="8" lg="10">
-                                <vs-row justify="end">
-                                    <template v-if="dataDelivery.length > 0">
-                                        <vs-button
-                                            style="float: right"
-                                            :loading="loadingConfirm"
-                                            :disabled="disabledConfirm"
-                                            :data-testid="'confirm-status-button'"
-                                            @click="confirmAction"
-                                        >
-                                            <span> Confirm Status </span>
-                                        </vs-button>
-                                    </template>
-                                    <template v-if="dataDelivery.length > 0">
-                                        <template v-if="listenUserRoleName === 'HELPDESK'">
-                                            <div v-if="!disabledApprove">
-                                                <vs-button
-                                                    style="float: left"
-                                                    :disabled="hrsStatus"
-                                                    :loading="loadingApprove"
-                                                    :data-testid="'approve-runsheet-button'"
-                                                    @click="approveAction(true)"
-                                                >
-                                                    <span> Approve Runsheet </span>
-                                                </vs-button>
-                                            </div>
-                                            <div v-else-if="disabledApprove">
-                                                <vs-button
-                                                    danger
-                                                    style="float: left"
-                                                    :disabled="hrsStatus"
-                                                    :loading="loadingApprove"
-                                                    :data-testid="'unapprove-runsheet-button'"
-                                                    @click="approveAction(false)"
-                                                >
-                                                    <span> Unapprove Runsheet </span>
-                                                </vs-button>
-                                            </div>
-                                        </template>
-                                        <template v-else>
-                                            <vs-button
-                                                style="float: left"
-                                                :disabled="disabledApprove"
-                                                :loading="loadingApprove"
-                                                :data-testid="'approve-runsheet-button'"
-                                                @click="approveAction(true)"
-                                            >
-                                                <span>
-                                                    {{
-                                                        disabledApprove
-                                                            ? 'Runsheet Approved'
-                                                            : 'Approve Runsheet'
-                                                    }}
-                                                </span>
-                                            </vs-button>
-                                        </template>
-                                    </template>
-                                </vs-row>
-                            </vs-col>
-                        </vs-row>
-                        <div class="nav-box">
-                            <vs-row>
-                                <vs-col lg="12" :sm="12" xs="12">
-                                    <template>
-                                        <transition name="slide-fade">
-                                            <template v-if="listenDataDelivery.length > 0">
-                                                <RunsheetInformation
-                                                    v-if="arrStatus && dataDelivery"
-                                                    ref="runsheetInformation"
-                                                    :arr-status="arrStatus"
-                                                    :data-delivery="dataDelivery"
-                                                    :delivery-number="delivery_runsheet_number"
-                                                    :loading="loadingRunsheet"
-                                                    :selectedItems="selectedUpdateItems"
-                                                    @update-selected="updateSelected"
-                                                    @updatePOD="updatePOD"
-                                                    @editPOD="editPOD"
-                                                />
-                                            </template>
-                                        </transition>
-                                    </template>
-                                </vs-col>
-                            </vs-row>
-                        </div>
-                    </div>
-                </vs-col>
-            </vs-row>
-            <vs-row justify="flex-end" style="padding-top: 40px">
-                <template v-if="is_approve === '1'">
-                    <vs-button class="mt-1" style="float: right" square active @click="print">
-                        <i class="bx bxs-printer" /> PRINT
-                    </vs-button>
-                </template>
 
-                <vs-button class="mt-1" style="float: right" square active @click="back">
-                    <i class="bx bx-left-arrow" /> BACK
-                </vs-button>
-            </vs-row>
-        </section>
+        <vs-row>
+            <vs-col lg="12" sm="12" xs="12">
+                <div class="box information">
+                    <vs-row justify="space-between" align="center">
+                        <vs-col xs="12" sm="6" lg="3">
+                            <asynchronous-select
+                                ref="courier"
+                                name="Courier"
+                                formKey="courier"
+                                :valueData="courier_arr"
+                                :selectedValue="selectedCourier"
+                                isSingleInput
+                                :url="autoCompleteCourierUrl"
+                                :selectValue="input_value"
+                                :selectLabel="input_label"
+                                :searchKeyword="lastKeywordCourier"
+                                :labelFormatter="formatEmployeeLabel"
+                                :disabled="disabledApprove"
+                                @updateValue="updateValueCourier"
+                                @inputFocus="onCourierFocus"
+                                @search="handleSearchCourier"
+                            />
+                        </vs-col>
+
+                        <vs-col xs="12" sm="6" lg="9">
+                            <vs-row justify="end" v-if="hasDelivery">
+                                <vs-button
+                                    class="mr-2"
+                                    :loading="loadingConfirm"
+                                    :disabled="disabledConfirm"
+                                    data-testid="confirm-status-button"
+                                    @click="confirmAction"
+                                >
+                                    Confirm Status
+                                </vs-button>
+
+                                <vs-button
+                                    v-if="!isHelpdesk"
+                                    :loading="loadingApprove"
+                                    :disabled="disabledApprove"
+                                    data-testid="approve-runsheet-button"
+                                    @click="approveAction(true)"
+                                >
+                                    {{ disabledApprove ? 'Runsheet Approved' : 'Approve Runsheet' }}
+                                </vs-button>
+
+                                <template v-else>
+                                    <vs-button
+                                        v-if="!disabledApprove"
+                                        :loading="loadingApprove"
+                                        :disabled="hrsStatus"
+                                        data-testid="approve-runsheet-button"
+                                        @click="approveAction(true)"
+                                    >
+                                        Approve Runsheet
+                                    </vs-button>
+
+                                    <vs-button
+                                        v-else
+                                        danger
+                                        :loading="loadingApprove"
+                                        :disabled="hrsStatus"
+                                        data-testid="unapprove-runsheet-button"
+                                        @click="approveAction(false)"
+                                    >
+                                        Unapprove Runsheet
+                                    </vs-button>
+                                </template>
+                            </vs-row>
+                        </vs-col>
+                    </vs-row>
+
+                    <div class="nav-box" v-if="arrStatus && hasDelivery">
+                        <RunsheetInformation
+                            ref="runsheetInformation"
+                            :arrStatus="arrStatus"
+                            :dataDelivery="dataDelivery"
+                            :deliveryNumber="delivery_runsheet_number"
+                            :loading="loadingRunsheet"
+                            :selectedItems="selectedUpdateItems"
+                            @update-selected="updateSelected"
+                            @updatePOD="updatePOD"
+                            @editPOD="editPOD"
+                        />
+                    </div>
+                </div>
+            </vs-col>
+        </vs-row>
+
+        <vs-row justify="flex-end" style="padding-top: 40px">
+            <vs-button v-if="is_approve === '1'" class="mt-1 mr-2" square active @click="print">
+                <i class="bx bxs-printer" /> PRINT
+            </vs-button>
+
+            <vs-button class="mt-1" square active @click="back">
+                <i class="bx bx-left-arrow" /> BACK
+            </vs-button>
+        </vs-row>
 
         <camera-scanner ref="cameraScanner" @data="onCameraScannerGetData" />
 
@@ -292,19 +264,19 @@
 <script>
 import axios from 'axios'
 import master from '@/mixins/master'
-import moment from 'moment'
 
 import Breadcrumb from '@/components/breadcrumb/index'
 import CameraScanner from '@/components/scanner/camera'
 import NavItem from '@/components/navbar/navTab'
 import Selector from '@/components/input/select'
+import AsynchronousSelect from '@/components/input/asynchronousSelect'
+import Loading from '@/components/loading'
 
 import DialogConfirm from '@/components/dialog/dialogConfirm'
 import DialogConfirmCustom from '@/views/delivery/runsheetNew/edit/dialogConfirm'
 import DialogReCheckConnoteZone from '@/views/delivery/runsheetNew/edit/dialogReCheckConnoteZone'
 import DialogReCheckConnoteSla from '@/views/delivery/runsheetNew/edit/dialogReCheckConnoteSla'
 import RunsheetInformation from '@/views/delivery/runsheetNew/edit/runsheetInformation'
-import AsynchronousSelect from '@/components/input/asynchronousSelect.vue'
 
 export default {
     name: 'DeliveryRunsheetEdit',
@@ -313,6 +285,7 @@ export default {
         breadcrumb: Breadcrumb,
         RunsheetInformation,
         CameraScanner,
+        'vs-loading': Loading,
         'dialog-confirm': DialogConfirm,
         'dialog-recheck-courier': DialogConfirmCustom,
         'dialog-recheck-connote-zone': DialogReCheckConnoteZone,
@@ -320,20 +293,30 @@ export default {
         selector: Selector,
         AsynchronousSelect,
     },
-    beforeRouteUpdate(to, from, next) {
-        // update param lokal
-        this.employee_id = to.params.employee_id?.toString() || ''
-        this.delivery_runsheet_number = to.params.delivery_runsheet_number?.toString() || ''
-
-        // reload data kurir & runsheet
-        this.getCourier()
-        if (this.delivery_runsheet_number) {
-            this.getDataDelivery()
-        }
-
-        next()
-    },
     mixins: [master],
+    computed: {
+        listenLoading() {
+            return (
+                this.loadingStatus ||
+                this.loadingRunsheet ||
+                this.loadingApprove ||
+                this.loadingConfirm ||
+                this.loadingConfirmUnpproveRunsheet ||
+                this.loadingCourier
+            )
+        },
+        hasDelivery() {
+            return this.dataDelivery.length > 0
+        },
+        isHelpdesk() {
+            return this.listenUserRoleName === 'HELPDESK'
+        },
+        activeUserLabel() {
+            if (!this.listenActiveUser) return ''
+            const { user_login, user_id } = this.listenActiveUser
+            return `${user_login} (${user_id})`
+        },
+    },
     data() {
         return {
             title: 'Edit Assign',
@@ -343,33 +326,24 @@ export default {
             form: {},
             delivery_runsheet_number: '',
             employee_id: '',
-            employee_data: {},
             dataDelivery: [],
             summary: [],
             arrStatus: null,
             statusObj: {},
             dataDeliverySummary: null,
-            loadingRunsheet: false,
             employee_code: '',
             employee_name: '',
+            selectedCourier: '',
 
+            form: {},
+
+            loadingRunsheet: false,
+            loadingStatus: false,
             loadingCourier: false,
             loadingConfirm: false,
             loadingApprove: false,
 
             selectedUpdateItems: [],
-            navItemm: [
-                {
-                    label: 'LIST DELIVERY',
-                    key: 'k-LIST-DELIVERY',
-                    title: 'Connote List',
-                },
-                {
-                    label: 'DELETE',
-                    key: 'k-LIST-DELETE',
-                    title: 'Bag List',
-                },
-            ],
             navActive: 'k-LIST-DELIVERY',
             disabledConfirm: true,
             disabledApprove: false,
@@ -383,706 +357,82 @@ export default {
             loadingConfirmUnpproveRunsheet: false,
             hrsStatus: false,
             courier_arr: [],
-            selectedCourier: '',
             is_approve: '0',
             is_auto_open_bag: true,
             is_validate_courier: false,
-            selectedCourierId: '', // untuk ID (value)
             autoCompleteCourierUrl: '',
-            input_value: 'employee_id', // field ID di response API
-            input_label: 'employee_name', // field NAME di response API
-            isNestedData: false,
-            nestedKey: '',
             lastKeywordCourier: '',
 
+            input_value: 'employee_id',
+            input_label: 'employee_name',
+
             isSubmitting: false,
+
+            timer: null,
+            now: Date.now(),
         }
     },
-    computed: {
-        listenDataDelivery() {
-            return this.dataDelivery
-        },
-    },
-    beforeDestroy() {
-        window.removeEventListener('timezone-changed', this.reload)
-    },
-    beforeUnmount() {
-        window.removeEventListener('keydown', this.handleTabNavigation)
-    },
-    async mounted() {
-        this.setActive('formInputConnote')
-
-        this.allowedRefs = ['formInputBag', 'formInputConnote', 'formRemoveConnote']
-        window.addEventListener('keydown', this.handleTabNavigation)
-        window.addEventListener('timezone-changed', this.reload)
-        await this.getStatus()
-        // this.getDataCourier()
-
-        this.timer = setInterval(() => {
-            this.dataDelivery = this.dataDelivery.map((item) => ({
-                ...item,
-                sla_connote_formatted: this.formatSlaTime(item.sla_date, item.end_date),
-            }))
-        }, 1000)
-    },
     methods: {
-        formatEmployeeLabel(item) {
-            const employeeName = item.employee_name || ''
-            const employeeCode = item.employee_code || ''
-            return employeeCode ? `${employeeName} (${employeeCode})` : employeeName
-        },
-        onCourierFocus() {
-            const newUrl = `${this.URL.courier_delivery}/list?n=${this.listenNodeId}`
+        /* ======================================================
+         * TIMER HELPER (RECHECK LATER)
+         * ====================================================== */
+        startSlaTimer() {
+            if (this.timer) return
 
-            if (this.autoCompleteCourierUrl !== newUrl) {
-                this.autoCompleteCourierUrl = newUrl
+            this.timer = setInterval(() => {
+                this.now = Date.now()
+            }, 1000)
+        },
+
+        stopSlaTimer() {
+            if (this.timer) {
+                clearInterval(this.timer)
+                this.timer = null
             }
         },
-        setActive(refName) {
-            const validRefs = ['formInputConnote', 'formInputBag', 'formRemoveConnote']
 
-            if (!validRefs.includes(refName)) return
+        /* ======================================================
+         * INIT
+         * ====================================================== */
+        async initRoute() {
+            const { employee_id = '', delivery_runsheet_number = '' } = this.$route.params || {}
 
-            this.setActiveInput(refName, null, () => this.dialogValidateTracingActive)
-        },
+            this.employee_id = employee_id
+            this.delivery_runsheet_number = delivery_runsheet_number
 
-        handleTabNavigation(e) {
-            if (e.key !== 'Tab') return
+            const tasks = []
 
-            e.preventDefault() // block default tab behavior
-
-            const refs = this.allowedRefs.map((ref) => this.$refs[ref]).filter(Boolean)
-
-            const activeIndex = refs.findIndex(
-                (ref) => this.getInputEl(ref) === document.activeElement
-            )
-
-            const nextIndex = activeIndex === -1 ? 0 : (activeIndex + 1) % refs.length
-
-            this.focusRef(this.allowedRefs[nextIndex])
-        },
-
-        focusRef(refName) {
-            const ref = this.$refs[refName]
-            const inputEl = this.getInputEl(ref)
-
-            if (!inputEl) return
-
-            inputEl.focus()
-            this.setActive(refName)
-        },
-
-        getInputEl(ref) {
-            return ref?.$el?.querySelector('input')
-        },
-        reload() {
-            this.getDataDelivery()
-        },
-        async getDataCourier() {
-            this.loading = true
-
-            await axios
-                .get(
-                    this.URL.courier_delivery + `/list?n=${this.listenNodeId}`,
-                    this.Helper.header()
-                )
-                .then((res) => {
-                    if (res.data.data.length > 0) {
-                        let arr = []
-                        res.data.data.map((item) => {
-                            let obj = {}
-                            const formattedLabel = this.formatEmployeeLabel(item)
-                            obj['label'] = formattedLabel
-                            // ===> VALUE SEKARANG PAKAI FORMATTED LABEL
-                            obj['value'] = formattedLabel
-                            obj['item'] = item
-
-                            arr.push(obj)
-                        })
-
-                        if (arr.length == 0) {
-                            arr = [{ label: null, value: null }]
-                        }
-
-                        this.courier_arr = arr
-                    } else {
-                        this.openNotification(
-                            'warn',
-                            null,
-                            'Delivery courier data is empty!',
-                            ' Please create a new courier delivery'
-                        )
-                    }
-                })
-                .catch((err) => {
-                    this.openNotification(
-                        'danger',
-                        err?.err?.response?.data?.code ?? '',
-                        'Failed to populate delivery courier list',
-                        err?.response?.data?.message ?? 'something went wrong'
-                    )
-                })
-
-            this.loading = false
-        },
-        updateValueCourier(key, val, info) {
-            if (key !== 'courier') return
-
-            // Since val is now the formatted label, we need to get employee_id from info
-            this.selectedCourierId = info?.employee_id || val
-            this.employee_id = info?.employee_id || val
-
-            if (info) {
-                this.employee_name = info.employee_name || this.employee_name
-                this.employee_code = info.employee_code || this.employee_code
-                this.selectedCourier = val || '' // val is now the formatted label
+            if (this.employee_id) {
+                tasks.push(this.getCourier())
             }
-
-            // kirim ke backend supaya runsheet pindah kurir
-            this.updateRunsheetCourier()
-        },
-        async updateRunsheetCourier() {
-            const courierId = this.selectedCourierId || this.employee_id
 
             if (this.delivery_runsheet_number) {
-                try {
-                    const res = await axios.put(
-                        `${this.URL.revamp_delivery}/${this.delivery_runsheet_number}?n=${this.listenNodeId}`,
-                        { courier_employee_id: courierId },
-                        this.Helper.header()
-                    )
-                    this.openNotification(
-                        'success',
-                        null,
-                        'Success',
-                        res?.data?.message ?? 'Sukses mengganti kurir'
-                    )
-
-                    this.employee_id = courierId
-                    await this.getCourier()
-                    await this.getDataDelivery()
-                } catch (err) {
-                    this.openNotification(
-                        'danger',
-                        err?.response?.data?.code ?? '',
-                        'Failed',
-                        err?.response?.data?.message ?? 'Something went wrong'
-                    )
-                    this.selectedCourier = this.formatEmployeeLabel({
-                        employee_name: this.employee_name,
-                        employee_code: this.employee_code,
-                    })
-                }
-            } else {
-                this.employee_id = courierId
-                this.$router.push({
-                    name: 'delivery-runsheet-new',
-                    params: {
-                        employee_id: this.employee_id,
-                    },
-                })
-                this.setRoutePageHistory(this.$route.meta, false)
-            }
-        },
-        handleSearchCourier(keyword) {
-            // cukup simpan keyword (kalau komponen butuh)
-            this.lastKeywordCourier = keyword
-            // JANGAN ubah autoCompleteCourierUrl di sini
-        },
-        updateValueBag(val) {
-            if (!this.item_bag) return
-
-            this.form.koli_number = null
-            this.form.courier_employee_id = this.employee_id
-            this.form.bag_number = this.item_bag
-            this.form.auto_open_bag = this.is_auto_open_bag
-            document.activeElement.blur()
-            this.validateBagPraRunsheet(val)
-        },
-        updateValue() {
-            if (!this.item_no) return
-
-            this.form.koli_number = this.item_no
-            this.form.courier_employee_id = this.employee_id
-            this.form.bag_number = null
-            this.form.auto_open_bag = this.is_auto_open_bag
-            document.activeElement.blur()
-            this.scanConnote()
-            this.setActive('formInputConnote')
-        },
-        removeValue() {
-            if (!this.item_no_remove) return
-
-            this.form.koli_number = this.item_no_remove
-            this.form.courier_employee_id = this.employee_id
-            this.form.bag_number = null
-            document.activeElement.blur()
-            this.removeConnote()
-        },
-        getParamRoute() {
-            this.employee_id = this.$route.params.employee_id.toString()
-            this.getCourier()
-
-            if (this.$route.name === 'delivery-runsheet-edit') {
-                this.delivery_runsheet_number =
-                    this.$route.params.delivery_runsheet_number.toString()
-
-                this.getDataDelivery()
-            }
-        },
-        async getCourier() {
-            this.loadingCourier = true
-            await axios
-                .get(
-                    `${this.URL.employee}/${this.employee_id}?n=${this.listenNodeId}`,
-                    this.Helper.header()
-                )
-                .then((res) => {
-                    const { data } = res.data
-                    this.employee_code = data.employee_code
-                    this.employee_name = data.employee_name
-                    this.employee_id = data.employee_id
-                    this.loadingCourier = false
-
-                    // selected = FORMATTED LABEL
-                    const formattedLabel = this.formatEmployeeLabel(data)
-                    this.selectedCourier = formattedLabel
-                    this.selectedCourierId = data.employee_id
-
-                    // opsi awal di dropdown
-                    this.courier_arr = [
-                        {
-                            label: formattedLabel,
-                            value: formattedLabel,
-                            item: data,
-                        },
-                    ]
-                })
-                .catch((err) => {
-                    this.loadingCourier = true
-                    this.openNotification(
-                        'danger',
-                        err?.response?.data?.code ?? '',
-                        'Failed to populate status',
-                        err?.response?.data?.message ?? 'something went wrong'
-                    )
-                })
-        },
-        async validateBagPraRunsheet(val) {
-            if (this.isSubmitting) return
-
-            this.isSubmitting = true
-
-            const loading = this.$vs.loading({
-                type: 'scale',
-                text: 'Checking credentials...',
-                background: '#EAEAEA',
-            })
-
-            const valForm = {
-                item_number: this.item_bag,
-                delivery_runsheet_number: this.delivery_runsheet_number,
-                courier_id: this.employee_id,
-                auto_open_bag: this.is_auto_open_bag,
-                validate_courier: this.is_validate_courier,
+                tasks.push(this.getDataDelivery())
             }
 
-            try {
-                const res = await axios.post(
-                    `${this.URL.validation}/create-runsheet-pra?n=${this.listenNodeId}`,
-                    valForm,
-                    this.Helper.header()
-                )
+            await Promise.all(tasks)
 
-                // Call the next function after success
-                this.validateCourier(val)
-            } catch (err) {
-                loading.close()
-                await this.openNotification(
-                    'danger',
-                    err.response?.data?.status || '',
-                    err.response?.data?.message || 'Something went wrong'
-                )
-                this.setActive('formInputBag')
-            } finally {
-                loading.close()
-                this.isSubmitting = false
-                this.clearInputs()
-            }
+            this.setActiveInput('formInputConnote')
         },
-        async validateCourier(val) {
-            await axios
-                .get(
-                    this.URL.bag +
-                        '/' +
-                        this.form.bag_number +
-                        `?n=${this.listenNodeId}&courier_employee_id=${this.employee_id}`,
-                    this.Helper.header()
-                )
-                .then((res) => {
-                    const details = res.data.detail
-                    const postData = {
-                        bag_number: this.form.bag_number,
-                        courier_employee_id: this.employee_id,
-                        delivery_runsheet_number: this.delivery_runsheet_number,
-                        auto_open_bag: this.is_auto_open_bag,
-                        validate_courier: this.is_validate_courier,
-                    }
 
-                    if (postData) {
-                        this.form = postData
-                    }
-                    this.checkItemSla('BAG')
-                })
-                .catch((err) => {
-                    this.loading = false
-                    this.openNotification(
-                        'danger',
-                        err?.response?.data?.code ?? '',
-                        ' Nomor bag item is failed',
-                        err?.response?.data?.message ?? 'something went wrong'
-                    )
-                })
-        },
-        closeDialog(ref) {
-            switch (ref) {
-                case 'recheck_connote_sla':
-                    this.openDialogReCheckConnoteSla = false
-                    break
-                case 'recheck_connote_zone':
-                    this.openDialogReCheckConnoteZone = false
-                    break
-                case 'unapprove_runsheet':
-                    this.activeDialogConfirmUnpproveRunsheet = false
-                default:
-                    break
-            }
-        },
-        async scanConnote(postData) {
-            if (this.isSubmitting) return
-
-            this.isSubmitting = true
-
-            const loading = this.$vs.loading({
-                type: 'scale',
-                text: 'Checking credentials...',
-                background: '#EAEAEA',
-            })
-
-            let valForm = {}
-            if (postData) {
-                this.form = postData
-                valForm = {
-                    item_number: postData.koli_number,
-                    delivery_runsheet_number: this.delivery_runsheet_number,
-                    courier_id: this.employee_id,
-                    auto_open_bag: this.is_auto_open_bag,
-                    validate_courier: this.is_validate_courier,
-                }
-            } else {
-                valForm = {
-                    item_number: this.form.koli_number,
-                    delivery_runsheet_number: this.delivery_runsheet_number,
-                    courier_id: this.employee_id,
-                    auto_open_bag: this.is_auto_open_bag,
-                    validate_courier: this.is_validate_courier,
-                }
-            }
-
-            // NOTES TODO: Change this to addConnoteToRunsheet if backend validation's ready
-            try {
-                const res = await axios.post(
-                    `${this.URL.validation}/create-runsheet?n=${this.listenNodeId}`,
-                    valForm,
-                    this.Helper.header()
-                )
-
-                this.checkItemSla('KOLI')
-            } catch (err) {
-                loading.close()
-                await this.openNotification(
-                    'danger',
-                    err.response ? err.response.data.code : '',
-                    err.response?.data?.status,
-                    err.response?.data?.message
-                )
-                this.clearInputs()
-                this.setActive('formInputConnote')
-            } finally {
-                loading.close()
-                this.isSubmitting = false
-            }
-        },
-        async checkItemSla(type) {
-            this.type = type
-            const url =
-                this.type === 'KOLI'
-                    ? `${this.URL.configuration_warning_sla}/check-sla?n=${this.listenNodeId}&item_number=${this.form.koli_number}`
-                    : `${this.URL.configuration_warning_sla}/check-sla-bag?n=${this.listenNodeId}&bag_number=${this.form.bag_number}`
-
-            try {
-                const res = await axios.get(url, this.Helper.header())
-
-                this.dataItemCheckSla = res.data.data
-
-                const itemData = this.type === 'KOLI' ? [res.data.data] : res.data.data
-
-                const allItemStatusSafe = Array.isArray(itemData)
-                    ? itemData.every((item) => item.status === 'SAFE')
-                    : false
-
-                if (allItemStatusSafe) {
-                    this.checkZoneDelivery()
-                } else {
-                    this.openDialogReCheckConnoteSla = true
-                }
-            } catch (err) {
-                this.openNotification(
-                    'danger',
-                    err?.response?.data?.code ?? '',
-                    'Failed',
-                    err?.response?.data?.message ?? 'Something went wrong'
-                )
-                this.clearInputs()
-                this.setActive('formInputConnote')
-            }
-        },
-        async checkZoneDelivery() {
-            this.openDialogReCheckConnoteSla = false
-            const itemNumber = this.type === 'BAG' ? this.form.bag_number : this.form.koli_number
-
-            try {
-                const res = await axios.get(
-                    `${this.URL.check_delivery_area}?item_number=${itemNumber}&type=${this.type}&n=${this.listenNodeId}&limit=-1`,
-                    this.Helper.header()
-                )
-
-                if (this.type === 'BAG') {
-                    this.addBagPraRunsheetToRunsheet(this.form)
-                } else {
-                    this.addConnoteToRunsheet(this.form)
-                }
-            } catch (err) {
-                if (err?.response?.data?.status === 'failed') {
-                    this.dataItem = this.form
-                    this.listConnote = err?.response?.data?.data
-                    this.openDialogReCheckConnoteZone = true
-                } else {
-                    this.openNotification(
-                        'danger',
-                        err?.response?.data?.code ?? '',
-                        'Failed',
-                        err?.response?.data?.message ?? 'Something went wrong'
-                    )
-
-                    this.clearInputs()
-                    this.setActive('formInputConnote')
-                }
-            }
-        },
-        async addConnoteToRunsheet(form) {
-            this.loadingRunsheet = true
-            try {
-                if (!this.delivery_runsheet_number) {
-                    const res = await axios.post(
-                        `${this.URL.revamp_delivery}?n=${this.listenNodeId}`,
-                        JSON.stringify(form),
-                        this.Helper.header()
-                    )
-
-                    this.dataDeliverySummary = res.data.summary
-                    this.delivery_runsheet_number =
-                        this.dataDeliverySummary.delivery_runsheet_number.toString()
-                    this.$router.push({
-                        name: 'delivery-runsheet-edit',
-                        params: {
-                            employee_id: this.employee_id,
-                            delivery_runsheet_number: this.delivery_runsheet_number,
-                        },
-                    })
-                    this.setRoutePageHistory(this.$route.meta, false)
-                    this.getDataDelivery()
-                    this.openNotification(
-                        'success',
-                        null,
-                        'Success',
-                        res?.data?.message ?? 'Create runsheet success'
-                    )
-                } else {
-                    const res = await axios.post(
-                        `${this.URL.revamp_delivery}/${this.delivery_runsheet_number}/detail?n=${this.listenNodeId}`,
-                        JSON.stringify(form),
-                        this.Helper.header()
-                    )
-
-                    this.dataDelivery.employee_name = res?.data?.data?.employee_name ?? null
-                    this.dataDelivery.employee_code = res?.data?.data?.employee_code ?? null
-                    this.dataDeliverySummary = res.data.summary
-                    this.delivery_runsheet_number =
-                        this.dataDeliverySummary.delivery_runsheet_number.toString()
-                    this.getDataDelivery()
-                    this.openNotification(
-                        'success',
-                        null,
-                        'Success',
-                        res?.data?.message ?? 'Update runsheet success'
-                    )
-                }
-            } catch (err) {
-                this.openNotification(
-                    'danger',
-                    err?.response?.data?.code ?? '',
-                    'Failed',
-                    err?.response?.data?.message ?? 'Something went wrong'
-                )
-            } finally {
-                this.clearInputs()
-                // this.setFocus()
-                this.loadingRunsheet = false
-                this.setActive('formInputConnote')
-            }
-        },
-        async addBagPraRunsheetToRunsheet(form) {
-            this.loadingRunsheet = true
-            try {
-                if (!this.delivery_runsheet_number) {
-                    const res = await axios.post(
-                        `${this.URL.revamp_delivery_bag_pra}?n=${this.listenNodeId}`,
-                        JSON.stringify(form),
-                        this.Helper.header()
-                    )
-
-                    this.dataDeliverySummary = res.data.summary
-                    this.delivery_runsheet_number =
-                        this.dataDeliverySummary.delivery_runsheet_number.toString()
-                    this.$router.push({
-                        name: 'delivery-runsheet-edit',
-                        params: {
-                            employee_id: this.employee_id,
-                            delivery_runsheet_number: this.delivery_runsheet_number,
-                        },
-                    })
-                    this.setRoutePageHistory(this.$route.meta, false)
-
-                    this.getDataDelivery()
-                    this.openNotification(
-                        'success',
-                        null,
-                        'Success',
-                        res?.data?.message ?? 'Create runsheet success'
-                    )
-                } else {
-                    const res = await axios.post(
-                        `${this.URL.revamp_delivery_bag_pra}/${this.delivery_runsheet_number}/detail?n=${this.listenNodeId}`,
-                        JSON.stringify(form),
-                        this.Helper.header()
-                    )
-
-                    this.dataDelivery.employee_name = res?.data?.data?.employee_name ?? null
-                    this.dataDelivery.employee_code = res?.data?.data?.employee_code ?? null
-                    this.dataDeliverySummary = res.data.summary
-                    this.delivery_runsheet_number =
-                        this.dataDeliverySummary.delivery_runsheet_number.toString()
-                    this.getDataDelivery()
-                    this.openNotification(
-                        'success',
-                        null,
-                        'Success',
-                        res?.data?.message ?? 'Update runsheet success'
-                    )
-                }
-            } catch (err) {
-                this.openNotification(
-                    'danger',
-                    err?.response?.data?.code ?? '',
-                    'Failed',
-                    err?.response?.data?.message ?? 'Something went wrong'
-                )
-            } finally {
-                this.clearInputs()
-                this.loadingRunsheet = false
-            }
-        },
-        async removeConnote() {
-            if (this.isSubmitting) return
-
-            this.isSubmitting = true
-
-            const loading = this.$vs.loading({
-                type: 'scale',
-                text: 'Checking credentials...',
-                background: '#EAEAEA',
-            })
-
-            this.loadingRunsheet = true
-            try {
-                const res = await axios.delete(
-                    `${this.URL.revamp_delivery}/${this.delivery_runsheet_number}/detail/${this.form.koli_number}?n=${this.listenNodeId}`,
-                    this.Helper.header()
-                )
-
-                if (res.data.hasOwnProperty('summary')) {
-                    this.dataDelivery.employee_name = res.data.data.employee_name
-                        ? res.data.data.employee_name
-                        : null
-                    this.dataDelivery.employee_code = res.data.data.employee_code
-                        ? res.data.data.employee_code
-                        : null
-                    this.dataDeliverySummary = res.data.summary
-                    this.delivery_runsheet_number =
-                        this.dataDeliverySummary.delivery_runsheet_number.toString()
-                    this.getDataDelivery()
-                    this.openNotification('success', null, 'Success', 'Remove item success')
-                    this.loadingRunsheet = false
-                    this.clearInputs()
-                } else {
-                    this.getDataDelivery()
-                    this.openNotification(
-                        'success',
-                        null,
-                        'Success',
-                        res?.data?.message ?? 'Remove item success'
-                    )
-                    this.loadingRunsheet = false
-                    this.clearInputs()
-                }
-            } catch (err) {
-                this.loadingRunsheet = false
-                loading.close()
-                await this.openNotification(
-                    'danger',
-                    err?.response?.data?.code ?? '',
-                    'Failed',
-                    err?.response?.data?.message ?? 'Something went wrong'
-                )
-                this.setActive('formRemoveConnote')
-            } finally {
-                loading.close()
-                this.clearInputs()
-                this.loadingRunsheet = false
-                this.isSubmitting = false
-                this.setActive('formRemoveConnote')
-            }
-        },
         async getStatus() {
-            const loading = this.$vs.loading({
-                type: 'scale',
-                text: 'Checking credentials...',
-                background: '#EAEAEA',
-            })
+            if (this.isSubmitting) return
+            this.isSubmitting = true
+            this.loadingStatus = true
 
             try {
-                const res = await axios.get(
+                const { data } = await axios.get(
                     `${this.URL.status}?status_type=DELIVERY&n=${this.listenNodeId}&limit=-1`,
                     this.Helper.header()
                 )
 
+                const list = Array.isArray(data?.data) ? data.data : []
                 const statusObj = {}
 
-                this.arrStatus = res.data.data.map((item) => {
-                    const label = `${item.status_description}(${item.status_code})`
+                this.arrStatus = list.map((item) => {
+                    const label = `${item.status_description} (${item.status_code})`
 
-                    const obj = {
+                    const statusItem = {
                         label,
                         formattedLabel: label.length > 60 ? this.splitText(label, 60) : undefined,
                         value: item.status_code,
@@ -1091,362 +441,27 @@ export default {
 
                     const condition = item.status_condition?.toLowerCase()
                     if (condition) {
-                        if (!statusObj[condition]) {
-                            statusObj[condition] = []
-                        }
-                        statusObj[condition].push(obj)
+                        statusObj[condition] ||= []
+                        statusObj[condition].push(statusItem)
                     }
 
-                    return obj
+                    return statusItem
                 })
 
                 this.statusObj = statusObj
-                this.getParamRoute()
             } catch (err) {
-                loading.close()
-                this.openNotification(
+                await this.openNotification(
                     'danger',
                     err?.response?.data?.code ?? '',
                     'Failed to populate status',
                     err?.response?.data?.message ?? 'Something went wrong'
                 )
             } finally {
-                loading.close()
+                this.loadingStatus = false
+                this.clearInputs()
             }
         },
-        async getDataDelivery() {
-            this.loadingRunsheet = true
 
-            try {
-                const res = await axios.get(
-                    `${this.URL.employee}/${this.employee_id}/delivery?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}`,
-                    this.Helper.header()
-                )
-
-                const { data, summary } = res.data
-
-                this.dataDelivery = this.processDataDelivery(data)
-                this.dataDeliverySummary = summary
-                this.delivery_runsheet_number = summary?.delivery_runsheet_number?.toString() ?? ''
-
-                if (!data?.delivery || data?.delivery.length === 0) {
-                    this.clearInputs()
-                    this.$router.push('/delivery/runsheet')
-                }
-            } catch (err) {
-                this.openNotification(
-                    'danger',
-                    err?.response?.data?.code ?? '',
-                    'Failed to populate status',
-                    err?.response?.data?.message ?? 'Something went wrong'
-                )
-            } finally {
-                this.loadingRunsheet = false
-            }
-        },
-        processDataDelivery(data) {
-            const status = this.statusObj || {}
-            const delivery = data.delivery ? data.delivery : []
-
-            delivery.map((item) => {
-                item.status_delivery = []
-                item.is_disabled_input = false
-
-                if (item.hasOwnProperty('koli_number')) {
-                    // if (item.koli_number.toLowerCase().includes("rt")) {
-                    //     item.status_delivery = [...status.rt, ...status.all];
-                    // } else {
-                    //     item.status_delivery = [...status.normal, ...status.all];
-                    // }
-
-                    // filter untuk all status
-                    item.status_delivery = [
-                        ...(status?.normal ?? []),
-                        ...(status?.rt ?? []),
-                        ...(status?.all ?? []),
-                    ]
-                }
-                if (item.hasOwnProperty('remarks')) {
-                    if (item['status_code'] == null) {
-                        item['is_disabled_input_remarks'] =
-                            item['remarks'] !== null || item['remarks'] !== '' ? true : false
-                    }
-                }
-                if (item.hasOwnProperty('receiver_name')) {
-                    if (item['status_code'] == null) {
-                        item['is_disabled_input_reveiver'] =
-                            item['receiver_name'] !== null || item['receiver_name'] !== ''
-                                ? true
-                                : false
-                    }
-                }
-
-                this.is_approve = item.is_approve
-                if (item.is_approve === '1') {
-                    this.disabledApprove = true
-                } else {
-                    item['is_disabled_input_status'] = true
-                }
-
-                if (item.is_hrs) {
-                    this.hrsStatus = true
-                }
-
-                item.isDisabled = item.is_delivered === 1
-                if (
-                    item.is_delivered == 1 ||
-                    item.is_pod_orion == 1 ||
-                    this.hasPermission('disable-pod')
-                ) {
-                    this.disableDeliveredPOD(item)
-                }
-                item.employee_name = data.employee_name
-                item.employee_code = data.employee_code
-                item.warning_koli_record_id = item?.warning_koli_record_id
-                item.created_at = this.formatTimezone(item?.created_at)
-
-                if (item?.days_elapsed != null) {
-                    item.days_elapsed = this.formatElapsedDay(item.days_elapsed)
-                }
-            })
-
-            return delivery
-        },
-        async updatePOD(dataPOD, info) {
-            if (dataPOD.remarks || dataPOD.receiver_name || dataPOD.status) {
-                if (!dataPOD.status) {
-                    this.openNotification('warn', null, 'Status Kosong', 'Status Wajib Diisi')
-                    return
-                } else {
-                    let statusDesc = this.arrStatus.find(
-                        (status) => status.value === dataPOD.status
-                    )
-                    if (statusDesc.label.includes('RECEIVED') && !dataPOD.receiver_name) {
-                        this.openNotification(
-                            'warn',
-                            null,
-                            'Receiver Kosong',
-                            'Receiver Wajib Diisi'
-                        )
-                        return
-                    }
-                }
-                if (this.delivery_runsheet_number) {
-                    dataPOD.delivery_runsheet_number = this.delivery_runsheet_number
-                    if (this.employee_id != null || this.employee_id !== '') {
-                        dataPOD.courier_employee_id = this.employee_id
-                    }
-
-                    this.loadingConfirm = true
-
-                    try {
-                        const res = await axios.put(
-                            `${this.URL.revamp_delivery}/${this.delivery_runsheet_number}/detail/${dataPOD.koli_number}/status?n=${this.listenNodeId}`,
-                            JSON.stringify(dataPOD),
-                            this.Helper.header()
-                        )
-                        this.openNotification(
-                            'success',
-                            null,
-                            'Success',
-                            res?.data?.message ?? 'POD UPDATED!'
-                        )
-                        this.getDataDelivery()
-                        this.form = {}
-                        this.selectedUpdateItems = []
-                        this.disabledConfirm = true
-                    } catch (err) {
-                        this.openNotification(
-                            'danger',
-                            err?.response?.data?.code ?? '',
-                            'Failed',
-                            err?.response?.data?.message ?? 'Something went wrong'
-                        )
-                    } finally {
-                        this.loadingConfirm = false
-                    }
-                } else {
-                    this.openNotification(
-                        'danger',
-                        err.response ? err.response.data.code : '',
-                        'Failed',
-                        'Runsheet unavailable!'
-                    )
-                }
-            } else {
-                this.openNotification(
-                    'danger',
-                    err.response ? err.response.data.code : '',
-                    'POD KOSONG',
-                    'Isi POD terlebih dahulu'
-                )
-            }
-        },
-        disableDeliveredPOD(val) {
-            this.$set(val, 'is_disabled_input_status', true)
-            this.$set(val, 'is_disabled_input_remarks', true)
-            this.$set(val, 'is_disabled_input_reveiver', true)
-        },
-        async editPOD(val) {
-            this.loadingConfirm = true
-            const dataPOD = {
-                courier_employee_id: val.courier_employee_id,
-                delivery_runsheet_number: val.delivery_runsheet_number,
-                koli_number: val.koli_number,
-                status: val.status_code,
-                remarks: val.remarks,
-                receiver_name: val.receiver_name,
-            }
-            try {
-                const res = await axios.put(
-                    `${this.URL.revamp_delivery}/${val.delivery_runsheet_number}/detail/${dataPOD.koli_number}/status?n=${this.listenNodeId}`,
-                    JSON.stringify(dataPOD),
-                    this.Helper.header()
-                )
-                this.getDataDelivery()
-                this.form = {}
-                this.openNotification(
-                    'success',
-                    null,
-                    'Success',
-                    res?.data?.message ?? 'POD EDITED!'
-                )
-            } catch (err) {
-                this.openNotification(
-                    'danger',
-                    err?.response?.data?.code ?? '',
-                    'Failed',
-                    err?.response?.data?.message ?? 'Something went wrong'
-                )
-            } finally {
-                this.loadingConfirm = false
-            }
-        },
-        back() {
-            this.$router.push('/delivery/runsheet')
-            this.setRoutePageHistory(this.$route.meta, false)
-        },
-        print() {
-            const routeData = this.$router.resolve({
-                name: 'printGeneral',
-                params: {
-                    id: this.delivery_runsheet_number,
-                    type: 'delivery',
-                    employee_id: this.employee_id,
-                    node_id: this.listenNodeId,
-                },
-            })
-
-            const printWindow = window.open(routeData.href, '_blank', 'noopener')
-
-            if (printWindow) {
-                printWindow.onload = function () {
-                    printWindow.print()
-                    printWindow.onafterprint = () => printWindow.close()
-                }
-            }
-        },
-        updateSelected(arr) {
-            this.selectedUpdateItems = arr
-            this.disabledConfirm = arr.length > 0 && this.disabledApprove ? false : true
-        },
-        confirmAction() {
-            if (this.selectedUpdateItems.length > 0) {
-                this.selectedUpdateItems.forEach((item) => {
-                    const dataPOD = {
-                        courier_employee_id: item.courier_employee_id,
-                        delivery_runsheet_number: item.delivery_runsheet_number,
-                        koli_number: item.koli_number,
-                        status: item.status_code,
-                        remarks: item.remarks,
-                        receiver_name: item.receiver_name,
-                    }
-
-                    this.updatePOD(dataPOD)
-                })
-            } else {
-                this.openNotification(
-                    'danger',
-                    err?.response?.data?.code || '',
-                    'Failed',
-                    err?.response?.data?.message || 'Please select at least one item'
-                )
-            }
-        },
-        approveAction(val) {
-            this.data_is_approve = {
-                approved: val,
-            }
-
-            if (val) {
-                this.approve(val)
-            } else {
-                this.activeDialogConfirmUnpproveRunsheet = true
-            }
-        },
-        confirmUnpproveRunsheet() {
-            this.approve(false)
-            this.activeDialogConfirmUnpproveRunsheet = false
-            this.reload()
-        },
-        async approve(val) {
-            this.loadingApprove = true
-            this.loadingConfirmUnpproveRunsheet = true
-            try {
-                const res = await axios.patch(
-                    `${this.URL.revamp_delivery}/${this.delivery_runsheet_number}/approval?n=${this.listenNodeId}`,
-                    JSON.stringify(this.data_is_approve),
-                    this.Helper.header()
-                )
-
-                this.form = {}
-                this.is_approve = val
-                this.disabledApprove = val
-                this.openNotification('success', null, 'Success', res?.data?.message)
-                this.reload()
-            } catch (err) {
-                this.openNotification(
-                    'danger',
-                    err?.response?.data?.code ?? '',
-                    'Failed',
-                    err?.response?.data?.message ?? 'Something went wrong'
-                )
-            } finally {
-                this.loadingConfirmUnpproveRunsheet = false
-                this.loadingApprove = false
-            }
-        },
-        onCameraScannerGetData(data) {
-            if (data && data.event === 'result') {
-                const result = data.data
-
-                switch (data.namespace) {
-                    case 'formInputBag':
-                        this.item_bag = result.text
-                        this.updateValueBag()
-                        break
-                    case 'formInputConnote':
-                        this.item_no = result.text
-                        this.updateValue()
-                        break
-                    case 'formRemoveConnote':
-                        this.item_no_remove = result.text
-                        this.removeValue()
-                        break
-                    default:
-                        break
-                }
-            }
-        },
-        clearInputs() {
-            this.item_no = ''
-            this.item_no_remove = ''
-            this.item_bag = ''
-            delete this.form.delivery_runsheet_number
-            this.openDialogReCheckConnoteZone = false
-            this.openDialogReCheckConnoteSla = false
-            this.isSubmitting = false
-        },
         splitText(text, maxLineLength) {
             const words = text.split(' ')
             let lines = []
@@ -1467,48 +482,709 @@ export default {
 
             return lines
         },
-        handleAutoOpenBag(val) {
-            this.is_auto_open_bag = val.target.checked
+
+        /* ======================================================
+         * DATA DELIVERY
+         * ====================================================== */
+        async getDataDelivery() {
+            this.loadingRunsheet = true
+
+            try {
+                const res = await axios.get(
+                    `${this.URL.employee}/${this.employee_id}/delivery?n=${this.listenNodeId}&delivery_runsheet_number=${this.delivery_runsheet_number}`,
+                    this.Helper.header()
+                )
+
+                const { data, summary } = res.data
+
+                this.dataDelivery = this.processDataDelivery(data)
+                this.dataDeliverySummary = summary
+                this.delivery_runsheet_number = summary?.delivery_runsheet_number?.toString() ?? ''
+
+                if (!data?.delivery?.length) {
+                    this.back()
+                }
+            } catch (err) {
+                await this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed to load delivery data',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
+            } finally {
+                this.loadingRunsheet = false
+            }
         },
-        handleValidateCourier(val) {
-            this.is_validate_courier = val.target.checked
-        },
-        setActiveInput(refName) {
-            this.activeInput = refName
-            this.$nextTick(() => {
-                this.focusInput(refName)
-            })
-        },
-        focusInput(refName) {
-            this.$nextTick(() => {
-                const inputEl = this.$refs[refName]?.$el.querySelector('input')
-                if (inputEl) {
-                    inputEl.focus()
-                    inputEl.removeEventListener('blur', this.preventUnfocus)
-                    inputEl.addEventListener('blur', this.preventUnfocus)
+
+        processDataDelivery(data) {
+            const status = this.statusObj ?? {}
+            const delivery = data?.delivery ?? []
+
+            return delivery.map((item) => {
+                const isApprove = item.is_approve === '1'
+                const isDelivered =
+                    item.is_delivered === 1 ||
+                    item.is_pod_orion === 1 ||
+                    this.hasPermission('disable-pod')
+
+                // build status_delivery
+                const status_delivery = item.koli_number
+                    ? [...(status.normal ?? []), ...(status.rt ?? []), ...(status.all ?? [])]
+                    : []
+
+                // update global flags once (safe)
+                this.is_approve = item.is_approve
+                this.disabledApprove = isApprove
+                if (item.is_hrs) this.hrsStatus = true
+
+                if (isDelivered) {
+                    this.disableDeliveredPOD(item)
+                }
+
+                return {
+                    ...item,
+
+                    // TODO: RECHECK LATER
+                    // sla_connote_formatted: this.formatSlaTime(
+                    //     item.sla_date,
+                    //     item.end_date,
+                    //     this.now
+                    // ),
+
+                    status_delivery,
+                    is_disabled_input: false,
+                    is_disabled_input_status: !isApprove,
+
+                    is_disabled_input_remarks: item.status_code == null && !!item.remarks,
+
+                    is_disabled_input_reveiver: item.status_code == null && !!item.receiver_name,
+
+                    isDisabled: item.is_delivered === 1,
+
+                    created_at: this.formatTimezone(item?.created_at),
+
+                    days_elapsed:
+                        item?.days_elapsed != null
+                            ? this.formatElapsedDay(item.days_elapsed)
+                            : item.days_elapsed,
                 }
             })
         },
-        preventUnfocus(e) {
-            this.$nextTick(() => {
-                const inputConnote = this.$refs.formInputConnote?.$el.querySelector('input')
-                const inputBag = this.$refs.formInputBag?.$el.querySelector('input')
-                const inputRemoveConnote = this.$refs.formRemoveConnote?.$el.querySelector('input')
-                const nextEl = e.relatedTarget
-                if (
-                    nextEl === inputConnote ||
-                    nextEl === inputBag ||
-                    nextEl === inputRemoveConnote
-                ) {
-                    return
-                }
-                this.focusInput(this.activeInput)
+
+        /* ======================================================
+         * BASIC TOGGLES, BUTTON & UI
+         * ====================================================== */
+        handleAutoOpenBag(e) {
+            this.is_auto_open_bag = e.target.checked
+        },
+
+        handleValidateCourier(e) {
+            this.is_validate_courier = e.target.checked
+        },
+
+        back() {
+            this.clearInputs()
+
+            this.$router.push('/delivery/runsheet')
+            this.setRoutePageHistory(this.$route.meta, false)
+        },
+
+        reload() {
+            this.getDataDelivery()
+        },
+
+        /* ======================================================
+         * COURIER & UPDATE COURIER
+         * ====================================================== */
+        formatEmployeeLabel(item = {}) {
+            const { employee_name = '', employee_code = '' } = item
+            return employee_code ? `${employee_name} (${employee_code})` : employee_name
+        },
+
+        handleSearchCourier(keyword) {
+            this.lastKeywordCourier = keyword
+        },
+
+        onCourierFocus() {
+            this.autoCompleteCourierUrl = `${this.URL.courier_delivery}/list?n=${this.listenNodeId}`
+        },
+
+        async getCourier() {
+            if (!this.employee_id) return
+
+            this.loadingCourier = true
+
+            try {
+                const res = await axios.get(
+                    `${this.URL.employee}/${this.employee_id}?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
+
+                const employee = res?.data?.data
+                if (!employee) return
+
+                const label = this.formatEmployeeLabel(employee)
+
+                this.employee_id = employee.employee_id
+                this.selectedCourier = label
+
+                this.employee_name = employee.employee_name
+                this.employee_code = employee.employee_code
+
+                this.courier_arr = [
+                    {
+                        label,
+                        value: label,
+                        item: employee,
+                    },
+                ]
+            } catch (err) {
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
+            } finally {
+                this.loadingCourier = false
+            }
+        },
+
+        updateValueCourier(key, label, info) {
+            if (key !== 'courier') return
+
+            const courierId = info?.employee_id ?? label
+            this.setCourierState(courierId, label, info)
+            this.updateRunsheetCourier()
+        },
+
+        setCourierState(courierId, label, info) {
+            this.employee_id = courierId
+        },
+
+        async updateRunsheetCourier() {
+            if (!this.employee_id) return
+
+            if (!this.delivery_runsheet_number) {
+                this.$router.push({
+                    name: 'delivery-runsheet-new',
+                    params: { employee_id: this.employee_id },
+                })
+                return
+            }
+
+            try {
+                const res = await axios.put(
+                    `${this.URL.revamp_delivery}/${this.delivery_runsheet_number}?n=${this.listenNodeId}`,
+                    { courier_employee_id: this.employee_id },
+                    this.Helper.header()
+                )
+
+                this.openNotification('success', null, 'Success', res?.data?.message)
+
+                this.setURL()
+
+                await Promise.all([this.getCourier(), this.getDataDelivery()])
+            } catch (err) {
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
+            }
+        },
+
+        /* ======================================================
+         * UPDATE VALUE
+         * ====================================================== */
+        applyForm(payload = {}) {
+            this.form = {
+                ...payload,
+                courier_employee_id: this.employee_id,
+            }
+
+            document.activeElement?.blur()
+        },
+
+        getUpdateValueConfig() {
+            return {
+                formInputBag: {
+                    guard: () => this.item_bag,
+                    form: () => ({
+                        bag_number: this.item_bag,
+                        auto_open_bag: this.is_auto_open_bag,
+                    }),
+                    after: () => this.validateBagPraRunsheet(),
+                },
+
+                formInputConnote: {
+                    guard: () => this.item_no,
+                    form: () => ({
+                        koli_number: this.item_no,
+                        auto_open_bag: this.is_auto_open_bag,
+                    }),
+                    after: () => {
+                        this.scanConnote()
+                        this.setActiveInput('formInputConnote')
+                    },
+                },
+
+                formRemoveConnote: {
+                    guard: () => this.item_no_remove,
+                    form: () => ({
+                        koli_number: this.item_no_remove,
+                    }),
+                    after: () => this.removeConnote(),
+                },
+            }
+        },
+
+        updateValue(type) {
+            const action = this.getUpdateValueConfig()[type]
+            if (!action || !action.guard()) return
+
+            this.applyForm(action.form())
+            action.after?.()
+        },
+
+        /* ======================================================
+         * SCAN & VALIDATION
+         * ====================================================== */
+        async scanConnote() {
+            if (this.isSubmitting) return
+            this.isSubmitting = true
+
+            const payload = {
+                item_number: this.form.koli_number,
+                delivery_runsheet_number: this.delivery_runsheet_number,
+                courier_id: this.employee_id,
+                auto_open_bag: this.is_auto_open_bag,
+                validate_courier: this.is_validate_courier,
+            }
+
+            try {
+                await axios.post(
+                    `${this.URL.validation}/create-runsheet?n=${this.listenNodeId}`,
+                    payload,
+                    this.Helper.header()
+                )
+                this.checkItemSla('KOLI')
+            } catch (err) {
+                await this.openNotification(
+                    'danger',
+                    '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
+            } finally {
+                this.isSubmitting = false
+                this.clearInputs()
+                this.setActiveInput('formInputConnote')
+            }
+        },
+
+        async validateBagPraRunsheet() {
+            if (this.isSubmitting) return
+            this.isSubmitting = true
+
+            try {
+                await axios.post(
+                    `${this.URL.validation}/create-runsheet-pra?n=${this.listenNodeId}`,
+                    {
+                        item_number: this.item_bag,
+                        delivery_runsheet_number: this.delivery_runsheet_number,
+                        courier_id: this.employee_id,
+                        auto_open_bag: this.is_auto_open_bag,
+                        validate_courier: this.is_validate_courier,
+                    },
+                    this.Helper.header()
+                )
+                this.validateCourier()
+            } catch (err) {
+                await this.openNotification(
+                    'danger',
+                    '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
+            } finally {
+                this.isSubmitting = false
+                this.clearInputs()
+                this.setActiveInput('formInputBag')
+            }
+        },
+
+        async validateCourier() {
+            try {
+                await axios.get(
+                    `${this.URL.bag}/${this.form.bag_number}?n=${this.listenNodeId}&courier_employee_id=${this.employee_id}`,
+                    this.Helper.header()
+                )
+                this.checkItemSla('BAG')
+            } catch (err) {
+                await this.openNotification(
+                    'danger',
+                    '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
+            }
+        },
+
+        /* ======================================================
+         * SLA & ZONE
+         * ====================================================== */
+        async checkItemSla(type) {
+            const url =
+                type === 'KOLI'
+                    ? `${this.URL.configuration_warning_sla}/check-sla?n=${this.listenNodeId}&item_number=${this.form.koli_number}`
+                    : `${this.URL.configuration_warning_sla}/check-sla-bag?n=${this.listenNodeId}&bag_number=${this.form.bag_number}`
+
+            try {
+                const res = await axios.get(url, this.Helper.header())
+                const data = Array.isArray(res.data.data) ? res.data.data : [res.data.data]
+
+                const safe = data.every((i) => i.status === 'SAFE')
+                safe ? this.checkZoneDelivery(type) : (this.openDialogReCheckConnoteSla = true)
+            } catch {
+                await this.openNotification('danger', '', 'Failed', 'Check SLA failed')
+            }
+        },
+
+        async checkZoneDelivery(type) {
+            const item = type === 'BAG' ? this.form.bag_number : this.form.koli_number
+
+            try {
+                await axios.get(
+                    `${this.URL.check_delivery_area}?item_number=${item}&type=${type}&n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
+                type === 'BAG'
+                    ? this.addBagPraRunsheetToRunsheet(this.form)
+                    : this.addConnoteToRunsheet(this.form)
+            } catch (err) {
+                await this.openNotification(
+                    'danger',
+                    '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
+            }
+        },
+
+        /* ======================================================
+         * RUNSHEET CRUD
+         * ====================================================== */
+        async submitRunsheet({ form, baseUrl, activeForm = 'formInputConnote' }) {
+            this.loadingRunsheet = true
+
+            try {
+                const isCreate = !this.delivery_runsheet_number
+                const url = isCreate
+                    ? `${baseUrl}?n=${this.listenNodeId}`
+                    : `${baseUrl}/${this.delivery_runsheet_number}/detail?n=${this.listenNodeId}`
+
+                const { data } = await axios.post(url, JSON.stringify(form), this.Helper.header())
+
+                this.dataDeliverySummary = data.summary
+                this.delivery_runsheet_number = data.summary.delivery_runsheet_number.toString()
+
+                if (isCreate) this.setURL()
+
+                await this.getDataDelivery()
+
+                this.openNotification('success', null, 'Success', 'Success')
+            } catch (err) {
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
+            } finally {
+                this.clearAll()
+                this.loadingRunsheet = false
+                this.setActive?.(activeForm)
+            }
+        },
+        addConnoteToRunsheet(form) {
+            return this.submitRunsheet({
+                form,
+                baseUrl: this.URL.revamp_delivery,
+                activeForm: 'formInputConnote',
             })
+        },
+
+        addBagPraRunsheetToRunsheet(form) {
+            return this.submitRunsheet({
+                form,
+                baseUrl: this.URL.revamp_delivery_bag_pra,
+                activeForm: 'formInputBag',
+            })
+        },
+
+        async removeConnote() {
+            if (this.isSubmitting) return
+
+            this.isSubmitting = true
+            this.loadingRunsheet = true
+
+            try {
+                const { data } = await axios.delete(
+                    `${this.URL.revamp_delivery}/${this.delivery_runsheet_number}/detail/${this.form.koli_number}?n=${this.listenNodeId}`,
+                    this.Helper.header()
+                )
+
+                const { summary, data: detail, message } = data || {}
+
+                if (summary) {
+                    this.dataDeliverySummary = summary
+                    this.delivery_runsheet_number =
+                        summary.delivery_runsheet_number?.toString() ?? ''
+                }
+
+                await this.getDataDelivery()
+
+                this.openNotification('success', null, 'Success', message ?? 'Remove item success')
+            } catch (err) {
+                await this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
+            } finally {
+                this.clearInputs()
+                this.loadingRunsheet = false
+                this.isSubmitting = false
+                this.setActiveInput('formRemoveConnote')
+            }
+        },
+
+        /* ======================================================
+         * UPDATE CHECKBOX
+         * ====================================================== */
+        updateSelected(arr) {
+            this.selectedUpdateItems = arr
+            this.disabledConfirm = !(arr.length > 0 && this.disabledApprove)
+        },
+
+        /* ======================================================
+         * APPROVE & UNAPPROVE RUNSHEET
+         * ====================================================== */
+        confirmUnpproveRunsheet() {
+            this.approve(false)
+            this.activeDialogConfirmUnpproveRunsheet = false
+            this.reload()
+        },
+
+        approveAction(val) {
+            if (!val) {
+                this.activeDialogConfirmUnpproveRunsheet = true
+                return
+            }
+
+            this.approve(true)
+        },
+
+        async approve(val) {
+            this.loadingApprove = true
+            this.loadingConfirmUnpproveRunsheet = true
+
+            try {
+                const res = await axios.patch(
+                    `${this.URL.revamp_delivery}/${this.delivery_runsheet_number}/approval?n=${this.listenNodeId}`,
+                    { approved: val },
+                    this.Helper.header()
+                )
+
+                this.form = {}
+                this.is_approve = val
+                this.disabledApprove = val
+
+                this.openNotification('success', null, 'Success', res?.data?.message)
+                this.reload()
+            } catch (err) {
+                await this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
+            } finally {
+                this.loadingApprove = false
+                this.loadingConfirmUnpproveRunsheet = false
+            }
+        },
+
+        /* ======================================================
+         * CONFIRM RUNSHEET & UPDATE POD
+         * ====================================================== */
+        mapItemToPOD(item) {
+            return {
+                courier_employee_id: item.courier_employee_id,
+                delivery_runsheet_number: item.delivery_runsheet_number,
+                koli_number: item.koli_number,
+                status: item.status_code,
+                remarks: item.remarks,
+                receiver_name: item.receiver_name,
+            }
+        },
+
+        async confirmAction() {
+            if (!this.selectedUpdateItems.length) {
+                return this.openNotification(
+                    'danger',
+                    '',
+                    'Failed',
+                    'Please select at least one item'
+                )
+            }
+
+            for (const item of this.selectedUpdateItems) {
+                await this.updatePOD(this.mapItemToPOD(item))
+            }
+        },
+
+        async submitPOD(dataPOD, runsheetNumber) {
+            if (!dataPOD.status) {
+                this.openNotification('warn', null, 'Status Required')
+                return
+            }
+
+            this.loadingConfirm = true
+
+            try {
+                const res = await axios.put(
+                    `${this.URL.revamp_delivery}/${runsheetNumber}/detail/${dataPOD.koli_number}/status?n=${this.listenNodeId}`,
+                    dataPOD,
+                    this.Helper.header()
+                )
+
+                this.openNotification('success', null, 'Success', res?.data?.message)
+                await this.getDataDelivery()
+            } catch (err) {
+                await this.openNotification(
+                    'danger',
+                    err?.response?.data?.code ?? '',
+                    'Failed',
+                    err?.response?.data?.message ?? 'Something went wrong'
+                )
+            } finally {
+                this.loadingConfirm = false
+            }
+        },
+
+        async editPOD(val) {
+            const dataPOD = this.mapItemToPOD(val)
+            await this.submitPOD(dataPOD, val.delivery_runsheet_number)
+        },
+
+        async updatePOD(dataPOD) {
+            await this.submitPOD(dataPOD, this.delivery_runsheet_number)
+        },
+
+        /* ==========================
+         * CAMERA SCAN HANDLER
+         * ========================== */
+        onCameraScannerGetData({ namespace, data }) {
+            const value = data.text
+            if (!value) return
+
+            if (namespace === 'formInputBag') {
+                this.item_bag = value
+                this.validateBag()
+            }
+            if (namespace === 'formInputConnote') {
+                this.item_no = value
+                this.scanConnote()
+            }
+            if (namespace === 'formRemoveConnote') {
+                this.item_no_remove = value
+                this.removeConnote()
+            }
+        },
+
+        /* ======================================================
+         * UTIL
+         * ====================================================== */
+        setURL() {
+            this.$router.push({
+                name: 'delivery-runsheet-edit',
+                params: {
+                    employee_id: this.employee_id,
+                    delivery_runsheet_number: this.delivery_runsheet_number,
+                },
+            })
+            this.setRoutePageHistory(this.$route.meta, false)
+        },
+
+        clearInputs() {
+            this.item_no = ''
+            this.item_no_remove = ''
+            this.item_bag = ''
+            this.isSubmitting = false
+        },
+
+        clearAll() {
+            this.clearInputs()
+            this.form = {}
+        },
+
+        disableDeliveredPOD(val) {
+            this.$set(val, 'is_disabled_input_status', true)
+            this.$set(val, 'is_disabled_input_remarks', true)
+            this.$set(val, 'is_disabled_input_reveiver', true) // TODO: CHANGE THIS WRONG KEY receiver
+        },
+
+        print() {
+            const routeData = this.$router.resolve({
+                name: 'printGeneral',
+                params: {
+                    id: this.delivery_runsheet_number,
+                    type: 'delivery',
+                    employee_id: this.employee_id,
+                    node_id: this.listenNodeId,
+                },
+            })
+
+            const printWindow = window.open(routeData.href, '_blank', 'noopener')
+
+            if (printWindow) {
+                printWindow.onload = function () {
+                    printWindow.print()
+                    printWindow.onafterprint = () => printWindow.close()
+                }
+            }
         },
     },
-    beforeUnmount() {
-        // Stop the timer when leaving the page
+    async mounted() {
+        await this.getStatus()
+
+        await this.initRoute()
+        // this.startSlaTimer()
+
+        window.addEventListener('timezone-changed', this.reload)
+
+        this.timer = setInterval(() => {
+            this.dataDelivery = this.dataDelivery.map((item) => ({
+                ...item,
+                sla_connote_formatted: this.formatSlaTime(item.sla_date, item.end_date),
+            }))
+        }, 1000)
+    },
+    beforeDestroy() {
+        // this.stopSlaTimer()
+        window.removeEventListener('timezone-changed', this.reload)
         clearInterval(this.timer)
     },
 }
 </script>
+<style lang="scss" scoped>
+.summary-list {
+    padding: 0;
+    text-align: left;
+    list-style: none;
+}
+</style>

@@ -169,22 +169,26 @@ const Master = {
         },
 
         handleTabNavigation(event, currentInputRef, inputOrder) {
-            if (event.key === 'Tab') {
-                event.preventDefault()
+            if (event.key !== 'Tab') return
 
-                if (!inputOrder || !inputOrder.length) return
+            event.preventDefault()
+            if (!inputOrder || !inputOrder.length) return
 
-                const currentIndex = inputOrder.indexOf(currentInputRef)
-                if (currentIndex === -1) return
+            const currentIndex = inputOrder.indexOf(currentInputRef)
+            if (currentIndex === -1) return
 
-                const nextIndex = (currentIndex + 1) % inputOrder.length
-                const nextRef = inputOrder[nextIndex]
+            const isShift = event.shiftKey
 
-                if (this.$refs[nextRef]) {
-                    const nextInput = this.$refs[nextRef].$el.querySelector('input')
-                    if (nextInput) nextInput.focus()
-                }
-            }
+            const nextIndex = isShift
+                ? (currentIndex - 1 + inputOrder.length) % inputOrder.length // Shift + Tab (prev)
+                : (currentIndex + 1) % inputOrder.length // Tab (next)
+
+            const nextRef = inputOrder[nextIndex]
+
+            const ref = this.$refs[nextRef]
+            const nextInput = ref?.$el?.querySelector('input')
+
+            if (nextInput) nextInput.focus()
         },
 
         moneyformat(number) {
