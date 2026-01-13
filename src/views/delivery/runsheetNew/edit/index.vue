@@ -298,7 +298,7 @@ export default {
         listenLoading() {
             return (
                 this.loadingStatus ||
-                // this.loadingRunsheet ||
+                this.loadingRunsheet ||
                 this.loadingApprove ||
                 this.loadingConfirm ||
                 this.loadingConfirmUnpproveRunsheet ||
@@ -416,8 +416,6 @@ export default {
         },
 
         async getStatus() {
-            if (this.isSubmitting) return
-            this.isSubmitting = true
             this.loadingStatus = true
 
             try {
@@ -458,7 +456,6 @@ export default {
                 )
             } finally {
                 this.loadingStatus = false
-                this.clearInputs()
             }
         },
 
@@ -823,7 +820,6 @@ export default {
 
                 this.clearInputs()
             } finally {
-                this.clearInputs()
                 this.setActiveInput('formInputBag')
             }
         },
@@ -836,12 +832,19 @@ export default {
                 )
                 this.checkItemSla('BAG')
             } catch (err) {
+                this.loadingRunsheet = false
+
                 await this.openNotification(
                     'danger',
                     '',
                     'Failed',
                     err?.response?.data?.message ?? 'Something went wrong'
                 )
+
+                this.clearInputs()
+            } finally {
+                this.clearAll()
+                this.setActiveInput('formInputBag')
             }
         },
 
