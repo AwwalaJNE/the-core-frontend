@@ -909,7 +909,6 @@ export default {
         },
 
         async checkZoneDelivery() {
-            console.log('CEK', this.type)
             this.openDialogReCheckConnoteSla = false
             const item = this.type === 'BAG' ? this.form.bag_number : this.form.koli_number
 
@@ -923,7 +922,6 @@ export default {
                     : this.addConnoteToRunsheet(this.form)
             } catch (err) {
                 this.loadingRunsheet = false
-
 
                 if (err?.response?.data?.status === 'failed') {
                     this.dataItem = this.form
@@ -1200,6 +1198,9 @@ export default {
                 default:
                     break
             }
+
+            this.setActiveInput(this.type === 'KOLI' ? 'formInputConnote' : 'formInputBag')
+            this.clearAll()
         },
 
         /* ======================================================
