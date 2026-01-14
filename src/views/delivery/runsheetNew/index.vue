@@ -70,7 +70,6 @@
                                         ref="searchInput"
                                         :placeholder="searchPlaceholder"
                                         @searchValue="searchValue"
-                                        @handleSearch="handleSearch"
                                     />
                                 </vs-col>
                             </vs-row>
@@ -257,12 +256,6 @@ export default {
                     e.preventDefault()
                     this.openDialog()
                 }
-            })
-        },
-        handleSearch() {
-            this.$nextTick(() => {
-                this.refresh()
-                this.$refs.searchInput.clear()
             })
         },
         updateValue(key, val) {
