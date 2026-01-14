@@ -133,7 +133,7 @@
             <template #thead>
                 <vs-tr>
                     <template v-if="listenExpandable">
-                        <vs-th>
+                        <vs-th class="xxxxs">
                             <i class="bx bx-chevron-right arrow" style="visibility: hidden"></i>
                         </vs-th>
                     </template>
