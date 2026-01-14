@@ -405,6 +405,8 @@ export default {
             if (this.isSubmitting) return
             this.isSubmitting = true
 
+            tasks.push(this.getStatus())
+
             if (this.employee_id) {
                 tasks.push(this.getCourier())
             }
@@ -1219,8 +1221,6 @@ export default {
         },
     },
     async mounted() {
-        await this.getStatus()
-
         await this.initRoute()
         // this.startSlaTimer()
 
