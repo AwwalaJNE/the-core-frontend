@@ -539,17 +539,42 @@ export default {
                     } else {
                         this.dataTable = []
                     }
-                    this.dataTableProp = res.data.detail
-                    this.dataTableProp.forEach((item) => {
-                        if (item.is_masterbag === '1') {
-                            item.item_type = 'MASTERBAG'
-                        }
-                        item.is_missroute = item.is_missroute == true ? 1 : 0
-                        item.total_connote = item.total_connote.toString()
-                    })
-                    this.dataTableProp.map((item) => {
+
+                    this.dataTableProp = res.data.detail.map((item) => {
+                        item['item_type'] = item.is_masterbag === '1' ? 'MASTERBAG' : item.item_type
+                        item['is_missroute'] = item.is_missroute === true ? 1 : 0
+                        item['total_connote'] = item.total_connote?.toString()
                         item, (item['button_status'] = { entry_status: item.is_received == '0' })
+
+                        if (item.item_type === 'MASTERBAG') {
+                            const children = {
+                                'Bag Number': [],
+                                'Item Type': [],
+                            }
+
+                            item?.masterbag_childs.forEach((el) => {
+                                children['Bag Number'].push(el?.bag_number)
+                                children['Item Type'].push(el?.item_type)
+                            })
+
+                            item.children = children
+                        } else if (item.item_type === 'BAG') {
+                            const children = {
+                                'Koli Number': [],
+                                'Item Type': [],
+                            }
+
+                            item?.bag_childs.forEach((el) => {
+                                children['Koli Number'].push(el?.item_number)
+                                children['Item Type'].push(el?.item_type)
+                            })
+
+                            item.children = children
+                        }
+
+                        return item
                     })
+
                     this.page = res.data.meta.current_page
                     this.limit = parseInt(res.data.meta.per_page)
                     this.page_size = res.data.meta.last_page

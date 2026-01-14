@@ -11,12 +11,13 @@
             :pageSize="pageSize"
             :page="page"
             :limit="limit"
-            @actionLimit="actionLimit"
-            @actionPagination="actionPagination"
             :customAction="true"
             :customActionList="customActionList"
-            @actionUpdate="entryReceivingLog"
             :isIconButton="true"
+            :expandable="true"
+            @actionLimit="actionLimit"
+            @actionPagination="actionPagination"
+            @actionUpdate="entryReceivingLog"
         />
 
         <dialog-create-receiving-log
