@@ -370,6 +370,8 @@ export default {
 
             timer: null,
             now: Date.now(),
+
+            type: '',
         }
     },
     methods: {
@@ -873,8 +875,9 @@ export default {
          * SLA & ZONE
          * ====================================================== */
         async checkItemSla(type) {
+            this.type = type
             const url =
-                type === 'KOLI'
+                this.type === 'KOLI'
                     ? `${this.URL.configuration_warning_sla}/check-sla?n=${this.listenNodeId}&item_number=${this.form.koli_number}`
                     : `${this.URL.configuration_warning_sla}/check-sla-bag?n=${this.listenNodeId}&bag_number=${this.form.bag_number}`
 
@@ -883,7 +886,12 @@ export default {
                 const data = Array.isArray(res.data.data) ? res.data.data : [res.data.data]
 
                 const safe = data.every((i) => i.status === 'SAFE')
-                safe ? this.checkZoneDelivery(type) : (this.openDialogReCheckConnoteSla = true)
+                if (safe) {
+                    this.checkZoneDelivery(this.type)
+                } else {
+                    this.loadingRunsheet = false
+                    this.openDialogReCheckConnoteSla = true
+                }
             } catch (err) {
                 this.loadingRunsheet = false
 
@@ -896,34 +904,41 @@ export default {
 
                 this.clearInputs()
             } finally {
-                this.setActiveInput(type === 'KOLI' ? 'formInputConnote' : 'formInputBag')
+                this.setActiveInput(this.type === 'KOLI' ? 'formInputConnote' : 'formInputBag')
             }
         },
 
-        async checkZoneDelivery(type) {
-            const item = type === 'BAG' ? this.form.bag_number : this.form.koli_number
+        async checkZoneDelivery() {
+            this.openDialogReCheckConnoteSla = false
+            const item = this.type === 'BAG' ? this.form.bag_number : this.form.koli_number
 
             try {
                 await axios.get(
-                    `${this.URL.check_delivery_area}?item_number=${item}&type=${type}&n=${this.listenNodeId}`,
+                    `${this.URL.check_delivery_area}?item_number=${item}&type=${this.type}&n=${this.listenNodeId}`,
                     this.Helper.header()
                 )
-                type === 'BAG'
+                this.type === 'BAG'
                     ? this.addBagPraRunsheetToRunsheet(this.form)
                     : this.addConnoteToRunsheet(this.form)
             } catch (err) {
                 this.loadingRunsheet = false
 
-                await this.openNotification(
-                    'danger',
-                    '',
-                    'Failed',
-                    err?.response?.data?.message ?? 'Something went wrong'
-                )
+                if (err?.response?.data?.status === 'failed') {
+                    this.dataItem = this.form
+                    this.listConnote = err?.response?.data?.data
+                    this.openDialogReCheckConnoteZone = true
+                } else {
+                    this.openNotification(
+                        'danger',
+                        err?.response?.data?.code ?? '',
+                        'Failed',
+                        err?.response?.data?.message ?? 'Something went wrong'
+                    )
+                }
 
                 this.clearInputs()
             } finally {
-                this.setActiveInput(type === 'KOLI' ? 'formInputConnote' : 'formInputBag')
+                this.setActiveInput(this.type === 'KOLI' ? 'formInputConnote' : 'formInputBag')
             }
         },
 
@@ -1168,6 +1183,27 @@ export default {
         },
 
         /* ======================================================
+         * DIALOG
+         * ====================================================== */
+        closeDialog(ref) {
+            switch (ref) {
+                case 'recheck_connote_sla':
+                    this.openDialogReCheckConnoteSla = false
+                    break
+                case 'recheck_connote_zone':
+                    this.openDialogReCheckConnoteZone = false
+                    break
+                case 'unapprove_runsheet':
+                    this.activeDialogConfirmUnpproveRunsheet = false
+                default:
+                    break
+            }
+
+            this.setActiveInput(this.type === 'KOLI' ? 'formInputConnote' : 'formInputBag')
+            this.clearAll()
+        },
+
+        /* ======================================================
          * UTIL
          * ====================================================== */
         setURL() {
@@ -1191,6 +1227,7 @@ export default {
         clearAll() {
             this.clearInputs()
             this.form = {}
+            this.type = ''
         },
 
         disableDeliveredPOD(val) {

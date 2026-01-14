@@ -167,7 +167,7 @@
                                 v-uppercase
                                 :data-testid="`input-item_number`"
                                 ref="formInputBaggingBag"
-                                :disabled="dialogActive"
+                                :disabled="dialogActive || isSubmitting"
                                 @click-icon="$refs.cameraScanner.open('formInputBaggingBag')"
                                 v-bind:data-kt="'scan_input'"
                                 @input="sanitizeAlphanumeric('item_number')"
