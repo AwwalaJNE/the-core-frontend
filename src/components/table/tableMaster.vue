@@ -1756,25 +1756,21 @@
                         </template>
 
                         <template v-if="listenExpandable" #expand>
-                            <div class="con-content">
-                                <template
-                                    v-if="
-                                        item.hasOwnProperty('children') &&
-                                        Object.keys(item.children).length > 0
-                                    "
-                                >
-                                    <table>
-                                        <tr>
-                                            <th
+                            <template
+                                v-if="
+                                    item.hasOwnProperty('children') &&
+                                    Object.keys(item.children).length > 0
+                                "
+                            >
+                                <vs-table striped class="child-table">
+                                    <template #thead>
+                                        <vs-tr>
+                                            <vs-th
                                                 v-for="(c_item, c_key) in Object.keys(
                                                     item.children
                                                 )"
                                                 :key="c_key"
-                                                :class="
-                                                    item.hasOwnProperty('children_width')
-                                                        ? item['children_width'][c_item]
-                                                        : ''
-                                                "
+                                                :class="item.children_width?.[c_item] || ''"
                                                 style="font-size: 0.85em; padding-left: 0.75em"
                                             >
                                                 <template
@@ -1793,9 +1789,11 @@
                                                         )
                                                     }}
                                                 </template>
-                                            </th>
-                                        </tr>
-                                        <tr>
+                                            </vs-th>
+                                        </vs-tr>
+                                    </template>
+                                    <template #tbody>
+                                        <vs-tr>
                                             <template
                                                 v-for="(c_item, c_td_key) in Object.keys(
                                                     item.children
@@ -1976,7 +1974,9 @@
                                                                                 </p>
                                                                             </template>
                                                                             <template v-else="">
-                                                                                <p>{{ itm }}</p>
+                                                                                <p>
+                                                                                    {{ itm }}
+                                                                                </p>
                                                                             </template>
                                                                         </template>
                                                                         <template v-else>
@@ -2003,10 +2003,10 @@
                                                     </td>
                                                 </template>
                                             </template>
-                                        </tr>
-                                    </table>
-                                </template>
-                            </div>
+                                        </vs-tr>
+                                    </template>
+                                </vs-table>
+                            </template>
                         </template>
                     </vs-tr>
                 </template>
@@ -2957,5 +2957,15 @@ span.text-danger {
 /* rotate when expanded */
 .vs-table__tr.isExpand .expand-icon .arrow {
     transform: rotate(90deg);
+}
+
+/* CHILD TABLE STYLE */
+.child-table .vs-table__thead .vs-table__th {
+    background: transparent !important;
+    font-weight: 600;
+    font-size: 0.75em;
+    color: #6b7280;
+    border-top: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb;
 }
 </style>
