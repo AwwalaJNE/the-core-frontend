@@ -65,10 +65,10 @@ export default {
             title: 'Handover Runsheet',
             tempSearch: '',
             searchBy: 'delivery_runsheet_number',
-            searchPlaceholder: 'Search Runsheet Number',
+            searchPlaceholder: 'Search ID',
             searchParams: [
                 {
-                    label: 'Runsheet Number',
+                    label: 'ID',
                     value: 'delivery_runsheet_number',
                 },
                 {
