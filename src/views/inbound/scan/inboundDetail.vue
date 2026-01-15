@@ -11,22 +11,23 @@
             :pageSize="pageSize"
             :page="page"
             :limit="limit"
-            @actionLimit="actionLimit"
-            @actionPagination="actionPagination"
             :customAction="true"
             :customActionList="customActionList"
-            @actionUpdate="entryReceivingLog"
             :isIconButton="true"
+            :expandable="true"
+            @actionLimit="actionLimit"
+            @actionPagination="actionPagination"
+            @actionUpdate="entryReceivingLog"
         />
 
         <dialog-create-receiving-log
             ref="dialogEditReceivingLog"
+            title="Edit Receiving Log"
+            btnBlue="Edit"
             :active="dialogEditReceivingLogActive"
             :inboundDetail="inboundDetail"
-            @closeDialog="closeDialog"
-            btnBlue="Edit"
-            title="Edit Receiving Log"
             :receivingLogs="receivingLogs"
+            @closeDialog="closeDialog"
         />
     </div>
 </template>
@@ -34,6 +35,14 @@
 import master from '@/mixins/master'
 import TableMaster from '@/components/table/tableMaster.vue'
 import DialogCreateReceivingLog from '../../inboundAirport/scan/dialogCreateReceivingLog.vue'
+
+const BAG_TYPE_MAP = {
+    OM: { label: 'TM', key: 'tm' },
+    HACB: { label: 'RCVB', key: 'rcvb' },
+    HVO: { label: 'HVI', key: 'hvi' },
+    DO: { label: 'HVI', key: 'hvi' },
+}
+
 export default {
     name: 'Inbound-Detail',
     mixins: [master],
@@ -56,7 +65,6 @@ export default {
     },
     data() {
         return {
-            dataTable: [],
             customActionList: [
                 {
                     label: 'Entry Status',
@@ -69,52 +77,24 @@ export default {
         }
     },
     computed: {
+        listenLoading() {
+            return this.loading
+        },
+
+        bagTypeConfig() {
+            return BAG_TYPE_MAP[this.dataTableProp?.[0]?.bag?.tipe_bag] ?? null
+        },
+
         tableKey() {
-            return `${this.getDynamicColumnKey}-${this.getDynamicColumnLabel}`
-        },
-
-        getDynamicColumnLabel() {
-            if (this.dataTableProp && this.dataTableProp.length > 0) {
-                const firstItem = this.dataTableProp[0]
-                const tipeBag = firstItem.bag?.tipe_bag
-
-                switch (tipeBag) {
-                    case 'OM':
-                        return 'TM'
-                    case 'HACB':
-                        return 'RCVB'
-                    case 'HVO':
-                    case 'DO':
-                        return 'HVI'
-                    default:
-                        return 'HVI' // default fallback
-                }
+            if (!this.bagTypeConfig) {
+                return 'no-dynamic-column'
             }
-            return 'HVI' // default ketika belum ada data
-        },
 
-        getDynamicColumnKey() {
-            if (this.dataTableProp && this.dataTableProp.length > 0) {
-                const firstItem = this.dataTableProp[0]
-                const tipeBag = firstItem.bag?.tipe_bag
-
-                switch (tipeBag) {
-                    case 'OM':
-                        return 'tm'
-                    case 'HACB':
-                        return 'rcvb'
-                    case 'HVO':
-                    case 'DO':
-                        return 'hvi'
-                    default:
-                        return 'hvi' // default fallback
-                }
-            }
-            return 'hvi' // default ketika belum ada data
+            return `${this.bagTypeConfig.key}-${this.bagTypeConfig.label}`
         },
 
         datacolumn() {
-            return [
+            const columns = [
                 {
                     label: 'Item Number',
                     key: 'item_number',
@@ -130,46 +110,52 @@ export default {
                     key: 'item_type',
                     width: 'sm',
                 },
-                {
-                    // 🧠 kolom dinamis
-                    label: this.getDynamicColumnLabel,
-                    key: this.getDynamicColumnKey,
+            ]
+
+            if (this.bagTypeConfig) {
+                columns.push({
+                    label: this.bagTypeConfig.label,
+                    key: this.bagTypeConfig.key,
                     width: 'sm',
-                },
+                })
+            }
+
+            columns.push(
                 {
                     label: 'Irregularity Status',
                     key: 'irregularity_status',
                     width: 'sm',
                 },
                 {
-                    label: 'Status receiving',
+                    label: 'Status Receiving',
                     key: 'is_received',
                     type: 'status',
                     width: 'sm',
                     is_missroute: 'is_missroute',
-                },
-            ]
-        },
+                }
+            )
 
-        listenLoading() {
-            return this.loading
+            return columns
         },
     },
+
     methods: {
         entryReceivingLog(val) {
             this.dialogEditReceivingLogActive = true
-            this.inboundDetail = val
-            this.inboundDetail.inbound_number = this.inboundNumber
+            this.inboundDetail = {
+                ...val,
+                inbound_number: this.inboundNumber,
+            }
 
-            this.$emit('autoFocusInput', this.dialogEditReceivingLogActive)
+            this.$emit('autoFocusInput', true)
         },
 
         closeDialog() {
             this.dialogEditReceivingLogActive = false
             this.inboundDetail = null
-            this.$emit('refresh')
 
-            this.$emit('autoFocusInput', this.dialogEditReceivingLogActive)
+            this.$emit('refresh')
+            this.$emit('autoFocusInput', false)
         },
     },
 }

@@ -132,7 +132,7 @@
             </template>
             <template #thead>
                 <vs-tr>
-                    <template v-if="listenExpandable">
+                    <template v-if="listenExpandable && listenHasChildren">
                         <vs-th class="xxxxs">
                             <i class="bx bx-chevron-right arrow" style="visibility: hidden"></i>
                         </vs-th>
@@ -221,7 +221,7 @@
                         :is-selected="!!selected.includes(item)"
                         @click="onRowClick($event, item)"
                     >
-                        <template v-if="listenExpandable">
+                        <template v-if="listenExpandable && listenHasChildren">
                             <vs-td>
                                 <span class="expand-icon">
                                     <i class="bx bx-chevron-right arrow"></i>
@@ -1756,25 +1756,21 @@
                         </template>
 
                         <template v-if="listenExpandable" #expand>
-                            <div class="con-content">
-                                <template
-                                    v-if="
-                                        item.hasOwnProperty('children') &&
-                                        Object.keys(item.children).length > 0
-                                    "
-                                >
-                                    <table>
-                                        <tr>
-                                            <th
+                            <template
+                                v-if="
+                                    item.hasOwnProperty('children') &&
+                                    Object.keys(item.children).length > 0
+                                "
+                            >
+                                <vs-table striped class="child-table">
+                                    <template #thead>
+                                        <vs-tr>
+                                            <vs-th
                                                 v-for="(c_item, c_key) in Object.keys(
                                                     item.children
                                                 )"
                                                 :key="c_key"
-                                                :class="
-                                                    item.hasOwnProperty('children_width')
-                                                        ? item['children_width'][c_item]
-                                                        : ''
-                                                "
+                                                :class="item.children_width?.[c_item] || ''"
                                                 style="font-size: 0.85em; padding-left: 0.75em"
                                             >
                                                 <template
@@ -1793,9 +1789,11 @@
                                                         )
                                                     }}
                                                 </template>
-                                            </th>
-                                        </tr>
-                                        <tr>
+                                            </vs-th>
+                                        </vs-tr>
+                                    </template>
+                                    <template #tbody>
+                                        <vs-tr>
                                             <template
                                                 v-for="(c_item, c_td_key) in Object.keys(
                                                     item.children
@@ -1976,7 +1974,9 @@
                                                                                 </p>
                                                                             </template>
                                                                             <template v-else="">
-                                                                                <p>{{ itm }}</p>
+                                                                                <p>
+                                                                                    {{ itm }}
+                                                                                </p>
                                                                             </template>
                                                                         </template>
                                                                         <template v-else>
@@ -2003,10 +2003,10 @@
                                                     </td>
                                                 </template>
                                             </template>
-                                        </tr>
-                                    </table>
-                                </template>
-                            </div>
+                                        </vs-tr>
+                                    </template>
+                                </vs-table>
+                            </template>
                         </template>
                     </vs-tr>
                 </template>
@@ -2291,6 +2291,9 @@ export default {
                 this.customBtn ||
                 this.customAction
             )
+        },
+        listenHasChildren() {
+            return this.dataTable?.some((i) => i.children && Object.keys(i.children).length > 0)
         },
     },
     watch: {
@@ -2957,5 +2960,22 @@ span.text-danger {
 /* rotate when expanded */
 .vs-table__tr.isExpand .expand-icon .arrow {
     transform: rotate(90deg);
+}
+
+/* CHILD TABLE STYLE */
+.child-table .vs-table__thead .vs-table__th {
+    background: transparent !important;
+    font-weight: 600;
+    font-size: 0.75em;
+    color: #6b7280;
+    border-top: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb;
+}
+.child-table .vs-table__tbody td {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8em;
+    color: #374151;
+    vertical-align: top;
+    border-bottom: 1px solid #e5e7eb;
 }
 </style>

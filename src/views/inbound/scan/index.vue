@@ -287,8 +287,7 @@ export default {
     },
     computed: {
         is_prealert() {
-            const pattern = /\/scan\/[\w-]+$/
-            return pattern.test(this.$route.fullPath)
+            return this.$route.params.inbound_number
         },
     },
     watch: {
@@ -539,17 +538,36 @@ export default {
                     } else {
                         this.dataTable = []
                     }
-                    this.dataTableProp = res.data.detail
-                    this.dataTableProp.forEach((item) => {
-                        if (item.is_masterbag === '1') {
-                            item.item_type = 'MASTERBAG'
-                        }
-                        item.is_missroute = item.is_missroute == true ? 1 : 0
-                        item.total_connote = item.total_connote.toString()
-                    })
-                    this.dataTableProp.map((item) => {
+
+                    this.dataTableProp = res.data.detail.map((item) => {
+                        item['item_type'] = item.is_masterbag === '1' ? 'MASTERBAG' : item.item_type
+                        item['is_missroute'] = item.is_missroute === true ? 1 : 0
+                        item['total_connote'] = item.total_connote?.toString()
                         item, (item['button_status'] = { entry_status: item.is_received == '0' })
+
+                        if (item.item_type === 'MASTERBAG') {
+                            const children = {
+                                'Bag Number': [],
+                            }
+
+                            item?.masterbag_childs.forEach((el) => {
+                                children['Bag Number'].push(el?.bag_number)
+                            })
+                            item.children = children
+                        } else if (item.item_type === 'BAG') {
+                            const children = {
+                                'Connote Number': [],
+                            }
+
+                            item?.bag_childs.forEach((el) => {
+                                children['Connote Number'].push(el?.connote_number)
+                            })
+                            item.children = children
+                        }
+
+                        return item
                     })
+
                     this.page = res.data.meta.current_page
                     this.limit = parseInt(res.data.meta.per_page)
                     this.page_size = res.data.meta.last_page
