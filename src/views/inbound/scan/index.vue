@@ -549,26 +549,20 @@ export default {
                         if (item.item_type === 'MASTERBAG') {
                             const children = {
                                 'Bag Number': [],
-                                'Item Type': [],
                             }
 
                             item?.masterbag_childs.forEach((el) => {
                                 children['Bag Number'].push(el?.bag_number)
-                                children['Item Type'].push(el?.item_type)
                             })
-
                             item.children = children
                         } else if (item.item_type === 'BAG') {
                             const children = {
-                                'Koli Number': [],
-                                'Item Type': [],
+                                'Connote Number': [],
                             }
 
                             item?.bag_childs.forEach((el) => {
-                                children['Koli Number'].push(el?.item_number)
-                                children['Item Type'].push(el?.item_type)
+                                children['Connote Number'].push(el?.connote_number)
                             })
-
                             item.children = children
                         }
 
