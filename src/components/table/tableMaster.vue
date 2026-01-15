@@ -132,7 +132,7 @@
             </template>
             <template #thead>
                 <vs-tr>
-                    <template v-if="listenExpandable">
+                    <template v-if="listenExpandable && listenHasChildren">
                         <vs-th class="xxxxs">
                             <i class="bx bx-chevron-right arrow" style="visibility: hidden"></i>
                         </vs-th>
@@ -221,7 +221,7 @@
                         :is-selected="!!selected.includes(item)"
                         @click="onRowClick($event, item)"
                     >
-                        <template v-if="listenExpandable">
+                        <template v-if="listenExpandable && listenHasChildren">
                             <vs-td>
                                 <span class="expand-icon">
                                     <i class="bx bx-chevron-right arrow"></i>
@@ -2292,6 +2292,9 @@ export default {
                 this.customAction
             )
         },
+        listenHasChildren() {
+            return this.dataTable?.some((i) => i.children && Object.keys(i.children).length > 0)
+        },
     },
     watch: {
         tableLoading: function (val) {
@@ -2966,6 +2969,13 @@ span.text-danger {
     font-size: 0.75em;
     color: #6b7280;
     border-top: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb;
+}
+.child-table .vs-table__tbody td {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8em;
+    color: #374151;
+    vertical-align: top;
     border-bottom: 1px solid #e5e7eb;
 }
 </style>
