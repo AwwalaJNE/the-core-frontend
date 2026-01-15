@@ -9,7 +9,7 @@
             :page="pagination.page"
             :limit="pagination.limit"
             :hasAction="false"
-            :hasLinkedChild="['Id']"
+            :hasLinkedChild="['ID']"
             :hasPagination="true"
             :expandable="true"
             :hasChildStatus="true"
@@ -243,7 +243,7 @@ export default {
                         })
                         children['Priority'] = has_undelivered_connote
                         children['Is Approve'] = is_approve
-                        children['Id'] = delivery_runsheet_number
+                        children['ID'] = delivery_runsheet_number
                         children['DRI Number'] = dri
                         children['HRS Number'] = hrs
                         children['Total Koli'] = total_koli

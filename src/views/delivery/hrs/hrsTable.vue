@@ -138,7 +138,7 @@ export default {
                             item['total_undelivered_received'] || '0'
 
                         item['children_width'] = {
-                            'Runsheet #': 'auto',
+                            ID: 'auto',
                             'DRI Number': 'auto',
                             'Total Koli': 'auto',
                             Open: 'auto',
@@ -156,7 +156,7 @@ export default {
                             total_undelivered.push(el.total_undelivered)
                             total_undelivery_received.push(el.total_undelivery_received)
                         })
-                        children['Runsheet #'] = delivery_runsheet_number
+                        children['ID'] = delivery_runsheet_number
                         children['DRI Number'] = dri
                         children['Total Koli'] = total_koli
                         children['Open'] = total_open
