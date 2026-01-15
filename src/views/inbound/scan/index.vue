@@ -287,8 +287,7 @@ export default {
     },
     computed: {
         is_prealert() {
-            const pattern = /\/scan\/[\w-]+$/
-            return pattern.test(this.$route.fullPath)
+            return this.$route.params.inbound_number
         },
     },
     watch: {
