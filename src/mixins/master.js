@@ -104,6 +104,20 @@ const Master = {
             }
         },
 
+        setUnfocusInput() {
+            // Clear activeInput so handleGlobalClick & refocus logic have nothing to lock onto
+            this.activeInput = null
+
+            this.$nextTick(() => {
+                requestAnimationFrame(() => {
+                    const el = document.activeElement
+                    if (el && typeof el.blur === 'function') {
+                        el.blur()
+                    }
+                })
+            })
+        },
+
         focusInput(refName, formRefName, shouldSkipFocus) {
             if (shouldSkipFocus()) return
 
@@ -116,6 +130,7 @@ const Master = {
 
             inputEl.focus()
         },
+
         preventUnfocus(e, formRefName = null, shouldSkipFocus = () => false) {
             if (shouldSkipFocus()) return
 

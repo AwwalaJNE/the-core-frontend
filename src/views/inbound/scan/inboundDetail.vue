@@ -1,40 +1,69 @@
 <template>
-    <div>
-        <table-master
-            :key="tableKey"
-            hideColumnKey="receiving-detail-info"
-            :dataTable="dataTableProp"
-            :dataColumn="datacolumn"
-            :tableLoading="listenLoading"
-            :hasAction="false"
-            :hasPagination="true"
-            :pageSize="pageSize"
-            :page="page"
-            :limit="limit"
-            :customAction="true"
-            :customActionList="customActionList"
-            :isIconButton="true"
-            :expandable="true"
-            @actionLimit="actionLimit"
-            @actionPagination="actionPagination"
-            @actionUpdate="entryReceivingLog"
+    <div :class="{ 'box-v1': boxed }">
+        <vs-row justify="space-between" align="center">
+            <h4 v-if="title">{{ title }}</h4>
+
+            <core-button
+                v-if="dataTable?.length > 0"
+                icon="bx bx-pencil"
+                name="remark"
+                :customStyle="{ width: 'auto' }"
+                @click="openDialog('insert_remark')"
+            >
+                Insert Remark
+            </core-button>
+        </vs-row>
+
+        <vs-row class="section-padding">
+            <vs-col w="12">
+                <table-master
+                    hideColumnKey="receiving-detail-info"
+                    :key="tableKey"
+                    :dataTable="dataTable"
+                    :dataColumn="datacolumn"
+                    :tableLoading="loading"
+                    :hasAction="false"
+                    :hasPagination="true"
+                    :pageSize="pageSize"
+                    :page="page"
+                    :limit="limit"
+                    :customAction="true"
+                    :customActionList="customActionList"
+                    :isIconButton="true"
+                    :expandable="true"
+                    @actionLimit="actionLimit"
+                    @actionPagination="actionPagination"
+                    @actionUpdate="handleActionUpdate"
+                />
+            </vs-col>
+        </vs-row>
+
+        <dialog-insert-remark
+            :actived="dialogInsertRemark"
+            :inbound_number="inboundNumber"
+            @closeDialog="closeDialog('insert_remark')"
         />
 
         <dialog-create-receiving-log
-            ref="dialogEditReceivingLog"
-            title="Edit Receiving Log"
-            btnBlue="Edit"
-            :active="dialogEditReceivingLogActive"
+            ref="dialogReceivingLog"
+            title="Receiving Log"
+            btnBlue="Save"
+            :active="dialogReceivingLog"
             :inboundDetail="inboundDetail"
             :receivingLogs="receivingLogs"
-            @closeDialog="closeDialog"
+            @closeDialog="closeDialog('receiving_log')"
         />
     </div>
 </template>
+
 <script>
 import master from '@/mixins/master'
-import TableMaster from '@/components/table/tableMaster.vue'
-import DialogCreateReceivingLog from '../../inboundAirport/scan/dialogCreateReceivingLog.vue'
+
+import Button from '@/components/button'
+import TableMaster from '@/components/table/tableMaster'
+
+import DialogCreateReceivingLog from '../../inboundAirport/scan/dialogCreateReceivingLog'
+import DialogInsertRemark from '@/views/inbound/scan/dialogInsertRemark'
 
 const BAG_TYPE_MAP = {
     OM: { label: 'TM', key: 'tm' },
@@ -44,24 +73,57 @@ const BAG_TYPE_MAP = {
 }
 
 export default {
-    name: 'Inbound-Detail',
+    name: 'InboundDetailBox',
     mixins: [master],
-    props: {
-        dataTableProp: Array,
-        loading: Boolean,
-        pageSize: Number,
-        page: Number,
-        limit: Number,
-        actionLimit: Function,
-        actionPagination: Function,
-        receivingLogs: Array,
-        inboundNumber: String,
-        is_prealert: Boolean,
-        autoFocusInput: Function,
-    },
     components: {
+        'core-button': Button,
         'table-master': TableMaster,
         'dialog-create-receiving-log': DialogCreateReceivingLog,
+        'dialog-insert-remark': DialogInsertRemark,
+    },
+    props: {
+        boxed: {
+            type: Boolean,
+            default: false,
+        },
+        title: {
+            type: String,
+            default: '',
+        },
+        dataTable: {
+            type: Array,
+            default: () => [],
+        },
+        loading: {
+            type: Boolean,
+            default: false,
+        },
+        pageSize: {
+            type: Number,
+            default: 10,
+        },
+        page: {
+            type: Number,
+            default: 1,
+        },
+        limit: {
+            type: Number,
+            default: 10,
+        },
+        actionLimit: {
+            type: Function,
+        },
+        actionPagination: {
+            type: Function,
+        },
+        receivingLogs: {
+            type: Array,
+            default: () => [],
+        },
+        inboundNumber: {
+            type: String,
+            default: '',
+        },
     },
     data() {
         return {
@@ -72,27 +134,20 @@ export default {
                     attribute: '',
                 },
             ],
-            dialogEditReceivingLogActive: false,
             inboundDetail: null,
+            dialogReceivingLog: false,
+            dialogInsertRemark: false,
         }
     },
     computed: {
-        listenLoading() {
-            return this.loading
-        },
-
         bagTypeConfig() {
-            return BAG_TYPE_MAP[this.dataTableProp?.[0]?.bag?.tipe_bag] ?? null
+            return BAG_TYPE_MAP[this.dataTable?.[0]?.bag?.tipe_bag] || null
         },
-
         tableKey() {
-            if (!this.bagTypeConfig) {
-                return 'no-dynamic-column'
-            }
-
-            return `${this.bagTypeConfig.key}-${this.bagTypeConfig.label}`
+            return this.bagTypeConfig
+                ? `${this.bagTypeConfig.key}-${this.bagTypeConfig.label}`
+                : 'no-dynamic-column'
         },
-
         datacolumn() {
             const columns = [
                 {
@@ -111,7 +166,6 @@ export default {
                     width: 'sm',
                 },
             ]
-
             if (this.bagTypeConfig) {
                 columns.push({
                     label: this.bagTypeConfig.label,
@@ -119,7 +173,6 @@ export default {
                     width: 'sm',
                 })
             }
-
             columns.push(
                 {
                     label: 'Irregularity Status',
@@ -134,26 +187,46 @@ export default {
                     is_missroute: 'is_missroute',
                 }
             )
-
             return columns
         },
     },
-
     methods: {
-        entryReceivingLog(val) {
-            this.dialogEditReceivingLogActive = true
-            this.inboundDetail = {
-                ...val,
-                inbound_number: this.inboundNumber,
+        handleActionUpdate(row) {
+            this.openDialog('receiving_log', row)
+        },
+        openDialog(type, row = null) {
+            this.$emit('autoFocusInput', true)
+
+            const dialogMap = {
+                insert_remark: () => {
+                    this.dialogInsertRemark = true
+                },
+
+                receiving_log: () => {
+                    if (!row) return
+
+                    this.dialogReceivingLog = true
+                    this.inboundDetail = {
+                        ...row,
+                        inbound_number: this.inboundNumber,
+                    }
+                },
             }
 
-            this.$emit('autoFocusInput', true)
+            dialogMap[type]?.()
         },
+        closeDialog(type) {
+            const closeMap = {
+                insert_remark: () => {
+                    this.dialogInsertRemark = false
+                },
+                receiving_log: () => {
+                    this.dialogReceivingLog = false
+                    this.inboundDetail = null
+                },
+            }
 
-        closeDialog() {
-            this.dialogEditReceivingLogActive = false
-            this.inboundDetail = null
-
+            closeMap[type]?.()
             this.$emit('refresh')
             this.$emit('autoFocusInput', false)
         },

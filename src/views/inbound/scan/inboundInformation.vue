@@ -1,33 +1,54 @@
 <template>
-    <div>
+    <div :class="{ 'box-v1': boxed }">
+        <h4 v-if="title" align="left">{{ title }}</h4>
         <table-master
             hideColumnKey="receiving-master-info"
             :dataTable="dataTable"
             :dataColumn="datacolumn"
-            :tableLoading="listenLoading"
+            :tableLoading="loading"
             :hasAction="false"
             :hasPagination="false"
             @handleEdit="actionDetail"
         />
     </div>
 </template>
+
 <script>
-import axios from 'axios'
 import master from '@/mixins/master'
-import TableMaster from '@/components/table/tableMaster.vue'
+
+import TableMaster from '@/components/table/tableMaster'
+
 export default {
     name: 'Inbound-Incoming',
     mixins: [master],
     props: {
-        dataTableProp: [Array, Object],
-        loading: Boolean,
+        boxed: {
+            type: Boolean,
+            default: false,
+        },
+        title: {
+            type: String,
+            default: '',
+        },
+        dataTableProp: {
+            type: [Array, Object],
+            default: () => [],
+        },
+        loading: {
+            type: Boolean,
+            default: false,
+        },
     },
     components: {
         'table-master': TableMaster,
     },
+    computed: {
+        dataTable() {
+            return this.dataTableProp
+        },
+    },
     data() {
         return {
-            dataTable: this.dataTableProp,
             datacolumn: [
                 {
                     label: 'Receiving Number',
@@ -58,29 +79,11 @@ export default {
             ],
         }
     },
-    computed: {
-        listenLoading() {
-            return this.loading
-        },
-        listendataTableProp() {
-            return this.dataTableProp
-        },
-    },
-    watch: {
-        dataTableProp: function (val) {
-            if (val != undefined) {
-                this.dataTable = val
-            }
-        },
-    },
     methods: {
         actionDetail(row) {
             this.$router.push({ name: 'detailConnote', params: { id: row.transaction_id } })
             this.setRoutePageHistory(this.$route.meta, false)
         },
-    },
-    mounted() {
-        // this.getTableData()
     },
 }
 </script>

@@ -1,6 +1,30 @@
 <template>
-    <div style="display: flex; flex-direction: column; gap: 1rem">
-        <vs-row>
+    <div :class="{ 'box-v1': boxed }">
+        <vs-row justify="space-between" align="center">
+            <h4 v-if="title">{{ title }}</h4>
+
+            <div style="display: flex" v-if="dataTable.length > 0">
+                <core-button
+                    icon="bx bx-plus"
+                    name="surat-jalan"
+                    :customStyle="{ width: 'auto' }"
+                    @click="openDialog('surat_jalan')"
+                >
+                    Surat Jalan
+                </core-button>
+
+                <core-button
+                    icon="bx bx-plus"
+                    name="surat-muatan"
+                    :customStyle="{ width: 'auto' }"
+                    @click="openDialog('surat_muatan')"
+                >
+                    Surat Muatan
+                </core-button>
+            </div>
+        </vs-row>
+
+        <vs-row v-if="dataTable.length > 0">
             <vs-col xs="6" sm="6" lg="3">
                 <selector
                     formKey="filter_type"
@@ -20,7 +44,8 @@
                 />
             </vs-col>
         </vs-row>
-        <vs-row>
+
+        <vs-row class="section-padding">
             <vs-col w="12">
                 <table-master
                     hideColumnKey="receiving-misroute-bag"
@@ -46,6 +71,19 @@
                 />
             </vs-col>
         </vs-row>
+
+        <dialog-bulk-surat-jalan
+            title="Create Penerusan"
+            :active="dialogSuratJalan"
+            :dataItem="selectedData"
+            @closeDialog="closeDialog('surat_jalan')"
+        />
+        <dialog-bulk-surat-muatan
+            title="Create Surat Muatan"
+            :active="dialogSuratMuatan"
+            :dataItem="selectedData"
+            @closeDialog="closeDialog('surat_muatan')"
+        />
     </div>
 </template>
 <script>
@@ -53,17 +91,33 @@ import axios from 'axios'
 import master from '@/mixins/master'
 
 import TableMaster from '@/components/table/tableMaster'
+import Button from '@/components/button'
 import AutoComplete from '@/components/input/autoComplete'
 import Selector from '@/components/input/select'
+
+import DialogBulkSuratJalan from '@/views/inbound/scan/dialogBulkSuratJalan'
+import DialogBulkSuratMuatan from '@/views/inbound/scan/dialogBulkSuratMuatan'
 
 export default {
     name: 'Misroute-Bag',
     mixins: [master],
-    props: { autoFocusInput: Function },
+    props: {
+        boxed: {
+            type: Boolean,
+            default: false,
+        },
+        title: {
+            type: String,
+            default: '',
+        },
+    },
     components: {
         'auto-complete': AutoComplete,
         'table-master': TableMaster,
         selector: Selector,
+        'core-button': Button,
+        'dialog-bulk-surat-jalan': DialogBulkSuratJalan,
+        'dialog-bulk-surat-muatan': DialogBulkSuratMuatan,
     },
     watch: {
         dataTable: {
@@ -140,6 +194,9 @@ export default {
             ],
 
             isAllChecked: false,
+
+            dialogSuratJalan: false,
+            dialogSuratMuatan: false,
         }
     },
     methods: {
@@ -151,7 +208,7 @@ export default {
                 this.destination_node_code,
                 this.filterTypeBy
             )
-            this.$emit('autoFocusInput', false)
+            this.$emit('autoFocusInput')
         },
         async getTableData(limit, page, destination_node_code, type) {
             this.loading = true
@@ -165,7 +222,6 @@ export default {
                     this.Helper.header()
                 )
                 this.dataTable = res.data.data
-                this.$emit('misroute-length-changed', this.dataTable.length)
 
                 this.pagination = {
                     page: res.data.meta.current_page,
@@ -242,7 +298,7 @@ export default {
             this.changes_form = [...changesMap.values()]
 
             this.$emit('update-selected', this.changes_form)
-            this.$emit('autoFocusInput', false)
+            this.$emit('autoFocusInput')
         },
         onAllCheckCallback(val) {
             // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING ALL CHECKBOX
@@ -262,9 +318,49 @@ export default {
             this.changes_form = []
             this.$emit('update-selected', [])
         },
-    },
-    mounted() {
-        this.refresh()
+        openDialog(type) {
+            this.setUnfocusInput()
+
+            const dialogMap = {
+                surat_jalan: () => {
+                    if (this.selectedData.length > 0) {
+                        this.dialogSuratJalan = true
+                    } else {
+                        this.openNotification(
+                            'danger',
+                            '',
+                            'Failed',
+                            'Please select at least one bag'
+                        )
+                    }
+                },
+
+                surat_muatan: () => {
+                    if (this.selectedData.length > 0) {
+                        this.dialogSuratMuatan = true
+                    } else {
+                        this.openNotification(
+                            'danger',
+                            '',
+                            'Failed',
+                            'Please select at least one bag'
+                        )
+                    }
+                },
+            }
+
+            dialogMap[type]?.()
+        },
+        closeDialog(type) {
+            const closeMap = {
+                surat_jalan: () => (this.dialogSuratJalan = false),
+                surat_muatan: () => (this.dialogSuratMuatan = false),
+            }
+
+            closeMap[type]?.()
+            this.refresh()
+            this.$emit('autoFocusInput')
+        },
     },
 }
 </script>
