@@ -370,8 +370,6 @@ export default {
 
             timer: null,
             now: Date.now(),
-
-            type: '',
         }
     },
     methods: {
@@ -795,7 +793,7 @@ export default {
                     payload,
                     this.Helper.header()
                 )
-                this.checkItemSla('KOLI')
+                await this.checkItemSla('KOLI')
             } catch (err) {
                 this.loadingRunsheet = false
 
@@ -853,7 +851,7 @@ export default {
                     `${this.URL.bag}/${this.form.bag_number}?n=${this.listenNodeId}&courier_employee_id=${this.employee_id}`,
                     this.Helper.header()
                 )
-                this.checkItemSla('BAG')
+                await this.checkItemSla('BAG')
             } catch (err) {
                 this.loadingRunsheet = false
 
@@ -876,6 +874,7 @@ export default {
          * ====================================================== */
         async checkItemSla(type) {
             this.type = type
+
             const url =
                 this.type === 'KOLI'
                     ? `${this.URL.configuration_warning_sla}/check-sla?n=${this.listenNodeId}&item_number=${this.form.koli_number}`
@@ -884,32 +883,34 @@ export default {
             try {
                 const res = await axios.get(url, this.Helper.header())
                 const data = Array.isArray(res.data.data) ? res.data.data : [res.data.data]
+                this.dataItemCheckSla = res.data.data
 
                 const safe = data.every((i) => i.status === 'SAFE')
                 if (safe) {
-                    this.checkZoneDelivery(this.type)
+                    await this.checkZoneDelivery()
                 } else {
                     this.loadingRunsheet = false
                     this.openDialogReCheckConnoteSla = true
                 }
             } catch (err) {
                 this.loadingRunsheet = false
-
                 await this.openNotification(
                     'danger',
                     '',
                     'Failed',
                     err?.response?.data?.message ?? 'Something went wrong'
                 )
-
                 this.clearInputs()
             } finally {
-                this.setActiveInput(this.type === 'KOLI' ? 'formInputConnote' : 'formInputBag')
+                if (!this.openDialogReCheckConnoteSla) {
+                    this.setActiveInput(this.type === 'KOLI' ? 'formInputConnote' : 'formInputBag')
+                }
             }
         },
 
         async checkZoneDelivery() {
             this.openDialogReCheckConnoteSla = false
+
             const item = this.type === 'BAG' ? this.form.bag_number : this.form.koli_number
 
             try {
@@ -917,6 +918,7 @@ export default {
                     `${this.URL.check_delivery_area}?item_number=${item}&type=${this.type}&n=${this.listenNodeId}`,
                     this.Helper.header()
                 )
+
                 this.type === 'BAG'
                     ? this.addBagPraRunsheetToRunsheet(this.form)
                     : this.addConnoteToRunsheet(this.form)
@@ -941,7 +943,6 @@ export default {
                 this.setActiveInput(this.type === 'KOLI' ? 'formInputConnote' : 'formInputBag')
             }
         },
-
         /* ======================================================
          * RUNSHEET CRUD
          * ====================================================== */
