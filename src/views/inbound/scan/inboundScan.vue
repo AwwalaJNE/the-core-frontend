@@ -1,6 +1,6 @@
 <template>
     <div :class="{ 'box-v1': boxed }" style="justify-content: center">
-        <vs-row style="gap: 2em" class="section-padding">
+        <vs-row style="gap: 3em" class="section-padding">
             <vs-col w="12">
                 <vs-input
                     border
@@ -80,10 +80,6 @@ export default {
             default: false,
         },
         disabled: {
-            type: Boolean,
-            default: false,
-        },
-        is_prealert: {
             type: Boolean,
             default: false,
         },
@@ -178,7 +174,7 @@ export default {
          * ====================================================== */
 
         autoFocusInput() {
-            if (!this.is_prealert && !this.parent_no) {
+            if (!this.parent_no) {
                 this.setActiveInput('formInputParentInbound')
             } else {
                 this.setActiveInput('formInputChildInbound')

@@ -25,7 +25,6 @@
                         :boxed="true"
                         :disabled="processing || isSubmitting"
                         :inbound_number="inbound_number"
-                        :is_prealert="is_prealert"
                         @submit="handleScanSubmit"
                         @removeInboundNumber="removeInboundNumber"
                     />
