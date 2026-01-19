@@ -1,15 +1,19 @@
 <template>
     <div :class="{ 'box-v1': boxed }">
         <h4 v-if="title" align="left">{{ title }}</h4>
-        <table-master
-            hideColumnKey="receiving-master-info"
-            :dataTable="dataTable"
-            :dataColumn="datacolumn"
-            :tableLoading="loading"
-            :hasAction="false"
-            :hasPagination="false"
-            @handleEdit="actionDetail"
-        />
+        <vs-row class="section-padding">
+            <vs-col w="12">
+                <table-master
+                    hideColumnKey="receiving-master-info"
+                    :dataTable="dataTable"
+                    :dataColumn="datacolumn"
+                    :tableLoading="loading"
+                    :hasAction="false"
+                    :hasPagination="false"
+                    @handleEdit="actionDetail"
+                />
+            </vs-col>
+        </vs-row>
     </div>
 </template>
 
