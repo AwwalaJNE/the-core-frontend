@@ -1,7 +1,7 @@
 <template>
-    <div :class="{ 'box-v1': boxed }">
-        <vs-row style="gap: 2em; margin-top: 2em">
-            <vs-col xs="12">
+    <div :class="{ 'box-v1': boxed }" style="justify-content: center">
+        <vs-row style="gap: 2em" class="section-padding">
+            <vs-col w="12">
                 <vs-input
                     border
                     ref="formInputParentInbound"
@@ -35,7 +35,7 @@
                 </div>
             </vs-col>
 
-            <vs-col xs="12">
+            <vs-col w="12">
                 <vs-input
                     border
                     v-model="child_no"

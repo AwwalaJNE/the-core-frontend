@@ -157,9 +157,10 @@ export default {
             if (this.is_prealert) {
                 this.inbound_number = this.$route.params.inbound_number.toString()
                 this.refresh()
+            } else {
+                this.$refs.misrouteBag.refresh()
+                this.autoFocusInput()
             }
-
-            this.autoFocusInput()
         },
 
         /* ======================================================
@@ -283,7 +284,8 @@ export default {
                 this.is_user_check = this.is_sm && data.is_user_check === '1'
 
                 this.dataTable = ['RECEIVING CONNOTE', 'RECEIVING BAG'].includes(data.inbound_type)
-                    ? [
+                    ? []
+                    : [
                           {
                               ...data,
                               total_received: data.total_received?.toString(),
@@ -291,7 +293,6 @@ export default {
                               is_missroute: data.is_missroute ? 1 : 0,
                           },
                       ]
-                    : []
 
                 this.dataTableProp = res.data.detail.map((item) => {
                     item.item_type = item.is_masterbag === '1' ? 'MASTERBAG' : item.item_type
