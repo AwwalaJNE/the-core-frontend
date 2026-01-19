@@ -75,7 +75,7 @@
                             <vs-row justify="end">
                                 <vs-col xs="12" sm="4" lg="4">
                                     <select-search-by
-                                        :key="listenBreadcrumbCode"
+                                        :key="listenBreadcrumbTitle"
                                         :isMultiple="false"
                                         :border="true"
                                         @updateSearchBy="updateSearchBy"
@@ -161,6 +161,7 @@
                         </vs-col>
                         <vs-col xs="12" sm="4" lg="2">
                             <select-search-by
+                                :key="listenBreadcrumbTitle"
                                 :isMultiple="false"
                                 :border="true"
                                 @updateSearchBy="updateFilterDateBy"
@@ -397,14 +398,22 @@ export default {
         },
         listenBreadcrumbCode: {
             handler(val, oldVal) {
-                if (val !== oldVal && val !== undefined) {
+                if (val && val !== oldVal) {
                     this.setSearchParams()
+                    this.resetSearchByInbound()
                 }
             },
             immediate: true,
         },
     },
     methods: {
+        resetSearchByInbound() {
+            this.searchBy = 'inbound_number'
+            this.searchPlaceholder = 'Inbound Number'
+            this.searchByNumeric = false
+
+            this.updateLocalStorage()
+        },
         setSearchParams() {
             const title = this.listenBreadcrumbTitle
             const code = this.listenBreadcrumbCode
