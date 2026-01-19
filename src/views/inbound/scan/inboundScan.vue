@@ -43,7 +43,7 @@
                     icon-after
                     v-uppercase
                     ref="formInputChildInbound"
-                    :disabled="disabled"
+                    :disabled="loading"
                     @keyup.enter="submit('child_no')"
                     @click-icon="$refs.cameraScanner.open('formInputChildInbound')"
                     @input="sanitizeAlphanumeric('child_no')"
@@ -76,10 +76,6 @@ export default {
 
     props: {
         boxed: {
-            type: Boolean,
-            default: false,
-        },
-        disabled: {
             type: Boolean,
             default: false,
         },

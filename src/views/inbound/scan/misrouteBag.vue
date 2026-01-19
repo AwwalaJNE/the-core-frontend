@@ -30,7 +30,6 @@
                     formKey="filter_type"
                     :valueData="filterType"
                     :selectedValue="filterTypeBy"
-                    :loading="loading"
                     @updateValue="updateValue"
                 />
             </vs-col>
@@ -200,9 +199,9 @@ export default {
         }
     },
     methods: {
-        refresh() {
+        async refresh() {
             this.resetCheckbox()
-            this.getTableData(
+            await this.getTableData(
                 this.pagination.limit,
                 this.pagination.page,
                 this.destination_node_code,
@@ -234,16 +233,16 @@ export default {
                 this.loading = false
             }
         },
-        actionLimit(val) {
+        async actionLimit(val) {
             this.pagination.limit = val
             this.pagination.page = 1
-            this.refresh()
+            await this.refresh()
         },
-        actionPagination(val) {
+        async actionPagination(val) {
             this.pagination.page = val
-            this.refresh()
+            await this.refresh()
         },
-        updateValue(key, val, info) {
+        async updateValue(key, val, info) {
             if (key === 'filter_type') {
                 this.filterTypeBy = val
                 this.refresh()
@@ -254,7 +253,7 @@ export default {
                     (info && Object.keys(info).length > 0) ||
                     (info && Object.keys(info).length === 0 && val === '')
                 ) {
-                    this.refresh()
+                    await this.refresh()
                 }
             }
         },
@@ -351,14 +350,14 @@ export default {
 
             dialogMap[type]?.()
         },
-        closeDialog(type) {
+        async closeDialog(type) {
             const closeMap = {
                 surat_jalan: () => (this.dialogSuratJalan = false),
                 surat_muatan: () => (this.dialogSuratMuatan = false),
             }
 
             closeMap[type]?.()
-            this.refresh()
+            await this.refresh()
             this.$emit('autoFocusInput')
         },
     },

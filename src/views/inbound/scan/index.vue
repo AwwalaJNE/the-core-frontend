@@ -23,8 +23,8 @@
                     <InboundScan
                         ref="inboundScan"
                         :boxed="true"
-                        :disabled="processing || isSubmitting"
                         :inbound_number="inbound_number"
+                        :loading="loadingDataTable || processing"
                         @submit="handleScanSubmit"
                         @removeInboundNumber="removeInboundNumber"
                     />
@@ -36,7 +36,7 @@
                         title="Receiving Information"
                         :boxed="true"
                         :dataTableProp="dataTable"
-                        :loading="loading"
+                        :loading="loadingDataTable || processing"
                     />
                 </vs-col>
             </vs-row>
@@ -48,7 +48,7 @@
                         title="List of Items"
                         :boxed="true"
                         :dataTable="dataTableProp"
-                        :loading="loading"
+                        :loading="loadingDataTable || processing"
                         :pageSize="pagination.page_size"
                         :page="pagination.page"
                         :limit="pagination.limit"
@@ -111,7 +111,9 @@ export default {
     },
 
     watch: {
-        is_prealert: 'refresh',
+        async is_prealert() {
+            await this.refresh()
+        },
     },
     data() {
         return {
@@ -122,6 +124,7 @@ export default {
             inbound_number: '',
 
             loading: false,
+            loadingDataTable: false,
 
             dataTable: [],
             dataTableProp: [],
@@ -148,16 +151,15 @@ export default {
 
         async init() {
             await this.loadInboundFromStorage()
-
-            this.getParamRoute()
+            await this.getParamRoute()
         },
 
-        getParamRoute() {
+        async getParamRoute() {
             if (this.is_prealert) {
                 this.inbound_number = this.$route.params.inbound_number.toString()
-                this.refresh()
+                await this.refresh()
             } else {
-                this.$refs.misrouteBag.refresh()
+                this.$refs.misrouteBag?.refresh()
                 this.autoFocusInput()
             }
         },
@@ -202,10 +204,10 @@ export default {
             }
         },
 
-        submitParent(value) {
+        async submitParent(value) {
             this.inbound_number = value
             this.saveInboundToStorage()
-            this.refresh()
+            await this.refresh()
         },
 
         submitChild(value) {
@@ -226,7 +228,7 @@ export default {
             try {
                 const res = await axios.post(
                     `${this.URL.receiving}?n=${this.listenNodeId}`,
-                    JSON.stringify(this.form),
+                    this.form,
                     this.Helper.header()
                 )
 
@@ -236,22 +238,23 @@ export default {
                     'Success',
                     res?.data?.message ?? 'Receiving success'
                 )
+
                 this.inbound_number = res?.data?.data?.inbound_number ?? this.inbound_number
             } catch (err) {
-                this.openNotification(
+                await this.openNotification(
                     'danger',
                     err?.response?.data?.code ?? '',
                     'Failed',
                     err?.response?.data?.message ?? 'Something went wrong'
                 )
+
                 this.inbound_number = err?.response?.data?.reference ?? this.inbound_number
 
                 if (!this.is_prealert && !this.inbound_number) {
                     this.handleClearTableInfo()
                 }
-                this.processing = false
             } finally {
-                this.refresh()
+                await this.refresh()
                 this.processing = false
             }
         },
@@ -260,9 +263,9 @@ export default {
          * GET DATA
          * ====================================================== */
 
-        refresh() {
-            this.getTableData()
-            this.$refs.misrouteBag.refresh()
+        async refresh() {
+            await this.getTableData()
+            this.$refs.misrouteBag?.refresh()
             this.autoFocusInput()
         },
 
@@ -323,16 +326,16 @@ export default {
 
                 this.getTableDataReceivingLog()
             } catch (err) {
-                if (!this.is_prealert) {
-                    this.removeInboundNumber()
-                }
-
-                this.openNotification(
+                await this.openNotification(
                     'danger',
                     err?.response?.data?.code ?? '',
                     'Failed',
                     err?.response?.data?.message ?? 'Something went wrong'
                 )
+
+                if (!this.is_prealert) {
+                    this.removeInboundNumber()
+                }
             } finally {
                 this.loadingDataTable = false
             }
@@ -399,15 +402,15 @@ export default {
         /* ======================================================
          * PAGINATION
          * ====================================================== */
-        actionLimit(val) {
+        async actionLimit(val) {
             this.pagination.limit = val
             this.pagination.page = 1
-            this.refresh()
+            await this.refresh()
         },
 
-        actionPagination(val) {
+        async actionPagination(val) {
             this.pagination.page = val
-            this.refresh()
+            await this.refresh()
         },
 
         /* ======================================================
@@ -424,7 +427,7 @@ export default {
 
                 this.openNotification('success', null, 'Success', 'Succes Close SM')
             } catch (err) {
-                this.openNotification(
+                await this.openNotification(
                     'danger',
                     err?.response?.data?.code ?? '',
                     'Failed',

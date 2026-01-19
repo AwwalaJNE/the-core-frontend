@@ -102,3 +102,8 @@ export default {
     },
 }
 </script>
+<style lang="scss">
+.vs-loading {
+    z-index: 10 !important;
+}
+</style>
