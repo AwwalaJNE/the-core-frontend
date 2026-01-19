@@ -208,7 +208,7 @@ export default {
                 this.destination_node_code,
                 this.filterTypeBy
             )
-            this.$emit('autoFocusInput', false)
+            this.$emit('autoFocusInput')
         },
         async getTableData(limit, page, destination_node_code, type) {
             this.loading = true
@@ -298,7 +298,7 @@ export default {
             this.changes_form = [...changesMap.values()]
 
             this.$emit('update-selected', this.changes_form)
-            this.$emit('autoFocusInput', false)
+            this.$emit('autoFocusInput')
         },
         onAllCheckCallback(val) {
             // NOTES: THIS FUNCTION USED FOR CHECKED BY CLICKING ALL CHECKBOX
@@ -319,7 +319,7 @@ export default {
             this.$emit('update-selected', [])
         },
         openDialog(type) {
-            this.$emit('autoFocusInput', true)
+            this.setUnfocusInput()
 
             const dialogMap = {
                 surat_jalan: () => {
@@ -359,7 +359,7 @@ export default {
 
             closeMap[type]?.()
             this.refresh()
-            this.$emit('autoFocusInput', false)
+            this.$emit('autoFocusInput')
         },
     },
 }
