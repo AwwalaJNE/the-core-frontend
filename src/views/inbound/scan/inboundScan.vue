@@ -9,8 +9,8 @@
                     label-placeholder="Masukkan SM / SJ / Pickup"
                     icon-after
                     v-uppercase
-                    :disabled="loading"
-                    @keyup.enter.native="submit('parent_no')"
+                    :disabled="hasInboundNumber || loading"
+                    @keyup.enter="submit('parent_no')"
                     @click-icon="$refs.cameraScanner.open('formInputParentInbound')"
                     @input="sanitizeAlphanumeric('parent_no')"
                     @keydown.native="
@@ -20,15 +20,15 @@
                         ])
                     "
                 >
-                    <template #icon v-if="!parent_no">
+                    <template #icon v-if="!hasInboundNumber">
                         <i class="bx bx-barcode-reader"></i>
                     </template>
                 </vs-input>
-                <div style="position: absolute; right: 20px; top: 10px" v-if="parent_no">
+                <div style="position: absolute; right: 20px; top: 10px" v-if="hasInboundNumber">
                     <span
                         class="vs-select__chips__chip__close"
                         :data-testid="`close-button-parent_no`"
-                        @click="removeInboundNumber"
+                        @click="removeParentNumber"
                     >
                         <i class="vs-icon-close vs-icon-hover-less"></i>
                     </span>
@@ -44,7 +44,7 @@
                     v-uppercase
                     ref="formInputChildInbound"
                     :disabled="disabled"
-                    @keyup.enter.native="submit('child_no')"
+                    @keyup.enter="submit('child_no')"
                     @click-icon="$refs.cameraScanner.open('formInputChildInbound')"
                     @input="sanitizeAlphanumeric('child_no')"
                     @keydown.native="
@@ -101,18 +101,18 @@ export default {
         inbound_number: {
             immediate: true,
             handler(newVal) {
-                if (newVal) {
-                    this.parent_no = newVal
-                } else {
-                    this.parent_no = ''
-                }
+                this.parent_no = newVal || ''
+                this.hasInboundNumber = !!newVal
+                this.autoFocusInput()
             },
         },
-    },
 
-    computed: {
-        isParentDisabled() {
-            return !!this.parent_no
+        hasInboundNumber: {
+            handler(newVal) {
+                if (!newVal) {
+                    this.autoFocusInput()
+                }
+            },
         },
     },
 
@@ -120,6 +120,7 @@ export default {
         return {
             parent_no: '',
             child_no: '',
+            hasInboundNumber: false,
         }
     },
 
@@ -128,8 +129,9 @@ export default {
          * SCAN INPUT
          * ====================================================== */
 
-        removeInboundNumber() {
+        removeParentNumber() {
             this.parent_no = ''
+            this.hasInboundNumber = false
             this.$emit('removeInboundNumber')
         },
 
@@ -138,6 +140,7 @@ export default {
 
             if (type === 'parent_no' && this.parent_no) {
                 payload = { type, value: this.parent_no }
+                this.hasInboundNumber = true
             }
 
             if (type === 'child_no' && this.child_no) {
@@ -175,8 +178,7 @@ export default {
          * ====================================================== */
 
         autoFocusInput() {
-            console.log('CEK', this.is_prealert, this.parent_no, this.inbound_number)
-            if (!this.is_prealert && !this.isParentDisabled) {
+            if (!this.is_prealert && !this.parent_no) {
                 this.setActiveInput('formInputParentInbound')
             } else {
                 this.setActiveInput('formInputChildInbound')

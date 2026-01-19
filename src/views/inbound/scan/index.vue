@@ -24,7 +24,7 @@
                         ref="inboundScan"
                         :boxed="true"
                         :disabled="processing || isSubmitting"
-                        :inbound_number="listenInboundNumber"
+                        :inbound_number="inbound_number"
                         :is_prealert="is_prealert"
                         @submit="handleScanSubmit"
                         @removeInboundNumber="removeInboundNumber"
@@ -108,9 +108,6 @@ export default {
     computed: {
         is_prealert() {
             return !!this.$route.params.inbound_number
-        },
-        listenInboundNumber() {
-            return this.inbound_number
         },
     },
 
