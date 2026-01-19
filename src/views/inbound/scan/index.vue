@@ -391,6 +391,8 @@ export default {
 
             this.clearInboundFromStorage()
 
+            if (this.is_prealert) this.$router.push('/inbound/prealert/scan')
+
             this.autoFocusInput()
         },
 
