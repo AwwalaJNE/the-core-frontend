@@ -124,6 +124,15 @@ export default {
                 this.refresh()
             }
         },
+
+        listenBreadcrumbTitle: {
+            handler(val, oldVal) {
+                if (val !== oldVal && val !== undefined) {
+                    this.setDatacolumn()
+                }
+            },
+            immediate: true,
+        },
     },
 
     methods: {
@@ -133,7 +142,7 @@ export default {
 
             const isPreAlert = title === 'Pre-Alert'
             const isRDO = title === 'RDO'
-            const isReceiving = ['Receiving Connote', 'Receiving Bag', 'RCVB'].includes(title)
+            const isReceivingItem = ['Receiving Connote', 'Receiving Bag', 'RCVB'].includes(title)
 
             const inboundLabel = code === 'Pre Alert' ? 'Incoming' : code === 'RDO' ? 'DO' : code
 
@@ -160,7 +169,7 @@ export default {
                     width: 'xxs',
                 },
 
-                ...(!isReceiving
+                ...(!isReceivingItem
                     ? [
                           {
                               label: 'Orion Number',
@@ -180,7 +189,7 @@ export default {
                       ]
                     : []),
 
-                ...(!isReceiving
+                ...(!isReceivingItem
                     ? [
                           {
                               label: 'Bag Received',

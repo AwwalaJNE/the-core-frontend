@@ -406,49 +406,57 @@ export default {
     },
     methods: {
         setSearchParams() {
+            const title = this.listenBreadcrumbTitle
+            const code = this.listenBreadcrumbCode
+
+            const isReceivingItem = ['Receiving Connote', 'Receiving Bag', 'RCVB'].includes(title)
+
             this.searchParams = [
                 {
                     label: `${
-                        this.listenBreadcrumbCode === 'Pre Alert'
-                            ? 'Incoming'
-                            : this.listenBreadcrumbCode
+                        code === 'Pre Alert' ? 'Incoming' : this.listenBreadcrumbCode
                     } Number`,
                     value: 'inbound_number',
                 },
-                {
-                    label: 'IM Numbers',
-                    value: 'manifestItems',
-                },
-                {
-                    label: 'Vehicle',
-                    value: 'vehicle_type_name',
-                },
+                ...(!isReceivingItem
+                    ? [
+                          {
+                              label: 'Orion Number',
+                              value: 'orion_number',
+                          },
+                          {
+                              label: 'IM Numbers',
+                              value: 'manifestItems',
+                          },
+                          {
+                              label: 'Vehicle',
+                              value: 'vehicle_type_name',
+                          },
+                          {
+                              label: 'Quantity Bag',
+                              value: 'inbound_total_bag',
+                              isNumeric: true,
+                          },
+                          {
+                              label: 'Quantity Connote',
+                              value: 'inbound_total_koli',
+                              isNumeric: true,
+                          },
+                          {
+                              label: 'Weight',
+                              value: 'inbound_total_weight',
+                              isNumeric: true,
+                          },
+                          {
+                              label: 'PIC',
+                              value: 'carrier_employee_name',
+                          },
+                      ]
+                    : []),
+
                 {
                     label: 'Origin',
                     value: 'inbound_node_name_origin',
-                },
-                {
-                    label: 'Type Inbound',
-                    value: 'inbound_type',
-                },
-                {
-                    label: 'Quantity Bag',
-                    value: 'inbound_total_bag',
-                    isNumeric: true,
-                },
-                {
-                    label: 'Quantity Connote',
-                    value: 'inbound_total_koli',
-                    isNumeric: true,
-                },
-                {
-                    label: 'Weight',
-                    value: 'inbound_total_weight',
-                    isNumeric: true,
-                },
-                {
-                    label: 'PIC',
-                    value: 'carrier_employee_name',
                 },
                 {
                     label: 'Received At',
