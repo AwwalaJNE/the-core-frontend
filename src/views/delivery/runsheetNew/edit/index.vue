@@ -1105,7 +1105,17 @@ export default {
             try {
                 for (const item of this.selectedUpdateItems) {
                     const dataPOD = this.mapItemToPOD(item)
-                    await axios.put(
+
+                    if (!dataPOD.status) {
+                        this.openNotification('warn', null, 'Warning!', 'Status wajib diisi')
+                        return
+                    }
+                    if (!dataPOD.remarks) {
+                        this.openNotification('warn', null, 'Warning!', 'Remarks wajib diisi')
+                        return
+                    }
+
+                    const res = await await axios.put(
                         `${this.URL.revamp_delivery}/${this.delivery_runsheet_number}/detail/${dataPOD.koli_number}/status?n=${this.listenNodeId}`,
                         dataPOD,
                         this.Helper.header()
@@ -1114,8 +1124,6 @@ export default {
 
                 await this.getDataDelivery()
                 this.disabledConfirm = true
-
-                this.openNotification('success', null, 'Success', res?.data?.message)
             } catch (err) {
                 await this.openNotification(
                     'danger',
