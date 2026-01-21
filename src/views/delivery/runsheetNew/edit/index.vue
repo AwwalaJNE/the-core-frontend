@@ -1107,7 +1107,11 @@ export default {
 
         async submitPOD(dataPOD, runsheetNumber) {
             if (!dataPOD.status) {
-                this.openNotification('warn', null, 'Status Required')
+                this.openNotification('warn', null, 'Warning!', 'Status Required')
+                return
+            }
+            if (!dataPOD.remarks) {
+                this.openNotification('warn', null, 'Warning!', 'Remarks Required')
                 return
             }
 
@@ -1122,6 +1126,7 @@ export default {
 
                 this.openNotification('success', null, 'Success', res?.data?.message)
                 await this.getDataDelivery()
+                this.disabledConfirm = true
             } catch (err) {
                 await this.openNotification(
                     'danger',

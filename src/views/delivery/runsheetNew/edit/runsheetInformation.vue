@@ -365,30 +365,15 @@ export default {
             }
         },
 
-        onAllCheckCallback(val, selected) {
-            if (val) {
-                const filtered = selected.filter(
-                    (item) => item.status_delivery_description === null
-                )
-
-                this.$refs.tableMaster.selected = filtered
-                this.$refs.tableMaster.$vs.checkAll(filtered, this.dataTable)
-                this.$refs.tableMaster.allCheck = filtered.length > 0
-
-                this.$emit('update-selected', filtered)
-            } else {
-                this.$emit('update-selected', selected)
-            }
+        filterSelectable(list) {
+            return list.filter((item) => item.status_delivery_description === null)
         },
-
+        onAllCheckCallback(val, selected) {
+            const filtered = val ? this.filterSelectable(selected) : selected
+            this.$emit('update-selected', filtered)
+        },
         onRowClickCallback(event, item, selected) {
-            const filtered = this.$refs.tableMaster.selected.filter(
-                (item) => item.status_delivery_description === null
-            )
-
-            this.$refs.tableMaster.selected = filtered
-            this.$refs.tableMaster.allCheck = filtered.length > 0
-
+            const filtered = this.filterSelectable(selected)
             this.$emit('update-selected', filtered)
         },
     },
