@@ -30,6 +30,7 @@
                                     v-on:keyup.enter="handleEnter"
                                     v-uppercase
                                     :label-placeholder="'Masukkan Connote'"
+                                    :disabled="loading"
                                     @click-icon="$refs.cameraScanner.open('formInputSorting')"
                                 >
                                     <template #icon>
@@ -529,17 +530,21 @@ export default {
                     this.setActiveInput('formInputSorting')
             }
         },
-        updateSearchBy(key, val, dataType) {
+        async updateSearchBy(key, val, dataType) {
             this.searchBy = val
             this.searchPlaceholder = key
             this.searchByDataType = dataType
-            this.refresh()
+            await this.refresh()
         },
-        searchValue(val) {
+        async searchValue(val) {
             this.tempSearch = val
-            this.refresh()
+            await this.refresh()
         },
         handleEnter() {
+            if (!this.item_number) {
+                return
+            }
+
             this.processSorting()
             this.item_number = ''
         },
@@ -579,7 +584,7 @@ export default {
                     this.sort_info = err.response.data
                     this.type = 'error'
 
-                    this.openNotification(
+                    await this.openNotification(
                         'danger',
                         err?.response?.data?.code || '',
                         'Failed',
@@ -589,12 +594,12 @@ export default {
                     this.loading = false
                     // TODO: RECHECK IT LATER
                     // this.is_auto_open_bag = true;
-                    this.refresh()
+                    await this.refresh()
                     // TODO: Use Later
                     // this.handleClearForm();
                 }
             } else {
-                this.openNotification('danger', '', 'Failed', 'Destination is mandatory')
+                await this.openNotification('danger', '', 'Failed', 'Destination is mandatory')
             }
         },
         onCameraScannerGetData(data) {
@@ -603,13 +608,14 @@ export default {
                 this.updateValue()
             }
         },
-        refresh() {
-            this.getTableData(
+        async refresh() {
+            await this.getTableData(
                 this.pagination.limit,
                 this.pagination.page,
                 this.tempSearch,
                 this.searchBy
             )
+            this.setActiveInput('formInputSorting')
         },
         async getTableData(limit, page, q, searchBy) {
             this.loading = true
@@ -638,7 +644,7 @@ export default {
                     this.dataTable = []
                 }
             } catch (err) {
-                this.openNotification(
+                await this.openNotification(
                     'danger',
                     err?.response?.data?.code || '',
                     'Failed',
@@ -648,14 +654,14 @@ export default {
                 this.loading = false
             }
         },
-        actionLimit(val) {
+        async actionLimit(val) {
             this.pagination.limit = val
             this.pagination.page = 1
-            this.refresh()
+            await this.refresh()
         },
-        actionPagination(val) {
+        async actionPagination(val) {
             this.pagination.page = val
-            this.refresh()
+            await this.refresh()
         },
         listenSLAType(sla) {
             if (sla < 0) {
@@ -666,9 +672,8 @@ export default {
             return 'safe'
         },
     },
-    mounted() {
-        this.refresh()
-        this.setActiveInput('formInputSorting')
+    async mounted() {
+        await this.refresh()
         window.addEventListener('timezone-changed', this.refresh)
     },
     beforeDestroy() {
