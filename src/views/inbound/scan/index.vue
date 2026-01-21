@@ -239,7 +239,10 @@ export default {
                     res?.data?.message ?? 'Receiving success'
                 )
 
-                this.inbound_number = res?.data?.data?.inbound_number ?? this.inbound_number
+                this.inbound_number =
+                    res?.data?.data?.inbound_type === 'RECEIVING CONNOTE'
+                        ? ''
+                        : res?.data?.data?.inbound_number ?? this.inbound_number
             } catch (err) {
                 await this.openNotification(
                     'danger',
