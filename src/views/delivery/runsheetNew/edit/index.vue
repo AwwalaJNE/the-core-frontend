@@ -209,8 +209,6 @@
                             :loading="loadingRunsheet"
                             :selectedItems="selectedUpdateItems"
                             @update-selected="updateSelected"
-                            @updatePOD="updatePOD"
-                            @editPOD="editPOD"
                         />
                     </div>
                 </div>
@@ -1102,33 +1100,22 @@ export default {
                 )
             }
 
-            for (const item of this.selectedUpdateItems) {
-                await this.updatePOD(this.mapItemToPOD(item))
-            }
-        },
-
-        async submitPOD(dataPOD, runsheetNumber) {
-            if (!dataPOD.status) {
-                this.openNotification('warn', null, 'Warning!', 'Status Required')
-                return
-            }
-            if (!dataPOD.remarks) {
-                this.openNotification('warn', null, 'Warning!', 'Remarks Required')
-                return
-            }
-
             this.loadingConfirm = true
 
             try {
-                const res = await axios.put(
-                    `${this.URL.revamp_delivery}/${runsheetNumber}/detail/${dataPOD.koli_number}/status?n=${this.listenNodeId}`,
-                    dataPOD,
-                    this.Helper.header()
-                )
+                for (const item of this.selectedUpdateItems) {
+                    const dataPOD = this.mapItemToPOD(item)
+                    await axios.put(
+                        `${this.URL.revamp_delivery}/${this.delivery_runsheet_number}/detail/${dataPOD.koli_number}/status?n=${this.listenNodeId}`,
+                        dataPOD,
+                        this.Helper.header()
+                    )
+                }
 
-                this.openNotification('success', null, 'Success', res?.data?.message)
                 await this.getDataDelivery()
                 this.disabledConfirm = true
+
+                this.openNotification('success', null, 'Success', res?.data?.message)
             } catch (err) {
                 await this.openNotification(
                     'danger',
@@ -1139,15 +1126,6 @@ export default {
             } finally {
                 this.loadingConfirm = false
             }
-        },
-
-        async editPOD(val) {
-            const dataPOD = this.mapItemToPOD(val)
-            await this.submitPOD(dataPOD, val.delivery_runsheet_number)
-        },
-
-        async updatePOD(dataPOD) {
-            await this.submitPOD(dataPOD, this.delivery_runsheet_number)
         },
 
         /* ==========================
