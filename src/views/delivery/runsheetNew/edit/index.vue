@@ -1027,7 +1027,6 @@ export default {
             this.selectedUpdateItems = arr
             this.disabledConfirm = !(arr.length > 0 && this.disabledApprove)
         },
-
         /* ======================================================
          * APPROVE & UNAPPROVE RUNSHEET
          * ====================================================== */
@@ -1080,11 +1079,14 @@ export default {
          * CONFIRM RUNSHEET & UPDATE POD
          * ====================================================== */
         mapItemToPOD(item) {
+            const statusMap = Object.fromEntries(item.status_delivery.map((sd) => [sd.value, sd]))
+
             return {
                 courier_employee_id: item.courier_employee_id,
                 delivery_runsheet_number: item.delivery_runsheet_number,
                 koli_number: item.koli_number,
                 status: item.status_code,
+                status_delivery: statusMap[item.status_code]?.data?.status_subtype,
                 remarks: item.remarks,
                 receiver_name: item.receiver_name,
             }
@@ -1103,25 +1105,34 @@ export default {
             this.loadingConfirm = true
 
             try {
-                for (const item of this.selectedUpdateItems) {
-                    const dataPOD = this.mapItemToPOD(item)
+                const pods = this.selectedUpdateItems.map((item) => this.mapItemToPOD(item))
 
-                    if (!dataPOD.status) {
+                for (const pod of pods) {
+                    if (!pod.status) {
                         this.openNotification('warn', null, 'Warning!', 'Status wajib diisi')
                         return
                     }
-                    if (!dataPOD.remarks) {
+                    if (!pod.remarks) {
                         this.openNotification('warn', null, 'Warning!', 'Remarks wajib diisi')
                         return
                     }
-
-                    const res = await await axios.put(
-                        `${this.URL.revamp_delivery}/${this.delivery_runsheet_number}/detail/${dataPOD.koli_number}/status?n=${this.listenNodeId}`,
-                        dataPOD,
-                        this.Helper.header()
-                    )
+                    if (!pod.receiver_name && pod.status_delivery === 'DELIVERED') {
+                        this.openNotification('warn', null, 'Warning!', 'Receiver Name wajib diisi')
+                        return
+                    }
                 }
 
+                await Promise.all(
+                    pods.map((pod) =>
+                        axios.put(
+                            `${this.URL.revamp_delivery}/${this.delivery_runsheet_number}/detail/${pod.koli_number}/status?n=${this.listenNodeId}`,
+                            pod,
+                            this.Helper.header()
+                        )
+                    )
+                )
+
+                this.selectedUpdateItems = []
                 await this.getDataDelivery()
                 this.disabledConfirm = true
             } catch (err) {

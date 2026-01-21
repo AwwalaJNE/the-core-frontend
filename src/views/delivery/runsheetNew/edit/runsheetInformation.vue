@@ -357,40 +357,52 @@ export default {
             }
         },
 
-        filterSelectable(list = []) {
-            return list.filter((item) => item.status_delivery_description !== 'DELIVERED')
+        isSelectable(item) {
+            return item.status_delivery_description !== 'DELIVERED'
         },
 
-        syncTableSelection(selected) {
+        filterSelectable(list = []) {
+            return list.filter(this.isSelectable)
+        },
+
+        syncSelection(selected) {
             this.$nextTick(() => {
                 const table = this.$refs.tableMaster
                 if (!table) return
 
-                table.selected = this.filterSelectable(selected)
-                table.allCheck = table.selected.length > 0
+                const validSelected = this.filterSelectable(selected)
+                const selectableCount = this.dataTable.filter(this.isSelectable).length
+
+                table.selected = validSelected
+
+                table.allCheck = selectableCount > 0 && validSelected.length === selectableCount
+
+                this.$emit('update-selected', validSelected)
             })
         },
 
         updateSelected(selected) {
-            const filtered = this.filterSelectable(selected)
+            this.syncSelection(selected)
+        },
 
-            this.$emit('update-selected', filtered)
-
-            this.syncTableSelection(selected)
+        onRowClickCallback(event, item, selected) {
+            this.syncSelection(selected)
         },
 
         onAllCheckCallback(val, selected) {
             if (!val) {
-                this.$emit('update-selected', [])
-                this.syncTableSelection([])
+                this.$nextTick(() => {
+                    const table = this.$refs.tableMaster
+                    if (!table) return
+
+                    table.selected = []
+                    table.allCheck = false
+                    this.$emit('update-selected', [])
+                })
                 return
             }
 
-            this.updateSelected(selected)
-        },
-
-        onRowClickCallback(event, item, selected) {
-            this.updateSelected(selected)
+            this.syncSelection(selected)
         },
     },
 }
