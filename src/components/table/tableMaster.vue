@@ -771,6 +771,19 @@
                                                 </vs-row>
                                             </template>
                                         </template>
+                                        <template
+                                            v-else-if="
+                                                column.typeInput !== undefined &&
+                                                String(column.typeInput ?? '')
+                                                    .toLowerCase()
+                                                    .includes('countdown')
+                                            "
+                                        >
+                                            <countdown
+                                                :target_time="item?.[column.countdown?.target]"
+                                                :end_time="item?.[column.countdown?.end]"
+                                            />
+                                        </template>
                                     </vs-td>
                                 </template>
                                 <template
@@ -2043,6 +2056,7 @@
 </template>
 <script>
 import master from '@/mixins/master'
+
 import Pagination from '@/components/pagination/pagination.vue'
 import Checkbox from '@/components/input/checkbox.vue'
 import InputGeneral from '@/components/input/general'
@@ -2050,7 +2064,10 @@ import Selector from '@/components/input/select'
 import asynchronousSelect from '@/components/input/asynchronousSelect'
 import iterateSelector from '@/components/input/iterateInput2'
 import AutoComplete from '@/components/input/autoComplete'
+import Countdown from '@/components/countdown'
+
 import { Dialog } from 'element-ui'
+
 export default {
     name: 'tabelMaster',
     mixins: [master],
@@ -2063,6 +2080,7 @@ export default {
         'iterate-selector': iterateSelector,
         'auto-complete': AutoComplete,
         'el-dialog': Dialog,
+        countdown: Countdown,
     },
     props: {
         hideColumnKey: String,
@@ -2637,7 +2655,7 @@ export default {
     display: inline-grid;
 }
 .do-not-wrap {
-    white-space: pre !important;
+    white-space: pre-line !important;
 }
 
 .vs-table {
