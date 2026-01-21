@@ -179,7 +179,13 @@ export default {
                 },
                 {
                     label: 'SLA Connote',
-                    key: 'sla_connote_formatted',
+                    key: 'sla_connote_countdown',
+                    type: 'inputan',
+                    typeInput: 'countdown',
+                    countdown: {
+                        target: 'sla_date',
+                        end: 'end_date',
+                    },
                     width: 'auto',
                 },
                 {
