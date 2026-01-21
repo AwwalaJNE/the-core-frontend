@@ -334,14 +334,6 @@ export default {
             this.openDialogRunsheetProofAction = false
             this.dataItem = {}
         },
-        updateSelected(arr) {
-            const { selected } = this.$refs.tableMaster
-            const filtered = selected.filter((item) => item.status_delivery_description === null)
-
-            this.$refs.tableMaster.selected = filtered
-
-            this.$emit('update-selected', filtered)
-        },
         closeDialogConfirm() {
             this.confirmDialog = false
         },
@@ -365,16 +357,40 @@ export default {
             }
         },
 
-        filterSelectable(list) {
-            return list.filter((item) => item.status_delivery_description === null)
+        filterSelectable(list = []) {
+            return list.filter((item) => item.status_delivery_description !== 'DELIVERED')
         },
-        onAllCheckCallback(val, selected) {
-            const filtered = val ? this.filterSelectable(selected) : selected
-            this.$emit('update-selected', filtered)
+
+        syncTableSelection(selected) {
+            this.$nextTick(() => {
+                const table = this.$refs.tableMaster
+                if (!table) return
+
+                table.selected = this.filterSelectable(selected)
+                table.allCheck = table.selected.length > 0
+            })
         },
-        onRowClickCallback(event, item, selected) {
+
+        updateSelected(selected) {
             const filtered = this.filterSelectable(selected)
+
             this.$emit('update-selected', filtered)
+
+            this.syncTableSelection(selected)
+        },
+
+        onAllCheckCallback(val, selected) {
+            if (!val) {
+                this.$emit('update-selected', [])
+                this.syncTableSelection([])
+                return
+            }
+
+            this.updateSelected(selected)
+        },
+
+        onRowClickCallback(event, item, selected) {
+            this.updateSelected(selected)
         },
     },
 }
