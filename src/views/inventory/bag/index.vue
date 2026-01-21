@@ -267,13 +267,6 @@ export default {
             ],
         }
     },
-    watch: {
-        loading(newValue) {
-            if (!newValue) {
-                this.setActiveInput('scanItem')
-            }
-        },
-    },
     methods: {
         handleIconClick() {
             if (!this.isDisabled) {
@@ -402,7 +395,7 @@ export default {
 
                 this.openNotification('success', null, 'Success', 'Bagging is success')
             } catch (err) {
-                this.openNotification(
+                await this.openNotification(
                     'danger',
                     err?.response?.data?.code || '',
                     'Failed',
@@ -415,6 +408,7 @@ export default {
         handleClearForm() {
             this.form = {}
             this.item_number = ''
+            this.setActiveInput('scanItem')
         },
 
         openDialog() {
