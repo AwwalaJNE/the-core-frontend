@@ -88,6 +88,7 @@
                     v-model="is_auto_open_bag"
                     @change="handleAutoOpenBag"
                     :data-testid="`checkbox-is_auto_open_bag`"
+                    class="checkbox-core"
                 >
                     Auto Open Bag
                 </vs-checkbox>
@@ -97,6 +98,7 @@
                     v-model="is_hub_delivery_validation"
                     @change="handleValidateHubDelivery"
                     :data-testid="`checkbox-validate_hub_delivery`"
+                    class="checkbox-core"
                 >
                     Validate Destination
                 </vs-checkbox>

@@ -75,6 +75,7 @@
                                     v-model="is_auto_open_bag"
                                     @change="handleAutoOpenBag"
                                     :data-testid="`checkbox-is_auto_open_bag`"
+                                    class="checkbox-core"
                                 >
                                     Auto Open Bag
                                 </vs-checkbox>

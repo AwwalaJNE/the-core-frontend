@@ -17,6 +17,7 @@
                         v-model="is_auto_open_bag"
                         @change="handleAutoOpenBag"
                         data-testid="checkbox-auto_open_bag"
+                        class="checkbox-core"
                     >
                         Auto Open Bag
                     </vs-checkbox>
@@ -25,6 +26,7 @@
                         v-model="is_validate_courier"
                         @change="handleValidateCourier"
                         data-testid="checkbox-validate_courier"
+                        class="checkbox-core"
                     >
                         Validate Courier
                     </vs-checkbox>
