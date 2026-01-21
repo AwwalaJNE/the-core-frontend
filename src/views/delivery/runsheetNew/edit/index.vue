@@ -374,24 +374,6 @@ export default {
     },
     methods: {
         /* ======================================================
-         * TIMER HELPER (RECHECK LATER)
-         * ====================================================== */
-        startSlaTimer() {
-            if (this.timer) return
-
-            this.timer = setInterval(() => {
-                this.now = Date.now()
-            }, 1000)
-        },
-
-        stopSlaTimer() {
-            if (this.timer) {
-                clearInterval(this.timer)
-                this.timer = null
-            }
-        },
-
-        /* ======================================================
          * INIT
          * ====================================================== */
         async initRoute() {
@@ -1126,7 +1108,11 @@ export default {
 
         async submitPOD(dataPOD, runsheetNumber) {
             if (!dataPOD.status) {
-                this.openNotification('warn', null, 'Status Required')
+                this.openNotification('warn', null, 'Warning!', 'Status Required')
+                return
+            }
+            if (!dataPOD.remarks) {
+                this.openNotification('warn', null, 'Warning!', 'Remarks Required')
                 return
             }
 
@@ -1141,6 +1127,7 @@ export default {
 
                 this.openNotification('success', null, 'Success', res?.data?.message)
                 await this.getDataDelivery()
+                this.disabledConfirm = true
             } catch (err) {
                 await this.openNotification(
                     'danger',
@@ -1260,21 +1247,11 @@ export default {
     },
     async mounted() {
         await this.initRoute()
-        // this.startSlaTimer()
 
         window.addEventListener('timezone-changed', this.reload)
-
-        this.timer = setInterval(() => {
-            this.dataDelivery = this.dataDelivery.map((item) => ({
-                ...item,
-                sla_connote_formatted: this.formatSlaTime(item.sla_date, item.end_date),
-            }))
-        }, 1000)
     },
     beforeDestroy() {
-        // this.stopSlaTimer()
         window.removeEventListener('timezone-changed', this.reload)
-        clearInterval(this.timer)
     },
 }
 </script>
