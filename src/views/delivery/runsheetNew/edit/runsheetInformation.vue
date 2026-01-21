@@ -334,14 +334,6 @@ export default {
             this.openDialogRunsheetProofAction = false
             this.dataItem = {}
         },
-        updateSelected(arr) {
-            const { selected } = this.$refs.tableMaster
-            const filtered = selected.filter((item) => item.status_delivery_description === null)
-
-            this.$refs.tableMaster.selected = filtered
-
-            this.$emit('update-selected', filtered)
-        },
         closeDialogConfirm() {
             this.confirmDialog = false
         },
@@ -365,16 +357,52 @@ export default {
             }
         },
 
-        filterSelectable(list) {
-            return list.filter((item) => item.status_delivery_description === null)
+        isSelectable(item) {
+            return item.status_delivery_description !== 'DELIVERED'
         },
-        onAllCheckCallback(val, selected) {
-            const filtered = val ? this.filterSelectable(selected) : selected
-            this.$emit('update-selected', filtered)
+
+        filterSelectable(list = []) {
+            return list.filter(this.isSelectable)
         },
+
+        syncSelection(selected) {
+            this.$nextTick(() => {
+                const table = this.$refs.tableMaster
+                if (!table) return
+
+                const validSelected = this.filterSelectable(selected)
+                const selectableCount = this.dataTable.filter(this.isSelectable).length
+
+                table.selected = validSelected
+
+                table.allCheck = selectableCount > 0 && validSelected.length === selectableCount
+
+                this.$emit('update-selected', validSelected)
+            })
+        },
+
+        updateSelected(selected) {
+            this.syncSelection(selected)
+        },
+
         onRowClickCallback(event, item, selected) {
-            const filtered = this.filterSelectable(selected)
-            this.$emit('update-selected', filtered)
+            this.syncSelection(selected)
+        },
+
+        onAllCheckCallback(val, selected) {
+            if (!val) {
+                this.$nextTick(() => {
+                    const table = this.$refs.tableMaster
+                    if (!table) return
+
+                    table.selected = []
+                    table.allCheck = false
+                    this.$emit('update-selected', [])
+                })
+                return
+            }
+
+            this.syncSelection(selected)
         },
     },
 }

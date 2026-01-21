@@ -76,23 +76,6 @@ const Master = {
         },
     },
     methods: {
-        startLoading(target = null, text = 'Loading...') {
-            const el = target ? target.$el || target : this.$el
-            this.refloading = this.$vs.loading({
-                target: el,
-                type: 'scale',
-                text,
-                background: '#EAEAEA',
-                color: '#3b86ff',
-            })
-        },
-        stopLoading() {
-            if (this.refloading) {
-                this.refloading.close()
-                this.refloading = null
-            }
-        },
-
         setActiveInput(refName, formRefName = null, shouldSkipFocus = () => false) {
             this.activeInput = refName
             if (!shouldSkipFocus()) {

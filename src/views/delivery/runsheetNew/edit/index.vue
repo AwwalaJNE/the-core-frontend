@@ -209,8 +209,6 @@
                             :loading="loadingRunsheet"
                             :selectedItems="selectedUpdateItems"
                             @update-selected="updateSelected"
-                            @updatePOD="updatePOD"
-                            @editPOD="editPOD"
                         />
                     </div>
                 </div>
@@ -1030,7 +1028,6 @@ export default {
             this.selectedUpdateItems = arr
             this.disabledConfirm = !(arr.length > 0 && this.disabledApprove)
         },
-
         /* ======================================================
          * APPROVE & UNAPPROVE RUNSHEET
          * ====================================================== */
@@ -1083,11 +1080,14 @@ export default {
          * CONFIRM RUNSHEET & UPDATE POD
          * ====================================================== */
         mapItemToPOD(item) {
+            const statusMap = Object.fromEntries(item.status_delivery.map((sd) => [sd.value, sd]))
+
             return {
                 courier_employee_id: item.courier_employee_id,
                 delivery_runsheet_number: item.delivery_runsheet_number,
                 koli_number: item.koli_number,
                 status: item.status_code,
+                status_delivery: statusMap[item.status_code]?.data?.status_subtype,
                 remarks: item.remarks,
                 receiver_name: item.receiver_name,
             }
@@ -1103,31 +1103,37 @@ export default {
                 )
             }
 
-            for (const item of this.selectedUpdateItems) {
-                await this.updatePOD(this.mapItemToPOD(item))
-            }
-        },
-
-        async submitPOD(dataPOD, runsheetNumber) {
-            if (!dataPOD.status) {
-                this.openNotification('warn', null, 'Warning!', 'Status Required')
-                return
-            }
-            if (!dataPOD.remarks) {
-                this.openNotification('warn', null, 'Warning!', 'Remarks Required')
-                return
-            }
-
             this.loadingConfirm = true
 
             try {
-                const res = await axios.put(
-                    `${this.URL.revamp_delivery}/${runsheetNumber}/detail/${dataPOD.koli_number}/status?n=${this.listenNodeId}`,
-                    dataPOD,
-                    this.Helper.header()
+                const pods = this.selectedUpdateItems.map((item) => this.mapItemToPOD(item))
+
+                for (const pod of pods) {
+                    if (!pod.status) {
+                        this.openNotification('warn', null, 'Warning!', 'Status wajib diisi')
+                        return
+                    }
+                    if (!pod.remarks) {
+                        this.openNotification('warn', null, 'Warning!', 'Remarks wajib diisi')
+                        return
+                    }
+                    if (!pod.receiver_name && pod.status_delivery === 'DELIVERED') {
+                        this.openNotification('warn', null, 'Warning!', 'Receiver Name wajib diisi')
+                        return
+                    }
+                }
+
+                await Promise.all(
+                    pods.map((pod) =>
+                        axios.put(
+                            `${this.URL.revamp_delivery}/${this.delivery_runsheet_number}/detail/${pod.koli_number}/status?n=${this.listenNodeId}`,
+                            pod,
+                            this.Helper.header()
+                        )
+                    )
                 )
 
-                this.openNotification('success', null, 'Success', res?.data?.message)
+                this.selectedUpdateItems = []
                 await this.getDataDelivery()
                 this.disabledConfirm = true
             } catch (err) {
@@ -1140,15 +1146,6 @@ export default {
             } finally {
                 this.loadingConfirm = false
             }
-        },
-
-        async editPOD(val) {
-            const dataPOD = this.mapItemToPOD(val)
-            await this.submitPOD(dataPOD, val.delivery_runsheet_number)
-        },
-
-        async updatePOD(dataPOD) {
-            await this.submitPOD(dataPOD, this.delivery_runsheet_number)
         },
 
         /* ==========================
