@@ -18,7 +18,7 @@
             <vs-col w="12">
                 <table-master
                     hideColumnKey="receiving-detail-info"
-                    :key="tableKey"
+                    :key="`${tableKey}-${documentType}`"
                     :dataTable="dataTable"
                     :dataColumn="datacolumn"
                     :tableLoading="loading"
@@ -69,7 +69,7 @@ const BAG_TYPE_MAP = {
     OM: { label: 'TM', key: 'tm' },
     HACB: { label: 'RCVB', key: 'rcvb' },
     HVO: { label: 'HVI', key: 'hvi' },
-    DO: { label: 'HVI', key: 'hvi' },
+    DO: { label: 'HVO', key: 'hvo' },
 }
 
 export default {
@@ -124,6 +124,10 @@ export default {
             type: String,
             default: '',
         },
+        documentType: {
+            type: String,
+            default: '',
+        }
     },
     data() {
         return {

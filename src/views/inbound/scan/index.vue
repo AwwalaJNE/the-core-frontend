@@ -136,7 +136,9 @@ export default {
                 page_size: 1,
                 page: 1,
             },
-
+            receivingLogs: [],
+            inboundNumber: '',
+            documentType: '',
             processing: false,
             isSubmitting: false,
 
