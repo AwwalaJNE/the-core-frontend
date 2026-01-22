@@ -246,7 +246,7 @@ export default {
                 },
                 {
                     label: 'Node Origin',
-                    key: 'inbound_node_name_origin',
+                    key: 'formatted_node_origin',
                     width: 'md',
                 },
                 {
@@ -342,6 +342,7 @@ export default {
                 total_received: item?.total_received || '0',
                 total_outstanding: item?.total_outstanding || '0',
                 total_item: item?.total_item || '0',
+                formatted_node_origin: item?.inbound_node_code_origin + ' - ' + item?.inbound_node_name_origin,
                 orion_number:
                     item?.manifest_delivery_order?.do ||
                     item?.manifest_delivery_order?.hbag ||

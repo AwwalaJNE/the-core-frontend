@@ -18,7 +18,7 @@
             <vs-col w="12">
                 <table-master
                     hideColumnKey="receiving-detail-info"
-                    :key="tableKey"
+                    :key="`${tableKey}-${documentType}`"
                     :dataTable="dataTable"
                     :dataColumn="datacolumn"
                     :tableLoading="loading"
@@ -124,6 +124,10 @@ export default {
             type: String,
             default: '',
         },
+        documentType: {
+            type: String,
+            default: ''
+        }
     },
     data() {
         return {
@@ -166,6 +170,14 @@ export default {
                     width: 'sm',
                 },
             ]
+            // Conditionally add HVO column before the dynamic column if documentType is 'DO'
+            if (this.documentType === 'DO') {
+                columns.push({
+                    label: 'HVO',
+                    key: 'hvo',
+                    width: 'sm',
+                });
+            }
             if (this.bagTypeConfig) {
                 columns.push({
                     label: this.bagTypeConfig.label,

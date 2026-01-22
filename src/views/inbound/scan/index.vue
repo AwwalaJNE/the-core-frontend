@@ -55,6 +55,7 @@
                         :actionLimit="actionLimit"
                         :actionPagination="actionPagination"
                         :receivingLogs="receivingLogs"
+                        :documentType="documentType"
                         :inboundNumber="inbound_number"
                         @autoFocusInput="autoFocusInput"
                         @refresh="refresh"
@@ -136,9 +137,9 @@ export default {
                 page_size: 1,
                 page: 1,
             },
-
             processing: false,
             isSubmitting: false,
+            documentType: '',
 
             is_sm: false,
             is_user_check: false,
@@ -192,14 +193,14 @@ export default {
         /* ======================================================
          * SCAN SUBMIT
          * ====================================================== */
-        handleScanSubmit({ type, value }) {
+        async handleScanSubmit({ type, value }) {
             switch (type) {
                 case 'parent_no':
-                    this.submitParent(value)
+                    await this.submitParent(value)
                     break
 
                 case 'child_no':
-                    this.submitChild(value)
+                    await this.submitChild(value)
                     break
             }
         },
@@ -210,12 +211,12 @@ export default {
             await this.refresh()
         },
 
-        submitChild(value) {
+        async submitChild(value) {
             this.form = this.inbound_number
                 ? { item_no: value, inbound_number: this.inbound_number }
                 : { item_no: value }
 
-            this.processInbound()
+            await this.processInbound()
         },
 
         /* ======================================================
@@ -239,10 +240,7 @@ export default {
                     res?.data?.message ?? 'Receiving success'
                 )
 
-                this.inbound_number =
-                    res?.data?.data?.inbound_type === 'RECEIVING CONNOTE'
-                        ? ''
-                        : res?.data?.data?.inbound_number ?? this.inbound_number
+                this.inbound_number = res?.data?.data?.inbound_number ?? this.inbound_number
             } catch (err) {
                 await this.openNotification(
                     'danger',
@@ -287,7 +285,12 @@ export default {
 
                 this.is_sm = data.inbound_type === 'SM'
                 this.is_user_check = this.is_sm && data.is_user_check === '1'
-
+                this.documentType = res.data.data.document_type
+                this.inbound_number = ['RECEIVING CONNOTE', 'RECEIVING BAG'].includes(
+                    data.inbound_type
+                )
+                    ? ''
+                    : this.inbound_number || ''
                 this.dataTable = ['RECEIVING CONNOTE', 'RECEIVING BAG'].includes(data.inbound_type)
                     ? []
                     : [
