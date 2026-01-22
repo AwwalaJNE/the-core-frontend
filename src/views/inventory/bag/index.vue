@@ -417,6 +417,7 @@ export default {
         closeDialog() {
             this.dialogActiveManualDestination = false
             this.autoFocusInput(this.dialogActiveManualDestination)
+            this.handleClearForm()
         },
         autoFocusInput(value) {
             this.setActiveInput('scanItem', null, () => value)
