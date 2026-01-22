@@ -132,6 +132,11 @@
             </template>
             <template #thead>
                 <vs-tr>
+                    <template v-if="listenExpandable && listenHasChildren">
+                        <vs-th class="xxxxs">
+                            <i class="bx bx-chevron-right arrow" style="visibility: hidden"></i>
+                        </vs-th>
+                    </template>
                     <template v-if="listenIsMultipleSelect">
                         <vs-th>
                             <vs-checkbox
@@ -216,6 +221,14 @@
                         :is-selected="!!selected.includes(item)"
                         @click="onRowClick($event, item)"
                     >
+                        <template v-if="listenExpandable && listenHasChildren">
+                            <vs-td>
+                                <span class="expand-icon">
+                                    <i class="bx bx-chevron-right arrow"></i>
+                                </span>
+                            </vs-td>
+                        </template>
+
                         <template v-if="isActionFirst == true">
                             <vs-td class="action">
                                 <vs-row justify="center" class="btn_action">
@@ -273,7 +286,7 @@
                                 <template
                                     v-if="
                                         column.type !== undefined &&
-                                        column.type.toLowerCase() === 'text'
+                                        String(column.type ?? '').toLowerCase() === 'text'
                                     "
                                 >
                                     <vs-td :key="key" :class="column.width ? column.width : ''">
@@ -304,14 +317,18 @@
                                 <template
                                     v-else-if="
                                         column.type !== undefined &&
-                                        column.type.toLowerCase().includes('boolean')
+                                        String(column.type ?? '')
+                                            .toLowerCase()
+                                            .includes('boolean')
                                     "
                                 >
                                     <vs-td :key="key" :class="column.width ? column.width : ''">
                                         <checkbox
                                             :isChecked="item[column.key]"
                                             :isDisabled="
-                                                column.type.toLowerCase().includes('disabled')
+                                                String(column.type ?? '')
+                                                    .toLowerCase()
+                                                    .includes('disabled')
                                             "
                                             :formKey="`${column.key}|${item[listenColumn[0].key]}`"
                                             :dataObj="item"
@@ -322,7 +339,9 @@
                                 <template
                                     v-else-if="
                                         column.type !== undefined &&
-                                        column.type.toLowerCase().includes('inputan')
+                                        String(column.type ?? '')
+                                            .toLowerCase()
+                                            .includes('inputan')
                                     "
                                 >
                                     <vs-td
@@ -337,7 +356,8 @@
                                         <template
                                             v-if="
                                                 column.typeInput !== undefined &&
-                                                column.typeInput.toLowerCase() === 'select'
+                                                String(column.typeInput ?? '').toLowerCase() ===
+                                                    'select'
                                             "
                                         >
                                             <template v-if="column.hasOwnProperty('injectedData')">
@@ -376,6 +396,8 @@
                                                                         : false
                                                                 "
                                                                 autocomplete="off"
+                                                                :hiddenTitle="true"
+                                                                :placeholder="column.label"
                                                                 @updateValue="updateValue"
                                                                 @inputFocus="onfocuslah"
                                                             />
@@ -446,6 +468,8 @@
                                                                           ]
                                                                         : false
                                                                 "
+                                                                :hiddenTitle="true"
+                                                                :placeholder="column.label"
                                                                 autocomplete="off"
                                                                 @updateValue="updateValue"
                                                             />
@@ -486,6 +510,8 @@
                                                                     ? item[column.disabled_input]
                                                                     : false
                                                             "
+                                                            :hiddenTitle="true"
+                                                            :placeholder="column.label"
                                                             @updateValue="updateValue"
                                                         />
                                                     </div>
@@ -495,71 +521,71 @@
                                         <template
                                             v-else-if="
                                                 column.typeInput !== undefined &&
-                                                column.typeInput.toLowerCase() === 'text'
+                                                String(column.typeInput ?? '').toLowerCase() ===
+                                                    'text'
                                             "
                                         >
-                                            <div style="margin-top: 20px">
-                                                <input-general
-                                                    :name="column.label"
-                                                    :rules="''"
-                                                    :formKey="`${column.key}|${
-                                                        item[listenColumn[0].key]
-                                                    }`"
-                                                    :valueData="`${
-                                                        item[column.key] ? item[column.key] : ''
-                                                    }`"
-                                                    :typeInput="
-                                                        'text' +
-                                                        `|${
-                                                            column.hasOwnProperty('disabled_input')
-                                                                ? item[column.disabled_input] ==
-                                                                  true
-                                                                    ? 'disabled'
-                                                                    : ''
+                                            <input-general
+                                                :name="column.label"
+                                                :rules="''"
+                                                :formKey="`${column.key}|${
+                                                    item[listenColumn[0].key]
+                                                }`"
+                                                :valueData="`${
+                                                    item[column.key] ? item[column.key] : ''
+                                                }`"
+                                                :typeInput="
+                                                    'text' +
+                                                    `|${
+                                                        column.hasOwnProperty('disabled_input')
+                                                            ? item[column.disabled_input] == true
+                                                                ? 'disabled'
                                                                 : ''
-                                                        }`
-                                                    "
-                                                    :dataObj="item"
-                                                    @updateValue="updateValue"
-                                                />
-                                            </div>
+                                                            : ''
+                                                    }`
+                                                "
+                                                :dataObj="item"
+                                                :hiddenTitle="true"
+                                                :placeholder="column.label"
+                                                @updateValue="updateValue"
+                                            />
                                         </template>
                                         <template
                                             v-else-if="
                                                 column.typeInput !== undefined &&
-                                                column.typeInput.toLowerCase() === 'textsubmit'
+                                                String(column.typeInput ?? '').toLowerCase() ===
+                                                    'textsubmit'
                                             "
                                         >
-                                            <div style="margin-top: 20px">
-                                                <input-general
-                                                    :name="column.label + '*'"
-                                                    :rules="''"
-                                                    :formKey="`${column.key}|${
-                                                        item[listenColumn[0].key]
-                                                    }`"
-                                                    :valueData="`${
-                                                        item[column.key] ? item[column.key] : ''
-                                                    }`"
-                                                    :typeInput="
-                                                        'text' +
-                                                        `|${
-                                                            column.hasOwnProperty('disabled_input')
-                                                                ? item[column.disabled_input] ==
-                                                                  true
-                                                                    ? 'disabled'
-                                                                    : ''
+                                            <input-general
+                                                :name="column.label + '*'"
+                                                :rules="''"
+                                                :formKey="`${column.key}|${
+                                                    item[listenColumn[0].key]
+                                                }`"
+                                                :valueData="`${
+                                                    item[column.key] ? item[column.key] : ''
+                                                }`"
+                                                :typeInput="
+                                                    'text' +
+                                                    `|${
+                                                        column.hasOwnProperty('disabled_input')
+                                                            ? item[column.disabled_input] == true
+                                                                ? 'disabled'
                                                                 : ''
-                                                        }`
-                                                    "
-                                                    :dataObj="item"
-                                                    @updateValue="updateValue"
-                                                />
-                                            </div>
+                                                            : ''
+                                                    }`
+                                                "
+                                                :dataObj="item"
+                                                :hiddenTitle="true"
+                                                :placeholder="column.label"
+                                                @updateValue="updateValue"
+                                            />
                                         </template>
                                         <template
                                             v-else-if="
                                                 column.typeInput !== undefined &&
-                                                column.typeInput
+                                                String(column.typeInput ?? '')
                                                     .toLowerCase()
                                                     .includes('autocomplete')
                                             "
@@ -583,7 +609,9 @@
                                         <template
                                             v-else-if="
                                                 column.typeInput !== undefined &&
-                                                column.typeInput.toLowerCase().includes('icon')
+                                                String(column.typeInput ?? '')
+                                                    .toLowerCase()
+                                                    .includes('icon')
                                             "
                                         >
                                             <template v-if="item[column.key]">
@@ -609,7 +637,7 @@
                                         <template
                                             v-else-if="
                                                 column.typeInput !== undefined &&
-                                                column.typeInput
+                                                String(column.typeInput ?? '')
                                                     .toLowerCase()
                                                     .includes('button_text')
                                             "
@@ -625,7 +653,8 @@
                                         <template
                                             v-if="
                                                 column.typeInput !== undefined &&
-                                                column.typeInput.toLowerCase() === 'multi-select-by'
+                                                String(column.typeInput ?? '').toLowerCase() ===
+                                                    'multi-select-by'
                                             "
                                         >
                                             <template v-if="!item.filter">
@@ -688,7 +717,10 @@
                                                                 column.multipleSelector.selectValue
                                                             "
                                                             :dataObj="item"
-                                                            :minSearchLength="column.multipleSelector.minSearchLength"
+                                                            :minSearchLength="
+                                                                column.multipleSelector
+                                                                    .minSearchLength
+                                                            "
                                                             @inputFocus="
                                                                 inputFocus(
                                                                     filterIndex,
@@ -719,10 +751,12 @@
                                                 </vs-row>
                                                 <vs-row
                                                     v-if="
-                                                        column.typeInputDetail.toLowerCase() ===
-                                                            'others' ||
-                                                        (column.typeInputDetail.toLowerCase() ===
-                                                            'hide_column' &&
+                                                        String(
+                                                            column.typeInputDetail ?? ''
+                                                        ).toLowerCase() === 'others' ||
+                                                        (String(
+                                                            column.typeInputDetail ?? ''
+                                                        ).toLowerCase() === 'hide_column' &&
                                                             item.filter.length === 0)
                                                     "
                                                 >
@@ -737,12 +771,25 @@
                                                 </vs-row>
                                             </template>
                                         </template>
+                                        <template
+                                            v-else-if="
+                                                column.typeInput !== undefined &&
+                                                String(column.typeInput ?? '')
+                                                    .toLowerCase()
+                                                    .includes('countdown')
+                                            "
+                                        >
+                                            <countdown
+                                                :target_time="item?.[column.countdown?.target]"
+                                                :end_time="item?.[column.countdown?.end]"
+                                            />
+                                        </template>
                                     </vs-td>
                                 </template>
                                 <template
                                     v-else-if="
                                         column.type !== undefined &&
-                                        column.type.toLowerCase() === 'status'
+                                        String(column.type ?? '').toLowerCase() === 'status'
                                     "
                                 >
                                     <vs-td :key="key" :class="column.width ? column.width : ''">
@@ -860,7 +907,9 @@
                                                 hasLinked !== undefined &&
                                                 hasLinked.length > 0 &&
                                                 column.key !== undefined &&
-                                                hasLinked.includes(column.key.toLowerCase())
+                                                hasLinked.includes(
+                                                    String(column.key ?? '').toLowerCase()
+                                                )
                                             "
                                         >
                                             <template
@@ -911,7 +960,9 @@
                                                 hasLinked2 !== undefined &&
                                                 hasLinked2.length > 0 &&
                                                 column.key !== undefined &&
-                                                hasLinked2.includes(column.key.toLowerCase())
+                                                hasLinked2.includes(
+                                                    String(column.key ?? '').toLowerCase()
+                                                )
                                             "
                                         >
                                             <span
@@ -928,7 +979,9 @@
                                                 hasLinked3 !== undefined &&
                                                 hasLinked3.length > 0 &&
                                                 column.key !== undefined &&
-                                                hasLinked3.includes(column.key.toLowerCase()) &&
+                                                hasLinked3.includes(
+                                                    String(column.key ?? '').toLowerCase()
+                                                ) &&
                                                 (!item.hasOwnProperty('is_kurir_user') ||
                                                     !item.is_kurir_user)
                                             "
@@ -947,7 +1000,9 @@
                                                 hasLinked4 !== undefined &&
                                                 hasLinked4.length > 0 &&
                                                 column.key !== undefined &&
-                                                hasLinked4.includes(column.key.toLowerCase())
+                                                hasLinked4.includes(
+                                                    String(column.key ?? '').toLowerCase()
+                                                )
                                             "
                                         >
                                             <img
@@ -965,7 +1020,9 @@
                                                 hasLinkedCustom !== undefined &&
                                                 hasLinkedCustom.length > 0 &&
                                                 column.key !== undefined &&
-                                                hasLinkedCustom.includes(column.key.toLowerCase())
+                                                hasLinkedCustom.includes(
+                                                    String(column.key ?? '').toLowerCase()
+                                                )
                                             "
                                         >
                                             <span
@@ -1130,10 +1187,14 @@
                                                             ? item.isDisabled == true
                                                             : item.hasOwnProperty('button_status')
                                                             ? item['button_status'].hasOwnProperty([
-                                                                  actionItem.key.toLowerCase(),
+                                                                  String(
+                                                                      actionItem.key ?? ''
+                                                                  ).toLowerCase(),
                                                               ])
                                                                 ? item['button_status'][
-                                                                      actionItem.key.toLowerCase()
+                                                                      String(
+                                                                          actionItem.key ?? ''
+                                                                      ).toLowerCase()
                                                                   ] == false
                                                                     ? true
                                                                     : false
@@ -1141,7 +1202,7 @@
                                                             : false
                                                     "
                                                     :danger="
-                                                        actionItem.attribute
+                                                        String(actionItem.attribute ?? '')
                                                             .toLowerCase()
                                                             .includes('danger')
                                                             ? true
@@ -1149,17 +1210,21 @@
                                                                   'button_danger'
                                                               ) &&
                                                               item['button_danger'].hasOwnProperty([
-                                                                  actionItem.key.toLowerCase(),
+                                                                  String(
+                                                                      actionItem.key ?? ''
+                                                                  ).toLowerCase(),
                                                               ])
                                                             ? item['button_danger'][
-                                                                  actionItem.key.toLowerCase()
+                                                                  String(
+                                                                      actionItem.key ?? ''
+                                                                  ).toLowerCase()
                                                               ] == false
                                                                 ? true
                                                                 : false
                                                             : false
                                                     "
                                                     :warn="
-                                                        actionItem.attribute
+                                                        String(actionItem.attribute ?? '')
                                                             .toLowerCase()
                                                             .includes('warn')
                                                             ? true
@@ -1171,7 +1236,9 @@
                                                     <span v-if="!isIconButton">{{
                                                         (item.hasOwnProperty('button_label') &&
                                                             item['button_label'][
-                                                                actionItem.key.toLowerCase()
+                                                                String(
+                                                                    actionItem.key ?? ''
+                                                                ).toLowerCase()
                                                             ]) ||
                                                         actionItem.label
                                                     }}</span>
@@ -1415,28 +1482,14 @@
                             </vs-td>
                         </template>
                         <template v-if="runsheetProofAction == true">
-                            <vs-td class="action">
-                                <vs-row justify="center" class="btn_action">
+                            <vs-td>
+                                <vs-row justify="center">
                                     <i
                                         class="bx bxs-show"
                                         style="font-size: 36px"
                                         @click="actionRunsheetProofAction(item)"
                                     >
                                     </i>
-                                    <!-- <vs-button
-                      block
-                      :disabled="
-                        item.hasOwnProperty('isDisabled') &&
-                          item.isDisabled == true
-                      "
-                      size="small"
-                      flat
-                      warn
-                      :active="true"
-                      @click="actionConfirmed(item)"
-                    >
-                      <span>Confirmed</span>
-                    </vs-button> -->
                                 </vs-row>
                             </vs-td>
                         </template>
@@ -1716,25 +1769,21 @@
                         </template>
 
                         <template v-if="listenExpandable" #expand>
-                            <div class="con-content">
-                                <template
-                                    v-if="
-                                        item.hasOwnProperty('children') &&
-                                        Object.keys(item.children).length > 0
-                                    "
-                                >
-                                    <table>
-                                        <tr>
-                                            <th
+                            <template
+                                v-if="
+                                    item.hasOwnProperty('children') &&
+                                    Object.keys(item.children).length > 0
+                                "
+                            >
+                                <vs-table striped class="child-table">
+                                    <template #thead>
+                                        <vs-tr>
+                                            <vs-th
                                                 v-for="(c_item, c_key) in Object.keys(
                                                     item.children
                                                 )"
                                                 :key="c_key"
-                                                :class="
-                                                    item.hasOwnProperty('children_width')
-                                                        ? item['children_width'][c_item]
-                                                        : ''
-                                                "
+                                                :class="item.children_width?.[c_item] || ''"
                                                 style="font-size: 0.85em; padding-left: 0.75em"
                                             >
                                                 <template
@@ -1753,9 +1802,11 @@
                                                         )
                                                     }}
                                                 </template>
-                                            </th>
-                                        </tr>
-                                        <tr>
+                                            </vs-th>
+                                        </vs-tr>
+                                    </template>
+                                    <template #tbody>
+                                        <vs-tr>
                                             <template
                                                 v-for="(c_item, c_td_key) in Object.keys(
                                                     item.children
@@ -1936,7 +1987,9 @@
                                                                                 </p>
                                                                             </template>
                                                                             <template v-else="">
-                                                                                <p>{{ itm }}</p>
+                                                                                <p>
+                                                                                    {{ itm }}
+                                                                                </p>
                                                                             </template>
                                                                         </template>
                                                                         <template v-else>
@@ -1963,10 +2016,10 @@
                                                     </td>
                                                 </template>
                                             </template>
-                                        </tr>
-                                    </table>
-                                </template>
-                            </div>
+                                        </vs-tr>
+                                    </template>
+                                </vs-table>
+                            </template>
                         </template>
                     </vs-tr>
                 </template>
@@ -1983,12 +2036,12 @@
 
         <vs-row class="mt-2" justify="space-between" align="center" v-if="dataTable.length > 0">
             <template v-if="hasPagination == true">
-                <vs-col w="2">
+                <vs-col w="2" v-if="false">
                     <vs-button @click="handleExportCSV" :data-testid="`export-button`">
                         Export
                     </vs-button>
                 </vs-col>
-                <vs-col w="10">
+                <vs-col w="12">
                     <pagination-master
                         :page="pagination.page"
                         :limit="pagination.limit"
@@ -2003,6 +2056,7 @@
 </template>
 <script>
 import master from '@/mixins/master'
+
 import Pagination from '@/components/pagination/pagination.vue'
 import Checkbox from '@/components/input/checkbox.vue'
 import InputGeneral from '@/components/input/general'
@@ -2010,7 +2064,10 @@ import Selector from '@/components/input/select'
 import asynchronousSelect from '@/components/input/asynchronousSelect'
 import iterateSelector from '@/components/input/iterateInput2'
 import AutoComplete from '@/components/input/autoComplete'
+import Countdown from '@/components/countdown'
+
 import { Dialog } from 'element-ui'
+
 export default {
     name: 'tabelMaster',
     mixins: [master],
@@ -2023,6 +2080,7 @@ export default {
         'iterate-selector': iterateSelector,
         'auto-complete': AutoComplete,
         'el-dialog': Dialog,
+        countdown: Countdown,
     },
     props: {
         hideColumnKey: String,
@@ -2221,7 +2279,11 @@ export default {
         validColumn() {
             return this.dataColumn
                 .filter((col) => !this.listenHideColumn.includes(col.key))
-                .filter((col) => col.label.toLowerCase().includes(this.columnSearch.toLowerCase()))
+                .filter((col) =>
+                    String(col?.label ?? '')
+                        .toLowerCase()
+                        .includes(String(this.columnSearch ?? '').toLowerCase())
+                )
         },
         listenColumn() {
             return this.dataColumn.filter((col) => this.visibleKeys.includes(col.key))
@@ -2247,6 +2309,9 @@ export default {
                 this.customBtn ||
                 this.customAction
             )
+        },
+        listenHasChildren() {
+            return this.dataTable?.some((i) => i.children && Object.keys(i.children).length > 0)
         },
     },
     watch: {
@@ -2550,8 +2615,9 @@ export default {
             }
         },
         getStatusColor(status) {
-            if (!status) return 'gray'
-            switch (status.toLowerCase()) {
+            const normalized = String(status ?? '').toLowerCase()
+
+            switch (normalized) {
                 case 'safe':
                     return 'rgb(21, 224, 21)'
                 case 'warning':
@@ -2889,5 +2955,45 @@ span.text-danger {
 .columns-label {
     font-weight: bold;
     color: #333;
+}
+
+.expand-icon {
+    width: 32px;
+    height: 32px;
+    background-color: #e3f2fd;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #1976d2;
+    cursor: pointer;
+}
+
+/* arrow animation */
+.expand-icon .arrow {
+    display: inline-block;
+    transition: transform 0.2s ease;
+}
+
+/* rotate when expanded */
+.vs-table__tr.isExpand .expand-icon .arrow {
+    transform: rotate(90deg);
+}
+
+/* CHILD TABLE STYLE */
+.child-table .vs-table__thead .vs-table__th {
+    background: transparent !important;
+    font-weight: 600;
+    font-size: 0.75em;
+    color: #6b7280;
+    border-top: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb;
+}
+.child-table .vs-table__tbody td {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8em;
+    color: #374151;
+    vertical-align: top;
+    border-bottom: 1px solid #e5e7eb;
 }
 </style>

@@ -42,6 +42,7 @@
                                                 icon-after
                                                 v-uppercase
                                                 ref="formInputInbound"
+                                                :disabled="loading"
                                                 :data-testid="'input-item_no'"
                                             >
                                                 <template #icon>
@@ -180,6 +181,8 @@ export default {
             await this.getButtonValue()
         },
         async updateValue() {
+            if (!this.item_no) return
+
             this.form = {
                 item_number: this.item_no,
             }
@@ -194,7 +197,7 @@ export default {
                     this.Helper.header()
                 )
             } catch (err) {
-                this.openNotification(
+                await this.openNotification(
                     'danger',
                     err?.response?.data?.code ?? '',
                     'Failed',

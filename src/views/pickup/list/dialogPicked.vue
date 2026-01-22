@@ -25,6 +25,7 @@
                                 :val="item.value"
                                 :key="key"
                                 disabled
+                                class="checkbox-core"
                             >
                                 {{ item.label }}
                             </vs-checkbox>
