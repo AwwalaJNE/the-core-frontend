@@ -75,7 +75,7 @@
                             <vs-row justify="end">
                                 <vs-col xs="12" sm="4" lg="4">
                                     <select-search-by
-                                        :key="listenBreadcrumbCode"
+                                        :key="listenBreadcrumbTitle"
                                         :isMultiple="false"
                                         :border="true"
                                         @updateSearchBy="updateSearchBy"
@@ -161,6 +161,7 @@
                         </vs-col>
                         <vs-col xs="12" sm="4" lg="2">
                             <select-search-by
+                                :key="listenBreadcrumbTitle"
                                 :isMultiple="false"
                                 :border="true"
                                 @updateSearchBy="updateFilterDateBy"
@@ -205,7 +206,6 @@
                             :origin="node_origin"
                             :query="tempSearch"
                             :prealert="values"
-                            :hasLinkedItem="hasLinkedItems"
                             :filterDateBy="filterDateBy"
                             :dateFilter="tempDate"
                             :isReset="reset"
@@ -229,7 +229,6 @@ import SearchInput from '@/components/search/searchInput'
 import Inputan from '@/components/input/inputan'
 import InboundIncoming from '@/views/inbound/inboundList'
 import DateTime from '@/components/input/dateTime'
-import dateRange from '@/components/daterange/index'
 import SelectSearchBy from '@/components/search/selectSearchBy'
 
 export default {
@@ -252,13 +251,13 @@ export default {
         formKey: String,
         isMultiple: Boolean,
         border: Boolean,
-        hasLinkedItems: Array,
     },
     data() {
+        const saved = JSON.parse(localStorage.getItem('InboundFilters')) || {}
         return {
             title: 'Receiving ',
-            tempSearch: JSON.parse(localStorage.getItem('InboundFilters'))?.tempSearch || '',
-            tempDate: JSON.parse(localStorage.getItem('InboundFilters'))?.tempDate || [],
+            tempSearch: saved?.tempSearch || '',
+            tempDate: saved?.tempDate || [],
             DataNode: [
                 {
                     label: 'All Nodes',
@@ -266,8 +265,8 @@ export default {
                 },
             ],
             nodeOrigin: [],
-            node_request: JSON.parse(localStorage.getItem('InboundFilters'))?.node_request || '',
-            node_origin: JSON.parse(localStorage.getItem('InboundFilters'))?.node_origin || '',
+            node_request: saved?.node_request || '',
+            node_origin: saved?.node_origin || '',
             DataArr: this.valueData
                 ? this.valueData
                 : [
@@ -292,7 +291,7 @@ export default {
                           value: 'MISSROUTE RECEIVED',
                       },
                   ],
-            values: JSON.parse(localStorage.getItem('InboundFilters'))?.values || '-',
+            values: saved?.values || '-',
             DataFilterPrealert: this.valueData
                 ? this.valueData
                 : [
@@ -321,7 +320,7 @@ export default {
                           value: 'MTS',
                       },
                   ],
-            value: JSON.parse(localStorage.getItem('InboundFilters'))?.value || '-',
+            value: saved?.value || '-',
             arrValue: this.selectedValue
                 ? this.selectedValue
                 : [
@@ -330,10 +329,8 @@ export default {
                           label: 'All Status',
                       },
                   ],
-            filterDateBy:
-                JSON.parse(localStorage.getItem('InboundFilters'))?.filterDateBy || 'received',
-            searchBy:
-                JSON.parse(localStorage.getItem('InboundFilters'))?.searchBy || 'inbound_number',
+            filterDateBy: saved?.filterDateBy || 'received',
+            searchBy: 'inbound_number',
             searchByNumeric: false,
             searchPlaceholder: 'Search Inbound Number',
             searchParams: [],
@@ -401,58 +398,74 @@ export default {
         },
         listenBreadcrumbCode: {
             handler(val, oldVal) {
-                if (val !== oldVal && val !== undefined) {
+                if (val && val !== oldVal) {
                     this.setSearchParams()
+                    this.resetSearchByInbound()
                 }
             },
             immediate: true,
         },
     },
     methods: {
+        resetSearchByInbound() {
+            this.searchBy = 'inbound_number'
+            this.searchPlaceholder = 'Inbound Number'
+            this.searchByNumeric = false
+
+            this.updateLocalStorage()
+        },
         setSearchParams() {
+            const title = this.listenBreadcrumbTitle
+            const code = this.listenBreadcrumbCode
+
+            const isReceivingItem = ['Receiving Connote', 'Receiving Bag', 'RCVB'].includes(title)
+
             this.searchParams = [
                 {
                     label: `${
-                        this.listenBreadcrumbCode === 'Pre Alert'
-                            ? 'Incoming'
-                            : this.listenBreadcrumbCode
+                        code === 'Pre Alert' ? 'Incoming' : this.listenBreadcrumbCode
                     } Number`,
                     value: 'inbound_number',
                 },
-                {
-                    label: 'IM Numbers',
-                    value: 'manifestItems',
-                },
-                {
-                    label: 'Vehicle',
-                    value: 'vehicle_type_name',
-                },
+                ...(!isReceivingItem
+                    ? [
+                          {
+                              label: 'Orion Number',
+                              value: 'orion_number',
+                          },
+                          {
+                              label: 'IM Numbers',
+                              value: 'manifestItems',
+                          },
+                          {
+                              label: 'Vehicle',
+                              value: 'vehicle_type_name',
+                          },
+                          {
+                              label: 'Quantity Bag',
+                              value: 'inbound_total_bag',
+                              isNumeric: true,
+                          },
+                          {
+                              label: 'Quantity Connote',
+                              value: 'inbound_total_koli',
+                              isNumeric: true,
+                          },
+                          {
+                              label: 'Weight',
+                              value: 'inbound_total_weight',
+                              isNumeric: true,
+                          },
+                          {
+                              label: 'PIC',
+                              value: 'carrier_employee_name',
+                          },
+                      ]
+                    : []),
+
                 {
                     label: 'Origin',
                     value: 'inbound_node_name_origin',
-                },
-                {
-                    label: 'Type Inbound',
-                    value: 'inbound_type',
-                },
-                {
-                    label: 'Quantity Bag',
-                    value: 'inbound_total_bag',
-                    isNumeric: true,
-                },
-                {
-                    label: 'Quantity Connote',
-                    value: 'inbound_total_koli',
-                    isNumeric: true,
-                },
-                {
-                    label: 'Weight',
-                    value: 'inbound_total_weight',
-                    isNumeric: true,
-                },
-                {
-                    label: 'PIC',
-                    value: 'carrier_employee_name',
                 },
                 {
                     label: 'Received At',
@@ -576,12 +589,6 @@ export default {
             this.updateLocalStorage()
         },
         updatePrealert(val) {
-            const indexOfBag = val.indexOf('bag')
-            if (indexOfBag !== -1) {
-                this.hasLinkedItems = []
-            } else if (indexOfBag === -1) {
-                this.hasLinkedItems = ['inbound_number']
-            }
             this.updateLocalStorage()
         },
         updateSearchBy(key, val, isNumeric) {
@@ -630,15 +637,5 @@ export default {
 .span-button:focus {
     background: transparent;
     color: rgb(25, 91, 255);
-}
-</style>
-<style lang="scss">
-.mb-15 {
-    margin-bottom: 1.5em;
-}
-.custom-title {
-    padding: 0.6em;
-    text-align: right;
-    font-weight: 600;
 }
 </style>

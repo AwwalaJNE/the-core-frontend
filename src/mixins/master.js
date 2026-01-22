@@ -76,23 +76,6 @@ const Master = {
         },
     },
     methods: {
-        startLoading(target = null, text = 'Loading...') {
-            const el = target ? target.$el || target : this.$el
-            this.refloading = this.$vs.loading({
-                target: el,
-                type: 'scale',
-                text,
-                background: '#EAEAEA',
-                color: '#3b86ff',
-            })
-        },
-        stopLoading() {
-            if (this.refloading) {
-                this.refloading.close()
-                this.refloading = null
-            }
-        },
-
         setActiveInput(refName, formRefName = null, shouldSkipFocus = () => false) {
             this.activeInput = refName
             if (!shouldSkipFocus()) {
@@ -102,6 +85,20 @@ const Master = {
                     }, 0)
                 })
             }
+        },
+
+        setUnfocusInput() {
+            // Clear activeInput so handleGlobalClick & refocus logic have nothing to lock onto
+            this.activeInput = null
+
+            this.$nextTick(() => {
+                requestAnimationFrame(() => {
+                    const el = document.activeElement
+                    if (el && typeof el.blur === 'function') {
+                        el.blur()
+                    }
+                })
+            })
         },
 
         focusInput(refName, formRefName, shouldSkipFocus) {
@@ -116,6 +113,7 @@ const Master = {
 
             inputEl.focus()
         },
+
         preventUnfocus(e, formRefName = null, shouldSkipFocus = () => false) {
             if (shouldSkipFocus()) return
 
@@ -169,22 +167,26 @@ const Master = {
         },
 
         handleTabNavigation(event, currentInputRef, inputOrder) {
-            if (event.key === 'Tab') {
-                event.preventDefault()
+            if (event.key !== 'Tab') return
 
-                if (!inputOrder || !inputOrder.length) return
+            event.preventDefault()
+            if (!inputOrder || !inputOrder.length) return
 
-                const currentIndex = inputOrder.indexOf(currentInputRef)
-                if (currentIndex === -1) return
+            const currentIndex = inputOrder.indexOf(currentInputRef)
+            if (currentIndex === -1) return
 
-                const nextIndex = (currentIndex + 1) % inputOrder.length
-                const nextRef = inputOrder[nextIndex]
+            const isShift = event.shiftKey
 
-                if (this.$refs[nextRef]) {
-                    const nextInput = this.$refs[nextRef].$el.querySelector('input')
-                    if (nextInput) nextInput.focus()
-                }
-            }
+            const nextIndex = isShift
+                ? (currentIndex - 1 + inputOrder.length) % inputOrder.length // Shift + Tab (prev)
+                : (currentIndex + 1) % inputOrder.length // Tab (next)
+
+            const nextRef = inputOrder[nextIndex]
+
+            const ref = this.$refs[nextRef]
+            const nextInput = ref?.$el?.querySelector('input')
+
+            if (nextInput) nextInput.focus()
         },
 
         moneyformat(number) {
@@ -228,228 +230,219 @@ const Master = {
             this.Loading.close()
         },
         openNotification(type = null, code, title, msg) {
-            this.playNotificationSound(type)
+            return new Promise((resolve) => {
+                this.playNotificationSound(type)
 
-            if (type === 'success') {
-                return
-            } else if (type === 'warn') {
-                const notifications = document.querySelectorAll('.vs-notification')
-                for (const notification of notifications) {
-                    const message = notification.querySelector('p').textContent
-                    if (msg === message) {
-                        return
-                    }
+                /* =========================
+                 * SUCCESS
+                 * ========================= */
+                if (type === 'success') {
+                    resolve()
+                    return
                 }
 
-                const noti = this.$vs.notification({
-                    duration: 3000,
-                    progress: 'auto',
-                    color: type,
-                    position: 'top-right',
-                    title: `
+                /* =========================
+                 * WARN (vs-notification)
+                 * ========================= */
+                if (type === 'warn') {
+                    const notifications = document.querySelectorAll('.vs-notification')
+                    for (const notification of notifications) {
+                        const message = notification.querySelector('p')?.textContent
+                        if (msg === message) {
+                            resolve()
+                            return
+                        }
+                    }
+
+                    const duration = 3000
+
+                    this.$vs.notification({
+                        duration,
+                        progress: 'auto',
+                        color: type,
+                        position: 'top-right',
+                        title: `
                     <div style="padding-left: 2rem;">
                         ${title}
                     </div>
                 `,
-                    text: `
+                        text: `
                     <div style="padding-left: 2rem;">
                         ${msg}
                     </div>
                 `,
-                    icon: `
+                        icon: `
                     <div style="display: flex; flex-direction: column; align-items: center; min-width: 64px; margin-left: 30px;">
-                        <i class="bx ${
-                            type === 'success' || type === 'success-with-notif'
-                                ? 'bx-select-multiple'
-                                : 'bx-error'
-                        }" style="font-size: 24px;"></i>
+                        <i class="bx bx-error" style="font-size: 24px;"></i>
                         <div style="font-size: 12px; margin-top: 4px; color: #fff; font-weight: bold">
-                            ${type === 'danger' && code ? code : ''}
+                            ${code || ''}
                         </div>
                     </div>
                 `,
-                })
-            } else if (type === 'danger') {
-                const DialogConstructor = Vue.extend(DialogMaster)
-                const instance = new DialogConstructor({
-                    propsData: {
-                        actived: true,
-                        width: 'md',
-                        className: 'dialog-danger',
-                        hideCloseIcon: false,
-                        closeDialog: () => {
-                            instance.modalActive = false
-                            clearInterval(instance.timer)
+                    })
+
+                    setTimeout(() => {
+                        resolve()
+                    }, duration)
+
+                    return
+                }
+
+                /* =========================
+                 * DANGER (Dialog Custom)
+                 * ========================= */
+                if (type === 'danger') {
+                    const DialogConstructor = Vue.extend(DialogMaster)
+                    const instance = new DialogConstructor({
+                        propsData: {
+                            actived: true,
+                            width: 'md',
+                            className: 'dialog-danger',
+                            hideCloseIcon: false,
+                            closeDialog: () => {
+                                instance.modalActive = false
+                                clearInterval(instance.timer)
+                                resolve() // ⬅️ manual close
+                            },
                         },
-                    },
-                    data() {
-                        return {
-                            progress: 100,
-                            timer: null,
-                        }
-                    },
-                })
-
-                instance.$mount()
-                document.body.appendChild(instance.$el)
-
-                // inject CSS (hilangkan margin/padding bawaan)
-                const styleTag = document.createElement('style')
-                styleTag.textContent = `
-                    .dialog-danger .vs-dialog-content,
-                    .dialog-danger .vs-dialog__content,
-                    .dialog-danger .con-form,
-                    .dialog-danger .footer-dialog,
-                    .dialog-danger .not-margin {
-                        margin: 0 !important;
-                        padding: 0 !important;
-                    }
-                `
-                document.head.appendChild(styleTag)
-
-                const bgColor = '#ff4d4f'
-                const duration = 5000
-                const step = 100 / (duration / 200)
-
-                // === SLOT HEADER ===
-                instance.$slots.header = [
-                    instance.$createElement('div', {
-                        domProps: {
-                            innerHTML: `
-                                <div 
-                                    style="
-                                        background:${bgColor};
-                                        border-radius:20px 20px 0 0;
-                                        position:relative;
-                                        height:110px;
-                                        display:flex;
-                                        justify-content:center;
-                                    "
-                                >
-                                    <img 
-                                        src="${joniNgintip}" 
-                                        alt="mascot" 
-                                        style="
-                                            position: absolute;
-                                            bottom: -5px;
-                                            height: 90px;
-                                        " 
-                                    />
-                                </div>
-                            `,
+                        data() {
+                            return {
+                                progress: 100,
+                                timer: null,
+                            }
                         },
-                    }),
-                ]
+                    })
 
-                // === SLOT CONTENT ===
-                instance.$slots.content = [
-                    instance.$createElement('div', {
-                        domProps: {
-                            innerHTML: `
-                                <div 
-                                    style="
-                                        text-align: center;
-                                        padding: 40px 20px 25px;
-                                    "
-                                >
-                                    <h2 
-                                        style="
-                                            margin: 0;
-                                            color: #333;
-                                            font-weight: 600;
-                                        "
-                                    >
-                                        ${title || 'Error'}
-                                    </h2>
-                                    ${
-                                        code
-                                            ? `<div style="color: #999; margin-top: 4px;">${code}</div>`
-                                            : ''
-                                    }
-                                    <div 
-                                        style="margin-top: 10px; font-size: 15px; color:#555;"
-                                    >
-                                        ${msg || ''}
-                                    </div>
-                                    ${
-                                        code
-                                            ? `<a 
-                                                href="/help/error-dictionary?s=${code}" 
-                                                style="
-                                                    display: inline-block;
-                                                    margin-top: 14px;
-                                                    color: #409EFF;
-                                                    font-size: 14px;
-                                                    text-decoration: underline;
-                                                "
-                                            >
-                                                What does this mean?
-                                            </a>`
-                                            : ''
-                                    }
-                                </div>
-                            `,
-                        },
-                    }),
-                ]
+                    instance.$mount()
+                    document.body.appendChild(instance.$el)
 
-                // === SLOT FOOTER ===
-                instance.$slots.footer = [
-                    instance.$createElement('div', {
-                        style: `
-                            position: relative;
-                            width: 98%;
-                            height: 8px;
-                            border-radius: 0 0 20px 20px;
-                            overflow: hidden;
+                    /* === Inject CSS === */
+                    const styleTag = document.createElement('style')
+                    styleTag.textContent = `
+                .dialog-danger .vs-dialog-content,
+                .dialog-danger .vs-dialog__content,
+                .dialog-danger .con-form,
+                .dialog-danger .footer-dialog,
+                .dialog-danger .not-margin {
+                    margin: 0 !important;
+                    padding: 0 !important;
+                }
+            `
+                    document.head.appendChild(styleTag)
+
+                    const bgColor = '#ff4d4f'
+                    const duration = 5000
+                    const step = 100 / (duration / 200)
+
+                    /* === HEADER SLOT === */
+                    instance.$slots.header = [
+                        instance.$createElement('div', {
+                            domProps: {
+                                innerHTML: `
+                            <div style="
+                                background:${bgColor};
+                                border-radius:20px 20px 0 0;
+                                position:relative;
+                                height:110px;
+                                display:flex;
+                                justify-content:center;
+                            ">
+                                <img 
+                                    src="${joniNgintip}" 
+                                    alt="mascot" 
+                                    style="position:absolute; bottom:-5px; height:90px;" 
+                                />
+                            </div>
                         `,
-                        ref: 'progressWrapper',
-                    }),
-                ]
+                            },
+                        }),
+                    ]
 
-                instance.$forceUpdate()
-                instance.modalActive = true
+                    /* === CONTENT SLOT === */
+                    instance.$slots.content = [
+                        instance.$createElement('div', {
+                            domProps: {
+                                innerHTML: `
+                            <div style="text-align:center; padding:40px 20px 25px;">
+                                <h2 style="margin:0; color:#333; font-weight:600;">
+                                    ${title || 'Error'}
+                                </h2>
+                                ${
+                                    code
+                                        ? `<div style="color:#999; margin-top:4px;">${code}</div>`
+                                        : ''
+                                }
+                                <div style="margin-top:10px; font-size:15px; color:#555;">
+                                    ${msg || ''}
+                                </div>
+                                ${
+                                    code
+                                        ? `<a href="/help/error-dictionary?s=${code}"
+                                             style="display:inline-block; margin-top:14px; color:#409EFF; font-size:14px;">
+                                             What does this mean?
+                                           </a>`
+                                        : ''
+                                }
+                            </div>
+                        `,
+                            },
+                        }),
+                    ]
 
-                // === Progress Bar Element ===
-                instance.$nextTick(() => {
-                    const bar = document.createElement('div')
-                    bar.style = `
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        height: 98%;
-                        width: ${instance.progress}%;
-                        background: ${bgColor};
-                        transition: width 0.2s linear;
-                    `
-                    instance.$refs.progressWrapper.appendChild(bar)
+                    /* === FOOTER SLOT === */
+                    instance.$slots.footer = [
+                        instance.$createElement('div', {
+                            style: `
+                        position: relative;
+                        width: 98%;
+                        height: 8px;
+                        border-radius: 0 0 20px 20px;
+                        overflow: hidden;
+                    `,
+                            ref: 'progressWrapper',
+                        }),
+                    ]
 
-                    // === Timer logic ===
-                    const dialogEl = instance.$el.querySelector('.vs-dialog')
-                    let isPaused = false
+                    instance.$forceUpdate()
+                    instance.modalActive = true
 
-                    if (dialogEl) {
-                        dialogEl.addEventListener('mouseenter', () => {
-                            isPaused = true
-                        })
-                        dialogEl.addEventListener('mouseleave', () => {
-                            isPaused = false
-                        })
-                    }
+                    /* === Progress Bar + Auto Close === */
+                    instance.$nextTick(() => {
+                        const bar = document.createElement('div')
+                        bar.style = `
+                    position:absolute;
+                    top:0;
+                    left:0;
+                    height:98%;
+                    width:100%;
+                    background:${bgColor};
+                    transition: width 0.2s linear;
+                `
+                        instance.$refs.progressWrapper.appendChild(bar)
 
-                    instance.timer = setInterval(() => {
-                        if (isPaused) return // skip progress update when hovering inside vs-dialog
-                        instance.progress -= step
-                        if (instance.progress <= 0) {
-                            clearInterval(instance.timer)
-                            bar.style.width = '0%'
-                            instance.modalActive = false
-                        } else {
-                            bar.style.width = `${instance.progress}%`
+                        let isPaused = false
+                        const dialogEl = instance.$el.querySelector('.vs-dialog')
+
+                        if (dialogEl) {
+                            dialogEl.addEventListener('mouseenter', () => (isPaused = true))
+                            dialogEl.addEventListener('mouseleave', () => (isPaused = false))
                         }
-                    }, 200)
-                })
-            }
+
+                        instance.timer = setInterval(() => {
+                            if (isPaused) return
+
+                            instance.progress -= step
+                            if (instance.progress <= 0) {
+                                clearInterval(instance.timer)
+                                instance.modalActive = false
+                                resolve() // ⬅️ auto close
+                            } else {
+                                bar.style.width = `${instance.progress}%`
+                            }
+                        }, 200)
+                    })
+                }
+            })
         },
         openNotificationCenter(type = null, code, title, msg) {
             this.playNotificationSound(type)
@@ -872,39 +865,6 @@ const Master = {
             return `${days} day(s)`
         },
 
-        formatSlaTime(slaDate, endDate) {
-            if (!slaDate) return '-'
-
-            // Normalize format (replace space for ISO compatibility)
-            const start = new Date(slaDate.replace(' ', 'T'))
-            const end = endDate ? new Date(endDate.replace(' ', 'T')) : new Date()
-
-            // Validate dates
-            if (isNaN(start.getTime()) || isNaN(end.getTime())) return '-'
-
-            // Calculate difference
-            const diff = end - start
-            const isOverdue = diff > 0
-            const absDiff = Math.abs(diff)
-
-            // Break down into days, hours, minutes, seconds
-            const days = Math.floor(absDiff / (1000 * 60 * 60 * 24))
-            const hours = Math.floor((absDiff / (1000 * 60 * 60)) % 24)
-            const minutes = Math.floor((absDiff / (1000 * 60)) % 60)
-            const seconds = Math.floor((absDiff / 1000) % 60)
-
-            const timeString = `${days} day(s) ${hours} hour(s) ${minutes} minute(s) ${seconds} second(s)`
-
-            if (endDate) {
-                const completedText = `Completed at ${this.formatTimezone(end.toLocaleString())}`
-                if (isOverdue) {
-                    return `${completedText}\nOverdue: ${timeString}`
-                }
-                return completedText
-            }
-
-            return isOverdue ? `Overdue: ${timeString}` : `Remaining: ${timeString}`
-        },
         sanitizeAlphanumeric(fieldName) {
             this[fieldName] = this[fieldName].replace(/[^a-zA-Z0-9_\/-]/g, '')
         },

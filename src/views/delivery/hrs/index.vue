@@ -27,7 +27,6 @@
                                 ref="searchInput"
                                 @searchValue="searchValue"
                                 :placeholder="searchPlaceholder"
-                                @handleSearch="handleSearch"
                             />
                         </vs-col>
                     </vs-row>
@@ -65,10 +64,10 @@ export default {
             title: 'Handover Runsheet',
             tempSearch: '',
             searchBy: 'delivery_runsheet_number',
-            searchPlaceholder: 'Search Runsheet Number',
+            searchPlaceholder: 'Search ID',
             searchParams: [
                 {
-                    label: 'Runsheet Number',
+                    label: 'ID',
                     value: 'delivery_runsheet_number',
                 },
                 {
@@ -97,12 +96,6 @@ export default {
         },
         refresh() {
             this.$refs.HRSTable.refresh()
-        },
-        handleSearch() {
-            this.$nextTick(() => {
-                this.refresh()
-                this.$refs.searchInput.clear()
-            })
         },
     },
 }

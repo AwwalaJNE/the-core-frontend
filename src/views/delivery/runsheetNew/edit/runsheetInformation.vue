@@ -135,7 +135,6 @@ export default {
                     selectedValue: 'status_code',
                     disabled_input: 'is_disabled_input_status',
                     width: 'md',
-                    columnCaption: true,
                 },
 
                 {
@@ -170,7 +169,7 @@ export default {
                     width: 'auto',
                 },
                 {
-                    label: 'Elapsed',
+                    label: 'History Runsheet',
                     key: 'days_elapsed',
                     type: 'inputan',
                     typeInput: 'button_text',
@@ -180,7 +179,13 @@ export default {
                 },
                 {
                     label: 'SLA Connote',
-                    key: 'sla_connote_formatted',
+                    key: 'sla_connote_countdown',
+                    type: 'inputan',
+                    typeInput: 'countdown',
+                    countdown: {
+                        target: 'sla_date',
+                        end: 'end_date',
+                    },
                     width: 'auto',
                 },
                 {
@@ -329,14 +334,6 @@ export default {
             this.openDialogRunsheetProofAction = false
             this.dataItem = {}
         },
-        updateSelected(arr) {
-            const { selected } = this.$refs.tableMaster
-            const filtered = selected.filter((item) => item.status_delivery_description === null)
-
-            this.$refs.tableMaster.selected = filtered
-
-            this.$emit('update-selected', filtered)
-        },
         closeDialogConfirm() {
             this.confirmDialog = false
         },
@@ -360,31 +357,52 @@ export default {
             }
         },
 
-        onAllCheckCallback(val, selected) {
-            if (val) {
-                const filtered = selected.filter(
-                    (item) => item.status_delivery_description === null
-                )
+        isSelectable(item) {
+            return item.status_delivery_description !== 'DELIVERED'
+        },
 
-                this.$refs.tableMaster.selected = filtered
-                this.$refs.tableMaster.$vs.checkAll(filtered, this.dataTable)
-                this.$refs.tableMaster.allCheck = filtered.length > 0
+        filterSelectable(list = []) {
+            return list.filter(this.isSelectable)
+        },
 
-                this.$emit('update-selected', filtered)
-            } else {
-                this.$emit('update-selected', selected)
-            }
+        syncSelection(selected) {
+            this.$nextTick(() => {
+                const table = this.$refs.tableMaster
+                if (!table) return
+
+                const validSelected = this.filterSelectable(selected)
+                const selectableCount = this.dataTable.filter(this.isSelectable).length
+
+                table.selected = validSelected
+
+                table.allCheck = selectableCount > 0 && validSelected.length === selectableCount
+
+                this.$emit('update-selected', validSelected)
+            })
+        },
+
+        updateSelected(selected) {
+            this.syncSelection(selected)
         },
 
         onRowClickCallback(event, item, selected) {
-            const filtered = this.$refs.tableMaster.selected.filter(
-                (item) => item.status_delivery_description === null
-            )
+            this.syncSelection(selected)
+        },
 
-            this.$refs.tableMaster.selected = filtered
-            this.$refs.tableMaster.allCheck = filtered.length > 0
+        onAllCheckCallback(val, selected) {
+            if (!val) {
+                this.$nextTick(() => {
+                    const table = this.$refs.tableMaster
+                    if (!table) return
 
-            this.$emit('update-selected', filtered)
+                    table.selected = []
+                    table.allCheck = false
+                    this.$emit('update-selected', [])
+                })
+                return
+            }
+
+            this.syncSelection(selected)
         },
     },
 }

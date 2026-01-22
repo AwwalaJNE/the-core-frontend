@@ -2,7 +2,11 @@
     <inputan :name="name" :rules="rules">
         <template v-slot:inputan="props">
             <template v-if="isHidden == false">
-                <div class="flex items-center text-left" style="justify-content: flex-start">
+                <div
+                    class="flex items-center text-left"
+                    style="justify-content: flex-start"
+                    v-if="listenHiddenTitle == false"
+                >
                     <span class="c-label"
                         >{{ name }}<span v-if="rules && rules.includes('required')"> *</span></span
                     >
@@ -287,6 +291,10 @@ export default {
         },
         disabled: Boolean,
         tooltipMessage: String,
+        hiddenTitle: {
+            type: Boolean,
+            default: false,
+        },
     },
     components: {
         inputan: Inputan,
@@ -300,6 +308,9 @@ export default {
         }
     },
     computed: {
+        listenHiddenTitle() {
+            return this.hiddenTitle ? this.hiddenTitle : false
+        },
         listenFormKey() {
             return this.formKey
         },

@@ -478,10 +478,7 @@ export default {
 
             this.$store.dispatch('SET_SURAT_JALAN_AUTO_DEPART', val?.auto_depart === 1 ? 1 : 0)
             this.$store.dispatch('SET_SURAT_JALAN_MANIFEST_DO_NUMBER', val.manifest_do_number)
-            this.$store.dispatch(
-                'SET_SURAT_JALAN_DESTINATION_ID',
-                parseInt(val.node_id_destination)
-            )
+            this.$store.dispatch('SET_SURAT_JALAN_DESTINATION_ID', val.node_id_destination)
             this.$store.dispatch('SET_SURAT_JALAN_ETD', val.etd)
             this.$store.dispatch('SET_SURAT_JALAN_ETA', val.eta)
             this.$store.dispatch(

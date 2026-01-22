@@ -40,7 +40,6 @@
                                                 :key="navActive"
                                                 :placeholder="searchPlaceholderConnote"
                                                 :isNumeric="searchByDataTypeConnote"
-                                                @handleSearch="handleSearch"
                                                 @searchValue="searchValue"
                                             />
                                         </vs-col>
@@ -64,7 +63,6 @@
                                                 :key="navActive"
                                                 :placeholder="searchPlaceholder"
                                                 :isNumeric="searchByDataType"
-                                                @handleSearch="handleSearch"
                                                 @searchValue="searchValue"
                                             />
                                         </vs-col>
@@ -88,7 +86,6 @@
                                                 :key="navActive"
                                                 :placeholder="searchPlaceholderArchive"
                                                 :isNumeric="searchByDataTypeArchive"
-                                                @handleSearch="handleSearch"
                                                 @searchValue="searchValue"
                                             />
                                         </vs-col>
@@ -469,6 +466,10 @@ export default {
                     value: 'amount_cod',
                     isNumeric: true,
                 },
+                {
+                    label: 'Received By',
+                    value: 'received_by',
+                },
             ],
 
             selectedStatusBag: 'ALL',
@@ -705,12 +706,6 @@ export default {
         },
         actionPagination(val) {
             this.pagination.page = val
-        },
-        handleSearch() {
-            this.$nextTick(() => {
-                this.refresh()
-                this.$refs.searchInput.clear()
-            })
         },
 
         async getSummaryData() {

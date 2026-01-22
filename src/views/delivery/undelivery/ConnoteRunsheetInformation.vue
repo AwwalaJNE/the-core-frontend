@@ -42,9 +42,14 @@ export default {
                     width: 'md',
                 },
                 {
-                    label: 'Delivery Runsheet Number',
+                    label: 'ID',
                     key: 'delivery_runsheet_number',
                     width: 'auto',
+                },
+                {
+                    label: 'DRI Number',
+                    key: 'dri',
+                    width: 'md',
                 },
                 {
                     label: 'Service',

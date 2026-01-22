@@ -1,5 +1,5 @@
 <template>
-    <dialog-master :actived="actived" :loading="loading" :closeDialog="closeDialog" width="md">
+    <dialog-master :actived="actived" :loading="loading" :closeDialog="cancel" width="md">
         <template v-slot:header> Insert / Edit Remark </template>
 
         <template v-slot:content>
@@ -148,6 +148,10 @@ export default {
                     position: 'top-right',
                 })
             }
+        },
+
+        cancel() {
+            this.$emit('closeDialog')
         },
     },
 }
