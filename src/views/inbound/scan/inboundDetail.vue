@@ -69,7 +69,7 @@ const BAG_TYPE_MAP = {
     OM: { label: 'TM', key: 'tm' },
     HACB: { label: 'RCVB', key: 'rcvb' },
     HVO: { label: 'HVI', key: 'hvi' },
-    DO: { label: 'HVO', key: 'hvo' },
+    DO: { label: 'HVI', key: 'hvi' },
 }
 
 export default {
@@ -126,7 +126,7 @@ export default {
         },
         documentType: {
             type: String,
-            default: '',
+            default: ''
         }
     },
     data() {
@@ -170,6 +170,14 @@ export default {
                     width: 'sm',
                 },
             ]
+            // Conditionally add HVO column before the dynamic column if documentType is 'DO'
+            if (this.documentType === 'DO') {
+                columns.push({
+                    label: 'HVO',
+                    key: 'hvo',
+                    width: 'sm',
+                });
+            }
             if (this.bagTypeConfig) {
                 columns.push({
                     label: this.bagTypeConfig.label,

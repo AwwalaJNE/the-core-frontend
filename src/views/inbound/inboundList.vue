@@ -136,136 +136,6 @@ export default {
     },
 
     methods: {
-        async getTableData(
-            limit,
-            page,
-            q,
-            origin,
-            node_type,
-            statusReceived,
-            prealertFilter,
-            from,
-            to,
-            qFilter,
-            qDate,
-            type
-        ) {
-            this.loading = true
-            let query = ''
-            let startDate = ''
-            let endDate = ''
-            let isReceived = ''
-            let isPrealert = ''
-            let queryFilter = ''
-            let queryDate = ''
-            let inboundType = ''
-            if (q !== undefined) {
-                query = q
-            }
-            if (statusReceived !== undefined && statusReceived !== '-') {
-                isReceived = statusReceived
-            }
-            if (prealertFilter !== undefined && prealertFilter !== '-') {
-                isPrealert = prealertFilter
-            }
-            if (from !== undefined && to !== undefined) {
-                startDate = this.formatToWIB(from)
-                endDate = this.formatToWIB(to)
-            }
-            if (qFilter !== undefined) {
-                queryFilter = qFilter
-            }
-            if (qDate !== undefined) {
-                queryDate = qDate
-            }
-            if (type !== undefined) {
-                inboundType = type
-            }
-            await axios
-                .get(
-                    this.URL.inbound_incoming +
-                        `?n=${this.listenNodeId}&type=${node_type}&status=${isReceived}&origin=${origin}&prealert=${isPrealert}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&search_by=${queryFilter}&filter_date_by=${queryDate}&start_date=${startDate}&end_date=${endDate}&inbound_type=${inboundType}`,
-                    this.Helper.header()
-                )
-                .then((res) => {
-                    let total = 0
-                    this.dataTable = res.data.data
-                    this.dataTable.map((item) => {
-                        let im = []
-                        item['orion_number'] =
-                            item?.['manifest_delivery_order']?.do ||
-                            item?.['manifest_delivery_order']?.hbag ||
-                            item?.['manifest_delivery_order']?.mts ||
-                            ''
-                        item['flight_number'] = item?.manifest?.flight_number
-                        item['inbound_branch'] = item?.inbound_branch_name_origin
-                            ? item?.inbound_branch_code_origin +
-                              ' - ' +
-                              item?.inbound_branch_name_origin
-                            : item?.inbound_branch_code_origin
-                        item['created_orion'] =
-                            item['created_orion'] == null
-                                ? this.formatTimezone(item['created_at'])
-                                : this.formatTimezone(item['created_orion'])
-                        item['inbound_eta'] = this.formatTimezone(item['inbound_eta'])
-                        item['inbound_etd'] = this.formatTimezone(item['inbound_etd'])
-                        item['departed_at'] = this.formatTimezone(item['departed_at'])
-                        item['received_at'] = this.formatTimezone(item['received_at'])
-                        item['vehicle'] = item['vehicle_name']
-                        item['total_received'] =
-                            item['total_received'] === 0 ? '0' : item['total_received']
-                        item['total_outstanding'] =
-                            item['total_outstanding'] === 0 ? '0' : item['total_outstanding']
-                        // item['is_prealert'] = isPrealert
-                        item['inbound_number'] =
-                            isPrealert == 'bag' ? item['bag_number'] : item['inbound_number']
-                        if (item['inbound_number']?.startsWith('SJA')) {
-                            item['inbound_node_name_origin'] =
-                                item['inbound_node_name_origin'] + ' (AIRPORT)'
-                        }
-                        if (item['vehicle_name'] != null) {
-                            item['vehicle'] =
-                                item['vehicle'] + ' (' + item['vehicle_police_no'] + ')'
-                        }
-                        if (item['manifest_do_items'].length > 0) {
-                            item['manifest_do_items'].map((el) => {
-                                im.push(el.im_number)
-                            })
-                        }
-                        if (item['manifest_items'].length > 0) {
-                            item['manifest_items'].map((el) => {
-                                im.push(el.im_number)
-                            })
-                        }
-                        if (im.length > 0) {
-                            im = [...new Set(im)]
-                            item['im_numbers'] = im.join(', ')
-                        }
-                        item['rdo'] = item['manifest_delivery_order']?.rdo || ''
-                        total = Number(total) + Number(item.transaction_amount)
-                        item['formatted_node_origin'] = item['inbound_node_code_origin'] + ' - ' + item['inbound_node_name_origin']
-                    })
-                    this.pagination.page = res.data.meta.current_page
-                    this.pagination.limit = parseInt(res.data.meta.per_page)
-                    this.pagination.page_size = res.data.meta.last_page
-                    if (res.data.data.length > 0) {
-                    } else {
-                        // this.openNotification('warn', null, 'inbound data is empty!', ' Please create a new data')
-                    }
-
-                    this.loading = false
-                })
-                .catch((err) => {
-                    this.loading = false
-                    this.openNotification(
-                        'danger',
-                        err.response ? err.response.data.code : '',
-                        'Failed to populate data',
-                        err
-                    )
-                })
-        },
-
         setDatacolumn() {
             const title = this.listenBreadcrumbTitle
             const code = this.listenBreadcrumbCode
@@ -472,6 +342,7 @@ export default {
                 total_received: item?.total_received || '0',
                 total_outstanding: item?.total_outstanding || '0',
                 total_item: item?.total_item || '0',
+                formatted_node_origin: item?.inbound_node_code_origin + ' - ' + item?.inbound_node_name_origin,
                 orion_number:
                     item?.manifest_delivery_order?.do ||
                     item?.manifest_delivery_order?.hbag ||
