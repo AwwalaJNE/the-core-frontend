@@ -357,7 +357,6 @@ export default {
 
             closeMap[type]?.()
             await this.refresh()
-            this.$emit('autoFocusInput')
         },
     },
 }
