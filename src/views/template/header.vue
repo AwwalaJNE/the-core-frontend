@@ -388,7 +388,7 @@ export default {
     },
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 /* ================= HEADER ================= */
 .header {
     width: 100%;
