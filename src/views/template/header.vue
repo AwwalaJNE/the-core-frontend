@@ -88,17 +88,18 @@
                         title=""
                     />
 
-                    <vs-tooltip bottom shadow interactivity not-hover v-model="activeTooltip1">
-                        <vs-avatar @click="activeTooltip1 = !activeTooltip1">
+                    <div class="user-menu-wrapper" @click.stop>
+                        <vs-avatar @click="toggleUserMenu">
                             <i class="bx bx-user"></i>
                         </vs-avatar>
-                        <template #tooltip>
-                            <div class="content-tooltip">
+
+                        <transition name="fade">
+                            <div v-if="showUserMenu" class="user-menu">
                                 <div class="body">
                                     <vs-avatar circle size="60">
                                         <i class="bx bx-user"></i>
                                     </vs-avatar>
-                                    <div class="text">
+                                    <div class="user-text">
                                         {{ userAuthFullName }}
                                         <span>
                                             {{ userAuthLoginName }}
@@ -106,14 +107,16 @@
                                     </div>
                                 </div>
                                 <footer>
-                                    <vs-button circle @click="goToProfile">
+                                    <core-button name="edit-profile" @click="goToProfile">
                                         Edit Profile
-                                    </vs-button>
-                                    <vs-button circle @click="logout" danger> Logout </vs-button>
+                                    </core-button>
+                                    <core-button name="logout" variant="danger" @click="logout">
+                                        Logout
+                                    </core-button>
                                 </footer>
                             </div>
-                        </template>
-                    </vs-tooltip>
+                        </transition>
+                    </div>
                 </vs-row>
             </vs-col>
         </vs-row>
@@ -122,6 +125,7 @@
 <script>
 import axios from 'axios'
 import master from '@/mixins/master'
+import Button from '@/components/button'
 import Logo from '@/components/logo/logo.vue'
 import Selector from '@/components/input/select'
 import SearchInput from '@/components/search/searchInput'
@@ -133,6 +137,7 @@ export default {
         selector: Selector,
         'search-input': SearchInput,
         'search-general': SearchGeneral,
+        'core-button': Button,
     },
     mixins: [master],
     props: {
@@ -190,9 +195,16 @@ export default {
             ],
             userAuthFullName: '',
             userAuthLoginName: '',
+            showUserMenu: false,
         }
     },
     methods: {
+        toggleUserMenu() {
+            this.showUserMenu = !this.showUserMenu
+        },
+        closeUserMenu() {
+            this.showUserMenu = false
+        },
         searchValue(val) {
             this.tempSearch = val
         },
@@ -368,10 +380,16 @@ export default {
     mounted() {
         this.init()
         this.searchShortcut()
+
+        document.addEventListener('click', this.closeUserMenu)
+    },
+    beforeDestroy() {
+        document.removeEventListener('click', this.closeUserMenu)
     },
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+/* ================= HEADER ================= */
 .header {
     width: 100%;
     left: 0;
@@ -381,34 +399,37 @@ export default {
     padding: 0.5em 0.5em 0.5em 0;
     background-color: $bgWhite;
     position: sticky;
+
     .burger_custom {
-        margin: auto;
-        margin-top: 0.3em;
-        padding: 0.2em 0;
         width: 40px;
         height: 40px;
+        margin: 0.3em auto 0;
+        padding: 0.2em 0;
+
         border: 1px solid rgba(var(--vs-primary), 1);
         background: rgba(var(--vs-primary), 1);
+
         color: #fff;
         font-size: 24px;
         border-radius: 10px;
         cursor: pointer;
     }
+
     .vs-col {
-        padding-left: 0;
-        padding-right: 0;
+        padding: 0;
     }
+
     .vs-button--icon i {
         font-size: 1.5rem;
     }
+
     .logo {
         padding-top: 10px;
         max-height: 50px;
     }
+
     shadow {
-        -webkit-box-shadow: 0px 3px 33px -12px rgba(0, 0, 0, 0.42);
-        -moz-box-shadow: 0px 3px 33px -12px rgba(0, 0, 0, 0.42);
-        box-shadow: 0px 3px 33px -12px rgba(0, 0, 0, 0.42);
+        box-shadow: 0 3px 33px -12px rgba(0, 0, 0, 0.42);
     }
 
     .m-select.vs-select-content {
@@ -418,39 +439,41 @@ export default {
     @include for-phone-only {
         min-height: 1em;
     }
-    @include for-tablet-portrait-down {
-    }
-    @include for-tablet-portrait-up {
-    }
-    @include for-tablet-landscape-up {
-    }
-    @include for-desktop-up {
-    }
-    @include for-lg-desktop-up {
-    }
-    @include for-big-desktop-up {
-    }
 }
 
-.content-tooltip {
-    .body {
-        display: flex;
-        align-items: flex-start;
-        justify-content: center;
+/* ================= USER MENU ================= */
+.user-menu-wrapper {
+    position: relative;
 
-        .vs-avatar-content {
-            margin-top: 0;
-            border: 3px solid var(--vs-theme-layout);
-            box-shadow: 0px 4px 15px 0px rgba(0, 0, 0, 0.1);
+    .user-menu {
+        position: absolute;
+        top: 55px;
+        right: 0;
+        z-index: 999999;
+        min-width: 220px;
+        padding: 12px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+
+        .body {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
         }
 
-        .text {
+        .vs-avatar {
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .user-text {
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
             font-size: 0.55rem;
-            padding: 10px;
             font-weight: normal;
 
             span {
@@ -458,27 +481,24 @@ export default {
                 font-size: 0.7rem;
             }
         }
-    }
 
-    footer {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     }
+}
 
-    h4 {
-        padding: 8px;
-        margin: 0px;
-        text-align: left;
+/* ================= TRANSITION ================= */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
     }
-
-    p {
-        text-align: left;
-        padding: 0px;
-        margin: 0px;
-        line-height: 1rem;
-        padding-bottom: 5px;
-        padding-left: 8px;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 </style>
