@@ -126,8 +126,8 @@ export default {
         },
         documentType: {
             type: String,
-            default: ''
-        }
+            default: '',
+        },
     },
     data() {
         return {
@@ -176,7 +176,7 @@ export default {
                     label: 'HVO',
                     key: 'hvo',
                     width: 'sm',
-                });
+                })
             }
             if (this.bagTypeConfig) {
                 columns.push({
@@ -207,7 +207,7 @@ export default {
             this.openDialog('receiving_log', row)
         },
         openDialog(type, row = null) {
-            this.$emit('autoFocusInput', true)
+            this.setUnfocusInput()
 
             const dialogMap = {
                 insert_remark: () => {
@@ -240,7 +240,6 @@ export default {
 
             closeMap[type]?.()
             this.$emit('refresh')
-            this.$emit('autoFocusInput', false)
         },
     },
 }

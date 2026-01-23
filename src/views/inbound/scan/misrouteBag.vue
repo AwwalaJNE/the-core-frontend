@@ -207,7 +207,6 @@ export default {
                 this.destination_node_code,
                 this.filterTypeBy
             )
-            this.$emit('autoFocusInput')
         },
         async getTableData(limit, page, destination_node_code, type) {
             this.loading = true
@@ -358,7 +357,6 @@ export default {
 
             closeMap[type]?.()
             await this.refresh()
-            this.$emit('autoFocusInput')
         },
     },
 }
