@@ -89,21 +89,18 @@ export default {
         },
     },
 
+    computed: {
+        hasInboundNumber() {
+            return this.isParentSubmitted && !!this.parent_no
+        },
+    },
+
     watch: {
         inbound_number: {
             immediate: true,
-            handler(newVal) {
-                this.parent_no = newVal || ''
-                this.hasInboundNumber = !!newVal
-                this.autoFocusInput()
-            },
-        },
-
-        hasInboundNumber: {
-            handler(newVal) {
-                if (!newVal) {
-                    this.autoFocusInput()
-                }
+            handler(val) {
+                this.parent_no = val || ''
+                this.isParentSubmitted = !!val
             },
         },
     },
@@ -112,7 +109,6 @@ export default {
         return {
             parent_no: '',
             child_no: '',
-            hasInboundNumber: false,
         }
     },
 
@@ -123,7 +119,7 @@ export default {
 
         removeParentNumber() {
             this.parent_no = ''
-            this.hasInboundNumber = false
+            this.isParentSubmitted = false
             this.$emit('removeInboundNumber')
         },
 
@@ -132,7 +128,7 @@ export default {
 
             if (type === 'parent_no' && this.parent_no) {
                 payload = { type, value: this.parent_no }
-                this.hasInboundNumber = true
+                this.isParentSubmitted = true
             }
 
             if (type === 'child_no' && this.child_no) {
@@ -169,12 +165,14 @@ export default {
          * AUTO FOCUS INPUT
          * ====================================================== */
 
-        autoFocusInput() {
-            if (!this.parent_no) {
-                this.setActiveInput('formInputParentInbound')
-            } else {
-                this.setActiveInput('formInputChildInbound')
+        autoFocusInput(type = 'auto') {
+            const map = {
+                parent: 'formInputParentInbound',
+                child: 'formInputChildInbound',
+                auto: this.parent_no ? 'formInputChildInbound' : 'formInputParentInbound',
             }
+
+            this.setActiveInput(map[type])
         },
     },
 }
