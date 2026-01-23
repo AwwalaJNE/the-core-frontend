@@ -109,6 +109,7 @@ export default {
         return {
             parent_no: '',
             child_no: '',
+            isParentSubmitted: false,
         }
     },
 
@@ -121,6 +122,7 @@ export default {
             this.parent_no = ''
             this.isParentSubmitted = false
             this.$emit('removeInboundNumber')
+            this.autoFocusInput('parent')
         },
 
         submit(type) {

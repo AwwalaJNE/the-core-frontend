@@ -57,18 +57,12 @@
                         :receivingLogs="receivingLogs"
                         :documentType="documentType"
                         :inboundNumber="inbound_number"
-                        @autoFocusInput="autoFocusInput"
                         @refresh="refresh"
                     />
                 </vs-col>
 
                 <vs-col xs="12" sm="6" lg="6">
-                    <MisrouteBag
-                        ref="misrouteBag"
-                        title="Misrouted Bag"
-                        :boxed="true"
-                        @autoFocusInput="autoFocusInput"
-                    />
+                    <MisrouteBag ref="misrouteBag" title="Misrouted Bag" :boxed="true" />
                 </vs-col>
             </vs-row>
         </section>
@@ -197,10 +191,12 @@ export default {
             switch (type) {
                 case 'parent_no':
                     await this.submitParent(value)
+                    this.autoFocusInput('parent')
                     break
 
                 case 'child_no':
                     await this.submitChild(value)
+                    this.autoFocusInput('child')
                     break
             }
         },
@@ -401,8 +397,6 @@ export default {
             this.clearInboundFromStorage()
 
             if (this.is_prealert) this.$router.push('/inbound/prealert/scan')
-
-            this.autoFocusInput()
         },
 
         /* ======================================================
@@ -453,8 +447,8 @@ export default {
         /* ======================================================
          * AUTO FOCUS INPUT
          * ====================================================== */
-        autoFocusInput() {
-            this.$refs.inboundScan?.autoFocusInput()
+        autoFocusInput(mode) {
+            this.$refs.inboundScan?.autoFocusInput(mode)
         },
     },
     async mounted() {
