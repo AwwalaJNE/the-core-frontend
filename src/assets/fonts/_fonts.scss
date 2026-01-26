@@ -1,19 +1,35 @@
 @font-face {
     font-family: 'OpenSans-Regular';
     src: url('./OpenSans/OpenSans-Regular.ttf') format('truetype');
+    font-display: swap;
 }
 
 @font-face {
     font-family: 'OpenSans-Bold';
     src: url('./OpenSans/OpenSans-Bold.ttf') format('truetype');
+    font-display: swap;
 }
 
 @font-face {
     font-family: 'NunitoSans-Regular';
-    src: url('./NunitoSans-Regular.woff2') format('woff2');
+    src: url('./NunitoSans/NunitoSans-Regular.woff2') format('woff2');
+    font-display: swap;
 }
 
 @font-face {
     font-family: 'NunitoSans-Bold';
-    src: url('./NunitoSans-Bold.woff2') format('woff2');
+    src: url('./NunitoSans/NunitoSans-Bold.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'boxicons';
+    src: url('./Helpers/boxicons.woff2') format('woff2');
+    font-display: optional;
+}
+
+@font-face {
+    font-family: 'element-icons';
+    src: url('./Helpers/element-icons.woff') format('woff');
+    font-display: swap;
 }
