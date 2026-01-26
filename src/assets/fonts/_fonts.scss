@@ -1,51 +1,19 @@
 @font-face {
-    font-family: "NunitoSans-Bold";
-    src: url("./NunitoSans-Bold.eot"); /* IE9 Compat Modes */
-    src: url("./NunitoSans-Bold.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
-      url("./NunitoSans-Bold.otf") format("opentype"), /* Open Type Font */
-      url("./NunitoSans-Bold.woff") format("woff"), /* Modern Browsers */
-      url("./NunitoSans-Bold.woff2") format("woff2"); /* Modern Browsers */
-    font-weight: normal;
-    font-style: normal;
-}
-@font-face {
-    font-family: "NunitoSans-Light";
-    src: url("./NunitoSans-Light.eot"); /* IE9 Compat Modes */
-    src: url("./NunitoSans-Light.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
-      url("./NunitoSans-Light.otf") format("opentype"), /* Open Type Font */
-      url("./NunitoSans-Light.woff") format("woff"), /* Modern Browsers */
-      url("./NunitoSans-Light.woff2") format("woff2"); /* Modern Browsers */
-    font-weight: normal;
-    font-style: normal;
+    font-family: 'OpenSans-Regular';
+    src: url('./OpenSans/OpenSans-Regular.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: "NunitoSans-Regular";
-    src: url("./NunitoSans-Regular.eot"); /* IE9 Compat Modes */
-    src: url("./NunitoSans-Regular.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
-      url("./NunitoSans-Regular.otf") format("opentype"), /* Open Type Font */
-      url("./NunitoSans-Regular.woff") format("woff"), /* Modern Browsers */
-      url("./NunitoSans-Regular.woff2") format("woff2"); /* Modern Browsers */
-    font-weight: normal;
-    font-style: normal;
+    font-family: 'OpenSans-Bold';
+    src: url('./OpenSans/OpenSans-Bold.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: "OpenSans-Regular";
-  src: url("./OpenSans/OpenSans-Regular.ttf") format("truetype");
+    font-family: 'NunitoSans-Regular';
+    src: url('./NunitoSans-Regular.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: "OpenSans-Bold";
-  src: url("./OpenSans/OpenSans-Bold.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Roboto-Regular";
-  src: url("./Roboto/Roboto-Regular.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Roboto-Bold";
-  src: url("./Roboto/Roboto-Bold.ttf") format("truetype");
+    font-family: 'NunitoSans-Bold';
+    src: url('./NunitoSans-Bold.woff2') format('woff2');
 }
