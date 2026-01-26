@@ -8,6 +8,7 @@
 <script>
 import 'boxicons/css/boxicons.min.css'
 import 'element-ui/lib/theme-chalk/index.css'
+import 'leaflet/dist/leaflet.css'
 import './assets/fonts/_fonts.scss'
 import master from '@/mixins/master'
 export default {

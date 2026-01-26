@@ -59,14 +59,10 @@
 <script>
 import master from '@/mixins/master'
 
-import Logo from '../../components/logo/logo.vue'
 import { resourceLookup } from '@/constants'
 
 export default {
     name: 'Sidebar',
-    components: {
-        Logo: Logo,
-    },
     mixins: [master],
     props: {
         expand: Boolean,
