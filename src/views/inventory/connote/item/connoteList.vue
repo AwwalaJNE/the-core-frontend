@@ -82,7 +82,7 @@ export default {
                 },
                 {
                     label: 'Bag',
-                    key: 'bag_number',
+                    key: 'location_bag_number',
                     width: 'xxxs',
                 },
                 {

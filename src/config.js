@@ -259,12 +259,6 @@ export default {
     // Approval
     approval: api + 'approval',
 
-    // Surat Jalan Revamp
-    revamp_surat_jalan: api + 'revamp/manifest-delivery-order',
-
-    // Surat Jalan Revamp V2
-    revamp_surat_jalan_v2: api + 'revamp/manifest-delivery-order-v2',
-
     // Surat Jalan Revamp V3
     revamp_surat_jalan_v3: api + 'revamp/manifest-delivery-order-v3',
 

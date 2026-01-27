@@ -321,7 +321,7 @@ export default {
             this.loadingStatus = true
             try {
                 const res = await axios.get(
-                    `${this.URL.status}?n=${this.listenNodeId}&sort_order=desc&limit=2000&page=1`,
+                    `${this.URL.status}?n=${this.listenNodeId}&status_type=IRREGULARITY&sort_order=desc&limit=2000&page=1`,
                     this.Helper.header()
                 )
                 const data = res.data.data

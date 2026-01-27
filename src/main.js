@@ -30,27 +30,50 @@ import Storage from 'vue-ls'
 import axios from 'axios'
 
 // -------------------- Axios Interceptor --------------------
+let isHandling401 = false
+
 axios.interceptors.response.use(
     (response) => response,
-    (error) => {
-        if (error.response) {
-            const status = error.response.status
-            const data = error.response.data
+    async (error) => {
+        if (!error.response) return Promise.reject(error)
 
-            if (
-                status === 401 ||
-                (data && data.reason && data.reason.toLowerCase().includes('unauthenticated')) ||
-                (data && data.type === 'AuthenticationException')
-            ) {
-                localStorage.clear()
-                router.push('/login')
-                return Promise.reject(error)
+        const status = error.response.status
+        const data = error.response.data
+
+        const isUnauth =
+            status === 401 ||
+            data?.reason?.toLowerCase?.().includes('unauthenticated') ||
+            data?.type === 'AuthenticationException'
+
+        if (!isUnauth) return Promise.reject(error)
+
+        // 🧠 Prevent multiple concurrent logout triggers
+        if (isHandling401) return Promise.reject(error)
+        isHandling401 = true
+
+        // ⏳ Small delay — let concurrent API calls complete first
+        await new Promise((resolve) => setTimeout(resolve, 300))
+
+        // 🧪 Double-check token again (it might be valid now)
+        const token = JSON.parse(localStorage.getItem('vuejs__tokenBearer') || '{}')?.value
+        if (token) {
+            // Retry once — only if token still exists
+            try {
+                const retryResponse = await axios(error.config)
+                isHandling401 = false
+                return retryResponse
+            } catch (retryErr) {
+                // Retry failed → fallback to logout
             }
         }
+
+        // ❌ Still unauthenticated → log out user
+        localStorage.clear()
+        router.push('/login')
+        isHandling401 = false
         return Promise.reject(error)
     }
 )
-
 // -------------------- Element UI --------------------
 locale.use(lang)
 Vue.use(Upload)

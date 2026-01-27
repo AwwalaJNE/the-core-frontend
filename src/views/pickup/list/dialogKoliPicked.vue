@@ -23,6 +23,7 @@
                                 v-model="item_picked"
                                 :val="item.value"
                                 :key="key"
+                                class="checkbox-core"
                             >
                                 {{ item.label }}
                             </vs-checkbox>

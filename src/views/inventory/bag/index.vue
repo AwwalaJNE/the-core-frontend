@@ -1,5 +1,6 @@
 <template>
     <div>
+        <vs-loading :active="listenLoading" text="Loading..." :target="$refs.baggingSection" />
         <vs-row justify="space-between" align="stretch" style="padding: 1em 0" ref="baggingSection">
             <vs-col w="6">
                 <div :class="['box-v2', { 'with-glow-border': isDisabled }]">
@@ -75,6 +76,7 @@
                                     v-model="is_auto_open_bag"
                                     @change="handleAutoOpenBag"
                                     :data-testid="`checkbox-is_auto_open_bag`"
+                                    class="checkbox-core"
                                 >
                                     Auto Open Bag
                                 </vs-checkbox>
@@ -110,7 +112,7 @@
                                     :valueData="item_number"
                                     :hasBarcode="true"
                                     :enter_to_update="true"
-                                    :disabled="dialogActiveManualDestination"
+                                    :disabled="dialogActiveManualDestination || loading"
                                     @click-icon="handleIconClick"
                                     @updateValue="updateValue"
                                     @enterUpdate="validateItem"
@@ -159,6 +161,8 @@ import CameraScanner from '@/components/scanner/camera.vue'
 import asynchronousSelect from '@/components/input/asynchronousSelect'
 import InputGeneral from '@/components/input/general'
 
+import Loading from '@/components/loading'
+
 import bagPlaceholder from '@/assets/img/bagging-placeholder.png'
 
 import DialogManualDestination from '@/views/inventory/bag/dialogManualDestination'
@@ -174,6 +178,12 @@ export default {
         asynchronousSelect: asynchronousSelect,
         CameraScanner,
         'dialog-manual-destination': DialogManualDestination,
+        'vs-loading': Loading,
+    },
+    computed: {
+        listenLoading() {
+            return this.loading
+        },
     },
     data() {
         return {
@@ -234,9 +244,10 @@ export default {
             ],
             is_auto_open_bag: true,
             is_hub_delivery_validation: false,
-            refloading: null,
 
             item_number: '',
+            loading: false,
+
             dialogActiveManualDestination: false,
 
             destination: 'HUB_DELIVERY',
@@ -282,6 +293,32 @@ export default {
                 this.setActiveInput('scanItem')
             }
         },
+        async validateItem() {
+            if (!this.item_number) return
+
+            this.loading = true
+
+            try {
+                const res = await axios.post(
+                    `${this.URL.validation_item}?n=${this.listenNodeId}`,
+                    { item_number: this.item_number },
+                    this.Helper.header()
+                )
+
+                await this.processItem()
+
+                this.openNotification('success', null, 'Success', res?.data?.message || 'Success')
+            } catch (err) {
+                await this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Failed',
+                    err?.response?.data?.message || 'Something went wrong'
+                )
+            } finally {
+                this.loading = false
+            }
+        },
         async processItem() {
             this.form = {
                 item_number: this.item_number,
@@ -290,35 +327,13 @@ export default {
             }
 
             if (this.bag_type === 'pra runsheet') {
-                this.createBag()
+                await this.createBag()
             } else {
                 await this.processSorting()
             }
         },
-        async validateItem() {
-            try {
-                const res = await axios.post(
-                    `${this.URL.validation_item}?n=${this.listenNodeId}`,
-                    {
-                        item_number: this.item_number,
-                    },
-                    this.Helper.header()
-                )
-
-                this.processItem()
-
-                this.openNotification('success', null, 'Success', res?.data?.message || 'Success')
-            } catch (err) {
-                this.openNotification(
-                    'danger',
-                    err?.response?.data?.code || '',
-                    'Failed',
-                    err?.response?.data?.message || 'Something went wrong'
-                )
-            }
-        },
         async processSorting() {
-            this.startLoading(this.$refs.baggingSection)
+            let destinationNodeId
             try {
                 const res = await axios.post(
                     `${this.URL.sorting_zip_code_validation}?n=${this.listenNodeId}`,
@@ -326,21 +341,22 @@ export default {
                     this.Helper.header()
                 )
 
-                if (res?.data?.information?.destination_node_id) {
-                    this.createBag(res?.data?.information?.destination_node_id)
-                } else {
+                destinationNodeId = res?.data?.information?.destination_node_id
+
+                if (!destinationNodeId) {
                     this.openDialog()
+                    return
                 }
 
                 this.openNotification('success', null, 'Success', res?.data?.message || 'Success')
             } catch (err) {
                 this.openDialog()
-            } finally {
-                this.stopLoading()
+                return
             }
+
+            await this.createBag(destinationNodeId)
         },
         async createBag(destination_node_id = '') {
-            this.startLoading(this.$refs.baggingSection)
             try {
                 const res = await axios.post(
                     `${this.URL.revamp_bag}?n=${this.listenNodeId}`,
@@ -353,14 +369,12 @@ export default {
                         service: this.bag_type === 'pra runsheet' ? '' : ['ALL_SERVICE'],
                         validation: '',
                         validation_reference: '',
-                        destination_node_id: destination_node_id,
+                        destination_node_id,
                     },
                     this.Helper.header()
                 )
 
-                let bagNumber = res.data.data.bag_number
-                let bagNumberForRoute = bagNumber
-                this.handleClearForm()
+                const bagNumber = res?.data?.data?.bag_number
 
                 this.$store.dispatch('SET_BAG_IS_AUTO_OPEN_BAG', this.is_auto_open_bag)
                 this.$store.dispatch('SET_BAG_IS_AUTO_OPEN_BAG_ValueData', this.is_auto_open_bag)
@@ -374,23 +388,26 @@ export default {
                     this.is_hub_delivery_validation
                 )
 
-                this.$router.push('/bagging-detail/' + encodeURIComponent(bagNumberForRoute))
-                this.setRoutePageHistory(this.$route.meta, false)
+                this.handleClearForm()
+
+                this.$router.push('/bagging-detail/' + encodeURIComponent(bagNumber))
 
                 this.openNotification('success', null, 'Success', 'Bagging is success')
             } catch (err) {
-                const errorCode = err?.response?.data?.code ?? ''
-                const errorMessage = err?.response?.data?.message ?? 'Something went wrong'
+                await this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Failed',
+                    err?.response?.data?.message || 'Something went wrong'
+                )
 
-                this.openNotification('danger', errorCode, 'Failed', errorMessage)
-            } finally {
-                this.stopLoading()
-                this.handleClearForm()
+                return
             }
         },
         handleClearForm() {
             this.form = {}
             this.item_number = ''
+            this.setActiveInput('scanItem')
         },
 
         openDialog() {
@@ -400,6 +417,7 @@ export default {
         closeDialog() {
             this.dialogActiveManualDestination = false
             this.autoFocusInput(this.dialogActiveManualDestination)
+            this.handleClearForm()
         },
         autoFocusInput(value) {
             this.setActiveInput('scanItem', null, () => value)

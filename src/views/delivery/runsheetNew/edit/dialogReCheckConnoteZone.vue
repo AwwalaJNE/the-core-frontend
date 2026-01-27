@@ -89,15 +89,13 @@ import master from "@/mixins/master"
 import InputGeneral from "@/components/input/general"
 import Selector from "@/components/input/select"
 import DialogMaster from "@/components/dialog/dialogMaster"
-import { Dialog } from 'element-ui';
 export default {
     name:"irreguralities-cancel-dialog",
     mixins:[master],
     components: {
         "input-general": InputGeneral,
         "selector": Selector,
-        "dialog-master": DialogMaster,
-        'el-dialog': Dialog
+        "dialog-master": DialogMaster
     },
     props: {
        closeDialog: Function, 

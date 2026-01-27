@@ -175,7 +175,7 @@ export default {
         async getSuratJalan() {
             this.loading = true;
             try {
-                const res = await axios.get(this.URL.manifest_delivery_order + `?n=${this.listenNodeId}&s=${this.$route.params.id}`, this.Helper.header())
+                const res = await axios.get(this.URL.revamp_surat_jalan_v3 + `?n=${this.listenNodeId}&s=${this.$route.params.id}`, this.Helper.header())
 
                 let data = res.data.data[0];
                 if (data && res.data.data.length > 0) {

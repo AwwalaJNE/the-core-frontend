@@ -524,7 +524,7 @@ export default {
             this.loading = true
             await axios
                 .post(
-                    this.URL.manifest_delivery_order + `?n=${this.listenNodeId}`,
+                    this.URL.revamp_surat_jalan_v3 + `?n=${this.listenNodeId}`,
                     JSON.stringify(this.form),
                     this.Helper.header()
                 )
@@ -554,7 +554,7 @@ export default {
             this.loading = true
             await axios
                 .put(
-                    this.URL.manifest_delivery_order +
+                    this.URL.revamp_surat_jalan_v3 +
                         `/${this.manifest_delivery_id}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form),
                     this.Helper.header()

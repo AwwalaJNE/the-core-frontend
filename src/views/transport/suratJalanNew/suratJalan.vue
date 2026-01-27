@@ -235,11 +235,11 @@ export default {
                     key: 'total_outstanding',
                     width: 'xxxs',
                 },
-                {
-                    label: 'Total Bag',
-                    key: 'total_item',
-                    width: 'xxxs',
-                },
+                // {
+                //     label: 'Total Bag',
+                //     key: 'total_item',
+                //     width: 'xxxs',
+                // },
                 {
                     label: 'Orion Number',
                     key: 'orion_number',
@@ -389,7 +389,7 @@ export default {
 
             await axios
                 .get(
-                    this.URL.manifest_delivery_order +
+                    this.URL.revamp_surat_jalan_v3 +
                         `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${queryDate}&status=${this.status}&sj_type=${sjType}`,
                     this.Helper.header()
                 )
@@ -607,7 +607,7 @@ export default {
 
             try {
                 const res = await axios.patch(
-                    `${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/depart?n=${this.listenNodeId}&is_departed=1`,
+                    `${this.URL.revamp_surat_jalan_v3}/${this.manifest_do_number}/depart?n=${this.listenNodeId}&is_departed=1`,
                     {},
                     this.Helper.header()
                 )
@@ -636,7 +636,7 @@ export default {
         async cancel() {
             try {
                 const res = await axios.delete(
-                    `${this.URL.revamp_surat_jalan}/${this.manifest_do_number}?n=${this.listenNodeId}`,
+                    `${this.URL.revamp_surat_jalan_v3}/${this.manifest_do_number}?n=${this.listenNodeId}`,
                     this.Helper.header()
                 )
                 this.openNotification('success', null, 'Success', 'Cancel surat jalan success')

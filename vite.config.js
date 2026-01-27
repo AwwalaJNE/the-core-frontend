@@ -40,12 +40,23 @@ export default defineConfig({
         },
     },
     build: {
-        sourcemap: true, // Change this to true temporarily to debug
+        sourcemap: false, // Change this to true temporarily to debug
         rollupOptions: {
             output: {
                 entryFileNames: `[name].[hash].js`,
                 chunkFileNames: `[name].[hash].js`,
                 assetFileNames: `[name].[hash].[ext]`,
+            },
+            manualChunks(id) {
+                if (id.includes('node_modules')) {
+                    if (id.includes('xlsx')) return 'xlsx'
+                    if (id.includes('leaflet')) return 'leaflet'
+                    if (id.includes('moment')) return 'moment'
+                    if (id.includes('vue')) return 'vue'
+                    if (id.includes('axios')) return 'axios'
+                    if (id.includes('element-ui') || id.includes('vuesax')) return 'ui'
+                    return 'vendor'
+                }
             },
         },
     },

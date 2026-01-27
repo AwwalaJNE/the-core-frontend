@@ -1,20 +1,29 @@
 <!DOCTYPE html>
 <html class="is-smooth-scroll-compatible" lang="en">
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width,initial-scale=1.0">
-        <link rel="icon" href="jne.png" width="100%">
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
-        <script src="https://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+        <!-- PRELOAD LOGO -->
+        <link rel="preload" href="/src/assets/img/jne.png" as="image" fetchpriority="high" />
+
+        <link rel="icon" href="/src/assets/img/jne.png" />
         <title>The Core v2</title>
     </head>
     <body>
         <noscript>
             <strong>The Core - Your Ultimate Logistics Solution!</strong>
-            <strong>The ultimate superapp designed to streamline every aspect of your logistics needs. Whether you're sending packages across town or across the country, Expedition brings together all the tools you need in one powerful platform.</strong>
+            <strong>
+                The ultimate superapp designed to streamline every aspect of your logistics needs.
+                Whether you're sending packages across town or across the country, Expedition brings
+                together all the tools you need in one powerful platform.
+            </strong>
         </noscript>
+
         <div id="app"></div>
-        <script type="module" src="/src/main.js"></script>
+
+        <!-- Make sure JS is not blocking -->
+        <script type="module" src="/src/main.js" defer></script>
     </body>
 </html>
