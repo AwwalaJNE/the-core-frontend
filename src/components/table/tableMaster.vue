@@ -997,25 +997,6 @@
                                         </template>
                                         <template
                                             v-else-if="
-                                                hasLinked4 !== undefined &&
-                                                hasLinked4.length > 0 &&
-                                                column.key !== undefined &&
-                                                hasLinked4.includes(
-                                                    String(column.key ?? '').toLowerCase()
-                                                )
-                                            "
-                                        >
-                                            <img
-                                                style="width: 100px; height: 100px"
-                                                :src="item.image"
-                                                @click="handlePictureCardPreview(item)"
-                                            />
-                                            <el-dialog :visible.sync="dialogVisible">
-                                                <img width="100%" :src="dialogImageUrl" alt="" />
-                                            </el-dialog>
-                                        </template>
-                                        <template
-                                            v-else-if="
                                                 item[hasLinkedCustomValidation] &&
                                                 hasLinkedCustom !== undefined &&
                                                 hasLinkedCustom.length > 0 &&
@@ -2066,8 +2047,6 @@ import iterateSelector from '@/components/input/iterateInput2'
 import AutoComplete from '@/components/input/autoComplete'
 import Countdown from '@/components/countdown'
 
-import { Dialog } from 'element-ui'
-
 export default {
     name: 'tabelMaster',
     mixins: [master],
@@ -2079,7 +2058,6 @@ export default {
         asynchronousSelect: asynchronousSelect,
         'iterate-selector': iterateSelector,
         'auto-complete': AutoComplete,
-        'el-dialog': Dialog,
         countdown: Countdown,
     },
     props: {
@@ -2108,7 +2086,6 @@ export default {
         hasLinked: Array,
         hasLinked2: Array,
         hasLinked3: Array,
-        hasLinked4: Array,
         hasLinkedCustom: Array,
         hasLinkedCustomValidation: Array,
         hasLinkedChild: Array,

@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import master from '@/mixins/master'
 
 import Login from '@/views/auth'
 
