@@ -235,7 +235,7 @@
                         placeholder="Weight"
                         :disabled="(disabledApprove && !loading) || dialogActive"
                         @keypress="onlyNumber"
-                        @keyup.enter="updateBag"
+                        @keyup.enter="updateWeight"
                         icon-after
                         :data-testid="`input-weight`"
                         @click="focusWeightInput"
@@ -317,6 +317,7 @@ export default {
             form: {},
 
             is_disabled: true,
+            is_masterbag: false,
 
             routing: '',
             routingArray: [
@@ -663,9 +664,11 @@ export default {
                     break
             }
         },
-        async updateBag() {
+        updateWeight() {
             if (!this.weight || !this.actual_weight) return
-
+            this.updateBag()
+        },
+        async updateBag() {
             this.loading = true
             try {
                 const res = await axios.put(
