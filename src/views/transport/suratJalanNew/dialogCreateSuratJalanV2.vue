@@ -659,7 +659,7 @@ export default {
             this.loading = true
             try {
                 const res = await axios.post(
-                    `${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/detail?n=${this.listenNodeId}`,
+                    `${this.URL.revamp_surat_jalan_v3}/${this.manifest_do_number}/detail?n=${this.listenNodeId}`,
                     { item_number: this.item_number },
                     this.Helper.header()
                 )
@@ -686,7 +686,7 @@ export default {
             this.loading = true
             try {
                 const res = await axios.get(
-                    `${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/detail?n=${this.listenNodeId}`,
+                    `${this.URL.revamp_surat_jalan_v3}/${this.manifest_do_number}/detail?n=${this.listenNodeId}`,
                     this.Helper.header()
                 )
 
@@ -723,7 +723,7 @@ export default {
             this.loading = true
             try {
                 const res = await axios.put(
-                    `${this.URL.revamp_surat_jalan_v2}/${this.manifest_do_number}?n=${this.listenNodeId}`,
+                    `${this.URL.revamp_surat_jalan_v3}/${this.manifest_do_number}?n=${this.listenNodeId}`,
                     JSON.stringify(this.master_form),
                     this.Helper.header()
                 )
@@ -744,7 +744,7 @@ export default {
             this.loading = true
             try {
                 const res = await axios.delete(
-                    `${this.URL.revamp_surat_jalan}/${this.manifest_do_number}/detail/${this.item_remove}?n=${this.listenNodeId}`,
+                    `${this.URL.revamp_surat_jalan_v3}/${this.manifest_do_number}/detail/${this.item_remove}?n=${this.listenNodeId}`,
                     this.Helper.header()
                 )
                 this.openNotification('success', null, 'Success', 'Remove surat jalan success')
@@ -767,7 +767,7 @@ export default {
                 this.loading = true
                 try {
                     const res = await axios.patch(
-                        `${this.URL.revamp_surat_jalan_v2}/${this.manifest_do_number}/approval?n=${this.listenNodeId}`,
+                        `${this.URL.revamp_surat_jalan_v3}/${this.manifest_do_number}/approval?n=${this.listenNodeId}`,
                         { is_approve: this.is_approve ^ 1 },
                         this.Helper.header()
                     )

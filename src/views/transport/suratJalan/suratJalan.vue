@@ -217,7 +217,7 @@ export default {
               endDate = to
             }
             await axios
-                .get(this.URL.manifest_delivery_order +
+                .get(this.URL.revamp_surat_jalan_v3 +
                 `?n=${this.listenNodeId}&sort_order=desc&limit=${limit}&page=${page}&s=${query}&start_date=${startDate}&end_date=${endDate}&search_by=${this.searchBy}&filter_date_by=${this.filterDateBy}&status=${this.status}`,
                 this.Helper.header())
                 .then(res => {
@@ -349,7 +349,7 @@ export default {
             this.loading = true
             await axios
                 .put(
-                    this.URL.manifest_delivery_order + `/${this.manifest_do_number}/detail/${this.manifest_do_number}?n=${this.listenNodeId}`,
+                    this.URL.revamp_surat_jalan_v3 + `/${this.manifest_do_number}/detail/${this.manifest_do_number}?n=${this.listenNodeId}`,
                     JSON.stringify(this.form), 
                     this.Helper.header())
                 .then(res => {
@@ -388,7 +388,7 @@ export default {
           let formCancel={}
             await axios
                 .post(
-                    this.URL.manifest_delivery_order + `/${this.manifest_do_number}/cancel?n=${this.listenNodeId}`,
+                    this.URL.revamp_surat_jalan_v3 + `/${this.manifest_do_number}/cancel?n=${this.listenNodeId}`,
                     JSON.stringify(formCancel),
                     this.Helper.header())
                 .then(res => {
