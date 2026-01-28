@@ -27,6 +27,7 @@ import Vuesax from 'vuesax'
 import 'vuesax/dist/vuesax.css'
 
 import Storage from 'vue-ls'
+import VueRouter from 'vue-router'
 import axios from 'axios'
 
 // -------------------- Axios Interceptor --------------------
@@ -126,10 +127,22 @@ Vue.prototype.$VueDelete = Vue.delete
 Vue.prototype.$nextTick = Vue.nextTick
 
 // -------------------- Clear All Console --------------------
-// TURN THIS ON ON PRODUCTION
-console.log = () => {}
-console.warn = () => {}
-console.error = () => {}
+if (import.meta.env.PROD) {
+    console.log = () => {}
+    console.info = () => {}
+    console.warn = () => {}
+    console.debug = () => {}
+    console.error = () => {}
+}
+
+// ----- OVERRIDE GLOBAL PUSH -----
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location, onResolve, onReject) {
+    if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
+    return originalPush.call(this, location).catch((err) => {
+        if (err.name !== 'NavigationDuplicated') throw err
+    })
+}
 
 // -------------------- Uppercase Directive --------------------
 Vue.directive('uppercase', {
