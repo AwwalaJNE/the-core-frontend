@@ -19,6 +19,10 @@ export default {
     role: api + 'role',
     permission: api + 'permission',
 
+    // Maps
+    maps: api + 'maps',
+    reverse_geocode: api + 'maps/reverse-geocode',
+
     // geolocation
     geolocation: api + 'geolocation',
     geolocation_country: api + 'geolocation-country',

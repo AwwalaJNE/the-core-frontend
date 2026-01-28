@@ -2,253 +2,143 @@
     <vs-row justify="center">
         <vs-col xs="12" sm="12" lg="12">
             <div class="map_picker">
-                <div class="query_map">
-                    <!-- <div>Search desired location</div>
-                    <el-autocomplete
-                    class="inline-input"
-                    v-model="locationName"
-                    :fetch-suggestions="querySearch"
-                    placeholder="Please Input"
-                    :trigger-on-focus="false"
-                    @select="handleSelect"
-                    ></el-autocomplete> -->
-                </div>
-                
-                <div ref="map_general" id="map_general" style="width: 100%; height: 250px;z-index:1;position:relative; display:block; overflow:hidden;"></div>
+                <div
+                    ref="map_general"
+                    id="map_general"
+                    style="
+                        width: 100%;
+                        height: 250px;
+                        z-index: 1;
+                        position: relative;
+                        display: block;
+                        overflow: hidden;
+                    "
+                ></div>
             </div>
         </vs-col>
     </vs-row>
 </template>
+
 <script>
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import axios from 'axios'
+import master from '@/mixins/master'
 
-import axios from "axios"
-import master from "@/mixins/master"
 export default {
-    name: "map-component",
+    name: 'map-component',
     mixins: [master],
+
     props: {
-        title: String,
         lat: Number,
         lon: Number,
         fullAddress: String,
         parameterMap: String,
-        dataAddress: String,
-        dataLtnLng: String,
-        summonMap: Boolean
     },
+
     data() {
         return {
-            map: {},
-            marker: {},
-            center: {},
+            map: null,
+            marker: null,
             zoom: 14,
             latitude: this.lat,
             longitude: this.lon,
-            locationName: ""
+            locationName: '',
         }
     },
+
     watch: {
         lat(val) {
-            this.latitude = val;
-            this.getLocation();
+            this.latitude = val
+            this.setMarker()
         },
         lon(val) {
-            this.longitude = val;
-            this.getLocation();
+            this.longitude = val
+            this.setMarker()
         },
         fullAddress(val) {
-            this.locationName = val;
-            this.getLocation();
+            this.locationName = val
         },
-        summonMap(val) {
-            
-        }
-        // dataLtnLng(val) {
-        //     try {
-        //         if(val){
-        //             let temp = val.split(",");
-        //             this.latitude = temp[0];
-        //             this.longitude = temp[1];
-        //         }
-        //     } catch (error) {
-        //         console.log(error);
-        //     }
-        // },
     },
+
     methods: {
-        setMarker(){
-            let curLocation = [this.latitude, this.longitude];
-            
-            let self = this;
-            if (curLocation[0] == 0 && curLocation[1] == 0) {
-                curLocation = [-6.21462,106.84513];
-            }
-            
-            // document.getElementById("map_general").innerHTML =
-            // "<div id='map' style='width: 100%; height: 100%;'></div>";
-            this.$refs.map_general.innerHTML =
-            "<div id='map' style='width: 100%; height: 100%;'></div>";
+        setMarker() {
+            let curLocation = [this.latitude, this.longitude]
 
-            const container = L.DomUtil.get('map');
-            if(container != null){
-                container._leaflet_id = null;
+            if (!curLocation[0] && !curLocation[1]) {
+                curLocation = [-6.21462, 106.84513]
             }
 
-            var map = new L.Map("map").setView(curLocation, this.zoom);
+            this.$refs.map_general.innerHTML = "<div id='map' style='width:100%;height:100%'></div>"
 
-            L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
-                attribution:
-                '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
+            const container = L.DomUtil.get('map')
+            if (container) container._leaflet_id = null
 
-            map.attributionControl.setPrefix(false);
+            const map = L.map('map').setView(curLocation, this.zoom)
 
-            var marker = new L.marker(curLocation, {
-                draggable: "true"
-            });
+            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>',
+            }).addTo(map)
 
-            marker.on("dragend", function(event) {
-                var position = marker.getLatLng();
-                marker
-                .setLatLng(position, {
-                    draggable: "true"
-                })
-                .bindPopup(position)
-                .update();
-                self.latitude = position.lat;
-                self.longitude = position.lng;
-                self.getCoordinates();
+            map.attributionControl.setPrefix(false)
 
-                self.emitThem()
-            });
+            const marker = L.marker(curLocation, { draggable: true })
 
-            map.addLayer(marker);
-            this.marker = marker;
-            this.map = map;
+            marker.on('dragend', () => {
+                const { lat, lng } = marker.getLatLng()
+
+                this.latitude = lat
+                this.longitude = lng
+
+                this.getCoordinates()
+                this.emitThem()
+            })
+
+            marker.addTo(map)
+
+            this.map = map
+            this.marker = marker
         },
-        querySearch(queryString, cb){
-            axios.get('https://geocode.search.hereapi.com/v1/geocode?apiKey=5TeU1RNyTobul0RE74e0Xw3wmqC3JZL7w1sZ87oRkEU&q=' + queryString.replace(" ", "+")).then(res => {
-                let result = res.data
-                
-                let suggestions = [];
 
-                if (result["items"] != undefined && result["items"].length > 0) {
-                    result["items"].forEach(item => {
-                    suggestions.push({
-                        value: item.address.label,
-                        data: item
-                    });
-                    });
-                }
+        async getCoordinates() {
+            try {
+                const res = await axios.get(
+                    `${this.URL.reverse_geocode}?n=${this.listenNodeId}&lat=${this.latitude}&lon=${this.longitude}`,
+                    this.Helper.header()
+                )
 
-                
-
-                cb(suggestions);
-                })
-            .catch(error => console.log("error", error));
+                this.locationName = res?.data?.features?.[0]?.properties?.name || ''
+            } catch (error) {
+                console.error(error)
+            }
         },
-        // getCurrentLocation() {
-            // ISSUE diblock sama browser
 
-        //     navigator.geolocation.getCurrentPosition(
-        //         position => {
-        //         this.center = {
-        //             lat: parseFloat(position.coords.latitude),
-        //             lng: parseFloat(position.coords.longitude)
-        //         };
-        //         this.latitude = position.coords.latitude;
-        //         this.longitude = position.coords.longitude;
-        //         },
-        //         failure => {
-        //             console.log(failure, "Failure");
-        //             if (failure.message.startsWith("Only secure origins are allowed")) {
-        //                 this.openNotification('danger', err.response ? err.response.data.code : '', 'Failed get current location', 'Only secure origins are allowed')
-        //             }
-        //         }
-        //     );
-        // },
-        getLocation(){
-            navigator.geolocation.getCurrentPosition(position => {
-                this.center = {
-                lat: parseFloat(this.lat),
-                lng: parseFloat(this.lng)
-                };
-            });
-        },
-        async getCoordinates(){
-            let self = this;
-            await axios.get(
-                `https://api.geoapify.com/v1/geocode/reverse?lat=${self.latitude}&lon=${self.longitude}&apiKey=64a21693a8994b028d79d7ec832708be`
-                ).then(res => {
-                    let result = res;
-                    
-                    let address_data =
-                        result["data"]["features"].length > 0 ? result["data"]["features"][0] : "";
-                    self.locationName = address_data.properties.name;
-                })
-            .catch(error => console.log("error", error));
-
-            
-        },
-        handleSelect(item) {
-            let self = this
-            let selected = item.data
-            let marker = {
-                lat: selected.position.lat,
-                lng: selected.position.lng
-            };
-            self.latitude = marker.lat;
-            self.longitude = marker.lng;
-            self.locationName = selected.address.label;
-            // self.locationName = 'Berlin'
-            self.center = marker;
-
-            self.marker.setLatLng([marker.lat, marker.lng]);
-            self.map.panTo([marker.lat, marker.lng], self.zoom);
-
-            // self.emitThem()
-        },
         emitThem() {
-            let dataMap = {
-                    location: this.locationName,
-                    latitude: this.latitude,
-                    longitude: this.longitude,
-                    lat_lng: this.latitude + "," + this.longitude,
-                    parameterMap: this.parameterMap
-                };
-            this.$emit("pickLocation", dataMap);
-        }
+            this.$emit('pickLocation', {
+                location: this.locationName,
+                latitude: this.latitude,
+                longitude: this.longitude,
+                lat_lng: `${this.latitude},${this.longitude}`,
+                parameterMap: this.parameterMap,
+            })
+        },
     },
+
     mounted() {
-        let self = this
-        setTimeout(function(){ 
-            self.latitude= self.lat
-            self.longitude= self.lon
-            
-            self.getCoordinates()
-            self.$nextTick(_ => {
-                
-                self.setMarker()
-                // self.getCurrentLocation()
-            });
-        }, 400); // 4 mili detik | fix issue prop lat dan lon masih 0
-        
+        setTimeout(() => {
+            this.latitude = this.lat
+            this.longitude = this.lon
+            this.getCoordinates()
+            this.$nextTick(this.setMarker)
+        }, 400)
     },
 }
 </script>
+
 <style lang="scss">
-    .query_map{
-        position: relative;
-        width: 100%;
-        text-align: left;
-        font-size: 0.75rem;
-        
-    }
-    .map_picker{
-        position: relative;
-        widows: 100%;
-        margin: 0 auto 1em;
-    }
+.map_picker {
+    position: relative;
+    width: 100%;
+    margin: 0 auto 1em;
+}
 </style>
