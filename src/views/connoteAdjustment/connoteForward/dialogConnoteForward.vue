@@ -526,7 +526,6 @@ export default {
                 )
                 if (res.status === 200) {
                     const { amount_total_price } = res.data.data
-                    console.log('amount_total_price:', amount_total_price)
 
                     if (amount_total_price <= 0) {
                         this.openNotification(

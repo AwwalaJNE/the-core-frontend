@@ -136,7 +136,6 @@ export default {
                 }
                 
             } catch (err) {
-                console.log(err)
                 this.openNotification("danger", err?.response?.data?.code ?? '', "Failed", err?.response?.data?.message ?? 'Something went wrong');
             }
         },

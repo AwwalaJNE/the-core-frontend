@@ -277,8 +277,7 @@ export default {
                     ? val['node']['node_name'] + ' (' + val['node']['node_code'] + ')'
                     : ''
                 this.dataItem = val
-
-                console.log('HAI', val['node'])
+                
                 this.$store.dispatch(`SET_EMPLOYEE_EMPLOYEE_NODE_ID_ValueData`, val['node'])
 
                 this.$nextTick(() => {

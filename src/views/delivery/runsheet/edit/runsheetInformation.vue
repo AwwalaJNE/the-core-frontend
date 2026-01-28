@@ -359,12 +359,6 @@ export default {
           this.Helper.header()
         )
         .then((res) => {
-          console.log(
-            res.data,
-            res.data.data.length,
-            Object.keys(res.data.data).length,
-            "inires"
-          );
           if (Object.keys(res.data.data).length > 0) {
             this.refresh();
           } else {

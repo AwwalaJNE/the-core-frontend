@@ -181,12 +181,6 @@ export default {
                         'SET_ACTIVE_BAG_WEIGHT_DYNAMICINPUTCOMPONENT_OTHER_DESTINATION',
                         arr
                     )
-
-                    console.log(
-                        'CEK',
-                        this.$store.getters.getInputs.active_bag_weight
-                            .dynamicinputcomponent_other_destination
-                    )
                 }
             }
             this.dataItem = val

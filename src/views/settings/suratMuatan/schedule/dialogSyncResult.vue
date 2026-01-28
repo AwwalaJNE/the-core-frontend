@@ -154,7 +154,6 @@ export default {
     async fetchData() {
       this.loading = true;
       try {
-        console.log("📤 Sending request to sync flight:");
         const res = await axios.get(`${this.URL.sync_flight}`, {
           params: {
             ...this.form,
@@ -197,10 +196,8 @@ export default {
       }
     },
     updateSelected2(item) {
-      console.log("Selected item:", item);
     },
     onAllCheckedCallback(val) {
-      console.log("All checked:", val);
       this.isAllChecked = val;
     },
     cancel() {
