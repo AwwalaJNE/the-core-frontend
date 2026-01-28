@@ -22,8 +22,21 @@
 <script>
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
+import markerIcon from 'leaflet/dist/images/marker-icon.png'
+import markerShadow from 'leaflet/dist/images/marker-shadow.png'
+
 import axios from 'axios'
 import master from '@/mixins/master'
+
+delete L.Icon.Default.prototype._getIconUrl
+
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: markerIcon2x,
+    iconUrl: markerIcon,
+    shadowUrl: markerShadow,
+})
 
 export default {
     name: 'map-component',
@@ -76,7 +89,7 @@ export default {
 
             const map = L.map('map').setView(curLocation, this.zoom)
 
-            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>',
             }).addTo(map)
 
