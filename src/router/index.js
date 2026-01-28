@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Login from '@/views/auth'
+const Login = () => import('@/views/auth')
 
 import Content from '@/views/template/Content.vue'
 import ContentChild from '@/views/template/Content-child'
@@ -299,7 +299,6 @@ const routes = [
     },
     {
         path: '/',
-        name: 'main',
         component: Content,
         children: [
             {
