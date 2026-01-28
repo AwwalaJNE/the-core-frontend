@@ -126,10 +126,13 @@ Vue.prototype.$VueDelete = Vue.delete
 Vue.prototype.$nextTick = Vue.nextTick
 
 // -------------------- Clear All Console --------------------
-// TURN THIS ON ON PRODUCTION
-console.log = () => {}
-console.warn = () => {}
-console.error = () => {}
+if (import.meta.env.PROD) {
+    console.log = () => {};
+    console.info = () => {};
+    console.warn = () => {};
+    console.debug = () => {};
+    console.error = () => {};
+}
 
 // -------------------- Uppercase Directive --------------------
 Vue.directive('uppercase', {

@@ -18,5 +18,6 @@ module.exports = {
                 endOfLine: 'auto',
             },
         ],
+        "no-console": import.meta.env.PROD ? "error" : "off"
     },
 }
