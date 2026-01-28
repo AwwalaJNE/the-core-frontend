@@ -1030,6 +1030,10 @@ export default {
         // this.customFilter()
     },
     methods: {
+        setActive(item) {
+            if (!item?.url) return
+            this.activeItem = item.url
+        },
         isActive(item) {
             // 1) Kalau disediakan nama route parent (paling akurat)
             if (item.toName) {
