@@ -57,12 +57,10 @@
                         typeForm="origin"
                     />
             <!-- <template v-if="listenforcererender == true">
-                <transition>
                     loading ...
-                </transition>
+                
             </template>
             <template v-else-if="listenforcererender == false">
-                <transition>
                     <form-input-controller 
                         ref="formTransactionOriginController"
                         @formData="formData"
@@ -71,7 +69,7 @@
                         @onChangeCustom="onChangeCustom"
                         typeForm="origin"
                     />
-                </transition>
+                
             </template> -->
         </div>
 

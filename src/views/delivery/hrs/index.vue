@@ -32,9 +32,9 @@
                     </vs-row>
                 </div>
                 <template>
-                    <transition name="slide-fade">
+                    
                         <hrs-table :ref="'HRSTable'" :query="tempSearch" :searchBy="searchBy" />
-                    </transition>
+                    
                 </template>
             </div>
         </section>

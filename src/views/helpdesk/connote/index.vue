@@ -98,7 +98,7 @@
                                     />
                                 </vs-col>
                             </vs-row>
-                            <transition name="slide-fade">
+                            
                                 <connote-list
                                     :ref="navActive"
                                     :dateFilter="tempDateConnote"
@@ -108,7 +108,7 @@
                                     :querySearch="searchByConnote"
                                     :queryDate="filterDateByConnote"
                                 />
-                            </transition>
+                            
                         </template>
                     </div>
                 </vs-col>

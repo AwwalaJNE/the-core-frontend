@@ -75,7 +75,7 @@
                     </vs-row>
                 </div>
                 <template>
-                    <transition name="slide-fade">
+                    
                         <DeliveryCodTable
                             :ref="'DeliveryCodTable'"
                             :dateFilter="tempDate"
@@ -83,7 +83,7 @@
                             :searchBy="searchBy"
                             @openDialog="openDialog"
                         />
-                    </transition>
+                    
                 </template>
             </div>
         </section>

@@ -28,9 +28,9 @@
                 </vs-row>
               </div>
                 <template>
-                    <transition name="slide-fade">
+                    
                         <DeliveryRunsheetTable :ref="'DeliveryRunsheetTable'"   :node="node_request" :dateFilter="tempDate" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
 
             </div>

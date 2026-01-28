@@ -140,54 +140,54 @@
                     </vs-row>
                 </div>
                 <template v-if="navActive === 'sla-koli'">
-                    <transition name="slide-fade">
+                    
                         <sla-koli
                             :ref="navActive"
                             :query="tempSearch"
                             :searchBy="searchSlaKoliBy"
                         />
-                    </transition>
+                    
                 </template>
                 <template v-else-if="navActive === 'sla-inter-activity'">
-                    <transition name="slide-fade">
+                    
                         <sla-inter-activity
                             :ref="navActive"
                             :query="tempSearch"
                             :searchBy="searchSlaInterActivityBy"
                         />
-                    </transition>
+                    
                 </template>
                 <template v-else-if="navActive === 'sla-node-to-node-a'">
-                    <transition name="slide-fade">
+                    
                         <sla-node-to-node-a
                             :ref="navActive"
                             :query="tempSearch"
                             :searchBy="searchSlaNodeToNodeABy"
                         />
-                    </transition>
+                    
                 </template>
                 <template v-else-if="navActive === 'sla-node-to-node-b'">
-                    <transition name="slide-fade">
+                    
                         <sla-node-to-node-b
                             :ref="navActive"
                             :query="tempSearch"
                             :searchBy="searchSlaNodeToNodeBBy"
                         />
-                    </transition>
+                    
                 </template>
                 <template v-else-if="navActive === 'sla-bag'">
-                    <transition name="slide-fade">
+                    
                         <sla-bag
                             :ref="navActive"
                             :query="tempSearch"
                             :searchBy="searchSlaBagBy"
                         ></sla-bag>
-                    </transition>
+                    
                 </template>
                 <template v-else-if="navActive === 'upload-sla'">
-                    <transition name="slide-fade">
+                    
                         <upload-sla :ref="navActive" />
-                    </transition>
+                    
                 </template>
             </div>
         </section>

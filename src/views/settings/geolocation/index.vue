@@ -35,39 +35,39 @@
                     </vs-row>
                 </div>
                 <template v-if="navActive === 'k-GEOLOCATION'">
-                    <transition name="slide-fade">
+                    
                         <geo-location :ref="navActive" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
                 <template v-else-if="navActive === 'k-CITY'">
-                    <transition name="slide-fade">
+                    
                         <city :ref="navActive" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
                 <template v-else-if="navActive === 'k-COUNTRY'">
-                    <transition name="slide-fade">
+                    
                         <country :ref="navActive" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
                 <template v-else-if="navActive === 'k-PROVINCE'">
-                    <transition name="slide-fade">
+                    
                         <province :ref="navActive" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
                 <template v-else-if="navActive === 'k-DISTRICT'">
-                    <transition name="slide-fade">
+                    
                         <district :ref="navActive" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
                 <template v-else-if="navActive === 'k-SUBDISTRICT'">
-                    <transition name="slide-fade">
+                    
                         <subdistrict :ref="navActive" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
                 <template v-else-if="navActive === 'k-TIMEZONE'">
-                    <transition name="slide-fade">
+                    
                         <timezone :ref="navActive" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
 
             </div>

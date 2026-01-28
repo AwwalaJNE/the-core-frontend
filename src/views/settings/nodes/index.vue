@@ -34,34 +34,34 @@
                     </vs-row>
                 </div>
                 <template v-if="navActive === 'k-ALTERNATE-ADDRESS'">
-                    <transition name="slide-fade">
+                    
                         <alternate-address :ref="navActive" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
                 <template v-else-if="navActive === 'k-NODES'">
-                    <transition name="slide-fade">
+                    
                         <nodes :ref="navActive" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
                 <template v-else-if="navActive === 'k-NODES-COMMISION'">
-                    <transition name="slide-fade">
+                    
                         <nodes-commision :ref="navActive" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
                 <template v-else-if="navActive === 'k-TYPES'">
-                    <transition name="slide-fade">
+                    
                         <types :ref="navActive" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
                 <template v-else-if="navActive === 'k-NODE-LINK'">
-                    <transition name="slide-fade">
+                    
                         <node-link :ref="navActive" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
                 <template v-else-if="navActive === 'k-NODE-DELIVERY-AREA'">
-                    <transition name="slide-fade">
+                    
                         <node-delivery-area :ref="navActive" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
 
             </div>

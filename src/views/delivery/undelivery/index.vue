@@ -64,13 +64,13 @@
                             </vs-row>
                             <div class="nav-box">
                                 <template>
-                                    <transition name="slide-fade">
+                                    
                                         <ConnoteRunsheetInformation
                                             :ref="'ConnoteRunsheetInformation'"
                                             :employeeId="listenEmployeeId"
                                             :loadingScan="loading"
                                         />
-                                    </transition>
+                                    
                                 </template>
                             </div>
                         </div>
@@ -92,14 +92,14 @@
 
                         <div class="nav-box">
                             <template>
-                                <transition name="slide-fade">
+                                
                                     <UndeliveryInformation
                                         :ref="'undeliveryInformation'"
                                         :employeeId="listenEmployeeId"
                                         v-on:total-connote="getTotal"
                                         :loadingScan="loading"
                                     />
-                                </transition>
+                                
                             </template>
                         </div>
                     </div>

@@ -34,14 +34,14 @@
                     </vs-row>
                 </div>
                 <template v-if="navActive === 'k-CUSTOMER-LIST'">
-                    <transition name="slide-fade">
+                    
                         <customer-list :ref="navActive" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
                 <template v-else-if="navActive === 'k-CUSTOMER-TYPE'">
-                    <transition name="slide-fade">
+                    
                         <customer-type :ref="navActive" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
 
             </div>

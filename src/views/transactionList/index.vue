@@ -62,9 +62,9 @@
                     </vs-row>
                 </div>
                 <template>
-                    <transition name="slide-fade">
+                    
                         <transactionList :ref="'transactionList'"  @totalAmount="getTotalAmount"  :dateFilter="tempDate" :query="tempSearch" :searchBy="searchBy" :filterDateBy="filterDateBy"/>
-                    </transition>
+                    
                 </template>
 
             </div>

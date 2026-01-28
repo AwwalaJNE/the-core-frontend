@@ -58,13 +58,13 @@
                     </vs-row>
                 </div>
                 <template v-if="navActive === 'KPI'">
-                    <transition name="slide-fade">
+                    
                         <key-performance-indicator 
                             :ref="navActive" 
                             :query="tempSearch" 
                             :searchBy="searchBy"
                         />
-                    </transition>
+                    
                 </template>
             </div>
         </section>

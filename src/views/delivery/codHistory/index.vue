@@ -42,14 +42,14 @@
                     </vs-row>
                 </div>
                 <template>
-                    <transition name="slide-fade">
+                    
                         <DeliveryCodHistoryTable
                             :ref="'DeliveryCodHistoryTable'"
                             :dateFilter="tempDate"
                             :query="tempSearch"
                             :searchBy="searchBy"
                         />
-                    </transition>
+                    
                 </template>
             </div>
         </section>

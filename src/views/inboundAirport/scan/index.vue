@@ -93,7 +93,7 @@
                 <h4 align="left">Receiving Log</h4>
                 <div class="nav-box">
                   <template>
-                    <transition name="slide-fade">
+                    
                       <ReceivingLog 
                         ref="ReceivingLog" 
                         :dataTableProp="dataTableReceivingLog" 
@@ -105,7 +105,7 @@
                         :actionPagination="actionPagination"
                         @refresh="getTableDataReceivingLog"
                       />
-                    </transition>
+                    
                   </template>
                 </div>
               </div>
@@ -140,7 +140,7 @@
                 </vs-row>
                 <div class="nav-box">
                   <template>
-                    <transition name="slide-fade">
+                    
                       <InboundDetail 
                         ref="inboundDetail" 
                         :dataTable="dataTable" 
@@ -152,7 +152,7 @@
                         :actionPagination="actionPagination"
                         @actionRemove="actionRemove"
                       />
-                    </transition>
+                    
                   </template>
                 </div>
               </div>
@@ -176,7 +176,7 @@
                         </div>
                   <div class="nav-box" style="margin-top: 5px">
                       <template>
-                          <transition name="slide-fade">
+                          
                               <smDetail 
                                   ref="smDetail" 
                                   :dataTable="itemDataTableProp" 
@@ -189,7 +189,7 @@
                                   :smNumber="sm_no"
                                   :receivingLogs="receivingLogs"
                               />
-                          </transition>
+                          
                       </template>
                   </div>
               </div>

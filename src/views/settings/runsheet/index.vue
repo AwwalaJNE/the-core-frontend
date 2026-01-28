@@ -59,14 +59,14 @@
                     </vs-row>
                 </div>
                 <template v-if="navActive === 'runsheet-limit'">
-                    <transition name="slide-fade">
+                    
                         <runsheet-limit 
                             :ref="navActive" 
                             :query="tempSearch" 
                             :searchBy="searchRunsheetLimitBy"
                             @clearSearch="clearSearch"
                         />
-                    </transition>
+                    
                 </template>
             </div>
         </section>

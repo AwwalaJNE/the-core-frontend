@@ -38,9 +38,9 @@
                 </vs-row>
               </div>
                 <template>
-                    <transition name="slide-fade">
+                    
                         <PackingList :ref="'packingList'"   :node="node_request" :dateFilter="tempDate" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
 
             </div>

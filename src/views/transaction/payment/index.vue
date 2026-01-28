@@ -57,7 +57,7 @@
                     <vs-col xs="12" sm="8" lg="8">
                         <div class="box">
                             <template v-if="navActive.toLowerCase().includes('cash')">
-                                <transition name="slide-fade">
+                                
                                     <div>
                                         <vs-row>
                                             <vs-col xs="12" sm="3" lg="3">
@@ -84,10 +84,10 @@
                                             </vs-col>
                                         </vs-row>
                                     </div>
-                                </transition>
+                                
                             </template>
                             <template v-else-if="navActive.toLowerCase().includes('card')">
-                                <transition name="slide-fade">
+                                
                                     <div>
                                         <vs-row>
                                             <vs-col xs="12" sm="3" lg="3">
@@ -102,10 +102,10 @@
                                             </vs-col>
                                         </vs-row>
                                     </div>
-                                </transition>
+                                
                             </template>
                             <template v-else-if="navActive.toLowerCase().includes('wallet')">
-                                <transition name="slide-fade">
+                                
                                     <div class="wallet_box">
                                         <iframe
                                             :src="`https://staging.ecodi.cloud/f/0ea4ad92b532e972aeae55aab4887169/TCR/${ecodi_id}/${price}`"
@@ -113,7 +113,7 @@
                                             id="myId"
                                         ></iframe>
                                     </div>
-                                </transition>
+                                
                             </template>
                         </div>
                     </vs-col>

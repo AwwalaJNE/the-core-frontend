@@ -102,7 +102,7 @@
                                     />
                                 </vs-col>
                             </vs-row>
-                            <transition name="slide-fade">
+                            
                                 <vehicle-list
                                     :ref="navActive"
                                     :query="tempSearch"
@@ -110,7 +110,7 @@
                                     :queryBags="bag_number"
                                     :queryDriver="driver_id"
                                 />
-                            </transition>
+                            
                         </template>
                     </div>
                 </vs-col>

@@ -40,9 +40,9 @@
                         </vs-row>
 
                         <template v-if="navActive === 'k-USER'">
-                            <transition name="slide-fade">
+                            
                                 <user-list :ref="navActive" :query="tempSearch" />
-                            </transition>
+                            
                         </template>
                     </div>
                 </vs-col>

@@ -40,9 +40,9 @@
                 </vs-row>
               </div>
                 <template>
-                    <transition name="slide-fade">
+                    
                         <cashRegisterList :ref="'transactionList'" :dateFilter="tempDate"  :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
 
             </div>

@@ -105,34 +105,34 @@
                     </vs-row>
                 </div>
                 <template v-if="navActive === 'bag-weight'">
-                    <transition name="slide-fade">
+                    
                         <bag-weight 
                             :ref="navActive" 
                             :query="tempSearch" 
                             :searchBy="searchBagWeightBy"
                             @clearSearch="clearSearch"
                         />
-                    </transition>
+                    
                 </template>
                 <template v-else-if="navActive === 'bag-limit'">
-                    <transition name="slide-fade">
+                    
                         <bag-limit 
                             :ref="navActive" 
                             :query="tempSearch" 
                             :searchBy="searchBagLimitBy"
                             @clearSearch="clearSearch"
                         />
-                    </transition>
+                    
                 </template>
                 <template v-else-if="navActive === 'active-bag-weight'">
-                    <transition name="slide-fade">
+                    
                         <active-bag-weight 
                             :ref="navActive" 
                             :query="tempSearch" 
                             :searchBy="searchActiveBagWeightBy"
                             @clearSearch="clearSearch"
                         />
-                    </transition>
+                    
                 </template>
             </div>
         </section>

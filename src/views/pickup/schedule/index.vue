@@ -58,9 +58,9 @@
                 </vs-row>
               </div>
                 <template>
-                    <transition name="slide-fade">
+                    
                         <PickupSchedule :ref="'PickupScheduleTable'"   :node="node_request" :dateFilter="tempDate" :query="tempSearch" :searchBy="searchBy" :filterDateBy="filterDateBy"/>
-                    </transition>
+                    
                 </template>
             </div>
         </section>

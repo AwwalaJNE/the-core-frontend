@@ -34,14 +34,14 @@
                     </vs-row>
                 </div>
                 <template v-if="navActive === 'k-SURCHARGE'">
-                    <transition name="slide-fade">
+                    
                         <surcharge-list :ref="navActive" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
                 <template v-else-if="navActive === 'k-SURCHARGE-TYPE'">
-                    <transition name="slide-fade">
+                    
                         <surcharge-type :ref="navActive" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
             </div>
         </section>

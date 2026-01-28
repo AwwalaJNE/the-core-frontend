@@ -59,14 +59,14 @@
                     </vs-row>
                 </div>
                 <template v-if="navActive === 'courier-delivery-area'">
-                    <transition name="slide-fade">
+                    
                         <courier-delivery-area 
                             :ref="navActive" 
                             :query="tempSearch" 
                             :searchBy="searchCourierDeliveryAreaBy"
                             @clearSearch="clearSearch"
                         />
-                    </transition>
+                    
                 </template>
             </div>
         </section>

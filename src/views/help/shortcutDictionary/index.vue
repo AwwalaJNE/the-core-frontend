@@ -12,9 +12,9 @@
         <section class="nodes">
             <div class="box view">
                 <template>
-                    <transition name="slide-fade">
+                    
                         <shortcut-table :ref="'ShortcutTable'" />
-                    </transition>
+                    
                 </template>
             </div>
         </section>

@@ -169,7 +169,7 @@
                                     :searchBy="searchActiveWeightBy"
                                     @clearSearch="clearSearch"
                                 />
-                            </transition>
+                            
                         </template>
                         <template v-else>
                             <transition name="slide-fade" >
@@ -191,7 +191,7 @@
                                     :isMasterbag="navActive === 'k-BAG' ? '0' : '1'"
                                     :isArchive="navActive === 'k-ARCHIVE'"
                                 />
-                            </transition>
+                            
                         </template>
                     </template>
                     

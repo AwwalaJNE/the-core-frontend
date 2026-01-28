@@ -116,9 +116,9 @@
                 </vs-row>
               </div>
                 <template>
-                    <transition name="slide-fade">
+                    
                         <PickupList :ref="'transactionList'" :status_pickup="status_pickup" :courier_pickup="courier_pickup" :node="node_request" :dateFilter="tempDate" :query="tempSearch" :searchBy="searchBy" :filterDateBy="filterDateBy"/>
-                    </transition>
+                    
                 </template>
             </div>
         </section>
