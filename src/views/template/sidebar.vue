@@ -1,57 +1,47 @@
 <template>
     <vs-sidebar v-model="activeItem" :open="!isMobile || isExpand" :reduce="!isMobile && isExpand">
         <template v-for="(item, key) in getMenuWithPermissions()">
-            <template v-if="item.children.length > 0">
-                <vs-sidebar-group :key="key">
-                    <template #header>
-                        <vs-sidebar-item arrow>
-                            <template #icon>
-                                <i :class="`bx ${item.icon !== null ? item.icon : ''}`" />
-                            </template>
-                            {{ item.label }}
-                        </vs-sidebar-item>
-                    </template>
+            <!-- Parent item with children -->
+            <vs-sidebar-group :key="key" v-if="item.children.length > 0">
+                <template #header>
+                    <vs-sidebar-item arrow>
+                        <template #icon>
+                            <i :class="`bx ${item.icon !== null ? item.icon : ''}`" />
+                        </template>
+                        {{ item.label }}
+                    </vs-sidebar-item>
+                </template>
 
-                    <template v-for="(child, i) in item.children">
-                        <router-link
-                            :key="i"
-                            :to="child.url"
-                            :id="child.label.trim()"
-                            @click.native="setActive(child)"
-                        >
-                            <vs-sidebar-item
-                                :id="child.label.trim()"
-                                :class="{ active: isActiveChild(child) }"
-                            >
-                                <template #icon>
-                                    <i :class="`bx ${child.icon}`" />
-                                </template>
-                                <p>{{ child.label }}</p>
-                            </vs-sidebar-item>
-                        </router-link>
+                <!-- Child items -->
+                <vs-sidebar-item
+                    v-for="(child, i) in item.children"
+                    :key="i"
+                    :to="child.url"
+                    :id="child.label.trim()"
+                    :class="{ active: isActiveChild(child) }"
+                    @click="setActive(child)"
+                >
+                    <template #icon>
+                        <i :class="`bx ${child.icon}`" />
                     </template>
-                </vs-sidebar-group>
-            </template>
-            <template v-else>
-                <div :key="key" style="width: 100%">
-                    <router-link
-                        :key="key"
-                        :to="item.url"
-                        :id="item.label.trim()"
-                        @click.native="setActive(item)"
-                    >
-                        <vs-sidebar-item
-                            :id="item.label.trim()"
-                            :class="{ active: isActive(item) }"
-                        >
-                            <template #icon>
-                                <i :class="`bx ${item.icon !== null ? item.icon : ''}`" />
-                            </template>
-                            <p>{{ item.label }}</p>
-                        </vs-sidebar-item>
-                    </router-link>
-                </div>
-            </template>
+                    <p>{{ child.label }}</p>
+                </vs-sidebar-item>
+            </vs-sidebar-group>
+
+            <!-- Single item without children -->
+            <vs-sidebar-item
+                v-else
+                :key="key"
+                :to="item.url"
+                :id="item.label.trim()"
+                :class="{ active: isActive(item) }"
+                @click="setActive(item)"
+            >
+                <template #icon>
+                    <i :class="`bx ${item.icon !== null ? item.icon : ''}`" />
+                </template>
+                <p>{{ item.label }}</p>
+            </vs-sidebar-item>
         </template>
     </vs-sidebar>
 </template>
