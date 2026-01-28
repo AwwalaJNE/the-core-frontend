@@ -293,9 +293,6 @@ export default {
             this.filterDateBy = val;
             this.refresh();
         },
-        searchValue(val) {
-            this.tempSearch = val;
-        },
         updateSearchValue(val) {
             this.searchValue = val;
             this.pagination.page = 1;
