@@ -198,7 +198,7 @@
                     </vs-row>
                 </div>
                 <template>
-                    <transition name="slide-fade">
+                    
                         <InboundIncoming
                             :ref="'inboundIncoming'"
                             :nodeType="node_request"
@@ -214,7 +214,7 @@
                             :type="listenBreadcrumbCode"
                             @updateLocalStorage="updateLocalStorage"
                         />
-                    </transition>
+                    
                 </template>
             </div>
         </section>

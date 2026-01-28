@@ -53,7 +53,7 @@
             </vs-row>
         </section>
         <template>
-            <transition name="slide-fade">
+            
                 <receiving-log-list
                     ref="receivingLogList"
                     :pageSize="page_size"
@@ -65,7 +65,7 @@
                     :startDate="startDate"
                     :endDate="endDate"
                 />
-            </transition>
+            
         </template>
     </div>
 </template>

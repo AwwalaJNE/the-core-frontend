@@ -16,7 +16,7 @@
                         <h4 align="left">SM Information</h4>
                         <div class="nav-box">
                             <template>
-                                <transition name="slide-fade">
+                                
                                     <template v-if="loading == false">
                                         <InboundInformation
                                             :ref="'inboundInformation'" 
@@ -24,7 +24,7 @@
                                             :loading="loading"
                                         />
                                     </template>
-                                </transition>
+                                
                             </template>
                         </div>
                     </div>
@@ -32,7 +32,7 @@
                         <h4 align="left">Inbound Detail</h4>
                         <div class="nav-box">
                             <template>
-                                <transition name="slide-fade">
+                                
                                     <template v-if="loading == false">
                                         <InboundDetail 
                                             :ref="'inboundDetail'" 
@@ -40,7 +40,7 @@
                                             :loading="loading"
                                         />
                                     </template>
-                                </transition>
+                                
                             </template>
                         </div>
                     </div>

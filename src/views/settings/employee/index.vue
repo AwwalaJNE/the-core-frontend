@@ -34,14 +34,14 @@
                     </vs-row>
                 </div>
                 <template v-if="navActive === 'k-EMPLOYEE'">
-                    <transition name="slide-fade">
+                    
                         <employee-list :ref="navActive" :query="tempSearch" />
-                    </transition>
+                    
                 </template>
                 <template v-else-if="navActive === 'k-EMPLOYEE-TYPE'">
-                    <transition name="slide-fade">
+                    
                         <employee-type :ref="navActive"  :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
 
             </div>

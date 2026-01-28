@@ -13,13 +13,13 @@
                 <div class="nav-box">
                     <vs-row justify="space-between"> </vs-row>
                 </div>
-                <transition name="slide-fade">
+                
                     <claim-table
                         ref="Stock"
                         :query="tempSearch"
                         :searchBy="searchByClaimAndBurden"
                     />
-                </transition>
+                
             </div>
         </section>
     </div>

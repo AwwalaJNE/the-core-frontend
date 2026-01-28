@@ -83,22 +83,22 @@
                     </vs-row>
                 </div>
                 <template v-if="navActive === 'configuration-warning-runsheet'">
-                    <transition name="slide-fade">
+                    
                         <configuration-warning-runsheet
                             :ref="navActive"
                             :query="tempSearch"
                             :searchBy="searchConfigurationWarningRunsheetBy"
                         />
-                    </transition>
+                    
                 </template>
                 <template v-if="navActive === 'configuration-warning-sla'">
-                    <transition name="slide-fade">
+                    
                         <configuration-warning-sla
                             :ref="navActive"
                             :query="tempSearch"
                             :searchBy="searchConfigurationWarningSLABy"
                         />
-                    </transition>
+                    
                 </template>
             </div>
         </section>

@@ -107,22 +107,22 @@
                     </vs-row>
                 </div>
                     <template v-if="navActive === 'Stock'">
-                        <transition name="slide-fade">
+                        
                             <stock-table
                                 :ref="navActive" 
                                 :query="tempSearch" 
                                 :searchBy="searchByStock"
                             />
-                        </transition>
+                        
                     </template>
                     <template v-else-if="navActive === 'k-SCHEDULE'">
-                        <transition name="slide-fade">
+                        
                             <schedule-table 
                                 :ref="navActive" 
                                 :query="tempSearch"
                                 :searchBy="searchBySchedule"
                             />
-                        </transition>
+                        
                     </template>
             </div>
         </section>

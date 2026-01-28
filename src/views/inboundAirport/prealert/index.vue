@@ -67,7 +67,7 @@
                 </vs-col>
             </vs-row>
             <template>
-                <transition name="slide-fade">
+                
                     <InboundIncoming 
                         :ref="'inboundIncoming'"   
                         :nodeType="node_request" 
@@ -81,7 +81,7 @@
                         :dateFilter="tempDate"
                         :searchBy="searchBy"
                     />
-                </transition>
+                
             </template>
         </section>
     </div>

@@ -1,7 +1,7 @@
 <template>
     <div class="box calculator">
         <template v-if="switch_component == true">
-            <transition name="slide-fade">
+            
                 <div> 
                     <table class="tariff_selector">
                         <thead>
@@ -46,10 +46,10 @@
                         
                     </table>
                 </div>
-            </transition>
+            
         </template>
         <template v-else-if="switch_component == false">
-            <transition name="slide-fade">
+            
                 <div class="calc_slide">
                     <div class="select_connote">
                         <p>{{listConnote.length}} Package (s)</p>
@@ -106,7 +106,7 @@
                         </tr>
                     </table>
                 </div>
-            </transition>
+            
         </template>
     </div>
 </template>

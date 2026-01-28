@@ -43,14 +43,14 @@
                     </vs-row>
                 </div>
                 <template>
-                    <transition name="slide-fade">
+                    
                         <hrs-history-table
                             ref="HRSTable"
                             :dateFilter="dateRange"
                             :query="tempSearch"
                             :searchBy="searchBy"
                         />
-                    </transition>
+                    
                 </template>
             </div>
         </section>

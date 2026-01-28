@@ -63,10 +63,10 @@
                     </vs-row>
                 </div>
                 <template>
-                    <transition name="slide-fade">
+                    
                         <PickupRequest :ref="'pickupRequest'" :dateFilter="tempDate" :query="tempSearch"
                             :searchBy="searchBy" :filterDateBy="filterDateBy" />
-                    </transition>
+                    
                 </template>
             </div>
         </section>

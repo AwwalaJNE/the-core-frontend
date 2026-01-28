@@ -37,19 +37,19 @@
                     </vs-row>
                 </div>
                 <template v-if="navActive === 'k-VEHICLE'">
-                    <transition name="slide-fade">
+                    
                         <vehicle-list :ref="navActive" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
                 <template v-else-if="navActive === 'k-VEHICLE-MODE'">
-                    <transition name="slide-fade">
+                    
                         <vehicle-mode :ref="navActive" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
                 <template v-else-if="navActive === 'k-VEHICLE-TYPE'">
-                    <transition name="slide-fade">
+                    
                         <vehicle-type :ref="navActive" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
 
             </div>

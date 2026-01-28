@@ -23,7 +23,7 @@
                 </vs-col>
             </vs-row>
             <template>
-                <transition name="slide-fade">
+                
                     <SuratJalan
                         :ref="'SuratJalan'"
                         :dateFilter="tempDate"
@@ -31,7 +31,7 @@
                         :query="query"
                         :searchBy="searchBy"
                     />
-                </transition>
+                
             </template>
         </section>
     </div>

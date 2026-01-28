@@ -28,9 +28,9 @@
                     </vs-row>
                 </div>
                 <template>
-                    <transition name="slide-fade">
+                    
                         <CostToCostList :ref="'sostToCostList'" :query="tempSearch" />
-                    </transition>
+                    
                 </template>
             </div>
         </section>

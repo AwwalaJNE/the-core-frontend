@@ -59,7 +59,7 @@
                     </vs-row>
                 </div>
                 <template>
-                    <transition name="slide-fade">
+                    
                         <transactionDetailList
                             :ref="'transactionList'"
                             :query="tempSearch"
@@ -69,7 +69,7 @@
                             :searchBy="searchBy"
                             :filterDateBy="filterDateBy"
                         />
-                    </transition>
+                    
                 </template>
             </div>
         </section>

@@ -41,17 +41,17 @@
                         </vs-row>
 
                         <template v-if="navActive === 'k-USER'">
-                            <transition name="slide-fade">
+                            
                                 <user-list :ref="navActive" :query="tempSearch"/>
-                            </transition>
+                            
                         </template>
                         <template v-if="navActive === 'k-ROLES'">
-                            <transition name="slide-fade">
+                            
                                 <role-list :ref="navActive" :query="tempSearch"/>
-                            </transition>
+                            
                         </template>
                         <template v-if="navActive === 'k-PERMISSIONS'">
-                            <transition name="slide-fade">
+                            
                                 <div class="dataRole">
                                     <ul>
                                        <template v-for="(item,key) in dataRole">
@@ -59,7 +59,7 @@
                                        </template> 
                                     </ul>
                                 </div>
-                            </transition>
+                            
                         </template>
                     </div>
                 </vs-col>

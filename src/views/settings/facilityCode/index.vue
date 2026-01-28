@@ -59,13 +59,13 @@
                     </vs-row>
                 </div>
                 <template v-if="navActive === 'facility-code'">
-                    <transition name="slide-fade">
+                    
                         <facility-code-list
                             :ref="navActive"
                             :query="tempSearch"
                             :searchBy="searchByFacilityCode"
                         />
-                    </transition>
+                    
                 </template>
             </div>
         </section>

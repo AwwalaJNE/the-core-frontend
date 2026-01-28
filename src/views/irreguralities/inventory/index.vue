@@ -92,7 +92,7 @@
                                     />
                                 </vs-col>
                             </vs-row>
-                            <transition name="slide-fade">
+                            
                                 <active-list
                                     :ref="navActive"
                                     :dateFilter="tempDate"
@@ -100,7 +100,7 @@
                                     :querySearch="searchBy"
                                     :queryDate="filterDateBy"
                                 />
-                            </transition>
+                            
                         </template>
                         <template v-if="navActive === 'k-HISTORY'">
                             <vs-row>
@@ -125,7 +125,7 @@
                                     />
                                 </vs-col>
                             </vs-row>
-                            <transition name="slide-fade">
+                            
                                 <history-list
                                     :ref="navActive"
                                     :query="tempSearch"
@@ -133,7 +133,7 @@
                                     :searchDateBy="filterDateByBag"
                                     :searchBy="searchByBag"
                                 />
-                            </transition>
+                            
                         </template>
                     </div>
                 </vs-col>

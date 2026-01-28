@@ -91,22 +91,22 @@
                             </vs-col>
                         </vs-row>
                         <template v-if="navActive === 'k-PREALERT'">
-                            <transition name="slide-fade">
+                            
                                 <inbound-incoming 
                                     :ref="navActive"
                                     :query="tempSearch"
                                     :searchBy="searchPreAlertBy"
                                 />
-                            </transition>
+                            
                         </template>
                         <template v-if="navActive === 'k-SURATJALAN'">
-                            <transition name="slide-fade">
+                            
                                 <sj-list
                                     :ref="navActive"
                                     :query="tempSearch"
                                     :searchBy="searchSuratJalanBy"
                                 />
-                            </transition>
+                            
                         </template>
                     </div>
                 </vs-col>

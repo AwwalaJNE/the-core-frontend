@@ -63,7 +63,7 @@
                     </vs-row>
                 </div>
 
-                <transition name="slide-fade">
+                
                     <table-master
                         hideColumnKey="invalid-receiving"
                         :dataTable="dataTable"
@@ -77,7 +77,7 @@
                         @actionLimit="actionLimit"
                         @actionPagination="actionPagination"
                     />
-                </transition>
+                
             </div>
         </section>
     </div>

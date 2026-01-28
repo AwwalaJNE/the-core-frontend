@@ -61,19 +61,19 @@
                     </vs-row>
                 </div>
                 <template v-if="navActive === 'k-BASE-TARIFF'">
-                    <transition name="slide-fade">
+                    
                         <base-tariff :ref="navActive" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
                 <!-- <template v-else-if="navActive === 'k-SPECIAL-TARIFF'">
-                    <transition name="slide-fade">
+                    
                         <special-tariff :ref="navActive" :query="tempSearch"/>
-                    </transition>
+                    
                 </template> -->
                 <template v-if="navActive === 'k-DISCOUNT'">
-                    <transition name="slide-fade">
+                    
                         <discount-tariff :ref="navActive" :query="tempSearch"/>
-                    </transition>
+                    
                 </template>
 
             </div>

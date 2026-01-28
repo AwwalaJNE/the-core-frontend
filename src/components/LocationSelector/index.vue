@@ -1,7 +1,6 @@
 <template>
     <div>
         <template v-if="isShow == true">
-            <transition name="slide-fade">
                 <div> 
                     <table class="tariff_selector">
                         <thead>
@@ -45,7 +44,6 @@
                         
                     </table>
                 </div>
-            </transition>
         </template> 
     </div>
 </template>

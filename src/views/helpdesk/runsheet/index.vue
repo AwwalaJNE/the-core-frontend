@@ -39,7 +39,7 @@
                     </vs-row>
                 </div>
                 <template>
-                    <transition name="slide-fade">
+                    
                         <DeliveryRunsheetTable
                             :ref="'DeliveryRunsheetTable'"
                             :node="node_request"
@@ -48,7 +48,7 @@
                             :searchBy="searchBy"
                             :filterDateBy="filterDateBy"
                         />
-                    </transition>
+                    
                 </template>
             </div>
         </section>

@@ -62,7 +62,7 @@
             </div>
             
             <template v-if="dataTable.length == 0">
-                    <transition name="slide-fade">
+                    
                         <vs-row justify="center">
                             <vs-col xs="12" sm="12" lg="12">
                                 <el-upload
@@ -87,11 +87,11 @@
                                 </el-upload>
                             </vs-col>
                         </vs-row>
-                    </transition>
+                    
             </template>
 
             <template v-if="dataTable.length > 0">
-                <transition name="slide-fade">
+                
                     <table-master 
                     hideColumnKey="upload-transaction" 
                     :dataTable="dataTable" 
@@ -99,7 +99,7 @@
                     :hasAction="false"
                     :hasPagination="false"
                     />
-                </transition>
+                
             </template>
             
         </div>

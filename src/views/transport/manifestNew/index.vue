@@ -117,7 +117,7 @@
                     </vs-row>
                 </div>
                 <template>
-                    <transition name="slide-fade">
+                    
                         <SuratMuatan
                             ref="SuratMuatan"
                             :dateFilter="tempDate"
@@ -127,7 +127,7 @@
                             :status="filterStatusBy"
                             :isTransit="filterIsTransitBy"
                         />
-                    </transition>
+                    
                 </template>
             </div>
         </section>

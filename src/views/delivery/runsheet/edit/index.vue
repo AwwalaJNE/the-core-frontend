@@ -326,7 +326,7 @@
                                 </vs-row>
 
                                 <template v-if="navActive === 'k-LIST-DELIVERY'">
-                                    <transition name="slide-fade">
+                                    
                                         <template v-if="listenDataDelivery.length > 0">
                                             <RunsheetInformation
                                                 v-if="arrStatus && dataDelivery"
@@ -343,10 +343,10 @@
                                                 :selectedItems="selectedUpdateItems"
                                             />
                                         </template>
-                                    </transition>
+                                    
                                 </template>
                                 <template v-if="navActive === 'k-LIST-DELETE'">
-                                    <transition name="slide-fade">
+                                    
                                         <template v-if="radio_option === 'bag'">
                                             <RunsheetInformationCancel
                                                 v-if="arrStatus && dataDelivery"
@@ -362,14 +362,14 @@
                                                 :selectedItems="selectedUpdateItems"
                                             />
                                         </template>
-                                    </transition>
+                                    
                                 </template>
                             </div>
                             <vs-row v-if="radio_option !== 'bag'">
                                 <!-- col for detail unreceive item-->
                                 <vs-col lg="12" :sm="12" xs="12">
                                     <template>
-                                        <transition name="slide-fade">
+                                        
                                             <template v-if="listenDataDelivery.length > 0">
                                                 <RunsheetInformation
                                                     v-if="arrStatus && dataDelivery"
@@ -386,7 +386,7 @@
                                                     :selectedItems="selectedUpdateItems"
                                                 />
                                             </template>
-                                        </transition>
+                                        
                                     </template>
                                 </vs-col>
                             </vs-row>

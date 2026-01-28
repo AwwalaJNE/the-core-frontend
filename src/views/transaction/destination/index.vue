@@ -50,12 +50,10 @@
         <div class="con-form">
             
             <template v-if="listenforcererender == true">
-                <transition>
                     loading ...
-                </transition>
+                
             </template>
             <template v-else-if="listenforcererender == false">
-                <transition>
                     <form-input-controller 
                         ref="formTransactionDestinationController"
                         @formData="formData"
@@ -65,7 +63,7 @@
                         :inputDisabled="listeninputDisabled"
                         typeForm="destination"
                     />
-                </transition>
+                
             </template>
         </div>
         <customerByPhone

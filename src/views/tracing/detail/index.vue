@@ -90,7 +90,7 @@
                                     </vs-row>
                                 </vs-col>
                             </vs-row>
-                            <transition name="slide-fade">
+                            
                                 <remark-list
                                     ref="refreshRemark"
                                     :dateFilter="dateRange"
@@ -98,7 +98,7 @@
                                     :query="tempSearch"
                                     :searchBy="searchByRemark"
                                 />
-                            </transition>
+                            
                         </template>
 
                         <template v-if="navActive === 'k-RUNSHEET'">
@@ -149,7 +149,7 @@
                                     </vs-row>
                                 </vs-col>
                             </vs-row>
-                            <transition name="slide-fade">
+                            
                                 <runsheet-list
                                     :dateFilter="dateRange"
                                     :filterDateBy="filterDateByRunsheet"
@@ -157,7 +157,7 @@
                                     :ref="navActive"
                                     :searchBy="searchByRunsheet"
                                 />
-                            </transition>
+                            
                         </template>
 
                         <template v-if="navActive === 'k-MESSAGE'">
@@ -208,7 +208,7 @@
                                     </vs-row>
                                 </vs-col>
                             </vs-row>
-                            <transition name="slide-fade">
+                            
                                 <message-list
                                     ref="refreshMessage"
                                     :dateFilter="dateRange"
@@ -216,7 +216,7 @@
                                     :query="tempSearch"
                                     :searchBy="searchByMessage"
                                 />
-                            </transition>
+                            
                         </template>
                     </div>
                 </vs-col>

@@ -12,9 +12,9 @@
         <section class="nodes">
             <div class="box view">
                 <template>
-                    <transition name="slide-fade">
+                    
                         <help-table :ref="'HelpTable'" />
-                    </transition>
+                    
                 </template>
             </div>
         </section>
