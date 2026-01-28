@@ -125,23 +125,36 @@ Vue.prototype.$VueExtend = Vue.util.extend
 Vue.prototype.$VueDelete = Vue.delete
 Vue.prototype.$nextTick = Vue.nextTick
 
+// -------------------- Clear All Console --------------------
+// TURN THIS ON ON PRODUCTION
+console.log = () => {}
+console.warn = () => {}
+console.error = () => {}
+
 // -------------------- Uppercase Directive --------------------
 Vue.directive('uppercase', {
     bind(el, binding) {
         const input = el.querySelector('input')
         if (!input) return
         if (binding.value) input.value = binding.value.toUpperCase()
+
         input.addEventListener('input', () => {
-            input.value = input.value.toUpperCase()
-            input.dispatchEvent(new Event('input'))
+            const upperValue = input.value.toUpperCase()
+            if (input.value !== upperValue) {
+                input.value = upperValue
+                input.dispatchEvent(new Event('input', { bubbles: true }))
+            }
         })
     },
     update(el, binding) {
         const input = el.querySelector('input')
         if (!input) return
         if (binding.value !== undefined) {
-            input.value = binding.value.toUpperCase()
-            input.dispatchEvent(new Event('input'))
+            const upperValue = binding.value.toUpperCase()
+            if (input.value !== upperValue) {
+                input.value = upperValue
+                input.dispatchEvent(new Event('input', { bubbles: true }))
+            }
         }
     },
 })
@@ -159,8 +172,6 @@ async function checkVersion() {
         if (!currentVersion) {
             currentVersion = version
         } else if (currentVersion !== version) {
-            console.log('🔄 New version detected, broadcasting reload...')
-
             channel.postMessage(version)
 
             window.location.reload(true)
@@ -173,7 +184,6 @@ async function checkVersion() {
 channel.onmessage = (event) => {
     const newVersion = event.data
     if (newVersion && newVersion !== currentVersion) {
-        console.log('🔄 Reload triggered from another tab via BroadcastChannel')
         window.location.reload(true)
     }
 }

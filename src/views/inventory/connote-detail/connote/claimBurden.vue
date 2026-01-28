@@ -149,8 +149,6 @@ export default {
         async getClaimAndBurdenData() {
             this.loading = true
             try {
-                console.log('Connote:', this.listenConnoteNumber)
-                console.log('Node ID:', this.listenNodeId)
                 const res = await axios.get(
                     `${this.URL.claim_and_burden}/${this.listenConnoteNumber}?n=${this.listenNodeId}`,
                     this.Helper.header()

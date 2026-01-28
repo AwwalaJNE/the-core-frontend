@@ -287,7 +287,6 @@ export default {
             if(from !== undefined && to !== undefined) {
                startDate = this.formatToWIB(from)
                endDate = this.formatToWIB(to)
-               console.log(startDate, endDate)
             }
           
             if(status !== undefined && status !== null) {

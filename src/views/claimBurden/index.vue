@@ -33,7 +33,7 @@ import SelectSearchBy from '@/components/search/selectSearchBy'
 import claimTable from '@/views/claimBurden/claim/index'
 
 export default {
-    name: 'Claim and Charge',
+    name: 'Claim-andCharge',
     components: {
         'search-input': SearchInput,
         breadcrumb: Breadcrumb,
@@ -66,9 +66,6 @@ export default {
     methods: {
         refresh() {
             this.$refs.Stock.refresh()
-        },
-        searchValue(val) {
-            this.tempSearch = val
         },
         clearSearch() {
             this.$refs.searchInput.clear()

@@ -908,7 +908,6 @@ const Master = {
 
             const d = new Date(date)
             if (isNaN(d.getTime())) {
-                console.warn('Invalid date:', date)
                 return '-'
             }
 
@@ -1050,7 +1049,6 @@ const Master = {
 
             const d = new Date(date)
             if (isNaN(d.getTime())) {
-                console.warn('Invalid date:', date)
                 return '-'
             }
 

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Login from '@/views/auth'
+const Login = () => import('@/views/auth')
 
 import Content from '@/views/template/Content.vue'
 import ContentChild from '@/views/template/Content-child'
@@ -299,7 +299,6 @@ const routes = [
     },
     {
         path: '/',
-        name: 'main',
         component: Content,
         children: [
             {
@@ -850,8 +849,7 @@ const routes = [
                 },
             },
             {
-                path: '',
-                name: 'tracing',
+                path: 'tracing',
                 component: ContentChild,
                 children: [
                     {
@@ -1514,7 +1512,7 @@ const routes = [
                 children: [
                     {
                         path: 'bag',
-                        name: 'Bag',
+                        name: 'Create Bag',
                         component: InventoryBag,
                         meta: {
                             icon: 'bx bx-shopping-bag',
@@ -1773,7 +1771,7 @@ const routes = [
                 children: [
                     {
                         path: 'connote',
-                        name: 'Connote',
+                        name: 'Inventory Connote',
                         component: InventoryItem,
                         meta: {
                             icon: 'bx bx-notepad',
@@ -1788,7 +1786,7 @@ const routes = [
                     },
                     {
                         path: 'bag',
-                        name: 'Bag',
+                        name: 'Inventory Bag',
                         component: InventoryBagItem,
                         meta: {
                             icon: 'bx bx-shopping-bag',
@@ -1862,7 +1860,7 @@ const routes = [
                     },
                     {
                         path: 'manifest-vehicle/:id?',
-                        name: 'transport-manifest-vehicle',
+                        name: 'trace-transport-manifest-vehicle',
                         component: TransportManifestVehicle,
                         meta: {
                             icon: 'bx bxs-truck',
@@ -1930,7 +1928,7 @@ const routes = [
                 children: [
                     {
                         path: 'connote',
-                        name: 'Connote',
+                        name: 'HelpdeskConnote',
                         component: HelpdeskConnote,
                         meta: {
                             requiresAuth: true,
@@ -1944,7 +1942,7 @@ const routes = [
                     },
                     {
                         path: 'bag',
-                        name: 'Bag',
+                        name: 'HelpdeskBag',
                         component: InventoryBagItem,
                         meta: {
                             requiresAuth: true,
@@ -1958,7 +1956,7 @@ const routes = [
                     },
                     {
                         path: 'surat-muatan',
-                        name: 'SuratMuatan',
+                        name: 'HelpdeskSuratMuatan',
                         component: TransportManifest,
                         meta: {
                             requiresAuth: true,
@@ -1972,7 +1970,7 @@ const routes = [
                     },
                     {
                         path: 'surat-jalan',
-                        name: 'SuratJalan',
+                        name: 'HelpdeskSuratJalan',
                         component: TransportSuratJalan,
                         meta: {
                             requiresAuth: true,
@@ -1986,7 +1984,7 @@ const routes = [
                     },
                     {
                         path: 'runsheet',
-                        name: 'Runsheet',
+                        name: 'HelpdeskRunsheet',
                         component: HelpdeskRunsheet,
                         meta: {
                             requiresAuth: true,

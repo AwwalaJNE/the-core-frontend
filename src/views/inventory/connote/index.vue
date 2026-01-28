@@ -142,18 +142,16 @@
                                     />
                                 </vs-col>
                             </vs-row>
-                            <transition name="slide-fade">
-                                <connote-list
-                                    :ref="navActive"
-                                    :dateFilter="tempDateConnote"
-                                    :query="tempSearch"
-                                    :queryInventory="selectedStatusInventoryConnote"
-                                    :queryBag="selectedStatusBagConnote"
-                                    :querySearch="searchByConnote"
-                                    :queryDate="filterDateByConnote"
-                                    @getSummaryData="getSummaryData"
-                                />
-                            </transition>
+                            <connote-list
+                                :ref="navActive"
+                                :dateFilter="tempDateConnote"
+                                :query="tempSearch"
+                                :queryInventory="selectedStatusInventoryConnote"
+                                :queryBag="selectedStatusBagConnote"
+                                :querySearch="searchByConnote"
+                                :queryDate="filterDateByConnote"
+                                @getSummaryData="getSummaryData"
+                            />
                         </template>
                         <template v-else-if="navActive === 'k-KOLI'">
                             <vs-row>
@@ -203,19 +201,17 @@
                                     />
                                 </vs-col>
                             </vs-row>
-                            <transition name="slide-fade">
-                                <koli-list
-                                    :ref="navActive"
-                                    :dateFilter="tempDate"
-                                    :query="tempSearch"
-                                    :queryInventory="selectedStatusInventory"
-                                    :queryBag="selectedStatusBag"
-                                    :querySearch="searchBy"
-                                    :queryDate="filterDateBy"
-                                    :hasStatusDelivery="'0'"
-                                    @getSummaryData="getSummaryData"
-                                />
-                            </transition>
+                            <koli-list
+                                :ref="navActive"
+                                :dateFilter="tempDate"
+                                :query="tempSearch"
+                                :queryInventory="selectedStatusInventory"
+                                :queryBag="selectedStatusBag"
+                                :querySearch="searchBy"
+                                :queryDate="filterDateBy"
+                                :hasStatusDelivery="'0'"
+                                @getSummaryData="getSummaryData"
+                            />
                         </template>
                         <template v-else-if="navActive === 'k-ARCHIVE'">
                             <vs-row>
@@ -253,18 +249,16 @@
                                     />
                                 </vs-col>
                             </vs-row>
-                            <transition name="slide-fade">
-                                <koli-list
-                                    :ref="navActive"
-                                    :dateFilter="tempDateArchive"
-                                    :query="tempSearch"
-                                    :querySearch="searchByArchive"
-                                    :queryDate="filterDateByArchive"
-                                    :hasStatusDelivery="'1'"
-                                    :statusDelivery="selectedStatusDelivery"
-                                    @getSummaryData="getSummaryData"
-                                />
-                            </transition>
+                            <koli-list
+                                :ref="navActive"
+                                :dateFilter="tempDateArchive"
+                                :query="tempSearch"
+                                :querySearch="searchByArchive"
+                                :queryDate="filterDateByArchive"
+                                :hasStatusDelivery="'1'"
+                                :statusDelivery="selectedStatusDelivery"
+                                @getSummaryData="getSummaryData"
+                            />
                         </template>
                     </div>
                 </vs-col>
@@ -293,7 +287,7 @@ import ConnoteList from '@/views/inventory/connote/connote/cnoteList'
 import KoliList from '@/views/inventory/connote/item/connoteList'
 
 export default {
-    name: 'Inventory Item',
+    name: 'Inventory-Item',
     mixins: [master],
     components: {
         'table-master': TableMaster,
