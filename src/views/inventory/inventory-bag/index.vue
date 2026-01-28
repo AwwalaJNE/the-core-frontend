@@ -162,7 +162,7 @@
                         </template>
 
                         <template v-if="navActive === 'k-ACTIVE-WEIGHT'">
-                            <transition name="slide-fade" >
+                            
                                 <active-weight
                                     :ref="navActive" 
                                     :query="tempSearch" 
@@ -172,7 +172,7 @@
                             
                         </template>
                         <template v-else>
-                            <transition name="slide-fade" >
+                            
                                 <bag-list 
                                     :ref="navActive" 
                                     :key="navActive" 
