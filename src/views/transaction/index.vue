@@ -56,7 +56,6 @@
                     <vs-input
                         border
                         type="text"
-                        :autofocus="true"
                         v-model="customerCode"
                         label-placeholder="Customer Code"
                         ref="inputCustomerCode"
@@ -214,7 +213,7 @@ export default {
             return this.$store.getters.getTransaction.transaction.connote.length
         },
         listenNodeLabel() {
-            return this.listenCurrentNode.label || ''
+            return this.listenCurrentNode.node_name || ''
         },
         listenUserRole() {
             return this.listenUserRole
@@ -482,10 +481,14 @@ export default {
             }
         },
         handleBlurCustomerCode() {
+            if (!this.customerCode) return
             this.$store.dispatch('SET_CUSTOMER_CODE_TARIFF', this.customerCode)
         },
         handleInputCustomerCode() {
+            if (!this.customerCode) return
+
             setTimeout(() => {
+                if (!this.customerCode) return
                 this.$store.dispatch('SET_CUSTOMER_CODE_TARIFF', this.customerCode)
             }, 1000)
         },
@@ -915,16 +918,15 @@ export default {
         await this.getCustomerCode()
 
         this.$nextTick(() => {
-            let inputCodeBooking = this.$refs.inputCodeBooking
-            setTimeout(function () {
-                inputCodeBooking.$el.querySelector('input').focus()
-            }, 100)
-
-            let inputCustomerCode = this.$refs.inputCustomerCode
-            setTimeout(function () {
-                inputCustomerCode.$el.querySelector('input').focus()
+            setTimeout(() => {
+                if (this.customerCode) {
+                    this.$refs.inputCustomerCode?.$el?.querySelector('input')?.focus()
+                } else if (this.codeBooking) {
+                    this.$refs.inputCodeBooking?.$el?.querySelector('input')?.focus()
+                }
             }, 100)
         })
+
         this.permissionCustomerCode()
     },
     beforeRouteLeave(to, from, next) {
