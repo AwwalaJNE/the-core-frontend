@@ -116,7 +116,6 @@
                                         :title="'From'"
                                         :valueData="originData"
                                         :tlc="originTlc"
-                                        @updateInfo="updateInfo"
                                     />
                                 </vs-col>
                                 <vs-col xs="4" sm="4" lg="4">
@@ -124,14 +123,12 @@
                                         :title="'To'"
                                         :valueData="destinationData"
                                         :tlc="destinationTlc"
-                                        @updateInfo="updateInfo"
                                     />
                                 </vs-col>
                                 <vs-col xs="4" sm="4" lg="4">
                                     <selector-detail
                                         :title="'Information'"
                                         :valueData="informationData"
-                                        @updateInfo="updateInfo"
                                     />
                                 </vs-col>
                             </vs-row>
