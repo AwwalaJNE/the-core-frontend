@@ -631,6 +631,8 @@ export default {
     async getShippingService() {
       const connote_number = this.$store.getters.getTransaction.transaction.connote[this.listenConnoteIndexActive].connote_number || ''
 
+      if (!this.listenDestinationCode) return
+
 
       await axios
         .get(`${this.URL.tariff_shipping_service
