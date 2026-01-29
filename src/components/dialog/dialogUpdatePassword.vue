@@ -219,7 +219,6 @@ export default {
                 this.$ls.set('is_first_login', false)
                 const user = this.listenActiveUser
                 user.last_password_updated_at = res.data.data.last_password_updated_at
-                this.$store.dispatch('SET_USER_DATA', user)
                 this.visible = false
             } catch (e) {
                 const msg =
