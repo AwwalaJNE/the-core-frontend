@@ -53,8 +53,8 @@
                             :autofocus="true"
                             :disabled="isDisabled || hasCustomerCode"
                             :data-testid="`input-customer-code`"
-                            @blur="processCustomerCode"
-                            @input="processCustomerCode"
+                            @blur="handleBlurCustomerCode"
+                            @input="handleInputCustomerCode"
                             v-uppercase
                             ref="inputCustomerCode"
                         >
@@ -502,6 +502,20 @@ export default {
             if (!this.customerCode) return
             this.hasCustomerCode = true
             this.$store.dispatch('SET_CUSTOMER_CODE_TARIFF', this.customerCode)
+        },
+
+        handleBlurCustomerCode() {
+            if (!this.customerCode) return
+            this.hasCustomerCode = true
+            this.$store.dispatch('SET_CUSTOMER_CODE_TARIFF', this.customerCode)
+        },
+        handleInputCustomerCode() {
+            if (!this.customerCode) return
+
+            setTimeout(() => {
+                this.hasCustomerCode = true
+                this.$store.dispatch('SET_CUSTOMER_CODE_TARIFF', this.customerCode)
+            }, 1000)
         },
 
         async getCustomerCode() {
