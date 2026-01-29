@@ -81,11 +81,16 @@ export default {
         },
         updateScrollButtons() {
             const el = this.$refs.tabContainer
+            if (!el) return
+
             this.canScrollLeft = el.scrollLeft > 5
             this.canScrollRight = el.scrollLeft + el.clientWidth < el.scrollWidth - 5
         },
         scrollTabs(offset) {
-            this.$refs.tabContainer.scrollBy({ left: offset, behavior: 'smooth' })
+            const el = this.$refs.tabContainer
+            if (!el) return
+
+            el.scrollBy({ left: offset, behavior: 'smooth' })
         },
         updateActiveTabFromRoute() {
             const currentPath = this.$route.path
@@ -95,7 +100,9 @@ export default {
     },
     mounted() {
         this.updateActiveTabFromRoute()
-        this.updateScrollButtons()
+        this.$nextTick(() => {
+            this.updateScrollButtons()
+        })
         window.addEventListener('resize', this.updateScrollButtons)
     },
     beforeUnmount() {
