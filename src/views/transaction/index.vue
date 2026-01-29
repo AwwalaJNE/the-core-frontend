@@ -13,14 +13,6 @@
             <vs-row justify="flex-start">
                 <vs-col xs="12" sm="2" lg="3">
                     <form @submit.prevent="processBookingCode">
-                        <!-- <input-general 
-                                name="Masukan Kode Booking"
-                                rules=""
-                                formKey="bookingCode"
-                                :valueData="''"
-                                typeInput="text"
-                                :disabled="hasCodeBooking"
-                                @updateValue="updateValue" /> -->
                         <vs-input
                             border
                             type="text"
@@ -51,20 +43,39 @@
                         </div>
                     </template>
                 </vs-col>
-
-                <vs-col xs="12" sm="2" lg="2">
-                    <vs-input
-                        border
-                        type="text"
-                        v-model="customerCode"
-                        label-placeholder="Customer Code"
-                        ref="inputCustomerCode"
-                        @blur="handleBlurCustomerCode"
-                        @input="handleInputCustomerCode"
-                        :disabled="isDisabled"
-                        :data-testid="`input-customer-code`"
-                        v-uppercase
-                    ></vs-input>
+                <vs-col xs="12" sm="2" lg="3">
+                    <form @submit.prevent="processCustomerCode">
+                        <vs-input
+                            border
+                            type="text"
+                            v-model="customerCode"
+                            label-placeholder="Customer Code"
+                            :autofocus="true"
+                            :disabled="isDisabled || hasCustomerCode"
+                            :data-testid="`input-customer-code`"
+                            @blur="processCustomerCode"
+                            @input="processCustomerCode"
+                            v-uppercase
+                            ref="inputCustomerCode"
+                        >
+                        </vs-input>
+                    </form>
+                </vs-col>
+                <vs-col xs="2" sm="2" lg="2">
+                    <template v-if="hasCustomerCode">
+                        <div
+                            style="position: absolute; left: -10px; top: 15px"
+                            data-testid="remove-booking-wrapper"
+                        >
+                            <span
+                                class="vs-select__chips__chip__close"
+                                @click="removeCustomerCode"
+                                data-testid="remove-booking-btn"
+                            >
+                                <i class="vs-icon-close vs-icon-hover-less"></i>
+                            </span>
+                        </div>
+                    </template>
                 </vs-col>
             </vs-row>
             <vs-row justify="space-between">
@@ -240,6 +251,7 @@ export default {
             rerender: false,
             inputDisabled: false,
             isDisabled: false,
+            hasCustomerCode: false,
         }
     },
     methods: {
@@ -343,6 +355,11 @@ export default {
             }
             this.hasCodeBooking = false
             this.bookingCode = ''
+        },
+
+        removeCustomerCode() {
+            this.customerCode = ''
+            this.hasCustomerCode = false
         },
 
         async processBookingCode() {
@@ -480,18 +497,13 @@ export default {
                 )
             }
         },
-        handleBlurCustomerCode() {
+
+        processCustomerCode() {
             if (!this.customerCode) return
+            this.hasCustomerCode = true
             this.$store.dispatch('SET_CUSTOMER_CODE_TARIFF', this.customerCode)
         },
-        handleInputCustomerCode() {
-            if (!this.customerCode) return
 
-            setTimeout(() => {
-                if (!this.customerCode) return
-                this.$store.dispatch('SET_CUSTOMER_CODE_TARIFF', this.customerCode)
-            }, 1000)
-        },
         async getCustomerCode() {
             try {
                 const res = await axios.get(
@@ -500,6 +512,7 @@ export default {
                     this.Helper.header()
                 )
                 this.customerCode = res.data.data[0]['node_customer_code']
+                this.hasCustomerCode = !!this.customerCode
                 this.loading = false
             } catch (err) {
                 this.loading = false
