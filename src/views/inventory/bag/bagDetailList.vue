@@ -21,6 +21,7 @@
                             </p>
                         </div>
                     </template>
+
                     <template v-else>
                         <vs-col xs="12" sm="9" lg="9" align="left">
                             <p>Total Connote: {{ total_connote }} Pcs</p>
@@ -30,6 +31,7 @@
                         </vs-col>
                     </template>
                 </vs-col>
+
                 <vs-col xs="12" sm="3" lg="3" align="right">
                     <h1>{{ bag_detail_qty }}</h1>
                     <p>Bagged</p>
@@ -55,7 +57,7 @@
 
         <dialog-confirm
             title="Remove Item Detail"
-            :message="`Are you sure you want to remove item with id ${this.primaryKey}?`"
+            :message="`Are you sure you want to remove item with id ${primaryKey}?`"
             :active="activeDialogConfirmRemove"
             :loading="loadingConfirmRemove"
             :closeDialog="closeDialogConfirmRemove"
@@ -64,41 +66,41 @@
         />
     </div>
 </template>
+
 <script>
 import axios from 'axios'
 import master from '@/mixins/master'
 import TableMaster from '@/components/table/tableMaster.vue'
 import DialogConfirm from '@/components/dialog/dialogConfirm'
+
 export default {
     name: 'list-detailbag',
     mixins: [master],
+
     props: {
         query: String,
         bagId: String,
     },
+
     components: {
         'table-master': TableMaster,
         'dialog-confirm': DialogConfirm,
     },
+
     watch: {
-        query: function (val, old) {
-            if (val !== undefined) {
+        query(val, old) {
+            if (val !== undefined && val !== old) {
                 this.tempSearch = val
-                if (this.tempSearch !== old) {
-                    this.pagination.page = 1
-                    this.getTableData(this.pagination.limit, this.pagination.page, this.bag_id)
-                }
-            }
-        },
-        is_consolidated: function (val, old) {
-            if (val !== undefined) {
-                this.is_consolidated = val
+                this.pagination.page = 1
+                this.refresh()
             }
         },
     },
+
     data() {
         return {
             dataTable: [],
+
             dataColumn: [
                 {
                     label: 'No',
@@ -146,6 +148,7 @@ export default {
                     width: 'sm',
                 },
             ],
+
             additionalColumn: [
                 {
                     label: 'Runsheet Number',
@@ -153,10 +156,12 @@ export default {
                     width: 'sm',
                 },
             ],
+
             loading: false,
             dataItem: {},
-            tempSearch: this.query ? this.query : '',
-            dialogUser: false,
+
+            tempSearch: this.query || '',
+
             bag_id: '',
             bag_number: '',
             total_connote: '',
@@ -167,69 +172,79 @@ export default {
             bag_destination: '',
             bag_destination_id: '',
             bag_destination_name: '',
+
             pagination: {
                 limit: 20,
                 page_size: 1,
                 page: 1,
             },
+
             is_pra_runsheet: false,
-            parentId: '',
+            is_consolidated: false,
+
             id: '',
+            parentId: '',
             primaryKey: '',
+
             activeDialogConfirmRemove: false,
             loadingConfirmRemove: false,
-            is_consolidated: false,
-            data: {},
         }
     },
+
     methods: {
-        async getTableData(limit, page, bag) {
+        async getTableData(bag) {
             this.loading = true
-            let bagId = bag ?? ''
+            const bagId = bag || ''
 
             try {
                 const res = await axios.get(
-                    this.URL.bag + '/' + bagId + `?n=${this.listenNodeId}`,
+                    `${this.URL.bag}/${bagId}?n=${this.listenNodeId}`,
                     this.Helper.header()
                 )
 
-                this.data = res?.data
+                this.dataItem = res.data
 
-                let arr = res?.data?.detail
-                let arrData = res?.data?.data
+                const detail = res?.data?.detail || []
+                const bagData = res?.data?.data || {}
 
-                this.$ls.set('getDataBag', arrData)
+                this.$ls.set('getDataBag', bagData)
 
-                this.is_consolidated = arrData?.is_consolidated === '1'
-                this.is_pra_runsheet = arrData?.is_pra_runsheet === '1' ? true : false
+                this.is_consolidated = bagData.is_consolidated === '1'
+                this.is_pra_runsheet = bagData.is_pra_runsheet === '1'
 
-                arr.map((item, index) => {
-                    item['no'] = index + 1
-                    item['destination_code'] =
+                detail.forEach((item, index) => {
+                    item.no = index + 1
+                    item.destination_code =
                         item.item_type === 'KOLI'
                             ? item.connote_receiver_tariff_code
                             : item.node_tariff_code
-                    item['koli_qty'] =
-                        item.item_type == 'KOLI' ? item.koli_qty : item.bag_detail_qty
-                    item['koli_sequence'] = item.item_type == 'KOLI' ? item.koli_sequence : '-'
-                    item['bag_weight'] =
-                        item.item_type == 'KOLI' ? item?.connote_actual_weight : item.bag_weight
-                    item['connote_service_code'] =
-                        item.item_type == 'KOLI'
+
+                    item.koli_qty = item.item_type === 'KOLI' ? item.koli_qty : item.bag_detail_qty
+
+                    item.koli_sequence = item.item_type === 'KOLI' ? item.koli_sequence : '-'
+
+                    item.bag_weight =
+                        item.item_type === 'KOLI' ? item?.connote_actual_weight : item.bag_weight
+
+                    item.connote_service_code =
+                        item.item_type === 'KOLI'
                             ? item.connote_service_code
-                            : item.bag_service.join(', ')
-                    item['bag_detail_qty'] = res.data.data.bag_detail_qty
-                    item['isDisabled'] = res.data.data.is_approve === 1 ? true : false
-                    item['runsheet_number'] = item?.runsheet
-                        ? item?.runsheet?.[item?.runsheet?.length - 1]?.delivery_runsheet_number
+                            : item.bag_service?.join(', ') || '-'
+
+                    item.bag_detail_qty = bagData.bag_detail_qty
+                    item.isDisabled = bagData.is_approve === 1
+
+                    item.runsheet_number = item?.runsheet?.length
+                        ? item.runsheet[item.runsheet.length - 1].delivery_runsheet_number
                         : ''
-                    item['actual_weight_item'] = item.actual_weight_item + ' Kg'
-                    item['cost_weight_item'] = item.cost_weight_item + ' Kg'
-                    item['created_at'] = this.formatTimezone(item['created_at'])
+
+                    item.actual_weight_item = `${item.actual_weight_item} Kg`
+                    item.cost_weight_item = `${item.cost_weight_item} Kg`
+                    item.created_at = this.formatTimezone(item.created_at)
                 })
 
                 this.getSummaryBag(res)
-                this.dataTable = arr
+                this.dataTable = detail
             } catch (err) {
                 this.openNotification(
                     'danger',
@@ -239,145 +254,130 @@ export default {
                 )
             } finally {
                 this.loading = false
-                this.$emit('getResponse', this.data, this.loading)
+                this.$emit('getResponse', this.dataItem, this.loading)
             }
         },
 
-        getSummaryBag(val) {
-            this.bag_number = val.data.data.bag_number
-            this.bag_detail_qty = val.data.data.bag_detail_qty
-            this.total_connote = val.data.total_item_connote
-            this.total_weight = val.data.total_weight
-            this.actual_weight = val.data.data.bag_actual_weight
-            this.cost_weight = val.data.data.cost_weight
-            this.bag_destination = val?.data?.data?.destination?.node_code ?? ''
-            this.bag_destination_id = val?.data?.data?.destination?.node_id ?? ''
-            this.bag_destination_name = val?.data?.data?.destination?.node_name ?? ''
-        },
-        actionUpdate(val) {
-            if (this.dataTable.length > 0) {
-                let obj = this.dataTable.filter((item) => {
-                    return item.user_id === val.user_id
-                })
-                this.dataItem = obj[0]
+        getSummaryBag(res) {
+            const data = res?.data?.data || {}
 
-                this.$nextTick(() => {
-                    this.dialogUser = true
-                })
-            }
+            this.bag_number = data.bag_number
+            this.bag_detail_qty = data.bag_detail_qty
+            this.total_connote = res?.data?.total_item_connote
+            this.total_weight = res?.data?.total_weight
+            this.actual_weight = data.bag_actual_weight
+            this.cost_weight = data.cost_weight
+            this.bag_destination = data?.destination?.node_code || ''
+            this.bag_destination_id = data?.destination?.node_id || ''
+            this.bag_destination_name = data?.destination?.node_name || ''
         },
+
+        async refresh() {
+            await this.getTableData(this.bag_id)
+        },
+
+        getBagIdParam() {
+            this.bag_id = this.bagId || this.$route.params.id
+        },
+
         actionLimit(val) {
             this.pagination.limit = val
             this.pagination.page = 1
             this.refresh()
         },
+
         actionPagination(val) {
             this.pagination.page = val
             this.refresh()
         },
-        refresh(val) {
-            this.getTableData(this.pagination.limit, this.pagination.page, this.bag_id)
-        },
-        closeDialogUser() {
-            this.dialogUser = false
-        },
-        getBagIdParam() {
-            this.bag_id = this.$route.params.id
-        },
+
         actionRemove(val) {
             this.id = val.bag_detail_id
             this.parentId = val.bag_number
             this.primaryKey = val.item_number
             this.activeDialogConfirmRemove = true
         },
+
         confirmRemove() {
-            this.loadingConfirmRemove = true
             this.removeData()
         },
+
         async removeData() {
-            let bagNumberForRoute = this.parentId
-            await axios
-                .delete(
-                    this.URL.bag + `/${bagNumberForRoute}/detail/${this.id}?n=${this.listenNodeId}`,
+            this.loadingConfirmRemove = true
+            try {
+                const res = await axios.delete(
+                    `${this.URL.bag}/${this.parentId}/detail/${this.id}?n=${this.listenNodeId}`,
                     this.Helper.header()
                 )
-                .then((res) => {
-                    this.closeDialogConfirmRemove()
-                    this.loadingConfirmRemove = false
-                    if (res.data.detail.length > 0) {
-                        this.refresh()
-                    } else {
-                        this.$router.push('/outgoing/bag')
-                        this.setRoutePageHistory(this.$route.meta, false)
-                    }
-                    this.openNotification(
-                        'success',
-                        null,
-                        'Remove success',
-                        'Remove bag item successfully'
-                    )
-                })
-                .catch((err) => {
-                    this.loadingConfirmRemove = false
-                    this.closeDialogConfirmRemove()
-                    this.loading = false
-                    this.openNotification(
-                        'danger',
-                        err.response ? err.response.data.code : '',
-                        'Remove bag item is failed',
-                        err.response.data.message
-                    )
-                })
+
+                this.closeDialogConfirmRemove()
+
+                if (res.data.detail.length > 0) {
+                    this.refresh()
+                } else {
+                    this.$router.push('/outgoing/bag')
+                    this.setRoutePageHistory(this.$route.meta, false)
+                }
+
+                this.openNotification(
+                    'success',
+                    null,
+                    'Remove success',
+                    'Remove bag item successfully'
+                )
+            } catch (err) {
+                this.openNotification(
+                    'danger',
+                    err?.response?.data?.code || '',
+                    'Remove bag item failed',
+                    err?.response?.data?.message || 'Failed'
+                )
+            } finally {
+                this.loadingConfirmRemove = false
+            }
         },
+
         closeDialogConfirmRemove() {
             this.activeDialogConfirmRemove = false
             this.loadingConfirmRemove = false
         },
     },
-    mounted() {
+
+    async mounted() {
         this.getBagIdParam()
-        this.getTableData(this.pagination.limit, this.pagination.page, this.bag_id)
+        await this.refresh()
         window.addEventListener('timezone-changed', this.refresh)
     },
+
     beforeDestroy() {
         window.removeEventListener('timezone-changed', this.refresh)
     },
 }
 </script>
-<style lang="scss">
+
+<style lang="scss" scoped>
 .summary-bag p,
 h1 {
-    margin-top: 0px;
-    padding-top: 0px;
-    padding-bottom: 0px;
-    margin-bottom: 5px;
+    margin: 0 0 5px;
 }
+
 .summary-bag p {
     font-size: 16px;
 }
+
 .summary-bag {
     margin-bottom: 40px;
 }
+
 .bag-header {
     margin-bottom: 15px;
 }
-.bag-title,
-.bag-number {
-    font-size: 20px;
-    font-weight: bold;
-}
-.bag-info {
-    margin-top: 10px;
-}
+
 .bag-info p {
     font-size: 14px;
     margin-bottom: 3px;
 }
-.bag-detail {
-    @include for-phone-only {
-        text-align: right;
-    }
-}
+
 .bag-no {
     @include for-phone-only {
         text-align: center;

@@ -85,7 +85,7 @@ import TableMaster from '@/components/table/tableMaster.vue'
 import master from '@/mixins/master'
 import axios from 'axios'
 export default {
-    name: 'list-detailbag',
+    name: 'open-bag',
     mixins: [master],
     props: {
         itemNumber: String,

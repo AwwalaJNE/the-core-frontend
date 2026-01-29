@@ -559,7 +559,7 @@ export default {
                 this.routing = 'all_routing'
             }
 
-            let data_validation_service = data.validation_service || []
+            let data_validation_service = (data.validation_service || []).filter(Boolean)
             if (data_validation_service.length > 0) {
                 this.service = data_validation_service
             } else {
