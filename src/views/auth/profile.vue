@@ -89,7 +89,7 @@
             <div class="box" style="text-align: left">
                 <h3>Last login activity</h3>
                 <div class="last-login-info">
-                    <p>{{ dataItem.formatted_user_agent || '-' }}</p>
+                    <p>{{ dataItem?.formatted_user_agent || '-' }}</p>
                 </div>
             </div>
         </vs-col>
@@ -170,6 +170,7 @@ export default {
             activeDialogFirstLogin: true,
             activeLoadingFirstLogin: true,
             isPasswordEnable: false,
+            dataItem: {},
         }
     },
     computed: {
@@ -178,9 +179,6 @@ export default {
         },
         listenTitle() {
             return this.title
-        },
-        listenDataItem() {
-            return this.dataItem
         },
     },
     mounted() {
