@@ -4068,11 +4068,11 @@ export default {
         pickup_phone_number: {
             label: 'Phone',
             key: 'pickup_phone_number',
-            rule: 'required|phone',
+            rule: 'required|phone|numeric',
             typeInput: 'text',
             typeData: 'String',
             valueData: null,
-            value: '',
+            value: '62',
         },
         pickup_address: {
             label: 'Address',
