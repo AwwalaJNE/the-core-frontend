@@ -527,6 +527,7 @@ export default {
                 )
                 this.customerCode = res.data.data[0]['node_customer_code']
                 this.hasCustomerCode = !!this.customerCode
+                this.$store.dispatch('SET_CUSTOMER_CODE_TARIFF', this.customerCode)
                 this.loading = false
             } catch (err) {
                 this.loading = false
