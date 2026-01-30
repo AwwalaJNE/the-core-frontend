@@ -4192,11 +4192,11 @@ export default {
         pickup_schedule_phone_number: {
             label: 'Phone',
             key: 'pickup_schedule_phone_number',
-            rule: 'required|min:8',
+            rule: 'required|phone|numeric',
             typeInput: 'text',
             typeData: 'String',
             valueData: null,
-            value: '',
+            value: '62',
         },
         pickup_schedule_address: {
             label: 'Address',
