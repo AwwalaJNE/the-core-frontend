@@ -30,7 +30,6 @@
                                             ref="searchInput" 
                                             :key="'active-weight'"
                                             :placeholder="searchActiveWeightPlaceholder" 
-                                            @handleSearch="handleSearch" 
                                             @searchValue="searchValue" 
                                             
                                         />
@@ -54,7 +53,6 @@
                                             ref="searchInput" 
                                             :key="navActive"
                                             :placeholder="searchPlaceholderBag" 
-                                            @handleSearch="handleSearch" 
                                             @searchValue="searchValue" 
                                             
                                         />
@@ -454,12 +452,6 @@ export default {
         actionPagination(val) {
             this.pagination.page = val
         },
-        handleSearch() {
-            this.$nextTick(() => {
-                this.refresh();
-                this.$refs.searchInput.clear();
-            });
-        }
     },
 }
 </script>

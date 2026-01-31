@@ -60,7 +60,6 @@
                                                 ref="searchInput"
                                                 :placeholder="searchPreAlertPlaceholder"
                                                 @searchValue="searchValue"
-                                                @handleSearch="handleSearch"
                                             />
                                         </vs-col>
                                     </vs-row>
@@ -83,7 +82,6 @@
                                                 ref="searchInput" 
                                                 :placeholder="searchSuratJalanPlaceholder"
                                                 @searchValue="searchValue"
-                                                @handleSearch="handleSearch"
                                             />
                                         </vs-col>
                                     </vs-row>
@@ -294,12 +292,6 @@ export default {
                     break;
                 default:
             }
-        },
-        handleSearch() {
-            this.$nextTick(() => {
-                this.refresh();
-                this.$refs.searchInput.clear();
-            });
         },
         refresh(){
             let el = this.navActive

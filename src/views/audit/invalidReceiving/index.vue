@@ -55,7 +55,6 @@
                                         :formKey="'SEARCH_INPUT'"
                                         :placeholder="searchPlaceholder"
                                         @searchValue="updateValue('SEARCH_INPUT', $event)"
-                                        @handleSearch="handleSearch"
                                     />
                                 </vs-col>
                             </vs-row>
@@ -329,12 +328,6 @@ export default {
                     break
                 default:
             }
-        },
-        handleSearch() {
-            this.$nextTick(() => {
-                this.refresh()
-                this.$refs.searchInput.clear()
-            })
         },
     },
     mounted() {
