@@ -395,7 +395,7 @@ export default {
                 const res = await axios.post(
                     `${this.URL.receiving_log}/${this.listenReceivingLogId}?n=${this.listenNodeId}`,
                     formData,
-                    this.Helper.header()
+                    this.Helper.headerFormData()
                 )
                 this.openNotification(
                     'success',

@@ -362,7 +362,7 @@ export default {
         async handleSubmitData(formData) {
             this.loading = true;
             try {
-                const res = await axios.post(`${this.URL.receiving_log}/${this.listenReceivingLogId}?n=${this.listenNodeId}`, formData, this.Helper.header());
+                const res = await axios.post(`${this.URL.receiving_log}/${this.listenReceivingLogId}?n=${this.listenNodeId}`, formData, this.Helper.headerFormData());
                 this.openNotification('success', null, "Success", res?.data?.message ||  "Success Update Data");
             } catch (err) {
                 this.openNotification("danger", err?.response?.data?.code || '', "Failed", err?.response?.data?.message || 'Something went wrong');
