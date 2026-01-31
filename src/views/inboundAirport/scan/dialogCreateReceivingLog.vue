@@ -324,7 +324,7 @@ export default {
                 const endpoint = this.receivingLogId
                     ? `${this.URL.receiving_log}/${this.receivingLogId}?n=${this.listenNodeId}`
                     : `${this.URL.receiving_log}?n=${this.listenNodeId}`
-                const res = await axios.post(`${endpoint}`, formData, this.Helper.header())
+                const res = await axios.post(`${endpoint}`, formData, this.Helper.headerFormData())
                 if (!this.receivingLogId) {
                     const resData = res.data.data
                     this.receivingLogId = resData.receiving_log_id

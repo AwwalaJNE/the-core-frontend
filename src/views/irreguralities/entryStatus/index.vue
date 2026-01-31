@@ -418,7 +418,7 @@ export default {
                     .post(
                         this.URL.irregularities + `/update?n=${this.listenNodeId}`,
                         formData,
-                        this.Helper.header()
+                        this.Helper.headerFormData()
                     )
                     .then((res) => {
                         this.loadingSubmit = false
@@ -441,7 +441,7 @@ export default {
                     .post(
                         this.URL.irregularities + `?n=${this.listenNodeId}`,
                         formData,
-                        this.Helper.header()
+                        this.Helper.headerFormData()
                     )
                     .then((res) => {
                         this.loadingSubmit = false
