@@ -282,11 +282,6 @@ export default {
                 this.is_sm = data.inbound_type === 'SM'
                 this.is_user_check = this.is_sm && data.is_user_check === '1'
                 this.documentType = res.data.data.document_type
-                this.inbound_number = ['RECEIVING CONNOTE', 'RECEIVING BAG'].includes(
-                    data.inbound_type
-                )
-                    ? ''
-                    : this.inbound_number || ''
                 this.dataTable = ['RECEIVING CONNOTE', 'RECEIVING BAG'].includes(data.inbound_type)
                     ? []
                     : [
@@ -327,6 +322,7 @@ export default {
                 }
 
                 this.getTableDataReceivingLog()
+                this.$refs.inboundScan?.removeParentNumberOnly()
             } catch (err) {
                 await this.openNotification(
                     'danger',
@@ -335,9 +331,7 @@ export default {
                     err?.response?.data?.message ?? 'Something went wrong'
                 )
 
-                if (!this.is_prealert) {
-                    this.removeInboundNumber()
-                }
+                this.removeInboundNumber()
             } finally {
                 this.loadingDataTable = false
             }

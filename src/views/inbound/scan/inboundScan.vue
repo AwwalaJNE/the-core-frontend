@@ -118,9 +118,13 @@ export default {
          * SCAN INPUT
          * ====================================================== */
 
-        removeParentNumber() {
+        removeParentNumberOnly() {
             this.parent_no = ''
             this.isParentSubmitted = false
+        },
+
+        removeParentNumber() {
+            this.removeParentNumberOnly()
             this.$emit('removeInboundNumber')
             this.autoFocusInput('parent')
         },
