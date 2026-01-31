@@ -34,7 +34,6 @@
                                         ref="searchInput"
                                         :placeholder="searchPlaceholder"
                                         @searchValue="searchValue"
-                                        @handleSearch="handleSearch"
                                     />
                                 </vs-col>
                             </vs-row>
@@ -91,18 +90,16 @@
                     </vs-row>
                 </div>
                 <template>
-                    
-                        <SuratJalan
-                            :ref="'SuratJalan'"
-                            :dateFilter="tempDate"
-                            :query="tempSearch"
-                            :searchBy="searchBy"
-                            :sj_type="listenBreadcrumbCode"
-                            :filterDateBy="filterDateBy"
-                            :status="filterStatusBy"
-                            :title="listenBreadcrumbTitle"
-                        />
-                    
+                    <SuratJalan
+                        :ref="'SuratJalan'"
+                        :dateFilter="tempDate"
+                        :query="tempSearch"
+                        :searchBy="searchBy"
+                        :sj_type="listenBreadcrumbCode"
+                        :filterDateBy="filterDateBy"
+                        :status="filterStatusBy"
+                        :title="listenBreadcrumbTitle"
+                    />
                 </template>
             </div>
         </section>
@@ -330,12 +327,6 @@ export default {
 
             document.addEventListener('keyup', (e) => {
                 keysPressed[e.key.toLowerCase()] = false
-            })
-        },
-        handleSearch() {
-            this.$nextTick(() => {
-                this.refresh()
-                this.$refs.searchInput.clear()
             })
         },
     },

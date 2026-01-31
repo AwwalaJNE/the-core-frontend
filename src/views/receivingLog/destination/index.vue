@@ -44,7 +44,6 @@
                                     ref="searchInput"
                                     :placeholder="searchOriginPlaceholder"
                                     @searchValue="searchValue"
-                                    @handleSearch="handleSearch"
                                 />
                             </vs-col>
                         </vs-row>
@@ -164,11 +163,6 @@ export default {
             this.tempDate = val;
             this.startDate = this.tempDate !== null ? this.tempDate[0] : '';
             this.endDate = this.tempDate !== null ? this.tempDate[1] : '';
-        },
-        handleSearch() {
-            this.$nextTick(() => {
-                this.$refs.searchInput.clear();
-            });
         },
     },
     mounted() {

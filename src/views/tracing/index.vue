@@ -114,7 +114,6 @@
                                         ref="searchInput"
                                         :placeholder="searchPlaceholder"
                                         @searchValue="searchValue"
-                                        @handleSearch="handleSearch"
                                     />
                                 </vs-col>
                             </vs-row>
@@ -655,12 +654,6 @@ export default {
         handleClearForm() {
             this.$refs.koliCode.value = []
             this.$refs.removeKoliCode.value = []
-        },
-        handleSearch() {
-            this.$nextTick(() => {
-                this.refresh()
-                this.$refs.searchInput.clear()
-            })
         },
     },
     mounted() {

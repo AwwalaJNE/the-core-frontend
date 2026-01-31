@@ -41,7 +41,6 @@
                                                 :key="navActive"
                                                 :placeholder="searchPlaceholderConnote"
                                                 :isNumeric="searchByDataTypeConnote"
-                                                @handleSearch="handleSearch"
                                                 @searchValue="searchValue"
                                             />
                                         </vs-col>
@@ -305,12 +304,6 @@ export default {
         },
         actionPagination(val) {
             this.pagination.page = val
-        },
-        handleSearch() {
-            this.$nextTick(() => {
-                this.refresh()
-                this.$refs.searchInput.clear()
-            })
         },
     },
 }

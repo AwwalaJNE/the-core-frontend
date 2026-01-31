@@ -50,7 +50,6 @@
                                             @searchValue="searchValue"
                                             :placeholder="searchPlaceholderFacilityCode"
                                             class="search-input"
-                                            @handleSearch="handleSearch"
                                         />
                                     </vs-col>
                                 </vs-row>
@@ -183,11 +182,6 @@ export default {
                     break
                 default:
             }
-        },
-        handleSearch() {
-            this.$nextTick(() => {
-                this.refresh()
-            })
         },
     },
 }
