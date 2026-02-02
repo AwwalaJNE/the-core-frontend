@@ -208,6 +208,10 @@ export default {
         },
 
         async submitChild(value) {
+            this.inbound_number = ['RECEIVING CONNOTE', 'RECEIVING BAG'].includes(this.documentType)
+                ? ''
+                : this.inbound_number
+
             this.form = this.inbound_number
                 ? { item_no: value, inbound_number: this.inbound_number }
                 : { item_no: value }
@@ -277,11 +281,17 @@ export default {
                     this.Helper.header()
                 )
 
-                const { data, detail } = res.data
+                const { data, detail, meta } = res.data
 
                 this.is_sm = data.inbound_type === 'SM'
                 this.is_user_check = this.is_sm && data.is_user_check === '1'
-                this.documentType = res.data.data.document_type
+                this.documentType = data.document_type
+                this.inbound_number = data.inbound_number
+
+                if (['RECEIVING CONNOTE', 'RECEIVING BAG'].includes(this.documentType)) {
+                    this.$refs.inboundScan?.removeParentNumberOnly()
+                }
+
                 this.dataTable = ['RECEIVING CONNOTE', 'RECEIVING BAG'].includes(data.inbound_type)
                     ? []
                     : [
@@ -293,7 +303,7 @@ export default {
                           },
                       ]
 
-                this.dataTableProp = res.data.detail.map((item) => {
+                this.dataTableProp = detail.map((item) => {
                     item.item_type = item.is_masterbag === '1' ? 'MASTERBAG' : item.item_type
                     item.is_missroute = item.is_missroute === true ? 1 : 0
                     item.total_connote = item.total_connote?.toString()
@@ -316,13 +326,12 @@ export default {
                 this.receivingLogs = data.receiving_log
 
                 this.pagination = {
-                    page: res.data.meta.current_page,
-                    limit: parseInt(res.data.meta.per_page),
-                    page_size: res.data.meta.last_page,
+                    page: meta.current_page,
+                    limit: parseInt(meta.per_page),
+                    page_size: meta.last_page,
                 }
 
                 this.getTableDataReceivingLog()
-                this.$refs.inboundScan?.removeParentNumberOnly()
             } catch (err) {
                 await this.openNotification(
                     'danger',
